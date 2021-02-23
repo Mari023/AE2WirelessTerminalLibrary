@@ -69,6 +69,10 @@ public class WUTGuiObject implements IPortableCell, IActionHost, IInventorySlotA
         return myRange;
     }
 
+    public IStorageGrid getIStorageGrid() {
+        return sg;
+    }
+
     @Override
     public <T extends IAEStack<T>> IMEMonitor<T> getInventory(IStorageChannel<T> channel) {
         return sg.getInventory(channel);

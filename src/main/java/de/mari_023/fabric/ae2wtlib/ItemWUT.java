@@ -58,7 +58,7 @@ public class ItemWUT extends ItemWT {
         }
 
         if(hasPower(player, 0.5, item)) {
-            WUTContainer.open(player, ContainerLocator.forHand(player, hand), (SecurityStationBlockEntity) securityStation);
+            WUTContainer.open(player, ContainerLocator.forHand(player, hand));
         } else {
             player.sendSystemMessage(PlayerMessages.DeviceNotPowered.get(), Util.NIL_UUID);
         }

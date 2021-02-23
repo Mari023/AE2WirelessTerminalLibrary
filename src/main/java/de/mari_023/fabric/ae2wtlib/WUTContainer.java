@@ -15,7 +15,6 @@ import appeng.core.AEConfig;
 import appeng.core.localization.PlayerMessages;
 import appeng.helpers.IContainerCraftingPacket;
 import appeng.tile.inventory.AppEngInternalInventory;
-import appeng.tile.misc.SecurityStationBlockEntity;
 import appeng.util.inv.IAEAppEngInventory;
 import appeng.util.inv.InvOperation;
 import net.minecraft.entity.player.PlayerEntity;
@@ -32,7 +31,6 @@ import net.minecraft.world.World;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.HashMap;
 
 public class WUTContainer extends MEPortableCellContainer implements IAEAppEngInventory, IContainerCraftingPacket, IStorageMonitorable {
 
@@ -50,9 +48,7 @@ public class WUTContainer extends MEPortableCellContainer implements IAEAppEngIn
     private final CraftingTermSlot outputSlot;
     private Recipe<CraftingInventory> currentRecipe;
 
-    private static final HashMap<PlayerEntity, SecurityStationBlockEntity> securityStations = new HashMap<>();
-    public static boolean open(PlayerEntity player, ContainerLocator locator, SecurityStationBlockEntity securityStationBlockEntity) {
-        securityStations.put(player, securityStationBlockEntity);
+    public static boolean open(PlayerEntity player, ContainerLocator locator) {
         return helper.open(player, locator);
     }
 
@@ -70,7 +66,7 @@ public class WUTContainer extends MEPortableCellContainer implements IAEAppEngIn
                 addSlot(craftingSlots[x + y * 3] = new CraftingMatrixSlot(this, crafting, x + y * 3, 37 + x * 18, -72 + y * 18));
             }
         }
-        addSlot(outputSlot = new CraftingTermSlot(getPlayerInv().player, getActionSource(), getPowerSource(), securityStations.get(getPlayerInv().player), crafting, crafting, output, 131, -72 + 18, this));
+        addSlot(outputSlot = new CraftingTermSlot(getPlayerInv().player, getActionSource(), getPowerSource(), gui.getIStorageGrid(), crafting, crafting, output, 131, -72 + 18, this));
     }
 
     @Override
