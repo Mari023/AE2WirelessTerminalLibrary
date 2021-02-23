@@ -63,7 +63,6 @@ public class WUTGuiObject implements IPortableCell, IActionHost, IInventorySlotA
                 itemStorage = sg.getInventory(Api.instance().storage().getStorageChannel(IItemStorageChannel.class));
             }
         }
-        System.out.println("WUTGuiObject created");//TODO remove line
     }
 
     public double getRange() {
@@ -256,7 +255,6 @@ public class WUTGuiObject implements IPortableCell, IActionHost, IInventorySlotA
 
     @Override
     public int getInventorySlot() {
-        return this.inventorySlot;
+        return inventorySlot;
     }
-
 }

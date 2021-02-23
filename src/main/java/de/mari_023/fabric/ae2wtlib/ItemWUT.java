@@ -7,17 +7,25 @@ import appeng.api.config.ViewItems;
 import appeng.api.features.ILocatable;
 import appeng.api.util.IConfigManager;
 import appeng.container.ContainerLocator;
-import appeng.container.ContainerOpener;
 import appeng.core.AEConfig;
 import appeng.core.Api;
+import appeng.core.localization.GuiText;
 import appeng.core.localization.PlayerMessages;
+import appeng.tile.misc.SecurityStationBlockEntity;
 import appeng.util.ConfigManager;
 import appeng.util.Platform;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public class ItemWUT extends ItemWT {
 
@@ -50,9 +58,30 @@ public class ItemWUT extends ItemWT {
         }
 
         if(hasPower(player, 0.5, item)) {
-            ContainerOpener.openContainer(WUTContainer.TYPE, player, ContainerLocator.forHand(player, hand));
+            WUTContainer.open(player, ContainerLocator.forHand(player, hand), (SecurityStationBlockEntity) securityStation);
         } else {
             player.sendSystemMessage(PlayerMessages.DeviceNotPowered.get(), Util.NIL_UUID);
+        }
+    }
+
+    @Override
+    @Environment(EnvType.CLIENT)
+    public void appendTooltip(final ItemStack stack, final World world, final List<Text> lines, final TooltipContext advancedTooltips) {
+        super.appendTooltip(stack, world, lines, advancedTooltips);
+
+        if(stack.hasTag()) {
+            final CompoundTag tag = stack.getOrCreateTag();
+            if(tag != null) {
+                final String encKey = tag.getString("encryptionKey");
+
+                if(encKey == null || encKey.isEmpty()) {
+                    lines.add(GuiText.Unlinked.text());
+                } else {
+                    lines.add(GuiText.Linked.text());
+                }
+            }
+        } else {
+            lines.add(new TranslatableText("AppEng.GuiITooltip.Unlinked"));
         }
     }
 

@@ -15,21 +15,18 @@ import net.minecraft.util.registry.Registry;
 
 public class ae2wtlib implements ModInitializer {
 
-    public static final ItemGroup ITEM_GROUP = FabricItemGroupBuilder.build(
-            new Identifier("ae2wtlib", "general"),
-            () -> new ItemStack(Items.STRUCTURE_VOID));
+    public static final ItemGroup ITEM_GROUP = FabricItemGroupBuilder.build(new Identifier("ae2wtlib", "general"), () -> new ItemStack(Items.STRUCTURE_VOID));
 
-    public static final ItemWUT ULTIMATE_TERMINAL = new ItemWUT(new FabricItemSettings().group(ITEM_GROUP));
+    public static final ItemWUT UNIVERSAL_TERMINAL = new ItemWUT(new FabricItemSettings().group(ITEM_GROUP));
 
     @Override
     public void onInitialize() {
-        Registry.register(Registry.ITEM, new Identifier("ae2wtlib", "wireless_universal_terminal"), ULTIMATE_TERMINAL);
+        Registry.register(Registry.ITEM, new Identifier("ae2wtlib", "wireless_universal_terminal"), UNIVERSAL_TERMINAL);
         WUTContainer.TYPE = registerScreenHandler(WUTContainer::fromNetwork, WUTContainer::open);
     }
 
     public static <T extends AEBaseContainer> ScreenHandlerType<T> registerScreenHandler(ScreenHandlerRegistry.ExtendedClientHandlerFactory<T> factory, ContainerOpener.Opener<T> opener) {
-        ScreenHandlerType<T> type = ScreenHandlerRegistry.registerExtended(new Identifier("ae2wtlib.wirelessuniversalterminal"), factory);
-        ContainerOpener.addOpener(type, opener);
+        ScreenHandlerType<T> type = ScreenHandlerRegistry.registerExtended(new Identifier("ae2wtlib", "wireless_universal_terminal"), factory);
         return type;
     }
 }

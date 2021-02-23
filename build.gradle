@@ -40,7 +40,7 @@ dependencies {
 
     // PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
     // You may need to force-disable transitiveness on them.
-    modImplementation    "appeng:appliedenergistics2-fabric:8.1.0-alpha.13"
+    modImplementation    "appeng:appliedenergistics2-fabric:8.2.0-alpha.1"
 }
 
 processResources {
