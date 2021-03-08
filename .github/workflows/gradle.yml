@@ -24,3 +24,8 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew remapJar
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v2.2.2
+      with: 
+        name: AE2WTLib.jar
+        path: build/libs/AE2WTLib-1.0-SNAPSHOT.jar
