@@ -29,7 +29,7 @@ import net.minecraft.world.World;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-public class WCTContainer extends MEPortableCellContainer implements IAEAppEngInventory, IContainerCraftingPacket {
+public class WCTContainer extends MEPortableCellContainer implements IAEAppEngInventory, IContainerCraftingPacket{
 
     public static ScreenHandlerType<WCTContainer> TYPE;
 
@@ -48,15 +48,15 @@ public class WCTContainer extends MEPortableCellContainer implements IAEAppEngIn
         return helper.open(player, locator);
     }
 
-    private final WCTGuiObject wirelessTerminalGUIObject;
+    private final WCTGuiObject wctGUIObject;
 
 
     public WCTContainer(int id, final PlayerInventory ip, final WCTGuiObject gui) {
         super(TYPE, id, ip, gui);
-        wirelessTerminalGUIObject = gui;
+        wctGUIObject = gui;
 
         final FixedItemInv crafting = getInventoryByName("crafting");
-        final FixedWCTInv fixedWCTInv = new FixedWCTInv(getPlayerInv());
+        final FixedWCTInv fixedWCTInv = new FixedWCTInv(getPlayerInv(), wctGUIObject.getItemStack());
 
         for(int y = 0; y < 3; y++) {
             for(int x = 0; x < 3; x++) {
@@ -75,19 +75,22 @@ public class WCTContainer extends MEPortableCellContainer implements IAEAppEngIn
         addSlot(new AppEngSlot(fixedWCTInv, 4, 80, -22));
         //trashslot
         addSlot(new AppEngSlot(fixedWCTInv, 5, 98, -22));
+        //infinityBoosterCard
+        addSlot(new AppEngSlot(fixedWCTInv, 6, 134, -20));
     }
 
     @Override
     public void sendContentUpdates() {
         super.sendContentUpdates();
-        if(!wirelessTerminalGUIObject.rangeCheck()) {
+        if(!wctGUIObject.rangeCheck()) {
             if(isServer() && isValidContainer()) {
                 getPlayerInv().player.sendSystemMessage(PlayerMessages.OutOfRange.get(), Util.NIL_UUID);
+                close(getPlayerInv().player);
             }
 
             setValidContainer(false);
         } else {
-            double powerMultiplier = AEConfig.instance().wireless_getDrainRate(wirelessTerminalGUIObject.getRange());
+            double powerMultiplier = AEConfig.instance().wireless_getDrainRate(wctGUIObject.getRange());
             try {
                 Method method = super.getClass().getDeclaredMethod("setPowerMultiplier", double.class);
                 method.setAccessible(true);
@@ -151,6 +154,6 @@ public class WCTContainer extends MEPortableCellContainer implements IAEAppEngIn
 
     @Override
     public ItemStack[] getViewCells() {
-        return wirelessTerminalGUIObject.getViewCellStorage().getViewCells();
+        return wctGUIObject.getViewCellStorage().getViewCells();
     }
 }

@@ -26,7 +26,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class ItemWCT extends ItemWT {
+public class ItemWCT extends ItemWT implements IInfinityBoosterCardHolder{
 
     public ItemWCT(Settings props) {
         super(AEConfig.instance().getWirelessTerminalBattery(), props);
@@ -125,5 +125,22 @@ public class ItemWCT extends ItemWT {
         final CompoundTag tag = item.getOrCreateTag();
         tag.putString("encryptionKey", encKey);
         tag.putString("name", name);
+    }
+    @Override
+    public boolean hasBoosterCard(ItemStack item) {
+        return item.getItem() instanceof IInfinityBoosterCardHolder && item.getTag() != null && item.getTag().getBoolean("hasboostercard");
+    }
+
+    @Override
+    public void setBoosterCard(ItemStack item, boolean hasBoosterCard) {
+        if(item.getItem() instanceof IInfinityBoosterCardHolder && item.getTag() != null && hasBoosterCard(item) != hasBoosterCard) {
+            item.getTag().putBoolean("hasboostercard", hasBoosterCard);
+        }
+    }
+
+    @Override
+    public ItemStack boosterCard(ItemStack item) {
+        if(hasBoosterCard(item)) return new ItemStack(ae2wtlib.INFINITY_BOOSTER);
+        return ItemStack.EMPTY;
     }
 }

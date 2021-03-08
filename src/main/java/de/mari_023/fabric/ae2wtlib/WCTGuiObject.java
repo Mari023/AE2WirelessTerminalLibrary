@@ -210,6 +210,7 @@ public class WCTGuiObject implements IPortableCell, IActionHost, IInventorySlotA
     }
 
     public boolean rangeCheck() {
+        if(((IInfinityBoosterCardHolder) effectiveItem.getItem()).hasBoosterCard(effectiveItem)) return true;
         sqRange = myRange = Double.MAX_VALUE;
 
         if (targetGrid != null && itemStorage != null) {
