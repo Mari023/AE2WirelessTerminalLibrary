@@ -29,7 +29,7 @@ import net.minecraft.world.World;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-public class WCTContainer extends MEPortableCellContainer implements IAEAppEngInventory, IContainerCraftingPacket{
+public class WCTContainer extends MEPortableCellContainer implements IAEAppEngInventory, IContainerCraftingPacket {
 
     public static ScreenHandlerType<WCTContainer> TYPE;
 
@@ -85,7 +85,7 @@ public class WCTContainer extends MEPortableCellContainer implements IAEAppEngIn
         if(!wctGUIObject.rangeCheck()) {
             if(isServer() && isValidContainer()) {
                 getPlayerInv().player.sendSystemMessage(PlayerMessages.OutOfRange.get(), Util.NIL_UUID);
-                close(getPlayerInv().player);
+                close(getPlayerInv().player);//TODO fix Inventory still being open
             }
 
             setValidContainer(false);
