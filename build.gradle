@@ -51,7 +51,7 @@ dependencies {
 
     // PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
     // You may need to force-disable transitiveness on them.
-    modImplementation "appeng:appliedenergistics2-fabric:8.2.0-alpha.1"
+    modImplementation "appeng:appliedenergistics2-fabric:8.2.0-alpha.3"
     modImplementation "top.theillusivec4.curios:curios-fabric:0.0.11-1.16.4"
 }
 
