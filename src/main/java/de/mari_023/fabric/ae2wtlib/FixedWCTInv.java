@@ -5,7 +5,7 @@ import alexiil.mc.lib.attributes.item.FixedItemInv;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 
-public class FixedWUTInv implements FixedItemInv {
+public class FixedWCTInv implements FixedItemInv {
 
     private final PlayerInventory playerInventory;
     private ItemStack trashSlot = ItemStack.EMPTY;
@@ -13,7 +13,7 @@ public class FixedWUTInv implements FixedItemInv {
     private static final int slotOffset = 36;
     private static final int offHandSlot = 40;
 
-    public FixedWUTInv(PlayerInventory playerInventory) {
+    public FixedWCTInv(PlayerInventory playerInventory) {
         this.playerInventory = playerInventory;
     }
 

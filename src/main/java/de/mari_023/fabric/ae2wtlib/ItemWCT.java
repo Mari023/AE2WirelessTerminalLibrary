@@ -26,9 +26,9 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class ItemWUT extends ItemWT {
+public class ItemWCT extends ItemWT {
 
-    public ItemWUT(Settings props) {
+    public ItemWCT(Settings props) {
         super(AEConfig.instance().getWirelessTerminalBattery(), props);
     }
 
@@ -57,7 +57,7 @@ public class ItemWUT extends ItemWT {
         }
 
         if(hasPower(player, 0.5, item)) {
-            WUTContainer.open(player, ContainerLocator.forHand(player, hand));
+            WCTContainer.open(player, ContainerLocator.forHand(player, hand));
         } else {
             player.sendSystemMessage(PlayerMessages.DeviceNotPowered.get(), Util.NIL_UUID);
         }
@@ -86,7 +86,7 @@ public class ItemWUT extends ItemWT {
 
     @Override
     public boolean canHandle(ItemStack is) {
-        return is.getItem() instanceof ItemWUT;
+        return is.getItem() instanceof ItemWCT;
     }
 
     @Override

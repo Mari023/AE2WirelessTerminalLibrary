@@ -29,7 +29,7 @@ import appeng.tile.networking.WirelessBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 
-public class WUTGuiObject implements IPortableCell, IActionHost, IInventorySlotAware, IViewCellStorage {
+public class WCTGuiObject implements IPortableCell, IActionHost, IInventorySlotAware, IViewCellStorage {
 
     private final ItemStack effectiveItem;
     private final IWirelessTermHandler wth;
@@ -43,7 +43,7 @@ public class WUTGuiObject implements IPortableCell, IActionHost, IInventorySlotA
     private final int inventorySlot;
     private final FixedViewCellInventory fixedViewCellInventory = new FixedViewCellInventory(0);
 
-    public WUTGuiObject(final IWirelessTermHandler wh, final ItemStack is, final PlayerEntity ep, int inventorySlot) {
+    public WCTGuiObject(final IWirelessTermHandler wh, final ItemStack is, final PlayerEntity ep, int inventorySlot) {
         String encryptionKey = wh.getEncryptionKey(is);
         effectiveItem = is;
         myPlayer = ep;

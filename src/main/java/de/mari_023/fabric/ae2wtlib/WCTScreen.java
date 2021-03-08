@@ -18,13 +18,13 @@ import net.minecraft.text.Text;
 
 import java.lang.reflect.Field;
 
-public class WUTScreen extends MEMonitorableScreen<WUTContainer> {
+public class WCTScreen extends MEMonitorableScreen<WCTContainer> {
 
     private int rows = 0;
     private AETextField searchField;
     private final int reservedSpace;
 
-    public WUTScreen(WUTContainer container, PlayerInventory playerInventory, Text title) {
+    public WCTScreen(WCTContainer container, PlayerInventory playerInventory, Text title) {
         super(container, playerInventory, title);
         reservedSpace = 73;
 

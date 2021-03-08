@@ -13,7 +13,7 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 
-public final class ContainerHelper<C extends WUTContainer, I> {
+public final class ContainerHelper<C extends WCTContainer, I> {
 
     private final Class<I> interfaceClass;
 
@@ -131,8 +131,8 @@ public final class ContainerHelper<C extends WUTContainer, I> {
             return null;
         }
 
-        if(interfaceClass.isAssignableFrom(WUTGuiObject.class) && it.getItem() instanceof ItemWUT) {
-            return interfaceClass.cast(new WUTGuiObject((ItemWUT) it.getItem(), it, player, locator.getItemIndex()));
+        if(interfaceClass.isAssignableFrom(WCTGuiObject.class) && it.getItem() instanceof ItemWCT) {
+            return interfaceClass.cast(new WCTGuiObject((ItemWCT) it.getItem(), it, player, locator.getItemIndex()));
         }
         return null;
     }

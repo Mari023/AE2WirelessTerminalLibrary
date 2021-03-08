@@ -29,13 +29,13 @@ import net.minecraft.world.World;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-public class WUTContainer extends MEPortableCellContainer implements IAEAppEngInventory, IContainerCraftingPacket {
+public class WCTContainer extends MEPortableCellContainer implements IAEAppEngInventory, IContainerCraftingPacket {
 
-    public static ScreenHandlerType<WUTContainer> TYPE;
+    public static ScreenHandlerType<WCTContainer> TYPE;
 
-    public static final ContainerHelper<WUTContainer, WUTGuiObject> helper = new ContainerHelper<>(WUTContainer::new, WUTGuiObject.class);
+    public static final ContainerHelper<WCTContainer, WCTGuiObject> helper = new ContainerHelper<>(WCTContainer::new, WCTGuiObject.class);
 
-    public static WUTContainer fromNetwork(int windowId, PlayerInventory inv, PacketByteBuf buf) {
+    public static WCTContainer fromNetwork(int windowId, PlayerInventory inv, PacketByteBuf buf) {
         return helper.fromNetwork(windowId, inv, buf);
     }
 
@@ -48,15 +48,15 @@ public class WUTContainer extends MEPortableCellContainer implements IAEAppEngIn
         return helper.open(player, locator);
     }
 
-    private final WUTGuiObject wirelessTerminalGUIObject;
+    private final WCTGuiObject wirelessTerminalGUIObject;
 
 
-    public WUTContainer(int id, final PlayerInventory ip, final WUTGuiObject gui) {
+    public WCTContainer(int id, final PlayerInventory ip, final WCTGuiObject gui) {
         super(TYPE, id, ip, gui);
         wirelessTerminalGUIObject = gui;
 
         final FixedItemInv crafting = getInventoryByName("crafting");
-        final FixedWUTInv fixedWUTInv = new FixedWUTInv(getPlayerInv());
+        final FixedWCTInv fixedWCTInv = new FixedWCTInv(getPlayerInv());
 
         for(int y = 0; y < 3; y++) {
             for(int x = 0; x < 3; x++) {
@@ -67,14 +67,14 @@ public class WUTContainer extends MEPortableCellContainer implements IAEAppEngIn
         addSlot(outputSlot = new CraftingTermSlot(getPlayerInv().player, getActionSource(), getPowerSource(), gui.getIStorageGrid(), crafting, crafting, output, 131 + 43, -72 + 18 - 4, this));
 
         //armor
-        addSlot(new AppEngSlot(fixedWUTInv, 3, 8, -76));
-        addSlot(new AppEngSlot(fixedWUTInv, 2, 8, -58));
-        addSlot(new AppEngSlot(fixedWUTInv, 1, 8, -40));
-        addSlot(new AppEngSlot(fixedWUTInv, 0, 8, -22));
+        addSlot(new AppEngSlot(fixedWCTInv, 3, 8, -76));
+        addSlot(new AppEngSlot(fixedWCTInv, 2, 8, -58));
+        addSlot(new AppEngSlot(fixedWCTInv, 1, 8, -40));
+        addSlot(new AppEngSlot(fixedWCTInv, 0, 8, -22));
         //offhand
-        addSlot(new AppEngSlot(fixedWUTInv, 4, 80, -22));
+        addSlot(new AppEngSlot(fixedWCTInv, 4, 80, -22));
         //trashslot
-        addSlot(new AppEngSlot(fixedWUTInv, 5, 98, -22));
+        addSlot(new AppEngSlot(fixedWCTInv, 5, 98, -22));
     }
 
     @Override
