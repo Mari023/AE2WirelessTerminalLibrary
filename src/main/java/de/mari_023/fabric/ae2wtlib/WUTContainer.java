@@ -2,13 +2,10 @@ package de.mari_023.fabric.ae2wtlib;
 
 import alexiil.mc.lib.attributes.item.FixedItemInv;
 import alexiil.mc.lib.attributes.item.compat.FixedInventoryVanillaWrapper;
-import appeng.api.storage.IMEMonitor;
-import appeng.api.storage.IStorageChannel;
-import appeng.api.storage.IStorageMonitorable;
-import appeng.api.storage.data.IAEStack;
 import appeng.container.ContainerLocator;
 import appeng.container.ContainerNull;
 import appeng.container.implementations.MEPortableCellContainer;
+import appeng.container.slot.AppEngSlot;
 import appeng.container.slot.CraftingMatrixSlot;
 import appeng.container.slot.CraftingTermSlot;
 import appeng.core.AEConfig;
@@ -32,7 +29,7 @@ import net.minecraft.world.World;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-public class WUTContainer extends MEPortableCellContainer implements IAEAppEngInventory, IContainerCraftingPacket, IStorageMonitorable {
+public class WUTContainer extends MEPortableCellContainer implements IAEAppEngInventory, IContainerCraftingPacket {
 
     public static ScreenHandlerType<WUTContainer> TYPE;
 
@@ -43,7 +40,6 @@ public class WUTContainer extends MEPortableCellContainer implements IAEAppEngIn
     }
 
     private final AppEngInternalInventory craftingGrid = new AppEngInternalInventory(this, 9);
-    private final AppEngInternalInventory output = new AppEngInternalInventory(this, 1);
     private final CraftingMatrixSlot[] craftingSlots = new CraftingMatrixSlot[9];
     private final CraftingTermSlot outputSlot;
     private Recipe<CraftingInventory> currentRecipe;
@@ -60,13 +56,25 @@ public class WUTContainer extends MEPortableCellContainer implements IAEAppEngIn
         wirelessTerminalGUIObject = gui;
 
         final FixedItemInv crafting = getInventoryByName("crafting");
+        final FixedWUTInv fixedWUTInv = new FixedWUTInv(getPlayerInv());
 
-        for (int y = 0; y < 3; y++) {
-            for (int x = 0; x < 3; x++) {
-                addSlot(craftingSlots[x + y * 3] = new CraftingMatrixSlot(this, crafting, x + y * 3, 37 + x * 18, -72 + y * 18));
+        for(int y = 0; y < 3; y++) {
+            for(int x = 0; x < 3; x++) {
+                addSlot(craftingSlots[x + y * 3] = new CraftingMatrixSlot(this, crafting, x + y * 3, 37 + x * 18 + 43, -72 + y * 18 - 4));
             }
         }
-        addSlot(outputSlot = new CraftingTermSlot(getPlayerInv().player, getActionSource(), getPowerSource(), gui.getIStorageGrid(), crafting, crafting, output, 131, -72 + 18, this));
+        AppEngInternalInventory output = new AppEngInternalInventory(this, 1);
+        addSlot(outputSlot = new CraftingTermSlot(getPlayerInv().player, getActionSource(), getPowerSource(), gui.getIStorageGrid(), crafting, crafting, output, 131 + 43, -72 + 18 - 4, this));
+
+        //armor
+        addSlot(new AppEngSlot(fixedWUTInv, 3, 8, -76));
+        addSlot(new AppEngSlot(fixedWUTInv, 2, 8, -58));
+        addSlot(new AppEngSlot(fixedWUTInv, 1, 8, -40));
+        addSlot(new AppEngSlot(fixedWUTInv, 0, 8, -22));
+        //offhand
+        addSlot(new AppEngSlot(fixedWUTInv, 4, 80, -22));
+        //trashslot
+        addSlot(new AppEngSlot(fixedWUTInv, 5, 98, -22));
     }
 
     @Override
@@ -98,16 +106,16 @@ public class WUTContainer extends MEPortableCellContainer implements IAEAppEngIn
         final ContainerNull cn = new ContainerNull();
         final CraftingInventory ic = new CraftingInventory(cn, 3, 3);
 
-        for (int x = 0; x < 9; x++) {
+        for(int x = 0; x < 9; x++) {
             ic.setStack(x, craftingSlots[x].getStack());
         }
 
-        if (currentRecipe == null || !currentRecipe.matches(ic, this.getPlayerInv().player.world)) {
+        if(currentRecipe == null || !currentRecipe.matches(ic, this.getPlayerInv().player.world)) {
             World world = this.getPlayerInv().player.world;
             currentRecipe = world.getRecipeManager().getFirstMatch(RecipeType.CRAFTING, ic, world).orElse(null);
         }
 
-        if (currentRecipe == null) {
+        if(currentRecipe == null) {
             outputSlot.setStack(ItemStack.EMPTY);
         } else {
             final ItemStack craftingResult = currentRecipe.craft(ic);
@@ -128,9 +136,9 @@ public class WUTContainer extends MEPortableCellContainer implements IAEAppEngIn
 
     @Override
     public FixedItemInv getInventoryByName(String name) {
-        if (name.equals("player")) {
+        if(name.equals("player")) {
             return new FixedInventoryVanillaWrapper(getPlayerInventory());
-        } else if (name.equals("crafting")) {
+        } else if(name.equals("crafting")) {
             return craftingGrid;
         }
         return null;
@@ -142,12 +150,7 @@ public class WUTContainer extends MEPortableCellContainer implements IAEAppEngIn
     }
 
     @Override
-    public <T extends IAEStack<T>> IMEMonitor<T> getInventory(IStorageChannel<T> channel) {
-        return null;
-    }
-
-    @Override
     public ItemStack[] getViewCells() {
-        return new ItemStack[0];
+        return wirelessTerminalGUIObject.getViewCellStorage().getViewCells();
     }
 }

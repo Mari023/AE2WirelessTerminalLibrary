@@ -4,6 +4,7 @@ import appeng.api.config.ActionItems;
 import appeng.client.gui.implementations.MEMonitorableScreen;
 import appeng.client.gui.widgets.AETextField;
 import appeng.client.gui.widgets.ActionButton;
+import appeng.client.gui.widgets.IconButton;
 import appeng.container.slot.CraftingMatrixSlot;
 import appeng.core.localization.GuiText;
 import appeng.core.sync.network.NetworkHandler;
@@ -12,6 +13,7 @@ import appeng.helpers.InventoryAction;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 
 import java.lang.reflect.Field;
@@ -37,8 +39,18 @@ public class WUTScreen extends MEMonitorableScreen<WUTContainer> {
     @Override
     public void init() {
         super.init();
-        ActionButton clearBtn = this.addButton(new ActionButton(this.x + 92, this.y + this.backgroundHeight - 156, ActionItems.STASH, btn -> clear()));
+        ActionButton clearBtn = addButton(new ActionButton(x + 92+43, y + backgroundHeight - 156-4, ActionItems.STASH, btn -> clear()));
         clearBtn.setHalfSize(true);
+
+        IconButton deleteButton = addButton(new IconButton(x + 92 + 25, y + backgroundHeight - 156 +52, btn -> delete()) {
+            @Override
+            protected int getIconIndex() {
+                return 6;
+            }
+        });
+        deleteButton.setHalfSize(true);
+        deleteButton.setMessage(new LiteralText("Empty Trash\n" +
+                "Delete contents of the Trash slot"));
 
         try {
             Field field = MEMonitorableScreen.class.getDeclaredField("rows");
@@ -59,7 +71,7 @@ public class WUTScreen extends MEMonitorableScreen<WUTContainer> {
     @Override
     public void drawBG(MatrixStack matrices, final int offsetX, final int offsetY, final int mouseX, final int mouseY, float partialTicks) {
 
-        bindTexture(this.getBackground());
+        bindTexture(getBackground());
         final int x_width = 197;
         drawTexture(matrices, offsetX, offsetY, 0, 0, x_width, 18);
 
@@ -93,8 +105,12 @@ public class WUTScreen extends MEMonitorableScreen<WUTContainer> {
         }
     }
 
+    private void delete() {
+
+    }
+
     @Override
     protected String getBackground() {
-        return "guis/crafting.png";
+        return "wtlib/gui/crafting.png";
     }
 }

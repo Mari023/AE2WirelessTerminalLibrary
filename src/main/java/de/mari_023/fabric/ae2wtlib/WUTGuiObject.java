@@ -6,6 +6,7 @@ import appeng.api.config.PowerMultiplier;
 import appeng.api.features.ILocatable;
 import appeng.api.features.IWirelessTermHandler;
 import appeng.api.implementations.guiobjects.IPortableCell;
+import appeng.api.implementations.tiles.IViewCellStorage;
 import appeng.api.implementations.tiles.IWirelessAccessPoint;
 import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridNode;
@@ -28,7 +29,7 @@ import appeng.tile.networking.WirelessBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 
-public class WUTGuiObject implements IPortableCell, IActionHost, IInventorySlotAware {
+public class WUTGuiObject implements IPortableCell, IActionHost, IInventorySlotAware, IViewCellStorage {
 
     private final ItemStack effectiveItem;
     private final IWirelessTermHandler wth;
@@ -40,6 +41,7 @@ public class WUTGuiObject implements IPortableCell, IActionHost, IInventorySlotA
     private double sqRange = Double.MAX_VALUE;
     private double myRange = Double.MAX_VALUE;
     private final int inventorySlot;
+    private final FixedViewCellInventory fixedViewCellInventory = new FixedViewCellInventory(0);
 
     public WUTGuiObject(final IWirelessTermHandler wh, final ItemStack is, final PlayerEntity ep, int inventorySlot) {
         String encryptionKey = wh.getEncryptionKey(is);
@@ -260,5 +262,10 @@ public class WUTGuiObject implements IPortableCell, IActionHost, IInventorySlotA
     @Override
     public int getInventorySlot() {
         return inventorySlot;
+    }
+
+    @Override
+    public FixedViewCellInventory getViewCellStorage() {
+        return fixedViewCellInventory;
     }
 }

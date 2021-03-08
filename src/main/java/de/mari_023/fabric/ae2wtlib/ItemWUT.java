@@ -11,7 +11,6 @@ import appeng.core.AEConfig;
 import appeng.core.Api;
 import appeng.core.localization.GuiText;
 import appeng.core.localization.PlayerMessages;
-import appeng.tile.misc.SecurityStationBlockEntity;
 import appeng.util.ConfigManager;
 import appeng.util.Platform;
 import net.fabricmc.api.EnvType;
