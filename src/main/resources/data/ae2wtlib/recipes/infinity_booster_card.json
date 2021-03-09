@@ -1,0 +1,16 @@
+{
+  "result": {
+    "item": "ae2wtlib:infinity_booster_card"
+  },
+  "type": "minecraft:crafting_shapeless",
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["a a", " b "],
+  "key": {
+    "a": {
+      "item": "appliedenergistics2:fluix_pearl"
+    },
+    "b": {
+      "item": "appliedenergistics2:wireless_receiver"
+    }
+  }
+}
