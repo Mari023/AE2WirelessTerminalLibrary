@@ -1,0 +1,9 @@
+{
+  "itemGroup.ae2wtlib.general": "AE2 Drahtlose Zugangskonsolen (AE2WTLib)",
+
+  "gui.ae2wtlib.emptytrash": "Müll löschen",
+  "gui.ae2wtlib.emptytrash.desc": "Löscht den Inhalt des Müll slots",
+
+  "item.ae2wtlib.wireless_crafting_terminal": "Drahtlose Fertigungskonsole",
+  "item.ae2wtlib.infinity_booster_card": "Unendlicher Drahtlosverstärker"
+}

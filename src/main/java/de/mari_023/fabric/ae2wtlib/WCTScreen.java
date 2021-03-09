@@ -15,6 +15,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 
 import java.lang.reflect.Field;
 
@@ -49,8 +50,8 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> {
             }
         });
         deleteButton.setHalfSize(true);
-        deleteButton.setMessage(new LiteralText("Empty Trash\n" +
-                "Delete contents of the Trash slot"));
+        //deleteButton.setMessage(new LiteralText("Empty Trash\n" + "Delete contents of the Trash slot"));
+        deleteButton.setMessage(new TranslatableText("gui.ae2wtlib.emptytrash").append("\n").append(new TranslatableText("gui.ae2wtlib.emptytrash.desc")));
 
         try {
             Field field = MEMonitorableScreen.class.getDeclaredField("rows");
