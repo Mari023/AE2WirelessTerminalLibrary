@@ -1,7 +1,6 @@
 package de.mari_023.fabric.ae2wtlib;
 
 import appeng.container.AEBaseContainer;
-import appeng.container.ContainerOpener;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
@@ -24,14 +23,13 @@ public class ae2wtlib implements ModInitializer {
     public void onInitialize() {
         Registry.register(Registry.ITEM, new Identifier("ae2wtlib", "infinity_booster_card"), INFINITY_BOOSTER);
         Registry.register(Registry.ITEM, new Identifier("ae2wtlib", "wireless_crafting_terminal"), CRAFTING_TERMINAL);
-        WCTContainer.TYPE = registerScreenHandler(WCTContainer::fromNetwork, WCTContainer::open);
+        WCTContainer.TYPE = registerScreenHandler(WCTContainer::fromNetwork);
         /*ItemComponentCallbackV2.event(UNIVERSAL_TERMINAL).register(((item, itemStack, componentContainer) -> componentContainer.put(CuriosComponent.ITEM, new ICurio() {
 
         })));*/
     }
 
-    public static <T extends AEBaseContainer> ScreenHandlerType<T> registerScreenHandler(ScreenHandlerRegistry.ExtendedClientHandlerFactory<T> factory, ContainerOpener.Opener<T> opener) {
-        ScreenHandlerType<T> type = ScreenHandlerRegistry.registerExtended(new Identifier("ae2wtlib", "wireless_crafting_terminal"), factory);
-        return type;
+    public static <T extends AEBaseContainer> ScreenHandlerType<T> registerScreenHandler(ScreenHandlerRegistry.ExtendedClientHandlerFactory<T> factory) {
+        return ScreenHandlerRegistry.registerExtended(new Identifier("ae2wtlib", "wireless_crafting_terminal"), factory);
     }
 }

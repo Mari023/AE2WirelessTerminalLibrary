@@ -10,12 +10,18 @@ import appeng.core.localization.GuiText;
 import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.InventoryActionPacket;
 import appeng.helpers.InventoryAction;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.util.math.Vector3f;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.slot.Slot;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.math.Quaternion;
 
 import java.lang.reflect.Field;
 
@@ -40,10 +46,10 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> {
     @Override
     public void init() {
         super.init();
-        ActionButton clearBtn = addButton(new ActionButton(x + 92+43, y + backgroundHeight - 156-4, ActionItems.STASH, btn -> clear()));
+        ActionButton clearBtn = addButton(new ActionButton(x + 92 + 43, y + backgroundHeight - 156 - 4, ActionItems.STASH, btn -> clear()));
         clearBtn.setHalfSize(true);
 
-        IconButton deleteButton = addButton(new IconButton(x + 92 + 25, y + backgroundHeight - 156 +52, btn -> delete()) {
+        IconButton deleteButton = addButton(new IconButton(x + 92 + 25, y + backgroundHeight - 156 + 52, btn -> delete()) {
             @Override
             protected int getIconIndex() {
                 return 6;
@@ -83,6 +89,9 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> {
         drawTexture(matrices, offsetX, offsetY + 16 + rows * 18, 0, 106 - 18 - 18, x_width, 99 + reservedSpace);
 
         searchField.render(matrices, mouseX, mouseY, partialTicks);
+
+        if(client != null && client.player != null)
+            drawEntity(offsetX + 52, offsetY + 94 + rows * 18, 30, (float) (offsetX + 52) - mouseX, (float) offsetY + 55 + rows * 18 - mouseY, client.player);
     }
 
     @Override
@@ -94,13 +103,13 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> {
 
     private void clear() {
         Slot s = null;
-        for (final Object j : handler.slots) {
-            if (j instanceof CraftingMatrixSlot) {
+        for(final Object j : handler.slots) {
+            if(j instanceof CraftingMatrixSlot) {
                 s = (Slot) j;
             }
         }
 
-        if (s != null) {
+        if(s != null) {
             final InventoryActionPacket p = new InventoryActionPacket(InventoryAction.MOVE_REGION, s.id, 0);
             NetworkHandler.instance().sendToServer(p);
         }
@@ -114,4 +123,44 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> {
     protected String getBackground() {
         return "wtlib/gui/crafting.png";
     }
+
+    public static void drawEntity(int x, int y, int size, float mouseX, float mouseY, LivingEntity entity) {
+        float f = (float) Math.atan((mouseX / 40.0F));
+        float g = (float) Math.atan((mouseY / 40.0F));
+        RenderSystem.pushMatrix();
+        RenderSystem.translatef((float) x, (float) y, 1050.0F);
+        RenderSystem.scalef(1.0F, 1.0F, -1.0F);
+        MatrixStack matrixStack = new MatrixStack();
+        matrixStack.translate(0.0D, 0.0D, 1000.0D);
+        matrixStack.scale((float) size, (float) size, (float) size);
+        Quaternion quaternion = Vector3f.POSITIVE_Z.getDegreesQuaternion(180.0F);
+        Quaternion quaternion2 = Vector3f.POSITIVE_X.getDegreesQuaternion(g * 20.0F);
+        quaternion.hamiltonProduct(quaternion2);
+        matrixStack.multiply(quaternion);
+        float h = entity.bodyYaw;
+        float i = entity.yaw;
+        float j = entity.pitch;
+        float k = entity.prevHeadYaw;
+        float l = entity.headYaw;
+        entity.bodyYaw = 180.0F + f * 20.0F;
+        entity.yaw = 180.0F + f * 40.0F;
+        entity.pitch = -g * 20.0F;
+        entity.headYaw = entity.yaw;
+        entity.prevHeadYaw = entity.yaw;
+        EntityRenderDispatcher entityRenderDispatcher = MinecraftClient.getInstance().getEntityRenderDispatcher();
+        quaternion2.conjugate();
+        entityRenderDispatcher.setRotation(quaternion2);
+        entityRenderDispatcher.setRenderShadows(false);
+        VertexConsumerProvider.Immediate immediate = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers();
+        RenderSystem.runAsFancy(() -> entityRenderDispatcher.render(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, matrixStack, immediate, 15728880));
+        immediate.draw();
+        entityRenderDispatcher.setRenderShadows(true);
+        entity.bodyYaw = h;
+        entity.yaw = i;
+        entity.pitch = j;
+        entity.prevHeadYaw = k;
+        entity.headYaw = l;
+        RenderSystem.popMatrix();
+    }
+
 }
