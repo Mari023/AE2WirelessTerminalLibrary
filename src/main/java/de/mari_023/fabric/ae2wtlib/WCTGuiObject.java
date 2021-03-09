@@ -41,7 +41,7 @@ public class WCTGuiObject implements IPortableCell, IActionHost, IInventorySlotA
     private double sqRange = Double.MAX_VALUE;
     private double myRange = Double.MAX_VALUE;
     private final int inventorySlot;
-    private final FixedViewCellInventory fixedViewCellInventory = new FixedViewCellInventory(0);
+    private final FixedViewCellInventory fixedViewCellInventory = new FixedViewCellInventory();
 
     public WCTGuiObject(final IWirelessTermHandler wh, final ItemStack is, final PlayerEntity ep, int inventorySlot) {
         String encryptionKey = wh.getEncryptionKey(is);
