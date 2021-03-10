@@ -41,13 +41,13 @@ public class ae2wtlib implements ModInitializer {
 
         ServerPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "general"), (server, player, handler, buf, sender) -> server.execute(() -> {
             String Name = buf.getCharSequence(0, buf.readableBytes() - 2, StandardCharsets.US_ASCII).toString();
-            //boolean value = buf.getBoolean(buf.readableBytes() - 1);
+            boolean value = buf.getBoolean(buf.readableBytes() - 1);
             final ScreenHandler c = player.currentScreenHandler;
             if(Name.startsWith("PatternTerminal.") && c instanceof WPTContainer) {
                 final WPTContainer cpt = (WPTContainer) c;
                 switch(Name) {
                     case "PatternTerminal.CraftMode":
-                        //cpt.getPatternTerminal().setCraftingRecipe(value);
+                        cpt.getPatternTerminal().setCraftingRecipe(value);
                         break;
                     case "PatternTerminal.Encode":
                         cpt.encode();
@@ -56,7 +56,7 @@ public class ae2wtlib implements ModInitializer {
                         cpt.clear();
                         break;
                         case "PatternTerminal.Substitute":
-                        //cpt.getPatternTerminal().setSubstitution(value);
+                        cpt.getPatternTerminal().setSubstitution(value);
                         break;
                 }
             }
