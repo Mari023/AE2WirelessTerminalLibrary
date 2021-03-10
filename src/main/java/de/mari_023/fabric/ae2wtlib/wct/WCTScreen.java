@@ -1,4 +1,4 @@
-package de.mari_023.fabric.ae2wtlib;
+package de.mari_023.fabric.ae2wtlib.wct;
 
 import appeng.api.config.ActionItems;
 import appeng.client.gui.implementations.MEMonitorableScreen;

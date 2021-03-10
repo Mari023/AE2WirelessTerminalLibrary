@@ -1,8 +1,11 @@
-package de.mari_023.fabric.ae2wtlib;
+package de.mari_023.fabric.ae2wtlib.wct;
 
 import alexiil.mc.lib.attributes.Simulation;
 import alexiil.mc.lib.attributes.item.FixedItemInv;
 import alexiil.mc.lib.attributes.item.filter.ItemFilter;
+import de.mari_023.fabric.ae2wtlib.IInfinityBoosterCardHolder;
+import de.mari_023.fabric.ae2wtlib.ItemInfinityBooster;
+import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 

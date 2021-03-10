@@ -1,16 +1,17 @@
-package de.mari_023.fabric.ae2wtlib;
+package de.mari_023.fabric.ae2wtlib.wpt;
 
+import alexiil.mc.lib.attributes.item.FixedItemInv;
 import appeng.api.config.AccessRestriction;
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
 import appeng.api.features.ILocatable;
 import appeng.api.features.IWirelessTermHandler;
 import appeng.api.implementations.guiobjects.IPortableCell;
-import appeng.api.implementations.tiles.IViewCellStorage;
 import appeng.api.implementations.tiles.IWirelessAccessPoint;
 import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.IMachineSet;
+import appeng.api.networking.crafting.ICraftingPatternDetails;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.security.IActionSource;
 import appeng.api.networking.storage.IStorageGrid;
@@ -25,11 +26,16 @@ import appeng.api.util.DimensionalCoord;
 import appeng.api.util.IConfigManager;
 import appeng.container.interfaces.IInventorySlotAware;
 import appeng.core.Api;
+import appeng.tile.inventory.AppEngInternalInventory;
 import appeng.tile.networking.WirelessBlockEntity;
+import appeng.util.inv.IAEAppEngInventory;
+import appeng.util.inv.InvOperation;
+import de.mari_023.fabric.ae2wtlib.FixedViewCellInventory;
+import de.mari_023.fabric.ae2wtlib.IInfinityBoosterCardHolder;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 
-public class WCTGuiObject implements IPortableCell, IActionHost, IInventorySlotAware, IViewCellStorage {
+public class WPTGuiObject implements IPortableCell, IActionHost, IInventorySlotAware, IAEAppEngInventory/*, IViewCellStorage*/ {
 
     private final ItemStack effectiveItem;
     private final IWirelessTermHandler wth;
@@ -42,8 +48,13 @@ public class WCTGuiObject implements IPortableCell, IActionHost, IInventorySlotA
     private double myRange = Double.MAX_VALUE;
     private final int inventorySlot;
     private final FixedViewCellInventory fixedViewCellInventory = new FixedViewCellInventory();
+    private boolean craftingMode = true;
+    private boolean substitute = false;
+    private final AppEngInternalInventory crafting = new AppEngInternalInventory(this, 9);
+    private final AppEngInternalInventory output = new AppEngInternalInventory(this, 3);
+    private final AppEngInternalInventory pattern = new AppEngInternalInventory(this, 2);
 
-    public WCTGuiObject(final IWirelessTermHandler wh, final ItemStack is, final PlayerEntity ep, int inventorySlot) {
+    public WPTGuiObject(final IWirelessTermHandler wh, final ItemStack is, final PlayerEntity ep, int inventorySlot) {
         String encryptionKey = wh.getEncryptionKey(is);
         effectiveItem = is;
         myPlayer = ep;
@@ -197,7 +208,7 @@ public class WCTGuiObject implements IPortableCell, IActionHost, IInventorySlotA
 
     @Override
     public IConfigManager getConfigManager() {
-        return wth.getConfigManager(this.effectiveItem);
+        return wth.getConfigManager(effectiveItem);
     }
 
     @Override
@@ -265,8 +276,84 @@ public class WCTGuiObject implements IPortableCell, IActionHost, IInventorySlotA
         return inventorySlot;
     }
 
+    public boolean isCraftingRecipe() {
+        return craftingMode;
+    }
+
+    public FixedItemInv getInventoryByName(final String name) {
+        if(name.equals("crafting")) {
+            return crafting;
+        }
+
+        if(name.equals("output")) {
+            return output;
+        }
+
+        if(name.equals("pattern")) {
+            return pattern;
+        }
+
+        System.out.println("need Inventory " + name);
+        return null;
+    }
+
     @Override
+    public void saveChanges() {
+        markForSave();
+    }
+
+    @Override
+    public void onChangeInventory(FixedItemInv inv, int slot, InvOperation mc, ItemStack removedStack, ItemStack newStack) {
+        if(inv == pattern && slot == 1) {
+            final ItemStack is = pattern.getInvStack(1);
+            final ICraftingPatternDetails details = Api.instance().crafting().decodePattern(is, myPlayer.world, false);
+            if(details != null) {
+                setCraftingRecipe(details.isCraftable());
+                setSubstitution(details.canSubstitute());
+
+                for(int x = 0; x < crafting.getSlotCount() && x < details.getSparseInputs().length; x++) {
+                    final IAEItemStack item = details.getSparseInputs()[x];
+                    crafting.forceSetInvStack(x, item == null ? ItemStack.EMPTY : item.createItemStack());
+                }
+
+                for(int x = 0; x < output.getSlotCount() && x < details.getSparseOutputs().length; x++) {
+                    final IAEItemStack item = details.getSparseOutputs()[x];
+                    output.forceSetInvStack(x, item == null ? ItemStack.EMPTY : item.createItemStack());
+                }
+            }
+        } else if(inv == crafting) {
+            fixCraftingRecipes();
+        }
+
+        markForSave();
+    }
+
+    public void setCraftingRecipe(final boolean craftingMode) {
+        this.craftingMode = craftingMode;
+        fixCraftingRecipes();
+    }
+
+    public void setSubstitution(final boolean canSubstitute) {
+        this.substitute = canSubstitute;
+    }
+
+    private void fixCraftingRecipes() {
+        if (craftingMode) {
+            for (int x = 0; x < crafting.getSlotCount(); x++) {
+                final ItemStack is = crafting.getInvStack(x);
+                if (!is.isEmpty()) {
+                    is.setCount(1);
+                }
+            }
+        }
+    }
+
+    private void markForSave() {
+        //TODO actually mark for safe
+    }
+
+    /*@Override
     public FixedViewCellInventory getViewCellStorage() {
         return fixedViewCellInventory;
-    }
+    }*/
 }

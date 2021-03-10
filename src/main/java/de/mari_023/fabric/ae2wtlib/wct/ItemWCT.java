@@ -1,4 +1,4 @@
-package de.mari_023.fabric.ae2wtlib;
+package de.mari_023.fabric.ae2wtlib.wct;
 
 import appeng.api.config.Actionable;
 import appeng.api.config.SortDir;
@@ -13,6 +13,9 @@ import appeng.core.localization.GuiText;
 import appeng.core.localization.PlayerMessages;
 import appeng.util.ConfigManager;
 import appeng.util.Platform;
+import de.mari_023.fabric.ae2wtlib.IInfinityBoosterCardHolder;
+import de.mari_023.fabric.ae2wtlib.ItemWT;
+import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.item.TooltipContext;
@@ -26,7 +29,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class ItemWCT extends ItemWT implements IInfinityBoosterCardHolder{
+public class ItemWCT extends ItemWT implements IInfinityBoosterCardHolder {
 
     public ItemWCT(Settings props) {
         super(AEConfig.instance().getWirelessTerminalBattery(), props);

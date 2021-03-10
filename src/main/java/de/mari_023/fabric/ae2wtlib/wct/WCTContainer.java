@@ -1,4 +1,4 @@
-package de.mari_023.fabric.ae2wtlib;
+package de.mari_023.fabric.ae2wtlib.wct;
 
 import alexiil.mc.lib.attributes.item.FixedItemInv;
 import alexiil.mc.lib.attributes.item.compat.FixedInventoryVanillaWrapper;
@@ -14,6 +14,7 @@ import appeng.helpers.IContainerCraftingPacket;
 import appeng.tile.inventory.AppEngInternalInventory;
 import appeng.util.inv.IAEAppEngInventory;
 import appeng.util.inv.InvOperation;
+import de.mari_023.fabric.ae2wtlib.ContainerHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.CraftingInventory;
@@ -152,8 +153,8 @@ public class WCTContainer extends MEPortableCellContainer implements IAEAppEngIn
         return true;
     }
 
-    @Override
+    /*@Override
     public ItemStack[] getViewCells() {
         return wctGUIObject.getViewCellStorage().getViewCells();
-    }
+    }*/
 }

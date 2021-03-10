@@ -2,8 +2,13 @@ package de.mari_023.fabric.ae2wtlib;
 
 import appeng.api.config.SecurityPermissions;
 import appeng.container.ContainerLocator;
+import appeng.container.implementations.MEMonitorableContainer;
 import appeng.core.AELog;
 import appeng.util.Platform;
+import de.mari_023.fabric.ae2wtlib.wct.ItemWCT;
+import de.mari_023.fabric.ae2wtlib.wct.WCTGuiObject;
+import de.mari_023.fabric.ae2wtlib.wpt.ItemWPT;
+import de.mari_023.fabric.ae2wtlib.wpt.WPTGuiObject;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -13,7 +18,7 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 
-public final class ContainerHelper<C extends WCTContainer, I> {
+public final class ContainerHelper<C extends MEMonitorableContainer, I> {
 
     private final Class<I> interfaceClass;
 
@@ -131,8 +136,12 @@ public final class ContainerHelper<C extends WCTContainer, I> {
             return null;
         }
 
-        if(interfaceClass.isAssignableFrom(WCTGuiObject.class) && it.getItem() instanceof ItemWCT) {
+        if(interfaceClass.isAssignableFrom(WCTGuiObject.class) && it.getItem() instanceof ItemWCT) {//TODO do something generic, I don't want to hardcode everything
             return interfaceClass.cast(new WCTGuiObject((ItemWCT) it.getItem(), it, player, locator.getItemIndex()));
+        }
+
+        if(interfaceClass.isAssignableFrom(WPTGuiObject.class) && it.getItem() instanceof ItemWPT) {
+            return interfaceClass.cast(new WPTGuiObject((ItemWPT) it.getItem(), it, player, locator.getItemIndex()));
         }
         return null;
     }
