@@ -22,7 +22,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 import java.lang.reflect.Field;
-import java.nio.charset.StandardCharsets;
 
 public class WPTScreen extends MEMonitorableScreen<WPTContainer> {
 
@@ -102,24 +101,22 @@ public class WPTScreen extends MEMonitorableScreen<WPTContainer> {
 
     private void toggleCraftMode(boolean mode) {
         PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeCharSequence("PatternTerminal.CraftMode", StandardCharsets.US_ASCII);
-        //buf.writeBoolean(mode);
+        buf.writeString("PatternTerminal.CraftMode");
+        buf.writeBoolean(mode);
         ClientPlayNetworking.send(new Identifier("ae2wtlib", "general"), buf);
     }
 
     private void toggleSubstitutions(boolean mode) {
-        //"PatternTerminal.Substitute", mode
         PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeCharSequence("PatternTerminal.Substitute", StandardCharsets.US_ASCII);
-        //buf.writeBoolean(mode);
+        buf.writeString("PatternTerminal.Substitute");
+        buf.writeBoolean(mode);
         ClientPlayNetworking.send(new Identifier("ae2wtlib", "general"), buf);
     }
 
     private void encode() {
-        //"PatternTerminal.Encode", "1"
         PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeCharSequence("PatternTerminal.Encode", StandardCharsets.US_ASCII);
-        //buf.writeBoolean(false);
+        buf.writeString("PatternTerminal.Encode");
+        buf.writeBoolean(false);
         ClientPlayNetworking.send(new Identifier("ae2wtlib", "general"), buf);
     }
 

@@ -17,8 +17,6 @@ import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-import java.nio.charset.StandardCharsets;
-
 public class ae2wtlib implements ModInitializer {
 
     public static final ItemGroup ITEM_GROUP = FabricItemGroupBuilder.build(new Identifier("ae2wtlib", "general"), () -> new ItemStack(ae2wtlib.CRAFTING_TERMINAL));
@@ -35,12 +33,10 @@ public class ae2wtlib implements ModInitializer {
         Registry.register(Registry.ITEM, new Identifier("ae2wtlib", "wireless_pattern_terminal"), PATTERN_TERMINAL);
         WCTContainer.TYPE = registerScreenHandler("wireless_crafting_terminal", WCTContainer::fromNetwork);
         WPTContainer.TYPE = registerScreenHandler("wireless_pattern_terminal", WPTContainer::fromNetwork);
-        /*ItemComponentCallbackV2.event(UNIVERSAL_TERMINAL).register(((item, itemStack, componentContainer) -> componentContainer.put(CuriosComponent.ITEM, new ICurio() {
-
-        })));*/
+        //ItemComponentCallbackV2.event(UNIVERSAL_TERMINAL).register(((item, itemStack, componentContainer) -> componentContainer.put(CuriosComponent.ITEM, new ICurio() {})));
 
         ServerPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "general"), (server, player, handler, buf, sender) -> server.execute(() -> {
-            String Name = buf.getCharSequence(0, buf.readableBytes() - 2, StandardCharsets.US_ASCII).toString();
+            String Name = buf.readString();
             boolean value = buf.getBoolean(buf.readableBytes() - 1);
             final ScreenHandler c = player.currentScreenHandler;
             if(Name.startsWith("PatternTerminal.") && c instanceof WPTContainer) {
