@@ -8,17 +8,21 @@ import appeng.client.gui.widgets.TabButton;
 import appeng.container.slot.CraftingMatrixSlot;
 import appeng.core.localization.GuiText;
 import appeng.core.sync.network.NetworkHandler;
-import appeng.core.sync.packets.ConfigValuePacket;
 import appeng.core.sync.packets.InventoryActionPacket;
 import appeng.helpers.InventoryAction;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 
 import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
 
 public class WPTScreen extends MEMonitorableScreen<WPTContainer> {
 
@@ -26,11 +30,11 @@ public class WPTScreen extends MEMonitorableScreen<WPTContainer> {
     private AETextField searchField;
     private final int reservedSpace;
 
-    private static final String SUBSITUTION_DISABLE = "0";
-    private static final String SUBSITUTION_ENABLE = "1";
+    private static final boolean SUBSITUTION_DISABLE = false;
+    private static final boolean SUBSITUTION_ENABLE = true;
 
-    private static final String CRAFTMODE_CRFTING = "1";
-    private static final String CRAFTMODE_PROCESSING = "0";
+    private static final boolean CRAFTMODE_CRFTING = true;
+    private static final boolean CRAFTMODE_PROCESSING = false;
 
     private TabButton tabCraftButton;
     private TabButton tabProcessButton;
@@ -96,16 +100,27 @@ public class WPTScreen extends MEMonitorableScreen<WPTContainer> {
         } catch(IllegalAccessException | NoSuchFieldException ignored) {}
     }
 
-    private void toggleCraftMode(String mode) {
-        NetworkHandler.instance().sendToServer(new ConfigValuePacket("PatternTerminal.CraftMode", mode));
+    private void toggleCraftMode(boolean mode) {
+        PacketByteBuf buf = PacketByteBufs.create();
+        buf.writeCharSequence("PatternTerminal.CraftMode", StandardCharsets.US_ASCII);
+        //buf.writeBoolean(mode);
+        ClientPlayNetworking.send(new Identifier("ae2wtlib", "general"), buf);
     }
 
-    private void toggleSubstitutions(String mode) {
-        NetworkHandler.instance().sendToServer(new ConfigValuePacket("PatternTerminal.Substitute", mode));
+    private void toggleSubstitutions(boolean mode) {
+        //"PatternTerminal.Substitute", mode
+        PacketByteBuf buf = PacketByteBufs.create();
+        buf.writeCharSequence("PatternTerminal.Substitute", StandardCharsets.US_ASCII);
+        //buf.writeBoolean(mode);
+        ClientPlayNetworking.send(new Identifier("ae2wtlib", "general"), buf);
     }
 
     private void encode() {
-        NetworkHandler.instance().sendToServer(new ConfigValuePacket("PatternTerminal.Encode", "1"));
+        //"PatternTerminal.Encode", "1"
+        PacketByteBuf buf = PacketByteBufs.create();
+        buf.writeCharSequence("PatternTerminal.Encode", StandardCharsets.US_ASCII);
+        //buf.writeBoolean(false);
+        ClientPlayNetworking.send(new Identifier("ae2wtlib", "general"), buf);
     }
 
     @Override

@@ -333,6 +333,10 @@ public class WPTGuiObject implements IPortableCell, IActionHost, IInventorySlotA
         fixCraftingRecipes();
     }
 
+    public boolean isSubstitution() {
+        return this.substitute;
+    }
+
     public void setSubstitution(final boolean canSubstitute) {
         this.substitute = canSubstitute;
     }
