@@ -5,10 +5,14 @@ import appeng.client.gui.implementations.MEMonitorableScreen;
 import appeng.client.gui.widgets.AETextField;
 import appeng.client.gui.widgets.ActionButton;
 import appeng.client.gui.widgets.IconButton;
+import appeng.client.gui.widgets.TabButton;
+import appeng.client.render.StackSizeRenderer;
+import appeng.container.implementations.CraftingStatusContainer;
 import appeng.container.slot.CraftingMatrixSlot;
 import appeng.core.localization.GuiText;
 import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.InventoryActionPacket;
+import appeng.core.sync.packets.SwitchGuisPacket;
 import appeng.helpers.InventoryAction;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
@@ -19,6 +23,7 @@ import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.Quaternion;
@@ -30,6 +35,7 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> {
     private int rows = 0;
     private AETextField searchField;
     private final int reservedSpace;
+    private TabButton craftingStatusBtn;
 
     public WCTScreen(WCTContainer container, PlayerInventory playerInventory, Text title) {
         super(container, playerInventory, title);
@@ -58,6 +64,9 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> {
         deleteButton.setHalfSize(true);
         //deleteButton.setMessage(new LiteralText("Empty Trash\n" + "Delete contents of the Trash slot"));
         deleteButton.setMessage(new TranslatableText("gui.ae2wtlib.emptytrash").append("\n").append(new TranslatableText("gui.ae2wtlib.emptytrash.desc")));
+
+        craftingStatusBtn = addButton(new TabButton(x + 169, y - 4, 2 + 11 * 16, GuiText.CraftingStatus.text(), itemRenderer, btn -> showCraftingStatus()));
+        craftingStatusBtn.setHideEdge(true);
 
         try {
             Field field = MEMonitorableScreen.class.getDeclaredField("rows");
@@ -98,8 +107,19 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> {
     public void drawFG(MatrixStack matrices, final int offsetX, final int offsetY, final int mouseX, final int mouseY) {
         super.drawFG(matrices, offsetX, offsetY, mouseX, mouseY);
         textRenderer.draw(matrices, GuiText.CraftingTerminal.text(), 8, backgroundHeight - 96 + 1 - reservedSpace, 4210752);
+
+        // Show the number of active crafting jobs
+        if (handler.activeCraftingJobs != -1) {
+            // The stack size renderer expects a 16x16 slot, while the button is normally bigger
+            int x = craftingStatusBtn.x + (craftingStatusBtn.getWidth() - 16) / 2;
+            int y = craftingStatusBtn.y + (craftingStatusBtn.getHeight() - 16) / 2;
+            StackSizeRenderer.renderSizeLabel(textRenderer, x - this.x, y - this.y, new LiteralText(String.valueOf(handler.activeCraftingJobs)));
+        }
     }
 
+    private void showCraftingStatus() {
+        NetworkHandler.instance().sendToServer(new SwitchGuisPacket(CraftingStatusContainer.TYPE));
+    }
 
     private void clear() {
         Slot s = null;

@@ -2,14 +2,14 @@ package de.mari_023.fabric.ae2wtlib.client;
 
 import de.mari_023.fabric.ae2wtlib.wct.WCTContainer;
 import de.mari_023.fabric.ae2wtlib.wct.WCTScreen;
+import de.mari_023.fabric.ae2wtlib.wit.WITContainer;
+import de.mari_023.fabric.ae2wtlib.wit.WITScreen;
 import de.mari_023.fabric.ae2wtlib.wpt.WPTContainer;
 import de.mari_023.fabric.ae2wtlib.wpt.WPTScreen;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
-import net.minecraft.util.Identifier;
 
 @Environment(EnvType.CLIENT)
 public class ae2wtlibclient implements ClientModInitializer {
@@ -17,5 +17,6 @@ public class ae2wtlibclient implements ClientModInitializer {
     public void onInitializeClient() {
         ScreenRegistry.register(WCTContainer.TYPE, WCTScreen::new);
         ScreenRegistry.register(WPTContainer.TYPE, WPTScreen::new);
+        ScreenRegistry.register(WITContainer.TYPE, WITScreen::new);
     }
 }

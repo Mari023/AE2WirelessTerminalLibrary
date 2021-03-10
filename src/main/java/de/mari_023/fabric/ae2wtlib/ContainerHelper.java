@@ -1,12 +1,12 @@
 package de.mari_023.fabric.ae2wtlib;
 
-import appeng.api.config.SecurityPermissions;
+import appeng.container.AEBaseContainer;
 import appeng.container.ContainerLocator;
-import appeng.container.implementations.MEMonitorableContainer;
 import appeng.core.AELog;
-import appeng.util.Platform;
 import de.mari_023.fabric.ae2wtlib.wct.ItemWCT;
 import de.mari_023.fabric.ae2wtlib.wct.WCTGuiObject;
+import de.mari_023.fabric.ae2wtlib.wit.ItemWIT;
+import de.mari_023.fabric.ae2wtlib.wit.WITGuiObject;
 import de.mari_023.fabric.ae2wtlib.wpt.ItemWPT;
 import de.mari_023.fabric.ae2wtlib.wpt.WPTGuiObject;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
@@ -18,20 +18,13 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 
-public final class ContainerHelper<C extends MEMonitorableContainer, I> {
+public final class ContainerHelper<C extends AEBaseContainer, I> {
 
     private final Class<I> interfaceClass;
 
     private final ContainerFactory<C, I> factory;
 
-    private final SecurityPermissions requiredPermission;
-
     public ContainerHelper(ContainerFactory<C, I> factory, Class<I> interfaceClass) {
-        this(factory, interfaceClass, null);
-    }
-
-    public ContainerHelper(ContainerFactory<C, I> factory, Class<I> interfaceClass, SecurityPermissions requiredPermission) {
-        this.requiredPermission = requiredPermission;
         this.interfaceClass = interfaceClass;
         this.factory = factory;
     }
@@ -69,10 +62,6 @@ public final class ContainerHelper<C extends MEMonitorableContainer, I> {
         I accessInterface = getHostFromLocator(player, locator);
 
         if(accessInterface == null) {
-            return false;
-        }
-
-        if(!checkPermission(player, accessInterface)) {
             return false;
         }
 
@@ -143,6 +132,10 @@ public final class ContainerHelper<C extends MEMonitorableContainer, I> {
         if(interfaceClass.isAssignableFrom(WPTGuiObject.class) && it.getItem() instanceof ItemWPT) {
             return interfaceClass.cast(new WPTGuiObject((ItemWPT) it.getItem(), it, player, locator.getItemIndex()));
         }
+
+        if(interfaceClass.isAssignableFrom(WITGuiObject.class) && it.getItem() instanceof ItemWIT) {
+            return interfaceClass.cast(new WITGuiObject((ItemWIT) it.getItem(), it, player, locator.getItemIndex()));
+        }
         return null;
     }
 
@@ -167,12 +160,5 @@ public final class ContainerHelper<C extends MEMonitorableContainer, I> {
     @FunctionalInterface
     public interface InitialDataDeserializer<C, I> {
         void deserializeInitialData(I host, C container, PacketByteBuf buffer);
-    }
-
-    private boolean checkPermission(PlayerEntity player, Object accessInterface) {
-        if(requiredPermission != null) {
-            return Platform.checkPermissions(player, accessInterface, requiredPermission, true);
-        }
-        return true;
     }
 }
