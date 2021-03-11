@@ -221,15 +221,15 @@ public class WPTGuiObject implements IPortableCell, IActionHost, IInventorySlotA
     }
 
     public boolean rangeCheck() {
-        if(((IInfinityBoosterCardHolder) effectiveItem.getItem()).hasBoosterCard(effectiveItem)) return true;
+        boolean isInfinity = ((IInfinityBoosterCardHolder) effectiveItem.getItem()).hasBoosterCard(effectiveItem);
         sqRange = myRange = Double.MAX_VALUE;
 
         if(targetGrid != null && itemStorage != null) {
             if(myWap != null) {
                 if(myWap.getGrid() == targetGrid) {
-                    return testWap(myWap);
+                    return testWap(myWap) || isInfinity;
                 }
-                return false;
+                return isInfinity;
             }
 
             final IMachineSet tw = targetGrid.getMachines(WirelessBlockEntity.class);
@@ -243,9 +243,9 @@ public class WPTGuiObject implements IPortableCell, IActionHost, IInventorySlotA
                 }
             }
 
-            return myWap != null;
+            return myWap != null || isInfinity;
         }
-        return false;
+        return isInfinity;
     }
 
     private boolean testWap(final IWirelessAccessPoint wap) {
