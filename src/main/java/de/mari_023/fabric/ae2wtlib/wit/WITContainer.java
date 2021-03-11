@@ -10,6 +10,9 @@ import appeng.api.networking.IGridNode;
 import appeng.api.networking.security.IActionHost;
 import appeng.container.AEBaseContainer;
 import appeng.container.ContainerLocator;
+import appeng.container.slot.AppEngSlot;
+import appeng.core.AEConfig;
+import appeng.core.localization.PlayerMessages;
 import appeng.helpers.DualityInterface;
 import appeng.helpers.IInterfaceHost;
 import appeng.helpers.InventoryAction;
@@ -22,6 +25,7 @@ import appeng.util.helpers.ItemHandlerUtil;
 import appeng.util.inv.AdaptorFixedInv;
 import appeng.util.inv.WrapperCursorItemHandler;
 import de.mari_023.fabric.ae2wtlib.ContainerHelper;
+import de.mari_023.fabric.ae2wtlib.wct.FixedWCTInv;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.player.PlayerEntity;
@@ -33,7 +37,10 @@ import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Util;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,10 +58,7 @@ public class WITContainer extends AEBaseContainer {
         return helper.open(player, locator);
     }
 
-    /**
-     * this stuff is all server side..
-     */
-
+    private final WITGuiObject witGUIObject;
     private static long autoBase = Long.MIN_VALUE;
     private final Map<IInterfaceHost, WITContainer.InvTracker> diList = new HashMap<>();
     private final Map<Long, WITContainer.InvTracker> byId = new HashMap<>();
@@ -63,12 +67,17 @@ public class WITContainer extends AEBaseContainer {
 
     public WITContainer(int id, final PlayerInventory ip, final WITGuiObject anchor) {
         super(TYPE, id, ip, anchor);
+        witGUIObject = anchor;
 
-        if(isServer() && anchor.getActionableNode() != null) {
-            grid = anchor.getActionableNode().getGrid();
+        if(isServer() && witGUIObject.getActionableNode() != null) {
+            grid = witGUIObject.getActionableNode().getGrid();
         }
 
         bindPlayerInventory(ip, 0, 222 - /* height of player inventory */82);
+
+        final FixedWCTInv fixedWITInv = new FixedWCTInv(getPlayerInv(), witGUIObject.getItemStack());
+        //infinityBoosterCard
+        addSlot(new AppEngSlot(fixedWITInv, 6, 173, 129));
     }
 
     @Override
@@ -78,6 +87,24 @@ public class WITContainer extends AEBaseContainer {
         }
 
         super.sendContentUpdates();
+
+
+        if(!witGUIObject.rangeCheck()) {
+            if(isValidContainer()) {
+                getPlayerInv().player.sendSystemMessage(PlayerMessages.OutOfRange.get(), Util.NIL_UUID);
+                close(getPlayerInv().player);
+            }
+
+            setValidContainer(false);
+        } else {
+            double powerMultiplier = AEConfig.instance().wireless_getDrainRate(witGUIObject.getRange());
+            try {
+                Method method = super.getClass().getDeclaredMethod("setPowerMultiplier", double.class);
+                method.setAccessible(true);
+                method.invoke(this, powerMultiplier);
+                method.setAccessible(false);
+            } catch(NoSuchMethodException | IllegalAccessException | InvocationTargetException ignored) {}
+        }
 
         if(grid == null) {
             return;

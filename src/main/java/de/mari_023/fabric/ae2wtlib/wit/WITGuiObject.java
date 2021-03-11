@@ -129,10 +129,9 @@ public class WITGuiObject implements IGuiItemObject, IEnergySource, IActionHost,
         return false;
     }
 
-
     @Override
     public int getInventorySlot() {
-        return 0;
+        return inventorySlot;
     }
 
     @Override

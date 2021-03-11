@@ -83,6 +83,7 @@ public class WCTContainer extends MEPortableCellContainer implements IAEAppEngIn
     @Override
     public void sendContentUpdates() {
         super.sendContentUpdates();
+
         if(!wctGUIObject.rangeCheck()) {
             if(isServer() && isValidContainer()) {
                 getPlayerInv().player.sendSystemMessage(PlayerMessages.OutOfRange.get(), Util.NIL_UUID);

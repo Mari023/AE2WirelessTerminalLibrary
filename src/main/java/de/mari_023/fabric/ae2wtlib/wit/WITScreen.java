@@ -106,7 +106,7 @@ public class WITScreen extends AEBaseScreen<WITContainer> {
 
     @Override
     public void drawBG(MatrixStack matrices, final int offsetX, final int offsetY, final int mouseX, final int mouseY, float partialTicks) {
-        bindTexture("guis/interfaceterminal.png");
+        bindTexture("wtlib/gui/interface.png");
         drawTexture(matrices, offsetX, offsetY, 0, 0, backgroundWidth, backgroundHeight);
 
         int offset = 17;

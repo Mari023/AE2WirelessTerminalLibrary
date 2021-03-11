@@ -132,6 +132,7 @@ public class ItemWIT extends ItemWT implements IInfinityBoosterCardHolder {
         tag.putString("encryptionKey", encKey);
         tag.putString("name", name);
     }
+
     @Override
     public boolean hasBoosterCard(ItemStack item) {
         return item.getItem() instanceof IInfinityBoosterCardHolder && item.getTag() != null && item.getTag().getBoolean("hasboostercard");

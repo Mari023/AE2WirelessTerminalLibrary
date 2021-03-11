@@ -90,12 +90,12 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
         final FixedItemInv patternInv = getPatternTerminal().getInventoryByName("pattern");
         final FixedItemInv output = getPatternTerminal().getInventoryByName("output");
 
-        final FixedWCTInv fixedWCTInv = new FixedWCTInv(getPlayerInv(), wptGUIObject.getItemStack());
+        final FixedWCTInv fixedWPTInv = new FixedWCTInv(getPlayerInv(), wptGUIObject.getItemStack());
 
         crafting = getPatternTerminal().getInventoryByName("crafting");
 
-        for (int y = 0; y < 3; y++) {
-            for (int x = 0; x < 3; x++) {
+        for(int y = 0; y < 3; y++) {
+            for(int x = 0; x < 3; x++) {
                 addSlot(craftingSlots[x + y * 3] = new FakeCraftingMatrixSlot(crafting, x + y * 3,
                         18 + x * 18, -76 + y * 18));
             }
@@ -105,14 +105,14 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
                 gui, crafting, patternInv, cOut, 110, -76 + 18, this, 2, this));
         craftSlot.setIIcon(-1);
 
-        for (int y = 0; y < 3; y++) {
+        for(int y = 0; y < 3; y++) {
             addSlot(outputSlots[y] = new PatternOutputsSlot(output, this, y, 110, -76 + y * 18, 0, 0, 1));
             outputSlots[y].setRenderDisabled(false);
             outputSlots[y].setIIcon(-1);
         }
 
         //infinityBoosterCard
-        addSlot(new AppEngSlot(fixedWCTInv, 6, 80, -20));
+        addSlot(new AppEngSlot(fixedWPTInv, 6, 80, -20));
 
         addSlot(patternSlotIN = new RestrictedInputSlot(RestrictedInputSlot.PlacableItemType.BLANK_PATTERN,
                 patternInv, 0, 147, -72 - 9, getPlayerInventory()));
@@ -122,32 +122,32 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
 
     @Override
     public void sendContentUpdates() {
-        super.sendContentUpdates();
+        if(isServer()) {
+            super.sendContentUpdates();
 
-        if (isServer()) {
-            if (isCraftingMode() != getPatternTerminal().isCraftingRecipe()) {
+            if(!wptGUIObject.rangeCheck()) {
+                if(isValidContainer()) {
+                    getPlayerInv().player.sendSystemMessage(PlayerMessages.OutOfRange.get(), Util.NIL_UUID);
+                    close(getPlayerInv().player);//TODO fix Inventory still being open
+                }
+
+                setValidContainer(false);
+            } else {
+                double powerMultiplier = AEConfig.instance().wireless_getDrainRate(wptGUIObject.getRange());
+                try {
+                    Method method = super.getClass().getDeclaredMethod("setPowerMultiplier", double.class);
+                    method.setAccessible(true);
+                    method.invoke(this, powerMultiplier);
+                    method.setAccessible(false);
+                } catch(NoSuchMethodException | IllegalAccessException | InvocationTargetException ignored) {}
+            }
+
+            if(isCraftingMode() != getPatternTerminal().isCraftingRecipe()) {
                 setCraftingMode(getPatternTerminal().isCraftingRecipe());
                 updateOrderOfOutputSlots();
             }
 
             substitute = getPatternTerminal().isSubstitution();
-        }
-
-        if(!wptGUIObject.rangeCheck()) {
-            if(isServer() && isValidContainer()) {
-                getPlayerInv().player.sendSystemMessage(PlayerMessages.OutOfRange.get(), Util.NIL_UUID);
-                close(getPlayerInv().player);//TODO fix Inventory still being open
-            }
-
-            setValidContainer(false);
-        } else {
-            double powerMultiplier = AEConfig.instance().wireless_getDrainRate(wptGUIObject.getRange());
-            try {
-                Method method = super.getClass().getDeclaredMethod("setPowerMultiplier", double.class);
-                method.setAccessible(true);
-                method.invoke(this, powerMultiplier);
-                method.setAccessible(false);
-            } catch(NoSuchMethodException | IllegalAccessException | InvocationTargetException ignored) {}
         }
     }
 
@@ -155,7 +155,7 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
     public void onUpdate(final String field, final Object oldValue, final Object newValue) {
         super.onUpdate(field, oldValue, newValue);
 
-        if (field.equals("craftingMode")) {
+        if(field.equals("craftingMode")) {
             getAndUpdateOutput();
             updateOrderOfOutputSlots();
         }
@@ -166,16 +166,16 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
     }
 
     private void updateOrderOfOutputSlots() {
-        if (!isCraftingMode()) {
+        if(!isCraftingMode()) {
             setSlotX(craftSlot, -9000);
 
-            for (int y = 0; y < 3; y++) {
+            for(int y = 0; y < 3; y++) {
                 setSlotX(outputSlots[y], outputSlots[y].getX());
             }
         } else {
             setSlotX(craftSlot, craftSlot.getX());
 
-            for (int y = 0; y < 3; y++) {
+            for(int y = 0; y < 3; y++) {
                 setSlotX(outputSlots[y], -9000);
             }
         }
@@ -203,23 +203,23 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
         final ItemStack[] out = getOutputs();
 
         // if there is no input, this would be silly.
-        if (in == null || out == null || isCraftingMode() && currentRecipe == null) {
+        if(in == null || out == null || isCraftingMode() && currentRecipe == null) {
             return;
         }
 
         // first check the output slots, should either be null, or a pattern
-        if (!output.isEmpty() && !craftingHelper.isEncodedPattern(output)) {
+        if(!output.isEmpty() && !craftingHelper.isEncodedPattern(output)) {
             return;
         } // if nothing is there we should snag a new pattern.
-        else if (output.isEmpty()) {
+        else if(output.isEmpty()) {
             output = patternSlotIN.getStack();
-            if (output.isEmpty() || !isPattern(output)) {
+            if(output.isEmpty() || !isPattern(output)) {
                 return; // no blanks.
             }
 
             // remove one, and clear the input slot.
             output.setCount(output.getCount() - 1);
-            if (output.getCount() == 0) {
+            if(output.getCount() == 0) {
                 patternSlotIN.setStack(ItemStack.EMPTY);
             }
 
@@ -227,7 +227,7 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
             output = null;
         }
 
-        if (isCraftingMode()) {
+        if(isCraftingMode()) {
             output = craftingHelper.encodeCraftingPattern(output, currentRecipe, in, out[0], isSubstitute());
         } else {
             output = craftingHelper.encodeProcessingPattern(output, in, out);
@@ -240,14 +240,14 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
         final ItemStack[] input = new ItemStack[9];
         boolean hasValue = false;
 
-        for (int x = 0; x < craftingSlots.length; x++) {
+        for(int x = 0; x < craftingSlots.length; x++) {
             input[x] = craftingSlots[x].getStack();
-            if (!input[x].isEmpty()) {
+            if(!input[x].isEmpty()) {
                 hasValue = true;
             }
         }
 
-        if (hasValue) {
+        if(hasValue) {
             return input;
         }
 
@@ -255,24 +255,24 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
     }
 
     private ItemStack[] getOutputs() {
-        if (isCraftingMode()) {
+        if(isCraftingMode()) {
             final ItemStack out = getAndUpdateOutput();
 
-            if (!out.isEmpty() && out.getCount() > 0) {
-                return new ItemStack[] { out };
+            if(!out.isEmpty() && out.getCount() > 0) {
+                return new ItemStack[]{out};
             }
         } else {
             boolean hasValue = false;
             final ItemStack[] list = new ItemStack[3];
 
-            for (int i = 0; i < outputSlots.length; i++) {
+            for(int i = 0; i < outputSlots.length; i++) {
                 final ItemStack out = outputSlots[i].getStack();
                 list[i] = out;
-                if (!out.isEmpty()) {
+                if(!out.isEmpty()) {
                     hasValue = true;
                 }
             }
-            if (hasValue) {
+            if(hasValue) {
                 return list;
             }
         }
@@ -282,14 +282,14 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
 
     @Override
     public FixedItemInv getInventoryByName(final String name) {
-        if (name.equals("player")) {
+        if(name.equals("player")) {
             return new FixedInventoryVanillaWrapper(getPlayerInventory());
         }
         return getPatternTerminal().getInventoryByName(name);
     }
 
     private boolean isPattern(final ItemStack output) {
-        if (output.isEmpty()) {
+        if(output.isEmpty()) {
             return false;
         }
 
@@ -299,9 +299,9 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
 
     @Override
     public boolean isSlotEnabled(final int idx) {
-        if (idx == 1) {
+        if(idx == 1) {
             return isServer() ? !getPatternTerminal().isCraftingRecipe() : !isCraftingMode();
-        } else if (idx == 2) {
+        } else if(idx == 2) {
             return isServer() ? getPatternTerminal().isCraftingRecipe() : isCraftingMode();
         } else {
             return false;
@@ -309,17 +309,17 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
     }
 
     public void craftOrGetItem(final PatternSlotPacket packetPatternSlot) {
-        if (packetPatternSlot.slotItem != null && getCellInventory() != null) {
+        if(packetPatternSlot.slotItem != null && getCellInventory() != null) {
             final IAEItemStack out = packetPatternSlot.slotItem.copy();
             InventoryAdaptor inv = new AdaptorFixedInv(
                     new WrapperCursorItemHandler(getPlayerInv().player.inventory));
             final InventoryAdaptor playerInv = InventoryAdaptor.getAdaptor(getPlayerInv().player);
 
-            if (packetPatternSlot.shift) {
+            if(packetPatternSlot.shift) {
                 inv = playerInv;
             }
 
-            if (!inv.simulateAdd(out.createItemStack()).isEmpty()) {
+            if(!inv.simulateAdd(out.createItemStack()).isEmpty()) {
                 return;
             }
 
@@ -327,9 +327,9 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
                     out, getActionSource());
             final PlayerEntity p = getPlayerInv().player;
 
-            if (extracted != null) {
+            if(extracted != null) {
                 inv.addItems(extracted.createItemStack());
-                if (p instanceof ServerPlayerEntity) {
+                if(p instanceof ServerPlayerEntity) {
                     updateHeld((ServerPlayerEntity) p);
                 }
                 sendContentUpdates();
@@ -339,7 +339,7 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
             final CraftingInventory ic = new CraftingInventory(new ContainerNull(), 3, 3);
             final CraftingInventory real = new CraftingInventory(new ContainerNull(), 3, 3);
 
-            for (int x = 0; x < 9; x++) {
+            for(int x = 0; x < 9; x++) {
                 ic.setStack(x, packetPatternSlot.pattern[x] == null ? ItemStack.EMPTY
                         : packetPatternSlot.pattern[x].createItemStack());
             }
@@ -347,7 +347,7 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
             final Recipe<CraftingInventory> r = p.world.getRecipeManager()
                     .getFirstMatch(RecipeType.CRAFTING, ic, p.world).orElse(null);
 
-            if (r == null) {
+            if(r == null) {
                 return;
             }
 
@@ -357,8 +357,8 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
 
             final ItemStack is = r.craft(ic);
 
-            for (int x = 0; x < ic.size(); x++) {
-                if (!ic.getStack(x).isEmpty()) {
+            for(int x = 0; x < ic.size(); x++) {
+                if(!ic.getStack(x).isEmpty()) {
                     final ItemStack pulled = Platform.extractItemsByRecipe(getPowerSource(),
                             getActionSource(), storage, p.world, r, is, ic, ic.getStack(x), x, all,
                             Actionable.MODULATE, ViewCellItem.createFilter(getViewCells()));
@@ -369,30 +369,30 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
             final Recipe<CraftingInventory> rr = p.world.getRecipeManager()
                     .getFirstMatch(RecipeType.CRAFTING, real, p.world).orElse(null);
 
-            if (rr == r && Platform.itemComparisons().isSameItem(rr.craft(real), is)) {
+            if(rr == r && Platform.itemComparisons().isSameItem(rr.craft(real), is)) {
                 final CraftingResultInventory craftingResult = new CraftingResultInventory();
                 craftingResult.setLastRecipe(rr);
 
                 final CraftingResultSlot sc = new CraftingResultSlot(p, real, craftingResult, 0, 0, 0);
                 sc.onTakeItem(p, is);
 
-                for (int x = 0; x < real.size(); x++) {
+                for(int x = 0; x < real.size(); x++) {
                     final ItemStack failed = playerInv.addItems(real.getStack(x));
 
-                    if (!failed.isEmpty()) {
+                    if(!failed.isEmpty()) {
                         p.dropItem(failed, false);
                     }
                 }
 
                 inv.addItems(is);
-                if (p instanceof ServerPlayerEntity) {
+                if(p instanceof ServerPlayerEntity) {
                     updateHeld((ServerPlayerEntity) p);
                 }
                 sendContentUpdates();
             } else {
-                for (int x = 0; x < real.size(); x++) {
+                for(int x = 0; x < real.size(); x++) {
                     final ItemStack failed = real.getStack(x);
-                    if (!failed.isEmpty()) {
+                    if(!failed.isEmpty()) {
                         getCellInventory().injectItems(AEItemStack.fromItemStack(failed), Actionable.MODULATE,
                                 new MachineSource(getPatternTerminal()));
                     }
@@ -405,17 +405,17 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
         final World world = getPlayerInv().player.world;
         final CraftingInventory ic = new CraftingInventory(this, 3, 3);
 
-        for (int x = 0; x < ic.size(); x++) {
+        for(int x = 0; x < ic.size(); x++) {
             ic.setStack(x, crafting.getInvStack(x));
         }
 
-        if (currentRecipe == null || !currentRecipe.matches(ic, world)) {
+        if(currentRecipe == null || !currentRecipe.matches(ic, world)) {
             currentRecipe = world.getRecipeManager().getFirstMatch(RecipeType.CRAFTING, ic, world).orElse(null);
         }
 
         final ItemStack is;
 
-        if (currentRecipe == null) {
+        if(currentRecipe == null) {
             is = ItemStack.EMPTY;
         } else {
             is = currentRecipe.craft(ic);
@@ -454,11 +454,11 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
     }
 
     public void clear() {
-        for (final Slot s : craftingSlots) {
+        for(final Slot s : craftingSlots) {
             s.setStack(ItemStack.EMPTY);
         }
 
-        for (final Slot s : outputSlots) {
+        for(final Slot s : outputSlots) {
             s.setStack(ItemStack.EMPTY);
         }
 
