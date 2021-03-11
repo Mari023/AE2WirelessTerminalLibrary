@@ -10,8 +10,6 @@ import appeng.api.networking.IGridNode;
 import appeng.api.networking.security.IActionHost;
 import appeng.container.AEBaseContainer;
 import appeng.container.ContainerLocator;
-import appeng.core.sync.network.NetworkHandler;
-import appeng.core.sync.packets.MEInterfaceUpdatePacket;
 import appeng.helpers.DualityInterface;
 import appeng.helpers.IInterfaceHost;
 import appeng.helpers.InventoryAction;
@@ -24,6 +22,8 @@ import appeng.util.helpers.ItemHandlerUtil;
 import appeng.util.inv.AdaptorFixedInv;
 import appeng.util.inv.WrapperCursorItemHandler;
 import de.mari_023.fabric.ae2wtlib.ContainerHelper;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -32,8 +32,8 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -93,8 +93,7 @@ public class WITContainer extends AEBaseContainer {
                 for(final IGridNode gn : grid.getMachines(InterfaceBlockEntity.class)) {
                     if(gn.isActive()) {
                         final IInterfaceHost ih = (IInterfaceHost) gn.getMachine();
-                        if(ih.getInterfaceDuality().getConfigManager()
-                                .getSetting(Settings.INTERFACE_TERMINAL) == YesNo.NO) {
+                        if(ih.getInterfaceDuality().getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.NO) {
                             continue;
                         }
 
@@ -152,11 +151,9 @@ public class WITContainer extends AEBaseContainer {
         }
 
         if(!data.isEmpty()) {
-            try {
-                NetworkHandler.instance().sendTo(new MEInterfaceUpdatePacket(data),
-                        (ServerPlayerEntity) getPlayerInv().player);
-            } catch(final IOException ignored) {}
-
+            PacketByteBuf buf = PacketByteBufs.create();
+            buf.writeCompoundTag(data);
+            ServerPlayNetworking.send((ServerPlayerEntity) getPlayerInv().player, new Identifier("ae2wtlib", "interface_terminal"), buf);
             data = new CompoundTag();
         }
     }

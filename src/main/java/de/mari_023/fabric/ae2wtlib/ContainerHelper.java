@@ -16,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 
 public final class ContainerHelper<C extends AEBaseContainer, I> {
@@ -65,7 +66,7 @@ public final class ContainerHelper<C extends AEBaseContainer, I> {
             return false;
         }
 
-        player.openHandledScreen(new HandlerFactory(locator, Text.of("text"), accessInterface, initialDataSerializer));
+        player.openHandledScreen(new HandlerFactory(locator, new LiteralText("text"), accessInterface, initialDataSerializer));
 
         return true;
     }
