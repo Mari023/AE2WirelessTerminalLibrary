@@ -7,12 +7,9 @@ import appeng.client.gui.widgets.ActionButton;
 import appeng.client.gui.widgets.TabButton;
 import appeng.client.render.StackSizeRenderer;
 import appeng.container.implementations.CraftingStatusContainer;
-import appeng.container.slot.CraftingMatrixSlot;
 import appeng.core.localization.GuiText;
 import appeng.core.sync.network.NetworkHandler;
-import appeng.core.sync.packets.InventoryActionPacket;
 import appeng.core.sync.packets.SwitchGuisPacket;
-import appeng.helpers.InventoryAction;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.block.Blocks;
@@ -20,7 +17,6 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -34,11 +30,11 @@ public class WPTScreen extends MEMonitorableScreen<WPTContainer> {
     private final int reservedSpace;
     private TabButton craftingStatusBtn;
 
-    private static final boolean SUBSITUTION_DISABLE = false;
-    private static final boolean SUBSITUTION_ENABLE = true;
+    private static final byte SUBSITUTION_DISABLE = 0;
+    private static final byte SUBSITUTION_ENABLE = 1;
 
-    private static final boolean CRAFTMODE_CRFTING = true;
-    private static final boolean CRAFTMODE_PROCESSING = false;
+    private static final byte CRAFTMODE_CRFTING = 1;
+    private static final byte CRAFTMODE_PROCESSING = 0;
 
     private TabButton tabCraftButton;
     private TabButton tabProcessButton;
@@ -71,21 +67,18 @@ public class WPTScreen extends MEMonitorableScreen<WPTContainer> {
                 btn -> toggleCraftMode(CRAFTMODE_CRFTING));
         addButton(tabProcessButton);
 
-        substitutionsEnabledBtn = new ActionButton(x + 84, y + backgroundHeight - 165,
-                ActionItems.ENABLE_SUBSTITUTION, act -> toggleSubstitutions(SUBSITUTION_DISABLE));
+        substitutionsEnabledBtn = new ActionButton(x + 84, y + backgroundHeight - 165, ActionItems.ENABLE_SUBSTITUTION, act -> toggleSubstitutions(SUBSITUTION_DISABLE));
         substitutionsEnabledBtn.setHalfSize(true);
         addButton(substitutionsEnabledBtn);
 
-        substitutionsDisabledBtn = new ActionButton(x + 84, y + backgroundHeight - 165,
-                ActionItems.DISABLE_SUBSTITUTION, act -> toggleSubstitutions(SUBSITUTION_ENABLE));
+        substitutionsDisabledBtn = new ActionButton(x + 84, y + backgroundHeight - 165, ActionItems.DISABLE_SUBSTITUTION, act -> toggleSubstitutions(SUBSITUTION_ENABLE));
         substitutionsDisabledBtn.setHalfSize(true);
         addButton(substitutionsDisabledBtn);
 
         ActionButton clearBtn = addButton(new ActionButton(x + 74, y + backgroundHeight - 165, ActionItems.CLOSE, btn -> clear()));
         clearBtn.setHalfSize(true);
 
-        ActionButton encodeBtn = new ActionButton(x + 147, y + backgroundHeight - 144,
-                ActionItems.ENCODE, act -> encode());
+        ActionButton encodeBtn = new ActionButton(x + 147, y + backgroundHeight - 144, ActionItems.ENCODE, act -> encode());
         addButton(encodeBtn);
 
         craftingStatusBtn = addButton(new TabButton(x + 170, y - 4, 2 + 11 * 16, GuiText.CraftingStatus.text(), itemRenderer, btn -> showCraftingStatus()));
@@ -107,24 +100,31 @@ public class WPTScreen extends MEMonitorableScreen<WPTContainer> {
         } catch(IllegalAccessException | NoSuchFieldException ignored) {}
     }
 
-    private void toggleCraftMode(boolean mode) {
+    private void toggleCraftMode(byte mode) {
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeString("PatternTerminal.CraftMode");
-        buf.writeBoolean(mode);
+        buf.writeByte(mode);
         ClientPlayNetworking.send(new Identifier("ae2wtlib", "general"), buf);
     }
 
-    private void toggleSubstitutions(boolean mode) {
+    private void toggleSubstitutions(byte mode) {
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeString("PatternTerminal.Substitute");
-        buf.writeBoolean(mode);
+        buf.writeByte(mode);
         ClientPlayNetworking.send(new Identifier("ae2wtlib", "general"), buf);
     }
 
     private void encode() {
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeString("PatternTerminal.Encode");
-        buf.writeBoolean(false);
+        buf.writeByte(0);
+        ClientPlayNetworking.send(new Identifier("ae2wtlib", "general"), buf);
+    }
+
+    private void clear() {
+        PacketByteBuf buf = PacketByteBufs.create();
+        buf.writeString("PatternTerminal.Clear");
+        buf.writeByte(0);
         ClientPlayNetworking.send(new Identifier("ae2wtlib", "general"), buf);
     }
 
@@ -178,20 +178,6 @@ public class WPTScreen extends MEMonitorableScreen<WPTContainer> {
 
     private void showCraftingStatus() {
         NetworkHandler.instance().sendToServer(new SwitchGuisPacket(CraftingStatusContainer.TYPE));
-    }
-
-    private void clear() {
-        Slot s = null;
-        for(final Object j : handler.slots) {
-            if(j instanceof CraftingMatrixSlot) {
-                s = (Slot) j;
-            }
-        }
-
-        if(s != null) {
-            final InventoryActionPacket p = new InventoryActionPacket(InventoryAction.MOVE_REGION, s.id, 0);
-            NetworkHandler.instance().sendToServer(p);
-        }
     }
 
     @Override
