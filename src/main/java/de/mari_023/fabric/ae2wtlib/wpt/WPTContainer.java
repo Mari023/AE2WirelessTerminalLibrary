@@ -182,6 +182,11 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
         if(s == craftSlot && isClient()) {
             getAndUpdateOutput();
         }
+
+        if(isClient() && isCraftingMode()) {
+            for(Slot slot : craftingSlots) if(s == slot) getAndUpdateOutput();
+            for(Slot slot : outputSlots) if(s == slot) getAndUpdateOutput();
+        }
     }
 
     private void setSlotX(Slot s, int x) {
