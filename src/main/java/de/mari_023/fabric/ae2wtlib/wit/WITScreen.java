@@ -51,9 +51,10 @@ public class WITScreen extends AEBaseScreen<WITContainer> {
         super.init();
 
         searchField = new AETextField(textRenderer, x + 104, y + 4, 65, 12);
+        searchField.setDrawsBackground(false);
         searchField.setMaxLength(25);
         searchField.setEditableColor(0xFFFFFF);
-        searchField.setVisible(true);
+        searchField.setSelectionColor(0xFF008000);
         searchField.setChangedListener(str -> refreshList());
         addChild(searchField);
         changeFocus(true);

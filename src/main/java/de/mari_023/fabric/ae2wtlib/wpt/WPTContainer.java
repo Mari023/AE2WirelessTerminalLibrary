@@ -472,13 +472,6 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
         return wptGUIObject;
     }
 
-    public void toggleSubstitute() {
-        substitute = !substitute;
-
-        sendContentUpdates();
-        getAndUpdateOutput();
-    }
-
     private boolean isSubstitute() {
         return substitute;
     }
