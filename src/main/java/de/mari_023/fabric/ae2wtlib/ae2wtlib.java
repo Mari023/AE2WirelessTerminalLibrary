@@ -1,9 +1,7 @@
 package de.mari_023.fabric.ae2wtlib;
 
-import appeng.api.storage.data.IAEItemStack;
 import appeng.container.AEBaseContainer;
-import appeng.container.implementations.PatternTermContainer;
-import appeng.util.item.AEItemStack;
+import de.mari_023.fabric.ae2wtlib.wct.ItemMagnetCard;
 import de.mari_023.fabric.ae2wtlib.wct.ItemWCT;
 import de.mari_023.fabric.ae2wtlib.wct.WCTContainer;
 import de.mari_023.fabric.ae2wtlib.wit.ItemWIT;
@@ -12,15 +10,12 @@ import de.mari_023.fabric.ae2wtlib.wpt.ItemWPT;
 import de.mari_023.fabric.ae2wtlib.wpt.WPTContainer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -28,15 +23,17 @@ public class ae2wtlib implements ModInitializer {
 
     public static final ItemGroup ITEM_GROUP = FabricItemGroupBuilder.build(new Identifier("ae2wtlib", "general"), () -> new ItemStack(ae2wtlib.CRAFTING_TERMINAL));
 
-    public static final ItemWCT CRAFTING_TERMINAL = new ItemWCT(new FabricItemSettings().group(ITEM_GROUP).maxCount(1));
-    public static final ItemWPT PATTERN_TERMINAL = new ItemWPT(new FabricItemSettings().group(ITEM_GROUP).maxCount(1));
-    public static final ItemWIT INTERFACE_TERMINAL = new ItemWIT(new FabricItemSettings().group(ITEM_GROUP).maxCount(1));
+    public static final ItemWCT CRAFTING_TERMINAL = new ItemWCT();
+    public static final ItemWPT PATTERN_TERMINAL = new ItemWPT();
+    public static final ItemWIT INTERFACE_TERMINAL = new ItemWIT();
 
     public static final ItemInfinityBooster INFINITY_BOOSTER = new ItemInfinityBooster();
+    public static final ItemMagnetCard MAGNET_CARD = new ItemMagnetCard();
 
     @Override
     public void onInitialize() {
         Registry.register(Registry.ITEM, new Identifier("ae2wtlib", "infinity_booster_card"), INFINITY_BOOSTER);
+        Registry.register(Registry.ITEM, new Identifier("ae2wtlib", "magnet_card"), MAGNET_CARD);
         Registry.register(Registry.ITEM, new Identifier("ae2wtlib", "wireless_crafting_terminal"), CRAFTING_TERMINAL);
         Registry.register(Registry.ITEM, new Identifier("ae2wtlib", "wireless_pattern_terminal"), PATTERN_TERMINAL);
         Registry.register(Registry.ITEM, new Identifier("ae2wtlib", "wireless_interface_terminal"), INTERFACE_TERMINAL);

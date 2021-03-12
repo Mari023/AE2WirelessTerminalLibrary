@@ -18,6 +18,7 @@ import de.mari_023.fabric.ae2wtlib.ItemWT;
 import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -31,8 +32,8 @@ import java.util.List;
 
 public class ItemWCT extends ItemWT implements IInfinityBoosterCardHolder {
 
-    public ItemWCT(Settings props) {
-        super(AEConfig.instance().getWirelessTerminalBattery(), props);
+    public ItemWCT() {
+        super(AEConfig.instance().getWirelessTerminalBattery(), new FabricItemSettings().group(ae2wtlib.ITEM_GROUP).maxCount(1));
     }
 
     @Override
