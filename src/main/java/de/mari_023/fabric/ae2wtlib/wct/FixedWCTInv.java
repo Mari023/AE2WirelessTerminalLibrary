@@ -25,7 +25,7 @@ public class FixedWCTInv implements FixedItemInv {
 
     @Override
     public int getSlotCount() {
-        return 7;
+        return 8;
     }
 
     @Override
@@ -34,7 +34,9 @@ public class FixedWCTInv implements FixedItemInv {
             return playerInventory.getStack(i + slotOffset);
         } else if(i == 4) return playerInventory.getStack(offHandSlot);
         else if(i == 5) return trashSlot;
-        else if(i == 6) return ((IInfinityBoosterCardHolder) wct.getItem()).boosterCard(wct);
+        else if(i == 6 && wct.getItem() instanceof IInfinityBoosterCardHolder)
+            return ((IInfinityBoosterCardHolder) wct.getItem()).boosterCard(wct);
+        else if(i == 7 && wct.getItem() instanceof ItemWCT) return ((ItemWCT) wct.getItem()).getMagnetCard(wct);
         return null;
     }
 
@@ -46,6 +48,8 @@ public class FixedWCTInv implements FixedItemInv {
         else if(i == 5) return true;
         else if(i == 6)
             return (itemStack.getItem() instanceof ItemInfinityBooster || itemStack.equals(ItemStack.EMPTY));
+        else if(i == 7 && wct.getItem() instanceof ItemWCT)
+            return itemStack.getItem() instanceof ItemMagnetCard || itemStack.isEmpty();
         return false;
     }
 
@@ -67,16 +71,26 @@ public class FixedWCTInv implements FixedItemInv {
                 ((IInfinityBoosterCardHolder) wct.getItem()).setBoosterCard(wct, itemStack.getItem() instanceof ItemInfinityBooster);
             }
             return true;
+        } else if(i == 7) {
+            if(!(itemStack.getItem() instanceof ItemMagnetCard) && !itemStack.equals(ItemStack.EMPTY)) return false;
+            if(simulation.isAction()) ((ItemWCT) wct.getItem()).setMagnetCard(wct, itemStack);
+            return true;
         }
         return false;
     }
 
     @Override
     public ItemStack extractStack(int slot, ItemFilter filter, ItemStack mergeWith, int maxCount, Simulation simulation) {
-        if(slot != 6) return FixedItemInv.super.extractStack(slot, filter, mergeWith, maxCount, simulation);
-        boolean hadBoosterCard = ((IInfinityBoosterCardHolder) wct.getItem()).hasBoosterCard(wct);
-        if(simulation.isAction()) ((IInfinityBoosterCardHolder) wct.getItem()).setBoosterCard(wct, false);
-        if(hadBoosterCard) return new ItemStack(ae2wtlib.INFINITY_BOOSTER);
-        return ItemStack.EMPTY;
+        if(slot == 6) {
+            boolean hadBoosterCard = ((IInfinityBoosterCardHolder) wct.getItem()).hasBoosterCard(wct);
+            if(simulation.isAction()) ((IInfinityBoosterCardHolder) wct.getItem()).setBoosterCard(wct, false);
+            if(hadBoosterCard) return new ItemStack(ae2wtlib.INFINITY_BOOSTER);
+            return ItemStack.EMPTY;
+        } else if(slot == 7) {
+            ItemStack magnetCard = ((ItemWCT) wct.getItem()).getMagnetCard(wct);
+            if(simulation.isAction()) ((ItemWCT) wct.getItem()).setMagnetCard(wct, ItemStack.EMPTY);
+            return magnetCard;
+        }
+        return FixedItemInv.super.extractStack(slot, filter, mergeWith, maxCount, simulation);
     }
 }

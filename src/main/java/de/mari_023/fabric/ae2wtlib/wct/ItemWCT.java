@@ -130,6 +130,7 @@ public class ItemWCT extends ItemWT implements IInfinityBoosterCardHolder {
         tag.putString("encryptionKey", encKey);
         tag.putString("name", name);
     }
+
     @Override
     public boolean hasBoosterCard(ItemStack item) {
         return item.getItem() instanceof IInfinityBoosterCardHolder && item.getTag() != null && item.getTag().getBoolean("hasboostercard");
@@ -146,5 +147,23 @@ public class ItemWCT extends ItemWT implements IInfinityBoosterCardHolder {
     public ItemStack boosterCard(ItemStack item) {
         if(hasBoosterCard(item)) return new ItemStack(ae2wtlib.INFINITY_BOOSTER);
         return ItemStack.EMPTY;
+    }
+
+    public ItemStack getMagnetCard(ItemStack item) {
+        if(!(item.getItem() instanceof ItemWCT) || item.getTag() == null) return ItemStack.EMPTY;
+        return ItemStack.fromTag(item.getTag().getCompound("magnet_card"));
+    }
+
+    public void setMagnetCard(ItemStack item, ItemStack magnet_card) {
+        if(!(item.getItem() instanceof ItemWCT)) return;
+        CompoundTag wctTag = item.getTag();
+        if(magnet_card.isEmpty()) {
+            if(wctTag == null) return;
+            wctTag.put("magnet_card", ItemStack.EMPTY.toTag(new CompoundTag()));
+        } else {
+            if(wctTag == null) wctTag = new CompoundTag();
+            wctTag.put("magnet_card", magnet_card.toTag(new CompoundTag()));
+        }
+        item.setTag(wctTag);
     }
 }

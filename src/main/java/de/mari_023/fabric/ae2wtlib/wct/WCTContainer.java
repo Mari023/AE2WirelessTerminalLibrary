@@ -81,6 +81,8 @@ public class WCTContainer extends MEPortableCellContainer implements IAEAppEngIn
         addSlot(new AppEngSlot(fixedWCTInv, 5, 98, -22));
         //infinityBoosterCard
         addSlot(new AppEngSlot(fixedWCTInv, 6, 134, -20));
+        //magnet card
+        addSlot(new AppEngSlot(fixedWCTInv, 7, 152, -20));
     }
 
     @Override
