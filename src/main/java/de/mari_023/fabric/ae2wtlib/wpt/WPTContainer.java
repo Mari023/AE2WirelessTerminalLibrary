@@ -17,7 +17,6 @@ import appeng.container.slot.*;
 import appeng.core.AEConfig;
 import appeng.core.Api;
 import appeng.core.localization.PlayerMessages;
-import appeng.core.sync.packets.PatternSlotPacket;
 import appeng.helpers.IContainerCraftingPacket;
 import appeng.items.storage.ViewCellItem;
 import appeng.me.helpers.MachineSource;
@@ -31,6 +30,7 @@ import appeng.util.inv.InvOperation;
 import appeng.util.inv.WrapperCursorItemHandler;
 import appeng.util.item.AEItemStack;
 import de.mari_023.fabric.ae2wtlib.ContainerHelper;
+import de.mari_023.fabric.ae2wtlib.FixedViewCellInventory;
 import de.mari_023.fabric.ae2wtlib.wct.FixedWCTInv;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -67,7 +67,7 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
     private CraftingRecipe currentRecipe;
     private final AppEngInternalInventory cOut = new AppEngInternalInventory(null, 1);
     private final FixedItemInv crafting;
-    private final PatternTermSlot craftSlot;
+    private final WirelessPatternTermSlot craftSlot;
     private final RestrictedInputSlot patternSlotIN;
     private final RestrictedInputSlot patternSlotOUT;
     private final ICraftingHelper craftingHelper = Api.INSTANCE.crafting();
@@ -102,8 +102,7 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
             }
         }
 
-        addSlot(craftSlot = new PatternTermSlot(ip.player, getActionSource(), getPowerSource(),
-                gui, crafting, patternInv, cOut, 110, -76 + 18, this, 2, this));
+        addSlot(craftSlot = new WirelessPatternTermSlot(ip.player, getActionSource(), getPowerSource(), gui, crafting, patternInv, cOut, 110, -76 + 18, this, 2, this));
         craftSlot.setIIcon(-1);
 
         for(int y = 0; y < 3; y++) {
@@ -336,14 +335,20 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
         }
     }
 
-    public void craftOrGetItem(final PatternSlotPacket packetPatternSlot) {
-        if(packetPatternSlot.slotItem != null && getCellInventory() != null) {
-            final IAEItemStack out = packetPatternSlot.slotItem.copy();
-            InventoryAdaptor inv = new AdaptorFixedInv(
-                    new WrapperCursorItemHandler(getPlayerInv().player.inventory));
+    public void craftOrGetItem(final PacketByteBuf packetByteBuf) {
+        IAEItemStack slotItem = readItem(packetByteBuf);
+        boolean shift = packetByteBuf.readBoolean();
+        IAEItemStack[] pattern = new IAEItemStack[9];
+        for (int x = 0; x < 9; x++) {
+            pattern[x] = readItem(packetByteBuf);
+        }
+
+        if(slotItem != null && getCellInventory() != null) {
+            final IAEItemStack out = slotItem.copy();
+            InventoryAdaptor inv = new AdaptorFixedInv(new WrapperCursorItemHandler(getPlayerInv().player.inventory));
             final InventoryAdaptor playerInv = InventoryAdaptor.getAdaptor(getPlayerInv().player);
 
-            if(packetPatternSlot.shift) {
+            if(shift) {
                 inv = playerInv;
             }
 
@@ -351,8 +356,7 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
                 return;
             }
 
-            final IAEItemStack extracted = Platform.poweredExtraction(getPowerSource(), getCellInventory(),
-                    out, getActionSource());
+            final IAEItemStack extracted = Platform.poweredExtraction(getPowerSource(), getCellInventory(), out, getActionSource());
             final PlayerEntity p = getPlayerInv().player;
 
             if(extracted != null) {
@@ -368,8 +372,7 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
             final CraftingInventory real = new CraftingInventory(new ContainerNull(), 3, 3);
 
             for(int x = 0; x < 9; x++) {
-                ic.setStack(x, packetPatternSlot.pattern[x] == null ? ItemStack.EMPTY
-                        : packetPatternSlot.pattern[x].createItemStack());
+                ic.setStack(x, pattern[x] == null ? ItemStack.EMPTY : pattern[x].createItemStack());
             }
 
             final Recipe<CraftingInventory> r = p.world.getRecipeManager()
@@ -387,9 +390,7 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
 
             for(int x = 0; x < ic.size(); x++) {
                 if(!ic.getStack(x).isEmpty()) {
-                    final ItemStack pulled = Platform.extractItemsByRecipe(getPowerSource(),
-                            getActionSource(), storage, p.world, r, is, ic, ic.getStack(x), x, all,
-                            Actionable.MODULATE, ViewCellItem.createFilter(getViewCells()));
+                    final ItemStack pulled = Platform.extractItemsByRecipe(getPowerSource(), getActionSource(), storage, p.world, r, is, ic, ic.getStack(x), x, all, Actionable.MODULATE, ViewCellItem.createFilter(getViewCells()));
                     real.setStack(x, pulled);
                 }
             }
@@ -421,12 +422,21 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
                 for(int x = 0; x < real.size(); x++) {
                     final ItemStack failed = real.getStack(x);
                     if(!failed.isEmpty()) {
-                        getCellInventory().injectItems(AEItemStack.fromItemStack(failed), Actionable.MODULATE,
-                                new MachineSource(getPatternTerminal()));
+                        getCellInventory().injectItems(AEItemStack.fromItemStack(failed), Actionable.MODULATE, new MachineSource(getPatternTerminal()));
                     }
                 }
             }
         }
+    }
+
+    private IAEItemStack readItem(final PacketByteBuf buf) {
+        final boolean hasItem = buf.readBoolean();
+
+        if (hasItem) {
+            return AEItemStack.fromPacket(buf);
+        }
+
+        return null;
     }
 
     private ItemStack getAndUpdateOutput() {
@@ -494,8 +504,9 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
         getAndUpdateOutput();
     }
 
-    /*@Override
+    @Override
     public ItemStack[] getViewCells() {
-        return wctGUIObject.getViewCellStorage().getViewCells();
-    }*/
+        return new FixedViewCellInventory().getViewCells(); //FIXME viemcells
+        //return wptGUIObject.getViewCellStorage().getViewCells();
+    }
 }

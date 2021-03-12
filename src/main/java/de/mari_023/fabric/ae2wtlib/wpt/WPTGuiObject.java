@@ -357,7 +357,7 @@ public class WPTGuiObject implements IPortableCell, IActionHost, IInventorySlotA
     }
 
     /*@Override
-    public FixedViewCellInventory getViewCellStorage() {
+    public FixedViewCellInventory getViewCellStorage() { //FIXME viemcells
         return fixedViewCellInventory;
     }*/
 }

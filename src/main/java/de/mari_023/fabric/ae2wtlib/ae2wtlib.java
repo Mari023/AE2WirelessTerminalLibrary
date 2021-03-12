@@ -1,6 +1,9 @@
 package de.mari_023.fabric.ae2wtlib;
 
+import appeng.api.storage.data.IAEItemStack;
 import appeng.container.AEBaseContainer;
+import appeng.container.implementations.PatternTermContainer;
+import appeng.util.item.AEItemStack;
 import de.mari_023.fabric.ae2wtlib.wct.ItemWCT;
 import de.mari_023.fabric.ae2wtlib.wct.WCTContainer;
 import de.mari_023.fabric.ae2wtlib.wit.ItemWIT;
@@ -14,8 +17,10 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -67,6 +72,16 @@ public class ae2wtlib implements ModInitializer {
                     if(Name.equals("CraftingTerminal.Delete")) {
                         cpt.deleteTrashSlot();
                     }
+                }
+                buf.release();
+            });
+        });
+        ServerPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "patternslotpacket"), (server, player, handler, buf, sender) -> {
+            buf.retain();
+            server.execute(() -> {
+                if (player.currentScreenHandler instanceof WPTContainer) {
+                    final WPTContainer patternTerminal = (WPTContainer) player.currentScreenHandler;
+                    patternTerminal.craftOrGetItem(buf);
                 }
                 buf.release();
             });

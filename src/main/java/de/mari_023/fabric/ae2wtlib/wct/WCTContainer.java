@@ -16,6 +16,7 @@ import appeng.tile.inventory.AppEngInternalInventory;
 import appeng.util.inv.IAEAppEngInventory;
 import appeng.util.inv.InvOperation;
 import de.mari_023.fabric.ae2wtlib.ContainerHelper;
+import de.mari_023.fabric.ae2wtlib.FixedViewCellInventory;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.CraftingInventory;
@@ -160,8 +161,9 @@ public class WCTContainer extends MEPortableCellContainer implements IAEAppEngIn
         fixedWCTInv.setInvStack(5, ItemStack.EMPTY, Simulation.ACTION);
     }
 
-    /*@Override
+    @Override
     public ItemStack[] getViewCells() {
-        return wctGUIObject.getViewCellStorage().getViewCells();
-    }*/
+        return new FixedViewCellInventory().getViewCells(); //FIXME viemcells
+        //return wctGUIObject.getViewCellStorage().getViewCells();
+    }
 }

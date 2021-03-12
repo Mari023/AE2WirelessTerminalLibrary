@@ -267,7 +267,7 @@ public class WCTGuiObject implements IPortableCell, IActionHost, IInventorySlotA
         return inventorySlot;
     }
 
-    /*@Override
+    /*@Override //FIXME viemcells
     public FixedViewCellInventory getViewCellStorage() {
         return fixedViewCellInventory;
     }*/
