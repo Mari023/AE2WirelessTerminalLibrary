@@ -1,5 +1,6 @@
 package de.mari_023.fabric.ae2wtlib.wct;
 
+import alexiil.mc.lib.attributes.Simulation;
 import alexiil.mc.lib.attributes.item.FixedItemInv;
 import alexiil.mc.lib.attributes.item.compat.FixedInventoryVanillaWrapper;
 import appeng.container.ContainerLocator;
@@ -44,6 +45,7 @@ public class WCTContainer extends MEPortableCellContainer implements IAEAppEngIn
     private final CraftingMatrixSlot[] craftingSlots = new CraftingMatrixSlot[9];
     private final CraftingTermSlot outputSlot;
     private Recipe<CraftingInventory> currentRecipe;
+    final FixedWCTInv fixedWCTInv;
 
     public static boolean open(PlayerEntity player, ContainerLocator locator) {
         return helper.open(player, locator);
@@ -57,7 +59,7 @@ public class WCTContainer extends MEPortableCellContainer implements IAEAppEngIn
         wctGUIObject = gui;
 
         final FixedItemInv crafting = getInventoryByName("crafting");
-        final FixedWCTInv fixedWCTInv = new FixedWCTInv(getPlayerInv(), wctGUIObject.getItemStack());
+        fixedWCTInv = new FixedWCTInv(getPlayerInv(), wctGUIObject.getItemStack());
 
         for(int y = 0; y < 3; y++) {
             for(int x = 0; x < 3; x++) {
@@ -152,6 +154,10 @@ public class WCTContainer extends MEPortableCellContainer implements IAEAppEngIn
     @Override
     public boolean useRealItems() {
         return true;
+    }
+
+    public void deleteTrashSlot() {
+        fixedWCTInv.setInvStack(6, ItemStack.EMPTY, Simulation.ACTION);
     }
 
     /*@Override

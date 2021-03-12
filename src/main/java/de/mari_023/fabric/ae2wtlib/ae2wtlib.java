@@ -60,6 +60,11 @@ public class ae2wtlib implements ModInitializer {
                         cpt.getPatternTerminal().setSubstitution(value);
                         break;
                 }
+            } else if(Name.startsWith("CraftingTerminal.") && c instanceof WCTContainer) {
+                final WCTContainer cpt = (WCTContainer) c;
+                if(Name.equals("CraftingTerminal.Delete")) {
+                    cpt.deleteTrashSlot();
+                }
             }
         }));
     }

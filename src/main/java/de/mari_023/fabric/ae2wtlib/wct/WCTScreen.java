@@ -15,6 +15,8 @@ import appeng.core.sync.packets.InventoryActionPacket;
 import appeng.core.sync.packets.SwitchGuisPacket;
 import appeng.helpers.InventoryAction;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
@@ -22,10 +24,12 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Quaternion;
 
 import java.lang.reflect.Field;
@@ -136,7 +140,10 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> {
     }
 
     private void delete() {
-
+        PacketByteBuf buf = PacketByteBufs.create();
+        buf.writeString("CraftingTerminal.Delete");
+        buf.writeBoolean(false);
+        ClientPlayNetworking.send(new Identifier("ae2wtlib", "general"), buf);
     }
 
     @Override
