@@ -40,33 +40,37 @@ public class ae2wtlib implements ModInitializer {
         WITContainer.TYPE = registerScreenHandler("wireless_interface_terminal", WITContainer::fromNetwork);
         //ItemComponentCallbackV2.event(UNIVERSAL_TERMINAL).register(((item, itemStack, componentContainer) -> componentContainer.put(CuriosComponent.ITEM, new ICurio() {})));
 
-        ServerPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "general"), (server, player, handler, buf, sender) -> server.execute(() -> {
-            String Name = buf.readString();
-            boolean value = buf.getBoolean(buf.readableBytes() - 1);
-            final ScreenHandler c = player.currentScreenHandler;
-            if(Name.startsWith("PatternTerminal.") && c instanceof WPTContainer) {
-                final WPTContainer cpt = (WPTContainer) c;
-                switch(Name) {
-                    case "PatternTerminal.CraftMode":
-                        cpt.getPatternTerminal().setCraftingRecipe(value);
-                        break;
-                    case "PatternTerminal.Encode":
-                        cpt.encode();
-                        break;
-                    case "PatternTerminal.Clear":
-                        cpt.clear();
-                        break;
+        ServerPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "general"), (server, player, handler, buf, sender) -> {
+            buf.retain();
+            server.execute(() -> {
+                String Name = buf.readString();
+                boolean value = buf.getBoolean(buf.readableBytes() - 1);
+                final ScreenHandler c = player.currentScreenHandler;
+                if(Name.startsWith("PatternTerminal.") && c instanceof WPTContainer) {
+                    final WPTContainer cpt = (WPTContainer) c;
+                    switch(Name) {
+                        case "PatternTerminal.CraftMode":
+                            cpt.getPatternTerminal().setCraftingRecipe(value);
+                            break;
+                        case "PatternTerminal.Encode":
+                            cpt.encode();
+                            break;
+                        case "PatternTerminal.Clear":
+                            cpt.clear();
+                            break;
                         case "PatternTerminal.Substitute":
-                        cpt.getPatternTerminal().setSubstitution(value);
-                        break;
+                            cpt.getPatternTerminal().setSubstitution(value);
+                            break;
+                    }
+                } else if(Name.startsWith("CraftingTerminal.") && c instanceof WCTContainer) {
+                    final WCTContainer cpt = (WCTContainer) c;
+                    if(Name.equals("CraftingTerminal.Delete")) {
+                        cpt.deleteTrashSlot();
+                    }
                 }
-            } else if(Name.startsWith("CraftingTerminal.") && c instanceof WCTContainer) {
-                final WCTContainer cpt = (WCTContainer) c;
-                if(Name.equals("CraftingTerminal.Delete")) {
-                    cpt.deleteTrashSlot();
-                }
-            }
-        }));
+                buf.release();
+            });
+        });
     }
 
     public static <T extends AEBaseContainer> ScreenHandlerType<T> registerScreenHandler(String Identifier, ScreenHandlerRegistry.ExtendedClientHandlerFactory<T> factory) {

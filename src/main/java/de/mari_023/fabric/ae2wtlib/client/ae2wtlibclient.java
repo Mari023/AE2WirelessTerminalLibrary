@@ -24,15 +24,19 @@ public class ae2wtlibclient implements ClientModInitializer {
         ScreenRegistry.register(WPTContainer.TYPE, WPTScreen::new);
         ScreenRegistry.register(WITContainer.TYPE, WITScreen::new);
 
-        ClientPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "interface_terminal"), (client, handler, buf, sender) -> client.execute(() -> {
-            if(client.player == null) return;
+        ClientPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "interface_terminal"), (client, handler, buf, responseSender) -> {
+            buf.retain();
+            client.execute(() -> {
+                if(client.player == null) return;
 
-            final Screen screen = MinecraftClient.getInstance().currentScreen;
-            if(screen instanceof WITScreen) {
-                WITScreen s = (WITScreen) screen;
-                CompoundTag tag = buf.readCompoundTag();
-                if(tag != null) s.postUpdate(tag);
-            }
-        }));
+                final Screen screen = MinecraftClient.getInstance().currentScreen;
+                if(screen instanceof WITScreen) {
+                    WITScreen s = (WITScreen) screen;
+                    CompoundTag tag = buf.readCompoundTag();
+                    if(tag != null) s.postUpdate(tag);
+                }
+                buf.release();
+            });
+        });
     }
 }
