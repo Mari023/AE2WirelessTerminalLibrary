@@ -157,7 +157,7 @@ public class WCTContainer extends MEPortableCellContainer implements IAEAppEngIn
     }
 
     public void deleteTrashSlot() {
-        fixedWCTInv.setInvStack(6, ItemStack.EMPTY, Simulation.ACTION);
+        fixedWCTInv.setInvStack(5, ItemStack.EMPTY, Simulation.ACTION);
     }
 
     /*@Override
