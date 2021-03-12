@@ -33,7 +33,7 @@ public class WPTScreen extends MEMonitorableScreen<WPTContainer> {
     private static final byte SUBSITUTION_DISABLE = 0;
     private static final byte SUBSITUTION_ENABLE = 1;
 
-    private static final byte CRAFTMODE_CRFTING = 1;
+    private static final byte CRAFTMODE_CRAFTING = 1;
     private static final byte CRAFTMODE_PROCESSING = 0;
 
     private TabButton tabCraftButton;
@@ -64,7 +64,7 @@ public class WPTScreen extends MEMonitorableScreen<WPTContainer> {
 
         tabProcessButton = new TabButton(x + 173, y + backgroundHeight - 177,
                 new ItemStack(Blocks.FURNACE), GuiText.ProcessingPattern.text(), itemRenderer,
-                btn -> toggleCraftMode(CRAFTMODE_CRFTING));
+                btn -> toggleCraftMode(CRAFTMODE_CRAFTING));
         addButton(tabProcessButton);
 
         substitutionsEnabledBtn = new ActionButton(x + 84, y + backgroundHeight - 165, ActionItems.ENABLE_SUBSTITUTION, act -> toggleSubstitutions(SUBSITUTION_DISABLE));
@@ -141,13 +141,12 @@ public class WPTScreen extends MEMonitorableScreen<WPTContainer> {
 
         drawTexture(matrices, offsetX, offsetY + 16 + rows * 18, 0, 106 - 18 - 18, x_width, 99 + reservedSpace);
 
-        searchField.render(matrices, mouseX, mouseY, partialTicks);
 
-        if (handler.isCraftingMode()) {
+        if(handler.isCraftingMode()) {
             tabCraftButton.visible = true;
             tabProcessButton.visible = false;
 
-            if (handler.substitute) {
+            if(handler.substitute) {
                 substitutionsEnabledBtn.visible = true;
                 substitutionsDisabledBtn.visible = false;
             } else {
@@ -159,16 +158,20 @@ public class WPTScreen extends MEMonitorableScreen<WPTContainer> {
             tabProcessButton.visible = true;
             substitutionsEnabledBtn.visible = false;
             substitutionsDisabledBtn.visible = false;
+            drawTexture(matrices, offsetX + 109, offsetY + 36 + rows * 18, 109, 108, 18, 18);
+            drawTexture(matrices, offsetX + 109, offsetY + 72 + rows * 18, 109, 108, 18, 18);
         }
+
+        searchField.render(matrices, mouseX, mouseY, partialTicks);
     }
 
     @Override
     public void drawFG(MatrixStack matrices, final int offsetX, final int offsetY, final int mouseX, final int mouseY) {
         super.drawFG(matrices, offsetX, offsetY, mouseX, mouseY);
-        textRenderer.draw(matrices, GuiText.CraftingTerminal.text(), 8, backgroundHeight - 96 + 1 - reservedSpace, 4210752);
+        textRenderer.draw(matrices, GuiText.PatternTerminal.text(), 8, backgroundHeight - 96 + 1 - reservedSpace, 4210752);
 
         // Show the number of active crafting jobs
-        if (handler.activeCraftingJobs != -1) {
+        if(handler.activeCraftingJobs != -1) {
             // The stack size renderer expects a 16x16 slot, while the button is normally bigger
             int x = craftingStatusBtn.x + (craftingStatusBtn.getWidth() - 16) / 2;
             int y = craftingStatusBtn.y + (craftingStatusBtn.getHeight() - 16) / 2;

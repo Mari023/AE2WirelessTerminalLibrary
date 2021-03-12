@@ -3,6 +3,7 @@ package de.mari_023.fabric.ae2wtlib;
 import appeng.container.AEBaseContainer;
 import appeng.container.ContainerLocator;
 import appeng.core.AELog;
+import appeng.core.localization.GuiText;
 import de.mari_023.fabric.ae2wtlib.wct.ItemWCT;
 import de.mari_023.fabric.ae2wtlib.wct.WCTGuiObject;
 import de.mari_023.fabric.ae2wtlib.wit.ItemWIT;
@@ -66,7 +67,7 @@ public final class ContainerHelper<C extends AEBaseContainer, I> {
             return false;
         }
 
-        player.openHandledScreen(new HandlerFactory(locator, new LiteralText("text"), accessInterface, initialDataSerializer));
+        player.openHandledScreen(new HandlerFactory(locator, GuiText.Terminal.text(), accessInterface, initialDataSerializer));
 
         return true;
     }

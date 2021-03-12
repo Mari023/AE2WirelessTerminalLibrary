@@ -41,6 +41,7 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeType;
+import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.CraftingResultSlot;
 import net.minecraft.screen.slot.Slot;
@@ -158,6 +159,28 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
         if(field.equals("craftingMode")) {
             getAndUpdateOutput();
             updateOrderOfOutputSlots();
+        }
+    }
+
+    @Override
+    public void onSlotChange(final Slot s) {
+        if(s == patternSlotOUT && isServer()) {
+            for(final ScreenHandlerListener listener : getListeners()) {
+                for(int i = 0; i < slots.size(); i++) {
+                    Slot slot = slots.get(i);
+                    if(slot instanceof OptionalFakeSlot || slot instanceof FakeCraftingMatrixSlot) {
+                        listener.onSlotUpdate(this, i, slot.getStack());
+                    }
+                }
+                if(listener instanceof ServerPlayerEntity) {
+                    ((ServerPlayerEntity) listener).skipPacketSlotUpdates = false;
+                }
+            }
+            sendContentUpdates();
+        }
+
+        if(s == craftSlot && isClient()) {
+            getAndUpdateOutput();
         }
     }
 
