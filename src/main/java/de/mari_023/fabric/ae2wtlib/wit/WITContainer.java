@@ -3,6 +3,8 @@ package de.mari_023.fabric.ae2wtlib.wit;
 import alexiil.mc.lib.attributes.item.FixedItemInv;
 import alexiil.mc.lib.attributes.item.LimitedFixedItemInv;
 import alexiil.mc.lib.attributes.item.SingleItemSlot;
+import appeng.api.config.Actionable;
+import appeng.api.config.PowerMultiplier;
 import appeng.api.config.Settings;
 import appeng.api.config.YesNo;
 import appeng.api.networking.IGrid;
@@ -39,8 +41,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -80,6 +80,9 @@ public class WITContainer extends AEBaseContainer {
         addSlot(new AppEngSlot(fixedWITInv, 6, 173, 129));
     }
 
+    private double powerMultiplier = 1;
+    private int ticks = 0;
+
     @Override
     public void sendContentUpdates() {
         if(isClient()) {
@@ -97,13 +100,13 @@ public class WITContainer extends AEBaseContainer {
 
             setValidContainer(false);
         } else {
-            double powerMultiplier = AEConfig.instance().wireless_getDrainRate(witGUIObject.getRange());
-            try {
-                Method method = super.getClass().getDeclaredMethod("setPowerMultiplier", double.class);
-                method.setAccessible(true);
-                method.invoke(this, powerMultiplier);
-                method.setAccessible(false);
-            } catch(NoSuchMethodException | IllegalAccessException | InvocationTargetException ignored) {}
+            powerMultiplier = AEConfig.instance().wireless_getDrainRate(witGUIObject.getRange());
+        }
+
+        ticks++;
+        if (ticks > 10) {
+            witGUIObject.extractAEPower(powerMultiplier * ticks, Actionable.MODULATE, PowerMultiplier.CONFIG);
+            ticks = 0;
         }
 
         if(grid == null) {
