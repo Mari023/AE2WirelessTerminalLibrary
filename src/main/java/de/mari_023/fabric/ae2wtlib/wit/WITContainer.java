@@ -13,7 +13,6 @@ import appeng.api.networking.security.IActionHost;
 import appeng.container.AEBaseContainer;
 import appeng.container.ContainerLocator;
 import appeng.container.slot.AppEngSlot;
-import appeng.core.AEConfig;
 import appeng.core.localization.PlayerMessages;
 import appeng.helpers.DualityInterface;
 import appeng.helpers.IInterfaceHost;
@@ -26,6 +25,7 @@ import appeng.util.InventoryAdaptor;
 import appeng.util.helpers.ItemHandlerUtil;
 import appeng.util.inv.AdaptorFixedInv;
 import appeng.util.inv.WrapperCursorItemHandler;
+import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.ContainerHelper;
 import de.mari_023.fabric.ae2wtlib.wct.FixedWCTInv;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -100,7 +100,7 @@ public class WITContainer extends AEBaseContainer {
 
             setValidContainer(false);
         } else {
-            powerMultiplier = AEConfig.instance().wireless_getDrainRate(witGUIObject.getRange());
+            powerMultiplier = Config.getPowerMultiplier(witGUIObject.getRange(), witGUIObject.isOutOfRange());
         }
 
         ticks++;

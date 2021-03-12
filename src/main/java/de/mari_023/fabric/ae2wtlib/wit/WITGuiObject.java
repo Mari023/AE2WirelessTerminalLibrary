@@ -79,15 +79,15 @@ public class WITGuiObject implements IGuiItemObject, IEnergySource, IActionHost,
     }
 
     public boolean rangeCheck() {
-        boolean isInfinity = ((IInfinityBoosterCardHolder) effectiveItem.getItem()).hasBoosterCard(effectiveItem);
+        isOutOfRange = ((IInfinityBoosterCardHolder) effectiveItem.getItem()).hasBoosterCard(effectiveItem);
         sqRange = myRange = Double.MAX_VALUE;
 
         if(targetGrid != null && itemStorage != null) {
             if(myWap != null) {
                 if(myWap.getGrid() == targetGrid) {
-                    return testWap(myWap) || isInfinity;
+                    return testWap(myWap) || isOutOfRange;
                 }
-                return isInfinity;
+                return isOutOfRange;
             }
 
             final IMachineSet tw = targetGrid.getMachines(WirelessBlockEntity.class);
@@ -101,9 +101,15 @@ public class WITGuiObject implements IGuiItemObject, IEnergySource, IActionHost,
                 }
             }
 
-            return myWap != null || isInfinity;
+            return myWap != null || isOutOfRange;
         }
-        return isInfinity;
+        return isOutOfRange;
+    }
+
+    private boolean isOutOfRange;
+
+    public boolean isOutOfRange() {
+        return isOutOfRange;
     }
 
     private boolean testWap(final IWirelessAccessPoint wap) {

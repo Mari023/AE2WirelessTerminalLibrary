@@ -15,6 +15,7 @@ import appeng.helpers.IContainerCraftingPacket;
 import appeng.tile.inventory.AppEngInternalInventory;
 import appeng.util.inv.IAEAppEngInventory;
 import appeng.util.inv.InvOperation;
+import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.ContainerHelper;
 import de.mari_023.fabric.ae2wtlib.FixedViewCellInventory;
 import net.minecraft.entity.player.PlayerEntity;
@@ -97,7 +98,7 @@ public class WCTContainer extends MEPortableCellContainer implements IAEAppEngIn
 
             setValidContainer(false);
         } else {
-            double powerMultiplier = AEConfig.instance().wireless_getDrainRate(wctGUIObject.getRange());
+            double powerMultiplier = Config.getPowerMultiplier(wctGUIObject.getRange(), wctGUIObject.isOutOfRange());
             try {
                 Method method = super.getClass().getDeclaredMethod("setPowerMultiplier", double.class);
                 method.setAccessible(true);

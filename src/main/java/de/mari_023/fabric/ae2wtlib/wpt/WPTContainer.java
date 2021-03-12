@@ -14,7 +14,6 @@ import appeng.container.ContainerNull;
 import appeng.container.guisync.GuiSync;
 import appeng.container.implementations.MEPortableCellContainer;
 import appeng.container.slot.*;
-import appeng.core.AEConfig;
 import appeng.core.Api;
 import appeng.core.localization.PlayerMessages;
 import appeng.helpers.IContainerCraftingPacket;
@@ -29,6 +28,7 @@ import appeng.util.inv.IAEAppEngInventory;
 import appeng.util.inv.InvOperation;
 import appeng.util.inv.WrapperCursorItemHandler;
 import appeng.util.item.AEItemStack;
+import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.ContainerHelper;
 import de.mari_023.fabric.ae2wtlib.FixedViewCellInventory;
 import de.mari_023.fabric.ae2wtlib.wct.FixedWCTInv;
@@ -133,7 +133,7 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
 
                 setValidContainer(false);
             } else {
-                double powerMultiplier = AEConfig.instance().wireless_getDrainRate(wptGUIObject.getRange());
+                double powerMultiplier = Config.getPowerMultiplier(wptGUIObject.getRange(), wptGUIObject.isOutOfRange());
                 try {
                     Method method = super.getClass().getDeclaredMethod("setPowerMultiplier", double.class);
                     method.setAccessible(true);
