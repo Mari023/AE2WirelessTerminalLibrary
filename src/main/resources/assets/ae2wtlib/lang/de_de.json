@@ -4,6 +4,11 @@
   "gui.ae2wtlib.emptytrash": "Müll löschen",
   "gui.ae2wtlib.emptytrash.desc": "Löscht den Inhalt des Müll slots",
 
+  "item.ae2wtlib.infinity_booster_card": "Unendlicher Drahtlosverstärker",
+  "item.ae2wtlib.magnet_card": "Magnet Karte",
+  "item.ae2wtlib.magnet_card.desc": "Funktioniert noch nicht",
+
   "item.ae2wtlib.wireless_crafting_terminal": "Drahtlose Fertigungskonsole",
-  "item.ae2wtlib.infinity_booster_card": "Unendlicher Drahtlosverstärker"
+  "item.ae2wtlib.wireless_pattern_terminal": "Drahtlose Schablonenkonsole",
+  "item.ae2wtlib.wireless_interface_terminal": "Drahtlose Schnittstellenkonsole"
 }
