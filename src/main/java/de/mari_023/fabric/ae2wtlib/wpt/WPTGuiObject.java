@@ -348,10 +348,10 @@ public class WPTGuiObject implements IPortableCell, IActionHost, IInventorySlotA
     }
 
     private void fixCraftingRecipes() {
-        if (craftingMode) {
-            for (int x = 0; x < crafting.getSlotCount(); x++) {
+        if(craftingMode) {
+            for(int x = 0; x < crafting.getSlotCount(); x++) {
                 final ItemStack is = crafting.getInvStack(x);
-                if (!is.isEmpty()) {
+                if(!is.isEmpty()) {
                     is.setCount(1);
                 }
             }

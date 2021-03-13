@@ -76,7 +76,7 @@ public class ae2wtlib implements ModInitializer {
         ServerPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "patternslotpacket"), (server, player, handler, buf, sender) -> {
             buf.retain();
             server.execute(() -> {
-                if (player.currentScreenHandler instanceof WPTContainer) {
+                if(player.currentScreenHandler instanceof WPTContainer) {
                     final WPTContainer patternTerminal = (WPTContainer) player.currentScreenHandler;
                     patternTerminal.craftOrGetItem(buf);
                 }

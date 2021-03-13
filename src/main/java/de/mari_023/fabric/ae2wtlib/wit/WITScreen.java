@@ -13,7 +13,6 @@ import appeng.core.AppEng;
 import appeng.core.localization.GuiText;
 import appeng.util.Platform;
 import com.google.common.collect.HashMultimap;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -117,7 +116,6 @@ public class WITScreen extends AEBaseScreen<WITContainer> {
             if(lineObj instanceof ClientDCInternalInv) {
                 final ClientDCInternalInv inv = (ClientDCInternalInv) lineObj;
 
-                RenderSystem.color4f(1, 1, 1, 1);
                 final int width = inv.getInventory().getSlotCount() * 18;
                 drawTexture(matrices, offsetX + 7, offsetY + offset, 7, 139, width, 18);
             }

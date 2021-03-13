@@ -113,7 +113,7 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> {
         textRenderer.draw(matrices, GuiText.CraftingTerminal.text(), 8, backgroundHeight - 96 + 1 - reservedSpace, 4210752);
 
         // Show the number of active crafting jobs
-        if (handler.activeCraftingJobs != -1) {
+        if(handler.activeCraftingJobs != -1) {
             // The stack size renderer expects a 16x16 slot, while the button is normally bigger
             int x = craftingStatusBtn.x + (craftingStatusBtn.getWidth() - 16) / 2;
             int y = craftingStatusBtn.y + (craftingStatusBtn.getHeight() - 16) / 2;

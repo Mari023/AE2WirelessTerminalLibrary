@@ -5,6 +5,7 @@ import alexiil.mc.lib.attributes.item.FixedItemInv;
 import alexiil.mc.lib.attributes.item.filter.ItemFilter;
 import de.mari_023.fabric.ae2wtlib.IInfinityBoosterCardHolder;
 import de.mari_023.fabric.ae2wtlib.ItemInfinityBooster;
+import de.mari_023.fabric.ae2wtlib.ItemWT;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 
@@ -73,7 +74,7 @@ public class FixedWCTInv implements FixedItemInv {
         } else if(i == 7) {
             if(!(itemStack.getItem() instanceof ItemMagnetCard) && !itemStack.equals(ItemStack.EMPTY)) return false;
             if(simulation.isAction())
-                ((ItemWCT) wct.getItem()).setSavedSlot(wct, itemStack, "magnetCard");
+                ((ItemWT) wct.getItem()).setSavedSlot(wct, itemStack, "magnetCard");
             return true;
         }
         return false;
@@ -86,9 +87,9 @@ public class FixedWCTInv implements FixedItemInv {
             if(simulation.isAction()) ((IInfinityBoosterCardHolder) wct.getItem()).setBoosterCard(wct, ItemStack.EMPTY);
             return boosterCard;
         } else if(slot == 7) {
-            ItemStack magnetCard = ((ItemWCT) wct.getItem()).getSavedSlot(wct, "magnetCard");
+            ItemStack magnetCard = ((ItemWT) wct.getItem()).getSavedSlot(wct, "magnetCard");
             if(simulation.isAction())
-                ((ItemWCT) wct.getItem()).setSavedSlot(wct, ItemStack.EMPTY, "magnetCard");
+                ((ItemWT) wct.getItem()).setSavedSlot(wct, ItemStack.EMPTY, "magnetCard");
             return magnetCard;
         }
         return FixedItemInv.super.extractStack(slot, filter, mergeWith, maxCount, simulation);

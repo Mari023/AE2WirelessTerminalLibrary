@@ -6,7 +6,7 @@ import net.minecraft.item.ItemStack;
 
 import java.util.Arrays;
 
-public class FixedViewCellInventory implements FixedItemInv {
+public class FixedViewCellInventory implements FixedItemInv {//FIXME viewcells
 
     private final ItemStack[] viewCells;
 

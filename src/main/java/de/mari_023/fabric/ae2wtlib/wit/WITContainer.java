@@ -104,7 +104,7 @@ public class WITContainer extends AEBaseContainer {
         }
 
         ticks++;
-        if (ticks > 10) {
+        if(ticks > 10) {
             witGUIObject.extractAEPower(powerMultiplier * ticks, Actionable.MODULATE, PowerMultiplier.CONFIG);
             ticks = 0;
         }

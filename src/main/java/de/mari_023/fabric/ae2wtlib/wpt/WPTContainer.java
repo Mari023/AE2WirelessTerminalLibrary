@@ -339,7 +339,7 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
         IAEItemStack slotItem = readItem(packetByteBuf);
         boolean shift = packetByteBuf.readBoolean();
         IAEItemStack[] pattern = new IAEItemStack[9];
-        for (int x = 0; x < 9; x++) {
+        for(int x = 0; x < 9; x++) {
             pattern[x] = readItem(packetByteBuf);
         }
 
@@ -432,7 +432,7 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
     private IAEItemStack readItem(final PacketByteBuf buf) {
         final boolean hasItem = buf.readBoolean();
 
-        if (hasItem) {
+        if(hasItem) {
             return AEItemStack.fromPacket(buf);
         }
 

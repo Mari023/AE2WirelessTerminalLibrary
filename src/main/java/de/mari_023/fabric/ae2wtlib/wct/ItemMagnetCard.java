@@ -23,7 +23,6 @@ public class ItemMagnetCard extends Item {
     @Environment(EnvType.CLIENT)
     public void appendTooltip(final ItemStack stack, final World world, final List<Text> lines, final TooltipContext advancedTooltips) {
         super.appendTooltip(stack, world, lines, advancedTooltips);
-
         lines.add(new TranslatableText("item.ae2wtlib.magnet_card.desc"));
     }
 }

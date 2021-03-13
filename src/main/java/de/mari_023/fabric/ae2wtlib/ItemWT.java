@@ -5,6 +5,7 @@ import appeng.api.config.SortDir;
 import appeng.api.config.SortOrder;
 import appeng.api.config.ViewItems;
 import appeng.api.features.ILocatable;
+import appeng.api.features.IWirelessTermHandler;
 import appeng.api.util.IConfigManager;
 import appeng.core.Api;
 import appeng.core.localization.GuiText;
@@ -25,11 +26,12 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.Util;
 import net.minecraft.world.World;
+import top.theillusivec4.curios.api.type.component.ICurio;
 
 import java.util.List;
 import java.util.function.DoubleSupplier;
 
-public abstract class ItemWT extends AEBasePoweredItem implements ICustomWirelessTerminalItem {
+public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermHandler, ICurio {
 
     public ItemWT(DoubleSupplier powerCapacity, Settings props) {
         super(powerCapacity, props);

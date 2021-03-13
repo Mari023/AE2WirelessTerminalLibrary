@@ -40,7 +40,7 @@ public class WirelessPatternTermSlot extends PatternTermSlot {
             return new PatternSlotPacket(new FixedEmptyInventory(9), Api.instance().storage().getStorageChannel(IItemStorageChannel.class).createStack(getStack()), shift);
 
         PacketByteBuf buf = PacketByteBufs.create();
-            writeItem(Api.instance().storage().getStorageChannel(IItemStorageChannel.class).createStack(getStack()), buf);
+        writeItem(Api.instance().storage().getStorageChannel(IItemStorageChannel.class).createStack(getStack()), buf);
         buf.writeBoolean(shift);
         for(int x = 0; x < 9; x++) {
             writeItem(Api.instance().storage().getStorageChannel(IItemStorageChannel.class).createStack(pattern.getInvStack(x)), buf);
