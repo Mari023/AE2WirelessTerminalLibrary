@@ -12,7 +12,6 @@ import net.minecraft.item.ItemStack;
 public class FixedWCTInv implements FixedItemInv {
 
     private final PlayerInventory playerInventory;
-    private ItemStack trashSlot = ItemStack.EMPTY;
     private final ItemStack wct;
 
     private static final int slotOffset = 36;
@@ -33,10 +32,11 @@ public class FixedWCTInv implements FixedItemInv {
         if(i < 4 && i >= 0) {
             return playerInventory.getStack(i + slotOffset);
         } else if(i == 4) return playerInventory.getStack(offHandSlot);
-        else if(i == 5) return trashSlot;
+        else if(i == 5 && wct.getItem() instanceof ItemWCT) return ((ItemWCT) wct.getItem()).getSavedSlot(wct, "trash");
         else if(i == 6 && wct.getItem() instanceof IInfinityBoosterCardHolder)
             return ((IInfinityBoosterCardHolder) wct.getItem()).getBoosterCard(wct);
-        else if(i == 7 && wct.getItem() instanceof ItemWCT) return ((ItemWCT) wct.getItem()).getSavedSlot(wct, "magnetCard");
+        else if(i == 7 && wct.getItem() instanceof ItemWCT)
+            return ((ItemWCT) wct.getItem()).getSavedSlot(wct, "magnetCard");
         return null;
     }
 
@@ -47,7 +47,7 @@ public class FixedWCTInv implements FixedItemInv {
         } else if(i == 4) return playerInventory.isValid(offHandSlot, itemStack);
         else if(i == 5) return true;
         else if(i == 6)
-            return (itemStack.getItem() instanceof ItemInfinityBooster || itemStack.equals(ItemStack.EMPTY));
+            return itemStack.getItem() instanceof ItemInfinityBooster || itemStack.isEmpty();
         else if(i == 7 && wct.getItem() instanceof ItemWCT)
             return itemStack.getItem() instanceof ItemMagnetCard || itemStack.isEmpty();
         return false;
@@ -62,7 +62,7 @@ public class FixedWCTInv implements FixedItemInv {
             if(simulation.isAction()) playerInventory.setStack(offHandSlot, itemStack);
             return true;
         } else if(i == 5) {
-            if(simulation.isAction()) trashSlot = itemStack;
+            if(simulation.isAction()) ((ItemWT) wct.getItem()).setSavedSlot(wct, itemStack, "trash");
             return true;
         } else if(i == 6) {
             if(!(itemStack.getItem() instanceof ItemInfinityBooster) && !itemStack.equals(ItemStack.EMPTY))
