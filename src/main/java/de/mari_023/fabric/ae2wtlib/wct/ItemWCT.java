@@ -3,6 +3,7 @@ package de.mari_023.fabric.ae2wtlib.wct;
 import appeng.container.ContainerLocator;
 import appeng.core.AEConfig;
 import de.mari_023.fabric.ae2wtlib.IInfinityBoosterCardHolder;
+import de.mari_023.fabric.ae2wtlib.ItemInfinityBooster;
 import de.mari_023.fabric.ae2wtlib.ItemWT;
 import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
@@ -28,20 +29,22 @@ public class ItemWCT extends ItemWT implements IInfinityBoosterCardHolder {
     }
 
     @Override
-    public boolean hasBoosterCard(ItemStack item) {
-        return item.getItem() instanceof IInfinityBoosterCardHolder && item.getTag() != null && item.getTag().getBoolean("hasboostercard");
+    public boolean hasBoosterCard(ItemStack hostItem) {
+        return getBoosterCard(hostItem).getItem() instanceof ItemInfinityBooster;
     }
 
     @Override
-    public void setBoosterCard(ItemStack item, boolean hasBoosterCard) {
-        if(item.getItem() instanceof IInfinityBoosterCardHolder && item.getTag() != null && hasBoosterCard(item) != hasBoosterCard) {
-            item.getTag().putBoolean("hasboostercard", hasBoosterCard);
+    public void setBoosterCard(ItemStack hostItem, ItemStack boosterCard) {
+        if(hostItem.getItem() instanceof IInfinityBoosterCardHolder) {
+            setSavedSlot(hostItem, boosterCard, "boosterCard");
         }
     }
 
     @Override
-    public ItemStack boosterCard(ItemStack item) {
-        if(hasBoosterCard(item)) return new ItemStack(ae2wtlib.INFINITY_BOOSTER);
+    public ItemStack getBoosterCard(ItemStack hostItem) {
+        if(hostItem.getItem() instanceof IInfinityBoosterCardHolder) {
+            return getSavedSlot(hostItem, "boosterCard");
+        }
         return ItemStack.EMPTY;
     }
 

@@ -4,9 +4,9 @@ import net.minecraft.item.ItemStack;
 
 public interface IInfinityBoosterCardHolder {
 
-    boolean hasBoosterCard(ItemStack item);
+    boolean hasBoosterCard(ItemStack hostItem);
 
-    void setBoosterCard(ItemStack item, boolean hasBoosterCard);
+    void setBoosterCard(ItemStack hostItem, ItemStack boosterCard);
 
-    ItemStack boosterCard(ItemStack item);
+    ItemStack getBoosterCard(ItemStack hostItem);
 }

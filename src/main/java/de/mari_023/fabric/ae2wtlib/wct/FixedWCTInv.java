@@ -5,7 +5,6 @@ import alexiil.mc.lib.attributes.item.FixedItemInv;
 import alexiil.mc.lib.attributes.item.filter.ItemFilter;
 import de.mari_023.fabric.ae2wtlib.IInfinityBoosterCardHolder;
 import de.mari_023.fabric.ae2wtlib.ItemInfinityBooster;
-import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 
@@ -35,7 +34,7 @@ public class FixedWCTInv implements FixedItemInv {
         } else if(i == 4) return playerInventory.getStack(offHandSlot);
         else if(i == 5) return trashSlot;
         else if(i == 6 && wct.getItem() instanceof IInfinityBoosterCardHolder)
-            return ((IInfinityBoosterCardHolder) wct.getItem()).boosterCard(wct);
+            return ((IInfinityBoosterCardHolder) wct.getItem()).getBoosterCard(wct);
         else if(i == 7 && wct.getItem() instanceof ItemWCT) return ((ItemWCT) wct.getItem()).getMagnetCard(wct);
         return null;
     }
@@ -68,7 +67,7 @@ public class FixedWCTInv implements FixedItemInv {
             if(!(itemStack.getItem() instanceof ItemInfinityBooster) && !itemStack.equals(ItemStack.EMPTY))
                 return false;
             if(simulation.isAction()) {
-                ((IInfinityBoosterCardHolder) wct.getItem()).setBoosterCard(wct, itemStack.getItem() instanceof ItemInfinityBooster);
+                ((IInfinityBoosterCardHolder) wct.getItem()).setBoosterCard(wct, itemStack);
             }
             return true;
         } else if(i == 7) {
@@ -82,10 +81,9 @@ public class FixedWCTInv implements FixedItemInv {
     @Override
     public ItemStack extractStack(int slot, ItemFilter filter, ItemStack mergeWith, int maxCount, Simulation simulation) {
         if(slot == 6) {
-            boolean hadBoosterCard = ((IInfinityBoosterCardHolder) wct.getItem()).hasBoosterCard(wct);
-            if(simulation.isAction()) ((IInfinityBoosterCardHolder) wct.getItem()).setBoosterCard(wct, false);
-            if(hadBoosterCard) return new ItemStack(ae2wtlib.INFINITY_BOOSTER);
-            return ItemStack.EMPTY;
+            ItemStack boosterCard = ((IInfinityBoosterCardHolder) wct.getItem()).getBoosterCard(wct);
+            if(simulation.isAction()) ((IInfinityBoosterCardHolder) wct.getItem()).setBoosterCard(wct, ItemStack.EMPTY);
+            return boosterCard;
         } else if(slot == 7) {
             ItemStack magnetCard = ((ItemWCT) wct.getItem()).getMagnetCard(wct);
             if(simulation.isAction()) ((ItemWCT) wct.getItem()).setMagnetCard(wct, ItemStack.EMPTY);
