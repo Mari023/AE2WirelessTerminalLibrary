@@ -35,7 +35,7 @@ public class FixedWCTInv implements FixedItemInv {
         else if(i == 5) return trashSlot;
         else if(i == 6 && wct.getItem() instanceof IInfinityBoosterCardHolder)
             return ((IInfinityBoosterCardHolder) wct.getItem()).getBoosterCard(wct);
-        else if(i == 7 && wct.getItem() instanceof ItemWCT) return ((ItemWCT) wct.getItem()).getMagnetCard(wct);
+        else if(i == 7 && wct.getItem() instanceof ItemWCT) return ((ItemWCT) wct.getItem()).getSavedSlot(wct, "magnetCard");
         return null;
     }
 
@@ -72,7 +72,8 @@ public class FixedWCTInv implements FixedItemInv {
             return true;
         } else if(i == 7) {
             if(!(itemStack.getItem() instanceof ItemMagnetCard) && !itemStack.equals(ItemStack.EMPTY)) return false;
-            if(simulation.isAction()) ((ItemWCT) wct.getItem()).setMagnetCard(wct, itemStack);
+            if(simulation.isAction())
+                ((ItemWCT) wct.getItem()).setSavedSlot(wct, itemStack, "magnetCard");
             return true;
         }
         return false;
@@ -85,8 +86,9 @@ public class FixedWCTInv implements FixedItemInv {
             if(simulation.isAction()) ((IInfinityBoosterCardHolder) wct.getItem()).setBoosterCard(wct, ItemStack.EMPTY);
             return boosterCard;
         } else if(slot == 7) {
-            ItemStack magnetCard = ((ItemWCT) wct.getItem()).getMagnetCard(wct);
-            if(simulation.isAction()) ((ItemWCT) wct.getItem()).setMagnetCard(wct, ItemStack.EMPTY);
+            ItemStack magnetCard = ((ItemWCT) wct.getItem()).getSavedSlot(wct, "magnetCard");
+            if(simulation.isAction())
+                ((ItemWCT) wct.getItem()).setSavedSlot(wct, ItemStack.EMPTY, "magnetCard");
             return magnetCard;
         }
         return FixedItemInv.super.extractStack(slot, filter, mergeWith, maxCount, simulation);
