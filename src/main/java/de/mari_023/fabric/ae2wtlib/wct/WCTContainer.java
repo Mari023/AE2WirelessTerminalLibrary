@@ -42,7 +42,7 @@ public class WCTContainer extends MEPortableCellContainer implements IAEAppEngIn
         return helper.fromNetwork(windowId, inv, buf);
     }
 
-    private final AppEngInternalInventory craftingGrid = new AppEngInternalInventory(this, 9);
+    private final AppEngInternalInventory craftingGrid;
     private final CraftingMatrixSlot[] craftingSlots = new CraftingMatrixSlot[9];
     private final CraftingTermSlot outputSlot;
     private Recipe<CraftingInventory> currentRecipe;
@@ -59,8 +59,9 @@ public class WCTContainer extends MEPortableCellContainer implements IAEAppEngIn
         super(TYPE, id, ip, gui);
         wctGUIObject = gui;
 
-        final FixedItemInv crafting = getInventoryByName("crafting");
         fixedWCTInv = new FixedWCTInv(getPlayerInv(), wctGUIObject.getItemStack());
+        craftingGrid = new CraftingInv(this, wctGUIObject.getItemStack());
+        final FixedItemInv crafting = getInventoryByName("crafting");
 
         for(int y = 0; y < 3; y++) {
             for(int x = 0; x < 3; x++) {
