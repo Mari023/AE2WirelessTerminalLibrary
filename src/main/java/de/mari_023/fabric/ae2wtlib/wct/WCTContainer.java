@@ -17,6 +17,8 @@ import appeng.util.inv.InvOperation;
 import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.ContainerHelper;
 import de.mari_023.fabric.ae2wtlib.FixedViewCellInventory;
+import de.mari_023.fabric.ae2wtlib.terminal.FixedWTInv;
+import de.mari_023.fabric.ae2wtlib.terminal.ae2wtlibInternalInventory;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.CraftingInventory;
@@ -46,7 +48,7 @@ public class WCTContainer extends MEPortableCellContainer implements IAEAppEngIn
     private final CraftingMatrixSlot[] craftingSlots = new CraftingMatrixSlot[9];
     private final CraftingTermSlot outputSlot;
     private Recipe<CraftingInventory> currentRecipe;
-    final FixedWCTInv fixedWCTInv;
+    final FixedWTInv fixedWTInv;
 
     public static boolean open(PlayerEntity player, ContainerLocator locator) {
         return helper.open(player, locator);
@@ -59,8 +61,8 @@ public class WCTContainer extends MEPortableCellContainer implements IAEAppEngIn
         super(TYPE, id, ip, gui);
         wctGUIObject = gui;
 
-        fixedWCTInv = new FixedWCTInv(getPlayerInv(), wctGUIObject.getItemStack());
-        craftingGrid = new CraftingInv(this, wctGUIObject.getItemStack());
+        fixedWTInv = new FixedWTInv(getPlayerInv(), wctGUIObject.getItemStack());
+        craftingGrid = new ae2wtlibInternalInventory(this, 9, "crafting", wctGUIObject.getItemStack());
         final FixedItemInv crafting = getInventoryByName("crafting");
 
         for(int y = 0; y < 3; y++) {
@@ -72,22 +74,20 @@ public class WCTContainer extends MEPortableCellContainer implements IAEAppEngIn
         addSlot(outputSlot = new CraftingTermSlot(getPlayerInv().player, getActionSource(), getPowerSource(), gui.getIStorageGrid(), crafting, crafting, output, 131 + 43, -72 + 18 - 4, this));
 
         //armor
-        addSlot(new AppEngSlot(fixedWCTInv, 3, 8, -76));
-        addSlot(new AppEngSlot(fixedWCTInv, 2, 8, -58));
-        addSlot(new AppEngSlot(fixedWCTInv, 1, 8, -40));
-        addSlot(new AppEngSlot(fixedWCTInv, 0, 8, -22));
-        //offhand
-        addSlot(new AppEngSlot(fixedWCTInv, 4, 80, -22));
-        //trashslot
-        addSlot(new AppEngSlot(fixedWCTInv, 5, 98, -22));
-        //infinityBoosterCard
-        addSlot(new AppEngSlot(fixedWCTInv, 6, 134, -20));
-        //magnet card
-        addSlot(new AppEngSlot(fixedWCTInv, 7, 152, -20));
+        addSlot(new AppEngSlot(fixedWTInv, 3, 8, -76));
+        addSlot(new AppEngSlot(fixedWTInv, 2, 8, -58));
+        addSlot(new AppEngSlot(fixedWTInv, 1, 8, -40));
+        addSlot(new AppEngSlot(fixedWTInv, 0, 8, -22));
+
+        addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.OFFHAND, 80, -22));
+        addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.TRASH, 98, -22));
+        addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.INFINITY_BOOSTER_CARD, 134, -20));
+        addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.MAGNET_CARD, 152, -20));
     }
 
     @Override
     public void sendContentUpdates() {
+        if(isClient()) return;
         super.sendContentUpdates();
 
         if(!wctGUIObject.rangeCheck()) {
@@ -161,7 +161,7 @@ public class WCTContainer extends MEPortableCellContainer implements IAEAppEngIn
     }
 
     public void deleteTrashSlot() {
-        fixedWCTInv.setInvStack(5, ItemStack.EMPTY, Simulation.ACTION);
+        fixedWTInv.setInvStack(FixedWTInv.TRASH, ItemStack.EMPTY, Simulation.ACTION);
     }
 
     @Override

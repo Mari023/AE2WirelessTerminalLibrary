@@ -32,6 +32,7 @@ import appeng.util.inv.IAEAppEngInventory;
 import appeng.util.inv.InvOperation;
 import de.mari_023.fabric.ae2wtlib.FixedViewCellInventory;
 import de.mari_023.fabric.ae2wtlib.IInfinityBoosterCardHolder;
+import de.mari_023.fabric.ae2wtlib.terminal.ae2wtlibInternalInventory;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 
@@ -50,9 +51,9 @@ public class WPTGuiObject implements IPortableCell, IActionHost, IInventorySlotA
     private final FixedViewCellInventory fixedViewCellInventory = new FixedViewCellInventory();
     private boolean craftingMode = true;
     private boolean substitute = false;
-    private final AppEngInternalInventory crafting = new AppEngInternalInventory(this, 9);
-    private final AppEngInternalInventory output = new AppEngInternalInventory(this, 3);
-    private final AppEngInternalInventory pattern = new AppEngInternalInventory(this, 2);
+    private final AppEngInternalInventory crafting;
+    private final AppEngInternalInventory output;
+    private final AppEngInternalInventory pattern;
 
     public WPTGuiObject(final IWirelessTermHandler wh, final ItemStack is, final PlayerEntity ep, int inventorySlot) {
         String encryptionKey = wh.getEncryptionKey(is);
@@ -60,6 +61,9 @@ public class WPTGuiObject implements IPortableCell, IActionHost, IInventorySlotA
         myPlayer = ep;
         wth = wh;
         this.inventorySlot = inventorySlot;
+        crafting = new ae2wtlibInternalInventory(this, 9, "crafting", effectiveItem);
+        output = new ae2wtlibInternalInventory(this, 3, "output", effectiveItem);
+        pattern = new ae2wtlibInternalInventory(this, 2, "pattern", effectiveItem);
 
         ILocatable obj = null;
 

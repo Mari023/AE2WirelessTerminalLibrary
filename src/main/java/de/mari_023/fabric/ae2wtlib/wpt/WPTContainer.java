@@ -31,7 +31,7 @@ import appeng.util.item.AEItemStack;
 import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.ContainerHelper;
 import de.mari_023.fabric.ae2wtlib.FixedViewCellInventory;
-import de.mari_023.fabric.ae2wtlib.wct.FixedWCTInv;
+import de.mari_023.fabric.ae2wtlib.terminal.FixedWTInv;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.CraftingInventory;
@@ -91,7 +91,7 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
         final FixedItemInv patternInv = getPatternTerminal().getInventoryByName("pattern");
         final FixedItemInv output = getPatternTerminal().getInventoryByName("output");
 
-        final FixedWCTInv fixedWPTInv = new FixedWCTInv(getPlayerInv(), wptGUIObject.getItemStack());
+        final FixedWTInv fixedWPTInv = new FixedWTInv(getPlayerInv(), wptGUIObject.getItemStack());
 
         crafting = getPatternTerminal().getInventoryByName("crafting");
 
@@ -112,7 +112,7 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
         }
 
         //infinityBoosterCard
-        addSlot(new AppEngSlot(fixedWPTInv, 6, 80, -20));
+        addSlot(new AppEngSlot(fixedWPTInv, FixedWTInv.INFINITY_BOOSTER_CARD, 80, -20));
 
         addSlot(patternSlotIN = new RestrictedInputSlot(RestrictedInputSlot.PlacableItemType.BLANK_PATTERN,
                 patternInv, 0, 147, -72 - 9, getPlayerInventory()));

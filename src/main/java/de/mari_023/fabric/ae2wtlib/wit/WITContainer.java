@@ -27,7 +27,7 @@ import appeng.util.inv.AdaptorFixedInv;
 import appeng.util.inv.WrapperCursorItemHandler;
 import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.ContainerHelper;
-import de.mari_023.fabric.ae2wtlib.wct.FixedWCTInv;
+import de.mari_023.fabric.ae2wtlib.terminal.FixedWTInv;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.player.PlayerEntity;
@@ -75,9 +75,9 @@ public class WITContainer extends AEBaseContainer {
 
         bindPlayerInventory(ip, 0, 222 - /* height of player inventory */82);
 
-        final FixedWCTInv fixedWITInv = new FixedWCTInv(getPlayerInv(), witGUIObject.getItemStack());
+        final FixedWTInv fixedWITInv = new FixedWTInv(getPlayerInv(), witGUIObject.getItemStack());
         //infinityBoosterCard
-        addSlot(new AppEngSlot(fixedWITInv, 6, 173, 129));
+        addSlot(new AppEngSlot(fixedWITInv, FixedWTInv.INFINITY_BOOSTER_CARD, 173, 129));
     }
 
     private double powerMultiplier = 1;

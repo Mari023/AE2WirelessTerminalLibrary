@@ -1,15 +1,22 @@
-package de.mari_023.fabric.ae2wtlib.wct;
+package de.mari_023.fabric.ae2wtlib.terminal;
 
 import alexiil.mc.lib.attributes.Simulation;
 import alexiil.mc.lib.attributes.item.FixedItemInv;
 import alexiil.mc.lib.attributes.item.filter.ItemFilter;
 import de.mari_023.fabric.ae2wtlib.IInfinityBoosterCardHolder;
 import de.mari_023.fabric.ae2wtlib.ItemInfinityBooster;
-import de.mari_023.fabric.ae2wtlib.ItemWT;
+import de.mari_023.fabric.ae2wtlib.wct.ItemMagnetCard;
+import de.mari_023.fabric.ae2wtlib.wct.ItemWCT;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 
-public class FixedWCTInv implements FixedItemInv {
+public class FixedWTInv implements FixedItemInv {
+
+    public static final int OFFHAND = 4;
+    public static final int TRASH = 5;
+    public static final int INFINITY_BOOSTER_CARD = 6;
+    public static final int MAGNET_CARD = 7;
+
 
     private final PlayerInventory playerInventory;
     private final ItemStack wct;
@@ -17,7 +24,7 @@ public class FixedWCTInv implements FixedItemInv {
     private static final int slotOffset = 36;
     private static final int offHandSlot = 40;
 
-    public FixedWCTInv(PlayerInventory playerInventory, ItemStack wct) {
+    public FixedWTInv(PlayerInventory playerInventory, ItemStack wct) {
         this.playerInventory = playerInventory;
         this.wct = wct;
     }
@@ -31,11 +38,12 @@ public class FixedWCTInv implements FixedItemInv {
     public ItemStack getInvStack(int i) {
         if(i < 4 && i >= 0) {
             return playerInventory.getStack(i + slotOffset);
-        } else if(i == 4) return playerInventory.getStack(offHandSlot);
-        else if(i == 5 && wct.getItem() instanceof ItemWCT) return ((ItemWCT) wct.getItem()).getSavedSlot(wct, "trash");
-        else if(i == 6 && wct.getItem() instanceof IInfinityBoosterCardHolder)
+        } else if(i == OFFHAND) return playerInventory.getStack(offHandSlot);
+        else if(i == TRASH && wct.getItem() instanceof ItemWCT)
+            return ((ItemWCT) wct.getItem()).getSavedSlot(wct, "trash");
+        else if(i == INFINITY_BOOSTER_CARD && wct.getItem() instanceof IInfinityBoosterCardHolder)
             return ((IInfinityBoosterCardHolder) wct.getItem()).getBoosterCard(wct);
-        else if(i == 7 && wct.getItem() instanceof ItemWCT)
+        else if(i == MAGNET_CARD && wct.getItem() instanceof ItemWCT)
             return ((ItemWCT) wct.getItem()).getSavedSlot(wct, "magnetCard");
         return null;
     }
@@ -44,11 +52,11 @@ public class FixedWCTInv implements FixedItemInv {
     public boolean isItemValidForSlot(int i, ItemStack itemStack) {
         if(i < 4 && i >= 0) {
             return playerInventory.isValid(i + slotOffset, itemStack);
-        } else if(i == 4) return playerInventory.isValid(offHandSlot, itemStack);
-        else if(i == 5) return true;
-        else if(i == 6)
+        } else if(i == OFFHAND) return playerInventory.isValid(offHandSlot, itemStack);
+        else if(i == TRASH) return true;
+        else if(i == INFINITY_BOOSTER_CARD)
             return itemStack.getItem() instanceof ItemInfinityBooster || itemStack.isEmpty();
-        else if(i == 7 && wct.getItem() instanceof ItemWCT)
+        else if(i == MAGNET_CARD && wct.getItem() instanceof ItemWCT)
             return itemStack.getItem() instanceof ItemMagnetCard || itemStack.isEmpty();
         return false;
     }
@@ -58,20 +66,20 @@ public class FixedWCTInv implements FixedItemInv {
         if(i < 4 && i >= 0) {
             if(simulation.isAction()) playerInventory.setStack(i + slotOffset, itemStack);
             return true;
-        } else if(i == 4) {
+        } else if(i == OFFHAND) {
             if(simulation.isAction()) playerInventory.setStack(offHandSlot, itemStack);
             return true;
-        } else if(i == 5) {
+        } else if(i == TRASH) {
             if(simulation.isAction()) ((ItemWT) wct.getItem()).setSavedSlot(wct, itemStack, "trash");
             return true;
-        } else if(i == 6) {
+        } else if(i == INFINITY_BOOSTER_CARD) {
             if(!(itemStack.getItem() instanceof ItemInfinityBooster) && !itemStack.equals(ItemStack.EMPTY))
                 return false;
             if(simulation.isAction()) {
                 ((IInfinityBoosterCardHolder) wct.getItem()).setBoosterCard(wct, itemStack);
             }
             return true;
-        } else if(i == 7) {
+        } else if(i == MAGNET_CARD) {
             if(!(itemStack.getItem() instanceof ItemMagnetCard) && !itemStack.equals(ItemStack.EMPTY)) return false;
             if(simulation.isAction())
                 ((ItemWT) wct.getItem()).setSavedSlot(wct, itemStack, "magnetCard");
@@ -82,11 +90,11 @@ public class FixedWCTInv implements FixedItemInv {
 
     @Override
     public ItemStack extractStack(int slot, ItemFilter filter, ItemStack mergeWith, int maxCount, Simulation simulation) {
-        if(slot == 6) {
+        if(slot == INFINITY_BOOSTER_CARD) {
             ItemStack boosterCard = ((IInfinityBoosterCardHolder) wct.getItem()).getBoosterCard(wct);
             if(simulation.isAction()) ((IInfinityBoosterCardHolder) wct.getItem()).setBoosterCard(wct, ItemStack.EMPTY);
             return boosterCard;
-        } else if(slot == 7) {
+        } else if(slot == MAGNET_CARD) {
             ItemStack magnetCard = ((ItemWT) wct.getItem()).getSavedSlot(wct, "magnetCard");
             if(simulation.isAction())
                 ((ItemWT) wct.getItem()).setSavedSlot(wct, ItemStack.EMPTY, "magnetCard");
