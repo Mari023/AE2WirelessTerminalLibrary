@@ -32,6 +32,9 @@ import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.ContainerHelper;
 import de.mari_023.fabric.ae2wtlib.FixedViewCellInventory;
 import de.mari_023.fabric.ae2wtlib.terminal.FixedWTInv;
+import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.CraftingInventory;
@@ -46,6 +49,7 @@ import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.CraftingResultSlot;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.world.World;
 
@@ -79,9 +83,9 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
     private final WPTGuiObject wptGUIObject;
 
     @GuiSync(97)
-    public boolean craftingMode = true;
+    public boolean craftingMode;
     @GuiSync(96)
-    public boolean substitute = false;
+    public boolean substitute;
 
 
     public WPTContainer(int id, final PlayerInventory ip, final WPTGuiObject gui) {
@@ -118,6 +122,25 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
                 patternInv, 0, 147, -72 - 9, getPlayerInventory()));
         addSlot(patternSlotOUT = new RestrictedInputSlot(RestrictedInputSlot.PlacableItemType.ENCODED_PATTERN,
                 patternInv, 1, 147, -72 + 34, getPlayerInventory()));
+
+        if(isClient()) {
+            craftingMode = ((ItemWT) wptGUIObject.getItemStack().getItem()).getBoolean(wptGUIObject.getItemStack(), "craftingMode");
+            substitute = ((ItemWT) wptGUIObject.getItemStack().getItem()).getBoolean(wptGUIObject.getItemStack(), "substitute");
+
+            PacketByteBuf buf = PacketByteBufs.create();
+            buf.writeString("PatternTerminal.CraftMode");
+            int i;
+            if(craftingMode) i = 1;
+            else i = 0;
+            buf.writeByte(i);
+            ClientPlayNetworking.send(new Identifier("ae2wtlib", "general"), buf);
+            buf = PacketByteBufs.create();
+            buf.writeString("PatternTerminal.Substitute");
+            if(substitute) i = 1;
+            else i = 0;
+            buf.writeByte(i);
+            ClientPlayNetworking.send(new Identifier("ae2wtlib", "general"), buf);
+        }
     }
 
     @Override
@@ -147,7 +170,10 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
                 updateOrderOfOutputSlots();
             }
 
-            substitute = getPatternTerminal().isSubstitution();
+            if(substitute != getPatternTerminal().isSubstitution()) {
+                substitute = getPatternTerminal().isSubstitution();
+                ((ItemWT) wptGUIObject.getItemStack().getItem()).setBoolean(wptGUIObject.getItemStack(), substitute, "substitute");
+            }
         }
     }
 
@@ -481,7 +507,10 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
     }
 
     private void setCraftingMode(final boolean craftingMode) {
-        this.craftingMode = craftingMode;
+        if(craftingMode != this.craftingMode) {
+            this.craftingMode = craftingMode;
+            ((ItemWT) wptGUIObject.getItemStack().getItem()).setBoolean(wptGUIObject.getItemStack(), craftingMode, "craftingMode");
+        }
     }
 
     public void clear() {

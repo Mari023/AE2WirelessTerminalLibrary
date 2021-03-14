@@ -166,4 +166,19 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
         }
         hostItem.setTag(wctTag);
     }
+
+    public boolean getBoolean(ItemStack hostItem, String key) {
+        if(!(hostItem.getItem() instanceof ItemWT) || hostItem.getTag() == null) return false;
+        System.out.println(key + " " + hostItem.getTag().getBoolean(key));
+        return hostItem.getTag().getBoolean(key);
+    }
+
+    public void setBoolean(ItemStack hostItem, boolean b, String key) {
+        if(!(hostItem.getItem() instanceof ItemWT)) return;
+        CompoundTag wctTag = hostItem.getTag();
+        if(wctTag == null) wctTag = new CompoundTag();
+        wctTag.putBoolean(key, b);
+        hostItem.setTag(wctTag);
+        System.out.println("set "+key + " " + hostItem.getTag().getBoolean(key));
+    }
 }

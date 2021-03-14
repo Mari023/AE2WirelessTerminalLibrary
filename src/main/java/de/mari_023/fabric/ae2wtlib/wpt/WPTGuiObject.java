@@ -302,15 +302,11 @@ public class WPTGuiObject implements IPortableCell, IActionHost, IInventorySlotA
         if(name.equals("pattern")) {
             return pattern;
         }
-
-        System.out.println("need Inventory " + name);
         return null;
     }
 
     @Override
-    public void saveChanges() {
-        markForSave();
-    }
+    public void saveChanges() {}
 
     @Override
     public void onChangeInventory(FixedItemInv inv, int slot, InvOperation mc, ItemStack removedStack, ItemStack newStack) {
@@ -334,8 +330,6 @@ public class WPTGuiObject implements IPortableCell, IActionHost, IInventorySlotA
         } else if(inv == crafting) {
             fixCraftingRecipes();
         }
-
-        markForSave();
     }
 
     public void setCraftingRecipe(final boolean craftingMode) {
@@ -360,10 +354,6 @@ public class WPTGuiObject implements IPortableCell, IActionHost, IInventorySlotA
                 }
             }
         }
-    }
-
-    private void markForSave() {
-        //TODO actually mark for safe
     }
 
     /*@Override
