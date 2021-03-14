@@ -66,7 +66,6 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> {
             }
         });
         deleteButton.setHalfSize(true);
-        //deleteButton.setMessage(new LiteralText("Empty Trash\n" + "Delete contents of the Trash slot"));
         deleteButton.setMessage(new TranslatableText("gui.ae2wtlib.emptytrash").append("\n").append(new TranslatableText("gui.ae2wtlib.emptytrash.desc")));
 
         craftingStatusBtn = addButton(new TabButton(x + 169, y - 4, 2 + 11 * 16, GuiText.CraftingStatus.text(), itemRenderer, btn -> showCraftingStatus()));
@@ -189,5 +188,4 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> {
         entity.headYaw = l;
         RenderSystem.popMatrix();
     }
-
 }
