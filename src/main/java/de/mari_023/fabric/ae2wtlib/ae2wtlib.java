@@ -1,6 +1,7 @@
 package de.mari_023.fabric.ae2wtlib;
 
 import appeng.container.AEBaseContainer;
+import appeng.container.ContainerLocator;
 import de.mari_023.fabric.ae2wtlib.wct.ItemMagnetCard;
 import de.mari_023.fabric.ae2wtlib.wct.ItemWCT;
 import de.mari_023.fabric.ae2wtlib.wct.WCTContainer;
@@ -68,6 +69,14 @@ public class ae2wtlib implements ModInitializer {
                     final WCTContainer cpt = (WCTContainer) c;
                     if(Name.equals("CraftingTerminal.Delete")) {
                         cpt.deleteTrashSlot();
+                    }
+                } else if(Name.equalsIgnoreCase("Terminal.showCraftingStatus")) {
+                    if(c instanceof WCTContainer) { //TODO does only work for wct
+                        final WCTContainer cpt = (WCTContainer) c;
+                        final ContainerLocator locator = cpt.getLocator();
+                        if(locator != null) {
+                            //CraftingStatusContainer.open(player, locator);
+                        }
                     }
                 }
                 buf.release();

@@ -7,12 +7,10 @@ import appeng.client.gui.widgets.ActionButton;
 import appeng.client.gui.widgets.IconButton;
 import appeng.client.gui.widgets.TabButton;
 import appeng.client.render.StackSizeRenderer;
-import appeng.container.implementations.CraftingStatusContainer;
 import appeng.container.slot.CraftingMatrixSlot;
 import appeng.core.localization.GuiText;
 import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.InventoryActionPacket;
-import appeng.core.sync.packets.SwitchGuisPacket;
 import appeng.helpers.InventoryAction;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -68,7 +66,7 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> {
         deleteButton.setHalfSize(true);
         deleteButton.setMessage(new TranslatableText("gui.ae2wtlib.emptytrash").append("\n").append(new TranslatableText("gui.ae2wtlib.emptytrash.desc")));
 
-        craftingStatusBtn = addButton(new TabButton(x + 169, y - 4, 2 + 11 * 16, GuiText.CraftingStatus.text(), itemRenderer, btn -> showCraftingStatus()));
+        craftingStatusBtn = addButton(new TabButton(x + 169, y - 4, 2 + 11 * 16, GuiText.CraftingStatus.text(), itemRenderer, btn -> showWirelessCraftingStatus()));
         craftingStatusBtn.setHideEdge(true);
 
         try {
@@ -120,8 +118,12 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> {
         }
     }
 
-    private void showCraftingStatus() {
-        NetworkHandler.instance().sendToServer(new SwitchGuisPacket(CraftingStatusContainer.TYPE));
+    private void showWirelessCraftingStatus() {
+        //NetworkHandler.instance().sendToServer(new SwitchGuisPacket(CraftingStatusContainer.TYPE));
+        PacketByteBuf buf = PacketByteBufs.create();
+        buf.writeString("Terminal.showCraftingStatus");
+        buf.writeBoolean(false);
+        ClientPlayNetworking.send(new Identifier("ae2wtlib", "general"), buf);
     }
 
     private void clear() {
