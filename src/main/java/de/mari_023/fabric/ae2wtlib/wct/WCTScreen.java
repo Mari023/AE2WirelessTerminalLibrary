@@ -7,6 +7,7 @@ import appeng.client.gui.widgets.ActionButton;
 import appeng.client.gui.widgets.IconButton;
 import appeng.client.gui.widgets.TabButton;
 import appeng.client.render.StackSizeRenderer;
+import appeng.container.implementations.WirelessCraftingStatusContainer;
 import appeng.container.slot.CraftingMatrixSlot;
 import appeng.core.localization.GuiText;
 import appeng.core.sync.network.NetworkHandler;
@@ -29,6 +30,7 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Quaternion;
+import net.minecraft.util.registry.Registry;
 
 import java.lang.reflect.Field;
 
@@ -119,11 +121,9 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> {
     }
 
     private void showWirelessCraftingStatus() {
-        //NetworkHandler.instance().sendToServer(new SwitchGuisPacket(CraftingStatusContainer.TYPE));
         PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeString("Terminal.showCraftingStatus");
-        buf.writeBoolean(false);
-        ClientPlayNetworking.send(new Identifier("ae2wtlib", "general"), buf);
+        buf.writeIdentifier(Registry.SCREEN_HANDLER.getId(WirelessCraftingStatusContainer.TYPE));
+        ClientPlayNetworking.send(new Identifier("ae2wtlib", "switch_gui"), buf);
     }
 
     private void clear() {

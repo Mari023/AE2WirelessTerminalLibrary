@@ -2,6 +2,7 @@ package de.mari_023.fabric.ae2wtlib;
 
 import appeng.container.AEBaseContainer;
 import appeng.container.ContainerLocator;
+import appeng.container.implementations.WirelessCraftingStatusContainer;
 import de.mari_023.fabric.ae2wtlib.wct.ItemMagnetCard;
 import de.mari_023.fabric.ae2wtlib.wct.ItemWCT;
 import de.mari_023.fabric.ae2wtlib.wct.WCTContainer;
@@ -41,6 +42,7 @@ public class ae2wtlib implements ModInitializer {
         WCTContainer.TYPE = registerScreenHandler("wireless_crafting_terminal", WCTContainer::fromNetwork);
         WPTContainer.TYPE = registerScreenHandler("wireless_pattern_terminal", WPTContainer::fromNetwork);
         WITContainer.TYPE = registerScreenHandler("wireless_interface_terminal", WITContainer::fromNetwork);
+        WirelessCraftingStatusContainer.TYPE = registerScreenHandler("wireless_crafting_status", WirelessCraftingStatusContainer::fromNetwork);
         //ItemComponentCallbackV2.event(UNIVERSAL_TERMINAL).register(((item, itemStack, componentContainer) -> componentContainer.put(CuriosComponent.ITEM, new ICurio() {})));
 
         ServerPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "general"), (server, player, handler, buf, sender) -> {
@@ -70,14 +72,6 @@ public class ae2wtlib implements ModInitializer {
                     if(Name.equals("CraftingTerminal.Delete")) {
                         cpt.deleteTrashSlot();
                     }
-                } else if(Name.equalsIgnoreCase("Terminal.showCraftingStatus")) {
-                    if(c instanceof WCTContainer) { //TODO does only work for wct
-                        final WCTContainer cpt = (WCTContainer) c;
-                        final ContainerLocator locator = cpt.getLocator();
-                        if(locator != null) {
-                            //CraftingStatusContainer.open(player, locator);
-                        }
-                    }
                 }
                 buf.release();
             });
@@ -88,6 +82,31 @@ public class ae2wtlib implements ModInitializer {
                 if(player.currentScreenHandler instanceof WPTContainer) {
                     final WPTContainer patternTerminal = (WPTContainer) player.currentScreenHandler;
                     patternTerminal.craftOrGetItem(buf);
+                }
+                buf.release();
+            });
+        });
+        ServerPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "switch_gui"), (server, player, handler, buf, sender) -> {
+            buf.retain();
+            server.execute(() -> {
+                Identifier id = buf.readIdentifier();
+                final ScreenHandler c = player.currentScreenHandler;
+                if(!(c instanceof AEBaseContainer)) return;
+                AEBaseContainer container = (AEBaseContainer) c;
+                final ContainerLocator locator = container.getLocator();
+                if(locator == null) return;
+                switch(id.getPath()) {
+                    case "wireless_crafting_terminal":
+                        WCTContainer.open(player, locator);
+                        break;
+                    case "wireless_pattern_terminal":
+                        WPTContainer.open(player, locator);
+                        break;
+                    case "wireless_interface_terminal":
+                        WITContainer.open(player, locator);
+                        break;
+                    case "wireless_crafting_status":
+                        WirelessCraftingStatusContainer.open(player, locator);
                 }
                 buf.release();
             });
