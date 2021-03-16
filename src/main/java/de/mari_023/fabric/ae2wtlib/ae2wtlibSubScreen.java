@@ -4,6 +4,8 @@ import appeng.client.gui.AEBaseScreen;
 import appeng.client.gui.widgets.TabButton;
 import de.mari_023.fabric.ae2wtlib.wct.WCTContainer;
 import de.mari_023.fabric.ae2wtlib.wct.WCTGuiObject;
+import de.mari_023.fabric.ae2wtlib.wpt.WPTContainer;
+import de.mari_023.fabric.ae2wtlib.wpt.WPTGuiObject;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.render.item.ItemRenderer;
@@ -28,9 +30,12 @@ public final class ae2wtlibSubScreen {
      */
     public ae2wtlibSubScreen(AEBaseScreen<?> gui, Object containerTarget) {
         this.gui = gui;
-        if(containerTarget instanceof WCTGuiObject) {
+        if(containerTarget instanceof WCTGuiObject) {//TODO don't hardcode
             previousContainerIcon = new ItemStack(ae2wtlib.CRAFTING_TERMINAL);
             previousContainerType = WCTContainer.TYPE;
+        } else if(containerTarget instanceof WPTGuiObject) {
+            previousContainerIcon = new ItemStack(ae2wtlib.PATTERN_TERMINAL);
+            previousContainerType = WPTContainer.TYPE;
         } else {
             previousContainerIcon = null;
             previousContainerType = null;

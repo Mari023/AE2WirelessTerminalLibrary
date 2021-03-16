@@ -6,10 +6,8 @@ import appeng.client.gui.widgets.AETextField;
 import appeng.client.gui.widgets.ActionButton;
 import appeng.client.gui.widgets.TabButton;
 import appeng.client.render.StackSizeRenderer;
-import appeng.container.implementations.CraftingStatusContainer;
+import appeng.container.implementations.WirelessCraftingStatusContainer;
 import appeng.core.localization.GuiText;
-import appeng.core.sync.network.NetworkHandler;
-import appeng.core.sync.packets.SwitchGuisPacket;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.block.Blocks;
@@ -20,6 +18,7 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
 import java.lang.reflect.Field;
 
@@ -81,7 +80,7 @@ public class WPTScreen extends MEMonitorableScreen<WPTContainer> {
         ActionButton encodeBtn = new ActionButton(x + 147, y + backgroundHeight - 144, ActionItems.ENCODE, act -> encode());
         addButton(encodeBtn);
 
-        craftingStatusBtn = addButton(new TabButton(x + 170, y - 4, 2 + 11 * 16, GuiText.CraftingStatus.text(), itemRenderer, btn -> showCraftingStatus()));
+        craftingStatusBtn = addButton(new TabButton(x + 170, y - 4, 2 + 11 * 16, GuiText.CraftingStatus.text(), itemRenderer, btn -> showWirelessCraftingStatus()));
         craftingStatusBtn.setHideEdge(true);
 
         try {
@@ -179,8 +178,10 @@ public class WPTScreen extends MEMonitorableScreen<WPTContainer> {
         }
     }
 
-    private void showCraftingStatus() {
-        NetworkHandler.instance().sendToServer(new SwitchGuisPacket(CraftingStatusContainer.TYPE));
+    private void showWirelessCraftingStatus() {
+        PacketByteBuf buf = PacketByteBufs.create();
+        buf.writeIdentifier(Registry.SCREEN_HANDLER.getId(WirelessCraftingStatusContainer.TYPE));
+        ClientPlayNetworking.send(new Identifier("ae2wtlib", "switch_gui"), buf);
     }
 
     @Override

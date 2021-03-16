@@ -6,6 +6,7 @@ import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
 import appeng.api.features.ILocatable;
 import appeng.api.features.IWirelessTermHandler;
+import appeng.api.implementations.guiobjects.IGuiItemObject;
 import appeng.api.implementations.guiobjects.IPortableCell;
 import appeng.api.implementations.tiles.IWirelessAccessPoint;
 import appeng.api.networking.IGrid;
@@ -36,7 +37,7 @@ import de.mari_023.fabric.ae2wtlib.terminal.ae2wtlibInternalInventory;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 
-public class WPTGuiObject implements IPortableCell, IActionHost, IInventorySlotAware, IAEAppEngInventory/*, IViewCellStorage*/ {
+public class WPTGuiObject implements IGuiItemObject, IPortableCell, IActionHost, IInventorySlotAware, IAEAppEngInventory/*, IViewCellStorage*/ {
 
     private final ItemStack effectiveItem;
     private final IWirelessTermHandler wth;
