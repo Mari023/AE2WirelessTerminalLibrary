@@ -91,6 +91,7 @@ task publishModrinth (type: TaskModrinthUpload) {
     projectId = 'pNabrMMw'
     versionNumber = '1.0.0-alpha.'+System.getenv("RUN_ID") // The version of the mod to upload.
     uploadFile = remapJar
+    releaseType = 'alpha'
     addGameVersion('1.16.5')
     addLoader('fabric')
 }
