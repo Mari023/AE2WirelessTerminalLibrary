@@ -1,6 +1,7 @@
 plugins {
     id 'fabric-loom' version '0.6-SNAPSHOT'
     id 'maven-publish'
+    id "com.modrinth.minotaur" version "1.1.0"
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_8
@@ -81,6 +82,17 @@ tasks.withType(JavaCompile) {
 task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = "sources"
     from sourceSets.main.allSource
+}
+
+import com.modrinth.minotaur.TaskModrinthUpload
+
+task publishModrinth (type: TaskModrinthUpload) {
+    token = System.getenv("MODRINTH_TOKEN")
+    projectId = 'pNabrMMw'
+    versionNumber = '1.0.0-alpha.'+System.getenv("RUN_ID") // The version of the mod to upload.
+    uploadFile = remapJar
+    addGameVersion('1.16.5')
+    addLoader('fabric')
 }
 
 jar {
