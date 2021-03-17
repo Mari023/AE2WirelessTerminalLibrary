@@ -86,10 +86,10 @@ task sourcesJar(type: Jar, dependsOn: classes) {
 
 import com.modrinth.minotaur.TaskModrinthUpload
 
-task publishModrinth (type: TaskModrinthUpload) {
+task publishModrinth(type: TaskModrinthUpload) {
     token = System.getenv("MODRINTH_TOKEN")
     projectId = 'pNabrMMw'
-    versionNumber = '1.0.0-alpha.'+System.getenv("RUN_ID") // The version of the mod to upload.
+    versionNumber = '1.0.0-alpha.' + System.getenv("RUN_ID") // The version of the mod to upload.
     uploadFile = remapJar
     addGameVersion('1.16.5')
     addLoader('fabric')
