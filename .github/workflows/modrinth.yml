@@ -29,6 +29,8 @@ jobs:
       run: ./gradlew clean --no-daemon --max-workers 1
     - name: Validate no assets
       run: test ! -d ./src/generated
+    - name: Build with Gradle
+      run: ./gradlew remapJar
     - name: modrinth task
       run: ./gradlew publishModrinth
       env:
