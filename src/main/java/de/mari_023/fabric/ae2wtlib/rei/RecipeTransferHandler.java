@@ -1,6 +1,5 @@
 package de.mari_023.fabric.ae2wtlib.rei;
 
-import appeng.core.sync.packets.JEIRecipePacket;
 import appeng.helpers.IContainerCraftingPacket;
 import me.shedaniel.rei.api.AutoTransferHandler;
 import me.shedaniel.rei.api.EntryStack;
@@ -61,7 +60,7 @@ abstract class RecipeTransferHandler<T extends ScreenHandler & IContainerCraftin
 
         if (context.isActuallyCrafting()) {
             if (canSendReference) {
-                //NetworkHandler.instance().sendToServer(new JEIRecipePacket(recipeId, isCrafting()));//FIXME
+                new REIRecipePacket(recipeId, isCrafting()).send();
             } else {
                 // To avoid earlier problems of too large packets being sent that crashed the
                 // client,
@@ -95,7 +94,7 @@ abstract class RecipeTransferHandler<T extends ScreenHandler & IContainerCraftin
                 }
 
                 ShapedRecipe fallbackRecipe = new ShapedRecipe(recipeId, "", 3, 3, flatIngredients, output);
-                //NetworkHandler.instance().sendToServer(new JEIRecipePacket(fallbackRecipe, isCrafting()));//FIXME
+                new REIRecipePacket(fallbackRecipe, isCrafting()).send();
             }
         }
 

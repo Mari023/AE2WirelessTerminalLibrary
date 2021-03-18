@@ -3,6 +3,7 @@ package de.mari_023.fabric.ae2wtlib;
 import appeng.container.AEBaseContainer;
 import appeng.container.ContainerLocator;
 import appeng.container.implementations.WirelessCraftingStatusContainer;
+import de.mari_023.fabric.ae2wtlib.rei.REIRecipePacket;
 import de.mari_023.fabric.ae2wtlib.wct.ItemMagnetCard;
 import de.mari_023.fabric.ae2wtlib.wct.ItemWCT;
 import de.mari_023.fabric.ae2wtlib.wct.WCTContainer;
@@ -108,6 +109,13 @@ public class ae2wtlib implements ModInitializer {
                     case "wireless_crafting_status":
                         WirelessCraftingStatusContainer.open(player, locator);
                 }
+                buf.release();
+            });
+        });
+        ServerPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "rei_recipe"), (server, player, handler, buf, sender) -> {
+            buf.retain();
+            server.execute(() -> {
+                new REIRecipePacket(buf, player);
                 buf.release();
             });
         });
