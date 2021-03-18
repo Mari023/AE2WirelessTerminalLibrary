@@ -3,6 +3,7 @@ package de.mari_023.fabric.ae2wtlib.wct;
 import alexiil.mc.lib.attributes.Simulation;
 import alexiil.mc.lib.attributes.item.FixedItemInv;
 import alexiil.mc.lib.attributes.item.compat.FixedInventoryVanillaWrapper;
+import appeng.api.networking.IGridNode;
 import appeng.container.ContainerLocator;
 import appeng.container.ContainerNull;
 import appeng.container.implementations.MEPortableCellContainer;
@@ -154,6 +155,12 @@ public class WCTContainer extends MEPortableCellContainer implements IAEAppEngIn
         }
         return null;
     }
+
+    @Override
+    public IGridNode getNetworkNode() {
+        return wctGUIObject.getActionableNode();
+    }
+
 
     @Override
     public boolean useRealItems() {
