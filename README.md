@@ -17,7 +17,6 @@ Missing Features / Known Issues
 - support for viewcells
 - There are currently only placeholder Textures
 - Magnet Card does not work yet
-- you can't use REI in Wireless Crafting Terminal / Wireless Pattern Terminal
 - Requesting items from autocrafting does not work
 
 

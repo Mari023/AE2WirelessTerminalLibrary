@@ -17,6 +17,9 @@
     ],
     "main": [
       "de.mari_023.fabric.ae2wtlib.ae2wtlib"
+    ],
+    "rei_plugins": [
+      "de.mari_023.fabric.ae2wtlib.rei.Plugin"
     ]
   },
   "mixins": [
