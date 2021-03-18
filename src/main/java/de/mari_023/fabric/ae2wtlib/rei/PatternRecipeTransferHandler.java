@@ -12,15 +12,13 @@ public class PatternRecipeTransferHandler extends RecipeTransferHandler<WPTConta
     }
 
     protected AutoTransferHandler.Result doTransferRecipe(WPTContainer container, RecipeDisplay recipe, AutoTransferHandler.Context context) {
-
-        if (container.isCraftingMode() && recipe.getRecipeCategory() != DefaultPlugin.CRAFTING) {
+        if(container.isCraftingMode() && recipe.getRecipeCategory() != DefaultPlugin.CRAFTING) {
             return AutoTransferHandler.Result.createFailed("jei.appliedenergistics2.requires_processing_mode");
         }
 
-        if (recipe.getResultingEntries().isEmpty()) {
+        if(recipe.getResultingEntries().isEmpty()) {
             return AutoTransferHandler.Result.createFailed("jei.appliedenergistics2.no_output");
         }
-
         return null;
     }
 

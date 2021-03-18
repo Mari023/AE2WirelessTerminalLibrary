@@ -219,7 +219,7 @@ public class WITScreen extends AEBaseScreen<WITContainer> {
             boolean found = searchFilterLowerCase.isEmpty();
 
             // Search if the current inventory holds a pattern containing the search term.
-            if(!found) {//TODO pull request to fix line 253 in ae2
+            if(!found) {
                 for(final ItemStack itemStack : entry.getInventory()) {
                     found = itemStackMatchesSearchTerm(itemStack, searchFilterLowerCase);
                     if(found) {

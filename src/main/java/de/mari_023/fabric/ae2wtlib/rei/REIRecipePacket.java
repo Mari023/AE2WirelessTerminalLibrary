@@ -115,9 +115,7 @@ public class REIRecipePacket {
 
         Recipe<?> recipe = player.getEntityWorld().getRecipeManager().get(recipeId).orElse(null);
         if(recipe == null && this.recipe != null) {
-            // Certain recipes (i.e. AE2 facades) are represented in JEI as ShapedRecipe's,
-            // while in reality they
-            // are special recipes. Those recipes are sent across the wire...
+            // Certain recipes (i.e. AE2 facades) are represented in JEI as ShapedRecipe's, while in reality they are special recipes. Those recipes are sent across the wire...
             recipe = this.recipe;
         }
         Preconditions.checkArgument(recipe != null);
@@ -128,21 +126,17 @@ public class REIRecipePacket {
         Preconditions.checkArgument(node != null);
 
         final IGrid grid = node.getGrid();
-        Preconditions.checkArgument(grid != null);
 
         final IStorageGrid inv = grid.getCache(IStorageGrid.class);
-        Preconditions.checkArgument(inv != null);
 
         final ISecurityGrid security = grid.getCache(ISecurityGrid.class);
-        Preconditions.checkArgument(security != null);
 
         final IEnergyGrid energy = grid.getCache(IEnergyGrid.class);
         final ICraftingGrid crafting = grid.getCache(ICraftingGrid.class);
         final FixedItemInv craftMatrix = cct.getInventoryByName("crafting");
         final FixedItemInv playerInventory = cct.getInventoryByName("player");
 
-        final IMEMonitor<IAEItemStack> storage = inv
-                .getInventory(Api.instance().storage().getStorageChannel(IItemStorageChannel.class));
+        final IMEMonitor<IAEItemStack> storage = inv.getInventory(Api.instance().storage().getStorageChannel(IItemStorageChannel.class));
         final IPartitionList<IAEItemStack> filter = ViewCellItem.createFilter(cct.getViewCells());
         final DefaultedList<Ingredient> ingredients = ensure3by3CraftingMatrix(recipe);
 
@@ -240,8 +234,7 @@ public class REIRecipePacket {
 
         Preconditions.checkArgument(ingredients.size() <= 9);
 
-        // shaped recipes can be smaller than 3x3, expand to 3x3 to match the crafting
-        // matrix
+        // shaped recipes can be smaller than 3x3, expand to 3x3 to match the crafting matrix
         if(recipe instanceof ShapedRecipe) {
             ShapedRecipe shapedRecipe = (ShapedRecipe) recipe;
             int width = shapedRecipe.getWidth();
@@ -294,8 +287,7 @@ public class REIRecipePacket {
     }
 
     /**
-     * From a stream of AE item stacks, pick the one with the highest available amount in the network. Returns null if
-     * the stream is empty.
+     * From a stream of AE item stacks, pick the one with the highest available amount in the network. Returns null if the stream is empty.
      */
     private static IAEItemStack getMostStored(Stream<? extends IAEItemStack> stacks, IMEMonitor<IAEItemStack> storage, IContainerCraftingPacket cct) {
         return stacks.map(s -> {
