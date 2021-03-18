@@ -5,6 +5,7 @@ import alexiil.mc.lib.attributes.item.compat.FixedInventoryVanillaWrapper;
 import appeng.api.config.Actionable;
 import appeng.api.crafting.ICraftingHelper;
 import appeng.api.definitions.IDefinitions;
+import appeng.api.networking.IGridNode;
 import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.channels.IItemStorageChannel;
 import appeng.api.storage.data.IAEItemStack;
@@ -86,7 +87,6 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
     public boolean craftingMode;
     @GuiSync(96)
     public boolean substitute;
-
 
     public WPTContainer(int id, final PlayerInventory ip, final WPTGuiObject gui) {
         super(TYPE, id, ip, gui);
@@ -524,6 +524,11 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
 
         sendContentUpdates();
         getAndUpdateOutput();
+    }
+
+    @Override
+    public IGridNode getNetworkNode() {
+        return wptGUIObject.getActionableNode();
     }
 
     @Override

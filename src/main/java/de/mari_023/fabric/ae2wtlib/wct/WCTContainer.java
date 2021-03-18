@@ -161,7 +161,6 @@ public class WCTContainer extends MEPortableCellContainer implements IAEAppEngIn
         return wctGUIObject.getActionableNode();
     }
 
-
     @Override
     public boolean useRealItems() {
         return true;
