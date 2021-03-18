@@ -12,7 +12,6 @@ import appeng.api.networking.storage.IStorageGrid;
 import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.channels.IItemStorageChannel;
 import appeng.api.storage.data.IAEItemStack;
-import appeng.container.implementations.PatternTermContainer;
 import appeng.core.Api;
 import appeng.helpers.IContainerCraftingPacket;
 import appeng.items.storage.ViewCellItem;
@@ -25,6 +24,7 @@ import appeng.util.item.AEItemStack;
 import appeng.util.prioritylist.IPartitionList;
 import com.google.common.base.Preconditions;
 import com.mojang.datafixers.util.Pair;
+import de.mari_023.fabric.ae2wtlib.wpt.WPTContainer;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.item.ItemStack;
@@ -299,8 +299,8 @@ public class REIRecipePacket {
     }
 
     private void handleProcessing(ScreenHandler con, IContainerCraftingPacket cct, Recipe<?> recipe) {
-        if(con instanceof PatternTermContainer) {
-            PatternTermContainer patternTerm = (PatternTermContainer) con;
+        if(con instanceof WPTContainer) {
+            WPTContainer patternTerm = (WPTContainer) con;
             if(!patternTerm.craftingMode) {
                 final FixedItemInv output = cct.getInventoryByName("output");
                 ItemHandlerUtil.setStackInSlot(output, 0, recipe.getOutput());
