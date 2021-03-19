@@ -15,11 +15,14 @@ import appeng.helpers.IContainerCraftingPacket;
 import appeng.tile.inventory.AppEngInternalInventory;
 import appeng.util.inv.IAEAppEngInventory;
 import appeng.util.inv.InvOperation;
+import com.mojang.datafixers.util.Pair;
 import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.ContainerHelper;
 import de.mari_023.fabric.ae2wtlib.FixedViewCellInventory;
 import de.mari_023.fabric.ae2wtlib.terminal.FixedWTInv;
 import de.mari_023.fabric.ae2wtlib.terminal.ae2wtlibInternalInventory;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.CraftingInventory;
@@ -28,7 +31,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeType;
+import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.world.World;
 
@@ -57,7 +62,6 @@ public class WCTContainer extends MEPortableCellContainer implements IAEAppEngIn
 
     private final WCTGuiObject wctGUIObject;
 
-
     public WCTContainer(int id, final PlayerInventory ip, final WCTGuiObject gui) {
         super(TYPE, id, ip, gui);
         wctGUIObject = gui;
@@ -75,12 +79,37 @@ public class WCTContainer extends MEPortableCellContainer implements IAEAppEngIn
         addSlot(outputSlot = new CraftingTermSlot(getPlayerInv().player, getActionSource(), getPowerSource(), gui.getIStorageGrid(), crafting, crafting, output, 131 + 43, -72 + 18 - 4, this));
 
         //armor
-        addSlot(new AppEngSlot(fixedWTInv, 3, 8, -76));
-        addSlot(new AppEngSlot(fixedWTInv, 2, 8, -58));
-        addSlot(new AppEngSlot(fixedWTInv, 1, 8, -40));
-        addSlot(new AppEngSlot(fixedWTInv, 0, 8, -22));
+        addSlot(new AppEngSlot(fixedWTInv, 3, 8, -76) {
+            @Environment(EnvType.CLIENT)
+            public Pair<Identifier, Identifier> getBackgroundSprite() {
+                return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, PlayerScreenHandler.EMPTY_HELMET_SLOT_TEXTURE);
+            }
+        });
+        addSlot(new AppEngSlot(fixedWTInv, 2, 8, -58) {
+            @Environment(EnvType.CLIENT)
+            public Pair<Identifier, Identifier> getBackgroundSprite() {
+                return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, PlayerScreenHandler.EMPTY_CHESTPLATE_SLOT_TEXTURE);
+            }
+        });
+        addSlot(new AppEngSlot(fixedWTInv, 1, 8, -40) {
+            @Environment(EnvType.CLIENT)
+            public Pair<Identifier, Identifier> getBackgroundSprite() {
+                return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, PlayerScreenHandler.EMPTY_LEGGINGS_SLOT_TEXTURE);
+            }
+        });
+        addSlot(new AppEngSlot(fixedWTInv, 0, 8, -22) {
+            @Environment(EnvType.CLIENT)
+            public Pair<Identifier, Identifier> getBackgroundSprite() {
+                return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, PlayerScreenHandler.EMPTY_BOOTS_SLOT_TEXTURE);
+            }
+        });
 
-        addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.OFFHAND, 80, -22));
+        addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.OFFHAND, 80, -22) {
+            @Environment(EnvType.CLIENT)
+            public Pair<Identifier, Identifier> getBackgroundSprite() {
+                return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, PlayerScreenHandler.EMPTY_OFFHAND_ARMOR_SLOT);
+            }
+        });
         addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.TRASH, 98, -22));
         addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.INFINITY_BOOSTER_CARD, 134, -20));
         addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.MAGNET_CARD, 152, -20));
