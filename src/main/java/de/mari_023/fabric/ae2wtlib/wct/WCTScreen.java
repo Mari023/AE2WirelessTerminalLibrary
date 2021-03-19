@@ -14,6 +14,7 @@ import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.InventoryActionPacket;
 import appeng.helpers.InventoryAction;
 import com.mojang.blaze3d.systems.RenderSystem;
+import me.shedaniel.math.Rectangle;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
@@ -33,6 +34,7 @@ import net.minecraft.util.math.Quaternion;
 import net.minecraft.util.registry.Registry;
 
 import java.lang.reflect.Field;
+import java.util.List;
 
 public class WCTScreen extends MEMonitorableScreen<WCTContainer> {
 
@@ -189,5 +191,12 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> {
         entity.prevHeadYaw = k;
         entity.headYaw = l;
         RenderSystem.popMatrix();
+    }
+
+    @Override
+    public List<Rectangle> getExclusionZones() {
+        List<Rectangle> zones = super.getExclusionZones();
+        zones.add(new Rectangle(x + 195, y, 24, backgroundHeight-110));
+        return zones;
     }
 }

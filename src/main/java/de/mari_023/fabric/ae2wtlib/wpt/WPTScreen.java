@@ -8,6 +8,7 @@ import appeng.client.gui.widgets.TabButton;
 import appeng.client.render.StackSizeRenderer;
 import appeng.container.implementations.WirelessCraftingStatusContainer;
 import appeng.core.localization.GuiText;
+import me.shedaniel.math.Rectangle;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.block.Blocks;
@@ -21,6 +22,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 import java.lang.reflect.Field;
+import java.util.List;
 
 public class WPTScreen extends MEMonitorableScreen<WPTContainer> {
 
@@ -187,5 +189,12 @@ public class WPTScreen extends MEMonitorableScreen<WPTContainer> {
     @Override
     protected String getBackground() {
         return "wtlib/gui/pattern.png";
+    }
+
+    @Override
+    public List<Rectangle> getExclusionZones() {
+        List<Rectangle> zones = super.getExclusionZones();
+        zones.add(new Rectangle(x + 195, y, 24, backgroundHeight-110));
+        return zones;
     }
 }
