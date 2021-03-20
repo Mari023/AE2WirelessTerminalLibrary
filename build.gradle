@@ -90,23 +90,25 @@ import com.modrinth.minotaur.TaskModrinthUpload
 task publishModrinth(type: TaskModrinthUpload) {
     token = System.getenv("MODRINTH_TOKEN")
     projectId = 'pNabrMMw'
-    versionNumber = '1.0.0-alpha.' + System.getenv("RUN_ID") // The version of the mod to upload.
+    versionNumber = '1.0.0-alpha.' + System.getenv("RUN_ID")
     uploadFile = remapJar
     releaseType = 'alpha'
     addGameVersion('1.16.5')
     addLoader('fabric')
-    curseforge
 }
 
 curseforge {
-    //apiKey = System.getenv("CURSEFORGE_TOKEN")
+    apiKey = System.getenv("CURSEFORGE_TOKEN")
     project {
         id = '459929'
         releaseType = 'alpha'
         addGameVersion '1.16.5'
         addGameVersion 'Fabric'
         addGameVersion "Java 8"
-        mainArtifact(remapJar)
+        mainArtifact(remapJar) {
+            displayName = '1.0.0-alpha.' + System.getenv("RUN_ID")
+        }
+
 
         relations {
             requiredDependency 'fabric-api'

@@ -28,10 +28,14 @@ jobs:
         key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
     - name: Clean gradle
       run: ./gradlew clean --no-daemon --max-workers 1
+      env:
+        CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
     - name: Validate no assets
       run: test ! -d ./src/generated
     - name: Build with Gradle
       run: ./gradlew remapJar
+      env:
+        CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2.2.2
       with: 

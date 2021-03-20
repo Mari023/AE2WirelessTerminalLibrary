@@ -41,3 +41,8 @@ jobs:
           CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
           RUN_ID: ${{ github.run_id }}
+      - name: curseForge Task
+        run: ./gradlew curseforge
+        env:
+          CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
+          RUN_ID: ${{ github.run_id }}
