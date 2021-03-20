@@ -99,7 +99,7 @@ task publishModrinth(type: TaskModrinthUpload) {
 }
 
 curseforge {
-    apiKey = System.getenv("CURSEFORGE_TOKEN")
+    //apiKey = System.getenv("CURSEFORGE_TOKEN")
     project {
         id = '459929'
         releaseType = 'alpha'
