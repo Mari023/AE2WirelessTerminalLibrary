@@ -5,7 +5,7 @@ import appeng.container.ContainerLocator;
 import appeng.core.sync.network.INetworkInfo;
 import appeng.core.sync.packets.InventoryActionPacket;
 import appeng.helpers.InventoryAction;
-import de.mari_023.fabric.ae2wtlib.terminal.WirelessCraftAmountContainer;
+import de.mari_023.fabric.ae2wtlib.util.WirelessCraftAmountContainer;
 import de.mari_023.fabric.ae2wtlib.wct.WCTContainer;
 import de.mari_023.fabric.ae2wtlib.wpt.WPTContainer;
 import net.minecraft.entity.player.PlayerEntity;

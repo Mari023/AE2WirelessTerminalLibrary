@@ -1,10 +1,17 @@
 package de.mari_023.fabric.ae2wtlib;
 
+import appeng.api.networking.IGrid;
+import appeng.api.networking.IGridNode;
+import appeng.api.networking.crafting.ICraftingGrid;
+import appeng.api.networking.crafting.ICraftingJob;
+import appeng.api.networking.security.IActionHost;
 import appeng.container.AEBaseContainer;
 import appeng.container.ContainerLocator;
 import appeng.container.implementations.WirelessCraftingStatusContainer;
+import appeng.core.AELog;
 import de.mari_023.fabric.ae2wtlib.rei.REIRecipePacket;
-import de.mari_023.fabric.ae2wtlib.terminal.WirelessCraftAmountContainer;
+import de.mari_023.fabric.ae2wtlib.util.WirelessCraftAmountContainer;
+import appeng.container.implementations.WirelessCraftConfirmContainer;
 import de.mari_023.fabric.ae2wtlib.wct.ItemMagnetCard;
 import de.mari_023.fabric.ae2wtlib.wct.ItemWCT;
 import de.mari_023.fabric.ae2wtlib.wct.WCTContainer;
@@ -22,6 +29,8 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+
+import java.util.concurrent.Future;
 
 public class ae2wtlib implements ModInitializer {
 
@@ -46,6 +55,7 @@ public class ae2wtlib implements ModInitializer {
         WITContainer.TYPE = registerScreenHandler("wireless_interface_terminal", WITContainer::fromNetwork);
         WirelessCraftingStatusContainer.TYPE = registerScreenHandler("wireless_crafting_status", WirelessCraftingStatusContainer::fromNetwork);
         WirelessCraftAmountContainer.TYPE = registerScreenHandler("wireless_craft_amount", WirelessCraftAmountContainer::fromNetwork);
+        WirelessCraftConfirmContainer.TYPE = registerScreenHandler("wireless_craft_confirm", WirelessCraftConfirmContainer::fromNetwork);
         //ItemComponentCallbackV2.event(UNIVERSAL_TERMINAL).register(((item, itemStack, componentContainer) -> componentContainer.put(CuriosComponent.ITEM, new ICurio() {})));
 
         ServerPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "general"), (server, player, handler, buf, sender) -> {
@@ -119,6 +129,57 @@ public class ae2wtlib implements ModInitializer {
             server.execute(() -> {
                 new REIRecipePacket(buf, player);
                 buf.release();
+            });
+        });
+        ServerPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "craft_request"), (server, player, handler, buf, sender) -> {
+            buf.retain();
+            server.execute(() -> {
+                int amount = buf.readInt();
+                boolean heldShift = buf.readBoolean();
+                if(player.currentScreenHandler instanceof WirelessCraftAmountContainer) {
+                    final WirelessCraftAmountContainer cca = (WirelessCraftAmountContainer) player.currentScreenHandler;
+                    final Object target = cca.getTarget();
+                    if(target instanceof IActionHost) {
+                        final IActionHost ah = (IActionHost) target;
+                        final IGridNode gn = ah.getActionableNode();
+                        if(gn == null) {
+                            return;
+                        }
+
+                        final IGrid g = gn.getGrid();
+                        if(cca.getItemToCraft() == null) {
+                            return;
+                        }
+
+                        cca.getItemToCraft().setStackSize(amount);
+
+                        Future<ICraftingJob> futureJob = null;
+                        try {
+                            final ICraftingGrid cg = g.getCache(ICraftingGrid.class);
+                            futureJob = cg.beginCraftingJob(cca.getWorld(), cca.getGrid(), cca.getActionSrc(),
+                                    cca.getItemToCraft(), null);
+
+                            final ContainerLocator locator = cca.getLocator();
+                            if(locator != null) {
+                                WirelessCraftConfirmContainer.open(player, locator);
+
+                                if(player.currentScreenHandler instanceof WirelessCraftConfirmContainer) {
+                                    final WirelessCraftConfirmContainer ccc = (WirelessCraftConfirmContainer) player.currentScreenHandler;
+                                    ccc.setAutoStart(heldShift);
+                                    ccc.setJob(futureJob);
+                                    cca.sendContentUpdates();
+                                }
+                            }
+                        } catch(final Throwable e) {
+                            if(futureJob != null) {
+                                futureJob.cancel(true);
+                            }
+                            AELog.info(e);
+                        }
+                    }
+
+                    buf.release();
+                }
             });
         });
     }

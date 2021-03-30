@@ -1,16 +1,17 @@
-package de.mari_023.fabric.ae2wtlib.terminal;
+package de.mari_023.fabric.ae2wtlib.util;
 
 import appeng.client.gui.AEBaseScreen;
 import appeng.client.gui.NumberEntryType;
 import appeng.client.gui.implementations.NumberEntryWidget;
 import appeng.core.localization.GuiText;
-import appeng.core.sync.network.NetworkHandler;
-import appeng.core.sync.packets.CraftRequestPacket;
-import de.mari_023.fabric.ae2wtlib.ae2wtlibSubScreen;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 
 public class WirelessCraftAmountScreen extends AEBaseScreen<WirelessCraftAmountContainer> {
     private final ae2wtlibSubScreen subGui;
@@ -48,7 +49,10 @@ public class WirelessCraftAmountScreen extends AEBaseScreen<WirelessCraftAmountC
         if(amount <= 0) {
             return;
         }
-        NetworkHandler.instance().sendToServer(new CraftRequestPacket(amount, hasShiftDown()));//FIXME
+        PacketByteBuf buf = PacketByteBufs.create();
+        buf.writeInt(amount);
+        buf.writeBoolean(hasShiftDown());
+        ClientPlayNetworking.send(new Identifier("ae2wtlib", "craft_request"), buf);
     }
 
     @Override
