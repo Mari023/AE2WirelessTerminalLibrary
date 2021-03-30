@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(InventoryActionPacket.class)
 public class InvActionPacket {
 
-    @Inject(method = "serverPacketData", at = @At(value = "TAIL"), require = 1, allow = 1)
+    @Inject(method = "serverPacketData", at = @At(value = "TAIL"), require = 1, allow = 1, remap = false)
     public void serverPacketData(INetworkInfo manager, PlayerEntity player, CallbackInfo ci) {
         System.out.println("mixed in!");
     }
