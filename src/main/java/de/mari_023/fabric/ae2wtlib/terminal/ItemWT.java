@@ -26,12 +26,11 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.Util;
 import net.minecraft.world.World;
-import top.theillusivec4.curios.api.type.component.ICurio;
 
 import java.util.List;
 import java.util.function.DoubleSupplier;
 
-public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermHandler, ICurio {
+public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermHandler {
 
     public ItemWT(DoubleSupplier powerCapacity, Settings props) {
         super(powerCapacity, props);
