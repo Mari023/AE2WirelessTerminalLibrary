@@ -10,6 +10,7 @@ import appeng.container.ContainerLocator;
 import appeng.container.implementations.WirelessCraftingStatusContainer;
 import appeng.core.AELog;
 import de.mari_023.fabric.ae2wtlib.rei.REIRecipePacket;
+import de.mari_023.fabric.ae2wtlib.terminal.ItemInfinityBooster;
 import de.mari_023.fabric.ae2wtlib.util.WirelessCraftAmountContainer;
 import appeng.container.implementations.WirelessCraftConfirmContainer;
 import de.mari_023.fabric.ae2wtlib.wct.ItemMagnetCard;
