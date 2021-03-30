@@ -4,6 +4,7 @@ import appeng.container.AEBaseContainer;
 import appeng.container.ContainerLocator;
 import appeng.container.implementations.WirelessCraftingStatusContainer;
 import de.mari_023.fabric.ae2wtlib.rei.REIRecipePacket;
+import de.mari_023.fabric.ae2wtlib.terminal.WirelessCraftAmountContainer;
 import de.mari_023.fabric.ae2wtlib.wct.ItemMagnetCard;
 import de.mari_023.fabric.ae2wtlib.wct.ItemWCT;
 import de.mari_023.fabric.ae2wtlib.wct.WCTContainer;
@@ -44,6 +45,7 @@ public class ae2wtlib implements ModInitializer {
         WPTContainer.TYPE = registerScreenHandler("wireless_pattern_terminal", WPTContainer::fromNetwork);
         WITContainer.TYPE = registerScreenHandler("wireless_interface_terminal", WITContainer::fromNetwork);
         WirelessCraftingStatusContainer.TYPE = registerScreenHandler("wireless_crafting_status", WirelessCraftingStatusContainer::fromNetwork);
+        WirelessCraftAmountContainer.TYPE = registerScreenHandler("wireless_craft_amount", WirelessCraftAmountContainer::fromNetwork);
         //ItemComponentCallbackV2.event(UNIVERSAL_TERMINAL).register(((item, itemStack, componentContainer) -> componentContainer.put(CuriosComponent.ITEM, new ICurio() {})));
 
         ServerPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "general"), (server, player, handler, buf, sender) -> {

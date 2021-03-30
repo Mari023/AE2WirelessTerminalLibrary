@@ -2,6 +2,8 @@ package de.mari_023.fabric.ae2wtlib.client;
 
 import de.mari_023.fabric.ae2wtlib.WirelessCraftingStatusScreen;
 import appeng.container.implementations.WirelessCraftingStatusContainer;
+import de.mari_023.fabric.ae2wtlib.terminal.WirelessCraftAmountContainer;
+import de.mari_023.fabric.ae2wtlib.terminal.WirelessCraftAmountScreen;
 import de.mari_023.fabric.ae2wtlib.wct.WCTContainer;
 import de.mari_023.fabric.ae2wtlib.wct.WCTScreen;
 import de.mari_023.fabric.ae2wtlib.wit.WITContainer;
@@ -26,6 +28,7 @@ public class ae2wtlibclient implements ClientModInitializer {
         ScreenRegistry.register(WPTContainer.TYPE, WPTScreen::new);
         ScreenRegistry.register(WITContainer.TYPE, WITScreen::new);
         ScreenRegistry.register(WirelessCraftingStatusContainer.TYPE, WirelessCraftingStatusScreen::new);
+        ScreenRegistry.register(WirelessCraftAmountContainer.TYPE, WirelessCraftAmountScreen::new);
 
         ClientPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "interface_terminal"), (client, handler, buf, responseSender) -> {
             buf.retain();

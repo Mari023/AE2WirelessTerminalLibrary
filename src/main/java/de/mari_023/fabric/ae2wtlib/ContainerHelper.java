@@ -1,9 +1,11 @@
 package de.mari_023.fabric.ae2wtlib;
 
+import appeng.api.config.SecurityPermissions;
 import appeng.container.AEBaseContainer;
 import appeng.container.ContainerLocator;
 import appeng.core.AELog;
 import appeng.core.localization.GuiText;
+import appeng.util.Platform;
 import de.mari_023.fabric.ae2wtlib.wct.ItemWCT;
 import de.mari_023.fabric.ae2wtlib.wct.WCTGuiObject;
 import de.mari_023.fabric.ae2wtlib.wit.ItemWIT;
@@ -25,7 +27,15 @@ public final class ContainerHelper<C extends AEBaseContainer, I> {
 
     private final ContainerFactory<C, I> factory;
 
+    private final SecurityPermissions requiredPermission;
+
     public ContainerHelper(ContainerFactory<C, I> factory, Class<I> interfaceClass) {
+        this(factory, interfaceClass, null);
+    }
+
+    public ContainerHelper(ContainerFactory<C, I> factory, Class<I> interfaceClass,
+                           SecurityPermissions requiredPermission) {
+        this.requiredPermission = requiredPermission;
         this.interfaceClass = interfaceClass;
         this.factory = factory;
     }
@@ -63,6 +73,10 @@ public final class ContainerHelper<C extends AEBaseContainer, I> {
         I accessInterface = getHostFromLocator(player, locator);
 
         if(accessInterface == null) {
+            return false;
+        }
+
+        if(!checkPermission(player, accessInterface)) {
             return false;
         }
 
@@ -138,6 +152,10 @@ public final class ContainerHelper<C extends AEBaseContainer, I> {
             return interfaceClass.cast(new WITGuiObject((ItemWIT) it.getItem(), it, player, locator.getItemIndex()));
         }
         return null;
+    }
+
+    private boolean checkPermission(PlayerEntity player, Object accessInterface) {
+        return requiredPermission == null || Platform.checkPermissions(player, accessInterface, requiredPermission, true);
     }
 
     @FunctionalInterface
