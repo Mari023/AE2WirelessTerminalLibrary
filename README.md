@@ -13,12 +13,11 @@ It features several wireless versions of Applied Energistics 2 terminals with su
 Missing Features / Known Issues
 - Wireless Universal Terminal
 - Wireless Fluid Terminal
+- Magnet Card does not work yet
 - Curios support
 - Keybinds to open Terminals
 - support for viewcells
 - There are currently only placeholder Textures
-- Magnet Card does not work yet
-- Requesting items from autocrafting does not work
 
 
 FAQ
