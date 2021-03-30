@@ -31,12 +31,9 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
 
     private final int rows = 5;
 
-    private final IItemList<IAEItemStack> storage = Api.instance().storage()
-            .getStorageChannel(IItemStorageChannel.class).createList();
-    private final IItemList<IAEItemStack> pending = Api.instance().storage()
-            .getStorageChannel(IItemStorageChannel.class).createList();
-    private final IItemList<IAEItemStack> missing = Api.instance().storage()
-            .getStorageChannel(IItemStorageChannel.class).createList();
+    private final IItemList<IAEItemStack> storage = Api.instance().storage().getStorageChannel(IItemStorageChannel.class).createList();
+    private final IItemList<IAEItemStack> pending = Api.instance().storage().getStorageChannel(IItemStorageChannel.class).createList();
+    private final IItemList<IAEItemStack> missing = Api.instance().storage().getStorageChannel(IItemStorageChannel.class).createList();
 
     private final List<IAEItemStack> visual = new ArrayList<>();
 
@@ -46,45 +43,42 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
 
     public WirelessCraftConfirmScreen(WirelessCraftConfirmContainer container, PlayerInventory playerInventory, Text title) {
         super(container, playerInventory, title);
-        this.subGui = new ae2wtlibSubScreen(this, container.getTarget());
-        this.backgroundWidth = 238;
-        this.backgroundHeight = 206;
+        subGui = new ae2wtlibSubScreen(this, container.getTarget());
+        backgroundWidth = 238;
+        backgroundHeight = 206;
 
         final Scrollbar scrollbar = new Scrollbar();
-        this.setScrollBar(scrollbar);
+        setScrollBar(scrollbar);
     }
 
     @Override
     public void init() {
         super.init();
 
-        this.start = new ButtonWidget(this.x + 162, this.y + this.backgroundHeight - 25, 50, 20, GuiText.Start.text(),
-                btn -> start());
-        this.start.active = false;
-        this.addButton(this.start);
+        start = new ButtonWidget(x + 162, y + backgroundHeight - 25, 50, 20, GuiText.Start.text(), btn -> start());
+        start.active = false;
+        addButton(start);
 
-        this.selectCPU = new ButtonWidget(this.x + (219 - 180) / 2, this.y + this.backgroundHeight - 68, 180, 20,
-                getNextCpuButtonLabel(), btn -> selectNextCpu());
-        this.selectCPU.active = false;
-        this.addButton(this.selectCPU);
+        selectCPU = new ButtonWidget(x + (219 - 180) / 2, y + backgroundHeight - 68, 180, 20, getNextCpuButtonLabel(), btn -> selectNextCpu());
+        selectCPU.active = false;
+        addButton(selectCPU);
 
-        addButton(new ButtonWidget(this.x + 6, this.y + this.backgroundHeight - 25, 50, 20, GuiText.Cancel.text(),
-                btn -> subGui.goBack()));
+        addButton(new ButtonWidget(x + 6, y + backgroundHeight - 25, 50, 20, GuiText.Cancel.text(), btn -> subGui.goBack()));
 
-        this.setScrollBar();
+        setScrollBar();
     }
 
     @Override
     public void render(MatrixStack matrices, final int mouseX, final int mouseY, final float btn) {
-        this.updateCPUButtonText();
+        updateCPUButtonText();
 
-        this.start.active = !(this.handler.hasNoCPU() || this.isSimulation());
-        this.selectCPU.active = !this.isSimulation();
+        start.active = !(handler.hasNoCPU() || isSimulation());
+        selectCPU.active = !isSimulation();
 
-        final int gx = (this.width - this.backgroundWidth) / 2;
-        final int gy = (this.height - this.backgroundHeight) / 2;
+        final int gx = (width - backgroundWidth) / 2;
+        final int gy = (height - backgroundHeight) / 2;
 
-        this.tooltip = -1;
+        tooltip = -1;
 
         final int offY = 23;
         int y = 0;
@@ -95,7 +89,7 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
 
             if(minX < mouseX && minX + 67 > mouseX) {
                 if(minY < mouseY && minY + offY - 2 > mouseY) {
-                    this.tooltip = z;
+                    tooltip = z;
                     break;
                 }
             }
@@ -112,49 +106,47 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
     }
 
     private void updateCPUButtonText() {
-        this.selectCPU.setMessage(getNextCpuButtonLabel());
+        selectCPU.setMessage(getNextCpuButtonLabel());
     }
 
     private Text getNextCpuButtonLabel() {
-        if(this.handler.hasNoCPU()) {
+        if(handler.hasNoCPU()) {
             return GuiText.NoCraftingCPUs.text();
         }
 
         Text cpuName;
-        if(this.handler.cpuName == null) {
+        if(handler.cpuName == null) {
             cpuName = GuiText.Automatic.text();
         } else {
-            cpuName = this.handler.cpuName;
+            cpuName = handler.cpuName;
         }
 
         return GuiText.CraftingCPU.withSuffix(": ").append(cpuName);
     }
 
     private boolean isSimulation() {
-        return this.handler.isSimulation();
+        return handler.isSimulation();
     }
 
     @Override
     public void drawFG(MatrixStack matrices, final int offsetX, final int offsetY, final int mouseX, final int mouseY) {
-        final long BytesUsed = this.handler.getUsedBytes();
+        final long BytesUsed = handler.getUsedBytes();
         final String byteUsed = NumberFormat.getInstance().format(BytesUsed);
-        final Text Add = BytesUsed > 0 ? new LiteralText(byteUsed + " ").append(GuiText.BytesUsed.text())
-                : GuiText.CalculatingWait.text();
-        this.textRenderer.draw(matrices, GuiText.CraftingPlan.withSuffix(" - ").append(Add), 8, 7, 4210752);
+        final Text Add = BytesUsed > 0 ? new LiteralText(byteUsed + " ").append(GuiText.BytesUsed.text()) : GuiText.CalculatingWait.text();
+        textRenderer.draw(matrices, GuiText.CraftingPlan.withSuffix(" - ").append(Add), 8, 7, 4210752);
 
         Text dsp;
 
-        if(this.isSimulation()) {
+        if(isSimulation()) {
             dsp = GuiText.Simulation.text();
         } else {
-            dsp = this.handler.getCpuAvailableBytes() > 0
-                    ? (GuiText.Bytes.withSuffix(": " + this.handler.getCpuAvailableBytes() + " : ")
-                    .append(GuiText.CoProcessors.text()).append(": " + this.handler.getCpuCoProcessors()))
+            dsp = handler.getCpuAvailableBytes() > 0 ? (GuiText.Bytes.withSuffix(": " + handler.getCpuAvailableBytes() + " : ")
+                    .append(GuiText.CoProcessors.text()).append(": " + handler.getCpuCoProcessors()))
                     : GuiText.Bytes.withSuffix(": N/A : ").append(GuiText.CoProcessors.text()).append(": N/A");
         }
 
-        final int offset = (219 - this.textRenderer.getWidth(dsp)) / 2;
-        this.textRenderer.draw(matrices, dsp, offset, 165, 4210752);
+        final int offset = (219 - textRenderer.getWidth(dsp)) / 2;
+        textRenderer.draw(matrices, dsp, offset, 165, 4210752);
 
         final int sectionLength = 67;
 
@@ -162,8 +154,8 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
         int y = 0;
         final int xo = 9;
         final int yo = 22;
-        final int viewStart = this.getScrollBar().getCurrentScroll() * 3;
-        final int viewEnd = viewStart + 3 * this.rows;
+        final int viewStart = getScrollBar().getCurrentScroll() * 3;
+        final int viewEnd = viewStart + 3 * rows;
 
         List<Text> dspToolTip = new ArrayList<>();
         final List<Text> lineList = new ArrayList<>();
@@ -172,15 +164,15 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
 
         final int offY = 23;
 
-        for(int z = viewStart; z < Math.min(viewEnd, this.visual.size()); z++) {
-            final IAEItemStack refStack = this.visual.get(z);// repo.getReferenceItem( z );
+        for(int z = viewStart; z < Math.min(viewEnd, visual.size()); z++) {
+            final IAEItemStack refStack = visual.get(z);// repo.getReferenceItem( z );
             if(refStack != null) {
                 RenderSystem.pushMatrix();
                 RenderSystem.scalef(0.5f, 0.5f, 0.5f);
 
-                final IAEItemStack stored = this.storage.findPrecise(refStack);
-                final IAEItemStack pendingStack = this.pending.findPrecise(refStack);
-                final IAEItemStack missingStack = this.missing.findPrecise(refStack);
+                final IAEItemStack stored = storage.findPrecise(refStack);
+                final IAEItemStack pendingStack = pending.findPrecise(refStack);
+                final IAEItemStack missingStack = missing.findPrecise(refStack);
 
                 int lines = 0;
 
@@ -207,12 +199,12 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
                     }
 
                     str = GuiText.FromStorage.getLocal() + ": " + str;
-                    final int w = 4 + this.textRenderer.getWidth(str);
-                    this.textRenderer.draw(matrices, str,
+                    final int w = 4 + textRenderer.getWidth(str);
+                    textRenderer.draw(matrices, str,
                             (int) ((x * (1 + sectionLength) + xo + sectionLength - 19 - (w * 0.5)) * 2),
                             (y * offY + yo + 6 - negY + downY) * 2, 4210752);
 
-                    if(this.tooltip == z - viewStart) {
+                    if(tooltip == z - viewStart) {
                         lineList.add(GuiText.FromStorage.withSuffix(": " + stored.getStackSize()));
                     }
 
@@ -230,12 +222,12 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
                     }
 
                     str = GuiText.Missing.getLocal() + ": " + str;
-                    final int w = 4 + this.textRenderer.getWidth(str);
-                    this.textRenderer.draw(matrices, str,
+                    final int w = 4 + textRenderer.getWidth(str);
+                    textRenderer.draw(matrices, str,
                             (int) ((x * (1 + sectionLength) + xo + sectionLength - 19 - (w * 0.5)) * 2),
                             (y * offY + yo + 6 - negY + downY) * 2, 4210752);
 
-                    if(this.tooltip == z - viewStart) {
+                    if(tooltip == z - viewStart) {
                         lineList.add(GuiText.Missing.withSuffix(": " + missingStack.getStackSize()));
                     }
 
@@ -253,12 +245,12 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
                     }
 
                     str = GuiText.ToCraft.getLocal() + ": " + str;
-                    final int w = 4 + this.textRenderer.getWidth(str);
-                    this.textRenderer.draw(matrices, str,
+                    final int w = 4 + textRenderer.getWidth(str);
+                    textRenderer.draw(matrices, str,
                             (int) ((x * (1 + sectionLength) + xo + sectionLength - 19 - (w * 0.5)) * 2),
                             (y * offY + yo + 6 - negY + downY) * 2, 4210752);
 
-                    if(this.tooltip == z - viewStart) {
+                    if(tooltip == z - viewStart) {
                         lineList.add(GuiText.ToCraft.withSuffix(": " + pendingStack.getStackSize()));
                     }
                 }
@@ -269,7 +261,7 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
 
                 final ItemStack is = refStack.asItemStackRepresentation();
 
-                if(this.tooltip == z - viewStart) {
+                if(tooltip == z - viewStart) {
                     dspToolTip.add(Platform.getItemDisplayName(refStack));
 
                     if(lineList.size() > 0) {
@@ -280,7 +272,7 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
                     toolPosY = y * offY + yo;
                 }
 
-                this.drawItem(posX, posY, is);
+                drawItem(posX, posY, is);
 
                 if(red) {
                     final int startX = x * (1 + sectionLength) + xo;
@@ -297,59 +289,59 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
             }
         }
 
-        if(this.tooltip >= 0 && !dspToolTip.isEmpty()) {
-            this.drawTooltip(matrices, toolPosX, toolPosY + 10, dspToolTip);
+        if(tooltip >= 0 && !dspToolTip.isEmpty()) {
+            drawTooltip(matrices, toolPosX, toolPosY + 10, dspToolTip);
         }
     }
 
     @Override
     public void drawBG(MatrixStack matrices, final int offsetX, final int offsetY, final int mouseX, final int mouseY,
                        float partialTicks) {
-        this.setScrollBar();
-        this.bindTexture("guis/craftingreport.png");
-        drawTexture(matrices, offsetX, offsetY, 0, 0, this.backgroundWidth, this.backgroundHeight);
+        setScrollBar();
+        bindTexture("guis/craftingreport.png");
+        drawTexture(matrices, offsetX, offsetY, 0, 0, backgroundWidth, backgroundHeight);
     }
 
     private void setScrollBar() {
-        final int size = this.visual.size();
+        final int size = visual.size();
 
-        this.getScrollBar().setTop(19).setLeft(218).setHeight(114);
-        this.getScrollBar().setRange(0, (size + 2) / 3 - this.rows, 1);
+        getScrollBar().setTop(19).setLeft(218).setHeight(114);
+        getScrollBar().setRange(0, (size + 2) / 3 - rows, 1);
     }
 
     public void postUpdate(final List<IAEItemStack> list, final byte ref) {
         switch(ref) {
             case 0:
                 for(final IAEItemStack l : list) {
-                    this.handleInput(this.storage, l);
+                    handleInput(storage, l);
                 }
                 break;
 
             case 1:
                 for(final IAEItemStack l : list) {
-                    this.handleInput(this.pending, l);
+                    handleInput(pending, l);
                 }
                 break;
 
             case 2:
                 for(final IAEItemStack l : list) {
-                    this.handleInput(this.missing, l);
+                    handleInput(missing, l);
                 }
                 break;
         }
 
         for(final IAEItemStack l : list) {
-            final long amt = this.getTotal(l);
+            final long amt = getTotal(l);
 
             if(amt <= 0) {
-                this.deleteVisualStack(l);
+                deleteVisualStack(l);
             } else {
-                final IAEItemStack is = this.findVisualStack(l);
+                final IAEItemStack is = findVisualStack(l);
                 is.setStackSize(amt);
             }
         }
 
-        this.setScrollBar();
+        setScrollBar();
     }
 
     private void handleInput(final IItemList<IAEItemStack> s, final IAEItemStack l) {
@@ -372,9 +364,9 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
     }
 
     private long getTotal(final IAEItemStack is) {
-        final IAEItemStack a = this.storage.findPrecise(is);
-        final IAEItemStack c = this.pending.findPrecise(is);
-        final IAEItemStack m = this.missing.findPrecise(is);
+        final IAEItemStack a = storage.findPrecise(is);
+        final IAEItemStack c = pending.findPrecise(is);
+        final IAEItemStack m = missing.findPrecise(is);
 
         long total = 0;
 
@@ -394,7 +386,7 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
     }
 
     private void deleteVisualStack(final IAEItemStack l) {
-        final Iterator<IAEItemStack> i = this.visual.iterator();
+        final Iterator<IAEItemStack> i = visual.iterator();
         while(i.hasNext()) {
             final IAEItemStack o = i.next();
             if(o.equals(l)) {
@@ -405,22 +397,22 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
     }
 
     private IAEItemStack findVisualStack(final IAEItemStack l) {
-        for(final IAEItemStack o : this.visual) {
+        for(final IAEItemStack o : visual) {
             if(o.equals(l)) {
                 return o;
             }
         }
 
         final IAEItemStack stack = l.copy();
-        this.visual.add(stack);
+        visual.add(stack);
         return stack;
     }
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int p_keyPressed_3_) {
-        if(!this.checkHotbarKeys(keyCode, scanCode)) {
+        if(!checkHotbarKeys(keyCode, scanCode)) {
             if(keyCode == GLFW.GLFW_KEY_ENTER || keyCode == GLFW.GLFW_KEY_KP_ENTER) {
-                this.start();
+                start();
                 return true;
             }
         }
@@ -435,5 +427,4 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
     private void start() {
         NetworkHandler.instance().sendToServer(new ConfigValuePacket("Terminal.Start", "Start"));
     }
-
 }
