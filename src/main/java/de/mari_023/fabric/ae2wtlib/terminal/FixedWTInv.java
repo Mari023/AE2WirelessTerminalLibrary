@@ -48,8 +48,14 @@ public class FixedWTInv implements FixedItemInv {
 
     @Override
     public boolean isItemValidForSlot(int i, ItemStack itemStack) {
-        if(i < 4 && i >= 0) {
-            return playerInventory.isValid(i + slotOffset, itemStack);
+        if(i == 0) {
+            return playerInventory.isValid(slotOffset, itemStack);//Boots
+        } else if(i == 1) {
+            return playerInventory.isValid(slotOffset + 1, itemStack);//Leggings
+        } else if(i == 2) {
+            return playerInventory.isValid(slotOffset + 2, itemStack);//Chestplate
+        } else if(i == 3) {
+            return playerInventory.isValid(slotOffset + 3, itemStack);//Helmet
         } else if(i == OFFHAND) return playerInventory.isValid(offHandSlot, itemStack);
         else if(i == TRASH) return true;
         else if(i == INFINITY_BOOSTER_CARD)
