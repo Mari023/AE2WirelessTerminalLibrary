@@ -39,9 +39,6 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.world.World;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
 public class WCTContainer extends MEPortableCellContainer implements IAEAppEngInventory, IContainerCraftingPacket {
 
     public static ScreenHandlerType<WCTContainer> TYPE;
@@ -117,6 +114,8 @@ public class WCTContainer extends MEPortableCellContainer implements IAEAppEngIn
         addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.MAGNET_CARD, 152, -20));
     }
 
+    private int ticks = 0;
+
     @Override
     public void sendContentUpdates() {
         if(isClient()) return;
@@ -131,12 +130,12 @@ public class WCTContainer extends MEPortableCellContainer implements IAEAppEngIn
             setValidContainer(false);
         } else {
             double powerMultiplier = Config.getPowerMultiplier(wctGUIObject.getRange(), wctGUIObject.isOutOfRange());
-            try {
-                Method method = super.getClass().getDeclaredMethod("setPowerMultiplier", double.class);
-                method.setAccessible(true);
-                method.invoke(this, powerMultiplier);
-                method.setAccessible(false);
-            } catch(NoSuchMethodException | IllegalAccessException | InvocationTargetException ignored) {}
+            ticks++;
+            if (ticks > 10) {
+                wctGUIObject.extractAEPower((powerMultiplier - 0.5) * ticks, Actionable.MODULATE,
+                        PowerMultiplier.CONFIG);
+                ticks = 0;
+            }
 
             if(wctGUIObject.extractAEPower(1, Actionable.SIMULATE, PowerMultiplier.ONE) == 0) {
                 if(isServer() && isValidContainer()) {
