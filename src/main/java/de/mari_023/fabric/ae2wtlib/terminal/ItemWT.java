@@ -166,11 +166,25 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
         hostItem.setTag(wctTag);
     }
 
+    /**
+     * get a previously stored boolean from a WirelessTerminal
+     *
+     * @param hostItem the Terminal to load from
+     * @return the boolean or false if it wasn't found
+     */
     public boolean getBoolean(ItemStack hostItem, String key) {
         if(!(hostItem.getItem() instanceof ItemWT) || hostItem.getTag() == null) return false;
         return hostItem.getTag().getBoolean(key);
     }
 
+    /**
+     * store a boolean in a WirelessTerminal
+     * this will overwrite any previously existing tags in slot
+     *
+     * @param hostItem the Terminal to store in
+     * @param b        the boolean to store
+     * @param key      the location where the stored item will be
+     */
     public void setBoolean(ItemStack hostItem, boolean b, String key) {
         if(!(hostItem.getItem() instanceof ItemWT)) return;
         CompoundTag wctTag = hostItem.getTag();
