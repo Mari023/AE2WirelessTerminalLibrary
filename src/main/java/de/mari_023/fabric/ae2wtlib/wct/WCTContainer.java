@@ -3,6 +3,8 @@ package de.mari_023.fabric.ae2wtlib.wct;
 import alexiil.mc.lib.attributes.Simulation;
 import alexiil.mc.lib.attributes.item.FixedItemInv;
 import alexiil.mc.lib.attributes.item.compat.FixedInventoryVanillaWrapper;
+import appeng.api.config.Actionable;
+import appeng.api.config.PowerMultiplier;
 import appeng.api.networking.IGridNode;
 import appeng.container.ContainerLocator;
 import appeng.container.ContainerNull;
@@ -135,6 +137,15 @@ public class WCTContainer extends MEPortableCellContainer implements IAEAppEngIn
                 method.invoke(this, powerMultiplier);
                 method.setAccessible(false);
             } catch(NoSuchMethodException | IllegalAccessException | InvocationTargetException ignored) {}
+
+            if(wctGUIObject.extractAEPower(1, Actionable.SIMULATE, PowerMultiplier.ONE) == 0) {
+                if(isServer() && isValidContainer()) {
+                    getPlayerInv().player.sendSystemMessage(PlayerMessages.DeviceNotPowered.get(), Util.NIL_UUID);
+                    close(getPlayerInv().player);//TODO fix Inventory still being open
+                }
+
+                setValidContainer(false);
+            }
         }
     }
 

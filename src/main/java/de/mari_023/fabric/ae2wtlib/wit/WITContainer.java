@@ -101,6 +101,15 @@ public class WITContainer extends AEBaseContainer {
             setValidContainer(false);
         } else {
             powerMultiplier = Config.getPowerMultiplier(witGUIObject.getRange(), witGUIObject.isOutOfRange());
+
+            if(witGUIObject.extractAEPower(1, Actionable.SIMULATE, PowerMultiplier.ONE) == 0) {
+                if(isServer() && isValidContainer()) {
+                    getPlayerInv().player.sendSystemMessage(PlayerMessages.DeviceNotPowered.get(), Util.NIL_UUID);
+                    close(getPlayerInv().player);
+                }
+
+                setValidContainer(false);
+            }
         }
 
         ticks++;

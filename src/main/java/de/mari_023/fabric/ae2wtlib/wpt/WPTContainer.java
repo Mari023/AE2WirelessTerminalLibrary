@@ -3,6 +3,7 @@ package de.mari_023.fabric.ae2wtlib.wpt;
 import alexiil.mc.lib.attributes.item.FixedItemInv;
 import alexiil.mc.lib.attributes.item.compat.FixedInventoryVanillaWrapper;
 import appeng.api.config.Actionable;
+import appeng.api.config.PowerMultiplier;
 import appeng.api.crafting.ICraftingHelper;
 import appeng.api.definitions.IDefinitions;
 import appeng.api.networking.IGridNode;
@@ -163,6 +164,15 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
                     method.invoke(this, powerMultiplier);
                     method.setAccessible(false);
                 } catch(NoSuchMethodException | IllegalAccessException | InvocationTargetException ignored) {}
+
+                if(wptGUIObject.extractAEPower(1, Actionable.SIMULATE, PowerMultiplier.ONE) == 0) {
+                    if(isServer() && isValidContainer()) {
+                        getPlayerInv().player.sendSystemMessage(PlayerMessages.DeviceNotPowered.get(), Util.NIL_UUID);
+                        close(getPlayerInv().player);//TODO fix Inventory still being open
+                    }
+
+                    setValidContainer(false);
+                }
             }
 
             if(isCraftingMode() != getPatternTerminal().isCraftingRecipe()) {
