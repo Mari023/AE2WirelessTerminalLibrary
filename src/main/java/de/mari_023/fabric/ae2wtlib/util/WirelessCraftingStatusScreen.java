@@ -1,4 +1,4 @@
-package de.mari_023.fabric.ae2wtlib;
+package de.mari_023.fabric.ae2wtlib.util;
 
 import appeng.client.gui.implementations.CraftingCPUScreen;
 import appeng.container.implementations.WirelessCraftingStatusContainer;
@@ -45,7 +45,7 @@ public class WirelessCraftingStatusScreen extends CraftingCPUScreen<WirelessCraf
     }
 
     private Text getNextCpuButtonLabel() {
-        if (handler.noCPU) {
+        if(handler.noCPU) {
             return GuiText.NoCraftingJobs.text();
         }
         return GuiText.CraftingCPU.withSuffix(": ").append(handler.cpuName);
