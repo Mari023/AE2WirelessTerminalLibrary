@@ -14,7 +14,8 @@ import appeng.api.storage.data.IItemList;
 import appeng.container.ContainerLocator;
 import appeng.container.ContainerNull;
 import appeng.container.guisync.GuiSync;
-import appeng.container.implementations.MEPortableCellContainer;
+import appeng.container.implementations.MEMonitorableContainer;
+import appeng.container.interfaces.IInventorySlotAware;
 import appeng.container.slot.*;
 import appeng.core.Api;
 import appeng.core.localization.PlayerMessages;
@@ -55,7 +56,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.world.World;
 
-public class WPTContainer extends MEPortableCellContainer implements IAEAppEngInventory, IOptionalSlotHost, IContainerCraftingPacket {
+public class WPTContainer extends MEMonitorableContainer implements IAEAppEngInventory, IOptionalSlotHost, IContainerCraftingPacket {
 
     public static ScreenHandlerType<WPTContainer> TYPE;
 
@@ -87,8 +88,11 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
     public boolean substitute;
 
     public WPTContainer(int id, final PlayerInventory ip, final WPTGuiObject gui) {
-        super(TYPE, id, ip, gui);
+        super(TYPE, id, ip, gui, true);
         wptGUIObject = gui;
+
+        final int slotIndex = ((IInventorySlotAware) wptGUIObject).getInventorySlot();
+        lockPlayerInventorySlot(slotIndex);
 
         final FixedItemInv patternInv = getPatternTerminal().getInventoryByName("pattern");
         final FixedItemInv output = getPatternTerminal().getInventoryByName("output");
@@ -99,8 +103,7 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
 
         for(int y = 0; y < 3; y++) {
             for(int x = 0; x < 3; x++) {
-                addSlot(craftingSlots[x + y * 3] = new FakeCraftingMatrixSlot(crafting, x + y * 3,
-                        18 + x * 18, -76 + y * 18));
+                addSlot(craftingSlots[x + y * 3] = new FakeCraftingMatrixSlot(crafting, x + y * 3, 18 + x * 18, -76 + y * 18));
             }
         }
 
@@ -158,9 +161,8 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
             } else {
                 double powerMultiplier = Config.getPowerMultiplier(wptGUIObject.getRange(), wptGUIObject.isOutOfRange());
                 ticks++;
-                if (ticks > 10) {
-                    wptGUIObject.extractAEPower((powerMultiplier - 0.5) * ticks, Actionable.MODULATE,
-                            PowerMultiplier.CONFIG);
+                if(ticks > 10) {
+                    wptGUIObject.extractAEPower((powerMultiplier) * ticks, Actionable.MODULATE, PowerMultiplier.CONFIG);
                     ticks = 0;
                 }
 
