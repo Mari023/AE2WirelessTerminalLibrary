@@ -1,5 +1,6 @@
 package de.mari_023.fabric.ae2wtlib.terminal;
 
+import appeng.api.config.AccessRestriction;
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
 import appeng.api.features.ILocatable;
@@ -11,20 +12,27 @@ import appeng.api.networking.IGridNode;
 import appeng.api.networking.IMachineSet;
 import appeng.api.networking.energy.IEnergySource;
 import appeng.api.networking.security.IActionHost;
+import appeng.api.networking.security.IActionSource;
 import appeng.api.networking.storage.IStorageGrid;
 import appeng.api.storage.IMEMonitor;
+import appeng.api.storage.IMEMonitorHandlerReceiver;
+import appeng.api.storage.IStorageChannel;
 import appeng.api.storage.channels.IItemStorageChannel;
 import appeng.api.storage.data.IAEItemStack;
+import appeng.api.storage.data.IAEStack;
+import appeng.api.storage.data.IItemList;
 import appeng.api.util.DimensionalCoord;
 import appeng.api.util.IConfigManager;
 import appeng.container.interfaces.IInventorySlotAware;
 import appeng.core.Api;
 import appeng.tile.networking.WirelessBlockEntity;
+import de.mari_023.fabric.ae2wtlib.FixedViewCellInventory;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 
 public class WTGUIObject implements IGuiItemObject, IEnergySource, IActionHost, IInventorySlotAware {
 
+    private final FixedViewCellInventory fixedViewCellInventory = new FixedViewCellInventory();
     private final ItemStack effectiveItem;
     private IGrid targetGrid;
     private final IWirelessTermHandler wth;
@@ -168,4 +176,101 @@ public class WTGUIObject implements IGuiItemObject, IEnergySource, IActionHost, 
     public IConfigManager getConfigManager() {
         return wth.getConfigManager(getItemStack());
     }
+
+
+
+    public <T extends IAEStack<T>> IMEMonitor<T> getInventory(IStorageChannel<T> channel) {
+        return sg.getInventory(channel);
+    }
+
+    public void addListener(final IMEMonitorHandlerReceiver<IAEItemStack> l, final Object verificationToken) {
+        if(itemStorage != null) {
+            itemStorage.addListener(l, verificationToken);
+        }
+    }
+
+    public void removeListener(final IMEMonitorHandlerReceiver<IAEItemStack> l) {
+        if(itemStorage != null) {
+            itemStorage.removeListener(l);
+        }
+    }
+
+    public IItemList<IAEItemStack> getAvailableItems(final IItemList<IAEItemStack> out) {
+        if(itemStorage != null) {
+            return itemStorage.getAvailableItems(out);
+        }
+        return out;
+    }
+
+    public IItemList<IAEItemStack> getStorageList() {
+        if(itemStorage != null) {
+            return itemStorage.getStorageList();
+        }
+        return null;
+    }
+
+    public AccessRestriction getAccess() {
+        if(itemStorage != null) {
+            return itemStorage.getAccess();
+        }
+        return AccessRestriction.NO_ACCESS;
+    }
+
+    public boolean isPrioritized(final IAEItemStack input) {
+        if(itemStorage != null) {
+            return itemStorage.isPrioritized(input);
+        }
+        return false;
+    }
+
+    public boolean canAccept(final IAEItemStack input) {
+        if(itemStorage != null) {
+            return itemStorage.canAccept(input);
+        }
+        return false;
+    }
+
+    public int getPriority() {
+        if(itemStorage != null) {
+            return itemStorage.getPriority();
+        }
+        return 0;
+    }
+
+    public int getSlot() {
+        if(itemStorage != null) {
+            return itemStorage.getSlot();
+        }
+        return 0;
+    }
+
+    public boolean validForPass(final int i) {
+        return itemStorage.validForPass(i);
+    }
+
+    public IAEItemStack injectItems(final IAEItemStack input, final Actionable type, final IActionSource src) {
+        if(itemStorage != null) {
+            return itemStorage.injectItems(input, type, src);
+        }
+        return input;
+    }
+
+    public IAEItemStack extractItems(final IAEItemStack request, final Actionable mode, final IActionSource src) {
+        if(itemStorage != null) {
+            return itemStorage.extractItems(request, mode, src);
+        }
+        return null;
+    }
+
+    public IStorageChannel getChannel() {
+        if(itemStorage != null) {
+            return itemStorage.getChannel();
+        }
+        return Api.instance().storage().getStorageChannel(IItemStorageChannel.class);
+    }
+
+    /*@Override //FIXME viemcells
+    public FixedViewCellInventory getViewCellStorage() {
+        return fixedViewCellInventory;
+    }*/
 }
