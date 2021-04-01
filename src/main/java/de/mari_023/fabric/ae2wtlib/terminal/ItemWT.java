@@ -158,7 +158,7 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
         CompoundTag wctTag = hostItem.getTag();
         if(savedItem.isEmpty()) {
             if(wctTag == null) return;
-            wctTag.put(slot, ItemStack.EMPTY.toTag(new CompoundTag()));
+            wctTag.remove(slot);
         } else {
             if(wctTag == null) wctTag = new CompoundTag();
             wctTag.put(slot, savedItem.toTag(new CompoundTag()));
