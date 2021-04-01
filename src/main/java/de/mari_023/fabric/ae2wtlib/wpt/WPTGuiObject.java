@@ -9,12 +9,12 @@ import appeng.core.Api;
 import appeng.tile.inventory.AppEngInternalInventory;
 import appeng.util.inv.IAEAppEngInventory;
 import appeng.util.inv.InvOperation;
-import de.mari_023.fabric.ae2wtlib.terminal.WTGUIObject;
+import de.mari_023.fabric.ae2wtlib.terminal.WTGuiObject;
 import de.mari_023.fabric.ae2wtlib.terminal.ae2wtlibInternalInventory;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 
-public class WPTGuiObject extends WTGUIObject implements IPortableCell, IAEAppEngInventory/*, IViewCellStorage*/ {
+public class WPTGuiObject extends WTGuiObject implements IPortableCell, IAEAppEngInventory/*, IViewCellStorage*/ {
 
     private boolean craftingMode = true;
     private boolean substitute = false;

@@ -30,7 +30,7 @@ import de.mari_023.fabric.ae2wtlib.FixedViewCellInventory;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 
-public class WTGUIObject implements IGuiItemObject, IEnergySource, IActionHost, IInventorySlotAware {
+public class WTGuiObject implements IGuiItemObject, IEnergySource, IActionHost, IInventorySlotAware {
 
     private final FixedViewCellInventory fixedViewCellInventory = new FixedViewCellInventory();
     private final ItemStack effectiveItem;
@@ -44,7 +44,7 @@ public class WTGUIObject implements IGuiItemObject, IEnergySource, IActionHost, 
     private IStorageGrid sg;
     private final int inventorySlot;
 
-    public WTGUIObject(final IWirelessTermHandler wh, final ItemStack is, final PlayerEntity ep, int inventorySlot) {
+    public WTGuiObject(final IWirelessTermHandler wh, final ItemStack is, final PlayerEntity ep, int inventorySlot) {
         String encryptionKey = wh.getEncryptionKey(is);
         effectiveItem = is;
         myPlayer = ep;
