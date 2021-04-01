@@ -212,15 +212,15 @@ public class WCTGuiObject implements IGuiItemObject, IPortableCell, IActionHost,
     }
 
     public boolean rangeCheck() {
-        isOutOfRange = ((IInfinityBoosterCardHolder) effectiveItem.getItem()).hasBoosterCard(effectiveItem);
+        boolean hasBoosterCard = ((IInfinityBoosterCardHolder) effectiveItem.getItem()).hasBoosterCard(effectiveItem);
         sqRange = myRange = Double.MAX_VALUE;
 
         if(targetGrid != null && itemStorage != null) {
             if(myWap != null) {
                 if(myWap.getGrid() == targetGrid) {
-                    return testWap(myWap) || isOutOfRange;
+                    return testWap(myWap) || hasBoosterCard;
                 }
-                return isOutOfRange;
+                return hasBoosterCard;
             }
 
             final IMachineSet tw = targetGrid.getMachines(WirelessBlockEntity.class);
@@ -234,9 +234,9 @@ public class WCTGuiObject implements IGuiItemObject, IPortableCell, IActionHost,
                 }
             }
 
-            return myWap != null || isOutOfRange;
+            return myWap != null || hasBoosterCard;
         }
-        return isOutOfRange;
+        return hasBoosterCard;
     }
 
     private boolean isOutOfRange;
@@ -261,10 +261,12 @@ public class WCTGuiObject implements IGuiItemObject, IPortableCell, IActionHost,
                 if(wap.isActive()) {
                     sqRange = r;
                     myRange = Math.sqrt(r);
+                    isOutOfRange = false;
                     return true;
                 }
             }
         }
+        isOutOfRange = true;
         return false;
     }
 

@@ -3,6 +3,8 @@ package de.mari_023.fabric.ae2wtlib.wct;
 import alexiil.mc.lib.attributes.Simulation;
 import alexiil.mc.lib.attributes.item.FixedItemInv;
 import alexiil.mc.lib.attributes.item.compat.FixedInventoryVanillaWrapper;
+import appeng.api.config.Actionable;
+import appeng.api.config.PowerMultiplier;
 import appeng.api.networking.IGridNode;
 import appeng.container.ContainerLocator;
 import appeng.container.ContainerNull;
@@ -36,9 +38,6 @@ import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.world.World;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 public class WCTContainer extends MEPortableCellContainer implements IAEAppEngInventory, IContainerCraftingPacket {
 
@@ -115,6 +114,8 @@ public class WCTContainer extends MEPortableCellContainer implements IAEAppEngIn
         addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.MAGNET_CARD, 152, -20));
     }
 
+    private int ticks = 0;
+
     @Override
     public void sendContentUpdates() {
         if(isClient()) return;
@@ -129,12 +130,21 @@ public class WCTContainer extends MEPortableCellContainer implements IAEAppEngIn
             setValidContainer(false);
         } else {
             double powerMultiplier = Config.getPowerMultiplier(wctGUIObject.getRange(), wctGUIObject.isOutOfRange());
-            try {
-                Method method = super.getClass().getDeclaredMethod("setPowerMultiplier", double.class);
-                method.setAccessible(true);
-                method.invoke(this, powerMultiplier);
-                method.setAccessible(false);
-            } catch(NoSuchMethodException | IllegalAccessException | InvocationTargetException ignored) {}
+            ticks++;
+            if (ticks > 10) {
+                wctGUIObject.extractAEPower((powerMultiplier - 0.5) * ticks, Actionable.MODULATE,
+                        PowerMultiplier.CONFIG);
+                ticks = 0;
+            }
+
+            if(wctGUIObject.extractAEPower(1, Actionable.SIMULATE, PowerMultiplier.ONE) == 0) {
+                if(isServer() && isValidContainer()) {
+                    getPlayerInv().player.sendSystemMessage(PlayerMessages.DeviceNotPowered.get(), Util.NIL_UUID);
+                    close(getPlayerInv().player);//TODO fix Inventory still being open
+                }
+
+                setValidContainer(false);
+            }
         }
     }
 

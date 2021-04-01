@@ -3,6 +3,7 @@ package de.mari_023.fabric.ae2wtlib.wpt;
 import alexiil.mc.lib.attributes.item.FixedItemInv;
 import alexiil.mc.lib.attributes.item.compat.FixedInventoryVanillaWrapper;
 import appeng.api.config.Actionable;
+import appeng.api.config.PowerMultiplier;
 import appeng.api.crafting.ICraftingHelper;
 import appeng.api.definitions.IDefinitions;
 import appeng.api.networking.IGridNode;
@@ -53,9 +54,6 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.world.World;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 public class WPTContainer extends MEPortableCellContainer implements IAEAppEngInventory, IOptionalSlotHost, IContainerCraftingPacket {
 
@@ -143,6 +141,8 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
         }
     }
 
+    private int ticks = 0;
+
     @Override
     public void sendContentUpdates() {
         if(isServer()) {
@@ -157,12 +157,21 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
                 setValidContainer(false);
             } else {
                 double powerMultiplier = Config.getPowerMultiplier(wptGUIObject.getRange(), wptGUIObject.isOutOfRange());
-                try {
-                    Method method = super.getClass().getDeclaredMethod("setPowerMultiplier", double.class);
-                    method.setAccessible(true);
-                    method.invoke(this, powerMultiplier);
-                    method.setAccessible(false);
-                } catch(NoSuchMethodException | IllegalAccessException | InvocationTargetException ignored) {}
+                ticks++;
+                if (ticks > 10) {
+                    wptGUIObject.extractAEPower((powerMultiplier - 0.5) * ticks, Actionable.MODULATE,
+                            PowerMultiplier.CONFIG);
+                    ticks = 0;
+                }
+
+                if(wptGUIObject.extractAEPower(1, Actionable.SIMULATE, PowerMultiplier.ONE) == 0) {
+                    if(isServer() && isValidContainer()) {
+                        getPlayerInv().player.sendSystemMessage(PlayerMessages.DeviceNotPowered.get(), Util.NIL_UUID);
+                        close(getPlayerInv().player);//TODO fix Inventory still being open
+                    }
+
+                    setValidContainer(false);
+                }
             }
 
             if(isCraftingMode() != getPatternTerminal().isCraftingRecipe()) {
