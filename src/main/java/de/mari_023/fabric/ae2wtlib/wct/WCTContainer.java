@@ -126,9 +126,9 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
         super.sendContentUpdates();
 
         if(!wctGUIObject.rangeCheck()) {
-            if(isServer() && isValidContainer()) {
+            if(isValidContainer()) {
                 getPlayerInv().player.sendSystemMessage(PlayerMessages.OutOfRange.get(), Util.NIL_UUID);
-                close(getPlayerInv().player);//TODO fix Inventory still being open
+                close(getPlayerInv().player);//FIXME Inventory still being open
             }
 
             setValidContainer(false);
@@ -141,9 +141,9 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
             }
 
             if(wctGUIObject.extractAEPower(1, Actionable.SIMULATE, PowerMultiplier.ONE) == 0) {
-                if(isServer() && isValidContainer()) {
+                if(isValidContainer()) {
                     getPlayerInv().player.sendSystemMessage(PlayerMessages.DeviceNotPowered.get(), Util.NIL_UUID);
-                    close(getPlayerInv().player);//TODO fix Inventory still being open
+                    close(getPlayerInv().player);//FIXME Inventory still being open
                 }
 
                 setValidContainer(false);

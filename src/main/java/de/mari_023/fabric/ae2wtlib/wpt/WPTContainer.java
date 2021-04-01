@@ -148,43 +148,42 @@ public class WPTContainer extends MEMonitorableContainer implements IAEAppEngInv
 
     @Override
     public void sendContentUpdates() {
-        if(isServer()) {
-            super.sendContentUpdates();
+        if(isClient()) return;
+        super.sendContentUpdates();
 
-            if(!wptGUIObject.rangeCheck()) {
+        if(!wptGUIObject.rangeCheck()) {
+            if(isValidContainer()) {
+                getPlayerInv().player.sendSystemMessage(PlayerMessages.OutOfRange.get(), Util.NIL_UUID);
+                close(getPlayerInv().player);//FIXME Inventory still being open
+            }
+
+            setValidContainer(false);
+        } else {
+            double powerMultiplier = Config.getPowerMultiplier(wptGUIObject.getRange(), wptGUIObject.isOutOfRange());
+            ticks++;
+            if(ticks > 10) {
+                wptGUIObject.extractAEPower((powerMultiplier) * ticks, Actionable.MODULATE, PowerMultiplier.CONFIG);
+                ticks = 0;
+            }
+
+            if(wptGUIObject.extractAEPower(1, Actionable.SIMULATE, PowerMultiplier.ONE) == 0) {
                 if(isValidContainer()) {
-                    getPlayerInv().player.sendSystemMessage(PlayerMessages.OutOfRange.get(), Util.NIL_UUID);
-                    close(getPlayerInv().player);//TODO fix Inventory still being open
+                    getPlayerInv().player.sendSystemMessage(PlayerMessages.DeviceNotPowered.get(), Util.NIL_UUID);
+                    close(getPlayerInv().player);//FIXME Inventory still being open
                 }
 
                 setValidContainer(false);
-            } else {
-                double powerMultiplier = Config.getPowerMultiplier(wptGUIObject.getRange(), wptGUIObject.isOutOfRange());
-                ticks++;
-                if(ticks > 10) {
-                    wptGUIObject.extractAEPower((powerMultiplier) * ticks, Actionable.MODULATE, PowerMultiplier.CONFIG);
-                    ticks = 0;
-                }
-
-                if(wptGUIObject.extractAEPower(1, Actionable.SIMULATE, PowerMultiplier.ONE) == 0) {
-                    if(isServer() && isValidContainer()) {
-                        getPlayerInv().player.sendSystemMessage(PlayerMessages.DeviceNotPowered.get(), Util.NIL_UUID);
-                        close(getPlayerInv().player);//TODO fix Inventory still being open
-                    }
-
-                    setValidContainer(false);
-                }
             }
+        }
 
-            if(isCraftingMode() != getPatternTerminal().isCraftingRecipe()) {
-                setCraftingMode(getPatternTerminal().isCraftingRecipe());
-                updateOrderOfOutputSlots();
-            }
+        if(isCraftingMode() != getPatternTerminal().isCraftingRecipe()) {
+            setCraftingMode(getPatternTerminal().isCraftingRecipe());
+            updateOrderOfOutputSlots();
+        }
 
-            if(substitute != getPatternTerminal().isSubstitution()) {
-                substitute = getPatternTerminal().isSubstitution();
-                ((ItemWT) wptGUIObject.getItemStack().getItem()).setBoolean(wptGUIObject.getItemStack(), substitute, "substitute");
-            }
+        if(substitute != getPatternTerminal().isSubstitution()) {
+            substitute = getPatternTerminal().isSubstitution();
+            ((ItemWT) wptGUIObject.getItemStack().getItem()).setBoolean(wptGUIObject.getItemStack(), substitute, "substitute");
         }
     }
 

@@ -85,12 +85,8 @@ public class WITContainer extends AEBaseContainer {
 
     @Override
     public void sendContentUpdates() {
-        if(isClient()) {
-            return;
-        }
-
+        if(isClient()) return;
         super.sendContentUpdates();
-
 
         if(!witGUIObject.rangeCheck()) {
             if(isValidContainer()) {
@@ -103,7 +99,7 @@ public class WITContainer extends AEBaseContainer {
             powerMultiplier = Config.getPowerMultiplier(witGUIObject.getRange(), witGUIObject.isOutOfRange());
 
             if(witGUIObject.extractAEPower(1, Actionable.SIMULATE, PowerMultiplier.ONE) == 0) {
-                if(isServer() && isValidContainer()) {
+                if(isValidContainer()) {
                     getPlayerInv().player.sendSystemMessage(PlayerMessages.DeviceNotPowered.get(), Util.NIL_UUID);
                     close(getPlayerInv().player);
                 }
