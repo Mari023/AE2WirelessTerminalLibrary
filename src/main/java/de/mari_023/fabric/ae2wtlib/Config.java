@@ -9,6 +9,10 @@ public class Config {
         return AEConfig.instance().wireless_getDrainRate(528 * getOutOfRangePowerMultiplier());
     }
 
+    public static double getChargeRate() {
+        return 8000;
+    }
+
     private static int getOutOfRangePowerMultiplier() {
         return 2;
     }
