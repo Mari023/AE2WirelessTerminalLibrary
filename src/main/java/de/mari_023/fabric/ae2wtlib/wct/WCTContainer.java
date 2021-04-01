@@ -81,7 +81,6 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
         AppEngInternalInventory output = new AppEngInternalInventory(this, 1);
         addSlot(outputSlot = new CraftingTermSlot(getPlayerInv().player, getActionSource(), getPowerSource(), gui.getIStorageGrid(), crafting, crafting, output, 131 + 43, -72 + 18 - 4, this));
 
-        //armor
         addSlot(new AppEngSlot(fixedWTInv, 3, 8, -76) {
             @Environment(EnvType.CLIENT)
             public Pair<Identifier, Identifier> getBackgroundSprite() {

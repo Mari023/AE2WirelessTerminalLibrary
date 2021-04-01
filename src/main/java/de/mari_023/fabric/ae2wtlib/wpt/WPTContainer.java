@@ -116,7 +116,6 @@ public class WPTContainer extends MEMonitorableContainer implements IAEAppEngInv
             outputSlots[y].setIIcon(-1);
         }
 
-        //infinityBoosterCard
         addSlot(new AppEngSlot(fixedWPTInv, FixedWTInv.INFINITY_BOOSTER_CARD, 80, -20));
 
         addSlot(patternSlotIN = new RestrictedInputSlot(RestrictedInputSlot.PlacableItemType.BLANK_PATTERN,

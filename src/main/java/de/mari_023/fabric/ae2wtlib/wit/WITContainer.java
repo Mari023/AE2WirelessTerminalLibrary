@@ -76,7 +76,6 @@ public class WITContainer extends AEBaseContainer {
         bindPlayerInventory(ip, 0, 222 - /* height of player inventory */82);
 
         final FixedWTInv fixedWITInv = new FixedWTInv(getPlayerInv(), witGUIObject.getItemStack());
-        //infinityBoosterCard
         addSlot(new AppEngSlot(fixedWITInv, FixedWTInv.INFINITY_BOOSTER_CARD, 173, 129));
     }
 
@@ -379,5 +378,4 @@ public class WITContainer extends AEBaseContainer {
             sortBy = dual.getSortValue();
         }
     }
-
 }
