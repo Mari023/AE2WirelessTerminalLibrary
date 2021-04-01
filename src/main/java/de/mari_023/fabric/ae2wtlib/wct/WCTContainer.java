@@ -8,7 +8,8 @@ import appeng.api.config.PowerMultiplier;
 import appeng.api.networking.IGridNode;
 import appeng.container.ContainerLocator;
 import appeng.container.ContainerNull;
-import appeng.container.implementations.MEPortableCellContainer;
+import appeng.container.implementations.MEMonitorableContainer;
+import appeng.container.interfaces.IInventorySlotAware;
 import appeng.container.slot.AppEngSlot;
 import appeng.container.slot.CraftingMatrixSlot;
 import appeng.container.slot.CraftingTermSlot;
@@ -39,7 +40,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.world.World;
 
-public class WCTContainer extends MEPortableCellContainer implements IAEAppEngInventory, IContainerCraftingPacket {
+public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInventory, IContainerCraftingPacket {
 
     public static ScreenHandlerType<WCTContainer> TYPE;
 
@@ -62,8 +63,11 @@ public class WCTContainer extends MEPortableCellContainer implements IAEAppEngIn
     private final WCTGuiObject wctGUIObject;
 
     public WCTContainer(int id, final PlayerInventory ip, final WCTGuiObject gui) {
-        super(TYPE, id, ip, gui);
+        super(TYPE, id, ip, gui, true);
         wctGUIObject = gui;
+
+        final int slotIndex = ((IInventorySlotAware) wctGUIObject).getInventorySlot();
+        lockPlayerInventorySlot(slotIndex);
 
         fixedWTInv = new FixedWTInv(getPlayerInv(), wctGUIObject.getItemStack());
         craftingGrid = new ae2wtlibInternalInventory(this, 9, "crafting", wctGUIObject.getItemStack());
@@ -131,9 +135,8 @@ public class WCTContainer extends MEPortableCellContainer implements IAEAppEngIn
         } else {
             double powerMultiplier = Config.getPowerMultiplier(wctGUIObject.getRange(), wctGUIObject.isOutOfRange());
             ticks++;
-            if (ticks > 10) {
-                wctGUIObject.extractAEPower((powerMultiplier - 0.5) * ticks, Actionable.MODULATE,
-                        PowerMultiplier.CONFIG);
+            if(ticks > 10) {
+                wctGUIObject.extractAEPower((powerMultiplier) * ticks, Actionable.MODULATE, PowerMultiplier.CONFIG);
                 ticks = 0;
             }
 
