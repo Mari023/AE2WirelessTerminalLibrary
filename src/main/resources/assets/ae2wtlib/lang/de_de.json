@@ -10,5 +10,6 @@
 
   "item.ae2wtlib.wireless_crafting_terminal": "Drahtlose Fertigungskonsole",
   "item.ae2wtlib.wireless_pattern_terminal": "Drahtlose Schablonenkonsole",
-  "item.ae2wtlib.wireless_interface_terminal": "Drahtlose Schnittstellenkonsole"
+  "item.ae2wtlib.wireless_interface_terminal": "Drahtlose Schnittstellenkonsole",
+  "item.ae2wtlib.wireless_universal_terminal": "Drahtlose Universalkonsole"
 }
