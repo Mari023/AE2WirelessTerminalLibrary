@@ -63,7 +63,6 @@ public class ae2wtlib implements ModInitializer {
         WirelessCraftingStatusContainer.TYPE = registerScreenHandler("wireless_crafting_status", WirelessCraftingStatusContainer::fromNetwork);
         WirelessCraftAmountContainer.TYPE = registerScreenHandler("wireless_craft_amount", WirelessCraftAmountContainer::fromNetwork);
         WirelessCraftConfirmContainer.TYPE = registerScreenHandler("wireless_craft_confirm", WirelessCraftConfirmContainer::fromNetwork);
-        //ItemComponentCallbackV2.event(UNIVERSAL_TERMINAL).register(((item, itemStack, componentContainer) -> componentContainer.put(CuriosComponent.ITEM, new ICurio() {})));
 
         Api.instance().registries().charger().addChargeRate(CRAFTING_TERMINAL, Config.getChargeRate());
         Api.instance().registries().charger().addChargeRate(PATTERN_TERMINAL, Config.getChargeRate());
