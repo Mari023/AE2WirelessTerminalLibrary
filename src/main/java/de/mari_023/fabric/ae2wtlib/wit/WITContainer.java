@@ -76,7 +76,6 @@ public class WITContainer extends AEBaseContainer {
         bindPlayerInventory(ip, 0, 222 - /* height of player inventory */82);
 
         final FixedWTInv fixedWITInv = new FixedWTInv(getPlayerInv(), witGUIObject.getItemStack());
-        //infinityBoosterCard
         addSlot(new AppEngSlot(fixedWITInv, FixedWTInv.INFINITY_BOOSTER_CARD, 173, 129));
     }
 
@@ -85,12 +84,8 @@ public class WITContainer extends AEBaseContainer {
 
     @Override
     public void sendContentUpdates() {
-        if(isClient()) {
-            return;
-        }
-
+        if(isClient()) return;
         super.sendContentUpdates();
-
 
         if(!witGUIObject.rangeCheck()) {
             if(isValidContainer()) {
@@ -103,7 +98,7 @@ public class WITContainer extends AEBaseContainer {
             powerMultiplier = Config.getPowerMultiplier(witGUIObject.getRange(), witGUIObject.isOutOfRange());
 
             if(witGUIObject.extractAEPower(1, Actionable.SIMULATE, PowerMultiplier.ONE) == 0) {
-                if(isServer() && isValidContainer()) {
+                if(isValidContainer()) {
                     getPlayerInv().player.sendSystemMessage(PlayerMessages.DeviceNotPowered.get(), Util.NIL_UUID);
                     close(getPlayerInv().player);
                 }
@@ -383,5 +378,4 @@ public class WITContainer extends AEBaseContainer {
             sortBy = dual.getSortValue();
         }
     }
-
 }

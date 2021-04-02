@@ -8,7 +8,8 @@ import appeng.api.config.PowerMultiplier;
 import appeng.api.networking.IGridNode;
 import appeng.container.ContainerLocator;
 import appeng.container.ContainerNull;
-import appeng.container.implementations.MEPortableCellContainer;
+import appeng.container.implementations.MEMonitorableContainer;
+import appeng.container.interfaces.IInventorySlotAware;
 import appeng.container.slot.AppEngSlot;
 import appeng.container.slot.CraftingMatrixSlot;
 import appeng.container.slot.CraftingTermSlot;
@@ -39,7 +40,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.world.World;
 
-public class WCTContainer extends MEPortableCellContainer implements IAEAppEngInventory, IContainerCraftingPacket {
+public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInventory, IContainerCraftingPacket {
 
     public static ScreenHandlerType<WCTContainer> TYPE;
 
@@ -62,8 +63,11 @@ public class WCTContainer extends MEPortableCellContainer implements IAEAppEngIn
     private final WCTGuiObject wctGUIObject;
 
     public WCTContainer(int id, final PlayerInventory ip, final WCTGuiObject gui) {
-        super(TYPE, id, ip, gui);
+        super(TYPE, id, ip, gui, true);
         wctGUIObject = gui;
+
+        final int slotIndex = ((IInventorySlotAware) wctGUIObject).getInventorySlot();
+        lockPlayerInventorySlot(slotIndex);
 
         fixedWTInv = new FixedWTInv(getPlayerInv(), wctGUIObject.getItemStack());
         craftingGrid = new ae2wtlibInternalInventory(this, 9, "crafting", wctGUIObject.getItemStack());
@@ -77,7 +81,6 @@ public class WCTContainer extends MEPortableCellContainer implements IAEAppEngIn
         AppEngInternalInventory output = new AppEngInternalInventory(this, 1);
         addSlot(outputSlot = new CraftingTermSlot(getPlayerInv().player, getActionSource(), getPowerSource(), gui.getIStorageGrid(), crafting, crafting, output, 131 + 43, -72 + 18 - 4, this));
 
-        //armor
         addSlot(new AppEngSlot(fixedWTInv, 3, 8, -76) {
             @Environment(EnvType.CLIENT)
             public Pair<Identifier, Identifier> getBackgroundSprite() {
@@ -122,25 +125,24 @@ public class WCTContainer extends MEPortableCellContainer implements IAEAppEngIn
         super.sendContentUpdates();
 
         if(!wctGUIObject.rangeCheck()) {
-            if(isServer() && isValidContainer()) {
+            if(isValidContainer()) {
                 getPlayerInv().player.sendSystemMessage(PlayerMessages.OutOfRange.get(), Util.NIL_UUID);
-                close(getPlayerInv().player);//TODO fix Inventory still being open
+                close(getPlayerInv().player);//FIXME Inventory still being open
             }
 
             setValidContainer(false);
         } else {
             double powerMultiplier = Config.getPowerMultiplier(wctGUIObject.getRange(), wctGUIObject.isOutOfRange());
             ticks++;
-            if (ticks > 10) {
-                wctGUIObject.extractAEPower((powerMultiplier - 0.5) * ticks, Actionable.MODULATE,
-                        PowerMultiplier.CONFIG);
+            if(ticks > 10) {
+                wctGUIObject.extractAEPower((powerMultiplier) * ticks, Actionable.MODULATE, PowerMultiplier.CONFIG);
                 ticks = 0;
             }
 
             if(wctGUIObject.extractAEPower(1, Actionable.SIMULATE, PowerMultiplier.ONE) == 0) {
-                if(isServer() && isValidContainer()) {
+                if(isValidContainer()) {
                     getPlayerInv().player.sendSystemMessage(PlayerMessages.DeviceNotPowered.get(), Util.NIL_UUID);
-                    close(getPlayerInv().player);//TODO fix Inventory still being open
+                    close(getPlayerInv().player);//FIXME Inventory still being open
                 }
 
                 setValidContainer(false);

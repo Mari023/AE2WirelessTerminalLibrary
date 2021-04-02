@@ -14,7 +14,8 @@ import appeng.api.storage.data.IItemList;
 import appeng.container.ContainerLocator;
 import appeng.container.ContainerNull;
 import appeng.container.guisync.GuiSync;
-import appeng.container.implementations.MEPortableCellContainer;
+import appeng.container.implementations.MEMonitorableContainer;
+import appeng.container.interfaces.IInventorySlotAware;
 import appeng.container.slot.*;
 import appeng.core.Api;
 import appeng.core.localization.PlayerMessages;
@@ -55,7 +56,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.world.World;
 
-public class WPTContainer extends MEPortableCellContainer implements IAEAppEngInventory, IOptionalSlotHost, IContainerCraftingPacket {
+public class WPTContainer extends MEMonitorableContainer implements IAEAppEngInventory, IOptionalSlotHost, IContainerCraftingPacket {
 
     public static ScreenHandlerType<WPTContainer> TYPE;
 
@@ -87,8 +88,11 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
     public boolean substitute;
 
     public WPTContainer(int id, final PlayerInventory ip, final WPTGuiObject gui) {
-        super(TYPE, id, ip, gui);
+        super(TYPE, id, ip, gui, true);
         wptGUIObject = gui;
+
+        final int slotIndex = ((IInventorySlotAware) wptGUIObject).getInventorySlot();
+        lockPlayerInventorySlot(slotIndex);
 
         final FixedItemInv patternInv = getPatternTerminal().getInventoryByName("pattern");
         final FixedItemInv output = getPatternTerminal().getInventoryByName("output");
@@ -99,8 +103,7 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
 
         for(int y = 0; y < 3; y++) {
             for(int x = 0; x < 3; x++) {
-                addSlot(craftingSlots[x + y * 3] = new FakeCraftingMatrixSlot(crafting, x + y * 3,
-                        18 + x * 18, -76 + y * 18));
+                addSlot(craftingSlots[x + y * 3] = new FakeCraftingMatrixSlot(crafting, x + y * 3, 18 + x * 18, -76 + y * 18));
             }
         }
 
@@ -113,7 +116,6 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
             outputSlots[y].setIIcon(-1);
         }
 
-        //infinityBoosterCard
         addSlot(new AppEngSlot(fixedWPTInv, FixedWTInv.INFINITY_BOOSTER_CARD, 80, -20));
 
         addSlot(patternSlotIN = new RestrictedInputSlot(RestrictedInputSlot.PlacableItemType.BLANK_PATTERN,
@@ -145,44 +147,42 @@ public class WPTContainer extends MEPortableCellContainer implements IAEAppEngIn
 
     @Override
     public void sendContentUpdates() {
-        if(isServer()) {
-            super.sendContentUpdates();
+        if(isClient()) return;
+        super.sendContentUpdates();
 
-            if(!wptGUIObject.rangeCheck()) {
+        if(!wptGUIObject.rangeCheck()) {
+            if(isValidContainer()) {
+                getPlayerInv().player.sendSystemMessage(PlayerMessages.OutOfRange.get(), Util.NIL_UUID);
+                close(getPlayerInv().player);//FIXME Inventory still being open
+            }
+
+            setValidContainer(false);
+        } else {
+            double powerMultiplier = Config.getPowerMultiplier(wptGUIObject.getRange(), wptGUIObject.isOutOfRange());
+            ticks++;
+            if(ticks > 10) {
+                wptGUIObject.extractAEPower((powerMultiplier) * ticks, Actionable.MODULATE, PowerMultiplier.CONFIG);
+                ticks = 0;
+            }
+
+            if(wptGUIObject.extractAEPower(1, Actionable.SIMULATE, PowerMultiplier.ONE) == 0) {
                 if(isValidContainer()) {
-                    getPlayerInv().player.sendSystemMessage(PlayerMessages.OutOfRange.get(), Util.NIL_UUID);
-                    close(getPlayerInv().player);//TODO fix Inventory still being open
+                    getPlayerInv().player.sendSystemMessage(PlayerMessages.DeviceNotPowered.get(), Util.NIL_UUID);
+                    close(getPlayerInv().player);//FIXME Inventory still being open
                 }
 
                 setValidContainer(false);
-            } else {
-                double powerMultiplier = Config.getPowerMultiplier(wptGUIObject.getRange(), wptGUIObject.isOutOfRange());
-                ticks++;
-                if (ticks > 10) {
-                    wptGUIObject.extractAEPower((powerMultiplier - 0.5) * ticks, Actionable.MODULATE,
-                            PowerMultiplier.CONFIG);
-                    ticks = 0;
-                }
-
-                if(wptGUIObject.extractAEPower(1, Actionable.SIMULATE, PowerMultiplier.ONE) == 0) {
-                    if(isServer() && isValidContainer()) {
-                        getPlayerInv().player.sendSystemMessage(PlayerMessages.DeviceNotPowered.get(), Util.NIL_UUID);
-                        close(getPlayerInv().player);//TODO fix Inventory still being open
-                    }
-
-                    setValidContainer(false);
-                }
             }
+        }
 
-            if(isCraftingMode() != getPatternTerminal().isCraftingRecipe()) {
-                setCraftingMode(getPatternTerminal().isCraftingRecipe());
-                updateOrderOfOutputSlots();
-            }
+        if(isCraftingMode() != getPatternTerminal().isCraftingRecipe()) {
+            setCraftingMode(getPatternTerminal().isCraftingRecipe());
+            updateOrderOfOutputSlots();
+        }
 
-            if(substitute != getPatternTerminal().isSubstitution()) {
-                substitute = getPatternTerminal().isSubstitution();
-                ((ItemWT) wptGUIObject.getItemStack().getItem()).setBoolean(wptGUIObject.getItemStack(), substitute, "substitute");
-            }
+        if(substitute != getPatternTerminal().isSubstitution()) {
+            substitute = getPatternTerminal().isSubstitution();
+            ((ItemWT) wptGUIObject.getItemStack().getItem()).setBoolean(wptGUIObject.getItemStack(), substitute, "substitute");
         }
     }
 
