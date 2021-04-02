@@ -269,8 +269,8 @@ public class WTGuiObject implements IGuiItemObject, IEnergySource, IActionHost, 
         return Api.instance().storage().getStorageChannel(IItemStorageChannel.class);
     }
 
-    /*@Override //FIXME viemcells
-    public FixedViewCellInventory getViewCellStorage() {
+
+    public FixedViewCellInventory getViewCellStorage() { //FIXME viemcells
         return fixedViewCellInventory;
-    }*/
+    }
 }
