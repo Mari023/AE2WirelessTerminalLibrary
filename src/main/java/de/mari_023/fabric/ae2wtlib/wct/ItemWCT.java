@@ -26,24 +26,4 @@ public class ItemWCT extends ItemWT implements IInfinityBoosterCardHolder {
     public boolean canHandle(ItemStack is) {
         return is.getItem() instanceof ItemWCT;
     }
-
-    @Override
-    public boolean hasBoosterCard(ItemStack hostItem) {
-        return getBoosterCard(hostItem).getItem() instanceof ItemInfinityBooster;
-    }
-
-    @Override
-    public void setBoosterCard(ItemStack hostItem, ItemStack boosterCard) {
-        if(hostItem.getItem() instanceof IInfinityBoosterCardHolder) {
-            setSavedSlot(hostItem, boosterCard, "boosterCard");
-        }
-    }
-
-    @Override
-    public ItemStack getBoosterCard(ItemStack hostItem) {
-        if(hostItem.getItem() instanceof IInfinityBoosterCardHolder) {
-            return getSavedSlot(hostItem, "boosterCard");
-        }
-        return ItemStack.EMPTY;
-    }
 }

@@ -192,4 +192,21 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
         wctTag.putBoolean(key, b);
         hostItem.setTag(wctTag);
     }
+
+    public boolean hasBoosterCard(ItemStack hostItem) {
+        return getBoosterCard(hostItem).getItem() instanceof ItemInfinityBooster;
+    }
+
+    public void setBoosterCard(ItemStack hostItem, ItemStack boosterCard) {
+        if(hostItem.getItem() instanceof IInfinityBoosterCardHolder) {
+            setSavedSlot(hostItem, boosterCard, "boosterCard");
+        }
+    }
+
+    public ItemStack getBoosterCard(ItemStack hostItem) {
+        if(hostItem.getItem() instanceof IInfinityBoosterCardHolder) {
+            return getSavedSlot(hostItem, "boosterCard");
+        }
+        return ItemStack.EMPTY;
+    }
 }
