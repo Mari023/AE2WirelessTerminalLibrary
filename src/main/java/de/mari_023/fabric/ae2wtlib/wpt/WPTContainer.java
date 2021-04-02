@@ -153,7 +153,7 @@ public class WPTContainer extends MEMonitorableContainer implements IAEAppEngInv
         if(!wptGUIObject.rangeCheck()) {
             if(isValidContainer()) {
                 getPlayerInv().player.sendSystemMessage(PlayerMessages.OutOfRange.get(), Util.NIL_UUID);
-                close(getPlayerInv().player);//FIXME Inventory still being open
+                ((ServerPlayerEntity) getPlayerInv().player).closeHandledScreen();
             }
 
             setValidContainer(false);
@@ -168,7 +168,7 @@ public class WPTContainer extends MEMonitorableContainer implements IAEAppEngInv
             if(wptGUIObject.extractAEPower(1, Actionable.SIMULATE, PowerMultiplier.ONE) == 0) {
                 if(isValidContainer()) {
                     getPlayerInv().player.sendSystemMessage(PlayerMessages.DeviceNotPowered.get(), Util.NIL_UUID);
-                    close(getPlayerInv().player);//FIXME Inventory still being open
+                    ((ServerPlayerEntity) getPlayerInv().player).closeHandledScreen();
                 }
 
                 setValidContainer(false);
