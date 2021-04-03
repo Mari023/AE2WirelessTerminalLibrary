@@ -198,32 +198,27 @@ public class ae2wtlib implements ModInitializer {
                 }
             });
         });
-        ServerPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "cycle_terminal"), (server, player, handler, buf, sender) -> {
-            buf.retain();
-            server.execute(() -> {
-                final ScreenHandler screenHandler = player.currentScreenHandler;
-                if(!(screenHandler instanceof AEBaseContainer)) {
-                    buf.release();
-                    return;
-                }
-                final AEBaseContainer container = (AEBaseContainer) screenHandler;
-                final ContainerLocator locator = container.getLocator();
-                ItemStack item = player.inventory.getStack(locator.getItemIndex());
-                if(!(item.getItem() instanceof ItemWUT)) {
-                    buf.release();
-                    return;
-                }
-                WUTHandler.cycle(item);
-
-                Hand hand;
-                if(player.inventory.offHand.get(0) == item) hand = Hand.OFF_HAND;
-                else if(player.inventory.getMainHandStack() == item) hand = Hand.MAIN_HAND;
-                else hand = null;
-
-                ((ItemWUT) item.getItem()).open(player, hand);
+        ServerPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "cycle_terminal"), (server, player, handler, buf, sender) -> server.execute(() -> {
+            final ScreenHandler screenHandler = player.currentScreenHandler;
+            if(!(screenHandler instanceof AEBaseContainer)) {
                 buf.release();
-            });
-        });
+                return;
+            }
+            final AEBaseContainer container = (AEBaseContainer) screenHandler;
+            final ContainerLocator locator = container.getLocator();
+            ItemStack item = player.inventory.getStack(locator.getItemIndex());
+            if(!(item.getItem() instanceof ItemWUT)) {
+                buf.release();
+                return;
+            }
+            WUTHandler.cycle(item);
+
+            Hand hand;
+            if(player.inventory.offHand.get(0) == item) hand = Hand.OFF_HAND;
+            else if(player.inventory.getMainHandStack() == item) hand = Hand.MAIN_HAND;
+            else return;
+            WUTHandler.open(player, hand);
+        }));
     }
 
     public static <T extends AEBaseContainer> ScreenHandlerType<T> registerScreenHandler(String Identifier, ScreenHandlerRegistry.ExtendedClientHandlerFactory<T> factory) {
