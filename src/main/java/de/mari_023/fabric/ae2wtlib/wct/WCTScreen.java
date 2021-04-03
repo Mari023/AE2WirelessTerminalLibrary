@@ -14,6 +14,8 @@ import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.InventoryActionPacket;
 import appeng.helpers.InventoryAction;
 import com.mojang.blaze3d.systems.RenderSystem;
+import de.mari_023.fabric.ae2wtlib.wut.CycleTerminalButton;
+import de.mari_023.fabric.ae2wtlib.wut.IUniversalTerminalCapable;
 import me.shedaniel.math.Rectangle;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -36,16 +38,18 @@ import net.minecraft.util.registry.Registry;
 import java.lang.reflect.Field;
 import java.util.List;
 
-public class WCTScreen extends MEMonitorableScreen<WCTContainer> {
+public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUniversalTerminalCapable {
 
     private int rows = 0;
     private AETextField searchField;
     private final int reservedSpace;
     private TabButton craftingStatusBtn;
+    private final WCTContainer container;
 
     public WCTScreen(WCTContainer container, PlayerInventory playerInventory, Text title) {
         super(container, playerInventory, title);
         reservedSpace = 73;
+        this.container = container;
 
         try {
             Field f = MEMonitorableScreen.class.getDeclaredField("reservedSpace");
@@ -72,6 +76,8 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> {
 
         craftingStatusBtn = addButton(new TabButton(x + 169, y - 4, 2 + 11 * 16, GuiText.CraftingStatus.text(), itemRenderer, btn -> showWirelessCraftingStatus()));
         craftingStatusBtn.setHideEdge(true);
+
+        if(container.isWUT()) addButton(new CycleTerminalButton(x - 18, y + 88, btn -> cycleTerminal()));
 
         try {
             Field field = MEMonitorableScreen.class.getDeclaredField("rows");

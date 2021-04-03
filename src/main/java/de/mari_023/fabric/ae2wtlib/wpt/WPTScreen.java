@@ -8,6 +8,8 @@ import appeng.client.gui.widgets.TabButton;
 import appeng.client.render.StackSizeRenderer;
 import appeng.container.implementations.WirelessCraftingStatusContainer;
 import appeng.core.localization.GuiText;
+import de.mari_023.fabric.ae2wtlib.wut.CycleTerminalButton;
+import de.mari_023.fabric.ae2wtlib.wut.IUniversalTerminalCapable;
 import me.shedaniel.math.Rectangle;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -24,12 +26,13 @@ import net.minecraft.util.registry.Registry;
 import java.lang.reflect.Field;
 import java.util.List;
 
-public class WPTScreen extends MEMonitorableScreen<WPTContainer> {
+public class WPTScreen extends MEMonitorableScreen<WPTContainer> implements IUniversalTerminalCapable {
 
     private int rows = 0;
     private AETextField searchField;
     private final int reservedSpace;
     private TabButton craftingStatusBtn;
+    private final WPTContainer container;
 
     private static final byte SUBSITUTION_DISABLE = 0;
     private static final byte SUBSITUTION_ENABLE = 1;
@@ -44,6 +47,7 @@ public class WPTScreen extends MEMonitorableScreen<WPTContainer> {
 
     public WPTScreen(WPTContainer container, PlayerInventory playerInventory, Text title) {
         super(container, playerInventory, title);
+        this.container = container;
         reservedSpace = 81;
 
         try {
@@ -84,6 +88,8 @@ public class WPTScreen extends MEMonitorableScreen<WPTContainer> {
 
         craftingStatusBtn = addButton(new TabButton(x + 170, y - 4, 2 + 11 * 16, GuiText.CraftingStatus.text(), itemRenderer, btn -> showWirelessCraftingStatus()));
         craftingStatusBtn.setHideEdge(true);
+
+        if(container.isWUT()) addButton(new CycleTerminalButton(x - 18, y + 88, btn -> cycleTerminal()));
 
         try {
             Field field = MEMonitorableScreen.class.getDeclaredField("rows");
