@@ -22,6 +22,7 @@ import de.mari_023.fabric.ae2wtlib.wit.WITContainer;
 import de.mari_023.fabric.ae2wtlib.wpt.ItemWPT;
 import de.mari_023.fabric.ae2wtlib.wpt.WPTContainer;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
+import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -30,6 +31,7 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -63,6 +65,10 @@ public class ae2wtlib implements ModInitializer {
         WirelessCraftingStatusContainer.TYPE = registerScreenHandler("wireless_crafting_status", WirelessCraftingStatusContainer::fromNetwork);
         WirelessCraftAmountContainer.TYPE = registerScreenHandler("wireless_craft_amount", WirelessCraftAmountContainer::fromNetwork);
         WirelessCraftConfirmContainer.TYPE = registerScreenHandler("wireless_craft_confirm", WirelessCraftConfirmContainer::fromNetwork);
+
+        WUTHandler.addTerminal("crafting", CRAFTING_TERMINAL::open);
+        WUTHandler.addTerminal("pattern", PATTERN_TERMINAL::open);
+        WUTHandler.addTerminal("interface", INTERFACE_TERMINAL::open);
 
         Api.instance().registries().charger().addChargeRate(CRAFTING_TERMINAL, Config.getChargeRate());
         Api.instance().registries().charger().addChargeRate(PATTERN_TERMINAL, Config.getChargeRate());
@@ -190,6 +196,32 @@ public class ae2wtlib implements ModInitializer {
                     }
                     buf.release();
                 }
+            });
+        });
+        ServerPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "cycle_terminal"), (server, player, handler, buf, sender) -> {
+            buf.retain();
+            server.execute(() -> {
+                final ScreenHandler screenHandler = player.currentScreenHandler;
+                if(!(screenHandler instanceof AEBaseContainer)) {
+                    buf.release();
+                    return;
+                }
+                final AEBaseContainer container = (AEBaseContainer) screenHandler;
+                final ContainerLocator locator = container.getLocator();
+                ItemStack item = player.inventory.getStack(locator.getItemIndex());
+                if(!(item.getItem() instanceof ItemWUT)) {
+                    buf.release();
+                    return;
+                }
+                WUTHandler.cycle(item);
+
+                Hand hand;
+                if(player.inventory.offHand.get(0) == item) hand = Hand.OFF_HAND;
+                else if(player.inventory.getMainHandStack() == item) hand = Hand.MAIN_HAND;
+                else hand = null;
+
+                ((ItemWUT) item.getItem()).open(player, hand);
+                buf.release();
             });
         });
     }
