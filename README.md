@@ -9,9 +9,9 @@ This is a Fabric port of [Wireless Crafting Terminal](https://www.curseforge.com
 
 It features several wireless versions of Applied Energistics 2 terminals with support for an Infinity Booster Card, which allows terminals to work from everywhere and even across dimensions.
 
+It also adds a wireless universal terminal which has all wireless terminals in one item 
 
 Missing Features / Known Issues
-- Wireless Universal Terminal
 - Wireless Fluid Terminal
 - Magnet Card does not work yet
 - Curios support
