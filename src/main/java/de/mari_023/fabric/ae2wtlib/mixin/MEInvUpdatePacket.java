@@ -4,6 +4,8 @@ import appeng.api.storage.data.IAEItemStack;
 import appeng.core.sync.network.INetworkInfo;
 import appeng.core.sync.packets.MEInventoryUpdatePacket;
 import de.mari_023.fabric.ae2wtlib.util.WirelessCraftConfirmScreen;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.entity.player.PlayerEntity;
@@ -26,6 +28,7 @@ public class MEInvUpdatePacket {
     @Final
     private byte ref;
 
+    @Environment(EnvType.CLIENT)
     @Inject(method = "clientPacketData", at = @At(value = "TAIL"), require = 1, allow = 1, remap = false)
     public void clientPacketData(INetworkInfo manager, PlayerEntity player, CallbackInfo ci) {
         final Screen gs = MinecraftClient.getInstance().currentScreen;
