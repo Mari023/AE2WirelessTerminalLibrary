@@ -120,7 +120,7 @@ curseforge {
             requiredDependency 'fabric-api'
             requiredDependency 'applied-energistics-2'
             requiredDependency 'roughly-enough-items'
-            //TODO requiredDependency 'nbt-crafting-fabric'
+            requiredDependency 'nbt-crafting'
             optionalDependency 'curios-fabric'
         }
         afterEvaluate {
