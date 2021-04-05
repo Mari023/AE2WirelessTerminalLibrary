@@ -81,25 +81,27 @@ public class ae2wtlib implements ModInitializer {
                 byte value = buf.readByte();
                 final ScreenHandler c = player.currentScreenHandler;
                 if(Name.startsWith("PatternTerminal.") && c instanceof WPTContainer) {
-                    final WPTContainer cpt = (WPTContainer) c;
+                    final WPTContainer container = (WPTContainer) c;
                     switch(Name) {
                         case "PatternTerminal.CraftMode":
-                            cpt.getPatternTerminal().setCraftingRecipe(value != 0);
+                            container.getPatternTerminal().setCraftingRecipe(value != 0);
                             break;
                         case "PatternTerminal.Encode":
-                            cpt.encode();
+                            container.encode();
                             break;
                         case "PatternTerminal.Clear":
-                            cpt.clear();
+                            container.clear();
                             break;
                         case "PatternTerminal.Substitute":
-                            cpt.getPatternTerminal().setSubstitution(value != 0);
+                            container.getPatternTerminal().setSubstitution(value != 0);
                             break;
                     }
                 } else if(Name.startsWith("CraftingTerminal.") && c instanceof WCTContainer) {
-                    final WCTContainer cpt = (WCTContainer) c;
+                    final WCTContainer container = (WCTContainer) c;
                     if(Name.equals("CraftingTerminal.Delete")) {
-                        cpt.deleteTrashSlot();
+                        container.deleteTrashSlot();
+                    } else if(Name.equals("CraftingTerminal.SetMagnetMode")) {
+                        container.setMagnetMode(value);
                     }
                 }
                 buf.release();

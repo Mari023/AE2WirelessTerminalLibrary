@@ -32,6 +32,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeType;
@@ -211,6 +212,25 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
 
     public void deleteTrashSlot() {
         fixedWTInv.setInvStack(FixedWTInv.TRASH, ItemStack.EMPTY, Simulation.ACTION);
+    }
+
+    private byte magnetMode = -1;
+    public void setMagnetMode(byte mode) {//TODO store magnetMode in Magnet Card and not in Terminal
+        CompoundTag tag = wctGUIObject.getItemStack().getTag();
+        if(tag == null) {
+            tag = new CompoundTag();
+            wctGUIObject.getItemStack().setTag(tag);
+        }
+        tag.putByte("magnetMode", mode);
+        magnetMode = mode;
+    }
+
+    public byte getMagnetMode() {
+        if(magnetMode == -1) {
+            if(wctGUIObject.getItemStack().getTag() == null) magnetMode = 0;
+            else magnetMode = wctGUIObject.getItemStack().getTag().getByte("magnetMode");
+        }
+        return magnetMode;
     }
 
     public boolean isWUT() {
