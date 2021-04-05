@@ -13,6 +13,10 @@ public class Config {
         return 8000;
     }
 
+    public static double WUTChargeRateMultiplier() {
+        return 1;
+    }
+
     private static int getOutOfRangePowerMultiplier() {
         return 2;
     }

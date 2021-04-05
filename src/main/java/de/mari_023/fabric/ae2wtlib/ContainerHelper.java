@@ -6,11 +6,9 @@ import appeng.container.ContainerLocator;
 import appeng.core.AELog;
 import appeng.core.localization.GuiText;
 import appeng.util.Platform;
-import de.mari_023.fabric.ae2wtlib.wct.ItemWCT;
+import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.wct.WCTGuiObject;
-import de.mari_023.fabric.ae2wtlib.wit.ItemWIT;
 import de.mari_023.fabric.ae2wtlib.wit.WITGuiObject;
-import de.mari_023.fabric.ae2wtlib.wpt.ItemWPT;
 import de.mari_023.fabric.ae2wtlib.wpt.WPTGuiObject;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.entity.player.PlayerEntity;
@@ -140,16 +138,16 @@ public final class ContainerHelper<C extends AEBaseContainer, I> {
             return null;
         }
 
-        if(interfaceClass.isAssignableFrom(WCTGuiObject.class) && it.getItem() instanceof ItemWCT) {//TODO do something generic, I don't want to hardcode everything
-            return interfaceClass.cast(new WCTGuiObject((ItemWCT) it.getItem(), it, player, locator.getItemIndex()));
+        if(interfaceClass.isAssignableFrom(WCTGuiObject.class) && it.getItem() instanceof ItemWT) {//TODO do something generic, I don't want to hardcode everything
+            return interfaceClass.cast(new WCTGuiObject((ItemWT) it.getItem(), it, player, locator.getItemIndex()));
         }
 
-        if(interfaceClass.isAssignableFrom(WPTGuiObject.class) && it.getItem() instanceof ItemWPT) {
-            return interfaceClass.cast(new WPTGuiObject((ItemWPT) it.getItem(), it, player, locator.getItemIndex()));
+        if(interfaceClass.isAssignableFrom(WPTGuiObject.class) && it.getItem() instanceof ItemWT) {
+            return interfaceClass.cast(new WPTGuiObject((ItemWT) it.getItem(), it, player, locator.getItemIndex()));
         }
 
-        if(interfaceClass.isAssignableFrom(WITGuiObject.class) && it.getItem() instanceof ItemWIT) {
-            return interfaceClass.cast(new WITGuiObject((ItemWIT) it.getItem(), it, player, locator.getItemIndex()));
+        if(interfaceClass.isAssignableFrom(WITGuiObject.class) && it.getItem() instanceof ItemWT) {
+            return interfaceClass.cast(new WITGuiObject((ItemWT) it.getItem(), it, player, locator.getItemIndex()));
         }
         return null;
     }

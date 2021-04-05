@@ -28,6 +28,7 @@ import appeng.util.inv.WrapperCursorItemHandler;
 import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.ContainerHelper;
 import de.mari_023.fabric.ae2wtlib.terminal.FixedWTInv;
+import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.player.PlayerEntity;
@@ -377,5 +378,10 @@ public class WITContainer extends AEBaseContainer {
             this.name = name;
             sortBy = dual.getSortValue();
         }
+    }
+
+
+    public boolean isWUT() {
+        return witGUIObject.getItemStack().getItem() instanceof ItemWUT;
     }
 }

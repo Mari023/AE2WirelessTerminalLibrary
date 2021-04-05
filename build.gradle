@@ -40,6 +40,10 @@ repositories {
     maven {
         url "https://maven.shedaniel.me/"
     }
+    maven {
+        name "Siphalor's Maven"
+        url "https://maven.siphalor.de"
+    }
 }
 
 dependencies {
@@ -56,6 +60,7 @@ dependencies {
     modImplementation "appeng:appliedenergistics2-fabric:${project.ae2_version}"
     modImplementation "top.theillusivec4.curios:curios-fabric:${project.curios_version}"
     modImplementation "me.shedaniel:RoughlyEnoughItems:${project.rei_version}"
+    modImplementation "de.siphalor:nbtcrafting-1.16:${project.nbt_crafting_version}"
 }
 
 processResources {
@@ -115,6 +120,7 @@ curseforge {
             requiredDependency 'fabric-api'
             requiredDependency 'applied-energistics-2'
             requiredDependency 'roughly-enough-items'
+            //TODO requiredDependency 'nbt-crafting-fabric'
             optionalDependency 'curios-fabric'
         }
         afterEvaluate {

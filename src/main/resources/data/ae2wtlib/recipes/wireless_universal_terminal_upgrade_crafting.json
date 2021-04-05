@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "ae2wtlib:wireless_universal_terminal"
+    },
+    {
+      "item": "ae2wtlib:wireless_crafting_terminal"
+    }
+  ],
+  "result": {
+    "item": "ae2wtlib:wireless_universal_terminal",
+    "data": {
+      "$": [
+        {
+          "value": "i0"
+        },
+        {
+          "value": "i1",
+          "path": {
+            "/": "keep"
+          }
+        }
+      ],
+      "crafting": true
+    }
+  }
+}

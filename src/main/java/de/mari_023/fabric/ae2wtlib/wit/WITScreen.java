@@ -13,6 +13,8 @@ import appeng.core.AppEng;
 import appeng.core.localization.GuiText;
 import appeng.util.Platform;
 import com.google.common.collect.HashMultimap;
+import de.mari_023.fabric.ae2wtlib.wut.CycleTerminalButton;
+import de.mari_023.fabric.ae2wtlib.wut.IUniversalTerminalCapable;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -23,7 +25,7 @@ import org.lwjgl.glfw.GLFW;
 
 import java.util.*;
 
-public class WITScreen extends AEBaseScreen<WITContainer> {
+public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalTerminalCapable {
 
     private static final int LINES_ON_PAGE = 6;
 
@@ -36,10 +38,11 @@ public class WITScreen extends AEBaseScreen<WITContainer> {
 
     private boolean refreshList = false;
     private AETextField searchField;
-
+    private final WITContainer container;
 
     public WITScreen(WITContainer container, PlayerInventory playerInventory, Text title) {
         super(container, playerInventory, title);
+        this.container = container;
         setScrollBar(new Scrollbar().setLeft(175).setTop(18).setHeight(106));
         backgroundWidth = 195;
         backgroundHeight = 222;
@@ -57,6 +60,8 @@ public class WITScreen extends AEBaseScreen<WITContainer> {
         searchField.setChangedListener(str -> refreshList());
         addChild(searchField);
         changeFocus(true);
+
+        if(container.isWUT()) addButton(new CycleTerminalButton(x - 18, y + 8, btn -> cycleTerminal()));
     }
 
     @Override

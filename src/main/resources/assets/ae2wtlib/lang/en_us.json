@@ -10,5 +10,6 @@
 
   "item.ae2wtlib.wireless_crafting_terminal": "Wireless Crafting Terminal",
   "item.ae2wtlib.wireless_pattern_terminal": "Wireless Pattern Terminal",
-  "item.ae2wtlib.wireless_interface_terminal": "Wireless Interface Terminal"
+  "item.ae2wtlib.wireless_interface_terminal": "Wireless Interface Terminal",
+  "item.ae2wtlib.wireless_universal_terminal": "Wireless Universal Terminal"
 }
