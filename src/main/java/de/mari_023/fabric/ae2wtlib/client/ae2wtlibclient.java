@@ -1,11 +1,11 @@
 package de.mari_023.fabric.ae2wtlib.client;
 
 import appeng.container.implementations.WirelessCraftConfirmContainer;
-import de.mari_023.fabric.ae2wtlib.util.WirelessCraftConfirmScreen;
-import de.mari_023.fabric.ae2wtlib.util.WirelessCraftingStatusScreen;
 import appeng.container.implementations.WirelessCraftingStatusContainer;
 import de.mari_023.fabric.ae2wtlib.util.WirelessCraftAmountContainer;
 import de.mari_023.fabric.ae2wtlib.util.WirelessCraftAmountScreen;
+import de.mari_023.fabric.ae2wtlib.util.WirelessCraftConfirmScreen;
+import de.mari_023.fabric.ae2wtlib.util.WirelessCraftingStatusScreen;
 import de.mari_023.fabric.ae2wtlib.wct.WCTContainer;
 import de.mari_023.fabric.ae2wtlib.wct.WCTScreen;
 import de.mari_023.fabric.ae2wtlib.wit.WITContainer;
@@ -26,6 +26,13 @@ import net.minecraft.util.Identifier;
 public class ae2wtlibclient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
+        //WCTContainer.TYPE = ScreenHandlerRegistry.registerExtended(new Identifier("ae2wtlib", "wireless_crafting_terminal"), WCTContainer::fromNetwork);
+        //WPTContainer.TYPE = ScreenHandlerRegistry.registerExtended(new Identifier("ae2wtlib", "wireless_pattern_terminal"), WPTContainer::fromNetwork);
+        //WITContainer.TYPE = ScreenHandlerRegistry.registerExtended(new Identifier("ae2wtlib", "wireless_interface_terminal"), WITContainer::fromNetwork);
+        //WirelessCraftingStatusContainer.TYPE = ScreenHandlerRegistry.registerExtended(new Identifier("ae2wtlib", "wireless_crafting_status"), WirelessCraftingStatusContainer::fromNetwork);
+        //WirelessCraftAmountContainer.TYPE = ScreenHandlerRegistry.registerExtended(new Identifier("ae2wtlib", "wireless_craft_amount"), WirelessCraftAmountContainer::fromNetwork);
+        //WirelessCraftConfirmContainer.TYPE = ScreenHandlerRegistry.registerExtended(new Identifier("ae2wtlib", "wireless_craft_confirm"), WirelessCraftConfirmContainer::fromNetwork);
+
         ScreenRegistry.register(WCTContainer.TYPE, WCTScreen::new);
         ScreenRegistry.register(WPTContainer.TYPE, WPTScreen::new);
         ScreenRegistry.register(WITContainer.TYPE, WITScreen::new);
