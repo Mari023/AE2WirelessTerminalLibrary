@@ -36,6 +36,7 @@ import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.world.World;
@@ -127,7 +128,7 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
         if(!wctGUIObject.rangeCheck()) {
             if(isValidContainer()) {
                 getPlayerInv().player.sendSystemMessage(PlayerMessages.OutOfRange.get(), Util.NIL_UUID);
-                close(getPlayerInv().player);//FIXME Inventory still being open
+                ((ServerPlayerEntity) getPlayerInv().player).closeHandledScreen();
             }
 
             setValidContainer(false);
@@ -142,7 +143,7 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
             if(wctGUIObject.extractAEPower(1, Actionable.SIMULATE, PowerMultiplier.ONE) == 0) {
                 if(isValidContainer()) {
                     getPlayerInv().player.sendSystemMessage(PlayerMessages.DeviceNotPowered.get(), Util.NIL_UUID);
-                    close(getPlayerInv().player);//FIXME Inventory still being open
+                    ((ServerPlayerEntity) getPlayerInv().player).closeHandledScreen();
                 }
 
                 setValidContainer(false);
