@@ -101,7 +101,6 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
                 x = 0;
             }
         }
-
         super.render(matrices, mouseX, mouseY, btn);
     }
 
@@ -200,8 +199,7 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
 
                     str = GuiText.FromStorage.getLocal() + ": " + str;
                     final int w = 4 + textRenderer.getWidth(str);
-                    textRenderer.draw(matrices, str,
-                            (int) ((x * (1 + sectionLength) + xo + sectionLength - 19 - (w * 0.5)) * 2),
+                    textRenderer.draw(matrices, str, (int) ((x * (1 + sectionLength) + xo + sectionLength - 19 - (w * 0.5)) * 2),
                             (y * offY + yo + 6 - negY + downY) * 2, 4210752);
 
                     if(tooltip == z - viewStart) {
@@ -289,14 +287,11 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
             }
         }
 
-        if(tooltip >= 0 && !dspToolTip.isEmpty()) {
-            drawTooltip(matrices, toolPosX, toolPosY + 10, dspToolTip);
-        }
+        if(tooltip >= 0 && !dspToolTip.isEmpty()) drawTooltip(matrices, toolPosX, toolPosY + 10, dspToolTip);
     }
 
     @Override
-    public void drawBG(MatrixStack matrices, final int offsetX, final int offsetY, final int mouseX, final int mouseY,
-                       float partialTicks) {
+    public void drawBG(MatrixStack matrices, final int offsetX, final int offsetY, final int mouseX, final int mouseY, float partialTicks) {
         setScrollBar();
         bindTexture("guis/craftingreport.png");
         drawTexture(matrices, offsetX, offsetY, 0, 0, backgroundWidth, backgroundHeight);
@@ -312,21 +307,13 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
     public void postUpdate(final List<IAEItemStack> list, final byte ref) {
         switch(ref) {
             case 0:
-                for(final IAEItemStack l : list) {
-                    handleInput(storage, l);
-                }
+                for(final IAEItemStack l : list) handleInput(storage, l);
                 break;
-
             case 1:
-                for(final IAEItemStack l : list) {
-                    handleInput(pending, l);
-                }
+                for(final IAEItemStack l : list) handleInput(pending, l);
                 break;
-
             case 2:
-                for(final IAEItemStack l : list) {
-                    handleInput(missing, l);
-                }
+                for(final IAEItemStack l : list) handleInput(missing, l);
                 break;
         }
 
@@ -340,7 +327,6 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
                 is.setStackSize(amt);
             }
         }
-
         setScrollBar();
     }
 
@@ -348,18 +334,14 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
         IAEItemStack a = s.findPrecise(l);
 
         if(l.getStackSize() <= 0) {
-            if(a != null) {
-                a.reset();
-            }
+            if(a != null) a.reset();
         } else {
             if(a == null) {
                 s.add(l.copy());
                 a = s.findPrecise(l);
             }
 
-            if(a != null) {
-                a.setStackSize(l.getStackSize());
-            }
+            if(a != null) a.setStackSize(l.getStackSize());
         }
     }
 
@@ -370,17 +352,11 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
 
         long total = 0;
 
-        if(a != null) {
-            total += a.getStackSize();
-        }
+        if(a != null) total += a.getStackSize();
 
-        if(c != null) {
-            total += c.getStackSize();
-        }
+        if(c != null) total += c.getStackSize();
 
-        if(m != null) {
-            total += m.getStackSize();
-        }
+        if(m != null) total += m.getStackSize();
 
         return total;
     }
@@ -398,9 +374,7 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
 
     private IAEItemStack findVisualStack(final IAEItemStack l) {
         for(final IAEItemStack o : visual) {
-            if(o.equals(l)) {
-                return o;
-            }
+            if(o.equals(l)) return o;
         }
 
         final IAEItemStack stack = l.copy();

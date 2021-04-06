@@ -142,12 +142,9 @@ public class WPTScreen extends MEMonitorableScreen<WPTContainer> implements IUni
         final int x_width = 197;
         drawTexture(matrices, offsetX, offsetY, 0, 0, x_width, 18);
 
-        for(int x = 0; x < rows; x++) {
-            drawTexture(matrices, offsetX, offsetY + 18 + x * 18, 0, 18, x_width, 18);
-        }
+        for(int x = 0; x < rows; x++) drawTexture(matrices, offsetX, offsetY + 18 + x * 18, 0, 18, x_width, 18);
 
         drawTexture(matrices, offsetX, offsetY + 16 + rows * 18, 0, 106 - 18 - 18, x_width, 99 + reservedSpace);
-
 
         if(handler.isCraftingMode()) {
             tabCraftButton.visible = true;
@@ -168,7 +165,6 @@ public class WPTScreen extends MEMonitorableScreen<WPTContainer> implements IUni
             drawTexture(matrices, offsetX + 109, offsetY + 36 + rows * 18, 109, 108, 18, 18);
             drawTexture(matrices, offsetX + 109, offsetY + 72 + rows * 18, 109, 108, 18, 18);
         }
-
         searchField.render(matrices, mouseX, mouseY, partialTicks);
     }
 

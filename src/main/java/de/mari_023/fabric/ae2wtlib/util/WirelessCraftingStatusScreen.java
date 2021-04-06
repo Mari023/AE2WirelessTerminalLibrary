@@ -24,8 +24,7 @@ public class WirelessCraftingStatusScreen extends CraftingCPUScreen<WirelessCraf
     public void init() {
         super.init();
 
-        selectCPU = new ButtonWidget(x + 8, y + backgroundHeight - 25, 150, 20,
-                getNextCpuButtonLabel(), btn -> selectNextCpu());
+        selectCPU = new ButtonWidget(x + 8, y + backgroundHeight - 25, 150, 20, getNextCpuButtonLabel(), btn -> selectNextCpu());
         addButton(selectCPU);
 
         subGui.addBackButton(btn -> {
@@ -53,7 +52,7 @@ public class WirelessCraftingStatusScreen extends CraftingCPUScreen<WirelessCraf
 
     @Override
     protected Text getGuiDisplayName(final Text in) {
-        return in; // the cup name is on the button
+        return in;
     }
 
     private void selectNextCpu() {

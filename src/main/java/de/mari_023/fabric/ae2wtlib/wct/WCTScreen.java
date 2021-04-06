@@ -195,7 +195,6 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
                 break;
             case 2:
                 magnetCardToggleButton.setMessage(new TranslatableText("gui.ae2wtlib.magnetcard").append("\n").append(new TranslatableText("gui.ae2wtlib.magnetcard.desc.me")));
-
         }
     }
 

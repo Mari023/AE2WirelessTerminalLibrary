@@ -42,9 +42,8 @@ public class WirelessPatternTermSlot extends PatternTermSlot {
         PacketByteBuf buf = PacketByteBufs.create();
         writeItem(Api.instance().storage().getStorageChannel(IItemStorageChannel.class).createStack(getStack()), buf);
         buf.writeBoolean(shift);
-        for(int x = 0; x < 9; x++) {
+        for(int x = 0; x < 9; x++)
             writeItem(Api.instance().storage().getStorageChannel(IItemStorageChannel.class).createStack(pattern.getInvStack(x)), buf);
-        }
         ClientPlayNetworking.send(new Identifier("ae2wtlib", "patternslotpacket"), buf);
 
         //This is just a stub. we don't actually use it, but this is the easiest (tho dirty) way to hack our own solution in
@@ -52,9 +51,8 @@ public class WirelessPatternTermSlot extends PatternTermSlot {
     }
 
     private void writeItem(final IAEItemStack slotItem, final PacketByteBuf data) {
-        if(slotItem == null) {
-            data.writeBoolean(false);
-        } else {
+        if(slotItem == null) data.writeBoolean(false);
+        else {
             data.writeBoolean(true);
             slotItem.writeToPacket(data);
         }

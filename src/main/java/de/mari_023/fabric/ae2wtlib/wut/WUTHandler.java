@@ -36,23 +36,18 @@ public class WUTHandler {
         if(is.getTag() == null) return;
         String currentTerminal = is.getTag().getString("currentTerminal");
 
+        if(!wirelessTerminals.containsKey(currentTerminal)) for(String terminal : terminalNames)
+            if(is.getTag().getBoolean(terminal)) {
+                currentTerminal = terminal;
+                is.getTag().putString("currentTerminal", currentTerminal);
+                break;
+            }
         if(!wirelessTerminals.containsKey(currentTerminal)) {
-            for(String terminal : terminalNames) {
-                if(is.getTag().getBoolean(terminal)) {
-                    currentTerminal = terminal;
-                    is.getTag().putString("currentTerminal", currentTerminal);
-                    break;
-                }
-            }
-            if(!wirelessTerminals.containsKey(currentTerminal)) {
-                player.sendMessage(new LiteralText("This terminal does not contain any other Terminals"), false);
-                return;
-            }
+            player.sendMessage(new LiteralText("This terminal does not contain any other Terminals"), false);
+            return;
         }
-
         wirelessTerminals.get(currentTerminal).open(player, hand);
     }
-
 
     private static final HashMap<String, containerOpener> wirelessTerminals = new HashMap<>();
     private static final List<String> terminalNames = new ArrayList<>();

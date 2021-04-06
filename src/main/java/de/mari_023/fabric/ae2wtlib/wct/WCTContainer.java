@@ -132,7 +132,6 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
                 getPlayerInv().player.sendSystemMessage(PlayerMessages.OutOfRange.get(), Util.NIL_UUID);
                 ((ServerPlayerEntity) getPlayerInv().player).closeHandledScreen();
             }
-
             setValidContainer(false);
         } else {
             double powerMultiplier = Config.getPowerMultiplier(wctGUIObject.getRange(), wctGUIObject.isOutOfRange());
@@ -147,7 +146,6 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
                     getPlayerInv().player.sendSystemMessage(PlayerMessages.DeviceNotPowered.get(), Util.NIL_UUID);
                     ((ServerPlayerEntity) getPlayerInv().player).closeHandledScreen();
                 }
-
                 setValidContainer(false);
             }
         }

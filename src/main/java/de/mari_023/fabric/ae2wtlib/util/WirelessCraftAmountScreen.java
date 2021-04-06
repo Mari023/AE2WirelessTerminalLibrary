@@ -46,9 +46,7 @@ public class WirelessCraftAmountScreen extends AEBaseScreen<WirelessCraftAmountC
 
     private void confirm(ButtonWidget button) {
         int amount = amountToCraft.getIntValue().orElse(0);
-        if(amount <= 0) {
-            return;
-        }
+        if(amount <= 0) return;
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeInt(amount);
         buf.writeBoolean(hasShiftDown());
@@ -61,8 +59,7 @@ public class WirelessCraftAmountScreen extends AEBaseScreen<WirelessCraftAmountC
     }
 
     @Override
-    public void drawBG(MatrixStack matrices, final int offsetX, final int offsetY, final int mouseX, final int mouseY,
-                       float partialTicks) {
+    public void drawBG(MatrixStack matrices, final int offsetX, final int offsetY, final int mouseX, final int mouseY, float partialTicks) {
         next.setMessage(hasShiftDown() ? GuiText.Start.text() : GuiText.Next.text());
 
         bindTexture("guis/craft_amt.png");

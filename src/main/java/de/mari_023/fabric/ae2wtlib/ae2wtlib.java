@@ -98,11 +98,8 @@ public class ae2wtlib implements ModInitializer {
                     }
                 } else if(Name.startsWith("CraftingTerminal.") && c instanceof WCTContainer) {
                     final WCTContainer container = (WCTContainer) c;
-                    if(Name.equals("CraftingTerminal.Delete")) {
-                        container.deleteTrashSlot();
-                    } else if(Name.equals("CraftingTerminal.SetMagnetMode")) {
-                        container.setMagnetMode(value);
-                    }
+                    if(Name.equals("CraftingTerminal.Delete")) container.deleteTrashSlot();
+                    else if(Name.equals("CraftingTerminal.SetMagnetMode")) container.setMagnetMode(value);
                 }
                 buf.release();
             });
@@ -160,22 +157,17 @@ public class ae2wtlib implements ModInitializer {
                     if(target instanceof IActionHost) {
                         final IActionHost ah = (IActionHost) target;
                         final IGridNode gn = ah.getActionableNode();
-                        if(gn == null) {
-                            return;
-                        }
+                        if(gn == null) return;
 
                         final IGrid g = gn.getGrid();
-                        if(cca.getItemToCraft() == null) {
-                            return;
-                        }
+                        if(cca.getItemToCraft() == null) return;
 
                         cca.getItemToCraft().setStackSize(amount);
 
                         Future<ICraftingJob> futureJob = null;
                         try {
                             final ICraftingGrid cg = g.getCache(ICraftingGrid.class);
-                            futureJob = cg.beginCraftingJob(cca.getWorld(), cca.getGrid(), cca.getActionSrc(),
-                                    cca.getItemToCraft(), null);
+                            futureJob = cg.beginCraftingJob(cca.getWorld(), cca.getGrid(), cca.getActionSrc(), cca.getItemToCraft(), null);
 
                             final ContainerLocator locator = cca.getLocator();
                             if(locator != null) {
@@ -189,9 +181,7 @@ public class ae2wtlib implements ModInitializer {
                                 }
                             }
                         } catch(final Throwable e) {
-                            if(futureJob != null) {
-                                futureJob.cancel(true);
-                            }
+                            if(futureJob != null) futureJob.cancel(true);
                             AELog.info(e);
                         }
                     }
@@ -202,14 +192,14 @@ public class ae2wtlib implements ModInitializer {
         ServerPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "cycle_terminal"), (server, player, handler, buf, sender) -> server.execute(() -> {
             final ScreenHandler screenHandler = player.currentScreenHandler;
             if(!(screenHandler instanceof AEBaseContainer)) {
-                buf.release();
+                buf.release();//FIXME might not need this
                 return;
             }
             final AEBaseContainer container = (AEBaseContainer) screenHandler;
             final ContainerLocator locator = container.getLocator();
             ItemStack item = player.inventory.getStack(locator.getItemIndex());
             if(!(item.getItem() instanceof ItemWUT)) {
-                buf.release();
+                buf.release();//FIXME might not need this
                 return;
             }
             WUTHandler.cycle(item);

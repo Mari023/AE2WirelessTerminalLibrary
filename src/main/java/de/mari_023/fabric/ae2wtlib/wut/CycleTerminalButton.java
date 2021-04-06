@@ -61,11 +61,8 @@ public class CycleTerminalButton extends ButtonWidget implements ITooltip {
             RenderSystem.disableDepthTest();
             RenderSystem.enableBlend();
 
-            if(this.active) {
-                RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
-            } else {
-                RenderSystem.color4f(0.5f, 0.5f, 0.5f, 1.0f);
-            }
+            if(this.active) RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
+            else RenderSystem.color4f(0.5f, 0.5f, 0.5f, 1.0f);
 
             final int uv_y = iconIndex / 16;
             final int uv_x = iconIndex - uv_y * 16;
@@ -76,9 +73,7 @@ public class CycleTerminalButton extends ButtonWidget implements ITooltip {
             RenderSystem.enableDepthTest();
             RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
 
-            if(isHovered()) {
-                renderToolTip(matrices, mouseX, mouseY);
-            }
+            if(isHovered()) renderToolTip(matrices, mouseX, mouseY);
         }
     }
 }
