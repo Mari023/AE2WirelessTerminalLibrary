@@ -212,21 +212,21 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
         fixedWTInv.setInvStack(FixedWTInv.TRASH, ItemStack.EMPTY, Simulation.ACTION);
     }
 
-    private byte magnetMode = -1;
-    public void setMagnetMode(byte mode) {//TODO store magnetMode in Magnet Card and not in Terminal
+    private MagnetMode magnetMode = MagnetMode.INVALID;
+    public void setMagnetMode(MagnetMode mode) {//TODO store magnetMode in Magnet Card and not in Terminal
         CompoundTag tag = wctGUIObject.getItemStack().getTag();
         if(tag == null) {
             tag = new CompoundTag();
             wctGUIObject.getItemStack().setTag(tag);
         }
-        tag.putByte("magnetMode", mode);
+        tag.putByte("magnetMode", mode.getId());
         magnetMode = mode;
     }
 
-    public byte getMagnetMode() {
-        if(magnetMode == -1) {
-            if(wctGUIObject.getItemStack().getTag() == null) magnetMode = 0;
-            else magnetMode = wctGUIObject.getItemStack().getTag().getByte("magnetMode");
+    public MagnetMode getMagnetMode() {
+        if(magnetMode == MagnetMode.INVALID) {
+            if(wctGUIObject.getItemStack().getTag() == null) magnetMode = MagnetMode.NO_CARD;
+            else magnetMode = MagnetMode.fromByte(wctGUIObject.getItemStack().getTag().getByte("magnetMode"));
         }
         return magnetMode;
     }

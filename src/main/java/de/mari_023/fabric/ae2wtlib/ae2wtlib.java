@@ -16,6 +16,7 @@ import de.mari_023.fabric.ae2wtlib.terminal.ItemInfinityBooster;
 import de.mari_023.fabric.ae2wtlib.util.WirelessCraftAmountContainer;
 import de.mari_023.fabric.ae2wtlib.wct.ItemMagnetCard;
 import de.mari_023.fabric.ae2wtlib.wct.ItemWCT;
+import de.mari_023.fabric.ae2wtlib.wct.MagnetMode;
 import de.mari_023.fabric.ae2wtlib.wct.WCTContainer;
 import de.mari_023.fabric.ae2wtlib.wit.ItemWIT;
 import de.mari_023.fabric.ae2wtlib.wit.WITContainer;
@@ -99,7 +100,7 @@ public class ae2wtlib implements ModInitializer {
                 } else if(Name.startsWith("CraftingTerminal.") && c instanceof WCTContainer) {
                     final WCTContainer container = (WCTContainer) c;
                     if(Name.equals("CraftingTerminal.Delete")) container.deleteTrashSlot();
-                    else if(Name.equals("CraftingTerminal.SetMagnetMode")) container.setMagnetMode(value);
+                    else if(Name.equals("CraftingTerminal.SetMagnetMode")) container.setMagnetMode(MagnetMode.fromByte(value));
                 }
                 buf.release();
             });
