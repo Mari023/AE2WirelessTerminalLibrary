@@ -35,6 +35,7 @@ public class ItemMagnetCard extends Item {
 
     public static MagnetSettings loadMagnetSettings(ItemStack magnetCardHolder) {
         ItemStack magnetCard = ItemWT.getSavedSlot(magnetCardHolder, "magnetCard");
+        if(magnetCard.isEmpty()) return new MagnetSettings();
         return new MagnetSettings((CompoundTag) magnetCard.getOrCreateTag().get("magnet_settings"));
     }
 }
