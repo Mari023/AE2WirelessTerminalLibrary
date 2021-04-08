@@ -63,7 +63,6 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
     @Override
     public void init() {
         super.init();
-        container.setScreen(this);
         ActionButton clearBtn = addButton(new ActionButton(x + 92 + 43, y + backgroundHeight - 156 - 4, ActionItems.STASH, btn -> clear()));
         clearBtn.setHalfSize(true);
 
@@ -189,20 +188,13 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
 
     public void setMagnetModeText() {
         switch(magnetSettings.magnetMode) {
-            case INVALID:
-            case NO_CARD:
-                magnetCardToggleButton.setVisibility(false);
-                break;
             case OFF:
-                magnetCardToggleButton.setVisibility(true);
                 magnetCardToggleButton.setMessage(new TranslatableText("gui.ae2wtlib.magnetcard").append("\n").append(new TranslatableText("gui.ae2wtlib.magnetcard.desc.off")));
                 break;
             case PICKUP_INVENTORY:
-                magnetCardToggleButton.setVisibility(true);
                 magnetCardToggleButton.setMessage(new TranslatableText("gui.ae2wtlib.magnetcard").append("\n").append(new TranslatableText("gui.ae2wtlib.magnetcard.desc.inv")));
                 break;
             case PICKUP_ME:
-                magnetCardToggleButton.setVisibility(true);
                 magnetCardToggleButton.setMessage(new TranslatableText("gui.ae2wtlib.magnetcard").append("\n").append(new TranslatableText("gui.ae2wtlib.magnetcard.desc.me")));
                 break;
         }
