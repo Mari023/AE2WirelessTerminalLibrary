@@ -141,8 +141,8 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
      * @return the stored Item or {@link ItemStack}.EMPTY if it wasn't found
      */
     public ItemStack getSavedSlot(ItemStack hostItem, String slot) {
-        if(!(hostItem.getItem() instanceof ItemWT) || hostItem.getTag() == null) return ItemStack.EMPTY;
-        return ItemStack.fromTag(hostItem.getTag().getCompound(slot));
+        if(!(hostItem.getItem() instanceof ItemWT)) return ItemStack.EMPTY;
+        return ItemStack.fromTag(hostItem.getOrCreateTag().getCompound(slot));
     }
 
     /**
@@ -155,12 +155,10 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
      */
     public void setSavedSlot(ItemStack hostItem, ItemStack savedItem, String slot) {
         if(!(hostItem.getItem() instanceof ItemWT)) return;
-        CompoundTag wctTag = hostItem.getTag();
+        CompoundTag wctTag = hostItem.getOrCreateTag();
         if(savedItem.isEmpty()) {
-            if(wctTag == null) return;
             wctTag.remove(slot);
         } else {
-            if(wctTag == null) wctTag = new CompoundTag();
             wctTag.put(slot, savedItem.toTag(new CompoundTag()));
         }
         hostItem.setTag(wctTag);
@@ -173,8 +171,8 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
      * @return the boolean or false if it wasn't found
      */
     public boolean getBoolean(ItemStack hostItem, String key) {
-        if(!(hostItem.getItem() instanceof ItemWT) || hostItem.getTag() == null) return false;
-        return hostItem.getTag().getBoolean(key);
+        if(!(hostItem.getItem() instanceof ItemWT)) return false;
+        return hostItem.getOrCreateTag().getBoolean(key);
     }
 
     /**
@@ -187,10 +185,8 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
      */
     public void setBoolean(ItemStack hostItem, boolean b, String key) {
         if(!(hostItem.getItem() instanceof ItemWT)) return;
-        CompoundTag wctTag = hostItem.getTag();
-        if(wctTag == null) wctTag = new CompoundTag();
+        CompoundTag wctTag = hostItem.getOrCreateTag();
         wctTag.putBoolean(key, b);
-        hostItem.setTag(wctTag);
     }
 
     public boolean hasBoosterCard(ItemStack hostItem) {

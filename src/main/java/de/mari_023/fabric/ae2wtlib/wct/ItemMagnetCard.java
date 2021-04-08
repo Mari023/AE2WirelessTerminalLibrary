@@ -28,11 +28,10 @@ public class ItemMagnetCard extends Item {
     }
 
     public static void saveMagnetSettings(ItemStack is, MagnetSettings magnetSettings) {
-        is.getTag().put("magnet_settings", magnetSettings.toTag());
+        is.getOrCreateTag().put("magnet_settings", magnetSettings.toTag());
     }
 
     public static MagnetSettings loadMagnetSettings(ItemStack is) {
-        if(is.getTag() == null) return new MagnetSettings(null);
-        return new MagnetSettings((CompoundTag) is.getTag().get("magnet_settings"));
+        return new MagnetSettings((CompoundTag) is.getOrCreateTag().get("magnet_settings"));
     }
 }

@@ -220,6 +220,7 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
     }
 
     public MagnetSettings getMagnetSettings() {
+        if(magnetSettings == null) return reloadMagnetSettings();
         return magnetSettings;
     }
 
