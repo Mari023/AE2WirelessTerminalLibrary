@@ -169,6 +169,9 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
 
     private void setMagnetMode() {
         switch(magnetSettings.magnetMode) {
+            case INVALID:
+            case NO_CARD:
+                return;
             case OFF:
                 magnetSettings.magnetMode = MagnetMode.PICKUP_INVENTORY;
                 break;
@@ -188,6 +191,10 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
 
     public void setMagnetModeText() {
         switch(magnetSettings.magnetMode) {
+            case INVALID:
+            case NO_CARD:
+                magnetCardToggleButton.setMessage(new TranslatableText("gui.ae2wtlib.magnetcard").append("\n").append(new TranslatableText("gui.ae2wtlib.magnetcard.desc.empty")));
+                break;
             case OFF:
                 magnetCardToggleButton.setMessage(new TranslatableText("gui.ae2wtlib.magnetcard").append("\n").append(new TranslatableText("gui.ae2wtlib.magnetcard.desc.off")));
                 break;
