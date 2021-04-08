@@ -8,7 +8,7 @@ public class MagnetSettings {
 
     public MagnetSettings(CompoundTag tag) {
         if(tag == null) {
-            magnetMode = MagnetMode.INVALID;
+            magnetMode = MagnetMode.DEFAULT;
         } else {
             magnetMode = MagnetMode.fromByte(tag.getByte("magnetMode"));
         }

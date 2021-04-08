@@ -41,11 +41,11 @@ public class FixedWTInv implements FixedItemInv {
             return playerInventory.getStack(i + slotOffset);
         } else if(i == OFFHAND) return playerInventory.getStack(offHandSlot);
         else if(i == TRASH && wt.getItem() instanceof ItemWT)
-            return ((ItemWT) wt.getItem()).getSavedSlot(wt, "trash");
+            return ItemWT.getSavedSlot(wt, "trash");
         else if(i == INFINITY_BOOSTER_CARD && wt.getItem() instanceof IInfinityBoosterCardHolder)
             return ((IInfinityBoosterCardHolder) wt.getItem()).getBoosterCard(wt);
         else if(i == MAGNET_CARD && wt.getItem() instanceof ItemWT)
-            return ((ItemWT) wt.getItem()).getSavedSlot(wt, "magnetCard");
+            return ItemWT.getSavedSlot(wt, "magnetCard");
         return null;
     }
 
@@ -77,7 +77,7 @@ public class FixedWTInv implements FixedItemInv {
             if(simulation.isAction()) playerInventory.setStack(offHandSlot, itemStack);
             return true;
         } else if(i == TRASH) {
-            if(simulation.isAction()) ((ItemWT) wt.getItem()).setSavedSlot(wt, itemStack, "trash");
+            if(simulation.isAction()) ItemWT.setSavedSlot(wt, itemStack, "trash");
             return true;
         } else if(i == INFINITY_BOOSTER_CARD) {
             if(!(itemStack.getItem() instanceof ItemInfinityBooster) && !itemStack.equals(ItemStack.EMPTY))
@@ -89,7 +89,7 @@ public class FixedWTInv implements FixedItemInv {
         } else if(i == MAGNET_CARD) {
             if(!(itemStack.getItem() instanceof ItemMagnetCard) && !itemStack.equals(ItemStack.EMPTY)) return false;
             if(simulation.isAction()) {
-                ((ItemWT) wt.getItem()).setSavedSlot(wt, itemStack, "magnetCard");
+                ItemWT.setSavedSlot(wt, itemStack, "magnetCard");
                 if(host instanceof WCTContainer) ((WCTContainer) host).reloadMagnetSettings();
             }
             return true;
@@ -104,9 +104,9 @@ public class FixedWTInv implements FixedItemInv {
             if(simulation.isAction()) ((IInfinityBoosterCardHolder) wt.getItem()).setBoosterCard(wt, ItemStack.EMPTY);
             return boosterCard;
         } else if(slot == MAGNET_CARD) {
-            ItemStack magnetCard = ((ItemWT) wt.getItem()).getSavedSlot(wt, "magnetCard");
+            ItemStack magnetCard = ItemWT.getSavedSlot(wt, "magnetCard");
             if(simulation.isAction()) {
-                ((ItemWT) wt.getItem()).setSavedSlot(wt, ItemStack.EMPTY, "magnetCard");
+                ItemWT.setSavedSlot(wt, ItemStack.EMPTY, "magnetCard");
                 if(host instanceof WCTContainer) ((WCTContainer) host).reloadMagnetSettings();
             }
             return magnetCard;

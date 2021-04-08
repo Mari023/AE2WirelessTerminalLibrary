@@ -140,7 +140,7 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
      * @param slot     the location where the item is stored
      * @return the stored Item or {@link ItemStack}.EMPTY if it wasn't found
      */
-    public ItemStack getSavedSlot(ItemStack hostItem, String slot) {
+    public static ItemStack getSavedSlot(ItemStack hostItem, String slot) {
         if(!(hostItem.getItem() instanceof ItemWT)) return ItemStack.EMPTY;
         return ItemStack.fromTag(hostItem.getOrCreateTag().getCompound(slot));
     }
@@ -153,7 +153,7 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
      * @param savedItem the item to store
      * @param slot      the location where the stored item will be
      */
-    public void setSavedSlot(ItemStack hostItem, ItemStack savedItem, String slot) {
+    public static void setSavedSlot(ItemStack hostItem, ItemStack savedItem, String slot) {
         if(!(hostItem.getItem() instanceof ItemWT)) return;
         CompoundTag wctTag = hostItem.getOrCreateTag();
         if(savedItem.isEmpty()) {
@@ -161,7 +161,6 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
         } else {
             wctTag.put(slot, savedItem.toTag(new CompoundTag()));
         }
-        hostItem.setTag(wctTag);
     }
 
     /**
@@ -170,7 +169,7 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
      * @param hostItem the Terminal to load from
      * @return the boolean or false if it wasn't found
      */
-    public boolean getBoolean(ItemStack hostItem, String key) {
+    public static boolean getBoolean(ItemStack hostItem, String key) {
         if(!(hostItem.getItem() instanceof ItemWT)) return false;
         return hostItem.getOrCreateTag().getBoolean(key);
     }
@@ -183,7 +182,7 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
      * @param b        the boolean to store
      * @param key      the location where the stored item will be
      */
-    public void setBoolean(ItemStack hostItem, boolean b, String key) {
+    public static void setBoolean(ItemStack hostItem, boolean b, String key) {
         if(!(hostItem.getItem() instanceof ItemWT)) return;
         CompoundTag wctTag = hostItem.getOrCreateTag();
         wctTag.putBoolean(key, b);

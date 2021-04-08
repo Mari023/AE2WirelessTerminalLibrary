@@ -1,6 +1,7 @@
 package de.mari_023.fabric.ae2wtlib.wct;
 
 import de.mari_023.fabric.ae2wtlib.ae2wtlib;
+import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
@@ -27,11 +28,13 @@ public class ItemMagnetCard extends Item {
         lines.add(new TranslatableText("item.ae2wtlib.magnet_card.desc"));
     }
 
-    public static void saveMagnetSettings(ItemStack is, MagnetSettings magnetSettings) {
-        is.getOrCreateTag().put("magnet_settings", magnetSettings.toTag());
+    public static void saveMagnetSettings(ItemStack magnetCardHolder, MagnetSettings magnetSettings) {
+        ItemStack magnetCard = ItemWT.getSavedSlot(magnetCardHolder, "magnetCard");
+        magnetCard.getOrCreateTag().put("magnet_settings", magnetSettings.toTag());
     }
 
-    public static MagnetSettings loadMagnetSettings(ItemStack is) {
-        return new MagnetSettings((CompoundTag) is.getOrCreateTag().get("magnet_settings"));
+    public static MagnetSettings loadMagnetSettings(ItemStack magnetCardHolder) {
+        ItemStack magnetCard = ItemWT.getSavedSlot(magnetCardHolder, "magnetCard");
+        return new MagnetSettings((CompoundTag) magnetCard.getOrCreateTag().get("magnet_settings"));
     }
 }
