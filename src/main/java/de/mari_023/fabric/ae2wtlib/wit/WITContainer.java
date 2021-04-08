@@ -28,6 +28,7 @@ import appeng.util.inv.WrapperCursorItemHandler;
 import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.ContainerHelper;
 import de.mari_023.fabric.ae2wtlib.terminal.FixedWTInv;
+import de.mari_023.fabric.ae2wtlib.terminal.IWTInvHolder;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -45,7 +46,7 @@ import net.minecraft.util.Util;
 import java.util.HashMap;
 import java.util.Map;
 
-public class WITContainer extends AEBaseContainer {
+public class WITContainer extends AEBaseContainer implements IWTInvHolder {
 
     public static ScreenHandlerType<WITContainer> TYPE;
 
@@ -76,7 +77,7 @@ public class WITContainer extends AEBaseContainer {
 
         bindPlayerInventory(ip, 0, 222 - /* height of player inventory */82);
 
-        final FixedWTInv fixedWITInv = new FixedWTInv(getPlayerInv(), witGUIObject.getItemStack());
+        final FixedWTInv fixedWITInv = new FixedWTInv(getPlayerInv(), witGUIObject.getItemStack(), this);
         addSlot(new AppEngSlot(fixedWITInv, FixedWTInv.INFINITY_BOOSTER_CARD, 173, 129));
     }
 

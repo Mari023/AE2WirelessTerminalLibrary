@@ -4,6 +4,7 @@ import alexiil.mc.lib.attributes.Simulation;
 import alexiil.mc.lib.attributes.item.FixedItemInv;
 import alexiil.mc.lib.attributes.item.filter.ItemFilter;
 import de.mari_023.fabric.ae2wtlib.wct.ItemMagnetCard;
+import de.mari_023.fabric.ae2wtlib.wct.WCTContainer;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ArmorItem;
@@ -16,16 +17,17 @@ public class FixedWTInv implements FixedItemInv {
     public static final int INFINITY_BOOSTER_CARD = 6;
     public static final int MAGNET_CARD = 7;
 
-
     private final PlayerInventory playerInventory;
     private final ItemStack wt;
+    private final IWTInvHolder host;
 
     private static final int slotOffset = 36;
     private static final int offHandSlot = 40;
 
-    public FixedWTInv(PlayerInventory playerInventory, ItemStack wt) {
+    public FixedWTInv(PlayerInventory playerInventory, ItemStack wt, IWTInvHolder host) {
         this.playerInventory = playerInventory;
         this.wt = wt;
+        this.host = host;
     }
 
     @Override
@@ -86,8 +88,10 @@ public class FixedWTInv implements FixedItemInv {
             return true;
         } else if(i == MAGNET_CARD) {
             if(!(itemStack.getItem() instanceof ItemMagnetCard) && !itemStack.equals(ItemStack.EMPTY)) return false;
-            if(simulation.isAction())
+            if(simulation.isAction()) {
                 ((ItemWT) wt.getItem()).setSavedSlot(wt, itemStack, "magnetCard");
+                if(host instanceof WCTContainer) ((WCTContainer) host).reloadMagnetSettings();
+            }
             return true;
         }
         return false;
@@ -101,8 +105,10 @@ public class FixedWTInv implements FixedItemInv {
             return boosterCard;
         } else if(slot == MAGNET_CARD) {
             ItemStack magnetCard = ((ItemWT) wt.getItem()).getSavedSlot(wt, "magnetCard");
-            if(simulation.isAction())
+            if(simulation.isAction()) {
                 ((ItemWT) wt.getItem()).setSavedSlot(wt, ItemStack.EMPTY, "magnetCard");
+                if(host instanceof WCTContainer) ((WCTContainer) host).reloadMagnetSettings();
+            }
             return magnetCard;
         }
         return FixedItemInv.super.extractStack(slot, filter, mergeWith, maxCount, simulation);

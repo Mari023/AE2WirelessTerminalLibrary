@@ -35,6 +35,7 @@ import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.ContainerHelper;
 import de.mari_023.fabric.ae2wtlib.FixedViewCellInventory;
 import de.mari_023.fabric.ae2wtlib.terminal.FixedWTInv;
+import de.mari_023.fabric.ae2wtlib.terminal.IWTInvHolder;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -57,7 +58,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.world.World;
 
-public class WPTContainer extends MEMonitorableContainer implements IAEAppEngInventory, IOptionalSlotHost, IContainerCraftingPacket {
+public class WPTContainer extends MEMonitorableContainer implements IAEAppEngInventory, IOptionalSlotHost, IContainerCraftingPacket, IWTInvHolder {
 
     public static ScreenHandlerType<WPTContainer> TYPE;
 
@@ -98,7 +99,7 @@ public class WPTContainer extends MEMonitorableContainer implements IAEAppEngInv
         final FixedItemInv patternInv = getPatternTerminal().getInventoryByName("pattern");
         final FixedItemInv output = getPatternTerminal().getInventoryByName("output");
 
-        final FixedWTInv fixedWPTInv = new FixedWTInv(getPlayerInv(), wptGUIObject.getItemStack());
+        final FixedWTInv fixedWPTInv = new FixedWTInv(getPlayerInv(), wptGUIObject.getItemStack(), this);
 
         crafting = getPatternTerminal().getInventoryByName("crafting");
 

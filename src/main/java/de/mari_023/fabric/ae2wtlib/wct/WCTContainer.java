@@ -23,6 +23,7 @@ import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.ContainerHelper;
 import de.mari_023.fabric.ae2wtlib.FixedViewCellInventory;
 import de.mari_023.fabric.ae2wtlib.terminal.FixedWTInv;
+import de.mari_023.fabric.ae2wtlib.terminal.IWTInvHolder;
 import de.mari_023.fabric.ae2wtlib.terminal.ae2wtlibInternalInventory;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
 import net.fabricmc.api.EnvType;
@@ -32,7 +33,6 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeType;
@@ -43,7 +43,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.world.World;
 
-public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInventory, IContainerCraftingPacket {
+public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInventory, IContainerCraftingPacket, IWTInvHolder {
 
     public static ScreenHandlerType<WCTContainer> TYPE;
 
@@ -72,7 +72,7 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
         final int slotIndex = ((IInventorySlotAware) wctGUIObject).getInventorySlot();
         lockPlayerInventorySlot(slotIndex);
 
-        fixedWTInv = new FixedWTInv(getPlayerInv(), wctGUIObject.getItemStack());
+        fixedWTInv = new FixedWTInv(getPlayerInv(), wctGUIObject.getItemStack(), this);
         craftingGrid = new ae2wtlibInternalInventory(this, 9, "crafting", wctGUIObject.getItemStack());
         final FixedItemInv crafting = getInventoryByName("crafting");
 
@@ -212,23 +212,24 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
         fixedWTInv.setInvStack(FixedWTInv.TRASH, ItemStack.EMPTY, Simulation.ACTION);
     }
 
-    private MagnetMode magnetMode = MagnetMode.INVALID;
-    public void setMagnetMode(MagnetMode mode) {//TODO store magnetMode in Magnet Card and not in Terminal
-        CompoundTag tag = wctGUIObject.getItemStack().getTag();
-        if(tag == null) {
-            tag = new CompoundTag();
-            wctGUIObject.getItemStack().setTag(tag);
-        }
-        tag.putByte("magnetMode", mode.getId());
-        magnetMode = mode;
+    private MagnetSettings magnetSettings;
+
+    public void setMagnetSettings(MagnetSettings settings) {
+        magnetSettings = settings;
+        saveMagnetSettings();
     }
 
-    public MagnetMode getMagnetMode() {
-        if(magnetMode == MagnetMode.INVALID) {
-            if(wctGUIObject.getItemStack().getTag() == null) magnetMode = MagnetMode.NO_CARD;
-            else magnetMode = MagnetMode.fromByte(wctGUIObject.getItemStack().getTag().getByte("magnetMode"));
-        }
-        return magnetMode;
+    public MagnetSettings getMagnetSettings() {
+        return magnetSettings;
+    }
+
+    public void saveMagnetSettings() {
+        ItemMagnetCard.saveMagnetSettings(wctGUIObject.getItemStack(), magnetSettings);
+    }
+
+    public MagnetSettings reloadMagnetSettings() {
+        magnetSettings = ItemMagnetCard.loadMagnetSettings(wctGUIObject.getItemStack());
+        return magnetSettings;
     }
 
     public boolean isWUT() {

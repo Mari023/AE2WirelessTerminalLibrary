@@ -14,10 +14,7 @@ import appeng.core.Api;
 import de.mari_023.fabric.ae2wtlib.rei.REIRecipePacket;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemInfinityBooster;
 import de.mari_023.fabric.ae2wtlib.util.WirelessCraftAmountContainer;
-import de.mari_023.fabric.ae2wtlib.wct.ItemMagnetCard;
-import de.mari_023.fabric.ae2wtlib.wct.ItemWCT;
-import de.mari_023.fabric.ae2wtlib.wct.MagnetMode;
-import de.mari_023.fabric.ae2wtlib.wct.WCTContainer;
+import de.mari_023.fabric.ae2wtlib.wct.*;
 import de.mari_023.fabric.ae2wtlib.wit.ItemWIT;
 import de.mari_023.fabric.ae2wtlib.wit.WITContainer;
 import de.mari_023.fabric.ae2wtlib.wpt.ItemWPT;
@@ -100,7 +97,10 @@ public class ae2wtlib implements ModInitializer {
                 } else if(Name.startsWith("CraftingTerminal.") && c instanceof WCTContainer) {
                     final WCTContainer container = (WCTContainer) c;
                     if(Name.equals("CraftingTerminal.Delete")) container.deleteTrashSlot();
-                    else if(Name.equals("CraftingTerminal.SetMagnetMode")) container.setMagnetMode(MagnetMode.fromByte(value));
+                    else if(Name.equals("CraftingTerminal.SetMagnetMode")) {
+                        container.getMagnetSettings().magnetMode = MagnetMode.fromByte(value);
+                        container.saveMagnetSettings();
+                    }
                 }
                 buf.release();
             });

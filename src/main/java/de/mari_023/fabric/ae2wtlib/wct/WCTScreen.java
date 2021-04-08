@@ -82,7 +82,7 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
             }
         });
         magnetCardToggleButton.setHalfSize(true);
-        magnetMode = container.getMagnetMode();
+        magnetSettings = container.getMagnetSettings();
         setMagnetModeText();
 
         craftingStatusBtn = addButton(new TabButton(x + 169, y - 4, 2 + 11 * 16, GuiText.CraftingStatus.text(), itemRenderer, btn -> showWirelessCraftingStatus()));
@@ -166,29 +166,29 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
         ClientPlayNetworking.send(new Identifier("ae2wtlib", "general"), buf);
     }
 
-    MagnetMode magnetMode = MagnetMode.INVALID;
+    MagnetSettings magnetSettings = null;
 
     private void setMagnetMode() {
-        switch(magnetMode) {
+        switch(magnetSettings.magnetMode) {
             case OFF:
-                magnetMode = MagnetMode.PICKUP_INVENTORY;
+                magnetSettings.magnetMode = MagnetMode.PICKUP_INVENTORY;
                 break;
             case PICKUP_INVENTORY:
-                magnetMode = MagnetMode.PICKUP_ME;
+                magnetSettings.magnetMode = MagnetMode.PICKUP_ME;
                 break;
             case PICKUP_ME:
-                magnetMode = MagnetMode.OFF;
+                magnetSettings.magnetMode = MagnetMode.OFF;
                 break;
         }
         setMagnetModeText();
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeString("CraftingTerminal.SetMagnetMode");
-        buf.writeByte(magnetMode.getId());
+        buf.writeByte(magnetSettings.magnetMode.getId());
         ClientPlayNetworking.send(new Identifier("ae2wtlib", "general"), buf);
     }
 
     private void setMagnetModeText() {
-        switch(magnetMode) {
+        switch(magnetSettings.magnetMode) {
             case INVALID:
             case NO_CARD:
                 magnetCardToggleButton.setVisibility(false);
