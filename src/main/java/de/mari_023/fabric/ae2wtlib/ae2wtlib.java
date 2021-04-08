@@ -120,10 +120,16 @@ public class ae2wtlib implements ModInitializer {
             server.execute(() -> {
                 Identifier id = buf.readIdentifier();
                 final ScreenHandler c = player.currentScreenHandler;
-                if(!(c instanceof AEBaseContainer)) return;
+                if(!(c instanceof AEBaseContainer)) {
+                    buf.release();
+                    return;
+                }
                 AEBaseContainer container = (AEBaseContainer) c;
                 final ContainerLocator locator = container.getLocator();
-                if(locator == null) return;
+                if(locator == null) {
+                    buf.release();
+                    return;
+                }
                 switch(id.getPath()) {
                     case "wireless_crafting_terminal":
                         WCTContainer.open(player, locator);
@@ -192,17 +198,15 @@ public class ae2wtlib implements ModInitializer {
         });
         ServerPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "cycle_terminal"), (server, player, handler, buf, sender) -> server.execute(() -> {
             final ScreenHandler screenHandler = player.currentScreenHandler;
-            if(!(screenHandler instanceof AEBaseContainer)) {
-                buf.release();//FIXME might not need this
-                return;
-            }
+
+            if(!(screenHandler instanceof AEBaseContainer)) return;
+
             final AEBaseContainer container = (AEBaseContainer) screenHandler;
             final ContainerLocator locator = container.getLocator();
             ItemStack item = player.inventory.getStack(locator.getItemIndex());
-            if(!(item.getItem() instanceof ItemWUT)) {
-                buf.release();//FIXME might not need this
-                return;
-            }
+
+            if(!(item.getItem() instanceof ItemWUT)) return;
+
             WUTHandler.cycle(item);
 
             Hand hand;
