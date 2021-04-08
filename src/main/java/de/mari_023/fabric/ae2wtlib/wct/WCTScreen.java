@@ -63,6 +63,7 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
     @Override
     public void init() {
         super.init();
+        container.setScreen(this);
         ActionButton clearBtn = addButton(new ActionButton(x + 92 + 43, y + backgroundHeight - 156 - 4, ActionItems.STASH, btn -> clear()));
         clearBtn.setHalfSize(true);
 
@@ -83,7 +84,6 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
         });
         magnetCardToggleButton.setHalfSize(true);
         magnetSettings = container.getMagnetSettings();
-        setMagnetModeText();
 
         craftingStatusBtn = addButton(new TabButton(x + 169, y - 4, 2 + 11 * 16, GuiText.CraftingStatus.text(), itemRenderer, btn -> showWirelessCraftingStatus()));
         craftingStatusBtn.setHideEdge(true);
@@ -187,7 +187,7 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
         ClientPlayNetworking.send(new Identifier("ae2wtlib", "general"), buf);
     }
 
-    private void setMagnetModeText() {
+    public void setMagnetModeText() {
         switch(magnetSettings.magnetMode) {
             case INVALID:
             case NO_CARD:
