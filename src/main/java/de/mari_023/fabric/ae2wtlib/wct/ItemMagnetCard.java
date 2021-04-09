@@ -31,6 +31,7 @@ public class ItemMagnetCard extends Item {
     public static void saveMagnetSettings(ItemStack magnetCardHolder, MagnetSettings magnetSettings) {
         ItemStack magnetCard = ItemWT.getSavedSlot(magnetCardHolder, "magnetCard");
         magnetCard.getOrCreateTag().put("magnet_settings", magnetSettings.toTag());
+        ItemWT.setSavedSlot(magnetCardHolder, magnetCard, "magnetCard");
     }
 
     public static MagnetSettings loadMagnetSettings(ItemStack magnetCardHolder) {
