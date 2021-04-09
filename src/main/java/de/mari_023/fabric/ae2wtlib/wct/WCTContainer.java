@@ -230,7 +230,7 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
 
     public MagnetSettings reloadMagnetSettings() {
         magnetSettings = ItemMagnetCard.loadMagnetSettings(wctGUIObject.getItemStack());
-        if(isClient() && screen != null) screen.setMagnetModeText();
+        if(isClient() && screen != null) screen.resetMagnetSettings();
         return magnetSettings;
     }
 

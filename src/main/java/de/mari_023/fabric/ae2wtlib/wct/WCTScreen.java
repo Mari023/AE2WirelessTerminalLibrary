@@ -63,7 +63,6 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
     @Override
     public void init() {
         super.init();
-        container.setScreen(this);
         ActionButton clearBtn = addButton(new ActionButton(x + 92 + 43, y + backgroundHeight - 156 - 4, ActionItems.STASH, btn -> clear()));
         clearBtn.setHalfSize(true);
 
@@ -83,7 +82,8 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
             }
         });
         magnetCardToggleButton.setHalfSize(true);
-        magnetSettings = container.getMagnetSettings();
+        resetMagnetSettings();
+        container.setScreen(this);
 
         craftingStatusBtn = addButton(new TabButton(x + 169, y - 4, 2 + 11 * 16, GuiText.CraftingStatus.text(), itemRenderer, btn -> showWirelessCraftingStatus()));
         craftingStatusBtn.setHideEdge(true);
@@ -166,7 +166,12 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
         ClientPlayNetworking.send(new Identifier("ae2wtlib", "general"), buf);
     }
 
-    MagnetSettings magnetSettings = null;
+    private MagnetSettings magnetSettings = null;
+
+    public void resetMagnetSettings() {
+        magnetSettings = container.getMagnetSettings();
+        setMagnetModeText();
+    }
 
     private void setMagnetMode() {
         switch(magnetSettings.magnetMode) {
@@ -190,19 +195,22 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
         ClientPlayNetworking.send(new Identifier("ae2wtlib", "general"), buf);
     }
 
-    public void setMagnetModeText() {
+    private void setMagnetModeText() {
         switch(magnetSettings.magnetMode) {
             case INVALID:
             case NO_CARD:
-                magnetCardToggleButton.setMessage(new TranslatableText("gui.ae2wtlib.magnetcard").append("\n").append(new TranslatableText("gui.ae2wtlib.magnetcard.desc.empty")));
+                magnetCardToggleButton.setVisibility(false);
                 break;
             case OFF:
+                magnetCardToggleButton.setVisibility(true);
                 magnetCardToggleButton.setMessage(new TranslatableText("gui.ae2wtlib.magnetcard").append("\n").append(new TranslatableText("gui.ae2wtlib.magnetcard.desc.off")));
                 break;
             case PICKUP_INVENTORY:
+                magnetCardToggleButton.setVisibility(true);
                 magnetCardToggleButton.setMessage(new TranslatableText("gui.ae2wtlib.magnetcard").append("\n").append(new TranslatableText("gui.ae2wtlib.magnetcard.desc.inv")));
                 break;
             case PICKUP_ME:
+                magnetCardToggleButton.setVisibility(true);
                 magnetCardToggleButton.setMessage(new TranslatableText("gui.ae2wtlib.magnetcard").append("\n").append(new TranslatableText("gui.ae2wtlib.magnetcard.desc.me")));
                 break;
         }
