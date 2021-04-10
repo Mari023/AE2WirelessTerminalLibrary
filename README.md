@@ -17,7 +17,6 @@ Missing Features / Known Issues
 - Curios support
 - Keybinds to open Terminals
 - support for viewcells
-- There are currently only placeholder Textures
 
 
 FAQ
