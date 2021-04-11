@@ -9,7 +9,7 @@ sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
 archivesBaseName = project.archives_base_name
-version = project.mod_version
+version = project.mod_version+"-"+project.versionType
 group = project.maven_group
 
 repositories {
@@ -96,9 +96,9 @@ import com.modrinth.minotaur.TaskModrinthUpload
 task publishModrinth(type: TaskModrinthUpload) {
     token = System.getenv("MODRINTH_TOKEN")
     projectId = 'pNabrMMw'
-    versionNumber = '1.0.0-alpha.' + System.getenv("RUN_ID")
+    versionNumber = project.version
     uploadFile = remapJar
-    releaseType = 'alpha'
+    releaseType = project.versionType
     addGameVersion('1.16.5')
     addLoader('fabric')
 }
@@ -107,12 +107,12 @@ curseforge {
     apiKey = System.getenv("CURSEFORGE_TOKEN")
     project {
         id = '459929'
-        releaseType = 'alpha'
+        releaseType = project.versionType
         addGameVersion '1.16.5'
         addGameVersion 'Fabric'
         addGameVersion "Java 8"
         mainArtifact(remapJar) {
-            displayName = '1.0.0-alpha.' + System.getenv("RUN_ID")
+            displayName = project.version
         }
 
 
