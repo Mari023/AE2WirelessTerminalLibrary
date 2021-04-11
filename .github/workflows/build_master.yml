@@ -5,8 +5,6 @@ name: build master
 on:
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
 
 jobs:
   build:
@@ -36,8 +34,8 @@ jobs:
       run: ./gradlew remapJar
       env:
         CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
+        HASH: $(git rev-parse --short "$GITHUB_SHA")
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v2.2.2
-      with: 
-        name: AE2WTLib.jar
-        path: build/libs/AE2WTLib-1.0-SNAPSHOT.jar
+      with:
+        path: build/libs/AE2WTLib-**.jar

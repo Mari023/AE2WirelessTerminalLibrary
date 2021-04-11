@@ -8,8 +8,33 @@ plugins {
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
+version = project.mod_version + "-SNAPSHOT"
+versionType = project.versionType
+boolean shouldPublish = false
+
+ext.pr = System.getenv('PR_NUMBER') ?: ""
+if (ext.pr) {
+    version = project.mod_version + "+pr" + ext.pr
+}
+
+ext.tag = System.getenv('TAG') ?: ""
+if (ext.tag) {
+    version = ext.tag
+    if (project.version.contains("alpha")) {
+        versionType = "alpha"
+        shouldPublish = true
+    }
+    if (project.version.contains("beta")) {
+        versionType = "beta"
+        shouldPublish = true
+    }
+    if (project.version.contains("release")) {
+        versionType = "release"
+        shouldPublish = true
+    }
+}
+
 archivesBaseName = project.archives_base_name
-version = project.mod_version+"-"+project.versionType
 group = project.maven_group
 
 repositories {
@@ -94,37 +119,43 @@ task sourcesJar(type: Jar, dependsOn: classes) {
 import com.modrinth.minotaur.TaskModrinthUpload
 
 task publishModrinth(type: TaskModrinthUpload) {
-    token = System.getenv("MODRINTH_TOKEN")
-    projectId = 'pNabrMMw'
-    versionNumber = project.version
-    uploadFile = remapJar
-    releaseType = project.versionType
-    addGameVersion('1.16.5')
-    addLoader('fabric')
+    if (shouldPublish) {
+        token = System.getenv("MODRINTH_TOKEN")
+        projectId = 'pNabrMMw'
+        changelog = System.getenv("CHANGELOG") ?: "Please visit our [releases](https://github.com/Mari023/AE2WirelessTerminalLibrary/releases) for a changelog"
+        versionNumber = project.version
+        uploadFile = remapJar
+        releaseType = versionType
+        addGameVersion('1.16.5')
+        addLoader('fabric')
+    }
 }
 
 curseforge {
-    apiKey = System.getenv("CURSEFORGE_TOKEN")
-    project {
-        id = '459929'
-        releaseType = project.versionType
-        addGameVersion '1.16.5'
-        addGameVersion 'Fabric'
-        addGameVersion "Java 8"
-        mainArtifact(remapJar) {
-            displayName = project.version
-        }
+    if (shouldPublish) {
+        apiKey = System.getenv("CURSEFORGE_TOKEN")
+        project {
+            id = '459929'
+            changelogType = "markdown"
+            changelog = System.getenv("CHANGELOG") ?: "Please visit our [releases](https://github.com/Mari023/AE2WirelessTerminalLibrary/releases) for a changelog"
+            releaseType = versionType
+            addGameVersion '1.16.5'
+            addGameVersion 'Fabric'
+            addGameVersion "Java 8"
+            mainArtifact(remapJar) {
+                displayName = project.version
+            }
 
-
-        relations {
-            requiredDependency 'fabric-api'
-            requiredDependency 'applied-energistics-2'
-            requiredDependency 'roughly-enough-items'
-            requiredDependency 'nbt-crafting'
-            optionalDependency 'curios-fabric'
-        }
-        afterEvaluate {
-            uploadTask.dependsOn(remapJar)
+            relations {
+                requiredDependency 'fabric-api'
+                requiredDependency 'applied-energistics-2'
+                requiredDependency 'roughly-enough-items'
+                requiredDependency 'nbt-crafting'
+                optionalDependency 'curios-fabric'
+            }
+            afterEvaluate {
+                uploadTask.dependsOn(remapJar)
+            }
         }
     }
     options {
