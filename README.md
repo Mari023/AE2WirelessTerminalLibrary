@@ -1,4 +1,4 @@
-[![Java CI with Gradle](https://github.com/Mari023/AE2WirelessTerminalLibrary/actions/workflows/gradle.yml/badge.svg)](https://github.com/Mari023/AE2WirelessTerminalLibrary/actions/workflows/gradle.yml)
+[![build master](https://github.com/Mari023/AE2WirelessTerminalLibrary/actions/workflows/build_master.yml/badge.svg)](https://github.com/Mari023/AE2WirelessTerminalLibrary/actions/workflows/build_master.yml)
 [![Curseforge downloads](http://cf.way2muchnoise.eu/full_459929_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/applied-energistics-2-wireless-terminals)
 [![Curseforge Versions](http://cf.way2muchnoise.eu/versions/459929.svg)](https://www.curseforge.com/minecraft/mc-mods/applied-energistics-2-wireless-terminals/files)
 
