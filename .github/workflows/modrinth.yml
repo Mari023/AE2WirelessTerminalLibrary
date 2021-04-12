@@ -35,6 +35,10 @@ jobs:
         run: ./gradlew remapJar
         env:
           CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
+      - name: Upload a Build Artifact for debug purposes only
+        uses: actions/upload-artifact@v2.2.2
+        with:
+          path: build/libs/AE2WTLib-**.jar
       - name: modrinth task
         run: ./gradlew publishModrinth
         env:
