@@ -220,8 +220,6 @@ public class ae2wtlib implements ModInitializer {
             WUTHandler.open(player, hand);
         }));
 
-        ServerTickEvents.START_SERVER_TICK.register(minecraftServer -> {
-            new MagnetHandler().doMagnet(minecraftServer);
-        });
+        ServerTickEvents.START_SERVER_TICK.register(minecraftServer -> new MagnetHandler().doMagnet(minecraftServer));
     }
 }
