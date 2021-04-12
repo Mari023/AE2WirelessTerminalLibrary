@@ -54,7 +54,7 @@ public class ae2wtlib implements ModInitializer {
     @Override
     public void onInitialize() {
         Registry.register(Registry.ITEM, new Identifier("ae2wtlib", "infinity_booster_card"), INFINITY_BOOSTER);
-        Registry.register(Registry.ITEM, new Identifier("ae2wtlib", "de/mari_023/fabric/ae2wtlib/wct/magnet_card"), MAGNET_CARD);
+        Registry.register(Registry.ITEM, new Identifier("ae2wtlib", "magnet_card"), MAGNET_CARD);
         Registry.register(Registry.ITEM, new Identifier("ae2wtlib", "wireless_crafting_terminal"), CRAFTING_TERMINAL);
         Registry.register(Registry.ITEM, new Identifier("ae2wtlib", "wireless_pattern_terminal"), PATTERN_TERMINAL);
         Registry.register(Registry.ITEM, new Identifier("ae2wtlib", "wireless_interface_terminal"), INTERFACE_TERMINAL);
