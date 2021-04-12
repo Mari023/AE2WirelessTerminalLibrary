@@ -1,24 +1,15 @@
 {
   "result": {
-    "item": "ae2wtlib:magnet_card"
+    "item": "ae2wtlib:infinity_booster_card"
   },
   "type": "minecraft:crafting_shaped",
-  "pattern": ["abc", "ded", "ddd"],
+  "pattern": ["a a", " b "],
   "key": {
     "a": {
-      "item": "minecraft:redstone_block"
+      "item": "appliedenergistics2:fluix_pearl"
     },
     "b": {
-      "item": "appliedenergistics2:annihilation_plane"
-    },
-    "c": {
-      "item": "minecraft:lapis_block"
-    },
-    "d": {
-      "item": "minecraft:iron_block"
-    },
-    "e": {
-      "item": "appliedenergistics2:advanced_card"
+      "item": "appliedenergistics2:wireless_receiver"
     }
   }
 }
