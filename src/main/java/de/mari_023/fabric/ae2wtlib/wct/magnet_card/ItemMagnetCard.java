@@ -41,11 +41,13 @@ public class ItemMagnetCard extends Item {
     }
 
     public static boolean isActiveMagnet(ItemStack magnetCardHolder) {
+        if(magnetCardHolder.isEmpty()) return false;
         MagnetSettings settings = loadMagnetSettings(magnetCardHolder);
         return settings.magnetMode == MagnetMode.PICKUP_INVENTORY || settings.magnetMode == MagnetMode.PICKUP_ME;
     }
 
     public static boolean isPickupME(ItemStack magnetCardHolder) {
+        if(magnetCardHolder.isEmpty()) return false;
         MagnetSettings settings = loadMagnetSettings(magnetCardHolder);
         return settings.magnetMode == MagnetMode.PICKUP_ME;
     }
