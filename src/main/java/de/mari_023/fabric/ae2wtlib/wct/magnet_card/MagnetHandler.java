@@ -21,7 +21,6 @@ public class MagnetHandler {
                     if(ItemMagnetCard.isActiveMagnet(magnetCardHolder)) {
                         List<ItemEntity> entityItems = player.getServerWorld().getEntitiesByClass(ItemEntity.class, player.getBoundingBox().expand(16.0D), EntityPredicates.VALID_ENTITY);
                         for(ItemEntity entityItemNearby : entityItems) {
-                            if(entityItemNearby.getStack().getTag() != null && entityItemNearby.getStack().getTag().contains("PreventRemoteMovement")) continue;
                             if(!player.isSneaking()) {
                                 entityItemNearby.onPlayerCollision(player);
                             }
