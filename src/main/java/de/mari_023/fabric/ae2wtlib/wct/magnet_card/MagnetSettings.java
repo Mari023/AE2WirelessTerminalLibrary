@@ -1,4 +1,4 @@
-package de.mari_023.fabric.ae2wtlib.wct;
+package de.mari_023.fabric.ae2wtlib.wct.magnet_card;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;

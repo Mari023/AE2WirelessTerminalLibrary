@@ -16,6 +16,8 @@ import appeng.helpers.InventoryAction;
 import com.mojang.blaze3d.systems.RenderSystem;
 import de.mari_023.fabric.ae2wtlib.wut.CycleTerminalButton;
 import de.mari_023.fabric.ae2wtlib.wut.IUniversalTerminalCapable;
+import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetMode;
+import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetSettings;
 import me.shedaniel.math.Rectangle;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;

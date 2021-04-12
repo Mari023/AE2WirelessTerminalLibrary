@@ -26,6 +26,8 @@ import de.mari_023.fabric.ae2wtlib.terminal.FixedWTInv;
 import de.mari_023.fabric.ae2wtlib.terminal.IWTInvHolder;
 import de.mari_023.fabric.ae2wtlib.terminal.ae2wtlibInternalInventory;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
+import de.mari_023.fabric.ae2wtlib.wct.magnet_card.ItemMagnetCard;
+import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetSettings;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.player.PlayerEntity;

@@ -1,4 +1,4 @@
-package de.mari_023.fabric.ae2wtlib.wct;
+package de.mari_023.fabric.ae2wtlib.wct.magnet_card;
 
 public enum MagnetMode {
     INVALID((byte) -2), NO_CARD((byte) -1), OFF((byte) 0), PICKUP_INVENTORY((byte) 1), PICKUP_ME((byte) 2);

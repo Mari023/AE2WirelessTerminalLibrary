@@ -1,4 +1,4 @@
-package de.mari_023.fabric.ae2wtlib.wct;
+package de.mari_023.fabric.ae2wtlib.wct.magnet_card;
 
 import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
@@ -25,7 +25,7 @@ public class ItemMagnetCard extends Item {
     @Environment(EnvType.CLIENT)
     public void appendTooltip(final ItemStack stack, final World world, final List<Text> lines, final TooltipContext advancedTooltips) {
         super.appendTooltip(stack, world, lines, advancedTooltips);
-        lines.add(new TranslatableText("item.ae2wtlib.magnet_card.desc"));
+        lines.add(new TranslatableText("item.ae2wtlib.de.mari_023.fabric.ae2wtlib.wct.magnet_card.desc"));
     }
 
     public static void saveMagnetSettings(ItemStack magnetCardHolder, MagnetSettings magnetSettings) {
