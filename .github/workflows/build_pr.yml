@@ -1,11 +1,11 @@
 # This workflow will build a Java project with Gradle
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
 
-name: publish to modrinth and curseforge
-
+name: build pr
 on:
-  release:
-    types: [published]
+  pull_request:
+    branches:
+      - '*'
 
 jobs:
   build:
@@ -35,14 +35,8 @@ jobs:
         run: ./gradlew remapJar
         env:
           CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
-      - name: modrinth task
-        run: ./gradlew publishModrinth
-        env:
-          CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
-          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
-          CHANGELOG: ${{ github.event.release.body }}
-      - name: curseForge Task
-        run: ./gradlew curseforge
-        env:
-          CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
-          CHANGELOG: ${{ github.event.release.body }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v2.2.2
+        with:
+          path: build/libs/AE2WTLib-**.jar

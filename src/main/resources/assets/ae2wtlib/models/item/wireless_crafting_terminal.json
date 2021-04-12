@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "ae2wtlib:wct"
+    "layer0": "ae2wtlib:wireless_crafting_terminal"
   }
 }
