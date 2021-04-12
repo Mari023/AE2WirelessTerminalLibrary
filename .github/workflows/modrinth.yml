@@ -40,9 +40,11 @@ jobs:
         env:
           CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+          TAG: ${{ github.event.release.tag_name }}
           CHANGELOG: ${{ github.event.release.body }}
       - name: curseForge Task
         run: ./gradlew curseforge
         env:
           CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
+          TAG: ${{ github.event.release.tag_name }}
           CHANGELOG: ${{ github.event.release.body }}
