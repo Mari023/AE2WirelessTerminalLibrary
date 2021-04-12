@@ -122,12 +122,12 @@ task publishModrinth(type: TaskModrinthUpload) {
     if (shouldPublish) {
         token = System.getenv("MODRINTH_TOKEN")
         projectId = 'pNabrMMw'
-        changelog = System.getenv("CHANGELOG") ?: "Please visit our [releases](https://github.com/Mari023/AE2WirelessTerminalLibrary/releases) for a changelog"
-        versionNumber = project.version
         uploadFile = remapJar
-        releaseType = versionType
         addGameVersion('1.16.5')
         addLoader('fabric')
+        versionNumber = project.version
+        releaseType = versionType
+        changelog = System.getenv("CHANGELOG") ?: "Please visit our [releases](https://github.com/Mari023/AE2WirelessTerminalLibrary/releases) for a changelog"
     }
 }
 
