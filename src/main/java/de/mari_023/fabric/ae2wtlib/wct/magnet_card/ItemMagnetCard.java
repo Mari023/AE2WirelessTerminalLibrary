@@ -39,4 +39,14 @@ public class ItemMagnetCard extends Item {
         if(magnetCard.isEmpty()) return new MagnetSettings();
         return new MagnetSettings((CompoundTag) magnetCard.getOrCreateTag().get("magnet_settings"));
     }
+
+    public static boolean isActiveMagnet(ItemStack magnetCardHolder) {
+        MagnetSettings settings = loadMagnetSettings(magnetCardHolder);
+        return settings.magnetMode == MagnetMode.PICKUP_INVENTORY || settings.magnetMode == MagnetMode.PICKUP_ME;
+    }
+
+    public static boolean isPickupME(ItemStack magnetCardHolder) {
+        MagnetSettings settings = loadMagnetSettings(magnetCardHolder);
+        return settings.magnetMode == MagnetMode.PICKUP_ME;
+    }
 }
