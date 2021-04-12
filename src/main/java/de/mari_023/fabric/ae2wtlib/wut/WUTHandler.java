@@ -10,6 +10,12 @@ import java.util.HashMap;
 import java.util.List;
 
 public class WUTHandler {
+    public static boolean hasTerminal(ItemStack itemStack, String terminal) {
+        if(!terminalNames.contains(terminal)) return false;
+        if(itemStack.getTag() == null) return false;
+        return itemStack.getTag().getBoolean(terminal);
+    }
+
     public static void cycle(ItemStack itemStack) {
         if(itemStack.getTag() == null) return;
         String nextTerminal = itemStack.getTag().getString("currentTerminal");
