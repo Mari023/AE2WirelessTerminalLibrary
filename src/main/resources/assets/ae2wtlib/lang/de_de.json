@@ -5,6 +5,7 @@
   "gui.ae2wtlib.emptytrash.desc": "Löscht den Inhalt des Müll slots",
 
   "item.ae2wtlib.infinity_booster_card": "Unendlicher Drahtlosverstärker",
+  "item.ae2wtlib.infinity_booster_card.desc": "Erweitert die Reichweite von Drahtloskonsolen ins unendliche",
   "item.ae2wtlib.magnet_card": "Magnet Karte",
   "item.ae2wtlib.magnet_card.desc": "Magnet Upgrade für die Drahtlose Fertigungskonsole",
   "gui.ae2wtlib.magnet_card": "Magnet Karte",
