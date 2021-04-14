@@ -7,7 +7,8 @@
     "CfgValuePacket",
     "InvActionPacket",
     "MEInvUpdatePacket",
-    "PlayerInventoryInsertStack"
+    "PlayerInventoryInsertStack",
+    "Restock"
   ],
   "client": [
   ],
