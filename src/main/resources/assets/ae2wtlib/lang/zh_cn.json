@@ -6,7 +6,7 @@
 
   "item.ae2wtlib.infinity_booster_card": "无限增幅卡",
   "item.ae2wtlib.magnet_card": "磁卡",
-  "item.ae2wtlib.magnet_card.desc": "尚未实现",
+  "outdated.item.ae2wtlib.magnet_card.desc": "尚未实现",
 
   "item.ae2wtlib.wireless_crafting_terminal": "无线合成终端",
   "item.ae2wtlib.wireless_pattern_terminal": "无线样板终端",
