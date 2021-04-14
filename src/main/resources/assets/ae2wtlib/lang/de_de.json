@@ -7,9 +7,10 @@
   "item.ae2wtlib.infinity_booster_card": "Unendlicher Drahtlosverstärker",
   "item.ae2wtlib.magnet_card": "Magnet Karte",
   "item.ae2wtlib.magnet_card.desc": "Magnet Upgrade für die Drahtlose Fertigungskonsole",
-  "gui.ae2wtlib.magnetcard.desc.off": "Magnet Karte: Aus",
-  "gui.ae2wtlib.magnetcard.desc.inv": "Magnet Karte: Items werden in das Inventar eingesammelt",
-  "gui.ae2wtlib.magnetcard.desc.me": "Magnet Karte: Items werden in das Inventar eingesammelt",
+  "gui.ae2wtlib.magnet_card": "Magnet Karte",
+  "gui.ae2wtlib.magnetcard.desc.off": "Aus",
+  "gui.ae2wtlib.magnetcard.desc.inv": "Items werden in das Inventar eingesammelt",
+  "gui.ae2wtlib.magnetcard.desc.me": "Items werden in das Inventar eingesammelt",
 
   "item.ae2wtlib.wireless_crafting_terminal": "Drahtlose Fertigungskonsole",
   "item.ae2wtlib.wireless_pattern_terminal": "Drahtlose Schablonenkonsole",
