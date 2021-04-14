@@ -29,7 +29,7 @@ public class MagnetHandler {
         }
     }
 
-    public ItemStack getCraftingTerminal(PlayerEntity player) {
+    public static ItemStack getCraftingTerminal(PlayerEntity player) {
         PlayerInventory inv = player.inventory;
         for(int i = 0; i < inv.size(); i++) {
             ItemStack terminal = inv.getStack(i);

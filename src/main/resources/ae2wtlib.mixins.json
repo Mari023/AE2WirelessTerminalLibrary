@@ -6,7 +6,8 @@
   "mixins": [
     "CfgValuePacket",
     "InvActionPacket",
-    "MEInvUpdatePacket"
+    "MEInvUpdatePacket",
+    "PlayerInventoryInsertStack"
   ],
   "client": [
   ],
