@@ -22,8 +22,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Util;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerInventory.class)
 public abstract class PlayerInventoryInsertStack {
@@ -33,14 +35,9 @@ public abstract class PlayerInventoryInsertStack {
     public
     PlayerEntity player;
 
-    @Shadow
-    public abstract boolean insertStack(int slot, ItemStack stack);
-
-    /**
-     * @author Mari_023
-     */
-    @Overwrite
-    public boolean insertStack(ItemStack stack) {
+    @Inject(method = "insertStack(Lnet/minecraft/item/ItemStack;)Z", at = @At(value = "INVOKE"), require = 1, allow = 1, remap = false)
+    public void insertStackInME(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
+        if(stack.isEmpty()) return;
         ItemStack terminal = MagnetHandler.getCraftingTerminal(player);
         if(ItemMagnetCard.isPickupME(terminal)) {
             final String unparsedKey = ((ItemWT) terminal.getItem()).getEncryptionKey(terminal);
@@ -57,10 +54,7 @@ public abstract class PlayerInventoryInsertStack {
 
             if(leftover == null || leftover.createItemStack().isEmpty()) {
                 stack.setCount(0);
-                return true;
-            }
-            stack.setCount(leftover.createItemStack().getCount());
+            } else stack.setCount(leftover.createItemStack().getCount());
         }
-        return insertStack(-1, stack);
     }
 }
