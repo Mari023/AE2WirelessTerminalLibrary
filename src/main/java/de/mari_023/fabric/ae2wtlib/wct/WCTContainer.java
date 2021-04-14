@@ -23,8 +23,11 @@ import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.ContainerHelper;
 import de.mari_023.fabric.ae2wtlib.FixedViewCellInventory;
 import de.mari_023.fabric.ae2wtlib.terminal.FixedWTInv;
+import de.mari_023.fabric.ae2wtlib.terminal.IWTInvHolder;
 import de.mari_023.fabric.ae2wtlib.terminal.ae2wtlibInternalInventory;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
+import de.mari_023.fabric.ae2wtlib.wct.magnet_card.ItemMagnetCard;
+import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetSettings;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.player.PlayerEntity;
@@ -42,7 +45,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.world.World;
 
-public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInventory, IContainerCraftingPacket {
+public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInventory, IContainerCraftingPacket, IWTInvHolder {
 
     public static ScreenHandlerType<WCTContainer> TYPE;
 
@@ -71,7 +74,7 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
         final int slotIndex = ((IInventorySlotAware) wctGUIObject).getInventorySlot();
         lockPlayerInventorySlot(slotIndex);
 
-        fixedWTInv = new FixedWTInv(getPlayerInv(), wctGUIObject.getItemStack());
+        fixedWTInv = new FixedWTInv(getPlayerInv(), wctGUIObject.getItemStack(), this);
         craftingGrid = new ae2wtlibInternalInventory(this, 9, "crafting", wctGUIObject.getItemStack());
         final FixedItemInv crafting = getInventoryByName("crafting");
 
@@ -116,7 +119,7 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
         });
         addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.TRASH, 98, -22));
         addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.INFINITY_BOOSTER_CARD, 134, -20));
-        addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.MAGNET_CARD, 152, -20));
+        addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.MAGNET_CARD, 152, -20));//TODO fetch texture for card background
     }
 
     private int ticks = 0;
@@ -131,7 +134,6 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
                 getPlayerInv().player.sendSystemMessage(PlayerMessages.OutOfRange.get(), Util.NIL_UUID);
                 ((ServerPlayerEntity) getPlayerInv().player).closeHandledScreen();
             }
-
             setValidContainer(false);
         } else {
             double powerMultiplier = Config.getPowerMultiplier(wctGUIObject.getRange(), wctGUIObject.isOutOfRange());
@@ -146,7 +148,6 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
                     getPlayerInv().player.sendSystemMessage(PlayerMessages.DeviceNotPowered.get(), Util.NIL_UUID);
                     ((ServerPlayerEntity) getPlayerInv().player).closeHandledScreen();
                 }
-
                 setValidContainer(false);
             }
         }
@@ -211,6 +212,36 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
 
     public void deleteTrashSlot() {
         fixedWTInv.setInvStack(FixedWTInv.TRASH, ItemStack.EMPTY, Simulation.ACTION);
+    }
+
+    private MagnetSettings magnetSettings;
+
+    public void setMagnetSettings(MagnetSettings settings) {
+        magnetSettings = settings;
+        saveMagnetSettings();
+    }
+
+    public MagnetSettings getMagnetSettings() {
+        if(magnetSettings == null) return reloadMagnetSettings();
+        return magnetSettings;
+    }
+
+    public void saveMagnetSettings() {
+        ItemMagnetCard.saveMagnetSettings(wctGUIObject.getItemStack(), magnetSettings);
+    }
+
+    public MagnetSettings reloadMagnetSettings() {
+        magnetSettings = ItemMagnetCard.loadMagnetSettings(wctGUIObject.getItemStack());
+        if(isClient() && screen != null) screen.resetMagnetSettings();
+        return magnetSettings;
+    }
+
+    @Environment(EnvType.CLIENT)
+    private WCTScreen screen;
+
+    @Environment(EnvType.CLIENT)
+    public void setScreen(WCTScreen screen) {
+        this.screen = screen;
     }
 
     public boolean isWUT() {

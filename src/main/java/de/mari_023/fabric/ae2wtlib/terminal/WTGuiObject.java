@@ -135,10 +135,6 @@ public class WTGuiObject implements IGuiItemObject, IEnergySource, IActionHost, 
         return sg;
     }
 
-    public IMEMonitor<IAEItemStack> getItemStorage() {
-        return itemStorage;
-    }
-
     @Override
     public IGridNode getActionableNode() {
         rangeCheck();

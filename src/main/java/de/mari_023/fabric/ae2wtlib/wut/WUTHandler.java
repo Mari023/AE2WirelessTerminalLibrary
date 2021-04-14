@@ -10,6 +10,12 @@ import java.util.HashMap;
 import java.util.List;
 
 public class WUTHandler {
+    public static boolean hasTerminal(ItemStack itemStack, String terminal) {
+        if(!terminalNames.contains(terminal)) return false;
+        if(itemStack.getTag() == null) return false;
+        return itemStack.getTag().getBoolean(terminal);
+    }
+
     public static void cycle(ItemStack itemStack) {
         if(itemStack.getTag() == null) return;
         String nextTerminal = itemStack.getTag().getString("currentTerminal");
@@ -36,23 +42,18 @@ public class WUTHandler {
         if(is.getTag() == null) return;
         String currentTerminal = is.getTag().getString("currentTerminal");
 
+        if(!wirelessTerminals.containsKey(currentTerminal)) for(String terminal : terminalNames)
+            if(is.getTag().getBoolean(terminal)) {
+                currentTerminal = terminal;
+                is.getTag().putString("currentTerminal", currentTerminal);
+                break;
+            }
         if(!wirelessTerminals.containsKey(currentTerminal)) {
-            for(String terminal : terminalNames) {
-                if(is.getTag().getBoolean(terminal)) {
-                    currentTerminal = terminal;
-                    is.getTag().putString("currentTerminal", currentTerminal);
-                    break;
-                }
-            }
-            if(!wirelessTerminals.containsKey(currentTerminal)) {
-                player.sendMessage(new LiteralText("This terminal does not contain any other Terminals"), false);
-                return;
-            }
+            player.sendMessage(new LiteralText("This terminal does not contain any other Terminals"), false);
+            return;
         }
-
         wirelessTerminals.get(currentTerminal).open(player, hand);
     }
-
 
     private static final HashMap<String, containerOpener> wirelessTerminals = new HashMap<>();
     private static final List<String> terminalNames = new ArrayList<>();

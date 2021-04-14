@@ -127,22 +127,17 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
             offset += 18;
         }
 
-        if(searchField != null) {
-            searchField.render(matrices, mouseX, mouseY, partialTicks);
-        }
+        if(searchField != null) searchField.render(matrices, mouseX, mouseY, partialTicks);
     }
 
     @Override
     public boolean charTyped(char character, int key) {
-        if(character == ' ' && searchField.getText().isEmpty()) {
-            return true;
-        }
+        if(character == ' ' && searchField.getText().isEmpty()) return true;
         return super.charTyped(character, key);
     }
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int p_keyPressed_3_) {
-
         if(keyCode != GLFW.GLFW_KEY_ESCAPE) {
             if(AppEng.instance().isActionKey(ActionKey.TOGGLE_FOCUS, keyCode, scanCode)) {
                 searchField.setFocused(!searchField.isFocused());
@@ -184,9 +179,8 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
 
                     for(int x = 0; x < current.getInventory().getSlotCount(); x++) {
                         final String which = Integer.toString(x);
-                        if(invData.contains(which)) {
+                        if(invData.contains(which))
                             current.getInventory().setInvStack(x, ItemStack.fromTag(invData.getCompound(which)), Simulation.ACTION);
-                        }
                     }
                 } catch(final NumberFormatException ignored) {}
             }
@@ -216,9 +210,7 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
         for(final ClientDCInternalInv entry : byId.values()) {
             // ignore inventory if not doing a full rebuild or cache already marks it as
             // miss.
-            if(!rebuild && !cachedSearch.contains(entry)) {
-                continue;
-            }
+            if(!rebuild && !cachedSearch.contains(entry)) continue;
 
             // Shortcut to skip any filter if search term is ""/empty
             boolean found = searchFilterLowerCase.isEmpty();
@@ -227,9 +219,7 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
             if(!found) {
                 for(final ItemStack itemStack : entry.getInventory()) {
                     found = itemStackMatchesSearchTerm(itemStack, searchFilterLowerCase);
-                    if(found) {
-                        break;
-                    }
+                    if(found) break;
                 }
             }
 
@@ -237,9 +227,7 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
             if(found || entry.getSearchName().contains(searchFilterLowerCase)) {
                 byName.put(entry.getFormattedName(), entry);
                 cachedSearch.add(entry);
-            } else {
-                cachedSearch.remove(entry);
-            }
+            } else cachedSearch.remove(entry);
         }
 
         names.clear();
@@ -263,15 +251,11 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
     }
 
     private boolean itemStackMatchesSearchTerm(final ItemStack itemStack, final String searchTerm) {
-        if(itemStack.isEmpty()) {
-            return false;
-        }
+        if(itemStack.isEmpty()) return false;
 
         final CompoundTag encodedValue = itemStack.getTag();
 
-        if(encodedValue == null) {
-            return false;
-        }
+        if(encodedValue == null) return false;
 
         // Potential later use to filter by input
         // ListNBT inTag = encodedValue.getTagList( "in", 10 );
@@ -282,11 +266,8 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
             final ItemStack parsedItemStack = ItemStack.fromTag(outTag.getCompound(i));
             if(!parsedItemStack.isEmpty()) {
                 final String displayName = Platform.getItemDisplayName(Api.instance().storage()
-                        .getStorageChannel(IItemStorageChannel.class).createStack(parsedItemStack)).getString()
-                        .toLowerCase();
-                if(displayName.contains(searchTerm)) {
-                    return true;
-                }
+                        .getStorageChannel(IItemStorageChannel.class).createStack(parsedItemStack)).getString().toLowerCase();
+                if(displayName.contains(searchTerm)) return true;
             }
         }
         return false;
@@ -302,9 +283,7 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
      * @return a Set matching a superset of the search term
      */
     private Set<Object> getCacheForSearchTerm(final String searchTerm) {
-        if(!cachedSearches.containsKey(searchTerm)) {
-            cachedSearches.put(searchTerm, new HashSet<>());
-        }
+        if(!cachedSearches.containsKey(searchTerm)) cachedSearches.put(searchTerm, new HashSet<>());
 
         final Set<Object> cache = cachedSearches.get(searchTerm);
 
@@ -332,7 +311,6 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
             byId.put(id, o = new ClientDCInternalInv(9, id, sortBy, name));
             refreshList = true;
         }
-
         return o;
     }
 }

@@ -16,6 +16,8 @@ import appeng.helpers.InventoryAction;
 import com.mojang.blaze3d.systems.RenderSystem;
 import de.mari_023.fabric.ae2wtlib.wut.CycleTerminalButton;
 import de.mari_023.fabric.ae2wtlib.wut.IUniversalTerminalCapable;
+import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetMode;
+import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetSettings;
 import me.shedaniel.math.Rectangle;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -44,6 +46,7 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
     private AETextField searchField;
     private final int reservedSpace;
     private TabButton craftingStatusBtn;
+    IconButton magnetCardToggleButton;
     private final WCTContainer container;
 
     public WCTScreen(WCTContainer container, PlayerInventory playerInventory, Text title) {
@@ -73,6 +76,16 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
         });
         deleteButton.setHalfSize(true);
         deleteButton.setMessage(new TranslatableText("gui.ae2wtlib.emptytrash").append("\n").append(new TranslatableText("gui.ae2wtlib.emptytrash.desc")));
+
+        magnetCardToggleButton = addButton(new IconButton(x + 92 + 60, y + backgroundHeight - 114, btn -> setMagnetMode()) {
+            @Override
+            protected int getIconIndex() {
+                return 6;
+            }
+        });
+        magnetCardToggleButton.setHalfSize(true);
+        resetMagnetSettings();
+        container.setScreen(this);
 
         craftingStatusBtn = addButton(new TabButton(x + 169, y - 4, 2 + 11 * 16, GuiText.CraftingStatus.text(), itemRenderer, btn -> showWirelessCraftingStatus()));
         craftingStatusBtn.setHideEdge(true);
@@ -136,9 +149,9 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
 
     private void clear() {
         Slot s = null;
-        for(final Object j : handler.slots) {
+        for(final Slot j : handler.slots) {
             if(j instanceof CraftingMatrixSlot) {
-                s = (Slot) j;
+                s = j;
             }
         }
 
@@ -153,6 +166,56 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
         buf.writeString("CraftingTerminal.Delete");
         buf.writeBoolean(false);
         ClientPlayNetworking.send(new Identifier("ae2wtlib", "general"), buf);
+    }
+
+    private MagnetSettings magnetSettings = null;
+
+    public void resetMagnetSettings() {
+        magnetSettings = container.getMagnetSettings();
+        setMagnetModeText();
+    }
+
+    private void setMagnetMode() {
+        switch(magnetSettings.magnetMode) {
+            case INVALID:
+            case NO_CARD:
+                return;
+            case OFF:
+                magnetSettings.magnetMode = MagnetMode.PICKUP_INVENTORY;
+                break;
+            case PICKUP_INVENTORY:
+                magnetSettings.magnetMode = MagnetMode.PICKUP_ME;
+                break;
+            case PICKUP_ME:
+                magnetSettings.magnetMode = MagnetMode.OFF;
+                break;
+        }
+        setMagnetModeText();
+        PacketByteBuf buf = PacketByteBufs.create();
+        buf.writeString("CraftingTerminal.SetMagnetMode");
+        buf.writeByte(magnetSettings.magnetMode.getId());
+        ClientPlayNetworking.send(new Identifier("ae2wtlib", "general"), buf);
+    }
+
+    private void setMagnetModeText() {
+        switch(magnetSettings.magnetMode) {
+            case INVALID:
+            case NO_CARD:
+                magnetCardToggleButton.setVisibility(false);
+                break;
+            case OFF:
+                magnetCardToggleButton.setVisibility(true);
+                magnetCardToggleButton.setMessage(new TranslatableText("gui.ae2wtlib.magnetcard").append("\n").append(new TranslatableText("gui.ae2wtlib.magnetcard.desc.off")));
+                break;
+            case PICKUP_INVENTORY:
+                magnetCardToggleButton.setVisibility(true);
+                magnetCardToggleButton.setMessage(new TranslatableText("gui.ae2wtlib.magnetcard").append("\n").append(new TranslatableText("gui.ae2wtlib.magnetcard.desc.inv")));
+                break;
+            case PICKUP_ME:
+                magnetCardToggleButton.setVisibility(true);
+                magnetCardToggleButton.setMessage(new TranslatableText("gui.ae2wtlib.magnetcard").append("\n").append(new TranslatableText("gui.ae2wtlib.magnetcard.desc.me")));
+                break;
+        }
     }
 
     @Override
@@ -202,7 +265,7 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
     @Override
     public List<Rectangle> getExclusionZones() {
         List<Rectangle> zones = super.getExclusionZones();
-        zones.add(new Rectangle(x + 195, y, 24, backgroundHeight-110));
+        zones.add(new Rectangle(x + 195, y, 24, backgroundHeight - 110));
         return zones;
     }
 }

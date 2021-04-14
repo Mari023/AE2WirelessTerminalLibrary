@@ -5,8 +5,13 @@
   "gui.ae2wtlib.emptytrash.desc": "Delete contents of the Trash slot",
 
   "item.ae2wtlib.infinity_booster_card": "Infinity Booster Card",
+  "item.ae2wtlib.infinity_booster_card.desc": "Expands Wireless Terminals to infinity",
   "item.ae2wtlib.magnet_card": "Magnet Card",
-  "item.ae2wtlib.magnet_card.desc": "Currently not implemented",
+  "item.ae2wtlib.magnet_card.desc": "Magnet upgrade for the Wireless Crafting Terminal",
+  "gui.ae2wtlib.magnet_card": "Magnet Card",
+  "gui.ae2wtlib.magnetcard.desc.off": "Off",
+  "gui.ae2wtlib.magnetcard.desc.inv": "Pickup to Inventory",
+  "gui.ae2wtlib.magnetcard.desc.me": "Pickup to ME",
 
   "item.ae2wtlib.wireless_crafting_terminal": "Wireless Crafting Terminal",
   "item.ae2wtlib.wireless_pattern_terminal": "Wireless Pattern Terminal",

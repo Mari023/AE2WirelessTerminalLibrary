@@ -22,25 +22,24 @@ public class FixedViewCellInventory implements FixedItemInv {//FIXME viewcells
 
     @Override
     public ItemStack getInvStack(int i) {
-        /*if(i < 5)*/
-        return viewCells[i];
-        //return ItemStack.EMPTY;
+        if(i < 5)
+            return viewCells[i];
+        return ItemStack.EMPTY;
     }
 
     @Override
     public boolean isItemValidForSlot(int i, ItemStack itemStack) {
-        //viewCells[i] = itemStack;
         return true;
         //return i < viewCells.length && itemStack.getItem() instanceof ViewCellItem;
     }
 
     @Override
     public boolean setInvStack(int i, ItemStack itemStack, Simulation simulation) {//somehow itemStack is always the item that is already in here
-        if(simulation.isAction()) {
-            //if(isItemValidForSlot(i, itemStack)) {
-            viewCells[i] = itemStack;
-            //return true;
-            //}
+        if(isItemValidForSlot(i, itemStack)) {
+            if(simulation.isAction()) {
+                viewCells[i] = itemStack;
+                return true;
+            }
         }
         return true;
     }

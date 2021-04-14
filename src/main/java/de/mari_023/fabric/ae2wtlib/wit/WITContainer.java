@@ -28,6 +28,7 @@ import appeng.util.inv.WrapperCursorItemHandler;
 import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.ContainerHelper;
 import de.mari_023.fabric.ae2wtlib.terminal.FixedWTInv;
+import de.mari_023.fabric.ae2wtlib.terminal.IWTInvHolder;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -45,7 +46,7 @@ import net.minecraft.util.Util;
 import java.util.HashMap;
 import java.util.Map;
 
-public class WITContainer extends AEBaseContainer {
+public class WITContainer extends AEBaseContainer implements IWTInvHolder {
 
     public static ScreenHandlerType<WITContainer> TYPE;
 
@@ -76,7 +77,7 @@ public class WITContainer extends AEBaseContainer {
 
         bindPlayerInventory(ip, 0, 222 - /* height of player inventory */82);
 
-        final FixedWTInv fixedWITInv = new FixedWTInv(getPlayerInv(), witGUIObject.getItemStack());
+        final FixedWTInv fixedWITInv = new FixedWTInv(getPlayerInv(), witGUIObject.getItemStack(), this);
         addSlot(new AppEngSlot(fixedWITInv, FixedWTInv.INFINITY_BOOSTER_CARD, 173, 129));
     }
 
@@ -93,7 +94,6 @@ public class WITContainer extends AEBaseContainer {
                 getPlayerInv().player.sendSystemMessage(PlayerMessages.OutOfRange.get(), Util.NIL_UUID);
                 ((ServerPlayerEntity) getPlayerInv().player).closeHandledScreen();
             }
-
             setValidContainer(false);
         } else {
             powerMultiplier = Config.getPowerMultiplier(witGUIObject.getRange(), witGUIObject.isOutOfRange());
@@ -103,7 +103,6 @@ public class WITContainer extends AEBaseContainer {
                     getPlayerInv().player.sendSystemMessage(PlayerMessages.DeviceNotPowered.get(), Util.NIL_UUID);
                     ((ServerPlayerEntity) getPlayerInv().player).closeHandledScreen();
                 }
-
                 setValidContainer(false);
             }
         }
@@ -150,38 +149,30 @@ public class WITContainer extends AEBaseContainer {
                 for(final IGridNode gn : grid.getMachines(InterfacePart.class)) {
                     if(gn.isActive()) {
                         final IInterfaceHost ih = (IInterfaceHost) gn.getMachine();
-                        if(ih.getInterfaceDuality().getConfigManager()
-                                .getSetting(Settings.INTERFACE_TERMINAL) == YesNo.NO) {
+                        if(ih.getInterfaceDuality().getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.NO)
                             continue;
-                        }
 
                         final WITContainer.InvTracker t = diList.get(ih);
 
-                        if(t == null) {
-                            missing = true;
-                        } else {
+                        if(t == null) missing = true;
+                        else {
                             final DualityInterface dual = ih.getInterfaceDuality();
                             if(!t.name.equals(dual.getTermName())) {
                                 missing = true;
                             }
                         }
-
                         total++;
                     }
                 }
             }
         }
 
-        if(total != diList.size() || missing) {
-            regenList(data);
-        } else {
+        if(total != diList.size() || missing) regenList(data);
+        else {
             for(final Map.Entry<IInterfaceHost, WITContainer.InvTracker> en : diList.entrySet()) {
                 final WITContainer.InvTracker inv = en.getValue();
-                for(int x = 0; x < inv.server.getSlotCount(); x++) {
-                    if(isDifferent(inv.server.getInvStack(x), inv.client.getInvStack(x))) {
-                        addItems(data, inv, x, 1);
-                    }
-                }
+                for(int x = 0; x < inv.server.getSlotCount(); x++)
+                    if(isDifferent(inv.server.getInvStack(x), inv.client.getInvStack(x))) addItems(data, inv, x, 1);
             }
         }
 
@@ -202,7 +193,7 @@ public class WITContainer extends AEBaseContainer {
 
             final InventoryAdaptor playerHand = new AdaptorFixedInv(new WrapperCursorItemHandler(player.inventory));
 
-            // Create a wrapper around the targetted slot that will only allow insertions of
+            // Create a wrapper around the targeted slot that will only allow insertions of
             // patterns
             LimitedFixedItemInv limitedSlotInv = inv.server.createLimitedFixedInv();
             limitedSlotInv.getAllRule().filterInserts(this::isValidPattern);
@@ -210,7 +201,6 @@ public class WITContainer extends AEBaseContainer {
 
             switch(action) {
                 case PICKUP_OR_SET_DOWN:
-
                     if(hasItemInHand) {
                         ItemStack inSlot = theSlot.get();
                         if(inSlot.isEmpty()) {
@@ -231,53 +221,37 @@ public class WITContainer extends AEBaseContainer {
                                 theSlot.set(inSlot);
                             }
                         }
-                    } else {
-                        theSlot.set(playerHand.addItems(theSlot.get()));
-                    }
-
+                    } else theSlot.set(playerHand.addItems(theSlot.get()));
                     break;
-                case SPLIT_OR_PLACE_SINGLE:
 
+                case SPLIT_OR_PLACE_SINGLE:
                     if(hasItemInHand) {
                         ItemStack extra = playerHand.removeItems(1, ItemStack.EMPTY, null);
-                        if(!extra.isEmpty()) {
-                            extra = theSlot.insert(extra);
-                        }
-                        if(!extra.isEmpty()) {
-                            playerHand.addItems(extra);
-                        }
+                        if(!extra.isEmpty()) extra = theSlot.insert(extra);
+                        if(!extra.isEmpty()) playerHand.addItems(extra);
                     } else if(!is.isEmpty()) {
                         ItemStack extra = theSlot.extract((is.getCount() + 1) / 2);
-                        if(!extra.isEmpty()) {
-                            extra = playerHand.addItems(extra);
-                        }
-                        if(!extra.isEmpty()) {
-                            theSlot.insert(extra);
-                        }
+                        if(!extra.isEmpty()) extra = playerHand.addItems(extra);
+                        if(!extra.isEmpty()) theSlot.insert(extra);
                     }
-
                     break;
-                case SHIFT_CLICK:
 
+                case SHIFT_CLICK:
                     final InventoryAdaptor playerInv = InventoryAdaptor.getAdaptor(player);
                     theSlot.set(playerInv.addItems(theSlot.get()));
-
                     break;
+
                 case MOVE_REGION:
-
                     final InventoryAdaptor playerInvAd = InventoryAdaptor.getAdaptor(player);
-                    for(int x = 0; x < inv.server.getSlotCount(); x++) {
+                    for(int x = 0; x < inv.server.getSlotCount(); x++)
                         ItemHandlerUtil.setStackInSlot(inv.server, x, playerInvAd.addItems(inv.server.getInvStack(x)));
-                    }
-
                     break;
+
                 case CREATIVE_DUPLICATE:
-
-                    if(player.isCreative() && !hasItemInHand) {
+                    if(player.isCreative() && !hasItemInHand)
                         player.inventory.setCursorStack(is.isEmpty() ? ItemStack.EMPTY : is.copy());
-                    }
-
                     break;
+
                 default:
                     return;
             }
@@ -301,17 +275,15 @@ public class WITContainer extends AEBaseContainer {
                 for(final IGridNode gn : grid.getMachines(InterfaceBlockEntity.class)) {
                     final IInterfaceHost ih = (IInterfaceHost) gn.getMachine();
                     final DualityInterface dual = ih.getInterfaceDuality();
-                    if(gn.isActive() && dual.getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.YES) {
+                    if(gn.isActive() && dual.getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.YES)
                         diList.put(ih, new WITContainer.InvTracker(dual, dual.getPatterns(), dual.getTermName()));
-                    }
                 }
 
                 for(final IGridNode gn : grid.getMachines(InterfacePart.class)) {
                     final IInterfaceHost ih = (IInterfaceHost) gn.getMachine();
                     final DualityInterface dual = ih.getInterfaceDuality();
-                    if(gn.isActive() && dual.getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.YES) {
+                    if(gn.isActive() && dual.getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.YES)
                         diList.put(ih, new WITContainer.InvTracker(dual, dual.getPatterns(), dual.getTermName()));
-                    }
                 }
             }
         }
@@ -326,14 +298,8 @@ public class WITContainer extends AEBaseContainer {
     }
 
     private boolean isDifferent(final ItemStack a, final ItemStack b) {
-        if(a.isEmpty() && b.isEmpty()) {
-            return false;
-        }
-
-        if(a.isEmpty() || b.isEmpty()) {
-            return true;
-        }
-
+        if(a.isEmpty() && b.isEmpty()) return false;
+        if(a.isEmpty() || b.isEmpty()) return true;
         return !ItemStack.areEqual(a, b);
     }
 
@@ -354,18 +320,14 @@ public class WITContainer extends AEBaseContainer {
             // "update" client side.
             ItemHandlerUtil.setStackInSlot(inv.client, x + offset, is.isEmpty() ? ItemStack.EMPTY : is.copy());
 
-            if(!is.isEmpty()) {
-                is.toTag(itemNBT);
-            }
+            if(!is.isEmpty()) is.toTag(itemNBT);
 
             tag.put(Integer.toString(x + offset), itemNBT);
         }
-
         data.put(name, tag);
     }
 
     private static class InvTracker {
-
         private final long sortBy;
         private final long which = autoBase++;
         private final Text name;

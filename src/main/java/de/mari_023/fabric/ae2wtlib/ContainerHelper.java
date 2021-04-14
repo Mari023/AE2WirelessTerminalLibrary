@@ -31,8 +31,7 @@ public final class ContainerHelper<C extends AEBaseContainer, I> {
         this(factory, interfaceClass, null);
     }
 
-    public ContainerHelper(ContainerFactory<C, I> factory, Class<I> interfaceClass,
-                           SecurityPermissions requiredPermission) {
+    public ContainerHelper(ContainerFactory<C, I> factory, Class<I> interfaceClass, SecurityPermissions requiredPermission) {
         this.requiredPermission = requiredPermission;
         this.interfaceClass = interfaceClass;
         this.factory = factory;
@@ -64,19 +63,13 @@ public final class ContainerHelper<C extends AEBaseContainer, I> {
     }
 
     public boolean open(PlayerEntity player, ContainerLocator locator, InitialDataSerializer<I> initialDataSerializer) {
-        if(!(player instanceof ServerPlayerEntity)) {
-            return false;
-        }
+        if(!(player instanceof ServerPlayerEntity)) return false;
 
         I accessInterface = getHostFromLocator(player, locator);
 
-        if(accessInterface == null) {
-            return false;
-        }
+        if(accessInterface == null) return false;
 
-        if(!checkPermission(player, accessInterface)) {
-            return false;
-        }
+        if(!checkPermission(player, accessInterface)) return false;
 
         player.openHandledScreen(new HandlerFactory(locator, GuiText.Terminal.text(), accessInterface, initialDataSerializer));
 
@@ -84,7 +77,6 @@ public final class ContainerHelper<C extends AEBaseContainer, I> {
     }
 
     private class HandlerFactory implements ExtendedScreenHandlerFactory {
-
         private final ContainerLocator locator;
 
         private final I accessInterface;
@@ -122,9 +114,7 @@ public final class ContainerHelper<C extends AEBaseContainer, I> {
     }
 
     private I getHostFromLocator(PlayerEntity player, ContainerLocator locator) {
-        if(locator.hasItemIndex()) {
-            return getHostFromPlayerInventory(player, locator);
-        }
+        if(locator.hasItemIndex()) return getHostFromPlayerInventory(player, locator);
         return null;
     }
 
@@ -133,22 +123,18 @@ public final class ContainerHelper<C extends AEBaseContainer, I> {
         ItemStack it = player.inventory.getStack(locator.getItemIndex());
 
         if(it.isEmpty()) {
-            AELog.debug("Cannot open container for player %s since they no longer hold the item in slot %d", player,
-                    locator.hasItemIndex());
+            AELog.debug("Cannot open container for player %s since they no longer hold the item in slot %d", player, locator.hasItemIndex());
             return null;
         }
 
-        if(interfaceClass.isAssignableFrom(WCTGuiObject.class) && it.getItem() instanceof ItemWT) {//TODO do something generic, I don't want to hardcode everything
+        if(interfaceClass.isAssignableFrom(WCTGuiObject.class) && it.getItem() instanceof ItemWT)//TODO do something generic, I don't want to hardcode everything
             return interfaceClass.cast(new WCTGuiObject((ItemWT) it.getItem(), it, player, locator.getItemIndex()));
-        }
 
-        if(interfaceClass.isAssignableFrom(WPTGuiObject.class) && it.getItem() instanceof ItemWT) {
+        if(interfaceClass.isAssignableFrom(WPTGuiObject.class) && it.getItem() instanceof ItemWT)
             return interfaceClass.cast(new WPTGuiObject((ItemWT) it.getItem(), it, player, locator.getItemIndex()));
-        }
 
-        if(interfaceClass.isAssignableFrom(WITGuiObject.class) && it.getItem() instanceof ItemWT) {
+        if(interfaceClass.isAssignableFrom(WITGuiObject.class) && it.getItem() instanceof ItemWT)
             return interfaceClass.cast(new WITGuiObject((ItemWT) it.getItem(), it, player, locator.getItemIndex()));
-        }
         return null;
     }
 

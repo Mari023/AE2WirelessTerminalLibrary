@@ -124,14 +124,12 @@ public class WirelessCraftConfirmContainer extends AEBaseContainer implements Cr
                     final MEInventoryUpdatePacket b = new MEInventoryUpdatePacket((byte) 1);
                     final MEInventoryUpdatePacket c = result.isSimulation() ? new MEInventoryUpdatePacket((byte) 2) : null;
 
-                    final IItemList<IAEItemStack> plan = Api.instance().storage()
-                            .getStorageChannel(IItemStorageChannel.class).createList();
+                    final IItemList<IAEItemStack> plan = Api.instance().storage().getStorageChannel(IItemStorageChannel.class).createList();
                     result.populatePlan(plan);
 
                     setUsedBytes(result.getByteTotal());
 
                     for(final IAEItemStack out : plan) {
-
                         IAEItemStack o = out.copy();
                         o.reset();
                         o.setStackSize(out.getStackSize());
@@ -141,8 +139,7 @@ public class WirelessCraftConfirmContainer extends AEBaseContainer implements Cr
                         p.setStackSize(out.getCountRequestable());
 
                         final IStorageGrid sg = getGrid().getCache(IStorageGrid.class);
-                        final IMEInventory<IAEItemStack> items = sg
-                                .getInventory(Api.instance().storage().getStorageChannel(IItemStorageChannel.class));
+                        final IMEInventory<IAEItemStack> items = sg.getInventory(Api.instance().storage().getStorageChannel(IItemStorageChannel.class));
 
                         IAEItemStack m = null;
                         if(c != null && result.isSimulation()) {
@@ -179,16 +176,13 @@ public class WirelessCraftConfirmContainer extends AEBaseContainer implements Cr
                             }
                         }
                     }
-                } catch(final IOException e) {
-                    // :P
-                }
+                } catch(final IOException ignored) {}
             } catch(final Throwable e) {
                 getPlayerInv().player.sendSystemMessage(new LiteralText("Error: " + e.toString()), Util.NIL_UUID);
                 AELog.debug(e);
                 setValidContainer(false);
                 result = null;
             }
-
             setJob(null);
         }
         verifyPermissions(SecurityPermissions.CRAFT, false);
@@ -213,7 +207,6 @@ public class WirelessCraftConfirmContainer extends AEBaseContainer implements Cr
         } else if(ah instanceof WPTGuiObject) {
             originalGui = WPTContainer.TYPE;
         }
-
 
         if(result != null && !isSimulation()) {
             final ICraftingGrid cc = getGrid().getCache(ICraftingGrid.class);

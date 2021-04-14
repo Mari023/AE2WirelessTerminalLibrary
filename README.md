@@ -19,7 +19,7 @@ It also adds a wireless universal terminal which has all wireless terminals in o
 ## Missing Features / Known Issues
 
 - Wireless Fluid Terminal
-- Magnet Card does not work yet
+- Magnet Card can't filter items
 - Curios support
 - Keybinds to open Terminals
 - support for viewcells
