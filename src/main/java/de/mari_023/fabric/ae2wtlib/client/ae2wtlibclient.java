@@ -15,12 +15,18 @@ import de.mari_023.fabric.ae2wtlib.wpt.WPTScreen;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.options.KeyBinding;
+import net.minecraft.client.util.InputUtil;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
+import org.lwjgl.glfw.GLFW;
 
 @Environment(EnvType.CLIENT)
 public class ae2wtlibclient implements ClientModInitializer {
@@ -46,6 +52,17 @@ public class ae2wtlibclient implements ClientModInitializer {
                 }
                 buf.release();
             });
+        });
+        registerKeybindings();
+    }
+
+    public static void registerKeybindings() {
+        KeyBinding binding1 = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.fabric-key-binding-api-v1-testmod.test_keybinding_1", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_I, "key.category.ae2wtlib"));
+
+        ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            while(binding1.wasPressed()) {
+                client.player.sendMessage(new LiteralText("Key 1 was pressed!"), false);
+            }
         });
     }
 }

@@ -14,6 +14,7 @@ import appeng.core.localization.PlayerMessages;
 import appeng.me.helpers.PlayerSource;
 import appeng.util.item.AEItemStack;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
+import de.mari_023.fabric.ae2wtlib.wct.CraftingTerminalHandler;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.ItemMagnetCard;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetHandler;
 import net.minecraft.entity.player.PlayerEntity;
@@ -38,7 +39,7 @@ public abstract class PlayerInventoryInsertStack {
     @Inject(method = "insertStack(Lnet/minecraft/item/ItemStack;)Z", at = @At(value = "INVOKE"), require = 1, allow = 1, remap = false)
     public void insertStackInME(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
         if(stack.isEmpty()) return;
-        ItemStack terminal = MagnetHandler.getCraftingTerminal(player);
+        ItemStack terminal = CraftingTerminalHandler.getCraftingTerminal(player);
         if(ItemMagnetCard.isPickupME(terminal)) {
             final String unparsedKey = ((ItemWT) terminal.getItem()).getEncryptionKey(terminal);
             if(unparsedKey.isEmpty()) {
