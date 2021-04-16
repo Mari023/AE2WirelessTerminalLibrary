@@ -26,7 +26,7 @@
     "ae2wtlib.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.11.1",
+    "fabricloader": ">=0.11.3",
     "fabric": "*",
     "minecraft": "1.16.5",
     "appliedenergistics2": ">=8.2.0-alpha.3",
