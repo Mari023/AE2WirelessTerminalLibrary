@@ -9,7 +9,7 @@
   ],
   "contact": {},
   "license": "MIT",
-  "icon": "assets/AE2WTLib/icon.png",
+  "icon": "assets/ae2wtlib/icon.png",
   "environment": "*",
   "entrypoints": {
     "client": [
