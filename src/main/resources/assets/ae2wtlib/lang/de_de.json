@@ -13,9 +13,14 @@
   "gui.ae2wtlib.magnetcard.desc.off": "Aus",
   "gui.ae2wtlib.magnetcard.desc.inv": "Items werden in das Inventar eingesammelt",
   "gui.ae2wtlib.magnetcard.desc.me": "Items werden in das Inventar eingesammelt",
+  "gui.ae2wtlib.cycle_terminal.desc": "nächste Konsole Öffnen",
 
   "item.ae2wtlib.wireless_crafting_terminal": "Drahtlose Fertigungskonsole",
   "item.ae2wtlib.wireless_pattern_terminal": "Drahtlose Schablonenkonsole",
   "item.ae2wtlib.wireless_interface_terminal": "Drahtlose Schnittstellenkonsole",
-  "item.ae2wtlib.wireless_universal_terminal": "Drahtlose Universalkonsole"
+  "item.ae2wtlib.wireless_universal_terminal": "Drahtlose Universalkonsole",
+
+  "key.ae2wtlib.wct": "Drahtlose Fertigungskonsole Öffnen",
+  "key.ae2wtlib.wpt": "Drahtlose Schablonenkonsole Öffnen",
+  "key.ae2wtlib.wit": "Drahtlose Schnittstellenkonsole Öffnen"
 }
