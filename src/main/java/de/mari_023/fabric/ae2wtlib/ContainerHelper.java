@@ -1,6 +1,7 @@
 package de.mari_023.fabric.ae2wtlib;
 
 import appeng.api.config.SecurityPermissions;
+import appeng.api.util.AEPartLocation;
 import appeng.container.AEBaseContainer;
 import appeng.container.ContainerLocator;
 import appeng.core.AELog;
@@ -18,6 +19,10 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
+
+import java.lang.reflect.Constructor;
 
 public final class ContainerHelper<C extends AEBaseContainer, I> {
 
@@ -140,6 +145,26 @@ public final class ContainerHelper<C extends AEBaseContainer, I> {
 
     private boolean checkPermission(PlayerEntity player, Object accessInterface) {
         return requiredPermission == null || Platform.checkPermissions(player, accessInterface, requiredPermission, true);
+    }
+
+    public static ContainerLocator getContainerLocatorForSlot(int slot) {
+        try {
+            Object containerLocatorTypePLAYER_INVENTORY = null;
+            Class<?> containerLocatorTypeClass = Class.forName("appeng.container.ContainerLocator$Type");
+            for (Object obj : containerLocatorTypeClass.getEnumConstants()) {
+                if(obj.toString().equals("PLAYER_INVENTORY")) {
+                    containerLocatorTypePLAYER_INVENTORY = obj;
+                    break;
+                }
+            }
+
+            Constructor<ContainerLocator> constructor = ContainerLocator.class.getDeclaredConstructor(containerLocatorTypeClass, int.class, Identifier.class, BlockPos.class, AEPartLocation.class);
+            constructor.setAccessible(true);
+            ContainerLocator containerLocator = constructor.newInstance(containerLocatorTypePLAYER_INVENTORY, slot, null, null, null);
+            constructor.setAccessible(false);
+            return containerLocator;
+        } catch(Exception ignored) {}
+        return null;
     }
 
     @FunctionalInterface
