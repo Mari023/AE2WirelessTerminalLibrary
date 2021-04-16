@@ -30,6 +30,7 @@ import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
@@ -214,6 +215,53 @@ public class ae2wtlib implements ModInitializer {
 
             WUTHandler.open(player, locator);
         }));
+        ServerPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "hotkey"), (server, player, handler, buf, sender) -> {
+            buf.retain();
+            server.execute(() -> {
+                String terminalName = buf.readString(32767);
+                if(terminalName.equalsIgnoreCase("crafting")) {
+                    PlayerInventory inv = player.inventory;
+                    int slot = -1;
+                    for(int i = 0; i < inv.size(); i++) {
+                        ItemStack terminal = inv.getStack(i);
+                        if(terminal.getItem() instanceof ItemWCT || (terminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(terminal, "crafting"))) {
+                            slot = i;
+                            break;
+                        }
+                    }
+                    if(slot == -1) return;
+                    ContainerLocator locator = ContainerHelper.getContainerLocatorForSlot(slot);
+                    CRAFTING_TERMINAL.open(player, locator);
+                } else if(terminalName.equalsIgnoreCase("pattern")) {
+                    PlayerInventory inv = player.inventory;
+                    int slot = -1;
+                    for(int i = 0; i < inv.size(); i++) {
+                        ItemStack terminal = inv.getStack(i);
+                        if(terminal.getItem() instanceof ItemWPT || (terminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(terminal, "pattern"))) {
+                            slot = i;
+                            break;
+                        }
+                    }
+                    if(slot == -1) return;
+                    ContainerLocator locator = ContainerHelper.getContainerLocatorForSlot(slot);
+                    PATTERN_TERMINAL.open(player, locator);
+                } else if(terminalName.equalsIgnoreCase("interface")) {
+                    PlayerInventory inv = player.inventory;
+                    int slot = -1;
+                    for(int i = 0; i < inv.size(); i++) {
+                        ItemStack terminal = inv.getStack(i);
+                        if(terminal.getItem() instanceof ItemWIT || (terminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(terminal, "interface"))) {
+                            slot = i;
+                            break;
+                        }
+                    }
+                    if(slot == -1) return;
+                    ContainerLocator locator = ContainerHelper.getContainerLocatorForSlot(slot);
+                    INTERFACE_TERMINAL.open(player, locator);
+                }
+                buf.release();
+            });
+        });
 
         ServerTickEvents.START_SERVER_TICK.register(minecraftServer -> new MagnetHandler().doMagnet(minecraftServer));
     }
