@@ -1,9 +1,9 @@
 package de.mari_023.fabric.ae2wtlib.wut;
 
+import appeng.container.ContainerLocator;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.LiteralText;
-import net.minecraft.util.Hand;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,18 +27,8 @@ public class WUTHandler {
         itemStack.getTag().putString("currentTerminal", nextTerminal);
     }
 
-    public static void open(final PlayerEntity player, final Hand hand) {
-        ItemStack is;
-        switch(hand) {
-            case MAIN_HAND:
-                is = player.inventory.getMainHandStack();
-                break;
-            case OFF_HAND:
-                is = player.inventory.offHand.get(0);
-                break;
-            default:
-                throw new IllegalStateException("There is no such hand: " + hand);
-        }
+    public static void open(final PlayerEntity player, final ContainerLocator locator) {
+        ItemStack is = player.inventory.getStack(locator.getItemIndex());
         if(is.getTag() == null) return;
         String currentTerminal = is.getTag().getString("currentTerminal");
 
@@ -52,7 +42,7 @@ public class WUTHandler {
             player.sendMessage(new LiteralText("This terminal does not contain any other Terminals"), false);
             return;
         }
-        wirelessTerminals.get(currentTerminal).open(player, hand);
+        wirelessTerminals.get(currentTerminal).open(player, locator);
     }
 
     private static final HashMap<String, containerOpener> wirelessTerminals = new HashMap<>();
@@ -66,6 +56,6 @@ public class WUTHandler {
 
     @FunctionalInterface
     public interface containerOpener {
-        void open(final PlayerEntity player, final Hand hand);
+        void open(final PlayerEntity player, final ContainerLocator locator);
     }
 }

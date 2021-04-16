@@ -8,7 +8,6 @@ import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Hand;
 
 public class ItemWCT extends ItemWT implements IInfinityBoosterCardHolder {
 
@@ -17,8 +16,8 @@ public class ItemWCT extends ItemWT implements IInfinityBoosterCardHolder {
     }
 
     @Override
-    public void open(final PlayerEntity player, final Hand hand) {
-        WCTContainer.open(player, ContainerLocator.forHand(player, hand));
+    public void open(final PlayerEntity player, final ContainerLocator locator) {
+        WCTContainer.open(player, locator);
     }
 
     @Override

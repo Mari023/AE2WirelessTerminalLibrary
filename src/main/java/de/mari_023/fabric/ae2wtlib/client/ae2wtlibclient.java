@@ -1,7 +1,10 @@
 package de.mari_023.fabric.ae2wtlib.client;
 
+import appeng.api.util.AEPartLocation;
+import appeng.container.ContainerLocator;
 import appeng.container.implementations.WirelessCraftConfirmContainer;
 import appeng.container.implementations.WirelessCraftingStatusContainer;
+import de.mari_023.fabric.ae2wtlib.ContainerHelper;
 import de.mari_023.fabric.ae2wtlib.util.WirelessCraftAmountContainer;
 import de.mari_023.fabric.ae2wtlib.util.WirelessCraftAmountScreen;
 import de.mari_023.fabric.ae2wtlib.util.WirelessCraftConfirmScreen;
@@ -24,9 +27,12 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.options.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
 import org.lwjgl.glfw.GLFW;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 @Environment(EnvType.CLIENT)
 public class ae2wtlibclient implements ClientModInitializer {
@@ -57,11 +63,11 @@ public class ae2wtlibclient implements ClientModInitializer {
     }
 
     public static void registerKeybindings() {
-        KeyBinding binding1 = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.fabric-key-binding-api-v1-testmod.test_keybinding_1", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_I, "key.category.ae2wtlib"));
+        KeyBinding wct = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.ae2wtlib.wct", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "key.category.ae2wtlib"));
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            while(binding1.wasPressed()) {
-                client.player.sendMessage(new LiteralText("Key 1 was pressed!"), false);
+            while(wct.wasPressed()) {
+                ContainerLocator locator = ContainerHelper.getContainerLocatorForSlot(0);
             }
         });
     }

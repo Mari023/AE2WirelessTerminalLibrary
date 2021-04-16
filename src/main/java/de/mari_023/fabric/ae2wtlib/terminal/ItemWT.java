@@ -7,6 +7,7 @@ import appeng.api.config.ViewItems;
 import appeng.api.features.ILocatable;
 import appeng.api.features.IWirelessTermHandler;
 import appeng.api.util.IConfigManager;
+import appeng.container.ContainerLocator;
 import appeng.core.Api;
 import appeng.core.localization.GuiText;
 import appeng.core.localization.PlayerMessages;
@@ -61,13 +62,13 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
         }
 
         if(hasPower(player, 0.5, item)) {
-            open(player, hand);
+            open(player, ContainerLocator.forHand(player, hand));
         } else {
             player.sendSystemMessage(PlayerMessages.DeviceNotPowered.get(), Util.NIL_UUID);
         }
     }
 
-    public abstract void open(final PlayerEntity player, final Hand hand);
+    public abstract void open(final PlayerEntity player, final ContainerLocator locator);
 
     @Override
     @Environment(EnvType.CLIENT)

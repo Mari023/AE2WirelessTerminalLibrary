@@ -14,16 +14,17 @@ import appeng.core.Api;
 import de.mari_023.fabric.ae2wtlib.rei.REIRecipePacket;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemInfinityBooster;
 import de.mari_023.fabric.ae2wtlib.util.WirelessCraftAmountContainer;
-import de.mari_023.fabric.ae2wtlib.wct.*;
+import de.mari_023.fabric.ae2wtlib.wct.ItemWCT;
+import de.mari_023.fabric.ae2wtlib.wct.WCTContainer;
+import de.mari_023.fabric.ae2wtlib.wct.magnet_card.ItemMagnetCard;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetHandler;
+import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetMode;
 import de.mari_023.fabric.ae2wtlib.wit.ItemWIT;
 import de.mari_023.fabric.ae2wtlib.wit.WITContainer;
 import de.mari_023.fabric.ae2wtlib.wpt.ItemWPT;
 import de.mari_023.fabric.ae2wtlib.wpt.WPTContainer;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
 import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
-import de.mari_023.fabric.ae2wtlib.wct.magnet_card.ItemMagnetCard;
-import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetMode;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -32,7 +33,6 @@ import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -210,14 +210,9 @@ public class ae2wtlib implements ModInitializer {
             ItemStack item = player.inventory.getStack(locator.getItemIndex());
 
             if(!(item.getItem() instanceof ItemWUT)) return;
-
             WUTHandler.cycle(item);
 
-            Hand hand;
-            if(player.inventory.offHand.get(0) == item) hand = Hand.OFF_HAND;
-            else if(player.inventory.getMainHandStack() == item) hand = Hand.MAIN_HAND;
-            else return;
-            WUTHandler.open(player, hand);
+            WUTHandler.open(player, locator);
         }));
 
         ServerTickEvents.START_SERVER_TICK.register(minecraftServer -> new MagnetHandler().doMagnet(minecraftServer));
