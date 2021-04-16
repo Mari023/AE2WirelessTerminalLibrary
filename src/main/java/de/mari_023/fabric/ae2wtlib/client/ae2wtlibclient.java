@@ -15,12 +15,19 @@ import de.mari_023.fabric.ae2wtlib.wpt.WPTScreen;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.options.KeyBinding;
+import net.minecraft.client.util.InputUtil;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
+import org.lwjgl.glfw.GLFW;
 
 @Environment(EnvType.CLIENT)
 public class ae2wtlibclient implements ClientModInitializer {
@@ -46,6 +53,31 @@ public class ae2wtlibclient implements ClientModInitializer {
                 }
                 buf.release();
             });
+        });
+        registerKeybindings();
+    }
+
+    public static void registerKeybindings() {
+        KeyBinding wct = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.ae2wtlib.wct", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "key.category.ae2wtlib"));
+        KeyBinding wpt = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.ae2wtlib.wpt", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "key.category.ae2wtlib"));
+        KeyBinding wit = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.ae2wtlib.wit", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "key.category.ae2wtlib"));
+
+        ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            while(wct.wasPressed()) {
+                PacketByteBuf buf = PacketByteBufs.create();
+                buf.writeString("crafting");
+                ClientPlayNetworking.send(new Identifier("ae2wtlib", "hotkey"), buf);
+            }
+            while(wpt.wasPressed()) {
+                PacketByteBuf buf = PacketByteBufs.create();
+                buf.writeString("pattern");
+                ClientPlayNetworking.send(new Identifier("ae2wtlib", "hotkey"), buf);
+            }
+            while(wit.wasPressed()) {
+                PacketByteBuf buf = PacketByteBufs.create();
+                buf.writeString("interface");
+                ClientPlayNetworking.send(new Identifier("ae2wtlib", "hotkey"), buf);
+            }
         });
     }
 }
