@@ -3,7 +3,6 @@ package de.mari_023.fabric.ae2wtlib.mixin;
 import appeng.api.config.Actionable;
 import appeng.api.features.ILocatable;
 import appeng.api.networking.IGrid;
-import appeng.api.networking.IGridNode;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.storage.IStorageGrid;
 import appeng.api.storage.IMEMonitor;
@@ -25,12 +24,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerInventory.class)
-public abstract class PlayerInventoryInsertStack {
+public class PlayerInventoryInsertStack {
 
     @Shadow
     @Final
-    public
-    PlayerEntity player;
+    public PlayerEntity player;
 
     @Inject(method = "insertStack(Lnet/minecraft/item/ItemStack;)Z", at = @At(value = "INVOKE"), require = 1, allow = 1, remap = false)
     public void insertStackInME(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
