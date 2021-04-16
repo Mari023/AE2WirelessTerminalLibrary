@@ -30,7 +30,7 @@ public class PlayerInventoryInsertStack {
     @Final
     public PlayerEntity player;
 
-    @Inject(method = "insertStack(Lnet/minecraft/item/ItemStack;)Z", at = @At(value = "INVOKE"), require = 1, allow = 1, remap = false)
+    @Inject(method = "insertStack(Lnet/minecraft/item/ItemStack;)Z", at = @At(value = "INVOKE"), require = 1, allow = 1)
     public void insertStackInME(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
         if(stack.isEmpty()) return;
         CraftingTerminalHandler CTHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
