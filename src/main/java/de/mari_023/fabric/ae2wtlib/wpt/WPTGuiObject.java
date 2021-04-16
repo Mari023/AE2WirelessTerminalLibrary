@@ -3,6 +3,7 @@ package de.mari_023.fabric.ae2wtlib.wpt;
 import alexiil.mc.lib.attributes.item.FixedItemInv;
 import appeng.api.features.IWirelessTermHandler;
 import appeng.api.implementations.guiobjects.IPortableCell;
+import appeng.api.implementations.tiles.IViewCellStorage;
 import appeng.api.networking.crafting.ICraftingPatternDetails;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.core.Api;
@@ -14,7 +15,7 @@ import de.mari_023.fabric.ae2wtlib.terminal.ae2wtlibInternalInventory;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 
-public class WPTGuiObject extends WTGuiObject implements IPortableCell, IAEAppEngInventory/*, IViewCellStorage*/ {
+public class WPTGuiObject extends WTGuiObject implements IPortableCell, IAEAppEngInventory, IViewCellStorage {
 
     private boolean craftingMode = true;
     private boolean substitute = false;
