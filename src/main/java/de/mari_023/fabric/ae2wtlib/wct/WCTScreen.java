@@ -40,7 +40,6 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
     private int rows = 0;
     private AETextField searchField;
     private final int reservedSpace;
-    //private TabButton craftingStatusBtn;
     IconButton magnetCardToggleButton;
     private final WCTContainer container;
 
