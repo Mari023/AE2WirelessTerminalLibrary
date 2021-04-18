@@ -147,6 +147,11 @@ public final class ContainerHelper<C extends AEBaseContainer, I> {
         return requiredPermission == null || Platform.checkPermissions(player, accessInterface, requiredPermission, true);
     }
 
+    /**
+     * creates a @link ContainerLocator} for any Inventory Slot since it's constructor is private and there is no static method which directly allows this
+     * @param slot the slot the container is in
+     * @return The new {@link ContainerLocator}
+     */
     public static ContainerLocator getContainerLocatorForSlot(int slot) {
         try {
             Object containerLocatorTypePLAYER_INVENTORY = null;
