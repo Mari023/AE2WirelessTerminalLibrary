@@ -32,7 +32,7 @@ public class FixedViewCellInventory implements FixedItemInv {
     }
 
     @Override
-    public boolean setInvStack(int i, ItemStack itemStack, Simulation simulation) {//somehow itemStack is always the item that is already in here
+    public boolean setInvStack(int i, ItemStack itemStack, Simulation simulation) {
         if(isItemValidForSlot(i, itemStack)) {
             if(simulation.isAction()) {
                 ItemWT.setSavedSlot(hostStack, itemStack, "viewCell" + i);
