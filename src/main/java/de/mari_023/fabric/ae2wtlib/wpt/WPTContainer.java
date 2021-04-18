@@ -33,7 +33,6 @@ import appeng.util.inv.WrapperCursorItemHandler;
 import appeng.util.item.AEItemStack;
 import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.ContainerHelper;
-import de.mari_023.fabric.ae2wtlib.FixedViewCellInventory;
 import de.mari_023.fabric.ae2wtlib.terminal.FixedWTInv;
 import de.mari_023.fabric.ae2wtlib.terminal.IWTInvHolder;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
@@ -125,8 +124,8 @@ public class WPTContainer extends MEMonitorableContainer implements IAEAppEngInv
                 patternInv, 1, 147, -72 + 34, getPlayerInventory()));
 
         if(isClient()) {//FIXME set craftingMode and substitute serverside
-            craftingMode = ((ItemWT) wptGUIObject.getItemStack().getItem()).getBoolean(wptGUIObject.getItemStack(), "craftingMode");
-            substitute = ((ItemWT) wptGUIObject.getItemStack().getItem()).getBoolean(wptGUIObject.getItemStack(), "substitute");
+            craftingMode = ItemWT.getBoolean(wptGUIObject.getItemStack(), "craftingMode");
+            substitute = ItemWT.getBoolean(wptGUIObject.getItemStack(), "substitute");
 
             PacketByteBuf buf = PacketByteBufs.create();
             buf.writeString("PatternTerminal.CraftMode");
@@ -181,7 +180,7 @@ public class WPTContainer extends MEMonitorableContainer implements IAEAppEngInv
 
         if(substitute != getPatternTerminal().isSubstitution()) {
             substitute = getPatternTerminal().isSubstitution();
-            ((ItemWT) wptGUIObject.getItemStack().getItem()).setBoolean(wptGUIObject.getItemStack(), substitute, "substitute");
+            ItemWT.setBoolean(wptGUIObject.getItemStack(), substitute, "substitute");
         }
     }
 
@@ -204,7 +203,8 @@ public class WPTContainer extends MEMonitorableContainer implements IAEAppEngInv
                     if(slot instanceof OptionalFakeSlot || slot instanceof FakeCraftingMatrixSlot)
                         listener.onSlotUpdate(this, i, slot.getStack());
                 }
-                if(listener instanceof ServerPlayerEntity) ((ServerPlayerEntity) listener).skipPacketSlotUpdates = false;
+                if(listener instanceof ServerPlayerEntity)
+                    ((ServerPlayerEntity) listener).skipPacketSlotUpdates = false;
             }
             sendContentUpdates();
         }
@@ -258,7 +258,8 @@ public class WPTContainer extends MEMonitorableContainer implements IAEAppEngInv
         if(in == null || out == null || isCraftingMode() && currentRecipe == null) return;
 
         // first check the output slots, should either be null, or a pattern
-        if(!output.isEmpty() && !craftingHelper.isEncodedPattern(output)) return; //if nothing is there we should snag a new pattern.
+        if(!output.isEmpty() && !craftingHelper.isEncodedPattern(output))
+            return; //if nothing is there we should snag a new pattern.
         else if(output.isEmpty()) {
             output = patternSlotIN.getStack();
             if(output.isEmpty() || !isPattern(output)) return; // no blanks.
@@ -271,7 +272,8 @@ public class WPTContainer extends MEMonitorableContainer implements IAEAppEngInv
             output = null;
         }
 
-        if(isCraftingMode()) output = craftingHelper.encodeCraftingPattern(output, currentRecipe, in, out[0], isSubstitute());
+        if(isCraftingMode())
+            output = craftingHelper.encodeCraftingPattern(output, currentRecipe, in, out[0], isSubstitute());
         else output = craftingHelper.encodeProcessingPattern(output, in, out);
         patternSlotOUT.setStack(output);
     }
@@ -356,7 +358,8 @@ public class WPTContainer extends MEMonitorableContainer implements IAEAppEngInv
             final CraftingInventory ic = new CraftingInventory(new ContainerNull(), 3, 3);
             final CraftingInventory real = new CraftingInventory(new ContainerNull(), 3, 3);
 
-            for(int x = 0; x < 9; x++) ic.setStack(x, pattern[x] == null ? ItemStack.EMPTY : pattern[x].createItemStack());
+            for(int x = 0; x < 9; x++)
+                ic.setStack(x, pattern[x] == null ? ItemStack.EMPTY : pattern[x].createItemStack());
 
             final Recipe<CraftingInventory> r = p.world.getRecipeManager().getFirstMatch(RecipeType.CRAFTING, ic, p.world).orElse(null);
 
@@ -448,7 +451,7 @@ public class WPTContainer extends MEMonitorableContainer implements IAEAppEngInv
     private void setCraftingMode(final boolean craftingMode) {
         if(craftingMode != this.craftingMode) {
             this.craftingMode = craftingMode;
-            ((ItemWT) wptGUIObject.getItemStack().getItem()).setBoolean(wptGUIObject.getItemStack(), craftingMode, "craftingMode");
+            ItemWT.setBoolean(wptGUIObject.getItemStack(), craftingMode, "craftingMode");
         }
     }
 
@@ -471,7 +474,6 @@ public class WPTContainer extends MEMonitorableContainer implements IAEAppEngInv
 
     @Override
     public ItemStack[] getViewCells() {
-        return new FixedViewCellInventory().getViewCells(); //FIXME viemcells
-        //return wptGUIObject.getViewCellStorage().getViewCells();
+        return wptGUIObject.getViewCellStorage().getViewCells();
     }
 }

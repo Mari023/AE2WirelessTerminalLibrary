@@ -21,13 +21,12 @@ import appeng.util.inv.InvOperation;
 import com.mojang.datafixers.util.Pair;
 import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.ContainerHelper;
-import de.mari_023.fabric.ae2wtlib.FixedViewCellInventory;
 import de.mari_023.fabric.ae2wtlib.terminal.FixedWTInv;
 import de.mari_023.fabric.ae2wtlib.terminal.IWTInvHolder;
 import de.mari_023.fabric.ae2wtlib.terminal.ae2wtlibInternalInventory;
-import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.ItemMagnetCard;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetSettings;
+import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.player.PlayerEntity;
@@ -250,7 +249,6 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
 
     @Override
     public ItemStack[] getViewCells() {
-        return new FixedViewCellInventory().getViewCells(); //FIXME viemcells
-        //return wctGUIObject.getViewCellStorage().getViewCells();
+        return wctGUIObject.getViewCellStorage().getViewCells();
     }
 }
