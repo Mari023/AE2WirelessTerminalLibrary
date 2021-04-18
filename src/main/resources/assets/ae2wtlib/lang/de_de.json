@@ -19,6 +19,7 @@
   "item.ae2wtlib.wireless_pattern_terminal": "Drahtlose Schablonenkonsole",
   "item.ae2wtlib.wireless_interface_terminal": "Drahtlose Schnittstellenkonsole",
   "item.ae2wtlib.wireless_universal_terminal": "Drahtlose Universalkonsole",
+  "item.ae2wtlib.wireless_universal_terminal.desc": "Installierte Konsolen:",
 
   "key.ae2wtlib.wct": "Drahtlose Fertigungskonsole Öffnen",
   "key.ae2wtlib.wpt": "Drahtlose Schablonenkonsole Öffnen",
