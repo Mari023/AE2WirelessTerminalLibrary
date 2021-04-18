@@ -23,7 +23,7 @@ import appeng.core.Api;
 import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.MEInventoryUpdatePacket;
 import appeng.me.helpers.PlayerSource;
-import de.mari_023.fabric.ae2wtlib.ContainerHelper;
+import de.mari_023.fabric.ae2wtlib.util.ContainerHelper;
 import de.mari_023.fabric.ae2wtlib.wct.WCTContainer;
 import de.mari_023.fabric.ae2wtlib.wct.WCTGuiObject;
 import de.mari_023.fabric.ae2wtlib.wpt.WPTContainer;

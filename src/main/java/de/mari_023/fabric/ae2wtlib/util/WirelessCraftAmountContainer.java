@@ -11,7 +11,6 @@ import appeng.container.ContainerLocator;
 import appeng.container.slot.InaccessibleSlot;
 import appeng.me.helpers.PlayerSource;
 import appeng.tile.inventory.AppEngInternalInventory;
-import de.mari_023.fabric.ae2wtlib.ContainerHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.network.PacketByteBuf;

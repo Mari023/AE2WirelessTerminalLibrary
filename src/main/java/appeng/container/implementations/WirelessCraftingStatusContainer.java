@@ -10,7 +10,7 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.text.Text;
-import de.mari_023.fabric.ae2wtlib.ContainerHelper;
+import de.mari_023.fabric.ae2wtlib.util.ContainerHelper;
 
 public class WirelessCraftingStatusContainer extends CraftingCPUContainer implements CraftingCPUCyclingContainer {
     public static ScreenHandlerType<WirelessCraftingStatusContainer> TYPE;
