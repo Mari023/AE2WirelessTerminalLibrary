@@ -81,7 +81,7 @@ public class WPTScreen extends MEMonitorableScreen<WPTContainer> implements IUni
         ActionButton encodeBtn = new ActionButton(x + 147, y + backgroundHeight - 144, ActionItems.ENCODE, act -> encode());
         addButton(encodeBtn);
 
-        if(container.isWUT()) addButton(new CycleTerminalButton(x - 18, y + 88, btn -> cycleTerminal()));
+        if(container.isWUT()) addButton(new CycleTerminalButton(x - 18, y + 108, btn -> cycleTerminal()));
 
         try {
             Field field = MEMonitorableScreen.class.getDeclaredField("rows");

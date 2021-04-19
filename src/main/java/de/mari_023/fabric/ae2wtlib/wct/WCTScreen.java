@@ -81,7 +81,7 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
         resetMagnetSettings();
         container.setScreen(this);
 
-        if(container.isWUT()) addButton(new CycleTerminalButton(x - 18, y + 88, btn -> cycleTerminal()));
+        if(container.isWUT()) addButton(new CycleTerminalButton(x - 18, y + 108, btn -> cycleTerminal()));
 
         try {
             Field field = MEMonitorableScreen.class.getDeclaredField("rows");

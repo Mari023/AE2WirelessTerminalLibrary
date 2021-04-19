@@ -168,8 +168,7 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
             refreshList = true;
         }
 
-        for(final Object oKey : in.getKeys()) {
-            final String key = (String) oKey;
+        for(final String key : in.getKeys()) {
             if(key.startsWith("=")) {
                 try {
                     final long id = Long.parseLong(key.substring(1), Character.MAX_RADIX);
