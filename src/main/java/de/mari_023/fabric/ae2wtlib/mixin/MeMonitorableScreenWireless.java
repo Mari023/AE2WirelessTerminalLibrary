@@ -16,10 +16,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Environment(EnvType.CLIENT)
 @Mixin(MEMonitorableScreen.class)
 public class MeMonitorableScreenWireless {
 
+    @Environment(EnvType.CLIENT)
     @Inject(method = "showCraftingStatus", at = @At(value = "INVOKE"), cancellable = true, remap = false)
     private void showWirelessCraftingStatus(CallbackInfo ci) {
         if(!((Object) this instanceof WCTScreen) && !((Object) this instanceof WPTScreen)) return;
