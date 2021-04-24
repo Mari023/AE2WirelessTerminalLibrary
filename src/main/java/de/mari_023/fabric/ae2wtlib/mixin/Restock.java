@@ -1,5 +1,6 @@
 package de.mari_023.fabric.ae2wtlib.mixin;
 
+import de.mari_023.fabric.ae2wtlib.wct.CraftingTerminalHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
@@ -18,41 +19,33 @@ public abstract class Restock {
     @Shadow
     public abstract boolean isEmpty();
 
-    @Shadow public abstract void setCount(int count);
+    @Shadow
+    public abstract void setCount(int count);
 
-    @Shadow public abstract int getMaxCount();
+    @Shadow
+    public abstract int getMaxCount();
+
+    @Shadow
+    public abstract int getCount();
 
     @Inject(method = "useOnBlock", at = @At(value = "RETURN"), require = 1, remap = false)
     public void useOnBlockRestock(ItemUsageContext context, CallbackInfoReturnable<ActionResult> cir) {
-        if(cir.getReturnValue().isAccepted() && !isEmpty()) {
-            setCount(getMaxCount());
-        }
-        if(context.getWorld().isClient) return;
-        System.out.println();
-        System.out.println("useOnBlock");
-        System.out.println("===================================================================");
-        System.out.println(this);
-        System.out.println(context.getStack());
-        System.out.println(cir.getReturnValue());
-        System.out.println("===================================================================");
-        System.out.println();
+        restock(context.getPlayer(), cir.getReturnValue());
     }
 
     @Inject(method = "use", at = @At(value = "RETURN"), require = 1, remap = false)
     public void useRestock(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir) {
-        if(cir.getReturnValue().getResult().isAccepted() && !isEmpty()) {
-            setCount(getMaxCount());
+        restock(user, cir.getReturnValue().getResult());
+    }
+
+    private void restock(PlayerEntity playerEntity, ActionResult result) {
+        if(result.isAccepted() && !isEmpty()) {
+            CraftingTerminalHandler cthandler = CraftingTerminalHandler.getCraftingTerminalHandler(playerEntity);
+            if(cthandler.inRange()) {
+
+                int toAdd = getMaxCount() - getCount();
+                setCount(getCount() + toAdd);
+            }
         }
-        if(world.isClient) return;
-        System.out.println();
-        System.out.println("use");
-        System.out.println("===================================================================");
-        System.out.println(this);
-        System.out.println(world);
-        System.out.println(user);
-        System.out.println(hand);
-        System.out.println(cir.getReturnValue().getResult());
-        System.out.println("===================================================================");
-        System.out.println();
     }
 }
