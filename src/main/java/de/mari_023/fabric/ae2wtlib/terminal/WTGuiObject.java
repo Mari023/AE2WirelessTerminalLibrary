@@ -26,13 +26,12 @@ import appeng.api.util.IConfigManager;
 import appeng.container.interfaces.IInventorySlotAware;
 import appeng.core.Api;
 import appeng.tile.networking.WirelessBlockEntity;
-import de.mari_023.fabric.ae2wtlib.FixedViewCellInventory;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 
 public class WTGuiObject implements IGuiItemObject, IEnergySource, IActionHost, IInventorySlotAware {
 
-    private final FixedViewCellInventory fixedViewCellInventory = new FixedViewCellInventory();
+    private final FixedViewCellInventory fixedViewCellInventory;
     private final ItemStack effectiveItem;
     private IGrid targetGrid;
     private final IWirelessTermHandler wth;
@@ -47,6 +46,7 @@ public class WTGuiObject implements IGuiItemObject, IEnergySource, IActionHost, 
     public WTGuiObject(final IWirelessTermHandler wh, final ItemStack is, final PlayerEntity ep, int inventorySlot) {
         String encryptionKey = wh.getEncryptionKey(is);
         effectiveItem = is;
+        fixedViewCellInventory = new FixedViewCellInventory(is);
         myPlayer = ep;
         wth = wh;
         this.inventorySlot = inventorySlot;
@@ -264,7 +264,6 @@ public class WTGuiObject implements IGuiItemObject, IEnergySource, IActionHost, 
         }
         return Api.instance().storage().getStorageChannel(IItemStorageChannel.class);
     }
-
 
     public FixedViewCellInventory getViewCellStorage() { //FIXME viemcells
         return fixedViewCellInventory;

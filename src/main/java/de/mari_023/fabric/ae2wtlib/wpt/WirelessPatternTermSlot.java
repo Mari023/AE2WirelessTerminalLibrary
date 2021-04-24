@@ -12,7 +12,7 @@ import appeng.core.Api;
 import appeng.core.sync.BasePacket;
 import appeng.core.sync.packets.PatternSlotPacket;
 import appeng.helpers.IContainerCraftingPacket;
-import de.mari_023.fabric.ae2wtlib.FixedEmptyInventory;
+import de.mari_023.fabric.ae2wtlib.util.FixedEmptyInventory;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.entity.player.PlayerEntity;

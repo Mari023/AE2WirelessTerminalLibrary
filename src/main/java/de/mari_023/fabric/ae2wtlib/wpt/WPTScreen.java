@@ -5,8 +5,6 @@ import appeng.client.gui.implementations.MEMonitorableScreen;
 import appeng.client.gui.widgets.AETextField;
 import appeng.client.gui.widgets.ActionButton;
 import appeng.client.gui.widgets.TabButton;
-import appeng.client.render.StackSizeRenderer;
-import appeng.container.implementations.WirelessCraftingStatusContainer;
 import appeng.core.localization.GuiText;
 import de.mari_023.fabric.ae2wtlib.wut.CycleTerminalButton;
 import de.mari_023.fabric.ae2wtlib.wut.IUniversalTerminalCapable;
@@ -18,10 +16,8 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -31,7 +27,6 @@ public class WPTScreen extends MEMonitorableScreen<WPTContainer> implements IUni
     private int rows = 0;
     private AETextField searchField;
     private final int reservedSpace;
-    private TabButton craftingStatusBtn;
     private final WPTContainer container;
 
     private static final byte SUBSITUTION_DISABLE = 0;
@@ -86,10 +81,7 @@ public class WPTScreen extends MEMonitorableScreen<WPTContainer> implements IUni
         ActionButton encodeBtn = new ActionButton(x + 147, y + backgroundHeight - 144, ActionItems.ENCODE, act -> encode());
         addButton(encodeBtn);
 
-        craftingStatusBtn = addButton(new TabButton(x + 170, y - 4, 2 + 11 * 16, GuiText.CraftingStatus.text(), itemRenderer, btn -> showWirelessCraftingStatus()));
-        craftingStatusBtn.setHideEdge(true);
-
-        if(container.isWUT()) addButton(new CycleTerminalButton(x - 18, y + 88, btn -> cycleTerminal()));
+        if(container.isWUT()) addButton(new CycleTerminalButton(x - 18, y + 108, btn -> cycleTerminal()));
 
         try {
             Field field = MEMonitorableScreen.class.getDeclaredField("rows");
@@ -172,20 +164,6 @@ public class WPTScreen extends MEMonitorableScreen<WPTContainer> implements IUni
     public void drawFG(MatrixStack matrices, final int offsetX, final int offsetY, final int mouseX, final int mouseY) {
         super.drawFG(matrices, offsetX, offsetY, mouseX, mouseY);
         textRenderer.draw(matrices, GuiText.PatternTerminal.text(), 8, backgroundHeight - 96 + 1 - reservedSpace, 4210752);
-
-        // Show the number of active crafting jobs
-        if(handler.activeCraftingJobs != -1) {
-            // The stack size renderer expects a 16x16 slot, while the button is normally bigger
-            int x = craftingStatusBtn.x + (craftingStatusBtn.getWidth() - 16) / 2;
-            int y = craftingStatusBtn.y + (craftingStatusBtn.getHeight() - 16) / 2;
-            StackSizeRenderer.renderSizeLabel(textRenderer, x - this.x, y - this.y, new LiteralText(String.valueOf(handler.activeCraftingJobs)));
-        }
-    }
-
-    private void showWirelessCraftingStatus() {
-        PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeIdentifier(Registry.SCREEN_HANDLER.getId(WirelessCraftingStatusContainer.TYPE));
-        ClientPlayNetworking.send(new Identifier("ae2wtlib", "switch_gui"), buf);
     }
 
     @Override

@@ -149,8 +149,8 @@ curseforge {
             relations {
                 requiredDependency 'fabric-api'
                 requiredDependency 'applied-energistics-2'
-                requiredDependency 'roughly-enough-items'
                 requiredDependency 'nbt-crafting'
+                optionalDependency 'roughly-enough-items'
                 optionalDependency 'curios-fabric'
             }
             afterEvaluate {

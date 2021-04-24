@@ -5,19 +5,16 @@ import appeng.client.gui.implementations.MEMonitorableScreen;
 import appeng.client.gui.widgets.AETextField;
 import appeng.client.gui.widgets.ActionButton;
 import appeng.client.gui.widgets.IconButton;
-import appeng.client.gui.widgets.TabButton;
-import appeng.client.render.StackSizeRenderer;
-import appeng.container.implementations.WirelessCraftingStatusContainer;
 import appeng.container.slot.CraftingMatrixSlot;
 import appeng.core.localization.GuiText;
 import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.InventoryActionPacket;
 import appeng.helpers.InventoryAction;
 import com.mojang.blaze3d.systems.RenderSystem;
-import de.mari_023.fabric.ae2wtlib.wut.CycleTerminalButton;
-import de.mari_023.fabric.ae2wtlib.wut.IUniversalTerminalCapable;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetMode;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetSettings;
+import de.mari_023.fabric.ae2wtlib.wut.CycleTerminalButton;
+import de.mari_023.fabric.ae2wtlib.wut.IUniversalTerminalCapable;
 import me.shedaniel.math.Rectangle;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -30,12 +27,10 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.slot.Slot;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Quaternion;
-import net.minecraft.util.registry.Registry;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -45,7 +40,6 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
     private int rows = 0;
     private AETextField searchField;
     private final int reservedSpace;
-    private TabButton craftingStatusBtn;
     IconButton magnetCardToggleButton;
     private final WCTContainer container;
 
@@ -87,10 +81,7 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
         resetMagnetSettings();
         container.setScreen(this);
 
-        craftingStatusBtn = addButton(new TabButton(x + 169, y - 4, 2 + 11 * 16, GuiText.CraftingStatus.text(), itemRenderer, btn -> showWirelessCraftingStatus()));
-        craftingStatusBtn.setHideEdge(true);
-
-        if(container.isWUT()) addButton(new CycleTerminalButton(x - 18, y + 88, btn -> cycleTerminal()));
+        if(container.isWUT()) addButton(new CycleTerminalButton(x - 18, y + 108, btn -> cycleTerminal()));
 
         try {
             Field field = MEMonitorableScreen.class.getDeclaredField("rows");
@@ -131,20 +122,6 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
     public void drawFG(MatrixStack matrices, final int offsetX, final int offsetY, final int mouseX, final int mouseY) {
         super.drawFG(matrices, offsetX, offsetY, mouseX, mouseY);
         textRenderer.draw(matrices, GuiText.CraftingTerminal.text(), 8, backgroundHeight - 96 + 1 - reservedSpace, 4210752);
-
-        // Show the number of active crafting jobs
-        if(handler.activeCraftingJobs != -1) {
-            // The stack size renderer expects a 16x16 slot, while the button is normally bigger
-            int x = craftingStatusBtn.x + (craftingStatusBtn.getWidth() - 16) / 2;
-            int y = craftingStatusBtn.y + (craftingStatusBtn.getHeight() - 16) / 2;
-            StackSizeRenderer.renderSizeLabel(textRenderer, x - this.x, y - this.y, new LiteralText(String.valueOf(handler.activeCraftingJobs)));
-        }
-    }
-
-    private void showWirelessCraftingStatus() {
-        PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeIdentifier(Registry.SCREEN_HANDLER.getId(WirelessCraftingStatusContainer.TYPE));
-        ClientPlayNetworking.send(new Identifier("ae2wtlib", "switch_gui"), buf);
     }
 
     private void clear() {

@@ -9,6 +9,7 @@
   "item.ae2wtlib.infinity_booster_card.desc": "Expands Wireless Terminals to infinity",
   "item.ae2wtlib.magnet_card": "Magnet Card",
   "item.ae2wtlib.magnet_card.desc": "Magnet upgrade for the Wireless Crafting Terminal",
+
   "gui.ae2wtlib.magnet_card": "Magnet Card",
   "gui.ae2wtlib.magnetcard.desc.off": "Off",
   "gui.ae2wtlib.magnetcard.desc.inv": "Pickup to Inventory",
@@ -19,6 +20,7 @@
   "item.ae2wtlib.wireless_pattern_terminal": "Wireless Pattern Terminal",
   "item.ae2wtlib.wireless_interface_terminal": "Wireless Interface Terminal",
   "item.ae2wtlib.wireless_universal_terminal": "Wireless Universal Terminal",
+  "item.ae2wtlib.wireless_universal_terminal.desc": "Installed Terminals:",
 
   "key.ae2wtlib.wct": "Open Wireless Crafting Terminal",
   "key.ae2wtlib.wpt": "Open Wireless Pattern Terminal",

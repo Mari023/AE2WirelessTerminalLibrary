@@ -20,9 +20,8 @@ It also adds a wireless universal terminal which has all wireless terminals in o
 
 - Wireless Fluid Terminal
 - Magnet Card can't filter items
-- Curios support
-- Keybinds to open Terminals
-- support for viewcells
+- Curios / Trinket support
+- Viewcells don't work
 
 ## FAQ
 

@@ -9,6 +9,7 @@
   "item.ae2wtlib.infinity_booster_card.desc": "Erweitert die Reichweite von Drahtloskonsolen ins unendliche",
   "item.ae2wtlib.magnet_card": "Magnet Karte",
   "item.ae2wtlib.magnet_card.desc": "Magnet Upgrade für die Drahtlose Fertigungskonsole",
+
   "gui.ae2wtlib.magnet_card": "Magnet Karte",
   "gui.ae2wtlib.magnetcard.desc.off": "Aus",
   "gui.ae2wtlib.magnetcard.desc.inv": "Items werden in das Inventar eingesammelt",
@@ -19,6 +20,7 @@
   "item.ae2wtlib.wireless_pattern_terminal": "Drahtlose Schablonenkonsole",
   "item.ae2wtlib.wireless_interface_terminal": "Drahtlose Schnittstellenkonsole",
   "item.ae2wtlib.wireless_universal_terminal": "Drahtlose Universalkonsole",
+  "item.ae2wtlib.wireless_universal_terminal.desc": "Installierte Konsolen:",
 
   "key.ae2wtlib.wct": "Drahtlose Fertigungskonsole Öffnen",
   "key.ae2wtlib.wpt": "Drahtlose Schablonenkonsole Öffnen",
