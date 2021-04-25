@@ -227,6 +227,7 @@ public class ae2wtlib implements ModInitializer {
                         ItemStack terminal = inv.getStack(i);
                         if(terminal.getItem() instanceof ItemWCT || (terminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(terminal, "crafting"))) {
                             slot = i;
+                            WUTHandler.setCurrentTerminal(terminal, "crafting");
                             break;
                         }
                     }
@@ -240,6 +241,7 @@ public class ae2wtlib implements ModInitializer {
                         ItemStack terminal = inv.getStack(i);
                         if(terminal.getItem() instanceof ItemWPT || (terminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(terminal, "pattern"))) {
                             slot = i;
+                            WUTHandler.setCurrentTerminal(terminal, "pattern");
                             break;
                         }
                     }
@@ -253,6 +255,7 @@ public class ae2wtlib implements ModInitializer {
                         ItemStack terminal = inv.getStack(i);
                         if(terminal.getItem() instanceof ItemWIT || (terminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(terminal, "interface"))) {
                             slot = i;
+                            WUTHandler.setCurrentTerminal(terminal, "interface");
                             break;
                         }
                     }

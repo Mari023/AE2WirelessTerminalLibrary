@@ -40,6 +40,13 @@ public class WUTHandler {
         return currentTerminal;
     }
 
+    public static void setCurrentTerminal(ItemStack itemStack, String terminal) {
+        if(hasTerminal(itemStack, terminal)) {
+            assert itemStack.getTag() != null;
+            itemStack.getTag().putString("currentTerminal", terminal);
+        }
+    }
+
     public static boolean hasTerminal(ItemStack itemStack, String terminal) {
         if(!terminalNames.contains(terminal)) return false;
         if(itemStack.getTag() == null) return false;
