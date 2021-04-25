@@ -6,12 +6,17 @@ import de.mari_023.fabric.ae2wtlib.util.WirelessCraftAmountContainer;
 import de.mari_023.fabric.ae2wtlib.util.WirelessCraftAmountScreen;
 import de.mari_023.fabric.ae2wtlib.util.WirelessCraftConfirmScreen;
 import de.mari_023.fabric.ae2wtlib.util.WirelessCraftingStatusScreen;
+import de.mari_023.fabric.ae2wtlib.wct.ItemWCT;
 import de.mari_023.fabric.ae2wtlib.wct.WCTContainer;
 import de.mari_023.fabric.ae2wtlib.wct.WCTScreen;
+import de.mari_023.fabric.ae2wtlib.wit.ItemWIT;
 import de.mari_023.fabric.ae2wtlib.wit.WITContainer;
 import de.mari_023.fabric.ae2wtlib.wit.WITScreen;
+import de.mari_023.fabric.ae2wtlib.wpt.ItemWPT;
 import de.mari_023.fabric.ae2wtlib.wpt.WPTContainer;
 import de.mari_023.fabric.ae2wtlib.wpt.WPTScreen;
+import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
+import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -24,6 +29,8 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.options.KeyBinding;
 import net.minecraft.client.util.InputUtil;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
@@ -63,20 +70,46 @@ public class ae2wtlibclient implements ClientModInitializer {
         KeyBinding wit = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.ae2wtlib.wit", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "key.category.ae2wtlib"));
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            PlayerInventory inv = null;
+            if(client.player != null) inv = client.player.inventory;
             while(wct.wasPressed()) {
                 PacketByteBuf buf = PacketByteBufs.create();
                 buf.writeString("crafting");
                 ClientPlayNetworking.send(new Identifier("ae2wtlib", "hotkey"), buf);
+                if(inv == null) return;
+                for(int i = 0; i < inv.size(); i++) {
+                    ItemStack terminal = inv.getStack(i);
+                    if(terminal.getItem() instanceof ItemWCT || (terminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(terminal, "crafting"))) {
+                        WUTHandler.setCurrentTerminal(terminal, "crafting");
+                        break;
+                    }
+                }
             }
             while(wpt.wasPressed()) {
                 PacketByteBuf buf = PacketByteBufs.create();
                 buf.writeString("pattern");
                 ClientPlayNetworking.send(new Identifier("ae2wtlib", "hotkey"), buf);
+                if(inv == null) return;
+                for(int i = 0; i < inv.size(); i++) {
+                    ItemStack terminal = inv.getStack(i);
+                    if(terminal.getItem() instanceof ItemWPT || (terminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(terminal, "pattern"))) {
+                        WUTHandler.setCurrentTerminal(terminal, "pattern");
+                        break;
+                    }
+                }
             }
             while(wit.wasPressed()) {
                 PacketByteBuf buf = PacketByteBufs.create();
                 buf.writeString("interface");
                 ClientPlayNetworking.send(new Identifier("ae2wtlib", "hotkey"), buf);
+                if(inv == null) return;
+                for(int i = 0; i < inv.size(); i++) {
+                    ItemStack terminal = inv.getStack(i);
+                    if(terminal.getItem() instanceof ItemWIT || (terminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(terminal, "interface"))) {
+                        WUTHandler.setCurrentTerminal(terminal, "interface");
+                        break;
+                    }
+                }
             }
         });
     }
