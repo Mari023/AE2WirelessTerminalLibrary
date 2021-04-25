@@ -1,6 +1,9 @@
 package de.mari_023.fabric.ae2wtlib.wut;
 
 import appeng.container.ContainerLocator;
+import de.mari_023.fabric.ae2wtlib.wct.ItemWCT;
+import de.mari_023.fabric.ae2wtlib.wit.ItemWIT;
+import de.mari_023.fabric.ae2wtlib.wpt.ItemWPT;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.LiteralText;
@@ -10,6 +13,33 @@ import java.util.HashMap;
 import java.util.List;
 
 public class WUTHandler {
+    public static String getAnyCurrentTerminal(ItemStack stack) {
+        if(stack.getItem() instanceof ItemWUT) {
+            if(stack.getTag() == null) return "noTerminal";
+            return getCurrentTerminal(stack);
+        } else if(stack.getItem() instanceof ItemWCT) {
+            return "crafting";
+        } else if(stack.getItem() instanceof ItemWPT) {
+            return "pattern";
+        } else if(stack.getItem() instanceof ItemWIT) {
+            return "interface";
+        } else return "noTerminal";
+    }
+
+    public static String getCurrentTerminal(ItemStack wirelessUniversalTerminal) {
+        if(!(wirelessUniversalTerminal.getItem() instanceof ItemWUT) || wirelessUniversalTerminal.getTag() == null)
+            return "noTerminal";
+        String currentTerminal = wirelessUniversalTerminal.getTag().getString("currentTerminal");
+
+        if(!wirelessTerminals.containsKey(currentTerminal)) for(String terminal : terminalNames)
+            if(wirelessUniversalTerminal.getTag().getBoolean(terminal)) {
+                currentTerminal = terminal;
+                wirelessUniversalTerminal.getTag().putString("currentTerminal", currentTerminal);
+                break;
+            }
+        return currentTerminal;
+    }
+
     public static boolean hasTerminal(ItemStack itemStack, String terminal) {
         if(!terminalNames.contains(terminal)) return false;
         if(itemStack.getTag() == null) return false;
@@ -18,7 +48,7 @@ public class WUTHandler {
 
     public static void cycle(ItemStack itemStack) {
         if(itemStack.getTag() == null) return;
-        String nextTerminal = itemStack.getTag().getString("currentTerminal");
+        String nextTerminal = getCurrentTerminal(itemStack);
         do {
             int i = terminalNames.indexOf(nextTerminal) + 1;
             if(i == terminalNames.size()) i = 0;
@@ -30,14 +60,7 @@ public class WUTHandler {
     public static void open(final PlayerEntity player, final ContainerLocator locator) {
         ItemStack is = player.inventory.getStack(locator.getItemIndex());
         if(is.getTag() == null) return;
-        String currentTerminal = is.getTag().getString("currentTerminal");
-
-        if(!wirelessTerminals.containsKey(currentTerminal)) for(String terminal : terminalNames)
-            if(is.getTag().getBoolean(terminal)) {
-                currentTerminal = terminal;
-                is.getTag().putString("currentTerminal", currentTerminal);
-                break;
-            }
+        String currentTerminal = getCurrentTerminal(is);
         if(!wirelessTerminals.containsKey(currentTerminal)) {
             player.sendMessage(new LiteralText("This terminal does not contain any other Terminals"), false);
             return;
