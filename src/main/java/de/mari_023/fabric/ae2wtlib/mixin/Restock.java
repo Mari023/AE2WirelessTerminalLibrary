@@ -1,5 +1,14 @@
 package de.mari_023.fabric.ae2wtlib.mixin;
 
+import appeng.api.config.Actionable;
+import appeng.api.networking.security.IActionHost;
+import appeng.api.networking.storage.IStorageGrid;
+import appeng.api.storage.IMEMonitor;
+import appeng.api.storage.channels.IItemStorageChannel;
+import appeng.api.storage.data.IAEItemStack;
+import appeng.core.Api;
+import appeng.me.helpers.PlayerSource;
+import appeng.util.item.AEItemStack;
 import de.mari_023.fabric.ae2wtlib.wct.CraftingTerminalHandler;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -28,23 +37,35 @@ public abstract class Restock {
     @Shadow
     public abstract int getCount();
 
+    @Shadow
+    public abstract ItemStack copy();
+
     @Inject(method = "useOnBlock", at = @At(value = "RETURN"), require = 1, remap = false)
     public void useOnBlockRestock(ItemUsageContext context, CallbackInfoReturnable<ActionResult> cir) {
-        restock(context.getPlayer(), cir.getReturnValue());
+        if(!context.getWorld().isClient()) restock(context.getPlayer(), cir.getReturnValue());
     }
 
     @Inject(method = "use", at = @At(value = "RETURN"), require = 1, remap = false)
     public void useRestock(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir) {
-        restock(user, cir.getReturnValue().getResult());
+        if(!world.isClient()) restock(user, cir.getReturnValue().getResult());
     }
 
     private void restock(PlayerEntity playerEntity, ActionResult result) {
-        if(result.isAccepted() && !isEmpty()) {
-            CraftingTerminalHandler cthandler = CraftingTerminalHandler.getCraftingTerminalHandler(playerEntity);
-            if(cthandler.inRange()) {
-
+        if(result.equals(ActionResult.CONSUME) && !isEmpty() && !playerEntity.isCreative()) {
+            CraftingTerminalHandler CTHandler = CraftingTerminalHandler.getCraftingTerminalHandler(playerEntity);
+            if(CTHandler.inRange()) {
                 int toAdd = getMaxCount() - getCount();
-                setCount(getCount() + toAdd);
+                if(toAdd == 0) return;
+                IStorageGrid sg = CTHandler.getTargetGrid().getCache(IStorageGrid.class);
+                IMEMonitor<IAEItemStack> itemStorage = sg.getInventory(Api.instance().storage().getStorageChannel(IItemStorageChannel.class));
+                ItemStack request = copy();
+                request.setCount(toAdd);
+                IAEItemStack stack = itemStorage.extractItems(AEItemStack.fromItemStack(request), Actionable.MODULATE, new PlayerSource(playerEntity, (IActionHost) CTHandler.getSecurityStation()));
+                if(stack == null) return;
+                ItemStack extraction = stack.createItemStack();
+                int extractedItems = 0;
+                if(extraction != null && !extraction.isEmpty()) extractedItems = extraction.getCount();
+                setCount(getCount() + extractedItems);
             }
         }
     }
