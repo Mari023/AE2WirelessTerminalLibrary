@@ -11,6 +11,7 @@ import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.InventoryActionPacket;
 import appeng.helpers.InventoryAction;
 import com.mojang.blaze3d.systems.RenderSystem;
+import de.mari_023.fabric.ae2wtlib.util.ItemButton;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetMode;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetSettings;
 import de.mari_023.fabric.ae2wtlib.wut.CycleTerminalButton;
@@ -40,7 +41,7 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
     private int rows = 0;
     private AETextField searchField;
     private final int reservedSpace;
-    IconButton magnetCardToggleButton;
+    ItemButton magnetCardToggleButton;
     private final WCTContainer container;
 
     public WCTScreen(WCTContainer container, PlayerInventory playerInventory, Text title) {
@@ -71,12 +72,7 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
         deleteButton.setHalfSize(true);
         deleteButton.setMessage(new TranslatableText("gui.ae2wtlib.emptytrash").append("\n").append(new TranslatableText("gui.ae2wtlib.emptytrash.desc")));
 
-        magnetCardToggleButton = addButton(new IconButton(x + 92 + 60, y + backgroundHeight - 114, btn -> setMagnetMode()) {
-            @Override
-            protected int getIconIndex() {
-                return 6;
-            }
-        });
+        magnetCardToggleButton = addButton(new ItemButton(x + 92 + 60, y + backgroundHeight - 114, btn -> setMagnetMode(), new Identifier("ae2wtlib", "textures/magnet_card.png")));
         magnetCardToggleButton.setHalfSize(true);
         resetMagnetSettings();
         container.setScreen(this);

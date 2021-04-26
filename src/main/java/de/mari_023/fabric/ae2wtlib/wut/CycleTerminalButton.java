@@ -49,26 +49,31 @@ public class CycleTerminalButton extends ButtonWidget implements ITooltip {
     }
 
     public static final Identifier TEXTURE_STATES = new Identifier("appliedenergistics2", "textures/guis/states.png");
+    public static final Identifier nextTerminal = new Identifier("ae2wtlib", "textures/wireless_universal_terminal.png");
 
     @Override
     public void renderButton(MatrixStack matrices, final int mouseX, final int mouseY, float partial) {
         MinecraftClient minecraft = MinecraftClient.getInstance();
-        if(this.visible) {
-            final int iconIndex = 6;
+        if(visible) {
 
             TextureManager textureManager = minecraft.getTextureManager();
             textureManager.bindTexture(TEXTURE_STATES);
             RenderSystem.disableDepthTest();
             RenderSystem.enableBlend();
 
-            if(this.active) RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
+            drawTexture(matrices, x, y, 256 - 16, 256 - 16, 16, 16);
+
+            textureManager.bindTexture(nextTerminal);
+            RenderSystem.pushMatrix();
+            RenderSystem.translatef(x, y, 0.0F);
+            RenderSystem.scalef(1f / 20f, 1f / 20f, 1f / 20f);
+
+            if(active) RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
             else RenderSystem.color4f(0.5f, 0.5f, 0.5f, 1.0f);
 
-            final int uv_y = iconIndex / 16;
-            final int uv_x = iconIndex - uv_y * 16;
+            drawTexture(matrices, 32, 32, 0, 0, 256, 256);
 
-            drawTexture(matrices, this.x, this.y, 256 - 16, 256 - 16, 16, 16);
-            drawTexture(matrices, this.x, this.y, uv_x * 16, uv_y * 16, 16, 16);
+            RenderSystem.popMatrix();
 
             RenderSystem.enableDepthTest();
             RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
