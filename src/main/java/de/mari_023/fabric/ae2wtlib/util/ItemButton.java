@@ -41,7 +41,7 @@ public class ItemButton extends ButtonWidget implements ITooltip {
             TextureManager textureManager = minecraft.getTextureManager();
             textureManager.bindTexture(TEXTURE_STATES);
             RenderSystem.disableDepthTest();
-            RenderSystem.enableBlend(); // FIXME: This should be the _default_ state, but some vanilla widget disables it :|
+            RenderSystem.enableBlend();
             if(halfSize) {
                 width = 8;
                 height = 8;
@@ -55,7 +55,7 @@ public class ItemButton extends ButtonWidget implements ITooltip {
                 RenderSystem.translatef(x, y, 0.0F);
             }
             drawTexture(matrices, 0, 0, 256 - 16, 256 - 16, 16, 16);
-            RenderSystem.scalef(1f/16f, 1f/16f, 1f/16f);
+            RenderSystem.scalef(1f / 16f, 1f / 16f, 1f / 16f);
             if(active) {
                 RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
             } else {

@@ -45,7 +45,7 @@ public class CycleTerminalButton extends ButtonWidget implements ITooltip {
 
     @Override
     public boolean isTooltipAreaVisible() {
-        return true;//TODO
+        return true;
     }
 
     public static final Identifier TEXTURE_STATES = new Identifier("appliedenergistics2", "textures/guis/states.png");
