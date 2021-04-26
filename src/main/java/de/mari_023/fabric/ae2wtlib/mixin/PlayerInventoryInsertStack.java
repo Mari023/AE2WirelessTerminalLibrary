@@ -30,7 +30,7 @@ public class PlayerInventoryInsertStack {
     @Final
     public PlayerEntity player;
 
-    @Inject(method = "insertStack(Lnet/minecraft/item/ItemStack;)Z", at = @At(value = "INVOKE"), require = 1, allow = 1)
+    @Inject(method = "insertStack(Lnet/minecraft/item/ItemStack;)Z", at = @At(value = "INVOKE"), require = 1, allow = 1, cancellable = true)
     public void insertStackInME(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
         if(stack.isEmpty()) return;
         CraftingTerminalHandler CTHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
@@ -43,7 +43,10 @@ public class PlayerInventoryInsertStack {
             IMEMonitor<IAEItemStack> itemStorage = sg.getInventory(Api.instance().storage().getStorageChannel(IItemStorageChannel.class));
             IAEItemStack leftover = itemStorage.injectItems(AEItemStack.fromItemStack(stack), Actionable.MODULATE, new PlayerSource(player, (IActionHost) securityStation));
 
-            if(leftover == null || leftover.createItemStack().isEmpty()) stack.setCount(0);
+            if(leftover == null || leftover.createItemStack().isEmpty()) {
+                stack.setCount(0);
+                cir.setReturnValue(true);
+            }
             else stack.setCount(leftover.createItemStack().getCount());
         }
     }
