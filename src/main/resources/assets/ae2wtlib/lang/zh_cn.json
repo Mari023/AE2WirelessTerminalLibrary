@@ -10,7 +10,7 @@
   "item.ae2wtlib.magnet_card": "磁卡",
   "item.ae2wtlib.magnet_card.desc": "为无线合成终端添加磁卡",
 
-  "gui.ae2wtlib.magnet_card": "磁卡",
+  "gui.ae2wtlib.magnetcard": "磁卡",
   "gui.ae2wtlib.magnetcard.desc.off": "关闭磁卡",
   "gui.ae2wtlib.magnetcard.desc.inv": "拾起物品至物品栏",
   "gui.ae2wtlib.magnetcard.desc.me": "拾起物品至ME网络",
