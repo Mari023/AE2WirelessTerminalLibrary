@@ -61,7 +61,7 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
         addChild(searchField);
         changeFocus(true);
 
-        if (container.isWUT()) addButton(new CycleTerminalButton(x - 18, y + 8, btn -> cycleTerminal()));
+        if(container.isWUT()) addButton(new CycleTerminalButton(x - 18, y + 8, btn -> cycleTerminal()));
     }
 
     @Override
@@ -76,15 +76,15 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
         int offset = 17;
         for (int x = 0; x < LINES_ON_PAGE && ex + x < lines.size(); x++) {
             final Object lineObj = lines.get(ex + x);
-            if (lineObj instanceof ClientDCInternalInv) {
+            if(lineObj instanceof ClientDCInternalInv) {
                 final ClientDCInternalInv inv = (ClientDCInternalInv) lineObj;
                 for (int z = 0; z < inv.getInventory().getSlotCount(); z++) {
                     handler.slots.add(new SlotDisconnected(inv, z, z * 18 + 8, 1 + offset));
                 }
-            } else if (lineObj instanceof String) {
+            } else if(lineObj instanceof String) {
                 String name = (String) lineObj;
                 final int rows = byName.get(name).size();
-                if (rows > 1) {
+                if(rows > 1) {
                     name = name + " (" + rows + ')';
                 }
 
@@ -100,7 +100,7 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
 
     @Override
     public boolean mouseClicked(final double xCoord, final double yCoord, final int btn) {
-        if (btn == 1 && searchField.isMouseOver(xCoord, yCoord)) {
+        if(btn == 1 && searchField.isMouseOver(xCoord, yCoord)) {
             searchField.setText("");
             return true;
         }
@@ -118,7 +118,7 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
 
         for (int x = 0; x < LINES_ON_PAGE && ex + x < lines.size(); x++) {
             final Object lineObj = lines.get(ex + x);
-            if (lineObj instanceof ClientDCInternalInv) {
+            if(lineObj instanceof ClientDCInternalInv) {
                 final ClientDCInternalInv inv = (ClientDCInternalInv) lineObj;
 
                 final int width = inv.getInventory().getSlotCount() * 18;
@@ -127,26 +127,26 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
             offset += 18;
         }
 
-        if (searchField != null) searchField.render(matrices, mouseX, mouseY, partialTicks);
+        if(searchField != null) searchField.render(matrices, mouseX, mouseY, partialTicks);
     }
 
     @Override
     public boolean charTyped(char character, int key) {
-        if (character == ' ' && searchField.getText().isEmpty()) return true;
+        if(character == ' ' && searchField.getText().isEmpty()) return true;
         return super.charTyped(character, key);
     }
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int p_keyPressed_3_) {
-        if (keyCode != GLFW.GLFW_KEY_ESCAPE) {
-            if (AppEng.instance().isActionKey(ActionKey.TOGGLE_FOCUS, keyCode, scanCode)) {
+        if(keyCode != GLFW.GLFW_KEY_ESCAPE) {
+            if(AppEng.instance().isActionKey(ActionKey.TOGGLE_FOCUS, keyCode, scanCode)) {
                 searchField.setFocused(!searchField.isFocused());
                 return true;
             }
 
             // Forward keypresses to the search field
-            if (searchField.isFocused()) {
-                if (keyCode == GLFW.GLFW_KEY_ENTER) {
+            if(searchField.isFocused()) {
+                if(keyCode == GLFW.GLFW_KEY_ENTER) {
                     searchField.setFocused(false);
                     return true;
                 }
@@ -163,13 +163,13 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
     }
 
     public void postUpdate(final CompoundTag in) {
-        if (in.getBoolean("clear")) {
+        if(in.getBoolean("clear")) {
             byId.clear();
             refreshList = true;
         }
 
         for (final String key : in.getKeys()) {
-            if (key.startsWith("=")) {
+            if(key.startsWith("=")) {
                 try {
                     final long id = Long.parseLong(key.substring(1), Character.MAX_RADIX);
                     final CompoundTag invData = in.getCompound(key);
@@ -178,7 +178,7 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
 
                     for (int x = 0; x < current.getInventory().getSlotCount(); x++) {
                         final String which = Integer.toString(x);
-                        if (invData.contains(which))
+                        if(invData.contains(which))
                             current.getInventory().setInvStack(x, ItemStack.fromTag(invData.getCompound(which)), Simulation.ACTION);
                     }
                 } catch (final NumberFormatException ignored) {
@@ -186,7 +186,7 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
             }
         }
 
-        if (refreshList) {
+        if(refreshList) {
             refreshList = false;
             // invalid caches on refresh
             cachedSearches.clear();
@@ -210,21 +210,21 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
         for (final ClientDCInternalInv entry : byId.values()) {
             // ignore inventory if not doing a full rebuild or cache already marks it as
             // miss.
-            if (!rebuild && !cachedSearch.contains(entry)) continue;
+            if(!rebuild && !cachedSearch.contains(entry)) continue;
 
             // Shortcut to skip any filter if search term is ""/empty
             boolean found = searchFilterLowerCase.isEmpty();
 
             // Search if the current inventory holds a pattern containing the search term.
-            if (!found) {
+            if(!found) {
                 for (final ItemStack itemStack : entry.getInventory()) {
                     found = itemStackMatchesSearchTerm(itemStack, searchFilterLowerCase);
-                    if (found) break;
+                    if(found) break;
                 }
             }
 
             // if found, filter skipped or machine name matching the search term, add it
-            if (found || entry.getSearchName().contains(searchFilterLowerCase)) {
+            if(found || entry.getSearchName().contains(searchFilterLowerCase)) {
                 byName.put(entry.getFormattedName(), entry);
                 cachedSearch.add(entry);
             } else cachedSearch.remove(entry);
@@ -251,11 +251,11 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
     }
 
     private boolean itemStackMatchesSearchTerm(final ItemStack itemStack, final String searchTerm) {
-        if (itemStack.isEmpty()) return false;
+        if(itemStack.isEmpty()) return false;
 
         final CompoundTag encodedValue = itemStack.getTag();
 
-        if (encodedValue == null) return false;
+        if(encodedValue == null) return false;
 
         // Potential later use to filter by input
         // ListNBT inTag = encodedValue.getTagList( "in", 10 );
@@ -264,10 +264,10 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
         for (int i = 0; i < outTag.size(); i++) {
 
             final ItemStack parsedItemStack = ItemStack.fromTag(outTag.getCompound(i));
-            if (!parsedItemStack.isEmpty()) {
+            if(!parsedItemStack.isEmpty()) {
                 final String displayName = Platform.getItemDisplayName(Api.instance().storage()
                         .getStorageChannel(IItemStorageChannel.class).createStack(parsedItemStack)).getString().toLowerCase();
-                if (displayName.contains(searchTerm)) return true;
+                if(displayName.contains(searchTerm)) return true;
             }
         }
         return false;
@@ -283,11 +283,11 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
      * @return a Set matching a superset of the search term
      */
     private Set<Object> getCacheForSearchTerm(final String searchTerm) {
-        if (!cachedSearches.containsKey(searchTerm)) cachedSearches.put(searchTerm, new HashSet<>());
+        if(!cachedSearches.containsKey(searchTerm)) cachedSearches.put(searchTerm, new HashSet<>());
 
         final Set<Object> cache = cachedSearches.get(searchTerm);
 
-        if (cache.isEmpty() && searchTerm.length() > 1) {
+        if(cache.isEmpty() && searchTerm.length() > 1) {
             cache.addAll(getCacheForSearchTerm(searchTerm.substring(0, searchTerm.length() - 1)));
             return cache;
         }
@@ -307,7 +307,7 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
     private ClientDCInternalInv getById(final long id, final long sortBy, final Text name) {
         ClientDCInternalInv o = byId.get(id);
 
-        if (o == null) {
+        if(o == null) {
             byId.put(id, o = new ClientDCInternalInv(9, id, sortBy, name));
             refreshList = true;
         }

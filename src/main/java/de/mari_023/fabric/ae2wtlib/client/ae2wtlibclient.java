@@ -49,12 +49,12 @@ public class ae2wtlibclient implements ClientModInitializer {
         ClientPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "interface_terminal"), (client, handler, buf, responseSender) -> {
             buf.retain();
             client.execute(() -> {
-                if (client.player == null) return;
+                if(client.player == null) return;
 
                 final Screen screen = MinecraftClient.getInstance().currentScreen;
-                if (screen instanceof WITScreen) {
+                if(screen instanceof WITScreen) {
                     CompoundTag tag = buf.readCompoundTag();
-                    if (tag != null)
+                    if(tag != null)
                         ((WITScreen) screen).postUpdate(tag);
                 }
                 buf.release();
@@ -63,7 +63,7 @@ public class ae2wtlibclient implements ClientModInitializer {
         ClientPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "update_restock"), (client, handler, buf, responseSender) -> {
             buf.retain();
             client.execute(() -> {
-                if (client.player == null) return;
+                if(client.player == null) return;
                 int slot = buf.readInt();
                 int count = buf.readInt();
                 client.player.inventory.getStack(slot).setCount(count);
@@ -100,11 +100,11 @@ public class ae2wtlibclient implements ClientModInitializer {
                 PacketByteBuf buf = PacketByteBufs.create();
                 buf.writeString("toggleRestock");
                 ClientPlayNetworking.send(new Identifier("ae2wtlib", "hotkey"), buf);
-                if (MinecraftClient.getInstance().player == null) return;
+                if(MinecraftClient.getInstance().player == null) return;
                 CraftingTerminalHandler craftingTerminalHandler = CraftingTerminalHandler.getCraftingTerminalHandler(MinecraftClient.getInstance().player);
                 ItemStack terminal = craftingTerminalHandler.getCraftingTerminal();
-                if (terminal.isEmpty()) return;
-                if (ItemWT.getBoolean(terminal, "restock")) {
+                if(terminal.isEmpty()) return;
+                if(ItemWT.getBoolean(terminal, "restock")) {
                     MinecraftClient.getInstance().player.sendMessage(new TranslatableText("gui.ae2wtlib.restock").append(new TranslatableText("gui.ae2wtlib.off").setStyle(Style.EMPTY.withColor(TextColor.parse("red")))), true);
                 } else {
                     MinecraftClient.getInstance().player.sendMessage(new TranslatableText("gui.ae2wtlib.restock").append(new TranslatableText("gui.ae2wtlib.on").setStyle(Style.EMPTY.withColor(TextColor.parse("green")))), true);

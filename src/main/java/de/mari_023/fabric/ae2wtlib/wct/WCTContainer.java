@@ -125,11 +125,11 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
 
     @Override
     public void sendContentUpdates() {
-        if (isClient()) return;
+        if(isClient()) return;
         super.sendContentUpdates();
 
-        if (!wctGUIObject.rangeCheck()) {
-            if (isValidContainer()) {
+        if(!wctGUIObject.rangeCheck()) {
+            if(isValidContainer()) {
                 getPlayerInv().player.sendSystemMessage(PlayerMessages.OutOfRange.get(), Util.NIL_UUID);
                 ((ServerPlayerEntity) getPlayerInv().player).closeHandledScreen();
             }
@@ -137,13 +137,13 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
         } else {
             double powerMultiplier = Config.getPowerMultiplier(wctGUIObject.getRange(), wctGUIObject.isOutOfRange());
             ticks++;
-            if (ticks > 10) {
+            if(ticks > 10) {
                 wctGUIObject.extractAEPower((powerMultiplier) * ticks, Actionable.MODULATE, PowerMultiplier.CONFIG);
                 ticks = 0;
             }
 
-            if (wctGUIObject.extractAEPower(1, Actionable.SIMULATE, PowerMultiplier.ONE) == 0) {
-                if (isValidContainer()) {
+            if(wctGUIObject.extractAEPower(1, Actionable.SIMULATE, PowerMultiplier.ONE) == 0) {
+                if(isValidContainer()) {
                     getPlayerInv().player.sendSystemMessage(PlayerMessages.DeviceNotPowered.get(), Util.NIL_UUID);
                     ((ServerPlayerEntity) getPlayerInv().player).closeHandledScreen();
                 }
@@ -165,12 +165,12 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
             ic.setStack(x, craftingSlots[x].getStack());
         }
 
-        if (currentRecipe == null || !currentRecipe.matches(ic, this.getPlayerInv().player.world)) {
+        if(currentRecipe == null || !currentRecipe.matches(ic, this.getPlayerInv().player.world)) {
             World world = this.getPlayerInv().player.world;
             currentRecipe = world.getRecipeManager().getFirstMatch(RecipeType.CRAFTING, ic, world).orElse(null);
         }
 
-        if (currentRecipe == null) {
+        if(currentRecipe == null) {
             outputSlot.setStack(ItemStack.EMPTY);
         } else {
             final ItemStack craftingResult = currentRecipe.craft(ic);
@@ -193,9 +193,9 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
 
     @Override
     public FixedItemInv getInventoryByName(String name) {
-        if (name.equals("player")) {
+        if(name.equals("player")) {
             return new FixedInventoryVanillaWrapper(getPlayerInventory());
-        } else if (name.equals("crafting")) {
+        } else if(name.equals("crafting")) {
             return craftingGrid;
         }
         return null;
@@ -218,7 +218,7 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
     private MagnetSettings magnetSettings;
 
     public MagnetSettings getMagnetSettings() {
-        if (magnetSettings == null) return reloadMagnetSettings();
+        if(magnetSettings == null) return reloadMagnetSettings();
         return magnetSettings;
     }
 
@@ -228,7 +228,7 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
 
     public MagnetSettings reloadMagnetSettings() {
         magnetSettings = ItemMagnetCard.loadMagnetSettings(wctGUIObject.getItemStack());
-        if (isClient() && screen != null) screen.resetMagnetSettings();
+        if(isClient() && screen != null) screen.resetMagnetSettings();
         return magnetSettings;
     }
 

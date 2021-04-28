@@ -37,60 +37,60 @@ public class FixedWTInv implements FixedItemInv {
 
     @Override
     public ItemStack getInvStack(int i) {
-        if (i < 4 && i >= 0) {
+        if(i < 4 && i >= 0) {
             return playerInventory.getStack(i + slotOffset);
-        } else if (i == OFFHAND) return playerInventory.getStack(offHandSlot);
-        else if (i == TRASH && wt.getItem() instanceof ItemWT)
+        } else if(i == OFFHAND) return playerInventory.getStack(offHandSlot);
+        else if(i == TRASH && wt.getItem() instanceof ItemWT)
             return ItemWT.getSavedSlot(wt, "trash");
-        else if (i == INFINITY_BOOSTER_CARD && wt.getItem() instanceof IInfinityBoosterCardHolder)
+        else if(i == INFINITY_BOOSTER_CARD && wt.getItem() instanceof IInfinityBoosterCardHolder)
             return ((IInfinityBoosterCardHolder) wt.getItem()).getBoosterCard(wt);
-        else if (i == MAGNET_CARD && wt.getItem() instanceof ItemWT)
+        else if(i == MAGNET_CARD && wt.getItem() instanceof ItemWT)
             return ItemWT.getSavedSlot(wt, "magnetCard");
         return null;
     }
 
     @Override
     public boolean isItemValidForSlot(int i, ItemStack itemStack) {
-        if (i == 0) {
+        if(i == 0) {
             return playerInventory.isValid(slotOffset, itemStack) && itemStack.getItem() instanceof ArmorItem && ((ArmorItem) itemStack.getItem()).getSlotType().equals(EquipmentSlot.FEET);
-        } else if (i == 1) {
+        } else if(i == 1) {
             return playerInventory.isValid(slotOffset + 1, itemStack) && itemStack.getItem() instanceof ArmorItem && ((ArmorItem) itemStack.getItem()).getSlotType().equals(EquipmentSlot.LEGS);
-        } else if (i == 2) {
+        } else if(i == 2) {
             return playerInventory.isValid(slotOffset + 2, itemStack) && itemStack.getItem() instanceof ArmorItem && ((ArmorItem) itemStack.getItem()).getSlotType().equals(EquipmentSlot.CHEST);
-        } else if (i == 3) {
+        } else if(i == 3) {
             return playerInventory.isValid(slotOffset + 3, itemStack) && itemStack.getItem() instanceof ArmorItem && ((ArmorItem) itemStack.getItem()).getSlotType().equals(EquipmentSlot.HEAD);
-        } else if (i == OFFHAND) return playerInventory.isValid(offHandSlot, itemStack);
-        else if (i == TRASH) return true;
-        else if (i == INFINITY_BOOSTER_CARD)
+        } else if(i == OFFHAND) return playerInventory.isValid(offHandSlot, itemStack);
+        else if(i == TRASH) return true;
+        else if(i == INFINITY_BOOSTER_CARD)
             return itemStack.getItem() instanceof ItemInfinityBooster || itemStack.isEmpty();
-        else if (i == MAGNET_CARD)
+        else if(i == MAGNET_CARD)
             return itemStack.getItem() instanceof ItemMagnetCard || itemStack.isEmpty();
         return false;
     }
 
     @Override
     public boolean setInvStack(int i, ItemStack itemStack, Simulation simulation) {
-        if (i < 4 && i >= 0) {
-            if (simulation.isAction()) playerInventory.setStack(i + slotOffset, itemStack);
+        if(i < 4 && i >= 0) {
+            if(simulation.isAction()) playerInventory.setStack(i + slotOffset, itemStack);
             return true;
-        } else if (i == OFFHAND) {
-            if (simulation.isAction()) playerInventory.setStack(offHandSlot, itemStack);
+        } else if(i == OFFHAND) {
+            if(simulation.isAction()) playerInventory.setStack(offHandSlot, itemStack);
             return true;
-        } else if (i == TRASH) {
-            if (simulation.isAction()) ItemWT.setSavedSlot(wt, itemStack, "trash");
+        } else if(i == TRASH) {
+            if(simulation.isAction()) ItemWT.setSavedSlot(wt, itemStack, "trash");
             return true;
-        } else if (i == INFINITY_BOOSTER_CARD) {
-            if (!(itemStack.getItem() instanceof ItemInfinityBooster) && !itemStack.equals(ItemStack.EMPTY))
+        } else if(i == INFINITY_BOOSTER_CARD) {
+            if(!(itemStack.getItem() instanceof ItemInfinityBooster) && !itemStack.equals(ItemStack.EMPTY))
                 return false;
-            if (simulation.isAction()) {
+            if(simulation.isAction()) {
                 ((IInfinityBoosterCardHolder) wt.getItem()).setBoosterCard(wt, itemStack);
             }
             return true;
-        } else if (i == MAGNET_CARD) {
-            if (!(itemStack.getItem() instanceof ItemMagnetCard) && !itemStack.equals(ItemStack.EMPTY)) return false;
-            if (simulation.isAction()) {
+        } else if(i == MAGNET_CARD) {
+            if(!(itemStack.getItem() instanceof ItemMagnetCard) && !itemStack.equals(ItemStack.EMPTY)) return false;
+            if(simulation.isAction()) {
                 ItemWT.setSavedSlot(wt, itemStack, "magnetCard");
-                if (host instanceof WCTContainer) ((WCTContainer) host).reloadMagnetSettings();
+                if(host instanceof WCTContainer) ((WCTContainer) host).reloadMagnetSettings();
             }
             return true;
         }
@@ -99,15 +99,15 @@ public class FixedWTInv implements FixedItemInv {
 
     @Override
     public ItemStack extractStack(int slot, ItemFilter filter, ItemStack mergeWith, int maxCount, Simulation simulation) {
-        if (slot == INFINITY_BOOSTER_CARD) {
+        if(slot == INFINITY_BOOSTER_CARD) {
             ItemStack boosterCard = ((IInfinityBoosterCardHolder) wt.getItem()).getBoosterCard(wt);
-            if (simulation.isAction()) ((IInfinityBoosterCardHolder) wt.getItem()).setBoosterCard(wt, ItemStack.EMPTY);
+            if(simulation.isAction()) ((IInfinityBoosterCardHolder) wt.getItem()).setBoosterCard(wt, ItemStack.EMPTY);
             return boosterCard;
-        } else if (slot == MAGNET_CARD) {
+        } else if(slot == MAGNET_CARD) {
             ItemStack magnetCard = ItemWT.getSavedSlot(wt, "magnetCard");
-            if (simulation.isAction()) {
+            if(simulation.isAction()) {
                 ItemWT.setSavedSlot(wt, ItemStack.EMPTY, "magnetCard");
-                if (host instanceof WCTContainer) ((WCTContainer) host).reloadMagnetSettings();
+                if(host instanceof WCTContainer) ((WCTContainer) host).reloadMagnetSettings();
             }
             return magnetCard;
         }

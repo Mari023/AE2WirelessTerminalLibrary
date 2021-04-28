@@ -114,7 +114,7 @@ public class REIRecipePacket {
         Preconditions.checkArgument(con instanceof IContainerCraftingPacket);
 
         Recipe<?> recipe = player.getEntityWorld().getRecipeManager().get(recipeId).orElse(null);
-        if (recipe == null && this.recipe != null) {
+        if(recipe == null && this.recipe != null) {
             // Certain recipes (i.e. AE2 facades) are represented in JEI as ShapedRecipe's, while in reality they are special recipes. Those recipes are sent across the wire...
             recipe = this.recipe;
         }
@@ -140,15 +140,15 @@ public class REIRecipePacket {
             Ingredient ingredient = ensure3by3CraftingMatrix(recipe).get(x);
 
             // prepare slots
-            if (!currentItem.isEmpty()) {
+            if(!currentItem.isEmpty()) {
                 // already the correct item? True, skip everything else
                 ItemStack newItem = canUseInSlot(ingredient, currentItem);
 
                 // put away old item, if not correct
-                if (newItem != currentItem && security.hasPermission(player, SecurityPermissions.INJECT)) {
+                if(newItem != currentItem && security.hasPermission(player, SecurityPermissions.INJECT)) {
                     final IAEItemStack in = AEItemStack.fromItemStack(currentItem);
                     final IAEItemStack out = cct.useRealItems() ? Platform.poweredInsert(energy, storage, in, cct.getActionSource()) : null;
-                    if (out != null) {
+                    if(out != null) {
                         currentItem = out.createItemStack();
                     } else {
                         currentItem = ItemStack.EMPTY;
@@ -157,35 +157,35 @@ public class REIRecipePacket {
             }
 
             // Find item or pattern from the network
-            if (currentItem.isEmpty() && security.hasPermission(player, SecurityPermissions.EXTRACT)) {
+            if(currentItem.isEmpty() && security.hasPermission(player, SecurityPermissions.EXTRACT)) {
                 IAEItemStack out;
 
-                if (cct.useRealItems()) {
+                if(cct.useRealItems()) {
                     IAEItemStack request = findBestMatchingItemStack(ingredient, filter, storage, cct);
                     out = request != null ? Platform.poweredExtraction(energy, storage, request.setStackSize(1), cct.getActionSource()) : null;
                 } else {
                     out = findBestMatchingPattern(ingredient, filter, grid.getCache(ICraftingGrid.class), storage, cct);
-                    if (out == null) {
+                    if(out == null) {
                         out = findBestMatchingItemStack(ingredient, filter, storage, cct);
                     }
-                    if (out == null && getMatchingStacks(ingredient).length > 0) {
+                    if(out == null && getMatchingStacks(ingredient).length > 0) {
                         out = AEItemStack.fromItemStack(getMatchingStacks(ingredient)[0]);
                     }
                 }
 
-                if (out != null) {
+                if(out != null) {
                     currentItem = out.createItemStack();
                 }
             }
 
             // If still nothing, search the player inventory.
-            if (currentItem.isEmpty()) {
+            if(currentItem.isEmpty()) {
                 ItemStack[] matchingStacks = getMatchingStacks(ingredient);
                 for (ItemStack matchingStack : matchingStacks) {
-                    if (currentItem.isEmpty()) {
+                    if(currentItem.isEmpty()) {
                         AdaptorFixedInv ad = new AdaptorFixedInv(cct.getInventoryByName("player"));
 
-                        if (cct.useRealItems()) {
+                        if(cct.useRealItems()) {
                             currentItem = ad.removeItems(1, matchingStack, null);
                         } else {
                             currentItem = ad.simulateRemove(1, matchingStack, null);
@@ -196,7 +196,7 @@ public class REIRecipePacket {
             ItemHandlerUtil.setStackInSlot(craftMatrix, x, currentItem);
         }
 
-        if (!this.crafting) {
+        if(!this.crafting) {
             handleProcessing(con, cct, recipe);
         }
 
@@ -206,11 +206,11 @@ public class REIRecipePacket {
     private static ItemStack[] getMatchingStacks(Ingredient ingredient) {
         IngredientAccessor accessor = (IngredientAccessor) (Object) ingredient;
         accessor.appeng_cacheMatchingStacks();
-        if (ingredient.isEmpty()) {
+        if(ingredient.isEmpty()) {
             return new ItemStack[0];
         }
         ItemStack[] stacks = accessor.getMatchingStacks();
-        if (stacks.length == 1 && stacks[0].isEmpty()) {
+        if(stacks.length == 1 && stacks[0].isEmpty()) {
             return new ItemStack[0];
         }
         return stacks;
@@ -229,7 +229,7 @@ public class REIRecipePacket {
         Preconditions.checkArgument(ingredients.size() <= 9);
 
         // shaped recipes can be smaller than 3x3, expand to 3x3 to match the crafting matrix
-        if (recipe instanceof ShapedRecipe) {
+        if(recipe instanceof ShapedRecipe) {
             ShapedRecipe shapedRecipe = (ShapedRecipe) recipe;
             int width = shapedRecipe.getWidth();
             int height = shapedRecipe.getHeight();
@@ -293,9 +293,9 @@ public class REIRecipePacket {
     }
 
     private void handleProcessing(ScreenHandler con, IContainerCraftingPacket cct, Recipe<?> recipe) {
-        if (con instanceof WPTContainer) {
+        if(con instanceof WPTContainer) {
             WPTContainer patternTerm = (WPTContainer) con;
-            if (!patternTerm.craftingMode) {
+            if(!patternTerm.craftingMode) {
                 final FixedItemInv output = cct.getInventoryByName("output");
                 ItemHandlerUtil.setStackInSlot(output, 0, recipe.getOutput());
                 ItemHandlerUtil.setStackInSlot(output, 1, ItemStack.EMPTY);

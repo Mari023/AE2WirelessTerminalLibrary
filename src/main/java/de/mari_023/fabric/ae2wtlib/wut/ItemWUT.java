@@ -34,11 +34,11 @@ public class ItemWUT extends ItemWT implements IInfinityBoosterCardHolder {
     @Environment(EnvType.CLIENT)
     public void appendTooltip(final ItemStack stack, final World world, final List<Text> lines, final TooltipContext advancedTooltips) {
         lines.add(new TranslatableText("item.ae2wtlib.wireless_universal_terminal.desc").fillStyle(Style.EMPTY.withColor(Formatting.GRAY)));
-        if (WUTHandler.hasTerminal(stack, "crafting"))
+        if(WUTHandler.hasTerminal(stack, "crafting"))
             lines.add(new TranslatableText("item.ae2wtlib.wireless_crafting_terminal").fillStyle(Style.EMPTY.withColor(Formatting.GRAY)));
-        if (WUTHandler.hasTerminal(stack, "interface"))
+        if(WUTHandler.hasTerminal(stack, "interface"))
             lines.add(new TranslatableText("item.ae2wtlib.wireless_interface_terminal").fillStyle(Style.EMPTY.withColor(Formatting.GRAY)));
-        if (WUTHandler.hasTerminal(stack, "pattern"))
+        if(WUTHandler.hasTerminal(stack, "pattern"))
             lines.add(new TranslatableText("item.ae2wtlib.wireless_pattern_terminal").fillStyle(Style.EMPTY.withColor(Formatting.GRAY)));
         super.appendTooltip(stack, world, lines, advancedTooltips);
     }

@@ -30,10 +30,10 @@ public final class ae2wtlibSubScreen {
      */
     public ae2wtlibSubScreen(AEBaseScreen<?> gui, Object containerTarget) {
         this.gui = gui;
-        if (containerTarget instanceof WCTGuiObject) {//TODO don't hardcode
+        if(containerTarget instanceof WCTGuiObject) {//TODO don't hardcode
             previousContainerIcon = new ItemStack(ae2wtlib.CRAFTING_TERMINAL);
             previousContainerType = WCTContainer.TYPE;
-        } else if (containerTarget instanceof WPTGuiObject) {
+        } else if(containerTarget instanceof WPTGuiObject) {
             previousContainerIcon = new ItemStack(ae2wtlib.PATTERN_TERMINAL);
             previousContainerType = WPTContainer.TYPE;
         } else {
@@ -47,8 +47,8 @@ public final class ae2wtlibSubScreen {
     }
 
     public final TabButton addBackButton(Consumer<TabButton> buttonAdder, int x, int y, Text label) {
-        if (previousContainerType != null && !previousContainerIcon.isEmpty()) {
-            if (label == null) label = previousContainerIcon.getName();
+        if(previousContainerType != null && !previousContainerIcon.isEmpty()) {
+            if(label == null) label = previousContainerIcon.getName();
             TabButton button = new TabButton(gui.getX() + x, gui.getY() + y, previousContainerIcon, label, gui.getClient().getItemRenderer(), btn -> goBack());
             buttonAdder.accept(button);
             return button;

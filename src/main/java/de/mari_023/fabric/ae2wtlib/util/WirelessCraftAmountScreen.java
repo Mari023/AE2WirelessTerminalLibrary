@@ -46,7 +46,7 @@ public class WirelessCraftAmountScreen extends AEBaseScreen<WirelessCraftAmountC
 
     private void confirm(ButtonWidget button) {
         int amount = amountToCraft.getIntValue().orElse(0);
-        if (amount <= 0) return;
+        if(amount <= 0) return;
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeInt(amount);
         buf.writeBoolean(hasShiftDown());

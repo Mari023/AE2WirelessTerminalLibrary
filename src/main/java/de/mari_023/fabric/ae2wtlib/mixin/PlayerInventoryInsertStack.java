@@ -29,12 +29,12 @@ public class PlayerInventoryInsertStack {
 
     @Inject(method = "insertStack(Lnet/minecraft/item/ItemStack;)Z", at = @At(value = "INVOKE"), require = 1, allow = 1, cancellable = true)
     public void insertStackInME(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
-        if (stack.isEmpty()) return;
+        if(stack.isEmpty()) return;
         CraftingTerminalHandler CTHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
         ItemStack terminal = CTHandler.getCraftingTerminal();
-        if (ItemMagnetCard.isPickupME(terminal) && CTHandler.inRange()) {
+        if(ItemMagnetCard.isPickupME(terminal) && CTHandler.inRange()) {
             IAEItemStack leftover = ((IStorageGrid) CTHandler.getTargetGrid().getCache(IStorageGrid.class)).getInventory(Api.instance().storage().getStorageChannel(IItemStorageChannel.class)).injectItems(AEItemStack.fromItemStack(stack), Actionable.MODULATE, new PlayerSource(player, (IActionHost) CTHandler.getSecurityStation()));
-            if (leftover == null || leftover.createItemStack().isEmpty()) {
+            if(leftover == null || leftover.createItemStack().isEmpty()) {
                 stack.setCount(0);
                 cir.setReturnValue(true);
             } else stack.setCount(leftover.createItemStack().getCount());

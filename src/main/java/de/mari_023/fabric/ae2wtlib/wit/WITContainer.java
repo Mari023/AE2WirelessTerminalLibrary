@@ -71,7 +71,7 @@ public class WITContainer extends AEBaseContainer implements IWTInvHolder {
         super(TYPE, id, ip, anchor);
         witGUIObject = anchor;
 
-        if (isServer() && witGUIObject.getActionableNode() != null) {
+        if(isServer() && witGUIObject.getActionableNode() != null) {
             grid = witGUIObject.getActionableNode().getGrid();
         }
 
@@ -86,11 +86,11 @@ public class WITContainer extends AEBaseContainer implements IWTInvHolder {
 
     @Override
     public void sendContentUpdates() {
-        if (isClient()) return;
+        if(isClient()) return;
         super.sendContentUpdates();
 
-        if (!witGUIObject.rangeCheck()) {
-            if (isValidContainer()) {
+        if(!witGUIObject.rangeCheck()) {
+            if(isValidContainer()) {
                 getPlayerInv().player.sendSystemMessage(PlayerMessages.OutOfRange.get(), Util.NIL_UUID);
                 ((ServerPlayerEntity) getPlayerInv().player).closeHandledScreen();
             }
@@ -98,8 +98,8 @@ public class WITContainer extends AEBaseContainer implements IWTInvHolder {
         } else {
             powerMultiplier = Config.getPowerMultiplier(witGUIObject.getRange(), witGUIObject.isOutOfRange());
 
-            if (witGUIObject.extractAEPower(1, Actionable.SIMULATE, PowerMultiplier.ONE) == 0) {
-                if (isValidContainer()) {
+            if(witGUIObject.extractAEPower(1, Actionable.SIMULATE, PowerMultiplier.ONE) == 0) {
+                if(isValidContainer()) {
                     getPlayerInv().player.sendSystemMessage(PlayerMessages.DeviceNotPowered.get(), Util.NIL_UUID);
                     ((ServerPlayerEntity) getPlayerInv().player).closeHandledScreen();
                 }
@@ -108,12 +108,12 @@ public class WITContainer extends AEBaseContainer implements IWTInvHolder {
         }
 
         ticks++;
-        if (ticks > 10) {
+        if(ticks > 10) {
             witGUIObject.extractAEPower(powerMultiplier * ticks, Actionable.MODULATE, PowerMultiplier.CONFIG);
             ticks = 0;
         }
 
-        if (grid == null) {
+        if(grid == null) {
             return;
         }
 
@@ -121,23 +121,23 @@ public class WITContainer extends AEBaseContainer implements IWTInvHolder {
         boolean missing = false;
 
         final IActionHost host = getActionHost();
-        if (host != null) {
+        if(host != null) {
             final IGridNode agn = host.getActionableNode();
-            if (agn != null && agn.isActive()) {
+            if(agn != null && agn.isActive()) {
                 for (final IGridNode gn : grid.getMachines(InterfaceBlockEntity.class)) {
-                    if (gn.isActive()) {
+                    if(gn.isActive()) {
                         final IInterfaceHost ih = (IInterfaceHost) gn.getMachine();
-                        if (ih.getInterfaceDuality().getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.NO) {
+                        if(ih.getInterfaceDuality().getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.NO) {
                             continue;
                         }
 
                         final WITContainer.InvTracker t = diList.get(ih);
 
-                        if (t == null) {
+                        if(t == null) {
                             missing = true;
                         } else {
                             final DualityInterface dual = ih.getInterfaceDuality();
-                            if (!t.name.equals(dual.getTermName())) {
+                            if(!t.name.equals(dual.getTermName())) {
                                 missing = true;
                             }
                         }
@@ -147,17 +147,17 @@ public class WITContainer extends AEBaseContainer implements IWTInvHolder {
                 }
 
                 for (final IGridNode gn : grid.getMachines(InterfacePart.class)) {
-                    if (gn.isActive()) {
+                    if(gn.isActive()) {
                         final IInterfaceHost ih = (IInterfaceHost) gn.getMachine();
-                        if (ih.getInterfaceDuality().getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.NO)
+                        if(ih.getInterfaceDuality().getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.NO)
                             continue;
 
                         final WITContainer.InvTracker t = diList.get(ih);
 
-                        if (t == null) missing = true;
+                        if(t == null) missing = true;
                         else {
                             final DualityInterface dual = ih.getInterfaceDuality();
-                            if (!t.name.equals(dual.getTermName())) {
+                            if(!t.name.equals(dual.getTermName())) {
                                 missing = true;
                             }
                         }
@@ -167,16 +167,16 @@ public class WITContainer extends AEBaseContainer implements IWTInvHolder {
             }
         }
 
-        if (total != diList.size() || missing) regenList(data);
+        if(total != diList.size() || missing) regenList(data);
         else {
             for (final Map.Entry<IInterfaceHost, WITContainer.InvTracker> en : diList.entrySet()) {
                 final WITContainer.InvTracker inv = en.getValue();
                 for (int x = 0; x < inv.server.getSlotCount(); x++)
-                    if (isDifferent(inv.server.getInvStack(x), inv.client.getInvStack(x))) addItems(data, inv, x, 1);
+                    if(isDifferent(inv.server.getInvStack(x), inv.client.getInvStack(x))) addItems(data, inv, x, 1);
             }
         }
 
-        if (!data.isEmpty()) {
+        if(!data.isEmpty()) {
             PacketByteBuf buf = PacketByteBufs.create();
             buf.writeCompoundTag(data);
             ServerPlayNetworking.send((ServerPlayerEntity) getPlayerInv().player, new Identifier("ae2wtlib", "interface_terminal"), buf);
@@ -187,7 +187,7 @@ public class WITContainer extends AEBaseContainer implements IWTInvHolder {
     @Override
     public void doAction(final ServerPlayerEntity player, final InventoryAction action, final int slot, final long id) {
         final WITContainer.InvTracker inv = byId.get(id);
-        if (inv != null) {
+        if(inv != null) {
             final ItemStack is = inv.server.getInvStack(slot);
             final boolean hasItemInHand = !player.inventory.getCursorStack().isEmpty();
 
@@ -201,9 +201,9 @@ public class WITContainer extends AEBaseContainer implements IWTInvHolder {
 
             switch (action) {
                 case PICKUP_OR_SET_DOWN:
-                    if (hasItemInHand) {
+                    if(hasItemInHand) {
                         ItemStack inSlot = theSlot.get();
-                        if (inSlot.isEmpty()) {
+                        if(inSlot.isEmpty()) {
                             player.inventory.setCursorStack(theSlot.insert(player.inventory.getCursorStack()));
                         } else {
                             inSlot = inSlot.copy();
@@ -214,7 +214,7 @@ public class WITContainer extends AEBaseContainer implements IWTInvHolder {
 
                             player.inventory.setCursorStack(theSlot.insert(inHand.copy()));
 
-                            if (player.inventory.getCursorStack().isEmpty()) {
+                            if(player.inventory.getCursorStack().isEmpty()) {
                                 player.inventory.setCursorStack(inSlot);
                             } else {
                                 player.inventory.setCursorStack(inHand);
@@ -225,14 +225,14 @@ public class WITContainer extends AEBaseContainer implements IWTInvHolder {
                     break;
 
                 case SPLIT_OR_PLACE_SINGLE:
-                    if (hasItemInHand) {
+                    if(hasItemInHand) {
                         ItemStack extra = playerHand.removeItems(1, ItemStack.EMPTY, null);
-                        if (!extra.isEmpty()) extra = theSlot.insert(extra);
-                        if (!extra.isEmpty()) playerHand.addItems(extra);
-                    } else if (!is.isEmpty()) {
+                        if(!extra.isEmpty()) extra = theSlot.insert(extra);
+                        if(!extra.isEmpty()) playerHand.addItems(extra);
+                    } else if(!is.isEmpty()) {
                         ItemStack extra = theSlot.extract((is.getCount() + 1) / 2);
-                        if (!extra.isEmpty()) extra = playerHand.addItems(extra);
-                        if (!extra.isEmpty()) theSlot.insert(extra);
+                        if(!extra.isEmpty()) extra = playerHand.addItems(extra);
+                        if(!extra.isEmpty()) theSlot.insert(extra);
                     }
                     break;
 
@@ -248,7 +248,7 @@ public class WITContainer extends AEBaseContainer implements IWTInvHolder {
                     break;
 
                 case CREATIVE_DUPLICATE:
-                    if (player.isCreative() && !hasItemInHand)
+                    if(player.isCreative() && !hasItemInHand)
                         player.inventory.setCursorStack(is.isEmpty() ? ItemStack.EMPTY : is.copy());
                     break;
 
@@ -269,20 +269,20 @@ public class WITContainer extends AEBaseContainer implements IWTInvHolder {
         diList.clear();
 
         final IActionHost host = getActionHost();
-        if (host != null) {
+        if(host != null) {
             final IGridNode agn = host.getActionableNode();
-            if (agn != null && agn.isActive()) {
+            if(agn != null && agn.isActive()) {
                 for (final IGridNode gn : grid.getMachines(InterfaceBlockEntity.class)) {
                     final IInterfaceHost ih = (IInterfaceHost) gn.getMachine();
                     final DualityInterface dual = ih.getInterfaceDuality();
-                    if (gn.isActive() && dual.getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.YES)
+                    if(gn.isActive() && dual.getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.YES)
                         diList.put(ih, new WITContainer.InvTracker(dual, dual.getPatterns(), dual.getTermName()));
                 }
 
                 for (final IGridNode gn : grid.getMachines(InterfacePart.class)) {
                     final IInterfaceHost ih = (IInterfaceHost) gn.getMachine();
                     final DualityInterface dual = ih.getInterfaceDuality();
-                    if (gn.isActive() && dual.getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.YES)
+                    if(gn.isActive() && dual.getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.YES)
                         diList.put(ih, new WITContainer.InvTracker(dual, dual.getPatterns(), dual.getTermName()));
                 }
             }
@@ -298,8 +298,8 @@ public class WITContainer extends AEBaseContainer implements IWTInvHolder {
     }
 
     private boolean isDifferent(final ItemStack a, final ItemStack b) {
-        if (a.isEmpty() && b.isEmpty()) return false;
-        if (a.isEmpty() || b.isEmpty()) return true;
+        if(a.isEmpty() && b.isEmpty()) return false;
+        if(a.isEmpty() || b.isEmpty()) return true;
         return !ItemStack.areEqual(a, b);
     }
 
@@ -307,7 +307,7 @@ public class WITContainer extends AEBaseContainer implements IWTInvHolder {
         final String name = '=' + Long.toString(inv.which, Character.MAX_RADIX);
         final CompoundTag tag = data.getCompound(name);
 
-        if (tag.isEmpty()) {
+        if(tag.isEmpty()) {
             tag.putLong("sortBy", inv.sortBy);
             tag.putString("un", Text.Serializer.toJson(inv.name));
         }
@@ -320,7 +320,7 @@ public class WITContainer extends AEBaseContainer implements IWTInvHolder {
             // "update" client side.
             ItemHandlerUtil.setStackInSlot(inv.client, x + offset, is.isEmpty() ? ItemStack.EMPTY : is.copy());
 
-            if (!is.isEmpty()) is.toTag(itemNBT);
+            if(!is.isEmpty()) is.toTag(itemNBT);
 
             tag.put(Integer.toString(x + offset), itemNBT);
         }

@@ -21,7 +21,7 @@ public class ae2wtlibInternalInventory extends AppEngInternalInventory {
     @Override
     public boolean setInvStack(int slot, ItemStack to, Simulation simulation) {
         boolean value = super.setInvStack(slot, to, simulation);
-        if (value && simulation.isAction()) ItemWT.setSavedSlot(terminal, to, identifier + slot);
+        if(value && simulation.isAction()) ItemWT.setSavedSlot(terminal, to, identifier + slot);
         return value;
     }
 }

@@ -33,7 +33,7 @@ public class CraftingTerminalHandler {
     }
 
     public static CraftingTerminalHandler getCraftingTerminalHandler(PlayerEntity player) {
-        if (players.containsKey(player.getUuid())) return players.get(player.getUuid());
+        if(players.containsKey(player.getUuid())) return players.get(player.getUuid());
         CraftingTerminalHandler handler = new CraftingTerminalHandler(player);
         players.put(player.getUuid(), handler);
         return handler;
@@ -41,11 +41,11 @@ public class CraftingTerminalHandler {
 
     public ItemStack getCraftingTerminal() {//TODO trinkets/curios
         PlayerInventory inv = player.inventory;
-        if ((!craftingTerminal.isEmpty()) && inv.contains(craftingTerminal)) return craftingTerminal;
+        if((!craftingTerminal.isEmpty()) && inv.contains(craftingTerminal)) return craftingTerminal;
 
         for (int i = 0; i < inv.size(); i++) {
             ItemStack terminal = inv.getStack(i);
-            if (terminal.getItem() instanceof ItemWCT || (terminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(terminal, "crafting"))) {
+            if(terminal.getItem() instanceof ItemWCT || (terminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(terminal, "crafting"))) {
                 securityStation = null;
                 targetGrid = null;
                 return craftingTerminal = terminal;
@@ -55,19 +55,19 @@ public class CraftingTerminalHandler {
     }
 
     public ILocatable getSecurityStation() {
-        if (getCraftingTerminal().isEmpty()) return securityStation = null;
-        if (securityStation != null) return securityStation;
+        if(getCraftingTerminal().isEmpty()) return securityStation = null;
+        if(securityStation != null) return securityStation;
         final String unParsedKey = ((ItemWT) craftingTerminal.getItem()).getEncryptionKey(craftingTerminal);
-        if (unParsedKey.isEmpty()) return null;
+        if(unParsedKey.isEmpty()) return null;
         final long parsedKey = Long.parseLong(unParsedKey);
         return securityStation = Api.instance().registries().locatable().getLocatableBy(parsedKey);
     }
 
     public IGrid getTargetGrid() {
-        if (getSecurityStation() == null) return targetGrid = null;
+        if(getSecurityStation() == null) return targetGrid = null;
         final IGridNode n = ((IActionHost) securityStation).getActionableNode();
 
-        if (n != null) {
+        if(n != null) {
             return targetGrid = n.getGrid();
         }
         return targetGrid = null;
@@ -77,15 +77,15 @@ public class CraftingTerminalHandler {
     private double sqRange = Double.MAX_VALUE;
 
     public boolean inRange() {
-        if (getCraftingTerminal().isEmpty()) return false;
-        if (((IInfinityBoosterCardHolder) craftingTerminal.getItem()).hasBoosterCard(craftingTerminal)) return true;
+        if(getCraftingTerminal().isEmpty()) return false;
+        if(((IInfinityBoosterCardHolder) craftingTerminal.getItem()).hasBoosterCard(craftingTerminal)) return true;
         sqRange = Double.MAX_VALUE;
 
-        if (getTargetGrid() == null) return false;
-        if (targetGrid != null) {
-            if (myWap != null) {
-                if (myWap.getGrid() == targetGrid) {
-                    if (testWap(myWap)) return true;
+        if(getTargetGrid() == null) return false;
+        if(targetGrid != null) {
+            if(myWap != null) {
+                if(myWap.getGrid() == targetGrid) {
+                    if(testWap(myWap)) return true;
                 }
             }
 
@@ -95,7 +95,7 @@ public class CraftingTerminalHandler {
 
             for (final IGridNode n : tw) {
                 final IWirelessAccessPoint wap = (IWirelessAccessPoint) n.getMachine();
-                if (testWap(wap)) {
+                if(testWap(wap)) {
                     myWap = wap;
                 }
             }
@@ -111,14 +111,14 @@ public class CraftingTerminalHandler {
 
         final DimensionalCoord dc = wap.getLocation();
 
-        if (dc.getWorld() == player.world) {
+        if(dc.getWorld() == player.world) {
             final double offX = dc.x - player.getX();
             final double offY = dc.y - player.getY();
             final double offZ = dc.z - player.getZ();
 
             final double r = offX * offX + offY * offY + offZ * offZ;
-            if (r < rangeLimit && sqRange > r) {
-                if (wap.isActive()) {
+            if(r < rangeLimit && sqRange > r) {
+                if(wap.isActive()) {
                     sqRange = r;
                     return true;
                 }

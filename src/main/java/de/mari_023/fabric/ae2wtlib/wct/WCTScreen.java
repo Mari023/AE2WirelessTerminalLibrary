@@ -78,7 +78,7 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
         resetMagnetSettings();
         container.setScreen(this);
 
-        if (container.isWUT()) addButton(new CycleTerminalButton(x - 18, y + 108, btn -> cycleTerminal()));
+        if(container.isWUT()) addButton(new CycleTerminalButton(x - 18, y + 108, btn -> cycleTerminal()));
 
         try {
             Field field = MEMonitorableScreen.class.getDeclaredField("rows");
@@ -113,7 +113,7 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
 
         searchField.render(matrices, mouseX, mouseY, partialTicks);
 
-        if (client != null && client.player != null)
+        if(client != null && client.player != null)
             drawEntity(offsetX + 52, offsetY + 94 + rows * 18, 30, (float) (offsetX + 52) - mouseX, (float) offsetY + 55 + rows * 18 - mouseY, client.player);
     }
 
@@ -126,12 +126,12 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
     private void clear() {
         Slot s = null;
         for (final Slot j : handler.slots) {
-            if (j instanceof CraftingMatrixSlot) {
+            if(j instanceof CraftingMatrixSlot) {
                 s = j;
             }
         }
 
-        if (s != null) {
+        if(s != null) {
             final InventoryActionPacket p = new InventoryActionPacket(InventoryAction.MOVE_REGION, s.id, 0);
             NetworkHandler.instance().sendToServer(p);
         }

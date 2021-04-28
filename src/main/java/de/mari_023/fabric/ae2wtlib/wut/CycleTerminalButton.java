@@ -54,7 +54,7 @@ public class CycleTerminalButton extends ButtonWidget implements ITooltip {
     @Override
     public void renderButton(MatrixStack matrices, final int mouseX, final int mouseY, float partial) {
         MinecraftClient minecraft = MinecraftClient.getInstance();
-        if (visible) {
+        if(visible) {
 
             TextureManager textureManager = minecraft.getTextureManager();
             textureManager.bindTexture(TEXTURE_STATES);
@@ -68,7 +68,7 @@ public class CycleTerminalButton extends ButtonWidget implements ITooltip {
             RenderSystem.translatef(x, y, 0.0F);
             RenderSystem.scalef(1f / 20f, 1f / 20f, 1f / 20f);
 
-            if (active) RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
+            if(active) RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
             else RenderSystem.color4f(0.5f, 0.5f, 0.5f, 1.0f);
 
             drawTexture(matrices, 32, 32, 0, 0, 256, 256);
@@ -78,7 +78,7 @@ public class CycleTerminalButton extends ButtonWidget implements ITooltip {
             RenderSystem.enableDepthTest();
             RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
 
-            if (isHovered()) renderToolTip(matrices, mouseX, mouseY);
+            if(isHovered()) renderToolTip(matrices, mouseX, mouseY);
         }
     }
 }

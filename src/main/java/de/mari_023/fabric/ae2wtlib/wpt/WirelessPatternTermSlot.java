@@ -37,7 +37,7 @@ public class WirelessPatternTermSlot extends PatternTermSlot {
         } catch (IllegalAccessException | NoSuchFieldException ignored) {
         }
 
-        if (pattern == null)
+        if(pattern == null)
             return new PatternSlotPacket(new FixedEmptyInventory(9), Api.instance().storage().getStorageChannel(IItemStorageChannel.class).createStack(getStack()), shift);
 
         PacketByteBuf buf = PacketByteBufs.create();
@@ -52,7 +52,7 @@ public class WirelessPatternTermSlot extends PatternTermSlot {
     }
 
     private void writeItem(final IAEItemStack slotItem, final PacketByteBuf data) {
-        if (slotItem == null) data.writeBoolean(false);
+        if(slotItem == null) data.writeBoolean(false);
         else {
             data.writeBoolean(true);
             slotItem.writeToPacket(data);
