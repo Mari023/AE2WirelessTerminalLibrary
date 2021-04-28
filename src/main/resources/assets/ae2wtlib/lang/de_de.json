@@ -10,7 +10,7 @@
   "item.ae2wtlib.magnet_card": "Magnet Karte",
   "item.ae2wtlib.magnet_card.desc": "Magnet Upgrade für die Drahtlose Fertigungskonsole",
 
-  "gui.ae2wtlib.magnet_card": "Magnet Karte",
+  "gui.ae2wtlib.magnetcard": "Magnet Karte",
   "gui.ae2wtlib.magnetcard.desc.off": "Aus",
   "gui.ae2wtlib.magnetcard.desc.inv": "Items werden in das Inventar eingesammelt",
   "gui.ae2wtlib.magnetcard.desc.me": "Items werden in das Inventar eingesammelt",
