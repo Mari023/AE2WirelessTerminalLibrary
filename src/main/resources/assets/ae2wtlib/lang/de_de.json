@@ -15,6 +15,10 @@
   "gui.ae2wtlib.magnetcard.desc.inv": "Items werden in das Inventar eingesammelt",
   "gui.ae2wtlib.magnetcard.desc.me": "Items werden in das Inventar eingesammelt",
   "gui.ae2wtlib.cycle_terminal.desc": "nächste Konsole Öffnen",
+  "gui.ae2wtlib.magnetcard.hotkey": "Magnet Karte: ",
+  "gui.ae2wtlib.restock": "Nachfüllen: ",
+  "gui.ae2wtlib.off": "Aus",
+  "gui.ae2wtlib.on": "An",
 
   "item.ae2wtlib.wireless_crafting_terminal": "Drahtlose Fertigungskonsole",
   "item.ae2wtlib.wireless_pattern_terminal": "Drahtlose Schablonenkonsole",
@@ -24,5 +28,7 @@
 
   "key.ae2wtlib.wct": "Drahtlose Fertigungskonsole Öffnen",
   "key.ae2wtlib.wpt": "Drahtlose Schablonenkonsole Öffnen",
-  "key.ae2wtlib.wit": "Drahtlose Schnittstellenkonsole Öffnen"
+  "key.ae2wtlib.wit": "Drahtlose Schnittstellenkonsole Öffnen",
+  "key.ae2wtlib.toggleRestock": "Nachfüllen umschalten",
+  "key.ae2wtlib.toggleMagnet": "Magnet Karte umschalten"
 }

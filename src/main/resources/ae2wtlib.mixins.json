@@ -8,7 +8,8 @@
     "InvActionPacket",
     "MEInvUpdatePacket",
     "MeMonitorableScreenWireless",
-    "PlayerInventoryInsertStack"
+    "PlayerInventoryInsertStack",
+    "Restock"
   ],
   "client": [
   ],
