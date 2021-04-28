@@ -199,7 +199,9 @@ public class WirelessCraftConfirmContainer extends AEBaseContainer implements Cr
         ScreenHandlerType<?> originalGui = null;
 
         final IActionHost ah = getActionHost();
-        if (ah instanceof WCTGuiObject || ah instanceof WPTGuiObject)
+        if (ah instanceof WCTGuiObject)
+            originalGui = WCTContainer.TYPE;
+        else if (ah instanceof WPTGuiObject)
             originalGui = WPTContainer.TYPE;
 
         if(result != null && !isSimulation()) {
