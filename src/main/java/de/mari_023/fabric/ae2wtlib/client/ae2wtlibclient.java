@@ -78,6 +78,7 @@ public class ae2wtlibclient implements ClientModInitializer {
         KeyBinding wpt = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.ae2wtlib.wpt", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "key.category.ae2wtlib"));
         KeyBinding wit = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.ae2wtlib.wit", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "key.category.ae2wtlib"));
         KeyBinding toggleRestock = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.ae2wtlib.toggleRestock", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "key.category.ae2wtlib"));
+        KeyBinding toggleMagnet = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.ae2wtlib.toggleMagnet", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "key.category.ae2wtlib"));
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             while(wct.wasPressed()) {
@@ -108,6 +109,11 @@ public class ae2wtlibclient implements ClientModInitializer {
                 } else {
                     MinecraftClient.getInstance().player.sendMessage(new TranslatableText("gui.ae2wtlib.restock").append(new TranslatableText("gui.ae2wtlib.on").setStyle(Style.EMPTY.withColor(TextColor.parse("green")))), true);
                 }
+            }
+            while(toggleMagnet.wasPressed()) {
+                PacketByteBuf buf = PacketByteBufs.create();
+                buf.writeString("toggleMagnet");
+                ClientPlayNetworking.send(new Identifier("ae2wtlib", "hotkey"), buf);
             }
         });
     }
