@@ -28,5 +28,7 @@
 
   "key.ae2wtlib.wct": "Open Wireless Crafting Terminal",
   "key.ae2wtlib.wpt": "Open Wireless Pattern Terminal",
-  "key.ae2wtlib.wit": "Open Wireless Interface Terminal"
+  "key.ae2wtlib.wit": "Open Wireless Interface Terminal",
+  "key.ae2wtlib.toggleRestock": "Toggle Restock",
+  "key.ae2wtlib.toggleMagnet": "Toggle Magnet Card"
 }
