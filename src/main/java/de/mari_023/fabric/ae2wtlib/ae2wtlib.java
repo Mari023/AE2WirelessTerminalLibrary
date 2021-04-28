@@ -13,8 +13,10 @@ import appeng.core.AELog;
 import appeng.core.Api;
 import de.mari_023.fabric.ae2wtlib.rei.REIRecipePacket;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemInfinityBooster;
+import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.util.ContainerHelper;
 import de.mari_023.fabric.ae2wtlib.util.WirelessCraftAmountContainer;
+import de.mari_023.fabric.ae2wtlib.wct.CraftingTerminalHandler;
 import de.mari_023.fabric.ae2wtlib.wct.ItemWCT;
 import de.mari_023.fabric.ae2wtlib.wct.WCTContainer;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.ItemMagnetCard;
@@ -259,6 +261,11 @@ public class ae2wtlib implements ModInitializer {
                     if(slot == -1) return;
                     ContainerLocator locator = ContainerHelper.getContainerLocatorForSlot(slot);
                     INTERFACE_TERMINAL.open(player, locator);
+                } else if(terminalName.equalsIgnoreCase("toggleRestock")) {
+                    CraftingTerminalHandler craftingTerminalHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
+                    ItemStack terminal = craftingTerminalHandler.getCraftingTerminal();
+                    if(terminal.isEmpty()) return;
+                    ItemWT.setBoolean(terminal, !ItemWT.getBoolean(terminal, "restock"), "restock");
                 }
                 buf.release();
             });

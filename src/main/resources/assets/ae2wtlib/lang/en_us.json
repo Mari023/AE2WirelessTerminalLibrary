@@ -15,6 +15,9 @@
   "gui.ae2wtlib.magnetcard.desc.inv": "Pickup to Inventory",
   "gui.ae2wtlib.magnetcard.desc.me": "Pickup to ME",
   "gui.ae2wtlib.cycle_terminal.desc": "Open next Terminal",
+  "gui.ae2wtlib.restock": "Restock: ",
+  "gui.ae2wtlib.off": "Off",
+  "gui.ae2wtlib.on": "On",
 
   "item.ae2wtlib.wireless_crafting_terminal": "Wireless Crafting Terminal",
   "item.ae2wtlib.wireless_pattern_terminal": "Wireless Pattern Terminal",

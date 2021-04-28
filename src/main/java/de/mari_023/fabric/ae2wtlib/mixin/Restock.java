@@ -9,6 +9,7 @@ import appeng.api.storage.data.IAEItemStack;
 import appeng.core.Api;
 import appeng.me.helpers.PlayerSource;
 import appeng.util.item.AEItemStack;
+import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.wct.CraftingTerminalHandler;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -58,7 +59,7 @@ public abstract class Restock {
     private void restock(PlayerEntity playerEntity, ActionResult result) {
         if(result.equals(ActionResult.CONSUME) && !isEmpty() && !playerEntity.isCreative()) {
             CraftingTerminalHandler CTHandler = CraftingTerminalHandler.getCraftingTerminalHandler(playerEntity);
-            if(CTHandler.inRange()) {
+            if(CTHandler.inRange() && ItemWT.getBoolean(CTHandler.getCraftingTerminal(), "restock")) {
                 int toAdd = getMaxCount() - getCount();
                 if(toAdd == 0) return;
                 IStorageGrid sg = CTHandler.getTargetGrid().getCache(IStorageGrid.class);
