@@ -309,6 +309,6 @@ public class ae2wtlib implements ModInitializer {
             });
         });
 
-        ServerTickEvents.START_SERVER_TICK.register(minecraftServer -> new MagnetHandler().doMagnet(minecraftServer));
+        ServerTickEvents.START_SERVER_TICK.register(new MagnetHandler()::doMagnet);
     }
 }
