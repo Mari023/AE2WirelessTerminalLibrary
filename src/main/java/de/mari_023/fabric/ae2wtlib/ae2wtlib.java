@@ -91,19 +91,18 @@ public class ae2wtlib implements ModInitializer {
                 byte value = buf.readByte();
                 final ScreenHandler c = player.currentScreenHandler;
                 if(Name.startsWith("PatternTerminal.") && c instanceof WPTContainer) {
-                    final WPTContainer container = (WPTContainer) c;
                     switch(Name) {
                         case "PatternTerminal.CraftMode":
-                            container.getPatternTerminal().setCraftingRecipe(value != 0);
+                            ((WPTContainer) c).getPatternTerminal().setCraftingRecipe(value != 0);
                             break;
                         case "PatternTerminal.Encode":
-                            container.encode();
+                            ((WPTContainer) c).encode();
                             break;
                         case "PatternTerminal.Clear":
-                            container.clear();
+                            ((WPTContainer) c).clear();
                             break;
                         case "PatternTerminal.Substitute":
-                            container.getPatternTerminal().setSubstitution(value != 0);
+                            ((WPTContainer) c).getPatternTerminal().setSubstitution(value != 0);
                             break;
                     }
                 } else if(Name.startsWith("CraftingTerminal.") && c instanceof WCTContainer) {
@@ -120,10 +119,8 @@ public class ae2wtlib implements ModInitializer {
         ServerPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "patternslotpacket"), (server, player, handler, buf, sender) -> {
             buf.retain();
             server.execute(() -> {
-                if(player.currentScreenHandler instanceof WPTContainer) {
-                    final WPTContainer patternTerminal = (WPTContainer) player.currentScreenHandler;
-                    patternTerminal.craftOrGetItem(buf);
-                }
+                if(player.currentScreenHandler instanceof WPTContainer)
+                    ((WPTContainer) player.currentScreenHandler).craftOrGetItem(buf);
                 buf.release();
             });
         });
