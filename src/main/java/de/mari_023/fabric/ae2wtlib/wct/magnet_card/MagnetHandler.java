@@ -2,7 +2,6 @@ package de.mari_023.fabric.ae2wtlib.wct.magnet_card;
 
 import de.mari_023.fabric.ae2wtlib.wct.CraftingTerminalHandler;
 import net.minecraft.entity.ItemEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;

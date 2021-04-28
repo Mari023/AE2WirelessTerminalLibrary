@@ -1,11 +1,8 @@
 package de.mari_023.fabric.ae2wtlib.mixin;
 
 import appeng.api.config.Actionable;
-import appeng.api.features.ILocatable;
-import appeng.api.networking.IGrid;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.storage.IStorageGrid;
-import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.channels.IItemStorageChannel;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.core.Api;
@@ -40,8 +37,7 @@ public class PlayerInventoryInsertStack {
             if(leftover == null || leftover.createItemStack().isEmpty()) {
                 stack.setCount(0);
                 cir.setReturnValue(true);
-            }
-            else stack.setCount(leftover.createItemStack().getCount());
+            } else stack.setCount(leftover.createItemStack().getCount());
         }
     }
 }
