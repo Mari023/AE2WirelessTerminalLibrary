@@ -96,9 +96,7 @@ public class WirelessCraftConfirmContainer extends AEBaseContainer implements Cr
 
     @Override
     public void sendContentUpdates() {
-        if(isClient()) {
-            return;
-        }
+        if(isClient()) return;
 
         cpuCycler.detectAndSendChanges(getGrid());
 
@@ -114,9 +112,7 @@ public class WirelessCraftConfirmContainer extends AEBaseContainer implements Cr
                         startJob();
                         return;
                     }
-                } else {
-                    setSimulation(true);
-                }
+                } else setSimulation(true);
 
                 try {
                     final MEInventoryUpdatePacket a = new MEInventoryUpdatePacket((byte) 0);
@@ -153,26 +149,18 @@ public class WirelessCraftConfirmContainer extends AEBaseContainer implements Cr
                             m.setStackSize(m.getStackSize() - o.getStackSize());
                         }
 
-                        if(o.getStackSize() > 0) {
-                            a.appendItem(o);
-                        }
+                        if(o.getStackSize() > 0) a.appendItem(o);
 
-                        if(p.getStackSize() > 0) {
-                            b.appendItem(p);
-                        }
+                        if(p.getStackSize() > 0) b.appendItem(p);
 
-                        if(c != null && m != null && m.getStackSize() > 0) {
-                            c.appendItem(m);
-                        }
+                        if(c != null && m != null && m.getStackSize() > 0) c.appendItem(m);
                     }
 
                     for(final Object g : getListeners()) {
                         if(g instanceof PlayerEntity) {
                             NetworkHandler.instance().sendTo(a, (ServerPlayerEntity) g);
                             NetworkHandler.instance().sendTo(b, (ServerPlayerEntity) g);
-                            if(c != null) {
-                                NetworkHandler.instance().sendTo(c, (ServerPlayerEntity) g);
-                            }
+                            if(c != null) NetworkHandler.instance().sendTo(c, (ServerPlayerEntity) g);
                         }
                     }
                 } catch(final IOException ignored) {}
@@ -199,20 +187,15 @@ public class WirelessCraftConfirmContainer extends AEBaseContainer implements Cr
         ScreenHandlerType<?> originalGui = null;
 
         final IActionHost ah = getActionHost();
-        if (ah instanceof WCTGuiObject)
-            originalGui = WCTContainer.TYPE;
-        else if (ah instanceof WPTGuiObject)
-            originalGui = WPTContainer.TYPE;
+        if(ah instanceof WCTGuiObject) originalGui = WCTContainer.TYPE;
+        else if(ah instanceof WPTGuiObject) originalGui = WPTContainer.TYPE;
 
-        if (result == null && isSimulation())
-            return;
+        if(result == null && isSimulation()) return;
 
         setAutoStart(false);
         if(((ICraftingGrid) getGrid().getCache(ICraftingGrid.class)).submitJob(result, null, selectedCpu, true, getActionSrc()) != null && originalGui != null && getLocator() != null) {
-            if(originalGui.equals(WCTContainer.TYPE))
-                WCTContainer.open(getPlayerInventory().player, getLocator());
-            else if(originalGui.equals(WPTContainer.TYPE))
-                WPTContainer.open(getPlayerInventory().player, getLocator());
+            if(originalGui.equals(WCTContainer.TYPE)) WCTContainer.open(getPlayerInventory().player, getLocator());
+            else if(originalGui.equals(WPTContainer.TYPE)) WPTContainer.open(getPlayerInventory().player, getLocator());
         }
     }
 

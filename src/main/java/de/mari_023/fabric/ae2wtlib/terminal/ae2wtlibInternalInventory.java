@@ -14,7 +14,8 @@ public class ae2wtlibInternalInventory extends AppEngInternalInventory {
         super(inventory, size);
         this.terminal = terminal;
         this.identifier = identifier;
-        for(int slot = 0; slot < size; slot++) super.setInvStack(slot, ItemWT.getSavedSlot(terminal, identifier + slot), Simulation.ACTION);
+        for(int slot = 0; slot < size; slot++)
+            super.setInvStack(slot, ItemWT.getSavedSlot(terminal, identifier + slot), Simulation.ACTION);
     }
 
     @Override
