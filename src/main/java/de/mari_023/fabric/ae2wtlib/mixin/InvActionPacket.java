@@ -25,17 +25,17 @@ public class InvActionPacket {
 
     @Inject(method = "serverPacketData", at = @At(value = "TAIL"), require = 1, allow = 1, remap = false)
     public void serverPacketData(INetworkInfo manager, PlayerEntity player, CallbackInfo ci) {
-        if(action == InventoryAction.AUTO_CRAFT) {
-            if(player.currentScreenHandler instanceof WCTContainer || player.currentScreenHandler instanceof WPTContainer) {
+        if (action == InventoryAction.AUTO_CRAFT) {
+            if (player.currentScreenHandler instanceof WCTContainer || player.currentScreenHandler instanceof WPTContainer) {
                 final AEBaseContainer baseContainer = (AEBaseContainer) player.currentScreenHandler;
                 final ContainerLocator locator = baseContainer.getLocator();
-                if(locator != null) {
+                if (locator != null) {
                     WirelessCraftAmountContainer.open(player, locator);
 
-                    if(player.currentScreenHandler instanceof WirelessCraftAmountContainer) {
+                    if (player.currentScreenHandler instanceof WirelessCraftAmountContainer) {
                         final WirelessCraftAmountContainer cca = (WirelessCraftAmountContainer) player.currentScreenHandler;
 
-                        if(baseContainer.getTargetStack() != null) {
+                        if (baseContainer.getTargetStack() != null) {
                             cca.getCraftingItem().setStack(baseContainer.getTargetStack().asItemStackRepresentation());
                             // This is the *actual* item that matters, not the display item above
                             cca.setItemToCraft(baseContainer.getTargetStack());

@@ -14,13 +14,14 @@ public class ae2wtlibInternalInventory extends AppEngInternalInventory {
         super(inventory, size);
         this.terminal = terminal;
         this.identifier = identifier;
-        for(int slot = 0; slot < size; slot++) super.setInvStack(slot, ItemWT.getSavedSlot(terminal, identifier + slot), Simulation.ACTION);
+        for (int slot = 0; slot < size; slot++)
+            super.setInvStack(slot, ItemWT.getSavedSlot(terminal, identifier + slot), Simulation.ACTION);
     }
 
     @Override
     public boolean setInvStack(int slot, ItemStack to, Simulation simulation) {
         boolean value = super.setInvStack(slot, to, simulation);
-        if(value && simulation.isAction()) ItemWT.setSavedSlot(terminal, to, identifier + slot);
+        if (value && simulation.isAction()) ItemWT.setSavedSlot(terminal, to, identifier + slot);
         return value;
     }
 }

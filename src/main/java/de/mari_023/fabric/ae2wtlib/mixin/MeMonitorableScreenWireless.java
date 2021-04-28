@@ -22,12 +22,13 @@ public class MeMonitorableScreenWireless {
     @Environment(EnvType.CLIENT)
     @Inject(method = "showCraftingStatus", at = @At(value = "INVOKE"), cancellable = true, remap = false)
     private void showWirelessCraftingStatus(CallbackInfo ci) {
-        if(!((Object) this instanceof WCTScreen) && !((Object) this instanceof WPTScreen)) return;
+        if (!((Object) this instanceof WCTScreen) && !((Object) this instanceof WPTScreen)) return;
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeIdentifier(Registry.SCREEN_HANDLER.getId(WirelessCraftingStatusContainer.TYPE));
         ClientPlayNetworking.send(new Identifier("ae2wtlib", "switch_gui"), buf);
         try {
             ci.cancel();
-        } catch(Exception ignored) {}
+        } catch (Exception ignored) {
+        }
     }
 }

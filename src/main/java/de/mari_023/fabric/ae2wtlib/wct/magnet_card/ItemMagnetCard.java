@@ -36,18 +36,18 @@ public class ItemMagnetCard extends Item {
 
     public static MagnetSettings loadMagnetSettings(ItemStack magnetCardHolder) {
         ItemStack magnetCard = ItemWT.getSavedSlot(magnetCardHolder, "magnetCard");
-        if(magnetCard.isEmpty()) return new MagnetSettings();
+        if (magnetCard.isEmpty()) return new MagnetSettings();
         return new MagnetSettings((CompoundTag) magnetCard.getOrCreateTag().get("magnet_settings"));
     }
 
     public static boolean isActiveMagnet(ItemStack magnetCardHolder) {
-        if(magnetCardHolder.isEmpty()) return false;
+        if (magnetCardHolder.isEmpty()) return false;
         MagnetSettings settings = loadMagnetSettings(magnetCardHolder);
         return settings.magnetMode == MagnetMode.PICKUP_INVENTORY || settings.magnetMode == MagnetMode.PICKUP_ME;
     }
 
     public static boolean isPickupME(ItemStack magnetCardHolder) {
-        if(magnetCardHolder.isEmpty()) return false;
+        if (magnetCardHolder.isEmpty()) return false;
         return loadMagnetSettings(magnetCardHolder).magnetMode == MagnetMode.PICKUP_ME;
     }
 }

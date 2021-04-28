@@ -50,7 +50,8 @@ public class WPTScreen extends MEMonitorableScreen<WPTContainer> implements IUni
             f.setAccessible(true);
             f.set(this, reservedSpace);
             f.setAccessible(false);
-        } catch(IllegalAccessException | NoSuchFieldException ignored) {}
+        } catch (IllegalAccessException | NoSuchFieldException ignored) {
+        }
     }
 
     @Override
@@ -81,7 +82,7 @@ public class WPTScreen extends MEMonitorableScreen<WPTContainer> implements IUni
         ActionButton encodeBtn = new ActionButton(x + 147, y + backgroundHeight - 144, ActionItems.ENCODE, act -> encode());
         addButton(encodeBtn);
 
-        if(container.isWUT()) addButton(new CycleTerminalButton(x - 18, y + 108, btn -> cycleTerminal()));
+        if (container.isWUT()) addButton(new CycleTerminalButton(x - 18, y + 108, btn -> cycleTerminal()));
 
         try {
             Field field = MEMonitorableScreen.class.getDeclaredField("rows");
@@ -89,14 +90,16 @@ public class WPTScreen extends MEMonitorableScreen<WPTContainer> implements IUni
             Object value = field.get(this);
             field.setAccessible(false);
             rows = (int) value;
-        } catch(IllegalAccessException | NoSuchFieldException ignored) {}
+        } catch (IllegalAccessException | NoSuchFieldException ignored) {
+        }
         try {
             Field field = MEMonitorableScreen.class.getDeclaredField("searchField");
             field.setAccessible(true);
             Object value = field.get(this);
             field.setAccessible(false);
             searchField = (AETextField) value;
-        } catch(IllegalAccessException | NoSuchFieldException ignored) {}
+        } catch (IllegalAccessException | NoSuchFieldException ignored) {
+        }
     }
 
     private void toggleCraftMode(byte mode) {
@@ -134,15 +137,15 @@ public class WPTScreen extends MEMonitorableScreen<WPTContainer> implements IUni
         final int x_width = 197;
         drawTexture(matrices, offsetX, offsetY, 0, 0, x_width, 18);
 
-        for(int x = 0; x < rows; x++) drawTexture(matrices, offsetX, offsetY + 18 + x * 18, 0, 18, x_width, 18);
+        for (int x = 0; x < rows; x++) drawTexture(matrices, offsetX, offsetY + 18 + x * 18, 0, 18, x_width, 18);
 
         drawTexture(matrices, offsetX, offsetY + 16 + rows * 18, 0, 106 - 18 - 18, x_width, 99 + reservedSpace);
 
-        if(handler.isCraftingMode()) {
+        if (handler.isCraftingMode()) {
             tabCraftButton.visible = true;
             tabProcessButton.visible = false;
 
-            if(handler.substitute) {
+            if (handler.substitute) {
                 substitutionsEnabledBtn.visible = true;
                 substitutionsDisabledBtn.visible = false;
             } else {
@@ -174,7 +177,7 @@ public class WPTScreen extends MEMonitorableScreen<WPTContainer> implements IUni
     @Override
     public List<Rectangle> getExclusionZones() {
         List<Rectangle> zones = super.getExclusionZones();
-        zones.add(new Rectangle(x + 195, y, 24, backgroundHeight-110));
+        zones.add(new Rectangle(x + 195, y, 24, backgroundHeight - 110));
         return zones;
     }
 }

@@ -96,7 +96,7 @@ public class WirelessCraftConfirmContainer extends AEBaseContainer implements Cr
 
     @Override
     public void sendContentUpdates() {
-        if(isClient()) {
+        if (isClient()) {
             return;
         }
 
@@ -104,13 +104,13 @@ public class WirelessCraftConfirmContainer extends AEBaseContainer implements Cr
 
         super.sendContentUpdates();
 
-        if(getJob() != null && getJob().isDone()) {
+        if (getJob() != null && getJob().isDone()) {
             try {
                 result = getJob().get();
 
-                if(!result.isSimulation()) {
+                if (!result.isSimulation()) {
                     setSimulation(false);
-                    if(isAutoStart()) {
+                    if (isAutoStart()) {
                         startJob();
                         return;
                     }
@@ -128,7 +128,7 @@ public class WirelessCraftConfirmContainer extends AEBaseContainer implements Cr
 
                     setUsedBytes(result.getByteTotal());
 
-                    for(final IAEItemStack out : plan) {
+                    for (final IAEItemStack out : plan) {
                         IAEItemStack o = out.copy();
                         o.reset();
                         o.setStackSize(out.getStackSize());
@@ -141,11 +141,11 @@ public class WirelessCraftConfirmContainer extends AEBaseContainer implements Cr
                         final IMEInventory<IAEItemStack> items = sg.getInventory(Api.instance().storage().getStorageChannel(IItemStorageChannel.class));
 
                         IAEItemStack m = null;
-                        if(c != null && result.isSimulation()) {
+                        if (c != null && result.isSimulation()) {
                             m = o.copy();
                             o = items.extractItems(o, Actionable.SIMULATE, getActionSource());
 
-                            if(o == null) {
+                            if (o == null) {
                                 o = m.copy();
                                 o.setStackSize(0);
                             }
@@ -153,30 +153,31 @@ public class WirelessCraftConfirmContainer extends AEBaseContainer implements Cr
                             m.setStackSize(m.getStackSize() - o.getStackSize());
                         }
 
-                        if(o.getStackSize() > 0) {
+                        if (o.getStackSize() > 0) {
                             a.appendItem(o);
                         }
 
-                        if(p.getStackSize() > 0) {
+                        if (p.getStackSize() > 0) {
                             b.appendItem(p);
                         }
 
-                        if(c != null && m != null && m.getStackSize() > 0) {
+                        if (c != null && m != null && m.getStackSize() > 0) {
                             c.appendItem(m);
                         }
                     }
 
-                    for(final Object g : getListeners()) {
-                        if(g instanceof PlayerEntity) {
+                    for (final Object g : getListeners()) {
+                        if (g instanceof PlayerEntity) {
                             NetworkHandler.instance().sendTo(a, (ServerPlayerEntity) g);
                             NetworkHandler.instance().sendTo(b, (ServerPlayerEntity) g);
-                            if(c != null) {
+                            if (c != null) {
                                 NetworkHandler.instance().sendTo(c, (ServerPlayerEntity) g);
                             }
                         }
                     }
-                } catch(final IOException ignored) {}
-            } catch(final Throwable e) {
+                } catch (final IOException ignored) {
+                }
+            } catch (final Throwable e) {
                 getPlayerInv().player.sendSystemMessage(new LiteralText("Error: " + e), Util.NIL_UUID);
                 AELog.debug(e);
                 setValidContainer(false);
@@ -208,10 +209,10 @@ public class WirelessCraftConfirmContainer extends AEBaseContainer implements Cr
             return;
 
         setAutoStart(false);
-        if(((ICraftingGrid) getGrid().getCache(ICraftingGrid.class)).submitJob(result, null, selectedCpu, true, getActionSrc()) != null && originalGui != null && getLocator() != null) {
-            if(originalGui.equals(WCTContainer.TYPE))
+        if (((ICraftingGrid) getGrid().getCache(ICraftingGrid.class)).submitJob(result, null, selectedCpu, true, getActionSrc()) != null && originalGui != null && getLocator() != null) {
+            if (originalGui.equals(WCTContainer.TYPE))
                 WCTContainer.open(getPlayerInventory().player, getLocator());
-            else if(originalGui.equals(WPTContainer.TYPE))
+            else if (originalGui.equals(WPTContainer.TYPE))
                 WPTContainer.open(getPlayerInventory().player, getLocator());
         }
     }
@@ -223,7 +224,7 @@ public class WirelessCraftConfirmContainer extends AEBaseContainer implements Cr
     @Override
     public void removeListener(final ScreenHandlerListener c) {
         super.removeListener(c);
-        if(getJob() != null) {
+        if (getJob() != null) {
             getJob().cancel(true);
             setJob(null);
         }
@@ -232,7 +233,7 @@ public class WirelessCraftConfirmContainer extends AEBaseContainer implements Cr
     @Override
     public void close(final PlayerEntity par1PlayerEntity) {
         super.close(par1PlayerEntity);
-        if(getJob() != null) {
+        if (getJob() != null) {
             getJob().cancel(true);
             setJob(null);
         }
@@ -241,7 +242,7 @@ public class WirelessCraftConfirmContainer extends AEBaseContainer implements Cr
     private void onCPUSelectionChanged(CraftingCPURecord cpuRecord, boolean cpusAvailable) {
         noCPU = !cpusAvailable;
 
-        if(cpuRecord == null) {
+        if (cpuRecord == null) {
             cpuBytesAvail = 0;
             cpuCoProcessors = 0;
             cpuName = null;

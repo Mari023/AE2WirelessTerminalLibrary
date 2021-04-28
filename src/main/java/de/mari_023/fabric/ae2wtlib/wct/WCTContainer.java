@@ -77,8 +77,8 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
         craftingGrid = new ae2wtlibInternalInventory(this, 9, "crafting", wctGUIObject.getItemStack());
         final FixedItemInv crafting = getInventoryByName("crafting");
 
-        for(int y = 0; y < 3; y++) {
-            for(int x = 0; x < 3; x++) {
+        for (int y = 0; y < 3; y++) {
+            for (int x = 0; x < 3; x++) {
                 addSlot(craftingSlots[x + y * 3] = new CraftingMatrixSlot(this, crafting, x + y * 3, 37 + x * 18 + 43, -72 + y * 18 - 4));
             }
         }
@@ -125,11 +125,11 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
 
     @Override
     public void sendContentUpdates() {
-        if(isClient()) return;
+        if (isClient()) return;
         super.sendContentUpdates();
 
-        if(!wctGUIObject.rangeCheck()) {
-            if(isValidContainer()) {
+        if (!wctGUIObject.rangeCheck()) {
+            if (isValidContainer()) {
                 getPlayerInv().player.sendSystemMessage(PlayerMessages.OutOfRange.get(), Util.NIL_UUID);
                 ((ServerPlayerEntity) getPlayerInv().player).closeHandledScreen();
             }
@@ -137,13 +137,13 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
         } else {
             double powerMultiplier = Config.getPowerMultiplier(wctGUIObject.getRange(), wctGUIObject.isOutOfRange());
             ticks++;
-            if(ticks > 10) {
+            if (ticks > 10) {
                 wctGUIObject.extractAEPower((powerMultiplier) * ticks, Actionable.MODULATE, PowerMultiplier.CONFIG);
                 ticks = 0;
             }
 
-            if(wctGUIObject.extractAEPower(1, Actionable.SIMULATE, PowerMultiplier.ONE) == 0) {
-                if(isValidContainer()) {
+            if (wctGUIObject.extractAEPower(1, Actionable.SIMULATE, PowerMultiplier.ONE) == 0) {
+                if (isValidContainer()) {
                     getPlayerInv().player.sendSystemMessage(PlayerMessages.DeviceNotPowered.get(), Util.NIL_UUID);
                     ((ServerPlayerEntity) getPlayerInv().player).closeHandledScreen();
                 }
@@ -161,16 +161,16 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
         final ContainerNull cn = new ContainerNull();
         final CraftingInventory ic = new CraftingInventory(cn, 3, 3);
 
-        for(int x = 0; x < 9; x++) {
+        for (int x = 0; x < 9; x++) {
             ic.setStack(x, craftingSlots[x].getStack());
         }
 
-        if(currentRecipe == null || !currentRecipe.matches(ic, this.getPlayerInv().player.world)) {
+        if (currentRecipe == null || !currentRecipe.matches(ic, this.getPlayerInv().player.world)) {
             World world = this.getPlayerInv().player.world;
             currentRecipe = world.getRecipeManager().getFirstMatch(RecipeType.CRAFTING, ic, world).orElse(null);
         }
 
-        if(currentRecipe == null) {
+        if (currentRecipe == null) {
             outputSlot.setStack(ItemStack.EMPTY);
         } else {
             final ItemStack craftingResult = currentRecipe.craft(ic);
@@ -184,16 +184,18 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
     }
 
     @Override
-    public void saveChanges() {}
+    public void saveChanges() {
+    }
 
     @Override
-    public void onChangeInventory(FixedItemInv inv, int slot, InvOperation mc, ItemStack removedStack, ItemStack newStack) {}
+    public void onChangeInventory(FixedItemInv inv, int slot, InvOperation mc, ItemStack removedStack, ItemStack newStack) {
+    }
 
     @Override
     public FixedItemInv getInventoryByName(String name) {
-        if(name.equals("player")) {
+        if (name.equals("player")) {
             return new FixedInventoryVanillaWrapper(getPlayerInventory());
-        } else if(name.equals("crafting")) {
+        } else if (name.equals("crafting")) {
             return craftingGrid;
         }
         return null;
@@ -216,7 +218,7 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
     private MagnetSettings magnetSettings;
 
     public MagnetSettings getMagnetSettings() {
-        if(magnetSettings == null) return reloadMagnetSettings();
+        if (magnetSettings == null) return reloadMagnetSettings();
         return magnetSettings;
     }
 
@@ -226,7 +228,7 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
 
     public MagnetSettings reloadMagnetSettings() {
         magnetSettings = ItemMagnetCard.loadMagnetSettings(wctGUIObject.getItemStack());
-        if(isClient() && screen != null) screen.resetMagnetSettings();
+        if (isClient() && screen != null) screen.resetMagnetSettings();
         return magnetSettings;
     }
 

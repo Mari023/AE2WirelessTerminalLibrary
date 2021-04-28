@@ -35,37 +35,38 @@ public class WPTGuiObject extends WTGuiObject implements IPortableCell, IAEAppEn
     }
 
     public FixedItemInv getInventoryByName(final String name) {
-        if(name.equals("crafting")) return crafting;
+        if (name.equals("crafting")) return crafting;
 
-        if(name.equals("output")) return output;
+        if (name.equals("output")) return output;
 
-        if(name.equals("pattern")) return pattern;
+        if (name.equals("pattern")) return pattern;
         return null;
     }
 
     @Override
-    public void saveChanges() {}
+    public void saveChanges() {
+    }
 
     @Override
     public void onChangeInventory(FixedItemInv inv, int slot, InvOperation mc, ItemStack removedStack, ItemStack newStack) {
-        if(inv == pattern && slot == 1) {
+        if (inv == pattern && slot == 1) {
             final ItemStack is = pattern.getInvStack(1);
             final ICraftingPatternDetails details = Api.instance().crafting().decodePattern(is, getPlayer().world, false);
-            if(details != null) {
+            if (details != null) {
                 setCraftingRecipe(details.isCraftable());
                 setSubstitution(details.canSubstitute());
 
-                for(int x = 0; x < crafting.getSlotCount() && x < details.getSparseInputs().length; x++) {
+                for (int x = 0; x < crafting.getSlotCount() && x < details.getSparseInputs().length; x++) {
                     final IAEItemStack item = details.getSparseInputs()[x];
                     crafting.forceSetInvStack(x, item == null ? ItemStack.EMPTY : item.createItemStack());
                 }
 
-                for(int x = 0; x < output.getSlotCount() && x < details.getSparseOutputs().length; x++) {
+                for (int x = 0; x < output.getSlotCount() && x < details.getSparseOutputs().length; x++) {
                     final IAEItemStack item = details.getSparseOutputs()[x];
                     output.forceSetInvStack(x, item == null ? ItemStack.EMPTY : item.createItemStack());
                 }
             }
-        } else if(inv == crafting) fixCraftingRecipes();
+        } else if (inv == crafting) fixCraftingRecipes();
     }
 
     public void setCraftingRecipe(final boolean craftingMode) {
@@ -82,9 +83,9 @@ public class WPTGuiObject extends WTGuiObject implements IPortableCell, IAEAppEn
     }
 
     private void fixCraftingRecipes() {
-        if(craftingMode) for(int x = 0; x < crafting.getSlotCount(); x++) {
+        if (craftingMode) for (int x = 0; x < crafting.getSlotCount(); x++) {
             final ItemStack is = crafting.getInvStack(x);
-            if(!is.isEmpty()) is.setCount(1);
+            if (!is.isEmpty()) is.setCount(1);
         }
     }
 }

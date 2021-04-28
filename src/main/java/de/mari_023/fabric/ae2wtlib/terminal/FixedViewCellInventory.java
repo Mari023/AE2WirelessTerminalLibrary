@@ -22,7 +22,7 @@ public class FixedViewCellInventory implements FixedItemInv {
 
     @Override
     public ItemStack getInvStack(int i) {
-        if(i < viewCellCount) return ItemWT.getSavedSlot(hostStack, "viewCell" + i);
+        if (i < viewCellCount) return ItemWT.getSavedSlot(hostStack, "viewCell" + i);
         return ItemStack.EMPTY;
     }
 
@@ -33,8 +33,8 @@ public class FixedViewCellInventory implements FixedItemInv {
 
     @Override
     public boolean setInvStack(int i, ItemStack itemStack, Simulation simulation) {
-        if(isItemValidForSlot(i, itemStack)) {
-            if(simulation.isAction()) {
+        if (isItemValidForSlot(i, itemStack)) {
+            if (simulation.isAction()) {
                 ItemWT.setSavedSlot(hostStack, itemStack, "viewCell" + i);
                 return true;
             }
@@ -44,7 +44,7 @@ public class FixedViewCellInventory implements FixedItemInv {
 
     public ItemStack[] getViewCells() {
         ItemStack[] viewCells = new ItemStack[viewCellCount];
-        for(int i = 0; i < viewCellCount; i++) {
+        for (int i = 0; i < viewCellCount; i++) {
             viewCells[i] = getInvStack(i);
         }
         return viewCells;
@@ -52,9 +52,9 @@ public class FixedViewCellInventory implements FixedItemInv {
 
     @Override
     public ItemStack extractStack(int slot, ItemFilter filter, ItemStack mergeWith, int maxCount, Simulation simulation) {
-        if(slot > viewCellCount || !mergeWith.isEmpty()) return ItemStack.EMPTY;
+        if (slot > viewCellCount || !mergeWith.isEmpty()) return ItemStack.EMPTY;
         ItemStack is = getInvStack(slot);
-        if(simulation.isAction()) setInvStack(slot, ItemStack.EMPTY, Simulation.ACTION);
+        if (simulation.isAction()) setInvStack(slot, ItemStack.EMPTY, Simulation.ACTION);
         return is;
     }
 }

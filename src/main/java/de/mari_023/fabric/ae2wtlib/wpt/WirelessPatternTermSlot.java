@@ -34,15 +34,16 @@ public class WirelessPatternTermSlot extends PatternTermSlot {
             f.setAccessible(true);
             pattern = (FixedItemInv) f.get(this);
             f.setAccessible(false);
-        } catch(IllegalAccessException | NoSuchFieldException ignored) {}
+        } catch (IllegalAccessException | NoSuchFieldException ignored) {
+        }
 
-        if(pattern == null)
+        if (pattern == null)
             return new PatternSlotPacket(new FixedEmptyInventory(9), Api.instance().storage().getStorageChannel(IItemStorageChannel.class).createStack(getStack()), shift);
 
         PacketByteBuf buf = PacketByteBufs.create();
         writeItem(Api.instance().storage().getStorageChannel(IItemStorageChannel.class).createStack(getStack()), buf);
         buf.writeBoolean(shift);
-        for(int x = 0; x < 9; x++)
+        for (int x = 0; x < 9; x++)
             writeItem(Api.instance().storage().getStorageChannel(IItemStorageChannel.class).createStack(pattern.getInvStack(x)), buf);
         ClientPlayNetworking.send(new Identifier("ae2wtlib", "patternslotpacket"), buf);
 
@@ -51,7 +52,7 @@ public class WirelessPatternTermSlot extends PatternTermSlot {
     }
 
     private void writeItem(final IAEItemStack slotItem, final PacketByteBuf data) {
-        if(slotItem == null) data.writeBoolean(false);
+        if (slotItem == null) data.writeBoolean(false);
         else {
             data.writeBoolean(true);
             slotItem.writeToPacket(data);

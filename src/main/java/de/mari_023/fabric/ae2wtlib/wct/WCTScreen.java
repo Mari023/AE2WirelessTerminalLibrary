@@ -54,7 +54,8 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
             f.setAccessible(true);
             f.set(this, reservedSpace);
             f.setAccessible(false);
-        } catch(IllegalAccessException | NoSuchFieldException ignored) {}
+        } catch (IllegalAccessException | NoSuchFieldException ignored) {
+        }
     }
 
     @Override
@@ -77,7 +78,7 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
         resetMagnetSettings();
         container.setScreen(this);
 
-        if(container.isWUT()) addButton(new CycleTerminalButton(x - 18, y + 108, btn -> cycleTerminal()));
+        if (container.isWUT()) addButton(new CycleTerminalButton(x - 18, y + 108, btn -> cycleTerminal()));
 
         try {
             Field field = MEMonitorableScreen.class.getDeclaredField("rows");
@@ -85,14 +86,16 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
             Object value = field.get(this);
             field.setAccessible(false);
             rows = (int) value;
-        } catch(IllegalAccessException | NoSuchFieldException ignored) {}
+        } catch (IllegalAccessException | NoSuchFieldException ignored) {
+        }
         try {
             Field field = MEMonitorableScreen.class.getDeclaredField("searchField");
             field.setAccessible(true);
             Object value = field.get(this);
             field.setAccessible(false);
             searchField = (AETextField) value;
-        } catch(IllegalAccessException | NoSuchFieldException ignored) {}
+        } catch (IllegalAccessException | NoSuchFieldException ignored) {
+        }
     }
 
     @Override
@@ -102,7 +105,7 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
         final int x_width = 197;
         drawTexture(matrices, offsetX, offsetY, 0, 0, x_width, 18);
 
-        for(int x = 0; x < this.rows; x++) {
+        for (int x = 0; x < this.rows; x++) {
             drawTexture(matrices, offsetX, offsetY + 18 + x * 18, 0, 18, x_width, 18);
         }
 
@@ -110,7 +113,7 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
 
         searchField.render(matrices, mouseX, mouseY, partialTicks);
 
-        if(client != null && client.player != null)
+        if (client != null && client.player != null)
             drawEntity(offsetX + 52, offsetY + 94 + rows * 18, 30, (float) (offsetX + 52) - mouseX, (float) offsetY + 55 + rows * 18 - mouseY, client.player);
     }
 
@@ -122,13 +125,13 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
 
     private void clear() {
         Slot s = null;
-        for(final Slot j : handler.slots) {
-            if(j instanceof CraftingMatrixSlot) {
+        for (final Slot j : handler.slots) {
+            if (j instanceof CraftingMatrixSlot) {
                 s = j;
             }
         }
 
-        if(s != null) {
+        if (s != null) {
             final InventoryActionPacket p = new InventoryActionPacket(InventoryAction.MOVE_REGION, s.id, 0);
             NetworkHandler.instance().sendToServer(p);
         }
@@ -149,7 +152,7 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
     }
 
     private void setMagnetMode() {
-        switch(magnetSettings.magnetMode) {
+        switch (magnetSettings.magnetMode) {
             case INVALID:
             case NO_CARD:
                 return;
@@ -171,7 +174,7 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
     }
 
     private void setMagnetModeText() {
-        switch(magnetSettings.magnetMode) {
+        switch (magnetSettings.magnetMode) {
             case INVALID:
             case NO_CARD:
                 magnetCardToggleButton.setVisibility(false);

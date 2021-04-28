@@ -44,24 +44,24 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
     }
 
     private void openWirelessTerminalGui(ItemStack item, PlayerEntity player, Hand hand) {
-        if(Platform.isClient()) {
+        if (Platform.isClient()) {
             return;
         }
 
         final String unparsedKey = getEncryptionKey(item);
-        if(unparsedKey.isEmpty()) {
+        if (unparsedKey.isEmpty()) {
             player.sendSystemMessage(PlayerMessages.DeviceNotLinked.get(), Util.NIL_UUID);
             return;
         }
 
         final long parsedKey = Long.parseLong(unparsedKey);
         final ILocatable securityStation = Api.instance().registries().locatable().getLocatableBy(parsedKey);
-        if(securityStation == null) {
+        if (securityStation == null) {
             player.sendSystemMessage(PlayerMessages.StationCanNotBeLocated.get(), Util.NIL_UUID);
             return;
         }
 
-        if(hasPower(player, 0.5, item)) {
+        if (hasPower(player, 0.5, item)) {
             open(player, ContainerLocator.forHand(player, hand));
         } else {
             player.sendSystemMessage(PlayerMessages.DeviceNotPowered.get(), Util.NIL_UUID);
@@ -75,12 +75,12 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
     public void appendTooltip(final ItemStack stack, final World world, final List<Text> lines, final TooltipContext advancedTooltips) {
         super.appendTooltip(stack, world, lines, advancedTooltips);
 
-        if(stack.hasTag()) {
+        if (stack.hasTag()) {
             final CompoundTag tag = stack.getOrCreateTag();
-            if(tag != null) {
+            if (tag != null) {
                 final String encKey = tag.getString("encryptionKey");
 
-                if(encKey == null || encKey.isEmpty()) {
+                if (encKey == null || encKey.isEmpty()) {
                     lines.add(GuiText.Unlinked.text());
                 } else {
                     lines.add(GuiText.Linked.text());
@@ -142,7 +142,7 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
      * @return the stored Item or {@link ItemStack}.EMPTY if it wasn't found
      */
     public static ItemStack getSavedSlot(ItemStack hostItem, String slot) {
-        if(!(hostItem.getItem() instanceof ItemWT)) return ItemStack.EMPTY;
+        if (!(hostItem.getItem() instanceof ItemWT)) return ItemStack.EMPTY;
         return ItemStack.fromTag(hostItem.getOrCreateTag().getCompound(slot));
     }
 
@@ -155,9 +155,9 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
      * @param slot      the location where the stored item will be
      */
     public static void setSavedSlot(ItemStack hostItem, ItemStack savedItem, String slot) {
-        if(!(hostItem.getItem() instanceof ItemWT)) return;
+        if (!(hostItem.getItem() instanceof ItemWT)) return;
         CompoundTag wctTag = hostItem.getOrCreateTag();
-        if(savedItem.isEmpty()) {
+        if (savedItem.isEmpty()) {
             wctTag.remove(slot);
         } else {
             wctTag.put(slot, savedItem.toTag(new CompoundTag()));
@@ -171,7 +171,7 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
      * @return the boolean or false if it wasn't found
      */
     public static boolean getBoolean(ItemStack hostItem, String key) {
-        if(!(hostItem.getItem() instanceof ItemWT)) return false;
+        if (!(hostItem.getItem() instanceof ItemWT)) return false;
         return hostItem.getOrCreateTag().getBoolean(key);
     }
 
@@ -184,7 +184,7 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
      * @param key      the location where the stored item will be
      */
     public static void setBoolean(ItemStack hostItem, boolean b, String key) {
-        if(!(hostItem.getItem() instanceof ItemWT)) return;
+        if (!(hostItem.getItem() instanceof ItemWT)) return;
         CompoundTag wctTag = hostItem.getOrCreateTag();
         wctTag.putBoolean(key, b);
     }
@@ -194,13 +194,13 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
     }
 
     public void setBoosterCard(ItemStack hostItem, ItemStack boosterCard) {
-        if(hostItem.getItem() instanceof IInfinityBoosterCardHolder) {
+        if (hostItem.getItem() instanceof IInfinityBoosterCardHolder) {
             setSavedSlot(hostItem, boosterCard, "boosterCard");
         }
     }
 
     public ItemStack getBoosterCard(ItemStack hostItem) {
-        if(hostItem.getItem() instanceof IInfinityBoosterCardHolder) {
+        if (hostItem.getItem() instanceof IInfinityBoosterCardHolder) {
             return getSavedSlot(hostItem, "boosterCard");
         }
         return ItemStack.EMPTY;

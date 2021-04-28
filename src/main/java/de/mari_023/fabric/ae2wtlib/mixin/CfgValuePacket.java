@@ -22,7 +22,7 @@ public class CfgValuePacket {
     @Inject(method = "serverPacketData", at = @At(value = "TAIL"), require = 1, allow = 1, remap = false)
     public void serverPacketData(INetworkInfo manager, PlayerEntity player, CallbackInfo ci) {
         final ScreenHandler c = player.currentScreenHandler;
-        if(Name.equals("Terminal.Start") && c instanceof WirelessCraftConfirmContainer) {
+        if (Name.equals("Terminal.Start") && c instanceof WirelessCraftConfirmContainer) {
             final WirelessCraftConfirmContainer qk = (WirelessCraftConfirmContainer) c;
             qk.startJob();
         }

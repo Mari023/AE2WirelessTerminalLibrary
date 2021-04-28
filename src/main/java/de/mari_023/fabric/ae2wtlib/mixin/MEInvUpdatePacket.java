@@ -32,7 +32,7 @@ public class MEInvUpdatePacket {
     @Inject(method = "clientPacketData", at = @At(value = "TAIL"), require = 1, allow = 1, remap = false)
     public void clientPacketData(INetworkInfo manager, PlayerEntity player, CallbackInfo ci) {
         final Screen gs = MinecraftClient.getInstance().currentScreen;
-        if(gs instanceof WirelessCraftConfirmScreen) {
+        if (gs instanceof WirelessCraftConfirmScreen) {
             ((WirelessCraftConfirmScreen) gs).postUpdate(list, ref);
         }
     }

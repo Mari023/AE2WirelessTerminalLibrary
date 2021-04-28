@@ -47,27 +47,27 @@ public abstract class Restock {
 
     @Inject(method = "useOnBlock", at = @At(value = "RETURN"), require = 1, remap = false)
     public void useOnBlockRestock(ItemUsageContext context, CallbackInfoReturnable<ActionResult> cir) {
-        if(!context.getWorld().isClient()) restock(context.getPlayer(), cir.getReturnValue());
+        if (!context.getWorld().isClient()) restock(context.getPlayer(), cir.getReturnValue());
     }
 
     @Inject(method = "use", at = @At(value = "RETURN"), require = 1, remap = false)
     public void useRestock(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir) {
-        if(!world.isClient()) restock(user, cir.getReturnValue().getResult());
+        if (!world.isClient()) restock(user, cir.getReturnValue().getResult());
     }
 
     private void restock(PlayerEntity playerEntity, ActionResult result) {
-        if(result.equals(ActionResult.CONSUME) && !isEmpty() && !playerEntity.isCreative()) {
+        if (result.equals(ActionResult.CONSUME) && !isEmpty() && !playerEntity.isCreative()) {
             CraftingTerminalHandler CTHandler = CraftingTerminalHandler.getCraftingTerminalHandler(playerEntity);
-            if(CTHandler.inRange() && ItemWT.getBoolean(CTHandler.getCraftingTerminal(), "restock")) {
+            if (CTHandler.inRange() && ItemWT.getBoolean(CTHandler.getCraftingTerminal(), "restock")) {
                 int toAdd = getMaxCount() - getCount();
-                if(toAdd == 0) return;
+                if (toAdd == 0) return;
                 ItemStack request = copy();
                 request.setCount(toAdd);
                 IAEItemStack stack = ((IStorageGrid) CTHandler.getTargetGrid().getCache(IStorageGrid.class)).getInventory(Api.instance().storage().getStorageChannel(IItemStorageChannel.class)).extractItems(AEItemStack.fromItemStack(request), Actionable.MODULATE, new PlayerSource(playerEntity, (IActionHost) CTHandler.getSecurityStation()));
-                if(stack == null) return;
+                if (stack == null) return;
                 ItemStack extraction = stack.createItemStack();
                 int extractedItems = 0;
-                if(extraction != null && !extraction.isEmpty()) extractedItems = extraction.getCount();
+                if (extraction != null && !extraction.isEmpty()) extractedItems = extraction.getCount();
                 setCount(getCount() + extractedItems);
                 PacketByteBuf buf = PacketByteBufs.create();
                 buf.writeInt(playerEntity.inventory.getSlotWithStack((ItemStack) (Object) this));

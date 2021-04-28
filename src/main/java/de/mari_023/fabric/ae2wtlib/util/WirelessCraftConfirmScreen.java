@@ -83,12 +83,12 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
         final int offY = 23;
         int y = 0;
         int x = 0;
-        for(int z = 0; z <= 4 * 5; z++) {
+        for (int z = 0; z <= 4 * 5; z++) {
             final int minX = gx + 9 + x * 67;
             final int minY = gy + 22 + y * offY;
 
-            if(minX < mouseX && minX + 67 > mouseX) {
-                if(minY < mouseY && minY + offY - 2 > mouseY) {
+            if (minX < mouseX && minX + 67 > mouseX) {
+                if (minY < mouseY && minY + offY - 2 > mouseY) {
                     tooltip = z;
                     break;
                 }
@@ -96,7 +96,7 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
 
             x++;
 
-            if(x > 2) {
+            if (x > 2) {
                 y++;
                 x = 0;
             }
@@ -109,12 +109,12 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
     }
 
     private Text getNextCpuButtonLabel() {
-        if(handler.hasNoCPU()) {
+        if (handler.hasNoCPU()) {
             return GuiText.NoCraftingCPUs.text();
         }
 
         Text cpuName;
-        if(handler.cpuName == null) {
+        if (handler.cpuName == null) {
             cpuName = GuiText.Automatic.text();
         } else {
             cpuName = handler.cpuName;
@@ -134,7 +134,7 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
 
         Text dsp;
 
-        if(isSimulation()) {
+        if (isSimulation()) {
             dsp = GuiText.Simulation.text();
         } else {
             dsp = handler.getCpuAvailableBytes() > 0 ? (GuiText.Bytes.withSuffix(": " + handler.getCpuAvailableBytes() + " : ")
@@ -161,9 +161,9 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
 
         final int offY = 23;
 
-        for(int z = viewStart; z < Math.min(viewEnd, visual.size()); z++) {
+        for (int z = viewStart; z < Math.min(viewEnd, visual.size()); z++) {
             final IAEItemStack refStack = visual.get(z);// repo.getReferenceItem( z );
-            if(refStack != null) {
+            if (refStack != null) {
                 RenderSystem.pushMatrix();
                 RenderSystem.scalef(0.5f, 0.5f, 0.5f);
 
@@ -173,25 +173,25 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
 
                 int lines = 0;
 
-                if(stored != null && stored.getStackSize() > 0) {
+                if (stored != null && stored.getStackSize() > 0) {
                     lines++;
                 }
-                if(missingStack != null && missingStack.getStackSize() > 0) {
+                if (missingStack != null && missingStack.getStackSize() > 0) {
                     lines++;
                 }
-                if(pendingStack != null && pendingStack.getStackSize() > 0) {
+                if (pendingStack != null && pendingStack.getStackSize() > 0) {
                     lines++;
                 }
 
                 final int negY = ((lines - 1) * 5) / 2;
                 int downY = 0;
 
-                if(stored != null && stored.getStackSize() > 0) {
+                if (stored != null && stored.getStackSize() > 0) {
                     String str = Long.toString(stored.getStackSize());
-                    if(stored.getStackSize() >= 10000) {
+                    if (stored.getStackSize() >= 10000) {
                         str = Long.toString(stored.getStackSize() / 1000) + 'k';
                     }
-                    if(stored.getStackSize() >= 10000000) {
+                    if (stored.getStackSize() >= 10000000) {
                         str = Long.toString(stored.getStackSize() / 1000000) + 'm';
                     }
 
@@ -200,7 +200,7 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
                     textRenderer.draw(matrices, str, (int) ((x * (1 + sectionLength) + xo + sectionLength - 19 - (w * 0.5)) * 2),
                             (y * offY + yo + 6 - negY + downY) * 2, 4210752);
 
-                    if(tooltip == z - viewStart) {
+                    if (tooltip == z - viewStart) {
                         lineList.add(GuiText.FromStorage.withSuffix(": " + stored.getStackSize()));
                     }
 
@@ -208,12 +208,12 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
                 }
 
                 boolean red = false;
-                if(missingStack != null && missingStack.getStackSize() > 0) {
+                if (missingStack != null && missingStack.getStackSize() > 0) {
                     String str = Long.toString(missingStack.getStackSize());
-                    if(missingStack.getStackSize() >= 10000) {
+                    if (missingStack.getStackSize() >= 10000) {
                         str = Long.toString(missingStack.getStackSize() / 1000) + 'k';
                     }
-                    if(missingStack.getStackSize() >= 10000000) {
+                    if (missingStack.getStackSize() >= 10000000) {
                         str = Long.toString(missingStack.getStackSize() / 1000000) + 'm';
                     }
 
@@ -223,7 +223,7 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
                             (int) ((x * (1 + sectionLength) + xo + sectionLength - 19 - (w * 0.5)) * 2),
                             (y * offY + yo + 6 - negY + downY) * 2, 4210752);
 
-                    if(tooltip == z - viewStart) {
+                    if (tooltip == z - viewStart) {
                         lineList.add(GuiText.Missing.withSuffix(": " + missingStack.getStackSize()));
                     }
 
@@ -231,12 +231,12 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
                     downY += 5;
                 }
 
-                if(pendingStack != null && pendingStack.getStackSize() > 0) {
+                if (pendingStack != null && pendingStack.getStackSize() > 0) {
                     String str = Long.toString(pendingStack.getStackSize());
-                    if(pendingStack.getStackSize() >= 10000) {
+                    if (pendingStack.getStackSize() >= 10000) {
                         str = Long.toString(pendingStack.getStackSize() / 1000) + 'k';
                     }
-                    if(pendingStack.getStackSize() >= 10000000) {
+                    if (pendingStack.getStackSize() >= 10000000) {
                         str = Long.toString(pendingStack.getStackSize() / 1000000) + 'm';
                     }
 
@@ -246,7 +246,7 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
                             (int) ((x * (1 + sectionLength) + xo + sectionLength - 19 - (w * 0.5)) * 2),
                             (y * offY + yo + 6 - negY + downY) * 2, 4210752);
 
-                    if(tooltip == z - viewStart) {
+                    if (tooltip == z - viewStart) {
                         lineList.add(GuiText.ToCraft.withSuffix(": " + pendingStack.getStackSize()));
                     }
                 }
@@ -257,10 +257,10 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
 
                 final ItemStack is = refStack.asItemStackRepresentation();
 
-                if(tooltip == z - viewStart) {
+                if (tooltip == z - viewStart) {
                     dspToolTip.add(Platform.getItemDisplayName(refStack));
 
-                    if(lineList.size() > 0) {
+                    if (lineList.size() > 0) {
                         dspToolTip.addAll(lineList);
                     }
 
@@ -270,7 +270,7 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
 
                 drawItem(posX, posY, is);
 
-                if(red) {
+                if (red) {
                     final int startX = x * (1 + sectionLength) + xo;
                     final int startY = posY - 4;
                     fill(matrices, startX, startY, startX + sectionLength, startY + offY, 0x1AFF0000);
@@ -278,14 +278,14 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
 
                 x++;
 
-                if(x > 2) {
+                if (x > 2) {
                     y++;
                     x = 0;
                 }
             }
         }
 
-        if(tooltip >= 0 && !dspToolTip.isEmpty()) drawTooltip(matrices, toolPosX, toolPosY + 10, dspToolTip);
+        if (tooltip >= 0 && !dspToolTip.isEmpty()) drawTooltip(matrices, toolPosX, toolPosY + 10, dspToolTip);
     }
 
     @Override
@@ -303,22 +303,22 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
     }
 
     public void postUpdate(final List<IAEItemStack> list, final byte ref) {
-        switch(ref) {
+        switch (ref) {
             case 0:
-                for(final IAEItemStack l : list) handleInput(storage, l);
+                for (final IAEItemStack l : list) handleInput(storage, l);
                 break;
             case 1:
-                for(final IAEItemStack l : list) handleInput(pending, l);
+                for (final IAEItemStack l : list) handleInput(pending, l);
                 break;
             case 2:
-                for(final IAEItemStack l : list) handleInput(missing, l);
+                for (final IAEItemStack l : list) handleInput(missing, l);
                 break;
         }
 
-        for(final IAEItemStack l : list) {
+        for (final IAEItemStack l : list) {
             final long amt = getTotal(l);
 
-            if(amt <= 0) {
+            if (amt <= 0) {
                 deleteVisualStack(l);
             } else {
                 findVisualStack(l).setStackSize(amt);
@@ -330,15 +330,15 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
     private void handleInput(final IItemList<IAEItemStack> s, final IAEItemStack l) {
         IAEItemStack a = s.findPrecise(l);
 
-        if(l.getStackSize() <= 0) {
-            if(a != null) a.reset();
+        if (l.getStackSize() <= 0) {
+            if (a != null) a.reset();
         } else {
-            if(a == null) {
+            if (a == null) {
                 s.add(l.copy());
                 a = s.findPrecise(l);
             }
 
-            if(a != null) a.setStackSize(l.getStackSize());
+            if (a != null) a.setStackSize(l.getStackSize());
         }
     }
 
@@ -349,20 +349,20 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
 
         long total = 0;
 
-        if(a != null) total += a.getStackSize();
+        if (a != null) total += a.getStackSize();
 
-        if(c != null) total += c.getStackSize();
+        if (c != null) total += c.getStackSize();
 
-        if(m != null) total += m.getStackSize();
+        if (m != null) total += m.getStackSize();
 
         return total;
     }
 
     private void deleteVisualStack(final IAEItemStack l) {
         final Iterator<IAEItemStack> i = visual.iterator();
-        while(i.hasNext()) {
+        while (i.hasNext()) {
             final IAEItemStack o = i.next();
-            if(o.equals(l)) {
+            if (o.equals(l)) {
                 i.remove();
                 return;
             }
@@ -370,8 +370,8 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
     }
 
     private IAEItemStack findVisualStack(final IAEItemStack l) {
-        for(final IAEItemStack o : visual) {
-            if(o.equals(l)) return o;
+        for (final IAEItemStack o : visual) {
+            if (o.equals(l)) return o;
         }
 
         final IAEItemStack stack = l.copy();
@@ -381,8 +381,8 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int p_keyPressed_3_) {
-        if(!checkHotbarKeys(keyCode, scanCode)) {
-            if(keyCode == GLFW.GLFW_KEY_ENTER || keyCode == GLFW.GLFW_KEY_KP_ENTER) {
+        if (!checkHotbarKeys(keyCode, scanCode)) {
+            if (keyCode == GLFW.GLFW_KEY_ENTER || keyCode == GLFW.GLFW_KEY_KP_ENTER) {
                 start();
                 return true;
             }

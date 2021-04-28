@@ -37,12 +37,12 @@ public class ItemButton extends ButtonWidget implements ITooltip {
 
         MinecraftClient minecraft = MinecraftClient.getInstance();
 
-        if(visible) {
+        if (visible) {
             TextureManager textureManager = minecraft.getTextureManager();
             textureManager.bindTexture(TEXTURE_STATES);
             RenderSystem.disableDepthTest();
             RenderSystem.enableBlend();
-            if(halfSize) {
+            if (halfSize) {
                 width = 8;
                 height = 8;
 
@@ -56,7 +56,7 @@ public class ItemButton extends ButtonWidget implements ITooltip {
             }
             drawTexture(matrices, 0, 0, 256 - 16, 256 - 16, 16, 16);
             RenderSystem.scalef(1f / 16f, 1f / 16f, 1f / 16f);
-            if(active) {
+            if (active) {
                 RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
             } else {
                 RenderSystem.color4f(0.5f, 0.5f, 0.5f, 1.0f);
@@ -67,7 +67,7 @@ public class ItemButton extends ButtonWidget implements ITooltip {
             RenderSystem.enableDepthTest();
             RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
 
-            if(isHovered()) {
+            if (isHovered()) {
                 renderToolTip(matrices, mouseX, mouseY);
             }
         }
