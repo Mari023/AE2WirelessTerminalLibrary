@@ -128,17 +128,17 @@ public class ae2wtlib implements ModInitializer {
             buf.retain();
             server.execute(() -> {
                 Identifier id = buf.readIdentifier();
-                final ScreenHandler c = player.currentScreenHandler;
-                if(!(c instanceof AEBaseContainer)) {
+                if(!(player.currentScreenHandler instanceof AEBaseContainer)) {
                     buf.release();
                     return;
                 }
-                AEBaseContainer container = (AEBaseContainer) c;
-                final ContainerLocator locator = container.getLocator();
+
+                final ContainerLocator locator = ((AEBaseContainer) player.currentScreenHandler).getLocator();
                 if(locator == null) {
                     buf.release();
                     return;
                 }
+                
                 switch(id.getPath()) {
                     case "wireless_crafting_terminal":
                         WCTContainer.open(player, locator);
