@@ -138,7 +138,7 @@ public class ae2wtlib implements ModInitializer {
                     buf.release();
                     return;
                 }
-                
+
                 switch(id.getPath()) {
                     case "wireless_crafting_terminal":
                         WCTContainer.open(player, locator);
@@ -210,8 +210,7 @@ public class ae2wtlib implements ModInitializer {
 
             if(!(screenHandler instanceof AEBaseContainer)) return;
 
-            final AEBaseContainer container = (AEBaseContainer) screenHandler;
-            final ContainerLocator locator = container.getLocator();
+            final ContainerLocator locator = ((AEBaseContainer) screenHandler).getLocator();
             ItemStack item = player.inventory.getStack(locator.getItemIndex());
 
             if(!(item.getItem() instanceof ItemWUT)) return;
