@@ -46,6 +46,8 @@ public class CraftingTerminalHandler {
         for(int i = 0; i < inv.size(); i++) {
             ItemStack terminal = inv.getStack(i);
             if(terminal.getItem() instanceof ItemWCT || (terminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(terminal, "crafting"))) {
+                securityStation = null;
+                targetGrid = null;
                 return craftingTerminal = terminal;
             }
         }
@@ -53,6 +55,7 @@ public class CraftingTerminalHandler {
     }
 
     public ILocatable getSecurityStation() {
+        if(getCraftingTerminal().isEmpty()) return securityStation = null;
         if(securityStation != null) return securityStation;
         final String unParsedKey = ((ItemWT) craftingTerminal.getItem()).getEncryptionKey(craftingTerminal);
         if(unParsedKey.isEmpty()) return null;
@@ -74,6 +77,7 @@ public class CraftingTerminalHandler {
     private double sqRange = Double.MAX_VALUE;
 
     public boolean inRange() {
+        if(getCraftingTerminal().isEmpty()) return false;
         if(((IInfinityBoosterCardHolder) craftingTerminal.getItem()).hasBoosterCard(craftingTerminal)) return true;
         sqRange = Double.MAX_VALUE;
 

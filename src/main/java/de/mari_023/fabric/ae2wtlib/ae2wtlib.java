@@ -13,13 +13,16 @@ import appeng.core.AELog;
 import appeng.core.Api;
 import de.mari_023.fabric.ae2wtlib.rei.REIRecipePacket;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemInfinityBooster;
+import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.util.ContainerHelper;
 import de.mari_023.fabric.ae2wtlib.util.WirelessCraftAmountContainer;
+import de.mari_023.fabric.ae2wtlib.wct.CraftingTerminalHandler;
 import de.mari_023.fabric.ae2wtlib.wct.ItemWCT;
 import de.mari_023.fabric.ae2wtlib.wct.WCTContainer;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.ItemMagnetCard;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetHandler;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetMode;
+import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetSettings;
 import de.mari_023.fabric.ae2wtlib.wit.ItemWIT;
 import de.mari_023.fabric.ae2wtlib.wit.WITContainer;
 import de.mari_023.fabric.ae2wtlib.wpt.ItemWPT;
@@ -35,6 +38,9 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.text.Style;
+import net.minecraft.text.TextColor;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -231,7 +237,10 @@ public class ae2wtlib implements ModInitializer {
                             break;
                         }
                     }
-                    if(slot == -1) return;
+                    if(slot == -1) {
+                        buf.release();
+                        return;
+                    }
                     ContainerLocator locator = ContainerHelper.getContainerLocatorForSlot(slot);
                     CRAFTING_TERMINAL.open(player, locator);
                 } else if(terminalName.equalsIgnoreCase("pattern")) {
@@ -245,7 +254,10 @@ public class ae2wtlib implements ModInitializer {
                             break;
                         }
                     }
-                    if(slot == -1) return;
+                    if(slot == -1) {
+                        buf.release();
+                        return;
+                    }
                     ContainerLocator locator = ContainerHelper.getContainerLocatorForSlot(slot);
                     PATTERN_TERMINAL.open(player, locator);
                 } else if(terminalName.equalsIgnoreCase("interface")) {
@@ -259,9 +271,43 @@ public class ae2wtlib implements ModInitializer {
                             break;
                         }
                     }
-                    if(slot == -1) return;
+                    if(slot == -1) {
+                        buf.release();
+                        return;
+                    }
                     ContainerLocator locator = ContainerHelper.getContainerLocatorForSlot(slot);
                     INTERFACE_TERMINAL.open(player, locator);
+                } else if(terminalName.equalsIgnoreCase("toggleRestock")) {
+                    CraftingTerminalHandler craftingTerminalHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
+                    ItemStack terminal = craftingTerminalHandler.getCraftingTerminal();
+                    if(terminal.isEmpty()) {
+                        buf.release();
+                        return;
+                    }
+                    ItemWT.setBoolean(terminal, !ItemWT.getBoolean(terminal, "restock"), "restock");
+                } else if(terminalName.equalsIgnoreCase("toggleMagnet")) {
+                    CraftingTerminalHandler craftingTerminalHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
+                    ItemStack terminal = craftingTerminalHandler.getCraftingTerminal();
+                    if(terminal.isEmpty()) {
+                        buf.release();
+                        return;
+                    }
+                    MagnetSettings settings = ItemMagnetCard.loadMagnetSettings(terminal);
+                    switch(settings.magnetMode) {
+                        case OFF:
+                            player.sendMessage(new TranslatableText("gui.ae2wtlib.magnetcard.hotkey").append(new TranslatableText("Pickup to Inventory").setStyle(Style.EMPTY.withColor(TextColor.parse("green")))), true);
+                            settings.magnetMode = MagnetMode.PICKUP_INVENTORY;
+                            break;
+                        case PICKUP_INVENTORY:
+                            player.sendMessage(new TranslatableText("gui.ae2wtlib.magnetcard.hotkey").append(new TranslatableText("Pickup to ME").setStyle(Style.EMPTY.withColor(TextColor.parse("green")))), true);
+                            settings.magnetMode = MagnetMode.PICKUP_ME;
+                            break;
+                        case PICKUP_ME:
+                            player.sendMessage(new TranslatableText("gui.ae2wtlib.magnetcard.hotkey").append(new TranslatableText("gui.ae2wtlib.magnetcard.desc.off").setStyle(Style.EMPTY.withColor(TextColor.parse("red")))), true);
+                            settings.magnetMode = MagnetMode.OFF;
+                            break;
+                    }
+                    ItemMagnetCard.saveMagnetSettings(terminal, settings);
                 }
                 buf.release();
             });
