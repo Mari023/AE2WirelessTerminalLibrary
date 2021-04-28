@@ -236,8 +236,8 @@ public class ae2wtlib implements ModInitializer {
                         buf.release();
                         return;
                     }
-                    ContainerLocator locator = ContainerHelper.getContainerLocatorForSlot(slot);
-                    CRAFTING_TERMINAL.open(player, locator);
+
+                    CRAFTING_TERMINAL.open(player, ContainerHelper.getContainerLocatorForSlot(slot));
                 } else if(terminalName.equalsIgnoreCase("pattern")) {
                     PlayerInventory inv = player.inventory;
                     int slot = -1;
@@ -249,12 +249,13 @@ public class ae2wtlib implements ModInitializer {
                             break;
                         }
                     }
+
                     if(slot == -1) {
                         buf.release();
                         return;
                     }
-                    ContainerLocator locator = ContainerHelper.getContainerLocatorForSlot(slot);
-                    PATTERN_TERMINAL.open(player, locator);
+
+                    PATTERN_TERMINAL.open(player, ContainerHelper.getContainerLocatorForSlot(slot));
                 } else if(terminalName.equalsIgnoreCase("interface")) {
                     PlayerInventory inv = player.inventory;
                     int slot = -1;
@@ -266,12 +267,13 @@ public class ae2wtlib implements ModInitializer {
                             break;
                         }
                     }
+
                     if(slot == -1) {
                         buf.release();
                         return;
                     }
-                    ContainerLocator locator = ContainerHelper.getContainerLocatorForSlot(slot);
-                    INTERFACE_TERMINAL.open(player, locator);
+
+                    INTERFACE_TERMINAL.open(player, ContainerHelper.getContainerLocatorForSlot(slot));
                 } else if(terminalName.equalsIgnoreCase("toggleRestock")) {
                     CraftingTerminalHandler craftingTerminalHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
                     ItemStack terminal = craftingTerminalHandler.getCraftingTerminal();
@@ -281,8 +283,7 @@ public class ae2wtlib implements ModInitializer {
                     }
                     ItemWT.setBoolean(terminal, !ItemWT.getBoolean(terminal, "restock"), "restock");
                 } else if(terminalName.equalsIgnoreCase("toggleMagnet")) {
-                    CraftingTerminalHandler craftingTerminalHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
-                    ItemStack terminal = craftingTerminalHandler.getCraftingTerminal();
+                    ItemStack terminal = CraftingTerminalHandler.getCraftingTerminalHandler(player).getCraftingTerminal();
                     if(terminal.isEmpty()) {
                         buf.release();
                         return;
