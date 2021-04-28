@@ -5,8 +5,9 @@ import appeng.core.AEConfig;
 public class Config {
 
     public static double getPowerMultiplier(double range, boolean isOutOfRange) {
-        if(!isOutOfRange) return AEConfig.instance().wireless_getDrainRate(range);
-        return AEConfig.instance().wireless_getDrainRate(528 * getOutOfRangePowerMultiplier());
+        if(isOutOfRange)
+            return AEConfig.instance().wireless_getDrainRate(528 * getOutOfRangePowerMultiplier());
+        return AEConfig.instance().wireless_getDrainRate(range);
     }
 
     public static double getChargeRate() {
