@@ -223,10 +223,9 @@ public class ae2wtlib implements ModInitializer {
             server.execute(() -> {
                 String terminalName = buf.readString(32767);
                 if(terminalName.equalsIgnoreCase("crafting")) {
-                    PlayerInventory inv = player.inventory;
                     int slot = -1;
-                    for(int i = 0; i < inv.size(); i++) {
-                        ItemStack terminal = inv.getStack(i);
+                    for(int i = 0; i < player.inventory.size(); i++) {
+                        ItemStack terminal = player.inventory.getStack(i);
                         if(terminal.getItem() instanceof ItemWCT || (terminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(terminal, "crafting"))) {
                             slot = i;
                             WUTHandler.setCurrentTerminal(terminal, "crafting");
