@@ -54,6 +54,16 @@ public class ae2wtlibclient implements ClientModInitializer {
                 buf.release();
             });
         });
+        ClientPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "update_restock"), (client, handler, buf, responseSender) -> {
+            buf.retain();
+            client.execute(() -> {
+                if(client.player == null) return;
+                int slot = buf.readInt();
+                int count = buf.readInt();
+                client.player.inventory.getStack(slot).setCount(count);
+                buf.release();
+            });
+        });
         registerKeybindings();
     }
 
