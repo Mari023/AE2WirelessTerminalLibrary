@@ -130,9 +130,7 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
     @Override
     public void drawFG(MatrixStack matrices, final int offsetX, final int offsetY, final int mouseX, final int mouseY) {
         final long BytesUsed = handler.getUsedBytes();
-        final String byteUsed = NumberFormat.getInstance().format(BytesUsed);
-        final Text Add = BytesUsed > 0 ? new LiteralText(byteUsed + " ").append(GuiText.BytesUsed.text()) : GuiText.CalculatingWait.text();
-        textRenderer.draw(matrices, GuiText.CraftingPlan.withSuffix(" - ").append(Add), 8, 7, 4210752);
+        textRenderer.draw(matrices, GuiText.CraftingPlan.withSuffix(" - ").append(BytesUsed > 0 ? new LiteralText(NumberFormat.getInstance().format(BytesUsed) + " ").append(GuiText.BytesUsed.text()) : GuiText.CalculatingWait.text()), 8, 7, 4210752);
 
         Text dsp;
 
@@ -323,8 +321,7 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
             if(amt <= 0) {
                 deleteVisualStack(l);
             } else {
-                final IAEItemStack is = findVisualStack(l);
-                is.setStackSize(amt);
+                findVisualStack(l).setStackSize(amt);
             }
         }
         setScrollBar();

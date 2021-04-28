@@ -48,7 +48,6 @@ public class ItemMagnetCard extends Item {
 
     public static boolean isPickupME(ItemStack magnetCardHolder) {
         if(magnetCardHolder.isEmpty()) return false;
-        MagnetSettings settings = loadMagnetSettings(magnetCardHolder);
-        return settings.magnetMode == MagnetMode.PICKUP_ME;
+        return loadMagnetSettings(magnetCardHolder).magnetMode == MagnetMode.PICKUP_ME;
     }
 }

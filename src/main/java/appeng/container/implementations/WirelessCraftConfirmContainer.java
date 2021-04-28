@@ -178,7 +178,7 @@ public class WirelessCraftConfirmContainer extends AEBaseContainer implements Cr
                     }
                 } catch(final IOException ignored) {}
             } catch(final Throwable e) {
-                getPlayerInv().player.sendSystemMessage(new LiteralText("Error: " + e.toString()), Util.NIL_UUID);
+                getPlayerInv().player.sendSystemMessage(new LiteralText("Error: " + e), Util.NIL_UUID);
                 AELog.debug(e);
                 setValidContainer(false);
                 result = null;
@@ -189,8 +189,7 @@ public class WirelessCraftConfirmContainer extends AEBaseContainer implements Cr
     }
 
     private IGrid getGrid() {
-        final IActionHost h = ((IActionHost) getTarget());
-        return h.getActionableNode().getGrid();
+        return ((IActionHost) getTarget()).getActionableNode().getGrid();
     }
 
     private boolean cpuMatches(final ICraftingCPU c) {
@@ -201,18 +200,12 @@ public class WirelessCraftConfirmContainer extends AEBaseContainer implements Cr
         ScreenHandlerType<?> originalGui = null;
 
         final IActionHost ah = getActionHost();
-
-        if(ah instanceof WCTGuiObject) {
-            originalGui = WCTContainer.TYPE;
-        } else if(ah instanceof WPTGuiObject) {
+        if (ah instanceof WCTGuiObject || ah instanceof WPTGuiObject)
             originalGui = WPTContainer.TYPE;
-        }
 
         if(result != null && !isSimulation()) {
-            final ICraftingGrid cc = getGrid().getCache(ICraftingGrid.class);
-            final ICraftingLink g = cc.submitJob(result, null, selectedCpu, true, getActionSrc());
             setAutoStart(false);
-            if(g != null && originalGui != null && getLocator() != null) {
+            if(((ICraftingGrid) getGrid().getCache(ICraftingGrid.class)).submitJob(result, null, selectedCpu, true, getActionSrc()) != null && originalGui != null && getLocator() != null) {
                 if(originalGui.equals(WCTContainer.TYPE)) WCTContainer.open(getPlayerInventory().player, getLocator());
                 else if(originalGui.equals(WPTContainer.TYPE))
                     WPTContainer.open(getPlayerInventory().player, getLocator());

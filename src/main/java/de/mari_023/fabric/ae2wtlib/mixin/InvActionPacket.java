@@ -27,15 +27,14 @@ public class InvActionPacket {
     @Inject(method = "serverPacketData", at = @At(value = "TAIL"), require = 1, allow = 1, remap = false)
     public void serverPacketData(INetworkInfo manager, PlayerEntity player, CallbackInfo ci) {
         if(action == InventoryAction.AUTO_CRAFT) {
-            final ServerPlayerEntity sender = (ServerPlayerEntity) player;
-            if(sender.currentScreenHandler instanceof WCTContainer || sender.currentScreenHandler instanceof WPTContainer) {
-                final AEBaseContainer baseContainer = (AEBaseContainer) sender.currentScreenHandler;
+            if(player.currentScreenHandler instanceof WCTContainer || player.currentScreenHandler instanceof WPTContainer) {
+                final AEBaseContainer baseContainer = (AEBaseContainer) player.currentScreenHandler;
                 final ContainerLocator locator = baseContainer.getLocator();
                 if(locator != null) {
                     WirelessCraftAmountContainer.open(player, locator);
 
-                    if(sender.currentScreenHandler instanceof WirelessCraftAmountContainer) {
-                        final WirelessCraftAmountContainer cca = (WirelessCraftAmountContainer) sender.currentScreenHandler;
+                    if(player.currentScreenHandler instanceof WirelessCraftAmountContainer) {
+                        final WirelessCraftAmountContainer cca = (WirelessCraftAmountContainer) player.currentScreenHandler;
 
                         if(baseContainer.getTargetStack() != null) {
                             cca.getCraftingItem().setStack(baseContainer.getTargetStack().asItemStackRepresentation());

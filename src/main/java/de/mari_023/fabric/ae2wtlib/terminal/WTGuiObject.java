@@ -80,11 +80,9 @@ public class WTGuiObject implements IGuiItemObject, IEnergySource, IActionHost, 
                 return hasBoosterCard;
             }
 
-            final IMachineSet tw = targetGrid.getMachines(WirelessBlockEntity.class);
-
             myWap = null;
 
-            for(final IGridNode n : tw) {
+            for(final IGridNode n : targetGrid.getMachines(WirelessBlockEntity.class)) {
                 final IWirelessAccessPoint wap = (IWirelessAccessPoint) n.getMachine();
                 if(testWap(wap)) {
                     myWap = wap;

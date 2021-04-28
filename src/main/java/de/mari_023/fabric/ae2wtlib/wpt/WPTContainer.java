@@ -96,9 +96,6 @@ public class WPTContainer extends MEMonitorableContainer implements IAEAppEngInv
         lockPlayerInventorySlot(slotIndex);
 
         final FixedItemInv patternInv = getPatternTerminal().getInventoryByName("pattern");
-        final FixedItemInv output = getPatternTerminal().getInventoryByName("output");
-
-        final FixedWTInv fixedWPTInv = new FixedWTInv(getPlayerInv(), wptGUIObject.getItemStack(), this);
 
         crafting = getPatternTerminal().getInventoryByName("crafting");
 
@@ -111,12 +108,12 @@ public class WPTContainer extends MEMonitorableContainer implements IAEAppEngInv
         craftSlot.setIIcon(-1);
 
         for(int y = 0; y < 3; y++) {
-            addSlot(outputSlots[y] = new PatternOutputsSlot(output, this, y, 110, -76 + y * 18, 0, 0, 1));
+            addSlot(outputSlots[y] = new PatternOutputsSlot(getPatternTerminal().getInventoryByName("output"), this, y, 110, -76 + y * 18, 0, 0, 1));
             outputSlots[y].setRenderDisabled(false);
             outputSlots[y].setIIcon(-1);
         }
 
-        addSlot(new AppEngSlot(fixedWPTInv, FixedWTInv.INFINITY_BOOSTER_CARD, 80, -20));
+        addSlot(new AppEngSlot(new FixedWTInv(getPlayerInv(), wptGUIObject.getItemStack(), this), FixedWTInv.INFINITY_BOOSTER_CARD, 80, -20));
 
         addSlot(patternSlotIN = new RestrictedInputSlot(RestrictedInputSlot.PlacableItemType.BLANK_PATTERN,
                 patternInv, 0, 147, -72 - 9, getPlayerInventory()));

@@ -62,11 +62,9 @@ public abstract class Restock {
             if(CTHandler.inRange() && ItemWT.getBoolean(CTHandler.getCraftingTerminal(), "restock")) {
                 int toAdd = getMaxCount() - getCount();
                 if(toAdd == 0) return;
-                IStorageGrid sg = CTHandler.getTargetGrid().getCache(IStorageGrid.class);
-                IMEMonitor<IAEItemStack> itemStorage = sg.getInventory(Api.instance().storage().getStorageChannel(IItemStorageChannel.class));
                 ItemStack request = copy();
                 request.setCount(toAdd);
-                IAEItemStack stack = itemStorage.extractItems(AEItemStack.fromItemStack(request), Actionable.MODULATE, new PlayerSource(playerEntity, (IActionHost) CTHandler.getSecurityStation()));
+                IAEItemStack stack = ((IStorageGrid) CTHandler.getTargetGrid().getCache(IStorageGrid.class)).getInventory(Api.instance().storage().getStorageChannel(IItemStorageChannel.class)).extractItems(AEItemStack.fromItemStack(request), Actionable.MODULATE, new PlayerSource(playerEntity, (IActionHost) CTHandler.getSecurityStation()));
                 if(stack == null) return;
                 ItemStack extraction = stack.createItemStack();
                 int extractedItems = 0;

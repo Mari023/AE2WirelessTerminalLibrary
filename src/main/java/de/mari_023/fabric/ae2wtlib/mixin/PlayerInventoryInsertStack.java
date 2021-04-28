@@ -36,11 +36,7 @@ public class PlayerInventoryInsertStack {
         CraftingTerminalHandler CTHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
         ItemStack terminal = CTHandler.getCraftingTerminal();
         if(ItemMagnetCard.isPickupME(terminal) && CTHandler.inRange()) {
-            IGrid targetGrid = CTHandler.getTargetGrid();
-            IStorageGrid sg = targetGrid.getCache(IStorageGrid.class);
-            IMEMonitor<IAEItemStack> itemStorage = sg.getInventory(Api.instance().storage().getStorageChannel(IItemStorageChannel.class));
-            IAEItemStack leftover = itemStorage.injectItems(AEItemStack.fromItemStack(stack), Actionable.MODULATE, new PlayerSource(player, (IActionHost) CTHandler.getSecurityStation()));
-
+            IAEItemStack leftover = ((IStorageGrid) CTHandler.getTargetGrid().getCache(IStorageGrid.class)).getInventory(Api.instance().storage().getStorageChannel(IItemStorageChannel.class)).injectItems(AEItemStack.fromItemStack(stack), Actionable.MODULATE, new PlayerSource(player, (IActionHost) CTHandler.getSecurityStation()));
             if(leftover == null || leftover.createItemStack().isEmpty()) {
                 stack.setCount(0);
                 cir.setReturnValue(true);

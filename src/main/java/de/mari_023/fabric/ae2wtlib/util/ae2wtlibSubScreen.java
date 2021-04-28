@@ -50,8 +50,7 @@ public final class ae2wtlibSubScreen {
     public final TabButton addBackButton(Consumer<TabButton> buttonAdder, int x, int y, Text label) {
         if(previousContainerType != null && !previousContainerIcon.isEmpty()) {
             if(label == null) label = previousContainerIcon.getName();
-            ItemRenderer itemRenderer = gui.getClient().getItemRenderer();
-            TabButton button = new TabButton(gui.getX() + x, gui.getY() + y, previousContainerIcon, label, itemRenderer, btn -> goBack());
+            TabButton button = new TabButton(gui.getX() + x, gui.getY() + y, previousContainerIcon, label, gui.getClient().getItemRenderer(), btn -> goBack());
             buttonAdder.accept(button);
             return button;
         }

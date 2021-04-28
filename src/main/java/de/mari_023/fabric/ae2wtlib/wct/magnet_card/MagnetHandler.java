@@ -13,8 +13,7 @@ public class MagnetHandler {
     public void doMagnet(MinecraftServer server) {
         List<ServerPlayerEntity> playerList = server.getPlayerManager().getPlayerList();
         for(ServerPlayerEntity player : playerList) {
-            ItemStack magnetCardHolder = CraftingTerminalHandler.getCraftingTerminalHandler(player).getCraftingTerminal();
-            if(ItemMagnetCard.isActiveMagnet(magnetCardHolder)) {
+            if(ItemMagnetCard.isActiveMagnet(CraftingTerminalHandler.getCraftingTerminalHandler(player).getCraftingTerminal())) {
                 List<ItemEntity> entityItems = player.getServerWorld().getEntitiesByClass(ItemEntity.class, player.getBoundingBox().expand(16.0D), EntityPredicates.VALID_ENTITY);
                 for(ItemEntity entityItemNearby : entityItems) {
                     if(!player.isSneaking()) {

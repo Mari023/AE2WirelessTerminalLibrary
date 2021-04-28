@@ -53,9 +53,9 @@ public class ae2wtlibclient implements ClientModInitializer {
 
                 final Screen screen = MinecraftClient.getInstance().currentScreen;
                 if(screen instanceof WITScreen) {
-                    WITScreen s = (WITScreen) screen;
                     CompoundTag tag = buf.readCompoundTag();
-                    if(tag != null) s.postUpdate(tag);
+                    if(tag != null)
+                        ((WITScreen) screen).postUpdate(tag);
                 }
                 buf.release();
             });
