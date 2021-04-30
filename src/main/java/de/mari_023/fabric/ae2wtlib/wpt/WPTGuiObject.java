@@ -10,6 +10,7 @@ import appeng.core.Api;
 import appeng.tile.inventory.AppEngInternalInventory;
 import appeng.util.inv.IAEAppEngInventory;
 import appeng.util.inv.InvOperation;
+import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import de.mari_023.fabric.ae2wtlib.terminal.WTGuiObject;
 import de.mari_023.fabric.ae2wtlib.terminal.ae2wtlibInternalInventory;
 import net.minecraft.entity.player.PlayerEntity;
@@ -22,6 +23,7 @@ public class WPTGuiObject extends WTGuiObject implements IPortableCell, IAEAppEn
     private final AppEngInternalInventory crafting;
     private final AppEngInternalInventory output;
     private final AppEngInternalInventory pattern;
+    private static final ItemStack ICON = new ItemStack(ae2wtlib.PATTERN_TERMINAL);
 
     public WPTGuiObject(final IWirelessTermHandler wh, final ItemStack is, final PlayerEntity ep, int inventorySlot) {
         super(wh, is, ep, inventorySlot, WPTContainer.TYPE);
@@ -86,5 +88,10 @@ public class WPTGuiObject extends WTGuiObject implements IPortableCell, IAEAppEn
             final ItemStack is = crafting.getInvStack(x);
             if(!is.isEmpty()) is.setCount(1);
         }
+    }
+
+    @Override
+    public ItemStack getIcon() {
+        return ICON;
     }
 }

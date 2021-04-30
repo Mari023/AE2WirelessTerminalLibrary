@@ -22,7 +22,6 @@ import appeng.api.storage.data.IAEStack;
 import appeng.api.storage.data.IItemList;
 import appeng.api.util.DimensionalCoord;
 import appeng.api.util.IConfigManager;
-import appeng.container.implementations.MEMonitorableContainer;
 import appeng.container.interfaces.IInventorySlotAware;
 import appeng.core.Api;
 import appeng.tile.networking.WirelessBlockEntity;
@@ -267,5 +266,9 @@ public class WTGuiObject implements IGuiItemObject, IEnergySource, IActionHost, 
 
     public FixedViewCellInventory getViewCellStorage() {
         return fixedViewCellInventory;
+    }
+
+    public ItemStack getIcon() {
+        return ItemStack.EMPTY;
     }
 }
