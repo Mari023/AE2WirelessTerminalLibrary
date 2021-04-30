@@ -185,10 +185,9 @@ public class WirelessCraftConfirmContainer extends AEBaseContainer implements Cr
     public void startJob() {
         final IActionHost ah = getActionHost();
         if(ah instanceof WTGuiObject) {
-            ScreenHandlerType<?> originalGui = ((WTGuiObject) ah).type;
+            if(result == null && isSimulation()) return;
 
-            if(result == null && isSimulation())
-                return;
+            ScreenHandlerType<?> originalGui = ((WTGuiObject) ah).type;
 
             setAutoStart(false);
             if(((ICraftingGrid) getGrid().getCache(ICraftingGrid.class)).submitJob(result, null, selectedCpu, true, getActionSrc()) != null && getLocator() != null) {
