@@ -8,6 +8,6 @@ import net.minecraft.item.ItemStack;
 public class WITGuiObject extends WTGuiObject {
 
     public WITGuiObject(final IWirelessTermHandler wh, final ItemStack is, final PlayerEntity ep, int inventorySlot) {
-        super(wh, is, ep, inventorySlot);
+        super(wh, is, ep, inventorySlot, WITContainer.TYPE);
     }
 }

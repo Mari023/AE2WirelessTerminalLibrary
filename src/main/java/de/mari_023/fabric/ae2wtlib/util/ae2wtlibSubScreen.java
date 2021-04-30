@@ -3,6 +3,7 @@ package de.mari_023.fabric.ae2wtlib.util;
 import appeng.client.gui.AEBaseScreen;
 import appeng.client.gui.widgets.TabButton;
 import de.mari_023.fabric.ae2wtlib.ae2wtlib;
+import de.mari_023.fabric.ae2wtlib.terminal.WTGuiObject;
 import de.mari_023.fabric.ae2wtlib.wct.WCTContainer;
 import de.mari_023.fabric.ae2wtlib.wct.WCTGuiObject;
 import de.mari_023.fabric.ae2wtlib.wpt.WPTContainer;
@@ -30,15 +31,18 @@ public final class ae2wtlibSubScreen {
      */
     public ae2wtlibSubScreen(AEBaseScreen<?> gui, Object containerTarget) {
         this.gui = gui;
-        if(containerTarget instanceof WCTGuiObject) {//TODO don't hardcode
-            previousContainerIcon = new ItemStack(ae2wtlib.CRAFTING_TERMINAL);
-            previousContainerType = WCTContainer.TYPE;
-        } else if(containerTarget instanceof WPTGuiObject) {
-            previousContainerIcon = new ItemStack(ae2wtlib.PATTERN_TERMINAL);
-            previousContainerType = WPTContainer.TYPE;
+
+        if (containerTarget instanceof WTGuiObject) {
+            previousContainerType = ((WTGuiObject) containerTarget).type;
+            if (previousContainerType == WCTContainer.TYPE)
+                previousContainerIcon =  new ItemStack(ae2wtlib.CRAFTING_TERMINAL);
+            else if (previousContainerType == WPTContainer.TYPE)
+                previousContainerIcon = new ItemStack(ae2wtlib.PATTERN_TERMINAL);
+            else
+                previousContainerIcon = null;
         } else {
-            previousContainerIcon = null;
             previousContainerType = null;
+            previousContainerIcon = null;
         }
     }
 

@@ -50,8 +50,7 @@ public class WirelessCraftAmountContainer extends AEBaseContainer {
     }
 
     public IGrid getGrid() {
-        final IActionHost h = ((IActionHost) getTarget());
-        return h.getActionableNode().getGrid();
+        return ((IActionHost) getTarget()).getActionableNode().getGrid();
     }
 
     public World getWorld() {

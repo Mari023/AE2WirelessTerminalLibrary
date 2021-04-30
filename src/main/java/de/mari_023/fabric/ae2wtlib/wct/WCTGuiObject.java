@@ -10,6 +10,6 @@ import net.minecraft.item.ItemStack;
 public class WCTGuiObject extends WTGuiObject implements IPortableCell, IViewCellStorage {
 
     public WCTGuiObject(final IWirelessTermHandler wh, final ItemStack is, final PlayerEntity ep, int inventorySlot) {
-        super(wh, is, ep, inventorySlot);
+        super(wh, is, ep, inventorySlot, WCTContainer.TYPE);
     }
 }
