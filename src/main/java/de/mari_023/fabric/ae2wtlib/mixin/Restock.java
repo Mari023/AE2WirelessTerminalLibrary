@@ -45,12 +45,12 @@ public abstract class Restock {
     @Shadow
     public abstract ItemStack copy();
 
-    @Inject(method = "useOnBlock", at = @At(value = "RETURN"), require = 1, remap = false)
+    @Inject(method = "useOnBlock", at = @At(value = "RETURN"), require = 1)
     public void useOnBlockRestock(ItemUsageContext context, CallbackInfoReturnable<ActionResult> cir) {
         if(!context.getWorld().isClient()) restock(context.getPlayer(), cir.getReturnValue());
     }
 
-    @Inject(method = "use", at = @At(value = "RETURN"), require = 1, remap = false)
+    @Inject(method = "use", at = @At(value = "RETURN"), require = 1)
     public void useRestock(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir) {
         if(!world.isClient()) restock(user, cir.getReturnValue().getResult());
     }
