@@ -1,6 +1,7 @@
 package de.mari_023.fabric.ae2wtlib;
 
 import appeng.core.AEConfig;
+import net.fabricmc.loader.api.FabricLoader;
 
 public class Config {
 
@@ -20,5 +21,20 @@ public class Config {
 
     private static int getOutOfRangePowerMultiplier() {
         return 2;
+    }
+
+    private static boolean trinketPresent = false;
+    private static boolean trinketChecked = false;
+
+    public static boolean allowTrinket() {
+        if(!trinketChecked) {
+            trinketPresent = isTrinketEnabled() && FabricLoader.getInstance().isModLoaded("trinkets");
+        }
+        trinketChecked = true;
+        return trinketPresent;
+    }
+
+    private static boolean isTrinketEnabled() {
+        return true;
     }
 }

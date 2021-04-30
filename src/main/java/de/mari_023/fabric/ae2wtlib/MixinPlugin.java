@@ -1,6 +1,5 @@
 package de.mari_023.fabric.ae2wtlib;
 
-import net.fabricmc.loader.api.FabricLoader;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -9,17 +8,6 @@ import java.util.List;
 import java.util.Set;
 
 public class MixinPlugin implements IMixinConfigPlugin {
-
-    private boolean trinketPresent = false;
-    private boolean trinketChecked = false;
-
-    private boolean hasTrinket() {
-        if(!trinketChecked) {
-            trinketPresent = FabricLoader.getInstance().isModLoaded("trinkets");
-        }
-        trinketChecked = true;
-        return trinketPresent;
-    }
 
     @Override
     public void onLoad(String mixinPackage) {}
@@ -31,7 +19,7 @@ public class MixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-        return hasTrinket() || !targetClassName.equals("de.mari_023.fabric.ae2wtlib.terminal.ItemWT") || !mixinClassName.equals("de.mari_023.fabric.ae2wtlib.mixin.TrinketWT");
+        return Config.allowTrinket() || !targetClassName.equals("de.mari_023.fabric.ae2wtlib.terminal.ItemWT") || !mixinClassName.equals("de.mari_023.fabric.ae2wtlib.mixin.TrinketWT");
     }
 
     @Override

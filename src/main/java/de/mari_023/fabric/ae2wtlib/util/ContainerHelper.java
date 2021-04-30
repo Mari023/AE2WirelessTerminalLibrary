@@ -7,10 +7,12 @@ import appeng.container.ContainerLocator;
 import appeng.core.AELog;
 import appeng.core.localization.GuiText;
 import appeng.util.Platform;
+import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.wct.WCTGuiObject;
 import de.mari_023.fabric.ae2wtlib.wit.WITGuiObject;
 import de.mari_023.fabric.ae2wtlib.wpt.WPTGuiObject;
+import dev.emi.trinkets.api.TrinketsApi;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -124,8 +126,12 @@ public final class ContainerHelper<C extends AEBaseContainer, I> {
     }
 
     private I getHostFromPlayerInventory(PlayerEntity player, ContainerLocator locator) {
+        int slot = locator.getItemIndex();
+        ItemStack it;
 
-        ItemStack it = player.inventory.getStack(locator.getItemIndex());
+        if(slot >= 100 && slot < 200 && Config.allowTrinket())
+            it = TrinketsApi.getTrinketsInventory(player).getStack(slot - 100);
+        else it = player.inventory.getStack(slot);
 
         if(it.isEmpty()) {
             AELog.debug("Cannot open container for player %s since they no longer hold the item in slot %d", player, locator.hasItemIndex());

@@ -9,10 +9,13 @@ import appeng.api.networking.security.IActionHost;
 import appeng.api.util.DimensionalCoord;
 import appeng.core.Api;
 import appeng.tile.networking.WirelessBlockEntity;
+import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.terminal.IInfinityBoosterCardHolder;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
 import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
+import dev.emi.trinkets.api.TrinketInventory;
+import dev.emi.trinkets.api.TrinketsApi;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -39,9 +42,20 @@ public class CraftingTerminalHandler {
         return handler;
     }
 
-    public ItemStack getCraftingTerminal() {//TODO trinkets/curios
+    public ItemStack getCraftingTerminal() {
         PlayerInventory inv = player.inventory;
         if((!craftingTerminal.isEmpty()) && inv.contains(craftingTerminal)) return craftingTerminal;
+        if(Config.allowTrinket()) {
+            TrinketInventory trinketInv = (TrinketInventory) TrinketsApi.getTrinketsInventory(player);
+            for(int i = 0; i < trinketInv.size(); i++) {
+                ItemStack terminal = trinketInv.getStack(i);
+                if(terminal.getItem() instanceof ItemWCT || (terminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(terminal, "crafting"))) {
+                    securityStation = null;
+                    targetGrid = null;
+                    return craftingTerminal = terminal;
+                }
+            }
+        }
 
         for(int i = 0; i < inv.size(); i++) {
             ItemStack terminal = inv.getStack(i);
