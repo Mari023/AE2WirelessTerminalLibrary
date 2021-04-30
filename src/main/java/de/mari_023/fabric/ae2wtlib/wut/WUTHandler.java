@@ -1,6 +1,8 @@
 package de.mari_023.fabric.ae2wtlib.wut;
 
 import appeng.container.ContainerLocator;
+import de.mari_023.fabric.ae2wtlib.Config;
+import dev.emi.trinkets.api.TrinketsApi;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.LiteralText;
@@ -50,7 +52,12 @@ public class WUTHandler {
     }
 
     public static void open(final PlayerEntity player, final ContainerLocator locator) {
-        ItemStack is = player.inventory.getStack(locator.getItemIndex());
+        int slot = locator.getItemIndex();
+        ItemStack is;
+        if(slot >= 100 && slot < 200 && Config.allowTrinket())
+            is = TrinketsApi.getTrinketsInventory(player).getStack(slot - 100);
+        else is = player.inventory.getStack(slot);
+
         if(is.getTag() == null) return;
         String currentTerminal = getCurrentTerminal(is);
         if(!wirelessTerminals.containsKey(currentTerminal)) {
