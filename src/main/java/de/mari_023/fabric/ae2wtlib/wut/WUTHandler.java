@@ -2,6 +2,10 @@ package de.mari_023.fabric.ae2wtlib.wut;
 
 import appeng.container.ContainerLocator;
 import de.mari_023.fabric.ae2wtlib.Config;
+import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
+import de.mari_023.fabric.ae2wtlib.wct.ItemWCT;
+import de.mari_023.fabric.ae2wtlib.wit.ItemWIT;
+import de.mari_023.fabric.ae2wtlib.wpt.ItemWPT;
 import dev.emi.trinkets.api.TrinketsApi;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -14,8 +18,14 @@ import java.util.List;
 public class WUTHandler {
 
     public static String getCurrentTerminal(ItemStack wirelessUniversalTerminal) {
-        if(!(wirelessUniversalTerminal.getItem() instanceof ItemWUT) || wirelessUniversalTerminal.getTag() == null)
+        if(!(wirelessUniversalTerminal.getItem() instanceof ItemWT) || wirelessUniversalTerminal.getTag() == null)
             return "noTerminal";
+        if(!(wirelessUniversalTerminal.getItem() instanceof ItemWUT)) {
+            if(wirelessUniversalTerminal.getItem() instanceof ItemWCT) return "crafting";
+            else if(wirelessUniversalTerminal.getItem() instanceof ItemWPT) return "pattern";
+            else if(wirelessUniversalTerminal.getItem() instanceof ItemWIT) return "interface";
+            else return "noTerminal";
+        }
         String currentTerminal = wirelessUniversalTerminal.getTag().getString("currentTerminal");
 
         if(!wirelessTerminals.containsKey(currentTerminal)) for(String terminal : terminalNames)
@@ -27,7 +37,7 @@ public class WUTHandler {
         return currentTerminal;
     }
 
-    public static void setCurrentTerminal(ItemStack itemStack, String terminal) {
+    public static void setCurrentTerminal(ItemStack itemStack, String terminal) {//FIXME sync to client
         if(hasTerminal(itemStack, terminal)) {
             assert itemStack.getTag() != null;
             itemStack.getTag().putString("currentTerminal", terminal);
@@ -40,7 +50,7 @@ public class WUTHandler {
         return itemStack.getTag().getBoolean(terminal);
     }
 
-    public static void cycle(ItemStack itemStack) {
+    public static void cycle(ItemStack itemStack) {//FIXME sync to client
         if(itemStack.getTag() == null) return;
         String nextTerminal = getCurrentTerminal(itemStack);
         do {
