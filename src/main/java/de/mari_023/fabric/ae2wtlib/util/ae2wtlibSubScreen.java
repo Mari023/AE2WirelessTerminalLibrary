@@ -9,7 +9,6 @@ import de.mari_023.fabric.ae2wtlib.wpt.WPTContainer;
 import de.mari_023.fabric.ae2wtlib.wpt.WPTGuiObject;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandlerType;
@@ -50,8 +49,7 @@ public final class ae2wtlibSubScreen {
     public final TabButton addBackButton(Consumer<TabButton> buttonAdder, int x, int y, Text label) {
         if(previousContainerType != null && !previousContainerIcon.isEmpty()) {
             if(label == null) label = previousContainerIcon.getName();
-            ItemRenderer itemRenderer = gui.getClient().getItemRenderer();
-            TabButton button = new TabButton(gui.getX() + x, gui.getY() + y, previousContainerIcon, label, itemRenderer, btn -> goBack());
+            TabButton button = new TabButton(gui.getX() + x, gui.getY() + y, previousContainerIcon, label, gui.getClient().getItemRenderer(), btn -> goBack());
             buttonAdder.accept(button);
             return button;
         }

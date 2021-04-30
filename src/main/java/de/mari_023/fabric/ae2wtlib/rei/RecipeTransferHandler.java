@@ -38,10 +38,7 @@ abstract class RecipeTransferHandler<T extends ScreenHandler & IContainerCraftin
         // Check that the recipe can actually be looked up via the manager, i.e. our
         // facade recipes
         // have an ID, but are never registered with the recipe manager.
-        boolean canSendReference = true;
-        if(recipeId == null || !context.getMinecraft().world.getRecipeManager().get(recipeId).isPresent()) {
-            canSendReference = false;
-        }
+        boolean canSendReference = recipeId != null && context.getMinecraft().world.getRecipeManager().get(recipeId).isPresent();
 
         if(recipe instanceof TransferRecipeDisplay) {
             TransferRecipeDisplay trd = (TransferRecipeDisplay) recipe;
@@ -93,8 +90,7 @@ abstract class RecipeTransferHandler<T extends ScreenHandler & IContainerCraftin
                     }
                 }
 
-                ShapedRecipe fallbackRecipe = new ShapedRecipe(recipeId, "", 3, 3, flatIngredients, output);
-                new REIRecipePacket(fallbackRecipe, isCrafting()).send();
+                new REIRecipePacket(new ShapedRecipe(recipeId, "", 3, 3, flatIngredients, output), isCrafting()).send();
             }
         }
 

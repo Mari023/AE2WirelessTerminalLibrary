@@ -174,7 +174,7 @@ public class WPTScreen extends MEMonitorableScreen<WPTContainer> implements IUni
     @Override
     public List<Rectangle> getExclusionZones() {
         List<Rectangle> zones = super.getExclusionZones();
-        zones.add(new Rectangle(x + 195, y, 24, backgroundHeight-110));
+        zones.add(new Rectangle(x + 195, y, 24, backgroundHeight - 110));
         return zones;
     }
 }

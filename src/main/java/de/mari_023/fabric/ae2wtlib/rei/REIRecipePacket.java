@@ -127,23 +127,17 @@ public class REIRecipePacket {
 
         final IGrid grid = node.getGrid();
 
-        final IStorageGrid inv = grid.getCache(IStorageGrid.class);
-
         final ISecurityGrid security = grid.getCache(ISecurityGrid.class);
-
         final IEnergyGrid energy = grid.getCache(IEnergyGrid.class);
-        final ICraftingGrid crafting = grid.getCache(ICraftingGrid.class);
         final FixedItemInv craftMatrix = cct.getInventoryByName("crafting");
-        final FixedItemInv playerInventory = cct.getInventoryByName("player");
 
-        final IMEMonitor<IAEItemStack> storage = inv.getInventory(Api.instance().storage().getStorageChannel(IItemStorageChannel.class));
+        final IMEMonitor<IAEItemStack> storage = ((IStorageGrid) grid.getCache(IStorageGrid.class)).getInventory(Api.instance().storage().getStorageChannel(IItemStorageChannel.class));
         final IPartitionList<IAEItemStack> filter = ViewCellItem.createFilter(cct.getViewCells());
-        final DefaultedList<Ingredient> ingredients = ensure3by3CraftingMatrix(recipe);
 
         // Handle each slot
         for(int x = 0; x < craftMatrix.getSlotCount(); x++) {
             ItemStack currentItem = craftMatrix.getInvStack(x);
-            Ingredient ingredient = ingredients.get(x);
+            Ingredient ingredient = ensure3by3CraftingMatrix(recipe).get(x);
 
             // prepare slots
             if(!currentItem.isEmpty()) {
@@ -170,7 +164,7 @@ public class REIRecipePacket {
                     IAEItemStack request = findBestMatchingItemStack(ingredient, filter, storage, cct);
                     out = request != null ? Platform.poweredExtraction(energy, storage, request.setStackSize(1), cct.getActionSource()) : null;
                 } else {
-                    out = findBestMatchingPattern(ingredient, filter, crafting, storage, cct);
+                    out = findBestMatchingPattern(ingredient, filter, grid.getCache(ICraftingGrid.class), storage, cct);
                     if(out == null) {
                         out = findBestMatchingItemStack(ingredient, filter, storage, cct);
                     }
@@ -189,7 +183,7 @@ public class REIRecipePacket {
                 ItemStack[] matchingStacks = getMatchingStacks(ingredient);
                 for(ItemStack matchingStack : matchingStacks) {
                     if(currentItem.isEmpty()) {
-                        AdaptorFixedInv ad = new AdaptorFixedInv(playerInventory);
+                        AdaptorFixedInv ad = new AdaptorFixedInv(cct.getInventoryByName("player"));
 
                         if(cct.useRealItems()) {
                             currentItem = ad.removeItems(1, matchingStack, null);

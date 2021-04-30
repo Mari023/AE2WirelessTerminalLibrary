@@ -91,19 +91,18 @@ public class ae2wtlib implements ModInitializer {
                 byte value = buf.readByte();
                 final ScreenHandler c = player.currentScreenHandler;
                 if(Name.startsWith("PatternTerminal.") && c instanceof WPTContainer) {
-                    final WPTContainer container = (WPTContainer) c;
                     switch(Name) {
                         case "PatternTerminal.CraftMode":
-                            container.getPatternTerminal().setCraftingRecipe(value != 0);
+                            ((WPTContainer) c).getPatternTerminal().setCraftingRecipe(value != 0);
                             break;
                         case "PatternTerminal.Encode":
-                            container.encode();
+                            ((WPTContainer) c).encode();
                             break;
                         case "PatternTerminal.Clear":
-                            container.clear();
+                            ((WPTContainer) c).clear();
                             break;
                         case "PatternTerminal.Substitute":
-                            container.getPatternTerminal().setSubstitution(value != 0);
+                            ((WPTContainer) c).getPatternTerminal().setSubstitution(value != 0);
                             break;
                     }
                 } else if(Name.startsWith("CraftingTerminal.") && c instanceof WCTContainer) {
@@ -120,10 +119,8 @@ public class ae2wtlib implements ModInitializer {
         ServerPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "patternslotpacket"), (server, player, handler, buf, sender) -> {
             buf.retain();
             server.execute(() -> {
-                if(player.currentScreenHandler instanceof WPTContainer) {
-                    final WPTContainer patternTerminal = (WPTContainer) player.currentScreenHandler;
-                    patternTerminal.craftOrGetItem(buf);
-                }
+                if(player.currentScreenHandler instanceof WPTContainer)
+                    ((WPTContainer) player.currentScreenHandler).craftOrGetItem(buf);
                 buf.release();
             });
         });
@@ -131,17 +128,17 @@ public class ae2wtlib implements ModInitializer {
             buf.retain();
             server.execute(() -> {
                 Identifier id = buf.readIdentifier();
-                final ScreenHandler c = player.currentScreenHandler;
-                if(!(c instanceof AEBaseContainer)) {
+                if(!(player.currentScreenHandler instanceof AEBaseContainer)) {
                     buf.release();
                     return;
                 }
-                AEBaseContainer container = (AEBaseContainer) c;
-                final ContainerLocator locator = container.getLocator();
+
+                final ContainerLocator locator = ((AEBaseContainer) player.currentScreenHandler).getLocator();
                 if(locator == null) {
                     buf.release();
                     return;
                 }
+
                 switch(id.getPath()) {
                     case "wireless_crafting_terminal":
                         WCTContainer.open(player, locator);
@@ -213,8 +210,7 @@ public class ae2wtlib implements ModInitializer {
 
             if(!(screenHandler instanceof AEBaseContainer)) return;
 
-            final AEBaseContainer container = (AEBaseContainer) screenHandler;
-            final ContainerLocator locator = container.getLocator();
+            final ContainerLocator locator = ((AEBaseContainer) screenHandler).getLocator();
             ItemStack item = player.inventory.getStack(locator.getItemIndex());
 
             if(!(item.getItem() instanceof ItemWUT)) return;
@@ -227,10 +223,9 @@ public class ae2wtlib implements ModInitializer {
             server.execute(() -> {
                 String terminalName = buf.readString(32767);
                 if(terminalName.equalsIgnoreCase("crafting")) {
-                    PlayerInventory inv = player.inventory;
                     int slot = -1;
-                    for(int i = 0; i < inv.size(); i++) {
-                        ItemStack terminal = inv.getStack(i);
+                    for(int i = 0; i < player.inventory.size(); i++) {
+                        ItemStack terminal = player.inventory.getStack(i);
                         if(terminal.getItem() instanceof ItemWCT || (terminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(terminal, "crafting"))) {
                             slot = i;
                             WUTHandler.setCurrentTerminal(terminal, "crafting");
@@ -241,8 +236,8 @@ public class ae2wtlib implements ModInitializer {
                         buf.release();
                         return;
                     }
-                    ContainerLocator locator = ContainerHelper.getContainerLocatorForSlot(slot);
-                    CRAFTING_TERMINAL.open(player, locator);
+
+                    CRAFTING_TERMINAL.open(player, ContainerHelper.getContainerLocatorForSlot(slot));
                 } else if(terminalName.equalsIgnoreCase("pattern")) {
                     PlayerInventory inv = player.inventory;
                     int slot = -1;
@@ -254,12 +249,13 @@ public class ae2wtlib implements ModInitializer {
                             break;
                         }
                     }
+
                     if(slot == -1) {
                         buf.release();
                         return;
                     }
-                    ContainerLocator locator = ContainerHelper.getContainerLocatorForSlot(slot);
-                    PATTERN_TERMINAL.open(player, locator);
+
+                    PATTERN_TERMINAL.open(player, ContainerHelper.getContainerLocatorForSlot(slot));
                 } else if(terminalName.equalsIgnoreCase("interface")) {
                     PlayerInventory inv = player.inventory;
                     int slot = -1;
@@ -271,12 +267,13 @@ public class ae2wtlib implements ModInitializer {
                             break;
                         }
                     }
+
                     if(slot == -1) {
                         buf.release();
                         return;
                     }
-                    ContainerLocator locator = ContainerHelper.getContainerLocatorForSlot(slot);
-                    INTERFACE_TERMINAL.open(player, locator);
+
+                    INTERFACE_TERMINAL.open(player, ContainerHelper.getContainerLocatorForSlot(slot));
                 } else if(terminalName.equalsIgnoreCase("toggleRestock")) {
                     CraftingTerminalHandler craftingTerminalHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
                     ItemStack terminal = craftingTerminalHandler.getCraftingTerminal();
@@ -286,8 +283,7 @@ public class ae2wtlib implements ModInitializer {
                     }
                     ItemWT.setBoolean(terminal, !ItemWT.getBoolean(terminal, "restock"), "restock");
                 } else if(terminalName.equalsIgnoreCase("toggleMagnet")) {
-                    CraftingTerminalHandler craftingTerminalHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
-                    ItemStack terminal = craftingTerminalHandler.getCraftingTerminal();
+                    ItemStack terminal = CraftingTerminalHandler.getCraftingTerminalHandler(player).getCraftingTerminal();
                     if(terminal.isEmpty()) {
                         buf.release();
                         return;
@@ -313,6 +309,6 @@ public class ae2wtlib implements ModInitializer {
             });
         });
 
-        ServerTickEvents.START_SERVER_TICK.register(minecraftServer -> new MagnetHandler().doMagnet(minecraftServer));
+        ServerTickEvents.START_SERVER_TICK.register(new MagnetHandler()::doMagnet);
     }
 }

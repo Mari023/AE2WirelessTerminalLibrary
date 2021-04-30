@@ -9,7 +9,6 @@ import appeng.api.implementations.guiobjects.IGuiItemObject;
 import appeng.api.implementations.tiles.IWirelessAccessPoint;
 import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridNode;
-import appeng.api.networking.IMachineSet;
 import appeng.api.networking.energy.IEnergySource;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.security.IActionSource;
@@ -80,11 +79,9 @@ public class WTGuiObject implements IGuiItemObject, IEnergySource, IActionHost, 
                 return hasBoosterCard;
             }
 
-            final IMachineSet tw = targetGrid.getMachines(WirelessBlockEntity.class);
-
             myWap = null;
 
-            for(final IGridNode n : tw) {
+            for(final IGridNode n : targetGrid.getMachines(WirelessBlockEntity.class)) {
                 final IWirelessAccessPoint wap = (IWirelessAccessPoint) n.getMachine();
                 if(testWap(wap)) {
                     myWap = wap;
@@ -172,7 +169,6 @@ public class WTGuiObject implements IGuiItemObject, IEnergySource, IActionHost, 
     public IConfigManager getConfigManager() {
         return wth.getConfigManager(getItemStack());
     }
-
 
 
     public <T extends IAEStack<T>> IMEMonitor<T> getInventory(IStorageChannel<T> channel) {
@@ -265,7 +261,7 @@ public class WTGuiObject implements IGuiItemObject, IEnergySource, IActionHost, 
         return Api.instance().storage().getStorageChannel(IItemStorageChannel.class);
     }
 
-    public FixedViewCellInventory getViewCellStorage() { //FIXME viemcells
+    public FixedViewCellInventory getViewCellStorage() {
         return fixedViewCellInventory;
     }
 }
