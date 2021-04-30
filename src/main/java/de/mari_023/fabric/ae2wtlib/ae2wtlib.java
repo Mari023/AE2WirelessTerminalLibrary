@@ -14,10 +14,6 @@ import appeng.core.Api;
 import de.mari_023.fabric.ae2wtlib.rei.REIRecipePacket;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemInfinityBooster;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
-import de.mari_023.fabric.ae2wtlib.trinket.TrinketItemWCT;
-import de.mari_023.fabric.ae2wtlib.trinket.TrinketItemWIT;
-import de.mari_023.fabric.ae2wtlib.trinket.TrinketItemWPT;
-import de.mari_023.fabric.ae2wtlib.trinket.TrinketItemWUT;
 import de.mari_023.fabric.ae2wtlib.util.ContainerHelper;
 import de.mari_023.fabric.ae2wtlib.util.WirelessCraftAmountContainer;
 import de.mari_023.fabric.ae2wtlib.wct.CraftingTerminalHandler;
@@ -33,15 +29,11 @@ import de.mari_023.fabric.ae2wtlib.wpt.ItemWPT;
 import de.mari_023.fabric.ae2wtlib.wpt.WPTContainer;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
 import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
-import dev.emi.trinkets.api.SlotGroups;
-import dev.emi.trinkets.api.Slots;
-import dev.emi.trinkets.api.TrinketSlots;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -58,29 +50,21 @@ public class ae2wtlib implements ModInitializer {
 
     public static final ItemGroup ITEM_GROUP = FabricItemGroupBuilder.build(new Identifier("ae2wtlib", "general"), () -> new ItemStack(ae2wtlib.CRAFTING_TERMINAL));
 
-    public static ItemWCT CRAFTING_TERMINAL;
-    public static ItemWPT PATTERN_TERMINAL;
-    public static ItemWIT INTERFACE_TERMINAL;
+    public static final ItemWCT CRAFTING_TERMINAL = new ItemWCT();
+    public static final ItemWPT PATTERN_TERMINAL = new ItemWPT();
+    public static final ItemWIT INTERFACE_TERMINAL = new ItemWIT();
 
-    public static ItemWUT UNIVERSAL_TERMINAL;
+    public static final ItemWUT UNIVERSAL_TERMINAL = new ItemWUT();
 
     public static final ItemInfinityBooster INFINITY_BOOSTER = new ItemInfinityBooster();
     public static final ItemMagnetCard MAGNET_CARD = new ItemMagnetCard();
 
     @Override
     public void onInitialize() {
-        if(FabricLoader.getInstance().isModLoaded("trinkets")) {
-            TrinketSlots.addSlot(SlotGroups.HAND, Slots.RING, new Identifier("trinkets", "textures/item/empty_trinket_slot_ring.png"));
-            Registry.register(Registry.ITEM, new Identifier("ae2wtlib", "wireless_crafting_terminal"), CRAFTING_TERMINAL = new TrinketItemWCT());
-            Registry.register(Registry.ITEM, new Identifier("ae2wtlib", "wireless_pattern_terminal"), PATTERN_TERMINAL = new TrinketItemWPT());
-            Registry.register(Registry.ITEM, new Identifier("ae2wtlib", "wireless_interface_terminal"), INTERFACE_TERMINAL = new TrinketItemWIT());
-            Registry.register(Registry.ITEM, new Identifier("ae2wtlib", "wireless_universal_terminal"), UNIVERSAL_TERMINAL = new TrinketItemWUT());
-        } else {
-            Registry.register(Registry.ITEM, new Identifier("ae2wtlib", "wireless_crafting_terminal"), CRAFTING_TERMINAL = new ItemWCT());
-            Registry.register(Registry.ITEM, new Identifier("ae2wtlib", "wireless_pattern_terminal"), PATTERN_TERMINAL = new ItemWPT());
-            Registry.register(Registry.ITEM, new Identifier("ae2wtlib", "wireless_interface_terminal"), INTERFACE_TERMINAL);
-            Registry.register(Registry.ITEM, new Identifier("ae2wtlib", "wireless_universal_terminal"), UNIVERSAL_TERMINAL);
-        }
+        Registry.register(Registry.ITEM, new Identifier("ae2wtlib", "wireless_crafting_terminal"), CRAFTING_TERMINAL );
+        Registry.register(Registry.ITEM, new Identifier("ae2wtlib", "wireless_pattern_terminal"), PATTERN_TERMINAL);
+        Registry.register(Registry.ITEM, new Identifier("ae2wtlib", "wireless_interface_terminal"), INTERFACE_TERMINAL);
+        Registry.register(Registry.ITEM, new Identifier("ae2wtlib", "wireless_universal_terminal"), UNIVERSAL_TERMINAL);
         Registry.register(Registry.ITEM, new Identifier("ae2wtlib", "infinity_booster_card"), INFINITY_BOOSTER);
         Registry.register(Registry.ITEM, new Identifier("ae2wtlib", "magnet_card"), MAGNET_CARD);
 
