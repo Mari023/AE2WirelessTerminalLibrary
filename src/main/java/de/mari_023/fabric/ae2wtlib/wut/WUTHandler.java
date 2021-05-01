@@ -42,7 +42,7 @@ public class WUTHandler {
         return currentTerminal;
     }
 
-    public static void setCurrentTerminal(PlayerEntity playerEntity, int slot, ItemStack itemStack, String terminal) {//FIXME sync to client
+    public static void setCurrentTerminal(PlayerEntity playerEntity, int slot, ItemStack itemStack, String terminal) {
         if(hasTerminal(itemStack, terminal)) {
             assert itemStack.getTag() != null;
             itemStack.getTag().putString("currentTerminal", terminal);
@@ -59,7 +59,7 @@ public class WUTHandler {
         return itemStack.getTag().getBoolean(terminal);
     }
 
-    public static void cycle(PlayerEntity playerEntity, int slot, ItemStack itemStack) {//FIXME sync to client
+    public static void cycle(PlayerEntity playerEntity, int slot, ItemStack itemStack) {
         if(itemStack.getTag() == null) return;
         String nextTerminal = getCurrentTerminal(itemStack);
         do {
