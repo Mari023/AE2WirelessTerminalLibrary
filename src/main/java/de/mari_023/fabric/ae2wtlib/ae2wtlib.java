@@ -106,11 +106,10 @@ public class ae2wtlib implements ModInitializer {
                             break;
                     }
                 } else if(Name.startsWith("CraftingTerminal.") && c instanceof WCTContainer) {
-                    final WCTContainer container = (WCTContainer) c;
-                    if(Name.equals("CraftingTerminal.Delete")) container.deleteTrashSlot();
+                    if(Name.equals("CraftingTerminal.Delete")) ((WCTContainer) c).deleteTrashSlot();
                     else if(Name.equals("CraftingTerminal.SetMagnetMode")) {
-                        container.getMagnetSettings().magnetMode = MagnetMode.fromByte(value);
-                        container.saveMagnetSettings();
+                        ((WCTContainer) c).getMagnetSettings().magnetMode = MagnetMode.fromByte(value);
+                        ((WCTContainer) c).saveMagnetSettings();
                     }
                 }
                 buf.release();
@@ -171,8 +170,7 @@ public class ae2wtlib implements ModInitializer {
                     final WirelessCraftAmountContainer cca = (WirelessCraftAmountContainer) player.currentScreenHandler;
                     final Object target = cca.getTarget();
                     if(target instanceof IActionHost) {
-                        final IActionHost ah = (IActionHost) target;
-                        final IGridNode gn = ah.getActionableNode();
+                        final IGridNode gn = ((IActionHost) target).getActionableNode();
                         if(gn == null) return;
 
                         final IGrid g = gn.getGrid();
