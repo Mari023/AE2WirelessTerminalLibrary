@@ -20,13 +20,18 @@ import appeng.util.inv.IAEAppEngInventory;
 import appeng.util.inv.InvOperation;
 import com.mojang.datafixers.util.Pair;
 import de.mari_023.fabric.ae2wtlib.Config;
-import de.mari_023.fabric.ae2wtlib.util.ContainerHelper;
 import de.mari_023.fabric.ae2wtlib.terminal.FixedWTInv;
 import de.mari_023.fabric.ae2wtlib.terminal.IWTInvHolder;
 import de.mari_023.fabric.ae2wtlib.terminal.ae2wtlibInternalInventory;
+import de.mari_023.fabric.ae2wtlib.trinket.AppEngTrinketSlot;
+import de.mari_023.fabric.ae2wtlib.trinket.FixedTrinketInv;
+import de.mari_023.fabric.ae2wtlib.util.ContainerHelper;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.ItemMagnetCard;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetSettings;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
+import dev.emi.trinkets.api.TrinketInventory;
+import dev.emi.trinkets.api.TrinketSlots;
+import dev.emi.trinkets.api.TrinketsApi;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.player.PlayerEntity;
@@ -119,6 +124,21 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
         addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.TRASH, 98, -22));
         addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.INFINITY_BOOSTER_CARD, 134, -20));
         addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.MAGNET_CARD, 152, -20));//TODO fetch texture for card background
+        if(Config.allowTrinket()) {
+            FixedTrinketInv inv = new FixedTrinketInv((TrinketInventory) TrinketsApi.getTrinketsInventory(getPlayerInv().player));
+            int i = 0;
+            for(TrinketSlots.SlotGroup group : TrinketSlots.slotGroups) {
+                int j = 0;
+                for(TrinketSlots.Slot slot : group.slots) {
+                    AppEngTrinketSlot ts;
+                    ts = new AppEngTrinketSlot(inv, i, Integer.MIN_VALUE, 8, group.getName(), slot.getName());
+                    if(j == 0 && !group.onReal) ts.keepVisible = true;
+                    addSlot(ts);
+                    i++;
+                    j++;
+                }
+            }
+        }
     }
 
     private int ticks = 0;
