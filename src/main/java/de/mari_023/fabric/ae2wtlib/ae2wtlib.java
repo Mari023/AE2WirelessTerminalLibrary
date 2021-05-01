@@ -85,8 +85,67 @@ public class ae2wtlib implements ModInitializer {
         Api.instance().registries().charger().addChargeRate(INTERFACE_TERMINAL, Config.getChargeRate());
         Api.instance().registries().charger().addChargeRate(UNIVERSAL_TERMINAL, Config.getChargeRate() * Config.WUTChargeRateMultiplier());
 
-        if(Config.allowTrinket())
-            TrinketSlots.addSlot(SlotGroups.HAND, Slots.RING, new Identifier("trinkets", "textures/item/empty_trinket_slot_ring.png"));//TODO mabe change slot or remove this
+        if(Config.allowTrinket()) {//TODO mabe change slot or remove this
+            TrinketSlots.addSlot(SlotGroups.HEAD, Slots.AGLET, new Identifier("trinkets", "textures/item/empty_trinket_slot_aglet.png"));
+            TrinketSlots.addSlot(SlotGroups.HEAD, Slots.BACKPACK, new Identifier("trinkets", "textures/item/empty_trinket_slot_backpack.png"));
+            TrinketSlots.addSlot(SlotGroups.HEAD, Slots.BELT, new Identifier("trinkets", "textures/item/empty_trinket_slot_belt.png"));
+            TrinketSlots.addSlot(SlotGroups.HEAD, Slots.CAPE, new Identifier("trinkets", "textures/item/empty_trinket_slot_cape.png"));
+            TrinketSlots.addSlot(SlotGroups.HEAD, Slots.CHARM, new Identifier("trinkets", "textures/item/empty_trinket_slot_charm.png"));
+            TrinketSlots.addSlot(SlotGroups.HEAD, Slots.GLOVES, new Identifier("trinkets", "textures/item/empty_trinket_slot_gloves.png"));
+            TrinketSlots.addSlot(SlotGroups.HEAD, Slots.NECKLACE, new Identifier("trinkets", "textures/item/empty_trinket_slot_necklace.png"));
+            TrinketSlots.addSlot(SlotGroups.HEAD, Slots.MASK, new Identifier("trinkets", "textures/item/empty_trinket_slot_mask.png"));
+            TrinketSlots.addSlot(SlotGroups.HEAD, Slots.RING, new Identifier("trinkets", "textures/item/empty_trinket_slot_ring.png"));
+
+            TrinketSlots.addSlot(SlotGroups.CHEST, Slots.AGLET, new Identifier("trinkets", "textures/item/empty_trinket_slot_aglet.png"));
+            TrinketSlots.addSlot(SlotGroups.CHEST, Slots.BACKPACK, new Identifier("trinkets", "textures/item/empty_trinket_slot_backpack.png"));
+            TrinketSlots.addSlot(SlotGroups.CHEST, Slots.BELT, new Identifier("trinkets", "textures/item/empty_trinket_slot_belt.png"));
+            TrinketSlots.addSlot(SlotGroups.CHEST, Slots.CAPE, new Identifier("trinkets", "textures/item/empty_trinket_slot_cape.png"));
+            TrinketSlots.addSlot(SlotGroups.CHEST, Slots.CHARM, new Identifier("trinkets", "textures/item/empty_trinket_slot_charm.png"));
+            TrinketSlots.addSlot(SlotGroups.CHEST, Slots.GLOVES, new Identifier("trinkets", "textures/item/empty_trinket_slot_gloves.png"));
+            TrinketSlots.addSlot(SlotGroups.CHEST, Slots.NECKLACE, new Identifier("trinkets", "textures/item/empty_trinket_slot_necklace.png"));
+            TrinketSlots.addSlot(SlotGroups.CHEST, Slots.MASK, new Identifier("trinkets", "textures/item/empty_trinket_slot_mask.png"));
+            TrinketSlots.addSlot(SlotGroups.CHEST, Slots.RING, new Identifier("trinkets", "textures/item/empty_trinket_slot_ring.png"));
+
+            TrinketSlots.addSlot(SlotGroups.LEGS, Slots.AGLET, new Identifier("trinkets", "textures/item/empty_trinket_slot_aglet.png"));
+            TrinketSlots.addSlot(SlotGroups.LEGS, Slots.BACKPACK, new Identifier("trinkets", "textures/item/empty_trinket_slot_backpack.png"));
+            TrinketSlots.addSlot(SlotGroups.LEGS, Slots.BELT, new Identifier("trinkets", "textures/item/empty_trinket_slot_belt.png"));
+            TrinketSlots.addSlot(SlotGroups.LEGS, Slots.CAPE, new Identifier("trinkets", "textures/item/empty_trinket_slot_cape.png"));
+            TrinketSlots.addSlot(SlotGroups.LEGS, Slots.CHARM, new Identifier("trinkets", "textures/item/empty_trinket_slot_charm.png"));
+            TrinketSlots.addSlot(SlotGroups.LEGS, Slots.GLOVES, new Identifier("trinkets", "textures/item/empty_trinket_slot_gloves.png"));
+            TrinketSlots.addSlot(SlotGroups.LEGS, Slots.NECKLACE, new Identifier("trinkets", "textures/item/empty_trinket_slot_necklace.png"));
+            TrinketSlots.addSlot(SlotGroups.LEGS, Slots.MASK, new Identifier("trinkets", "textures/item/empty_trinket_slot_mask.png"));
+            TrinketSlots.addSlot(SlotGroups.LEGS, Slots.RING, new Identifier("trinkets", "textures/item/empty_trinket_slot_ring.png"));
+
+            TrinketSlots.addSlot(SlotGroups.FEET, Slots.AGLET, new Identifier("trinkets", "textures/item/empty_trinket_slot_aglet.png"));
+            TrinketSlots.addSlot(SlotGroups.FEET, Slots.BACKPACK, new Identifier("trinkets", "textures/item/empty_trinket_slot_backpack.png"));
+            TrinketSlots.addSlot(SlotGroups.FEET, Slots.BELT, new Identifier("trinkets", "textures/item/empty_trinket_slot_belt.png"));
+            TrinketSlots.addSlot(SlotGroups.FEET, Slots.CAPE, new Identifier("trinkets", "textures/item/empty_trinket_slot_cape.png"));
+            TrinketSlots.addSlot(SlotGroups.FEET, Slots.CHARM, new Identifier("trinkets", "textures/item/empty_trinket_slot_charm.png"));
+            TrinketSlots.addSlot(SlotGroups.FEET, Slots.GLOVES, new Identifier("trinkets", "textures/item/empty_trinket_slot_gloves.png"));
+            TrinketSlots.addSlot(SlotGroups.FEET, Slots.NECKLACE, new Identifier("trinkets", "textures/item/empty_trinket_slot_necklace.png"));
+            TrinketSlots.addSlot(SlotGroups.FEET, Slots.MASK, new Identifier("trinkets", "textures/item/empty_trinket_slot_mask.png"));
+            TrinketSlots.addSlot(SlotGroups.FEET, Slots.RING, new Identifier("trinkets", "textures/item/empty_trinket_slot_ring.png"));
+
+            TrinketSlots.addSlot(SlotGroups.HAND, Slots.AGLET, new Identifier("trinkets", "textures/item/empty_trinket_slot_aglet.png"));
+            TrinketSlots.addSlot(SlotGroups.HAND, Slots.BACKPACK, new Identifier("trinkets", "textures/item/empty_trinket_slot_backpack.png"));
+            TrinketSlots.addSlot(SlotGroups.HAND, Slots.BELT, new Identifier("trinkets", "textures/item/empty_trinket_slot_belt.png"));
+            TrinketSlots.addSlot(SlotGroups.HAND, Slots.CAPE, new Identifier("trinkets", "textures/item/empty_trinket_slot_cape.png"));
+            TrinketSlots.addSlot(SlotGroups.HAND, Slots.CHARM, new Identifier("trinkets", "textures/item/empty_trinket_slot_charm.png"));
+            TrinketSlots.addSlot(SlotGroups.HAND, Slots.GLOVES, new Identifier("trinkets", "textures/item/empty_trinket_slot_gloves.png"));
+            TrinketSlots.addSlot(SlotGroups.HAND, Slots.NECKLACE, new Identifier("trinkets", "textures/item/empty_trinket_slot_necklace.png"));
+            TrinketSlots.addSlot(SlotGroups.HAND, Slots.MASK, new Identifier("trinkets", "textures/item/empty_trinket_slot_mask.png"));
+            TrinketSlots.addSlot(SlotGroups.HAND, Slots.RING, new Identifier("trinkets", "textures/item/empty_trinket_slot_ring.png"));
+
+            TrinketSlots.addSlot(SlotGroups.OFFHAND, Slots.AGLET, new Identifier("trinkets", "textures/item/empty_trinket_slot_aglet.png"));
+            TrinketSlots.addSlot(SlotGroups.OFFHAND, Slots.BACKPACK, new Identifier("trinkets", "textures/item/empty_trinket_slot_backpack.png"));
+            TrinketSlots.addSlot(SlotGroups.OFFHAND, Slots.BELT, new Identifier("trinkets", "textures/item/empty_trinket_slot_belt.png"));
+            TrinketSlots.addSlot(SlotGroups.OFFHAND, Slots.CAPE, new Identifier("trinkets", "textures/item/empty_trinket_slot_cape.png"));
+            TrinketSlots.addSlot(SlotGroups.OFFHAND, Slots.CHARM, new Identifier("trinkets", "textures/item/empty_trinket_slot_charm.png"));
+            TrinketSlots.addSlot(SlotGroups.OFFHAND, Slots.GLOVES, new Identifier("trinkets", "textures/item/empty_trinket_slot_gloves.png"));
+            TrinketSlots.addSlot(SlotGroups.OFFHAND, Slots.NECKLACE, new Identifier("trinkets", "textures/item/empty_trinket_slot_necklace.png"));
+            TrinketSlots.addSlot(SlotGroups.OFFHAND, Slots.MASK, new Identifier("trinkets", "textures/item/empty_trinket_slot_mask.png"));
+            TrinketSlots.addSlot(SlotGroups.OFFHAND, Slots.RING, new Identifier("trinkets", "textures/item/empty_trinket_slot_ring.png"));
+        }
 
         ServerPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "general"), (server, player, handler, buf, sender) -> {
             buf.retain();
