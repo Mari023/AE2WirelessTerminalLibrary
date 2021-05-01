@@ -28,7 +28,7 @@ public final class ae2wtlibSubScreen {
         this.gui = gui;
 
         if(containerTarget instanceof WTGuiObject) {
-            previousContainerType = ((WTGuiObject) containerTarget).type;
+            previousContainerType = ((WTGuiObject) containerTarget).getType();
             previousContainerIcon = ((WTGuiObject) containerTarget).getIcon();
         } else {
             previousContainerType = null;

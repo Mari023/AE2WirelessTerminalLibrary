@@ -187,13 +187,9 @@ public class WirelessCraftConfirmContainer extends AEBaseContainer implements Cr
         if(ah instanceof WTGuiObject) {
             if(result == null && isSimulation()) return;
 
-            ScreenHandlerType<?> originalGui = ((WTGuiObject) ah).type;
-
             setAutoStart(false);
             if(((ICraftingGrid) getGrid().getCache(ICraftingGrid.class)).submitJob(result, null, selectedCpu, true, getActionSrc()) != null && getLocator() != null) {
-                if(originalGui.equals(WCTContainer.TYPE)) WCTContainer.open(getPlayerInventory().player, getLocator());
-                else if(originalGui.equals(WPTContainer.TYPE))
-                    WPTContainer.open(getPlayerInventory().player, getLocator());
+                ((WTGuiObject) ah).open(getPlayerInv().player, getLocator());
             }
         }
     }

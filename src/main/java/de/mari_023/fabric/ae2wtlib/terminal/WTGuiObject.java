@@ -22,6 +22,7 @@ import appeng.api.storage.data.IAEStack;
 import appeng.api.storage.data.IItemList;
 import appeng.api.util.DimensionalCoord;
 import appeng.api.util.IConfigManager;
+import appeng.container.ContainerLocator;
 import appeng.container.interfaces.IInventorySlotAware;
 import appeng.core.Api;
 import appeng.tile.networking.WirelessBlockEntity;
@@ -29,9 +30,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerType;
 
-public class WTGuiObject implements IGuiItemObject, IEnergySource, IActionHost, IInventorySlotAware {
+public abstract class WTGuiObject implements IGuiItemObject, IEnergySource, IActionHost, IInventorySlotAware {
 
-    public final ScreenHandlerType<?> type;
     private final FixedViewCellInventory fixedViewCellInventory;
     private final ItemStack effectiveItem;
     private IGrid targetGrid;
@@ -44,14 +44,13 @@ public class WTGuiObject implements IGuiItemObject, IEnergySource, IActionHost, 
     private IStorageGrid sg;
     private final int inventorySlot;
 
-    public WTGuiObject(final IWirelessTermHandler wh, final ItemStack is, final PlayerEntity ep, int inventorySlot, ScreenHandlerType<?> type) {
+    public WTGuiObject(final IWirelessTermHandler wh, final ItemStack is, final PlayerEntity ep, int inventorySlot) {
         String encryptionKey = wh.getEncryptionKey(is);
         effectiveItem = is;
         fixedViewCellInventory = new FixedViewCellInventory(is);
         myPlayer = ep;
         wth = wh;
         this.inventorySlot = inventorySlot;
-        this.type = type;
 
         ILocatable obj = null;
 
@@ -69,6 +68,10 @@ public class WTGuiObject implements IGuiItemObject, IEnergySource, IActionHost, 
             }
         }
     }
+
+    public abstract boolean open(PlayerEntity player, ContainerLocator locator);
+    public abstract ScreenHandlerType<?> getType();
+    public abstract ItemStack getIcon();
 
     public boolean rangeCheck() {
         boolean hasBoosterCard = ((IInfinityBoosterCardHolder) effectiveItem.getItem()).hasBoosterCard(effectiveItem);
@@ -266,9 +269,5 @@ public class WTGuiObject implements IGuiItemObject, IEnergySource, IActionHost, 
 
     public FixedViewCellInventory getViewCellStorage() {
         return fixedViewCellInventory;
-    }
-
-    public ItemStack getIcon() {
-        return ItemStack.EMPTY;
     }
 }
