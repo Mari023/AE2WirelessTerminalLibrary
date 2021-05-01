@@ -70,7 +70,9 @@ public abstract class WTGuiObject implements IGuiItemObject, IEnergySource, IAct
     }
 
     public abstract boolean open(PlayerEntity player, ContainerLocator locator);
+
     public abstract ScreenHandlerType<?> getType();
+
     public abstract ItemStack getIcon();
 
     public boolean rangeCheck() {
