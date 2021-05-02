@@ -6,7 +6,7 @@ import alexiil.mc.lib.attributes.item.filter.ItemFilter;
 import dev.emi.trinkets.api.TrinketInventory;
 import net.minecraft.item.ItemStack;
 
-public class FixedTrinketInv implements FixedItemInv {
+public class FixedTrinketInv implements FixedItemInv.ModifiableFixedItemInv {
 
     private final TrinketInventory inventory;
 
@@ -37,10 +37,18 @@ public class FixedTrinketInv implements FixedItemInv {
     }
 
     @Override
+    public void markDirty() {
+        inventory.markDirty();
+    }
+
+    @Override
     public ItemStack extractStack(int slot, ItemFilter filter, ItemStack mergeWith, int maxCount, Simulation simulation) {
         if(mergeWith.isEmpty()) {
             ItemStack stack = inventory.getStack(slot);
-            if(Simulation.SIMULATE.isAction()) inventory.removeStack(slot);
+            if(Simulation.SIMULATE.isAction()) {
+                inventory.removeStack(slot);
+                markDirty();
+            }
             return stack;
         }
         return ItemStack.EMPTY;
