@@ -11,6 +11,7 @@
     "MeMonitorableScreenWireless",
     "PlayerInventoryInsertStack",
     "Restock",
+    "ScreenMixin",
     "TrinketWT"
   ],
   "client": [
