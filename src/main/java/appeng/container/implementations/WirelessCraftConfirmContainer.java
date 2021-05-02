@@ -93,7 +93,8 @@ public class WirelessCraftConfirmContainer extends AEBaseContainer implements Cr
 
     @Override
     public void sendContentUpdates() {
-        if(isClient()) return;
+        if(isClient())
+            return;
 
         cpuCycler.detectAndSendChanges(getGrid());
 
@@ -103,13 +104,15 @@ public class WirelessCraftConfirmContainer extends AEBaseContainer implements Cr
             try {
                 result = getJob().get();
 
-                if(!result.isSimulation()) {
+                if (result.isSimulation())
+                    setSimulation(true);
+                else {
                     setSimulation(false);
                     if(isAutoStart()) {
                         startJob();
                         return;
                     }
-                } else setSimulation(true);
+                }
 
                 try {
                     final MEInventoryUpdatePacket a = new MEInventoryUpdatePacket((byte) 0);
@@ -183,8 +186,8 @@ public class WirelessCraftConfirmContainer extends AEBaseContainer implements Cr
     public void startJob() {
         final IActionHost ah = getActionHost();
         if(ah instanceof WTGuiObject) {
-            if(result == null && isSimulation()) return;
-
+            if(result == null && isSimulation())
+                return;
             setAutoStart(false);
             if(((ICraftingGrid) getGrid().getCache(ICraftingGrid.class)).submitJob(result, null, selectedCpu, true, getActionSrc()) != null && getLocator() != null) {
                 ((WTGuiObject) ah).open(getPlayerInv().player, getLocator());

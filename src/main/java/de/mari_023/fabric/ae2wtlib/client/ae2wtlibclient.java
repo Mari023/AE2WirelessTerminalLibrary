@@ -49,8 +49,8 @@ public class ae2wtlibclient implements ClientModInitializer {
         ClientPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "interface_terminal"), (client, handler, buf, responseSender) -> {
             buf.retain();
             client.execute(() -> {
-                if(client.player == null) return;
-
+                if(client.player == null)
+                    return;
                 final Screen screen = MinecraftClient.getInstance().currentScreen;
                 if(screen instanceof WITScreen) {
                     CompoundTag tag = buf.readCompoundTag();
@@ -63,10 +63,9 @@ public class ae2wtlibclient implements ClientModInitializer {
         ClientPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "update_restock"), (client, handler, buf, responseSender) -> {
             buf.retain();
             client.execute(() -> {
-                if(client.player == null) return;
-                int slot = buf.readInt();
-                int count = buf.readInt();
-                client.player.inventory.getStack(slot).setCount(count);
+                if(client.player == null)
+                    return;
+                client.player.inventory.getStack(buf.readInt()).setCount(buf.readInt());
                 buf.release();
             });
         });
@@ -74,47 +73,37 @@ public class ae2wtlibclient implements ClientModInitializer {
     }
 
     public static void registerKeybindings() {
-        KeyBinding wct = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.ae2wtlib.wct", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "key.category.ae2wtlib"));
-        KeyBinding wpt = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.ae2wtlib.wpt", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "key.category.ae2wtlib"));
-        KeyBinding wit = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.ae2wtlib.wit", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "key.category.ae2wtlib"));
-        KeyBinding toggleRestock = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.ae2wtlib.toggleRestock", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "key.category.ae2wtlib"));
-        KeyBinding toggleMagnet = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.ae2wtlib.toggleMagnet", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "key.category.ae2wtlib"));
-
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            while(wct.wasPressed()) {
-                PacketByteBuf buf = PacketByteBufs.create();
-                buf.writeString("crafting");
-                ClientPlayNetworking.send(new Identifier("ae2wtlib", "hotkey"), buf);
-            }
-            while(wpt.wasPressed()) {
-                PacketByteBuf buf = PacketByteBufs.create();
-                buf.writeString("pattern");
-                ClientPlayNetworking.send(new Identifier("ae2wtlib", "hotkey"), buf);
-            }
-            while(wit.wasPressed()) {
-                PacketByteBuf buf = PacketByteBufs.create();
-                buf.writeString("interface");
-                ClientPlayNetworking.send(new Identifier("ae2wtlib", "hotkey"), buf);
-            }
-            while(toggleRestock.wasPressed()) {
+            RegisterBind("key.ae2wtlib.wct", "crafting");
+            RegisterBind("key.ae2wtlib.wpt", "pattern");
+            RegisterBind("key.ae2wtlib.wit", "interface");
+            RegisterBind("key.ae2wtlib.toggleMagnet", "toggleMagnet");
+            while(KeyBindingHelper.registerKeyBinding(new KeyBinding("key.ae2wtlib.toggleRestock", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "key.category.ae2wtlib")).wasPressed()) {
                 PacketByteBuf buf = PacketByteBufs.create();
                 buf.writeString("toggleRestock");
                 ClientPlayNetworking.send(new Identifier("ae2wtlib", "hotkey"), buf);
-                if(MinecraftClient.getInstance().player == null) return;
-                CraftingTerminalHandler craftingTerminalHandler = CraftingTerminalHandler.getCraftingTerminalHandler(MinecraftClient.getInstance().player);
-                ItemStack terminal = craftingTerminalHandler.getCraftingTerminal();
-                if(terminal.isEmpty()) return;
-                if(ItemWT.getBoolean(terminal, "restock")) {
-                    MinecraftClient.getInstance().player.sendMessage(new TranslatableText("gui.ae2wtlib.restock").append(new TranslatableText("gui.ae2wtlib.off").setStyle(Style.EMPTY.withColor(TextColor.parse("red")))), true);
-                } else {
-                    MinecraftClient.getInstance().player.sendMessage(new TranslatableText("gui.ae2wtlib.restock").append(new TranslatableText("gui.ae2wtlib.on").setStyle(Style.EMPTY.withColor(TextColor.parse("green")))), true);
-                }
-            }
-            while(toggleMagnet.wasPressed()) {
-                PacketByteBuf buf = PacketByteBufs.create();
-                buf.writeString("toggleMagnet");
-                ClientPlayNetworking.send(new Identifier("ae2wtlib", "hotkey"), buf);
+                if (MinecraftClient.getInstance().player == null)
+                    return;
+                ItemStack terminal = CraftingTerminalHandler.getCraftingTerminalHandler(MinecraftClient.getInstance().player).getCraftingTerminal();
+                if (terminal.isEmpty())
+                    return;
+                if (ItemWT.getBoolean(terminal, "restock"))
+                    Send("gui.ae2wtlib.off", "red");
+                else
+                    Send("gui.ae2wtlib.on", "green");
             }
         });
+    }
+
+    public static void Send(String str1, String str2) {
+        MinecraftClient.getInstance().player.sendMessage(new TranslatableText("gui.ae2wtlib.restock").append(new TranslatableText(str1).setStyle(Style.EMPTY.withColor(TextColor.parse(str2)))), true);
+    }
+
+    public static void RegisterBind(String str1, String str2) {
+        while (KeyBindingHelper.registerKeyBinding(new KeyBinding(str1, InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "key.category.ae2wtlib")).wasPressed()) {
+            PacketByteBuf buf = PacketByteBufs.create();
+            buf.writeString(str2);
+            ClientPlayNetworking.send(new Identifier("ae2wtlib", "hotkey"), buf);
+        }
     }
 }

@@ -64,7 +64,8 @@ public class WUTHandler {
     private static final List<String> terminalNames = new ArrayList<>();
 
     public static void addTerminal(String Name, containerOpener open) {
-        if(terminalNames.contains(Name)) return;
+        if(terminalNames.contains(Name))
+            return;
         wirelessTerminals.put(Name, open);
         terminalNames.add(Name);
     }
