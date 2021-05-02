@@ -2,11 +2,7 @@ package de.mari_023.fabric.ae2wtlib.util;
 
 import appeng.client.gui.AEBaseScreen;
 import appeng.client.gui.widgets.TabButton;
-import de.mari_023.fabric.ae2wtlib.ae2wtlib;
-import de.mari_023.fabric.ae2wtlib.wct.WCTContainer;
-import de.mari_023.fabric.ae2wtlib.wct.WCTGuiObject;
-import de.mari_023.fabric.ae2wtlib.wpt.WPTContainer;
-import de.mari_023.fabric.ae2wtlib.wpt.WPTGuiObject;
+import de.mari_023.fabric.ae2wtlib.terminal.WTGuiObject;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.item.ItemStack;
@@ -30,15 +26,13 @@ public final class ae2wtlibSubScreen {
      */
     public ae2wtlibSubScreen(AEBaseScreen<?> gui, Object containerTarget) {
         this.gui = gui;
-        if(containerTarget instanceof WCTGuiObject) {//TODO don't hardcode
-            previousContainerIcon = new ItemStack(ae2wtlib.CRAFTING_TERMINAL);
-            previousContainerType = WCTContainer.TYPE;
-        } else if(containerTarget instanceof WPTGuiObject) {
-            previousContainerIcon = new ItemStack(ae2wtlib.PATTERN_TERMINAL);
-            previousContainerType = WPTContainer.TYPE;
+
+        if(containerTarget instanceof WTGuiObject) {
+            previousContainerType = ((WTGuiObject) containerTarget).getType();
+            previousContainerIcon = ((WTGuiObject) containerTarget).getIcon();
         } else {
-            previousContainerIcon = null;
             previousContainerType = null;
+            previousContainerIcon = ItemStack.EMPTY;
         }
     }
 
@@ -47,7 +41,7 @@ public final class ae2wtlibSubScreen {
     }
 
     public final TabButton addBackButton(Consumer<TabButton> buttonAdder, int x, int y, Text label) {
-        if(previousContainerType != null && !previousContainerIcon.isEmpty()) {
+        if(!previousContainerIcon.isEmpty()) {
             if(label == null) label = previousContainerIcon.getName();
             TabButton button = new TabButton(gui.getX() + x, gui.getY() + y, previousContainerIcon, label, gui.getClient().getItemRenderer(), btn -> goBack());
             buttonAdder.accept(button);
