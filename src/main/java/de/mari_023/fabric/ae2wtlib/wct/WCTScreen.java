@@ -21,10 +21,8 @@ import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetSettings;
 import de.mari_023.fabric.ae2wtlib.wut.CycleTerminalButton;
 import de.mari_023.fabric.ae2wtlib.wut.IUniversalTerminalCapable;
 import dev.emi.trinkets.TrinketInventoryRenderer;
-import dev.emi.trinkets.TrinketSlot;
 import dev.emi.trinkets.TrinketsClient;
 import dev.emi.trinkets.api.SlotGroups;
-import dev.emi.trinkets.api.TrinketInventory;
 import dev.emi.trinkets.api.TrinketSlots;
 import dev.emi.trinkets.mixin.SlotMixin;
 import me.shedaniel.math.Rectangle;
@@ -148,8 +146,8 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
             setZOffset(100);
             itemRenderer.zOffset = 100.0F;
             int trinketOffset = -1;
-            for(int i = 46; i < handler.slots.size(); i++) {
-                if(!(handler.slots.get(i).inventory instanceof TrinketInventory)) continue;
+            for(int i = 55; i < handler.slots.size(); i++) {
+                if(!(handler.slots.get(i) instanceof AppEngTrinketSlot)) continue;
                 if(trinketOffset == -1) trinketOffset = i;
                 Slot ts = handler.getSlot(i);
                 TrinketSlots.Slot s = trinketSlots.get(i - trinketOffset);
@@ -186,22 +184,22 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
             List<TrinketSlots.Slot> trinketSlots = TrinketSlots.getAllSlots();
             int trinketOffset = -1;
             for(int i = 46; i < handler.slots.size(); i++) {
-                if(!(handler.slots.get(i).inventory instanceof TrinketInventory)) continue;
+                if(!(handler.slots.get(i) instanceof AppEngTrinketSlot)) continue;
                 if(trinketOffset == -1) trinketOffset = i;
                 Slot ts = handler.getSlot(i);
                 TrinketSlots.Slot s = trinketSlots.get(i - trinketOffset);
                 if(!(s.getSlotGroup() == TrinketsClient.slotGroup || !(s.getSlotGroup() == TrinketsClient.lastEquipped && TrinketsClient.displayEquipped > 0)))
-                    renderSlot(matrices, ts, s, x, y);
+                    renderSlot(matrices, ts, s, mouseX, mouseY);
             }
             //Redraw only the active group slots so they're always on top
             trinketOffset = -1;
             for(int i = 0; i < handler.slots.size(); i++) {
-                if(!(handler.slots.get(i).inventory instanceof TrinketInventory)) continue;
+                if(!(handler.slots.get(i) instanceof AppEngTrinketSlot)) continue;
                 if(trinketOffset == -1) trinketOffset = i;
                 Slot ts = handler.getSlot(i);
                 TrinketSlots.Slot s = trinketSlots.get(i - trinketOffset);
                 if(s.getSlotGroup() == TrinketsClient.slotGroup || (s.getSlotGroup() == TrinketsClient.lastEquipped && TrinketsClient.displayEquipped > 0))
-                    renderSlot(matrices, ts, s, x, y);
+                    renderSlot(matrices, ts, s, mouseX, mouseY);
             }
             RenderSystem.enableDepthTest();
         }
@@ -514,15 +512,9 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
     }
 
     private boolean isPointOverSlot(Slot slot, double a, double b) {
-        if(TrinketsClient.slotGroup == null && slot instanceof TrinketSlot) return false;
-        if(TrinketsClient.activeSlots != null)
-            for(Slot s : TrinketsClient.activeSlots) {
-                if(s == null) continue;
-                if(s == slot) {
-                    isPointWithinBounds(slot.x, slot.y, 16, 16, a, b);
-                    return true;
-                }
-            }
+        if(TrinketsClient.slotGroup == null && slot instanceof AppEngTrinketSlot) return false;
+        if(TrinketsClient.activeSlots != null && TrinketsClient.activeSlots.contains(slot))
+            return isPointWithinBounds(slot.x, slot.y, 16, 16, a, b);
         return false;
     }
 }
