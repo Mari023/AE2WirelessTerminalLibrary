@@ -42,9 +42,6 @@ repositories {
         name "Modmaven"
         url "https://modmaven.dev/"
         // For Gradle 5.1 and above, limit it to just AE2
-        content {
-            includeGroup 'appeng'
-        }
     }
     // Required for libblockattributes
     maven {
@@ -55,12 +52,21 @@ repositories {
         }
     }
 
-    maven {
+    /*maven {
         url = "https://maven.theillusivec4.top/"
+    }*/
+    maven {
+        url = "https://maven.terraformersmc.com/releases/"
     }
     maven {
         name = "Ladysnake Libs"
         url = 'https://dl.bintray.com/ladysnake/libs'
+    }
+    maven {
+        url "https://www.cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
     }
     maven {
         url "https://maven.shedaniel.me/"
@@ -83,9 +89,12 @@ dependencies {
     // PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
     // You may need to force-disable transitiveness on them.
     modImplementation "appeng:appliedenergistics2-fabric:${project.ae2_version}"
-    modImplementation "top.theillusivec4.curios:curios-fabric:${project.curios_version}"
+    //modImplementation "top.theillusivec4.curios:curios-fabric:${project.curios_version}"
     modImplementation "me.shedaniel:RoughlyEnoughItems:${project.rei_version}"
     modImplementation "de.siphalor:nbtcrafting-1.16:${project.nbt_crafting_version}"
+    modImplementation "curse.maven:minemenufabric-478687:${project.minemenufabric_version}"
+    modImplementation "com.terraformersmc:modmenu:1.16.7"//dependency for minemenu
+    modApi("me.shedaniel.cloth:cloth-config-fabric:4.11.14")//dependency for minemenu
 }
 
 processResources {

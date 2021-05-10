@@ -31,5 +31,8 @@
     "minecraft": "1.16.5",
     "appliedenergistics2": ">=8.2.0-alpha.3",
     "nbtcrafting": "*"
+  },
+  "suggests": {
+    "minemenufabric": "*"
   }
 }
