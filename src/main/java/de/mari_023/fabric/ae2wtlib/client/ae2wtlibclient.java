@@ -14,6 +14,9 @@ import de.mari_023.fabric.ae2wtlib.wit.WITContainer;
 import de.mari_023.fabric.ae2wtlib.wit.WITScreen;
 import de.mari_023.fabric.ae2wtlib.wpt.WPTContainer;
 import de.mari_023.fabric.ae2wtlib.wpt.WPTScreen;
+import me.ultrablacklinux.minemenufabric.client.MineMenuFabricClient;
+import me.ultrablacklinux.minemenufabric.client.screen.MineMenuSelectScreen;
+import me.ultrablacklinux.minemenufabric.client.util.GsonUtil;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -116,5 +119,19 @@ public class ae2wtlibclient implements ClientModInitializer {
                 ClientPlayNetworking.send(new Identifier("ae2wtlib", "hotkey"), buf);
             }
         });
+    }
+
+    public static void openMineMenu() {
+        MinecraftClient client = MinecraftClient.getInstance();
+        if(client == null || client.player == null) return;
+        if(!(client.currentScreen instanceof MineMenuSelectScreen)) {
+            GsonUtil.fixEntryAmount(MineMenuFabricClient.minemenuData);
+            try {
+                client.openScreen(new MineMenuSelectScreen(MineMenuFabricClient.minemenuData, new TranslatableText("minemenu.default.title").getString(), null));
+            } catch(NullPointerException e) {
+                client.openScreen(null);
+                client.player.sendMessage(new TranslatableText("minemenu.error.config"), false);
+            }
+        }
     }
 }
