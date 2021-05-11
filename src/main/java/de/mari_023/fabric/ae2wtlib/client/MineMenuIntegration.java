@@ -3,8 +3,10 @@ package de.mari_023.fabric.ae2wtlib.client;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import de.mari_023.fabric.ae2wtlib.mixin.MineMenuMixin;
+import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
 import me.ultrablacklinux.minemenufabric.client.screen.MineMenuSelectScreen;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.item.ItemStack;
 import net.minecraft.text.TranslatableText;
 
 public class MineMenuIntegration {
@@ -12,23 +14,35 @@ public class MineMenuIntegration {
     private static JsonObject wpt;
     private static JsonObject wit;
 
-    public static void openMineMenu() {
+    public static void openMineMenu(ItemStack terminal) {
         MinecraftClient client = MinecraftClient.getInstance();
         if(client == null || client.player == null) return;
-        if(!(client.currentScreen instanceof MineMenuSelectScreen)) {
-            JsonObject menu = new JsonObject();
+        if((client.currentScreen instanceof MineMenuSelectScreen)) return;
+        JsonObject menu = new JsonObject();
 
-            menu.add("0", getWCT());
-            menu.add("1", getWPT());
-            menu.add("2", getWIT());
-            try {
-                MineMenuSelectScreen screen = new MineMenuSelectScreen(menu, new TranslatableText("minemenu.default.title").getString(), null);
-                ((MineMenuMixin) screen).setCircleEntries(3);
-                client.openScreen(screen);
-            } catch(NullPointerException e) {
-                client.openScreen(null);
-                client.player.sendMessage(new TranslatableText("minemenu.error.config"), false);
-            }
+        int i = 0;
+        if(WUTHandler.hasTerminal(terminal, "crafting")) {
+            menu.add("" + i, getWCT());
+            i++;
+        }
+        if(WUTHandler.hasTerminal(terminal, "pattern")) {
+            menu.add("" + i, getWPT());
+            i++;
+        }
+        if(WUTHandler.hasTerminal(terminal, "interface")) {
+            menu.add("" + i, getWIT());
+            i++;
+        }
+
+        if(i < 2) return;
+
+        try {
+            MineMenuSelectScreen screen = new MineMenuSelectScreen(menu, new TranslatableText("minemenu.default.title").getString(), null);
+            ((MineMenuMixin) screen).setCircleEntries(i);
+            client.openScreen(screen);
+        } catch(NullPointerException e) {
+            client.openScreen(null);
+            client.player.sendMessage(new TranslatableText("minemenu.error.config"), false);
         }
     }
 
