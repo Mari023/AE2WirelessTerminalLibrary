@@ -2,9 +2,6 @@ package de.mari_023.fabric.ae2wtlib.client;
 
 import appeng.container.implementations.WirelessCraftConfirmContainer;
 import appeng.container.implementations.WirelessCraftingStatusContainer;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
-import de.mari_023.fabric.ae2wtlib.mixin.MineMenuMixin;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.util.WirelessCraftAmountContainer;
 import de.mari_023.fabric.ae2wtlib.util.WirelessCraftAmountScreen;
@@ -17,7 +14,6 @@ import de.mari_023.fabric.ae2wtlib.wit.WITContainer;
 import de.mari_023.fabric.ae2wtlib.wit.WITScreen;
 import de.mari_023.fabric.ae2wtlib.wpt.WPTContainer;
 import de.mari_023.fabric.ae2wtlib.wpt.WPTScreen;
-import me.ultrablacklinux.minemenufabric.client.screen.MineMenuSelectScreen;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -120,55 +116,5 @@ public class ae2wtlibclient implements ClientModInitializer {
                 ClientPlayNetworking.send(new Identifier("ae2wtlib", "hotkey"), buf);
             }
         });
-    }
-
-    public static void openMineMenu() {
-        MinecraftClient client = MinecraftClient.getInstance();
-        if(client == null || client.player == null) return;
-        if(!(client.currentScreen instanceof MineMenuSelectScreen)) {
-            JsonObject menu = new JsonObject();
-
-            JsonObject wct = new JsonObject();
-            wct.add("name", new JsonPrimitive("Wireless Crafting Terminal"));
-            JsonObject wctIcon = new JsonObject();
-            wctIcon.add("iconItem", new JsonPrimitive("ae2wtlib:wireless_crafting_terminal"));
-            wctIcon.add("enchanted", new JsonPrimitive(false));
-            wctIcon.add("skullOwner", new JsonPrimitive(""));
-            wct.add("icon", wctIcon);
-            wct.add("type", new JsonPrimitive("ae2wtlib.open"));
-            wct.add("data", new JsonPrimitive("crafting"));
-
-            JsonObject wpt = new JsonObject();
-            wpt.add("name", new JsonPrimitive("Wireless Pattern Terminal"));
-            JsonObject wptIcon = new JsonObject();
-            wptIcon.add("iconItem", new JsonPrimitive("ae2wtlib:wireless_pattern_terminal"));
-            wptIcon.add("enchanted", new JsonPrimitive(false));
-            wptIcon.add("skullOwner", new JsonPrimitive(""));
-            wpt.add("icon", wptIcon);
-            wpt.add("type", new JsonPrimitive("ae2wtlib.open"));
-            wpt.add("data", new JsonPrimitive("pattern"));
-
-            JsonObject wit = new JsonObject();
-            wit.add("name", new JsonPrimitive("Wireless Interface Terminal"));
-            JsonObject witIcon = new JsonObject();
-            witIcon.add("iconItem", new JsonPrimitive("ae2wtlib:wireless_interface_terminal"));
-            witIcon.add("enchanted", new JsonPrimitive(false));
-            witIcon.add("skullOwner", new JsonPrimitive(""));
-            wit.add("icon", witIcon);
-            wit.add("type", new JsonPrimitive("ae2wtlib.open"));
-            wit.add("data", new JsonPrimitive("interface"));
-
-            menu.add("0", wct);
-            menu.add("1", wpt);
-            menu.add("2", wit);
-            try {
-                MineMenuSelectScreen screen = new MineMenuSelectScreen(menu, new TranslatableText("minemenu.default.title").getString(), null);
-                ((MineMenuMixin) screen).setCircleEntries(3);
-                client.openScreen(screen);
-            } catch(NullPointerException e) {
-                client.openScreen(null);
-                client.player.sendMessage(new TranslatableText("minemenu.error.config"), false);
-            }
-        }
     }
 }
