@@ -4,6 +4,7 @@ import appeng.container.implementations.WirelessCraftConfirmContainer;
 import appeng.container.implementations.WirelessCraftingStatusContainer;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import de.mari_023.fabric.ae2wtlib.mixin.MineMenuMixin;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.util.WirelessCraftAmountContainer;
 import de.mari_023.fabric.ae2wtlib.util.WirelessCraftAmountScreen;
@@ -161,7 +162,9 @@ public class ae2wtlibclient implements ClientModInitializer {
             menu.add("1", wpt);
             menu.add("2", wit);
             try {
-                client.openScreen(new MineMenuSelectScreen(menu, new TranslatableText("minemenu.default.title").getString(), null));
+                MineMenuSelectScreen screen = new MineMenuSelectScreen(menu, new TranslatableText("minemenu.default.title").getString(), null);
+                ((MineMenuMixin) screen).setCircleEntries(3);
+                client.openScreen(screen);
             } catch(NullPointerException e) {
                 client.openScreen(null);
                 client.player.sendMessage(new TranslatableText("minemenu.error.config"), false);
