@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Environment(EnvType.CLIENT)
-@Mixin(MineMenuSelectScreen.class)
+@Mixin(value = MineMenuSelectScreen.class, remap = false)
 public interface MineMenuMixin {
     @Accessor("circleEntries")
     void setCircleEntries(int circleEntries);

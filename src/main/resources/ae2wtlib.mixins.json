@@ -9,6 +9,7 @@
     "MEInvUpdatePacket",
     "MeMonitorableScreenWireless",
     "MineMenuMixin",
+    "MineMenuTerminalHandler",
     "PlayerInventoryInsertStack",
     "Restock"
   ],
