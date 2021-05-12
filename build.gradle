@@ -83,7 +83,7 @@ dependencies {
     // PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
     // You may need to force-disable transitiveness on them.
     modImplementation "appeng:appliedenergistics2-fabric:${project.ae2_version}"
-    modImplementation "top.theillusivec4.curios:curios-fabric:${project.curios_version}"
+    //modImplementation "top.theillusivec4.curios:curios-fabric:${project.curios_version}"
     modImplementation "me.shedaniel:RoughlyEnoughItems:${project.rei_version}"
     modImplementation "de.siphalor:nbtcrafting-1.16:${project.nbt_crafting_version}"
 }
