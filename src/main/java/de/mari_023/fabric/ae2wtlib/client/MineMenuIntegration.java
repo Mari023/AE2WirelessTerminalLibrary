@@ -49,12 +49,8 @@ public class MineMenuIntegration {
     public static JsonObject getWCT() {
         if(wct == null) {
             wct = new JsonObject();
-            wct.add("name", new JsonPrimitive("Wireless Crafting Terminal"));
-            JsonObject wctIcon = new JsonObject();
-            wctIcon.add("iconItem", new JsonPrimitive("ae2wtlib:wireless_crafting_terminal"));
-            wctIcon.add("enchanted", new JsonPrimitive(false));
-            wctIcon.add("skullOwner", new JsonPrimitive(""));
-            wct.add("icon", wctIcon);
+            wct.add("name", new JsonPrimitive("item.ae2wtlib.wireless_crafting_terminal"));
+            wit.add("icon", getIcon("ae2wtlib:wireless_crafting_terminal"));
             wct.add("type", new JsonPrimitive("ae2wtlib.open"));
             wct.add("data", new JsonPrimitive("crafting"));
         }
@@ -64,12 +60,8 @@ public class MineMenuIntegration {
     public static JsonObject getWPT() {
         if(wpt == null) {
             wpt = new JsonObject();
-            wpt.add("name", new JsonPrimitive("Wireless Pattern Terminal"));
-            JsonObject wptIcon = new JsonObject();
-            wptIcon.add("iconItem", new JsonPrimitive("ae2wtlib:wireless_pattern_terminal"));
-            wptIcon.add("enchanted", new JsonPrimitive(false));
-            wptIcon.add("skullOwner", new JsonPrimitive(""));
-            wpt.add("icon", wptIcon);
+            wpt.add("name", new JsonPrimitive("item.ae2wtlib.wireless_pattern_terminal"));
+            wit.add("icon", getIcon("ae2wtlib:wireless_pattern_terminal"));
             wpt.add("type", new JsonPrimitive("ae2wtlib.open"));
             wpt.add("data", new JsonPrimitive("pattern"));
         }
@@ -79,15 +71,20 @@ public class MineMenuIntegration {
     public static JsonObject getWIT() {
         if(wit == null) {
             wit = new JsonObject();
-            wit.add("name", new JsonPrimitive("Wireless Interface Terminal"));
-            JsonObject witIcon = new JsonObject();
-            witIcon.add("iconItem", new JsonPrimitive("ae2wtlib:wireless_interface_terminal"));
-            witIcon.add("enchanted", new JsonPrimitive(false));
-            witIcon.add("skullOwner", new JsonPrimitive(""));
-            wit.add("icon", witIcon);
+            wit.add("name", new JsonPrimitive("item.ae2wtlib.wireless_interface_terminal"));
+            wit.add("icon", getIcon("ae2wtlib:wireless_interface_terminal"));
             wit.add("type", new JsonPrimitive("ae2wtlib.open"));
             wit.add("data", new JsonPrimitive("interface"));
         }
         return wit;
+    }
+
+    public static JsonObject getIcon(String iconItem) {
+        JsonObject Icon = new JsonObject();
+        Icon.add("iconItem", new JsonPrimitive(iconItem));
+        Icon.add("enchanted", new JsonPrimitive(false));
+        Icon.add("skullOwner", new JsonPrimitive(""));
+        Icon.add("customModelData", new JsonPrimitive(0));
+        return Icon;
     }
 }
