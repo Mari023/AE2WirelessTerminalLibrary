@@ -161,6 +161,7 @@ curseforge {
                 requiredDependency 'nbt-crafting'
                 optionalDependency 'roughly-enough-items'
                 optionalDependency 'curios-fabric'
+                optionalDependency 'minemenufabric'
             }
             afterEvaluate {
                 uploadTask.dependsOn(remapJar)
