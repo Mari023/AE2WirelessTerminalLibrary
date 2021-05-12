@@ -2,6 +2,7 @@ package de.mari_023.fabric.ae2wtlib.wut;
 
 import appeng.container.ContainerLocator;
 import appeng.core.AEConfig;
+import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import de.mari_023.fabric.ae2wtlib.client.MineMenuIntegration;
 import de.mari_023.fabric.ae2wtlib.terminal.IInfinityBoosterCardHolder;
@@ -32,7 +33,7 @@ public class ItemWUT extends ItemWT implements IInfinityBoosterCardHolder {
     @Override
     public TypedActionResult<ItemStack> use(final World w, final PlayerEntity player, final Hand hand) {
         if(player.isSneaking()) {
-            if(w.isClient()) MineMenuIntegration.openMineMenu(player.getStackInHand(hand));
+            if(w.isClient() && Config.allowMineMenu()) MineMenuIntegration.openMineMenu(player.getStackInHand(hand));
         } else openWirelessTerminalGui(player.getStackInHand(hand), player, hand);
         return new TypedActionResult<>(ActionResult.SUCCESS, player.getStackInHand(hand));
     }

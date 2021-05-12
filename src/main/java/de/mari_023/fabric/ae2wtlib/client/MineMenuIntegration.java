@@ -16,7 +16,6 @@ public class MineMenuIntegration {
     private static JsonObject wit;
 
     public static void openMineMenu(ItemStack terminal) {
-        if(!Config.allowMineMenu()) return;
         MinecraftClient client = MinecraftClient.getInstance();
         if(client == null || client.player == null) return;
         if((client.currentScreen instanceof MineMenuSelectScreen)) return;
