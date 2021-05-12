@@ -2,6 +2,7 @@ package de.mari_023.fabric.ae2wtlib.client;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.mixin.MineMenuMixin;
 import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
 import me.ultrablacklinux.minemenufabric.client.screen.MineMenuSelectScreen;
@@ -15,6 +16,7 @@ public class MineMenuIntegration {
     private static JsonObject wit;
 
     public static void openMineMenu(ItemStack terminal) {
+        if(!Config.allowMineMenu()) return;
         MinecraftClient client = MinecraftClient.getInstance();
         if(client == null || client.player == null) return;
         if((client.currentScreen instanceof MineMenuSelectScreen)) return;
