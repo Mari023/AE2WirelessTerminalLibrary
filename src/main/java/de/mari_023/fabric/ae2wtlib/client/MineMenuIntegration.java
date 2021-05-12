@@ -50,7 +50,7 @@ public class MineMenuIntegration {
         if(wct == null) {
             wct = new JsonObject();
             wct.add("name", new JsonPrimitive("item.ae2wtlib.wireless_crafting_terminal"));
-            wit.add("icon", getIcon("ae2wtlib:wireless_crafting_terminal"));
+            wct.add("icon", getIcon("ae2wtlib:wireless_crafting_terminal"));
             wct.add("type", new JsonPrimitive("ae2wtlib.open"));
             wct.add("data", new JsonPrimitive("crafting"));
         }
@@ -61,7 +61,7 @@ public class MineMenuIntegration {
         if(wpt == null) {
             wpt = new JsonObject();
             wpt.add("name", new JsonPrimitive("item.ae2wtlib.wireless_pattern_terminal"));
-            wit.add("icon", getIcon("ae2wtlib:wireless_pattern_terminal"));
+            wpt.add("icon", getIcon("ae2wtlib:wireless_pattern_terminal"));
             wpt.add("type", new JsonPrimitive("ae2wtlib.open"));
             wpt.add("data", new JsonPrimitive("pattern"));
         }
@@ -80,11 +80,11 @@ public class MineMenuIntegration {
     }
 
     public static JsonObject getIcon(String iconItem) {
-        JsonObject Icon = new JsonObject();
-        Icon.add("iconItem", new JsonPrimitive(iconItem));
-        Icon.add("enchanted", new JsonPrimitive(false));
-        Icon.add("skullOwner", new JsonPrimitive(""));
-        Icon.add("customModelData", new JsonPrimitive(0));
-        return Icon;
+        JsonObject icon = new JsonObject();
+        icon.add("iconItem", new JsonPrimitive(iconItem));
+        icon.add("enchanted", new JsonPrimitive(false));
+        icon.add("skullOwner", new JsonPrimitive(""));
+        icon.add("customModelData", new JsonPrimitive(0));
+        return icon;
     }
 }
