@@ -8,12 +8,12 @@
     "InvActionPacket",
     "MEInvUpdatePacket",
     "MeMonitorableScreenWireless",
-    "MineMenuMixin",
-    "MineMenuTerminalHandler",
     "PlayerInventoryInsertStack",
     "Restock"
   ],
   "client": [
+    "MineMenuMixin",
+    "MineMenuTerminalHandler"
   ],
   "injectors": {
     "defaultRequire": 1
