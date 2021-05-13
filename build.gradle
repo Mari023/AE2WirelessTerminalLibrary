@@ -41,7 +41,6 @@ repositories {
     maven {
         name "Modmaven"
         url "https://modmaven.dev/"
-        // For Gradle 5.1 and above, limit it to just AE2
     }
     // Required for libblockattributes
     maven {
@@ -58,10 +57,9 @@ repositories {
     maven {
         url = "https://maven.terraformersmc.com/releases/"
     }
-    /*maven {
-        name = "Ladysnake Libs"
-        url = 'https://dl.bintray.com/ladysnake/libs'
-    }*/
+    maven {
+        url = "https://jitpack.io"
+    }
     maven {
         url "https://www.cursemaven.com"
         content {
