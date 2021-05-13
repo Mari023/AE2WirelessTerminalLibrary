@@ -58,10 +58,10 @@ repositories {
     maven {
         url = "https://maven.theillusivec4.top/"
     }
-    maven {
+    /*maven {
         name = "Ladysnake Libs"
         url = 'https://dl.bintray.com/ladysnake/libs'
-    }
+    }*/
     maven {
         url "https://maven.shedaniel.me/"
     }
