@@ -5,7 +5,7 @@ import net.fabricmc.loader.api.FabricLoader;
 
 public class Config {
 
-    private static boolean mineMenuChecked, mineMenuPresent;
+    private static boolean mineMenuChecked, mineMenuPresent, trinketPresent, trinketChecked;
 
     public static double getPowerMultiplier(double range, boolean isOutOfRange) {
         if(isOutOfRange)
@@ -30,9 +30,6 @@ public class Config {
         mineMenuChecked = true;
         return mineMenuPresent;
     }
-
-    private static boolean trinketPresent = false;
-    private static boolean trinketChecked = false;
 
     public static boolean allowTrinket() {
         if(!trinketChecked) {
