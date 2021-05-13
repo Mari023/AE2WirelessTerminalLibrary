@@ -5,6 +5,8 @@ import net.fabricmc.loader.api.FabricLoader;
 
 public class Config {
 
+    private static boolean mineMenuChecked, mineMenuPresent;
+
     public static double getPowerMultiplier(double range, boolean isOutOfRange) {
         if(isOutOfRange)
             return AEConfig.instance().wireless_getDrainRate(528 * getOutOfRangePowerMultiplier());
@@ -21,6 +23,12 @@ public class Config {
 
     private static int getOutOfRangePowerMultiplier() {
         return 2;
+    }
+
+    public static boolean allowMineMenu() {
+        if(!mineMenuChecked) mineMenuPresent = FabricLoader.getInstance().isModLoaded("minemenufabric");
+        mineMenuChecked = true;
+        return mineMenuPresent;
     }
 
     private static boolean trinketPresent = false;

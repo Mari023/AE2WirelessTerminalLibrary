@@ -43,7 +43,7 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
         return new TypedActionResult<>(ActionResult.SUCCESS, player.getStackInHand(hand));
     }
 
-    private void openWirelessTerminalGui(ItemStack item, PlayerEntity player, Hand hand) {
+    protected void openWirelessTerminalGui(ItemStack item, PlayerEntity player, Hand hand) {
         if(Platform.isClient()) {
             return;
         }

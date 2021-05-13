@@ -6,14 +6,17 @@ import appeng.api.implementations.guiobjects.IPortableCell;
 import appeng.api.implementations.tiles.IViewCellStorage;
 import appeng.api.networking.crafting.ICraftingPatternDetails;
 import appeng.api.storage.data.IAEItemStack;
+import appeng.container.ContainerLocator;
 import appeng.core.Api;
 import appeng.tile.inventory.AppEngInternalInventory;
 import appeng.util.inv.IAEAppEngInventory;
 import appeng.util.inv.InvOperation;
+import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import de.mari_023.fabric.ae2wtlib.terminal.WTGuiObject;
 import de.mari_023.fabric.ae2wtlib.terminal.ae2wtlibInternalInventory;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.screen.ScreenHandlerType;
 
 public class WPTGuiObject extends WTGuiObject implements IPortableCell, IAEAppEngInventory, IViewCellStorage {
 
@@ -28,6 +31,21 @@ public class WPTGuiObject extends WTGuiObject implements IPortableCell, IAEAppEn
         crafting = new ae2wtlibInternalInventory(this, 9, "pattern_crafting", is);
         output = new ae2wtlibInternalInventory(this, 3, "output", is);
         pattern = new ae2wtlibInternalInventory(this, 2, "pattern", is);
+    }
+
+    @Override
+    public boolean open(PlayerEntity player, ContainerLocator locator) {
+        return WPTContainer.open(player, locator);
+    }
+
+    @Override
+    public ScreenHandlerType<?> getType() {
+        return WPTContainer.TYPE;
+    }
+
+    @Override
+    public ItemStack getIcon() {
+        return new ItemStack(ae2wtlib.PATTERN_TERMINAL);
     }
 
     public boolean isCraftingRecipe() {

@@ -33,6 +33,7 @@
     "nbtcrafting": "*"
   },
   "suggests": {
+    "minemenufabric": "*",
     "trinkets": "*"
   }
 }

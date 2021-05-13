@@ -22,11 +22,8 @@ import appeng.core.Api;
 import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.MEInventoryUpdatePacket;
 import appeng.me.helpers.PlayerSource;
+import de.mari_023.fabric.ae2wtlib.terminal.WTGuiObject;
 import de.mari_023.fabric.ae2wtlib.util.ContainerHelper;
-import de.mari_023.fabric.ae2wtlib.wct.WCTContainer;
-import de.mari_023.fabric.ae2wtlib.wct.WCTGuiObject;
-import de.mari_023.fabric.ae2wtlib.wpt.WPTContainer;
-import de.mari_023.fabric.ae2wtlib.wpt.WPTGuiObject;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.network.PacketByteBuf;
@@ -184,18 +181,14 @@ public class WirelessCraftConfirmContainer extends AEBaseContainer implements Cr
     }
 
     public void startJob() {
-        ScreenHandlerType<?> originalGui = null;
-
         final IActionHost ah = getActionHost();
-        if(ah instanceof WCTGuiObject) originalGui = WCTContainer.TYPE;
-        else if(ah instanceof WPTGuiObject) originalGui = WPTContainer.TYPE;
+        if(ah instanceof WTGuiObject) {
+            if(result == null && isSimulation()) return;
 
-        if(result == null && isSimulation()) return;
-
-        setAutoStart(false);
-        if(((ICraftingGrid) getGrid().getCache(ICraftingGrid.class)).submitJob(result, null, selectedCpu, true, getActionSrc()) != null && originalGui != null && getLocator() != null) {
-            if(originalGui.equals(WCTContainer.TYPE)) WCTContainer.open(getPlayerInventory().player, getLocator());
-            else if(originalGui.equals(WPTContainer.TYPE)) WPTContainer.open(getPlayerInventory().player, getLocator());
+            setAutoStart(false);
+            if(((ICraftingGrid) getGrid().getCache(ICraftingGrid.class)).submitJob(result, null, selectedCpu, true, getActionSrc()) != null && getLocator() != null) {
+                ((WTGuiObject) ah).open(getPlayerInv().player, getLocator());
+            }
         }
     }
 
