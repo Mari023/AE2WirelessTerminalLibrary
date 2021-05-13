@@ -2,7 +2,9 @@ package de.mari_023.fabric.ae2wtlib.wut;
 
 import appeng.container.ContainerLocator;
 import appeng.core.AEConfig;
+import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.ae2wtlib;
+import de.mari_023.fabric.ae2wtlib.client.MineMenuIntegration;
 import de.mari_023.fabric.ae2wtlib.terminal.IInfinityBoosterCardHolder;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import net.fabricmc.api.EnvType;
@@ -14,7 +16,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.Hand;
+import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -23,6 +28,15 @@ public class ItemWUT extends ItemWT implements IInfinityBoosterCardHolder {
 
     public ItemWUT() {
         super(AEConfig.instance().getWirelessTerminalBattery(), new FabricItemSettings().group(ae2wtlib.ITEM_GROUP).maxCount(1));
+    }
+
+    @Override
+    public TypedActionResult<ItemStack> use(final World w, final PlayerEntity player, final Hand hand) {
+        if(player.isSneaking()) {
+            if(w.isClient() && Config.allowMineMenu()) MineMenuIntegration.openMineMenu(player.getStackInHand(hand));
+            else;//This is here to trick java into not loading MineMenuIntegration when it can't
+        } else openWirelessTerminalGui(player.getStackInHand(hand), player, hand);
+        return new TypedActionResult<>(ActionResult.SUCCESS, player.getStackInHand(hand));
     }
 
     @Override
