@@ -15,6 +15,7 @@ import appeng.util.Platform;
 import com.google.common.collect.HashMultimap;
 import de.mari_023.fabric.ae2wtlib.wut.CycleTerminalButton;
 import de.mari_023.fabric.ae2wtlib.wut.IUniversalTerminalCapable;
+import net.minecraft.client.util.InputUtil;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -138,8 +139,9 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int p_keyPressed_3_) {
+        InputUtil.Key input = InputUtil.fromKeyCode(keyCode, scanCode);
         if(keyCode != GLFW.GLFW_KEY_ESCAPE) {
-            if(AppEng.instance().isActionKey(ActionKey.TOGGLE_FOCUS, keyCode, scanCode)) {
+            if(AppEng.instance().isActionKey(ActionKey.TOGGLE_FOCUS, input)) {
                 searchField.setFocused(!searchField.isFocused());
                 return true;
             }

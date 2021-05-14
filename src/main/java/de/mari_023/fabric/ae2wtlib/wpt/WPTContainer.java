@@ -31,6 +31,7 @@ import appeng.util.inv.InvOperation;
 import appeng.util.inv.WrapperCursorItemHandler;
 import appeng.util.item.AEItemStack;
 import de.mari_023.fabric.ae2wtlib.Config;
+import de.mari_023.fabric.ae2wtlib.mixin.ScreenHandlerMixin;
 import de.mari_023.fabric.ae2wtlib.mixin.SlotMixin;
 import de.mari_023.fabric.ae2wtlib.util.ContainerHelper;
 import de.mari_023.fabric.ae2wtlib.terminal.FixedWTInv;
@@ -194,7 +195,7 @@ public class WPTContainer extends MEMonitorableContainer implements IAEAppEngInv
     @Override
     public void onSlotChange(final Slot s) {
         if(s == patternSlotOUT && isServer()) {
-            for(final ScreenHandlerListener listener : getListeners()) {
+            for(final ScreenHandlerListener listener : ((ScreenHandlerMixin) this).getListeners()) {
                 for(int i = 0; i < slots.size(); i++) {
                     Slot slot = slots.get(i);
                     if(slot instanceof OptionalFakeSlot || slot instanceof FakeCraftingMatrixSlot)
