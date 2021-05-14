@@ -7,11 +7,11 @@
     "CfgValuePacket",
     "InvActionPacket",
     "MEInvUpdatePacket",
-    "MeMonitorableScreenWireless",
     "PlayerInventoryInsertStack",
     "Restock"
   ],
   "client": [
+    "MeMonitorableScreenWireless",
     "MineMenuMixin",
     "MineMenuTerminalHandler"
   ],
