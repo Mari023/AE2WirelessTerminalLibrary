@@ -38,9 +38,6 @@ archivesBaseName = project.archives_base_name
 group = project.maven_group
 
 repositories {
-    flatDir {
-        dirs '/home/mari/Schreibtisch/ae2'
-    }
     maven {
         name "Modmaven"
         url "https://modmaven.dev/"
@@ -89,11 +86,7 @@ dependencies {
 
     // PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
     // You may need to force-disable transitiveness on them.
-    //modImplementation "appeng:appliedenergistics2-fabric:${project.ae2_version}"
-    modImplementation "appeng:appliedenergistics2-fabric:0.0.0-SNAPSHOT"
-    modImplementation "alexiil.mc.lib:libblockattributes-core:0.8.7"
-    modImplementation "alexiil.mc.lib:libblockattributes-items:0.8.7"
-    modImplementation "alexiil.mc.lib:libblockattributes-fluids:0.8.7"
+    modImplementation "appeng:appliedenergistics2-fabric:${project.ae2_version}"
     //modImplementation "top.theillusivec4.curios:curios-fabric:${project.curios_version}"
     modImplementation "me.shedaniel:RoughlyEnoughItems:${project.rei_version}"
     modImplementation "de.siphalor:nbtcrafting-1.16:${project.nbt_crafting_version}"
