@@ -209,10 +209,11 @@ public class ae2wtlib implements ModInitializer {
             if(!(screenHandler instanceof AEBaseContainer)) return;
 
             final ContainerLocator locator = ((AEBaseContainer) screenHandler).getLocator();
-            ItemStack item = player.inventory.getStack(locator.getItemIndex());
+            int slot = locator.getItemIndex();
+            ItemStack item = player.inventory.getStack(slot);
 
             if(!(item.getItem() instanceof ItemWUT)) return;
-            WUTHandler.cycle(item);
+            WUTHandler.cycle(player, slot, item);
 
             WUTHandler.open(player, locator);
         }));
@@ -226,7 +227,7 @@ public class ae2wtlib implements ModInitializer {
                         ItemStack terminal = player.inventory.getStack(i);
                         if(terminal.getItem() instanceof ItemWCT || (terminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(terminal, "crafting"))) {
                             slot = i;
-                            WUTHandler.setCurrentTerminal(terminal, "crafting");
+                            WUTHandler.setCurrentTerminal(player, slot, terminal, "crafting");
                             break;
                         }
                     }
@@ -243,7 +244,7 @@ public class ae2wtlib implements ModInitializer {
                         ItemStack terminal = inv.getStack(i);
                         if(terminal.getItem() instanceof ItemWPT || (terminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(terminal, "pattern"))) {
                             slot = i;
-                            WUTHandler.setCurrentTerminal(terminal, "pattern");
+                            WUTHandler.setCurrentTerminal(player, slot, terminal, "pattern");
                             break;
                         }
                     }
@@ -261,7 +262,7 @@ public class ae2wtlib implements ModInitializer {
                         ItemStack terminal = inv.getStack(i);
                         if(terminal.getItem() instanceof ItemWIT || (terminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(terminal, "interface"))) {
                             slot = i;
-                            WUTHandler.setCurrentTerminal(terminal, "interface");
+                            WUTHandler.setCurrentTerminal(player, slot, terminal, "interface");
                             break;
                         }
                     }
