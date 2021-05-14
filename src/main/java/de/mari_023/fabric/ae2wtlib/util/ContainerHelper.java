@@ -11,6 +11,7 @@ import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.wct.WCTGuiObject;
 import de.mari_023.fabric.ae2wtlib.wit.WITGuiObject;
 import de.mari_023.fabric.ae2wtlib.wpt.WPTGuiObject;
+import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -124,7 +125,6 @@ public final class ContainerHelper<C extends AEBaseContainer, I> {
     }
 
     private I getHostFromPlayerInventory(PlayerEntity player, ContainerLocator locator) {
-
         ItemStack it = player.inventory.getStack(locator.getItemIndex());
 
         if(it.isEmpty()) {
@@ -132,14 +132,15 @@ public final class ContainerHelper<C extends AEBaseContainer, I> {
             return null;
         }
 
+        String currentTerminal = WUTHandler.getCurrentTerminal(it);
         //TODO do something generic, I don't want to hardcode everything
-        if(interfaceClass.equals(WCTGuiObject.class))
+        if(interfaceClass.isAssignableFrom(WCTGuiObject.class) && currentTerminal.equals("crafting"))
             return interfaceClass.cast(new WCTGuiObject((ItemWT) it.getItem(), it, player, locator.getItemIndex()));
 
-        if(interfaceClass.equals(WPTGuiObject.class))
+        if(interfaceClass.isAssignableFrom(WPTGuiObject.class) && currentTerminal.equals("pattern"))
             return interfaceClass.cast(new WPTGuiObject((ItemWT) it.getItem(), it, player, locator.getItemIndex()));
 
-        if(interfaceClass.equals(WITGuiObject.class))
+        if(interfaceClass.isAssignableFrom(WITGuiObject.class) && currentTerminal.equals("interface"))
             return interfaceClass.cast(new WITGuiObject((ItemWT) it.getItem(), it, player, locator.getItemIndex()));
         return null;
     }
