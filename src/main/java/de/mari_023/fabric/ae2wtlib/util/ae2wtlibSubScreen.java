@@ -43,7 +43,7 @@ public final class ae2wtlibSubScreen {
     public final TabButton addBackButton(Consumer<TabButton> buttonAdder, int x, int y, Text label) {
         if(!previousContainerIcon.isEmpty()) {
             if(label == null) label = previousContainerIcon.getName();
-            TabButton button = new TabButton(gui.getX() + x, gui.getY() + y, previousContainerIcon, label, gui.getClient().getItemRenderer(), btn -> goBack());
+            TabButton button = new TabButton(gui.getGuiLeft() + x, gui.getGuiTop() + y, previousContainerIcon, label, gui.getMinecraft().getItemRenderer(), btn -> goBack());
             buttonAdder.accept(button);
             return button;
         }
