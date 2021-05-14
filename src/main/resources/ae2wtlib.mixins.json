@@ -9,7 +9,9 @@
     "MEInvUpdatePacket",
     "MeMonitorableScreenWireless",
     "PlayerInventoryInsertStack",
-    "Restock"
+    "Restock",
+    "ScreenHandlerMixin",
+    "SlotMixin"
   ],
   "client": [
     "MineMenuMixin",
