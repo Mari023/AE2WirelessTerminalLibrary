@@ -17,6 +17,7 @@ import de.mari_023.fabric.ae2wtlib.terminal.ae2wtlibInternalInventory;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.server.network.ServerPlayerEntity;
 
 public class WPTGuiObject extends WTGuiObject implements IPortableCell, IAEAppEngInventory, IViewCellStorage {
 
@@ -25,9 +26,11 @@ public class WPTGuiObject extends WTGuiObject implements IPortableCell, IAEAppEn
     private final AppEngInternalInventory crafting;
     private final AppEngInternalInventory output;
     private final AppEngInternalInventory pattern;
+    private final boolean isRemote;
 
     public WPTGuiObject(final IWirelessTermHandler wh, final ItemStack is, final PlayerEntity ep, int inventorySlot) {
         super(wh, is, ep, inventorySlot);
+        isRemote = ep instanceof ServerPlayerEntity;
         crafting = new ae2wtlibInternalInventory(this, 9, "pattern_crafting", is);
         output = new ae2wtlibInternalInventory(this, 3, "output", is);
         pattern = new ae2wtlibInternalInventory(this, 2, "pattern", is);
@@ -84,6 +87,11 @@ public class WPTGuiObject extends WTGuiObject implements IPortableCell, IAEAppEn
                 }
             }
         } else if(inv == crafting) fixCraftingRecipes();
+    }
+
+    @Override
+    public boolean isRemote() {
+        return isRemote;
     }
 
     public void setCraftingRecipe(final boolean craftingMode) {
