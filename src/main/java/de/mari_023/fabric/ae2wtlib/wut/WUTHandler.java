@@ -1,9 +1,12 @@
 package de.mari_023.fabric.ae2wtlib.wut;
 
 import appeng.container.ContainerLocator;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.LiteralText;
+import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,6 +32,7 @@ public class WUTHandler {
         if(hasTerminal(itemStack, terminal)) {
             assert itemStack.getTag() != null;
             itemStack.getTag().putString("currentTerminal", terminal);
+            ServerPlayNetworking.send((ServerPlayerEntity) playerEntity, new Identifier("ae2wtlib", "update_wut"), buf);
         }
     }
 
@@ -47,6 +51,7 @@ public class WUTHandler {
             nextTerminal = terminalNames.get(i);
         } while(!itemStack.getTag().getBoolean(nextTerminal));
         itemStack.getTag().putString("currentTerminal", nextTerminal);
+        ServerPlayNetworking.send((ServerPlayerEntity) playerEntity, new Identifier("ae2wtlib", "update_wut"), buf);
     }
 
     public static void open(final PlayerEntity player, final ContainerLocator locator) {
