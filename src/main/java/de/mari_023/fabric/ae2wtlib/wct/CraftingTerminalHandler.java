@@ -8,7 +8,7 @@ import appeng.api.networking.IMachineSet;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.util.DimensionalCoord;
 import appeng.core.Api;
-import appeng.tile.networking.WirelessBlockEntity;
+import appeng.tile.networking.WirelessTileEntity;
 import de.mari_023.fabric.ae2wtlib.terminal.IInfinityBoosterCardHolder;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
@@ -89,7 +89,7 @@ public class CraftingTerminalHandler {
                 }
             }
 
-            final IMachineSet tw = targetGrid.getMachines(WirelessBlockEntity.class);
+            final IMachineSet tw = targetGrid.getMachines(WirelessTileEntity.class);
 
             myWap = null;
 

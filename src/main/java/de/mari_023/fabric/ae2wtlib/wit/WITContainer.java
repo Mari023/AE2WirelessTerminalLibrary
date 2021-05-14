@@ -20,7 +20,7 @@ import appeng.helpers.InventoryAction;
 import appeng.items.misc.EncodedPatternItem;
 import appeng.parts.misc.InterfacePart;
 import appeng.tile.inventory.AppEngInternalInventory;
-import appeng.tile.misc.InterfaceBlockEntity;
+import appeng.tile.misc.InterfaceTileEntity;
 import appeng.util.InventoryAdaptor;
 import appeng.util.helpers.ItemHandlerUtil;
 import appeng.util.inv.AdaptorFixedInv;
@@ -124,7 +124,7 @@ public class WITContainer extends AEBaseContainer implements IWTInvHolder {
         if(host != null) {
             final IGridNode agn = host.getActionableNode();
             if(agn != null && agn.isActive()) {
-                for(final IGridNode gn : grid.getMachines(InterfaceBlockEntity.class)) {
+                for(final IGridNode gn : grid.getMachines(InterfaceTileEntity.class)) {
                     if(gn.isActive()) {
                         final IInterfaceHost ih = (IInterfaceHost) gn.getMachine();
                         if(ih.getInterfaceDuality().getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.NO) {
@@ -272,7 +272,7 @@ public class WITContainer extends AEBaseContainer implements IWTInvHolder {
         if(host != null) {
             final IGridNode agn = host.getActionableNode();
             if(agn != null && agn.isActive()) {
-                for(final IGridNode gn : grid.getMachines(InterfaceBlockEntity.class)) {
+                for(final IGridNode gn : grid.getMachines(InterfaceTileEntity.class)) {
                     final IInterfaceHost ih = (IInterfaceHost) gn.getMachine();
                     final DualityInterface dual = ih.getInterfaceDuality();
                     if(gn.isActive() && dual.getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.YES)
