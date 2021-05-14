@@ -142,14 +142,14 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
         InputUtil.Key input = InputUtil.fromKeyCode(keyCode, scanCode);
         if(keyCode != GLFW.GLFW_KEY_ESCAPE) {
             if(AppEng.instance().isActionKey(ActionKey.TOGGLE_FOCUS, input)) {
-                searchField.setFocused(!searchField.isFocused());
+                searchField.setTextFieldFocused(!searchField.isFocused());
                 return true;
             }
 
             // Forward keypresses to the search field
             if(searchField.isFocused()) {
                 if(keyCode == GLFW.GLFW_KEY_ENTER) {
-                    searchField.setFocused(false);
+                    searchField.setTextFieldFocused(false);
                     return true;
                 }
 
