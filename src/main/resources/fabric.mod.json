@@ -29,7 +29,7 @@
     "fabricloader": ">=0.11.3",
     "fabric": "*",
     "minecraft": "1.16.5",
-    "appliedenergistics2": ">=8.3.0-alpha.1",
+    "appliedenergistics2": ">=8.3.0-alpha.2",
     "nbtcrafting": "*"
   },
   "suggests": {
