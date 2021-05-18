@@ -3,7 +3,7 @@
   "id": "ae2wtlib",
   "version": "${version}",
   "name": "AE2WTLib",
-  "description": "A Library which provides basic functions to create AE2 Wireless Terminals with infinite range capabilities",
+  "description": "Adds Wireless versions of different ae2 Terminals with infinite range capabilities",
   "authors": [
     "mari_023"
   ],
