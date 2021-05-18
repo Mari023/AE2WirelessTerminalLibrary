@@ -209,7 +209,7 @@ public class REIRecipePacket {
         if(ingredient.isEmpty()) {
             return new ItemStack[0];
         }
-        ItemStack[] stacks = accessor.getMatchingStacks();
+        ItemStack[] stacks = accessor.appeng_getMatchingStacks();
         if(stacks.length == 1 && stacks[0].isEmpty()) {
             return new ItemStack[0];
         }

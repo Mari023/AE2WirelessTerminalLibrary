@@ -8,7 +8,9 @@
     "InvActionPacket",
     "MEInvUpdatePacket",
     "PlayerInventoryInsertStack",
-    "Restock"
+    "Restock",
+    "ScreenHandlerMixin",
+    "SlotMixin"
   ],
   "client": [
     "MeMonitorableScreenWireless",

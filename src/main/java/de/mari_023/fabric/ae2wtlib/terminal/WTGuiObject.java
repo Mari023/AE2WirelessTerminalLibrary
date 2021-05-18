@@ -25,7 +25,7 @@ import appeng.api.util.IConfigManager;
 import appeng.container.ContainerLocator;
 import appeng.container.interfaces.IInventorySlotAware;
 import appeng.core.Api;
-import appeng.tile.networking.WirelessBlockEntity;
+import appeng.tile.networking.WirelessTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerType;
@@ -89,7 +89,7 @@ public abstract class WTGuiObject implements IGuiItemObject, IEnergySource, IAct
 
             myWap = null;
 
-            for(final IGridNode n : targetGrid.getMachines(WirelessBlockEntity.class)) {
+            for(final IGridNode n : targetGrid.getMachines(WirelessTileEntity.class)) {
                 final IWirelessAccessPoint wap = (IWirelessAccessPoint) n.getMachine();
                 if(testWap(wap)) {
                     myWap = wap;
