@@ -1,6 +1,6 @@
 
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "ae2wtlib:combine",
   "TerminalA": [
     {
       "item": "ae2wtlib:wireless_crafting_terminal"
