@@ -49,19 +49,19 @@ public class Combine implements Recipe<CraftingInventory> {
 
     @Override
     public boolean matches(CraftingInventory inv, World world) {
-        boolean a = false;
-        boolean b = false;
-        for(int i = 0; i < inv.size(); i++) {
-            if(!a) a = TerminalA.test(inv.getStack(i));
-            else if(!b) b = TerminalA.test(inv.getStack(i));
-            else break;
-        }
-        return a && b;
+        return !getInputStack(inv, TerminalA).isEmpty() && !getInputStack(inv, TerminalB).isEmpty();
     }
 
     @Override
     public ItemStack craft(CraftingInventory inv) {
         return outputStack.copy();
+    }
+
+    private ItemStack getInputStack(CraftingInventory inv, Ingredient ingredient) {
+        for(int i = 0; i < inv.size(); i++) {
+            if(ingredient.test(inv.getStack(i))) return inv.getStack(i);
+        }
+        return ItemStack.EMPTY;
     }
 
     @Override
