@@ -46,7 +46,7 @@ public class CombineRecipeSerializer implements RecipeSerializer<Combine> {
     }
 
     private boolean validateOutput(String s) {
-        if(s == null) return false;
-        return WUTHandler.terminalNames.contains(s);
+        if(s == null) return true;
+        return !WUTHandler.terminalNames.contains(s);
     }
 }
