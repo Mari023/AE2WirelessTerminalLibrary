@@ -3,6 +3,7 @@ package de.mari_023.fabric.ae2wtlib.wut.recipe;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
+import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
@@ -46,44 +47,6 @@ public class CombineRecipeSerializer implements RecipeSerializer<Combine> {
 
     private boolean validateOutput(String s) {
         if(s == null) return false;
-        switch(s) {
-            case "":
-            case "name":
-            case "currentTerminal":
-            case "output":
-            case "output0":
-            case "output1":
-            case "output2":
-            case "trash":
-            case "magnetCard":
-            case "boosterCard":
-            case "encryptionKey":
-            case "substitute":
-            case "craftingMode":
-            case "internalMaxPower":
-            case "crafting0":
-            case "crafting1":
-            case "crafting2":
-            case "crafting3":
-            case "crafting4":
-            case "crafting5":
-            case "crafting6":
-            case "crafting7":
-            case "crafting8":
-            case "pattern0":
-            case "pattern1":
-            case "pattern_crafting0":
-            case "pattern_crafting1":
-            case "pattern_crafting2":
-            case "pattern_crafting3":
-            case "pattern_crafting4":
-            case "pattern_crafting5":
-            case "pattern_crafting6":
-            case "pattern_crafting7":
-            case "pattern_crafting8":
-                return false;
-            default:
-                return true;
-        }
+        return WUTHandler.terminalNames.contains(s);
     }
 }
