@@ -48,17 +48,12 @@ public class Combine implements CraftingRecipe {
 
     @Override
     public boolean matches(CraftingInventory inv, World world) {
-        return !getInputStack(inv, TerminalA).isEmpty() && !getInputStack(inv, TerminalB).isEmpty();
+        return !InputHelper.getInputStack(inv, TerminalA).isEmpty() && !InputHelper.getInputStack(inv, TerminalB).isEmpty() && InputHelper.getInputCount(inv) == 2;
     }
 
     @Override
     public ItemStack craft(CraftingInventory inv) {
         return outputStack.copy();
-    }
-
-    private ItemStack getInputStack(CraftingInventory inv, Ingredient ingredient) {
-        for(int i = 0; i < inv.size(); i++) if(ingredient.test(inv.getStack(i))) return inv.getStack(i);
-        return ItemStack.EMPTY;
     }
 
     @Environment(EnvType.CLIENT)

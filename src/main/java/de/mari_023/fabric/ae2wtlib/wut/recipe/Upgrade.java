@@ -35,17 +35,12 @@ public class Upgrade implements CraftingRecipe {
 
     @Override
     public boolean matches(CraftingInventory inv, World world) {
-        return !getInputStack(inv, Terminal).isEmpty() && !getInputStack(inv, Ingredient.ofItems(ae2wtlib.UNIVERSAL_TERMINAL)).isEmpty();
+        return !InputHelper.getInputStack(inv, Terminal).isEmpty() && !InputHelper.getInputStack(inv, Ingredient.ofItems(ae2wtlib.UNIVERSAL_TERMINAL)).isEmpty() && InputHelper.getInputCount(inv) == 2;
     }
 
     @Override
     public ItemStack craft(CraftingInventory inv) {
         return outputStack.copy();
-    }
-
-    private ItemStack getInputStack(CraftingInventory inv, Ingredient ingredient) {
-        for(int i = 0; i < inv.size(); i++) if(ingredient.test(inv.getStack(i))) return inv.getStack(i);
-        return ItemStack.EMPTY;
     }
 
     @Environment(EnvType.CLIENT)
