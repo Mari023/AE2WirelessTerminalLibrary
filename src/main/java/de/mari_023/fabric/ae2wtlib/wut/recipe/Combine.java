@@ -1,17 +1,16 @@
 package de.mari_023.fabric.ae2wtlib.wut.recipe;
 
 import de.mari_023.fabric.ae2wtlib.ae2wtlib;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.Recipe;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.RecipeType;
+import net.minecraft.recipe.*;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
-public class Combine implements Recipe<CraftingInventory> {
+public class Combine implements CraftingRecipe {
     private final Ingredient TerminalA;
     private final Ingredient TerminalB;
     private final String TerminalAName;
@@ -58,12 +57,11 @@ public class Combine implements Recipe<CraftingInventory> {
     }
 
     private ItemStack getInputStack(CraftingInventory inv, Ingredient ingredient) {
-        for(int i = 0; i < inv.size(); i++) {
-            if(ingredient.test(inv.getStack(i))) return inv.getStack(i);
-        }
+        for(int i = 0; i < inv.size(); i++) if(ingredient.test(inv.getStack(i))) return inv.getStack(i);
         return ItemStack.EMPTY;
     }
 
+    @Environment(EnvType.CLIENT)
     @Override
     public boolean fits(int width, int height) {
         return width > 1 || height > 1;
@@ -82,18 +80,5 @@ public class Combine implements Recipe<CraftingInventory> {
     @Override
     public RecipeSerializer<?> getSerializer() {
         return CombineRecipeSerializer.INSTANCE;
-    }
-
-    @Override
-    public RecipeType<?> getType() {
-        return Type.INSTANCE;
-    }
-
-    public static class Type implements RecipeType<Combine> {
-        private Type() {}
-
-        public static final Type INSTANCE = new Type();
-
-        public static final String ID = "wut_combine";
     }
 }
