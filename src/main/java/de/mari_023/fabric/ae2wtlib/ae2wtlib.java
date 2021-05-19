@@ -30,6 +30,7 @@ import de.mari_023.fabric.ae2wtlib.wpt.WPTContainer;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
 import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
 import de.mari_023.fabric.ae2wtlib.wut.recipe.CombineRecipeSerializer;
+import de.mari_023.fabric.ae2wtlib.wut.recipe.UpgradeRecipeSerializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -86,6 +87,7 @@ public class ae2wtlib implements ModInitializer {
         Api.instance().registries().charger().addChargeRate(UNIVERSAL_TERMINAL, Config.getChargeRate() * Config.WUTChargeRateMultiplier());
 
         Registry.register(Registry.RECIPE_SERIALIZER, CombineRecipeSerializer.ID, CombineRecipeSerializer.INSTANCE);
+        Registry.register(Registry.RECIPE_SERIALIZER, UpgradeRecipeSerializer.ID, UpgradeRecipeSerializer.INSTANCE);
 
         ServerPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "general"), (server, player, handler, buf, sender) -> {
             buf.retain();
