@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "ae2wtlib:wireless_universal_terminal_upgrade_interface"
+      "ae2wtlib:upgrade_interface"
     ]
   },
   "criteria": {
@@ -19,7 +19,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "ae2wtlib:wireless_universal_terminal_upgrade_interface"
+        "recipe": "ae2wtlib:upgrade_interface"
       }
     }
   },
