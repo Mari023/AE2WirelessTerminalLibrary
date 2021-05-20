@@ -413,9 +413,8 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
         }
         for(AppEngTrinketSlot ts : trinketSlots) {
             if(((TrinketsClient.lastEquipped == null || TrinketsClient.displayEquipped <= 0 || !ts.group.equals(TrinketsClient.lastEquipped.getName()))
-                    && (TrinketsClient.slotGroup == null || !ts.group.equals(TrinketsClient.slotGroup.getName()))) && !ts.keepVisible) {
+                    && (TrinketsClient.slotGroup == null || !ts.group.equals(TrinketsClient.slotGroup.getName()))) && !ts.keepVisible)
                 ((SlotMixin) ts).setXPosition(Integer.MIN_VALUE);
-            }
         }
         for(AppEngTrinketSlot ts : trinketSlots) {
             int groupX = getGroupX(TrinketSlots.getSlotFromName(ts.group, ts.slot).getSlotGroup());
@@ -429,7 +428,6 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
             return false;
         return super.isClickOutsideBounds(x, y, i, j, k);
     }
-
 
     public boolean inBounds(TrinketSlots.SlotGroup group, float x, float y, boolean focused) {
         int groupX = getGroupX(group);
