@@ -44,9 +44,10 @@ public class Upgrade implements CraftingRecipe {
     @Override
     public ItemStack craft(CraftingInventory inv) {
         ItemStack wut = InputHelper.getInputStack(inv, Ingredient.ofItems(ae2wtlib.UNIVERSAL_TERMINAL)).copy();
-        CompoundTag terminal = InputHelper.getInputStack(inv, Terminal).getTag();
+        CompoundTag terminal = InputHelper.getInputStack(inv, Terminal).getTag().copy();
         wut.getTag().putBoolean(TerminalName, true);
-        wut.getTag().copyFrom(terminal);
+        terminal.copyFrom(wut.getTag());
+        wut.setTag(terminal);
 
         return wut;
     }
