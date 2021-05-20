@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "ae2wtlib:cp"
+      "ae2wtlib:wireless_universal_terminal/cp"
     ]
   },
   "criteria": {
@@ -29,7 +29,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "ae2wtlib:cp"
+        "recipe": "ae2wtlib:wireless_universal_terminal/cp"
       }
     }
   },
