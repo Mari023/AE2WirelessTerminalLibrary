@@ -126,9 +126,8 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
 
     @Override
     public void drawBG(MatrixStack matrices, final int offsetX, final int offsetY, final int mouseX, final int mouseY, float partialTicks) {
-        super.drawBG(matrices, offsetX, offsetY, mouseX, mouseY, partialTicks);
         bindTexture(getBackground());
-        final int x_width = 197;
+        final int x_width = 199;
         drawTexture(matrices, offsetX, offsetY, 0, 0, x_width, 18);
 
         for(int x = 0; x < rows; x++) drawTexture(matrices, offsetX, offsetY + 18 + x * 18, 0, 18, x_width, 18);
@@ -168,6 +167,8 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
                     drawTexture(matrices, x + getGroupX(group), y + getGroupY(group), 4, 4, 18, 18);
                 }
         }
+        bindTexture("guis/crafting.png");
+        drawTexture(matrices, offsetX + 197, offsetY, 197, 0, 46, 128); //draw viewcell background
     }
 
     @Override

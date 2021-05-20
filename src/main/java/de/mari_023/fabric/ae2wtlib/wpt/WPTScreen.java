@@ -129,7 +129,6 @@ public class WPTScreen extends MEMonitorableScreen<WPTContainer> implements IUni
 
     @Override
     public void drawBG(MatrixStack matrices, final int offsetX, final int offsetY, final int mouseX, final int mouseY, float partialTicks) {
-
         bindTexture(getBackground());
         final int x_width = 197;
         drawTexture(matrices, offsetX, offsetY, 0, 0, x_width, 18);
@@ -158,6 +157,8 @@ public class WPTScreen extends MEMonitorableScreen<WPTContainer> implements IUni
             drawTexture(matrices, offsetX + 109, offsetY + 72 + rows * 18, 109, 108, 18, 18);
         }
         searchField.render(matrices, mouseX, mouseY, partialTicks);
+        bindTexture("guis/crafting.png");
+        drawTexture(matrices, offsetX + 197, offsetY, 197, 0, 46, 128); //draw viewcell background
     }
 
     @Override
