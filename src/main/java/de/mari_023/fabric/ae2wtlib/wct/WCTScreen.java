@@ -184,7 +184,7 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
             RenderSystem.disableDepthTest();
             List<TrinketSlots.Slot> trinketSlots = TrinketSlots.getAllSlots();
             int trinketOffset = -1;
-            for(int i = 46; i < handler.slots.size(); i++) {
+            for(int i = 0; i < handler.slots.size(); i++) {
                 if(!(handler.slots.get(i) instanceof AppEngTrinketSlot)) continue;
                 if(trinketOffset == -1) trinketOffset = i;
                 Slot ts = handler.getSlot(i);
