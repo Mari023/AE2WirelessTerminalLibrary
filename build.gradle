@@ -101,6 +101,7 @@ dependencies {
     modImplementation "com.terraformersmc:modmenu:1.16.7"//dependency for minemenu
     modApi("me.shedaniel.cloth:cloth-config-fabric:4.11.14")//dependency for minemenu
     modImplementation "dev.emi:trinkets:${project.trinkets_version}"
+    modRuntime "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:2.8.3"
 }
 
 processResources {
