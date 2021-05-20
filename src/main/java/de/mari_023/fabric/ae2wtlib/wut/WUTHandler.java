@@ -1,6 +1,9 @@
 package de.mari_023.fabric.ae2wtlib.wut;
 
 import appeng.container.ContainerLocator;
+import de.mari_023.fabric.ae2wtlib.wct.ItemWCT;
+import de.mari_023.fabric.ae2wtlib.wit.ItemWIT;
+import de.mari_023.fabric.ae2wtlib.wpt.ItemWPT;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.player.PlayerEntity;
@@ -17,6 +20,9 @@ import java.util.List;
 public class WUTHandler {
 
     public static String getCurrentTerminal(ItemStack wirelessUniversalTerminal) {
+        if(wirelessUniversalTerminal.getItem() instanceof ItemWCT) return "crafting";
+        if(wirelessUniversalTerminal.getItem() instanceof ItemWPT) return "pattern";
+        if(wirelessUniversalTerminal.getItem() instanceof ItemWIT) return "interface";
         if(!(wirelessUniversalTerminal.getItem() instanceof ItemWUT) || wirelessUniversalTerminal.getTag() == null)
             return "noTerminal";
         String currentTerminal = wirelessUniversalTerminal.getTag().getString("currentTerminal");
