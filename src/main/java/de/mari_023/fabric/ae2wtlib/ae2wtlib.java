@@ -29,6 +29,8 @@ import de.mari_023.fabric.ae2wtlib.wpt.ItemWPT;
 import de.mari_023.fabric.ae2wtlib.wpt.WPTContainer;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
 import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
+import de.mari_023.fabric.ae2wtlib.wut.recipe.CombineRecipeSerializer;
+import de.mari_023.fabric.ae2wtlib.wut.recipe.UpgradeRecipeSerializer;
 import dev.emi.trinkets.api.*;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
@@ -84,6 +86,9 @@ public class ae2wtlib implements ModInitializer {
         Api.instance().registries().charger().addChargeRate(PATTERN_TERMINAL, Config.getChargeRate());
         Api.instance().registries().charger().addChargeRate(INTERFACE_TERMINAL, Config.getChargeRate());
         Api.instance().registries().charger().addChargeRate(UNIVERSAL_TERMINAL, Config.getChargeRate() * Config.WUTChargeRateMultiplier());
+
+        Registry.register(Registry.RECIPE_SERIALIZER, CombineRecipeSerializer.ID, CombineRecipeSerializer.INSTANCE);
+        Registry.register(Registry.RECIPE_SERIALIZER, UpgradeRecipeSerializer.ID, UpgradeRecipeSerializer.INSTANCE);
 
         if(Config.allowTrinket()) {//TODO mabe change slot or remove this
             TrinketSlots.addSlot(SlotGroups.HEAD, Slots.AGLET, new Identifier("trinkets", "textures/item/empty_trinket_slot_aglet.png"));

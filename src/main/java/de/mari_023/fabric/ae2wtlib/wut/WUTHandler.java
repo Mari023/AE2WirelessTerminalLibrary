@@ -91,7 +91,7 @@ public class WUTHandler {
     }
 
     private static final HashMap<String, containerOpener> wirelessTerminals = new HashMap<>();
-    private static final List<String> terminalNames = new ArrayList<>();
+    public static final List<String> terminalNames = new ArrayList<>();
 
     public static void addTerminal(String Name, containerOpener open) {
         if(terminalNames.contains(Name)) return;

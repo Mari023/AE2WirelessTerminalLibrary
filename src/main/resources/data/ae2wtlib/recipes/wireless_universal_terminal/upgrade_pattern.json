@@ -1,0 +1,7 @@
+{
+  "type": "ae2wtlib:upgrade",
+  "Terminal": {
+    "item": "ae2wtlib:wireless_pattern_terminal"
+  },
+  "TerminalName": "pattern"
+}

@@ -10,11 +10,14 @@
     "MEInvUpdatePacket",
     "PlayerInventoryInsertStack",
     "Restock",
-    "ScreenMixin",
+    "ScreenHandlerMixin",
+    "SlotMixin",
+    "Restock",
     "TrinketWT"
   ],
   "client": [
     "MeMonitorableScreenWireless",
+    "ScreenMixin",
     "MineMenuMixin",
     "MineMenuTerminalHandler"
   ],

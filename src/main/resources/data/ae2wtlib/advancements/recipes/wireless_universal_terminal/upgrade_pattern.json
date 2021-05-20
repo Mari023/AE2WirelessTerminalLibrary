@@ -2,16 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "ae2wtlib:wireless_universal_terminal_upgrade_crafting"
+      "ae2wtlib:wireless_universal_terminal/upgrade_pattern"
     ]
   },
   "criteria": {
-    "has_wct": {
+    "has_wpt": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "ae2wtlib:wireless_crafting_terminal"
+            "item": "ae2wtlib:wireless_pattern_terminal"
           }
         ]
       }
@@ -19,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "ae2wtlib:wireless_universal_terminal_upgrade_crafting"
+        "recipe": "ae2wtlib:wireless_universal_terminal/upgrade_pattern"
       }
     }
   },
   "requirements": [
     [
-      "has_wct",
+      "has_wpt",
       "has_the_recipe"
     ]
   ]

@@ -3,7 +3,7 @@
   "id": "ae2wtlib",
   "version": "${version}",
   "name": "AE2WTLib",
-  "description": "A Library which provides basic functions to create AE2 Wireless Terminals with infinite range capabilities",
+  "description": "Adds Wireless versions of different ae2 Terminals with infinite range capabilities",
   "authors": [
     "mari_023"
   ],
@@ -29,8 +29,7 @@
     "fabricloader": ">=0.11.3",
     "fabric": "*",
     "minecraft": "1.16.5",
-    "appliedenergistics2": "8.2.0-alpha.3",
-    "nbtcrafting": "*"
+    "appliedenergistics2": ">=8.3.0-alpha.2"
   },
   "suggests": {
     "minemenufabric": "*",

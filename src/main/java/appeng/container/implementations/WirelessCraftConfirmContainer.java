@@ -22,6 +22,7 @@ import appeng.core.Api;
 import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.MEInventoryUpdatePacket;
 import appeng.me.helpers.PlayerSource;
+import de.mari_023.fabric.ae2wtlib.mixin.ScreenHandlerMixin;
 import de.mari_023.fabric.ae2wtlib.terminal.WTGuiObject;
 import de.mari_023.fabric.ae2wtlib.util.ContainerHelper;
 import net.minecraft.entity.player.PlayerEntity;
@@ -153,7 +154,7 @@ public class WirelessCraftConfirmContainer extends AEBaseContainer implements Cr
                         if(c != null && m != null && m.getStackSize() > 0) c.appendItem(m);
                     }
 
-                    for(final Object g : getListeners()) {
+                    for(final Object g : ((ScreenHandlerMixin) this).getListeners()) {
                         if(g instanceof PlayerEntity) {
                             NetworkHandler.instance().sendTo(a, (ServerPlayerEntity) g);
                             NetworkHandler.instance().sendTo(b, (ServerPlayerEntity) g);

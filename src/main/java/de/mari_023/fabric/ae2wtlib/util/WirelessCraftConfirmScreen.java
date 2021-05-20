@@ -13,6 +13,7 @@ import appeng.core.sync.packets.ConfigValuePacket;
 import appeng.util.Platform;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.util.InputUtil;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -381,7 +382,7 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int p_keyPressed_3_) {
-        if(!checkHotbarKeys(keyCode, scanCode)) {
+        if(!checkHotbarKeys(InputUtil.fromKeyCode(keyCode, scanCode))) {
             if(keyCode == GLFW.GLFW_KEY_ENTER || keyCode == GLFW.GLFW_KEY_KP_ENTER) {
                 start();
                 return true;
