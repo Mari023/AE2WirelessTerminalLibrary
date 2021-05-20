@@ -97,14 +97,11 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
 
     @Override
     public void drawBG(MatrixStack matrices, final int offsetX, final int offsetY, final int mouseX, final int mouseY, float partialTicks) {
-
         bindTexture(getBackground());
-        final int x_width = 197;
+        final int x_width = 199;
         drawTexture(matrices, offsetX, offsetY, 0, 0, x_width, 18);
 
-        for(int x = 0; x < this.rows; x++) {
-            drawTexture(matrices, offsetX, offsetY + 18 + x * 18, 0, 18, x_width, 18);
-        }
+        for(int x = 0; x < rows; x++) drawTexture(matrices, offsetX, offsetY + 18 + x * 18, 0, 18, x_width, 18);
 
         drawTexture(matrices, offsetX, offsetY + 16 + rows * 18, 0, 106 - 18 - 18, x_width, 99 + reservedSpace);
 
@@ -112,6 +109,8 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
 
         if(client != null && client.player != null)
             drawEntity(offsetX + 52, offsetY + 94 + rows * 18, 30, (float) (offsetX + 52) - mouseX, (float) offsetY + 55 + rows * 18 - mouseY, client.player);
+        bindTexture("guis/crafting.png");
+        drawTexture(matrices, offsetX + 197, offsetY, 197, 0, 46, 128); //draw viewcell background
     }
 
     @Override
@@ -122,11 +121,7 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
 
     private void clear() {
         Slot s = null;
-        for(final Slot j : handler.slots) {
-            if(j instanceof CraftingMatrixSlot) {
-                s = j;
-            }
-        }
+        for(final Slot j : handler.slots) if(j instanceof CraftingMatrixSlot) s = j;
 
         if(s != null) {
             final InventoryActionPacket p = new InventoryActionPacket(InventoryAction.MOVE_REGION, s.id, 0);
