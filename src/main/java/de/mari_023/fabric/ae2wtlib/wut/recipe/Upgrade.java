@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.recipe.*;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
 public class Upgrade implements CraftingRecipe {
@@ -36,14 +37,14 @@ public class Upgrade implements CraftingRecipe {
 
     @Override
     public boolean matches(CraftingInventory inv, World world) {
-        ItemStack wut = InputHelper.getInputStack(inv, Ingredient.ofItems(ae2wtlib.UNIVERSAL_TERMINAL));
+        ItemStack wut = InputHelper.getInputStack(inv, InputHelper.wut);
         return !InputHelper.getInputStack(inv, Terminal).isEmpty() && !wut.isEmpty()
                 && InputHelper.getInputCount(inv) == 2 && !WUTHandler.hasTerminal(wut, TerminalName);
     }
 
     @Override
     public ItemStack craft(CraftingInventory inv) {
-        ItemStack wut = InputHelper.getInputStack(inv, Ingredient.ofItems(ae2wtlib.UNIVERSAL_TERMINAL)).copy();
+        ItemStack wut = InputHelper.getInputStack(inv, InputHelper.wut).copy();
         CompoundTag terminal = InputHelper.getInputStack(inv, Terminal).getTag().copy();
         wut.getTag().putBoolean(TerminalName, true);
         terminal.copyFrom(wut.getTag());
@@ -71,5 +72,12 @@ public class Upgrade implements CraftingRecipe {
     @Override
     public RecipeSerializer<?> getSerializer() {
         return UpgradeRecipeSerializer.INSTANCE;
+    }
+
+    public DefaultedList<Ingredient> getPreviewInputs() {
+        DefaultedList<Ingredient> inputs = DefaultedList.of();
+        inputs.add(Terminal);
+        inputs.add(InputHelper.wut);
+        return inputs;
     }
 }

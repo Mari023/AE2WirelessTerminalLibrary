@@ -1,5 +1,6 @@
 package de.mari_023.fabric.ae2wtlib.wut.recipe;
 
+import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
@@ -17,4 +18,6 @@ public class InputHelper {
         for(int i = 0; i < inventory.size(); i++) if(!inventory.getStack(i).isEmpty()) count++;
         return count;
     }
+
+    public static Ingredient wut = Ingredient.ofItems(ae2wtlib.UNIVERSAL_TERMINAL);
 }
