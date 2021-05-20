@@ -1,6 +1,7 @@
 package de.mari_023.fabric.ae2wtlib.wut.recipe;
 
 import de.mari_023.fabric.ae2wtlib.ae2wtlib;
+import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.inventory.CraftingInventory;
@@ -35,7 +36,9 @@ public class Upgrade implements CraftingRecipe {
 
     @Override
     public boolean matches(CraftingInventory inv, World world) {
-        return !InputHelper.getInputStack(inv, Terminal).isEmpty() && !InputHelper.getInputStack(inv, Ingredient.ofItems(ae2wtlib.UNIVERSAL_TERMINAL)).isEmpty() && InputHelper.getInputCount(inv) == 2;
+        ItemStack wut = InputHelper.getInputStack(inv, Ingredient.ofItems(ae2wtlib.UNIVERSAL_TERMINAL));
+        return !InputHelper.getInputStack(inv, Terminal).isEmpty() && !wut.isEmpty()
+                && InputHelper.getInputCount(inv) == 2 && !WUTHandler.hasTerminal(wut, TerminalName);
     }
 
     @Override
