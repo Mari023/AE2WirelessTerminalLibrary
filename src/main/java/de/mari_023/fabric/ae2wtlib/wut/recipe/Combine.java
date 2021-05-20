@@ -53,7 +53,17 @@ public class Combine implements CraftingRecipe {
 
     @Override
     public ItemStack craft(CraftingInventory inv) {
-        return outputStack.copy();
+        CompoundTag terminalA = InputHelper.getInputStack(inv, TerminalA).getTag();
+        if(terminalA == null) terminalA = new CompoundTag();
+        else terminalA = terminalA.copy();
+
+        CompoundTag terminalB = InputHelper.getInputStack(inv, TerminalB).getTag();
+        if(terminalB == null) terminalB = new CompoundTag();
+        else terminalB = terminalB.copy();
+
+        ItemStack wut = outputStack.copy();
+        wut.getTag().copyFrom(terminalB).copyFrom(terminalA);
+        return wut;
     }
 
     @Environment(EnvType.CLIENT)
