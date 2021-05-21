@@ -1,7 +1,4 @@
 {
-  "result": {
-    "item": "ae2wtlib:wireless_crafting_terminal"
-  },
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
@@ -13,5 +10,8 @@
     {
       "item": "appliedenergistics2:crafting_terminal"
     }
-  ]
+  ],
+  "result": {
+    "item": "ae2wtlib:wireless_crafting_terminal"
+  }
 }

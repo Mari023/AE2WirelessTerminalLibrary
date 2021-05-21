@@ -165,7 +165,6 @@ curseforge {
             relations {
                 requiredDependency 'fabric-api'
                 requiredDependency 'applied-energistics-2'
-                requiredDependency 'nbt-crafting'
                 optionalDependency 'roughly-enough-items'
                 optionalDependency 'curios-fabric'
                 optionalDependency 'minemenufabric'

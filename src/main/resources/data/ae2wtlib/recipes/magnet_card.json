@@ -1,9 +1,10 @@
 {
-  "result": {
-    "item": "ae2wtlib:magnet_card"
-  },
   "type": "minecraft:crafting_shaped",
-  "pattern": ["abc", "ded", "ddd"],
+  "pattern": [
+    "abc",
+    "ded",
+    "ddd"
+  ],
   "key": {
     "a": {
       "item": "minecraft:redstone_block"
@@ -20,5 +21,8 @@
     "e": {
       "item": "appliedenergistics2:advanced_card"
     }
+  },
+  "result": {
+    "item": "ae2wtlib:magnet_card"
   }
 }

@@ -7,7 +7,11 @@
   "authors": [
     "mari_023"
   ],
-  "contact": {},
+  "contact": {
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/applied-energistics-2-wireless-terminals",
+    "sources": "https://github.com/Mari023/AE2WirelessTerminalLibrary",
+    "issues": "https://github.com/Mari023/AE2WirelessTerminalLibrary/issues"
+  },
   "license": "MIT",
   "icon": "assets/ae2wtlib/icon.png",
   "environment": "*",
