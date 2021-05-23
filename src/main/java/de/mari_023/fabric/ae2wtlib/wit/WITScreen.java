@@ -1,162 +1,181 @@
 package de.mari_023.fabric.ae2wtlib.wit;
 
 import alexiil.mc.lib.attributes.Simulation;
+import appeng.api.config.Settings;
+import appeng.api.config.TerminalStyle;
 import appeng.api.storage.channels.IItemStorageChannel;
 import appeng.client.ActionKey;
 import appeng.client.gui.AEBaseScreen;
 import appeng.client.gui.widgets.AETextField;
 import appeng.client.gui.widgets.Scrollbar;
+import appeng.client.gui.widgets.SettingToggleButton;
 import appeng.client.me.ClientDCInternalInv;
 import appeng.client.me.SlotDisconnected;
+import appeng.container.slot.AppEngSlot;
+import appeng.core.AEConfig;
 import appeng.core.Api;
 import appeng.core.AppEng;
 import appeng.core.localization.GuiText;
 import appeng.util.Platform;
 import com.google.common.collect.HashMultimap;
-import de.mari_023.fabric.ae2wtlib.wut.CycleTerminalButton;
+import de.mari_023.fabric.ae2wtlib.mixin.SlotMixin;
 import de.mari_023.fabric.ae2wtlib.wut.IUniversalTerminalCapable;
 import net.minecraft.client.util.InputUtil;
+import net.minecraft.client.util.Rect2i;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.Text;
-import org.lwjgl.glfw.GLFW;
+import net.minecraft.util.math.MathHelper;
 
 import java.util.*;
 
 public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalTerminalCapable {
-
-    private static final int LINES_ON_PAGE = 6;
-
+    private static final int GUI_WIDTH = 195;
+    private static final int GUI_BUTTON_X_MARGIN = -18;
+    private static final int GUI_HEADER_HEIGHT = 17;
+    private static final int GUI_FOOTER_HEIGHT = 97;
+    private static final int INTERFACE_NAME_MARGIN_X = 2;
+    private static final int TEXT_MAX_WIDTH = 155;
+    private static final int MIN_ROW_COUNT = 3;
+    private static final int SLOT_SIZE = 18;
+    private static final Rect2i HEADER_BBOX = new Rect2i(0, 0, GUI_WIDTH, GUI_HEADER_HEIGHT);
+    private static final Rect2i ROW_TEXT_TOP_BBOX = new Rect2i(0, GUI_HEADER_HEIGHT, GUI_WIDTH, SLOT_SIZE);
+    private static final Rect2i ROW_TEXT_MIDDLE_BBOX = new Rect2i(0, 53, GUI_WIDTH, SLOT_SIZE);
+    private static final Rect2i ROW_TEXT_BOTTOM_BBOX = new Rect2i(0, 89, GUI_WIDTH, SLOT_SIZE);
+    private static final Rect2i ROW_INVENTORY_TOP_BBOX = new Rect2i(0, 35, GUI_WIDTH, SLOT_SIZE);
+    private static final Rect2i ROW_INVENTORY_MIDDLE_BBOX = new Rect2i(0, 71, GUI_WIDTH, SLOT_SIZE);
+    private static final Rect2i ROW_INVENTORY_BOTTOM_BBOX = new Rect2i(0, 107, GUI_WIDTH, SLOT_SIZE);
+    private static final Rect2i FOOTER_BBOX = new Rect2i(0, 125, GUI_WIDTH, GUI_FOOTER_HEIGHT);
     private final HashMap<Long, ClientDCInternalInv> byId = new HashMap<>();
     private final HashMultimap<String, ClientDCInternalInv> byName = HashMultimap.create();
     private final ArrayList<String> names = new ArrayList<>();
     private final ArrayList<Object> lines = new ArrayList<>();
-
     private final Map<String, Set<Object>> cachedSearches = new WeakHashMap<>();
-
     private boolean refreshList = false;
     private AETextField searchField;
-    private final WITContainer container;
+    private int numLines = 0;
 
     public WITScreen(WITContainer container, PlayerInventory playerInventory, Text title) {
         super(container, playerInventory, title);
-        this.container = container;
-        setScrollBar(new Scrollbar().setLeft(175).setTop(18).setHeight(106));
-        backgroundWidth = 195;
-        backgroundHeight = 222;
+        Scrollbar scrollbar = new Scrollbar();
+        setScrollBar(scrollbar);
+        backgroundWidth = GUI_WIDTH;
     }
 
-    @Override
     public void init() {
+        TerminalStyle terminalStyle = AEConfig.instance().getTerminalStyle();
+        int maxLines = terminalStyle == TerminalStyle.SMALL ? 6 : 2147483647;
+        numLines = (height - GUI_HEADER_HEIGHT - GUI_FOOTER_HEIGHT) / SLOT_SIZE;
+        numLines = MathHelper.clamp(numLines, MIN_ROW_COUNT, maxLines);
+        backgroundHeight = 114 + numLines * SLOT_SIZE;
         super.init();
-
         searchField = new AETextField(textRenderer, x + 104, y + 4, 65, 12);
         searchField.setDrawsBackground(false);
         searchField.setMaxLength(25);
-        searchField.setEditableColor(0xFFFFFF);
-        searchField.setSelectionColor(0xFF008000);
-        searchField.setChangedListener(str -> refreshList());
+        searchField.setEditableColor(16777215);
+        searchField.setVisible(true);
+        searchField.setChangedListener((str) -> refreshList());
         addChild(searchField);
         changeFocus(true);
+        int offset = y + 8;
+        addButton(new SettingToggleButton<>(x + GUI_BUTTON_X_MARGIN, offset, Settings.TERMINAL_STYLE, terminalStyle, this::toggleTerminalStyle));
 
-        if(container.isWUT()) addButton(new CycleTerminalButton(x - 18, y + 8, btn -> cycleTerminal()));
+        for(Slot s : handler.slots)
+            if(s instanceof AppEngSlot) ((SlotMixin) s).setY(((AppEngSlot) s).getY() + backgroundHeight - 83);
+
+        resetScrollbar();
     }
 
-    @Override
-    public void drawFG(MatrixStack matrices, final int offsetX, final int offsetY, final int mouseX, final int mouseY) {
-        textRenderer.draw(matrices, getGuiDisplayName(GuiText.InterfaceTerminal.text()), 8, 6, 4210752);
-        textRenderer.draw(matrices, GuiText.inventory.text(), 8, backgroundHeight - 96 + 3, 4210752);
+    public void drawFG(MatrixStack matrixStack, int offsetX, int offsetY, int mouseX, int mouseY) {
+        textRenderer.draw(matrixStack, getGuiDisplayName(GuiText.InterfaceTerminal.text()).getString(), 8.0F, 6.0F, 4210752);
+        handler.slots.removeIf((slot) -> slot instanceof SlotDisconnected);
+        int scrollLevel = getScrollBar().getCurrentScroll();
 
-        final int ex = getScrollBar().getCurrentScroll();
+        int i;
+        for(i = 0; i < numLines; ++i) {
+            if(scrollLevel + i < lines.size()) {
+                Object lineObj = lines.get(scrollLevel + i);
+                int rows;
+                if(lineObj instanceof ClientDCInternalInv) {
+                    ClientDCInternalInv inv = (ClientDCInternalInv) lineObj;
 
-        handler.slots.removeIf(slot -> slot instanceof SlotDisconnected);
+                    for(rows = 0; rows < inv.getInventory().getSlotCount(); ++rows)
+                        handler.slots.add(new SlotDisconnected(inv, rows, rows * SLOT_SIZE + 8, (i + 1) * SLOT_SIZE));
+                } else if(lineObj instanceof String) {
+                    String name = (String) lineObj;
+                    rows = byName.get(name).size();
+                    if(rows > 1) name = name + " (" + rows + ')';
 
-        int offset = 17;
-        for(int x = 0; x < LINES_ON_PAGE && ex + x < lines.size(); x++) {
-            final Object lineObj = lines.get(ex + x);
-            if(lineObj instanceof ClientDCInternalInv) {
-                final ClientDCInternalInv inv = (ClientDCInternalInv) lineObj;
-                for(int z = 0; z < inv.getInventory().getSlotCount(); z++) {
-                    handler.slots.add(new SlotDisconnected(inv, z, z * 18 + 8, 1 + offset));
+                    name = textRenderer.trimToWidth(name, TEXT_MAX_WIDTH, true);
+                    textRenderer.draw(matrixStack, name, 10.0F, (float) (23 + i * SLOT_SIZE), 4210752);
                 }
-            } else if(lineObj instanceof String) {
-                String name = (String) lineObj;
-                final int rows = byName.get(name).size();
-                if(rows > 1) {
-                    name = name + " (" + rows + ')';
-                }
-
-                while(name.length() > 2 && textRenderer.getWidth(name) > 155) {
-                    name = name.substring(0, name.length() - 1);
-                }
-
-                textRenderer.draw(matrices, name, 10, 6 + offset, 4210752);
             }
-            offset += 18;
         }
+
+        textRenderer.draw(matrixStack, GuiText.inventory.text().getString(), 8.0F, (float) (20 + i * SLOT_SIZE), 4210752);
     }
 
-    @Override
-    public boolean mouseClicked(final double xCoord, final double yCoord, final int btn) {
+    public boolean mouseClicked(double xCoord, double yCoord, int btn) {
+        if(searchField.mouseClicked(xCoord, yCoord, btn)) return true;
         if(btn == 1 && searchField.isMouseOver(xCoord, yCoord)) {
             searchField.setText("");
             return true;
         }
-
         return super.mouseClicked(xCoord, yCoord, btn);
     }
 
-    @Override
-    public void drawBG(MatrixStack matrices, final int offsetX, final int offsetY, final int mouseX, final int mouseY, float partialTicks) {
+    public void drawBG(MatrixStack matrixStack, int offsetX, int offsetY, int mouseX, int mouseY, float partialTicks) {
         bindTexture("wtlib/gui/interface.png");
-        drawTexture(matrices, offsetX, offsetY, 0, 0, backgroundWidth, backgroundHeight);
+        blit(matrixStack, offsetX, offsetY, HEADER_BBOX);
+        int scrollLevel = getScrollBar().getCurrentScroll();
+        int currentY = offsetY + GUI_HEADER_HEIGHT;
+        blit(matrixStack, offsetX, currentY + numLines * SLOT_SIZE, FOOTER_BBOX);
 
-        int offset = 17;
-        final int ex = getScrollBar().getCurrentScroll();
-
-        for(int x = 0; x < LINES_ON_PAGE && ex + x < lines.size(); x++) {
-            final Object lineObj = lines.get(ex + x);
-            if(lineObj instanceof ClientDCInternalInv) {
-                final ClientDCInternalInv inv = (ClientDCInternalInv) lineObj;
-
-                final int width = inv.getInventory().getSlotCount() * 18;
-                drawTexture(matrices, offsetX + 7, offsetY + offset, 7, 139, width, 18);
+        for(int i = 0; i < numLines; ++i) {
+            boolean firstLine = i == 0;
+            boolean lastLine = i == numLines - 1;
+            boolean isInvLine = false;
+            if(scrollLevel + i < lines.size()) {
+                Object lineObj = lines.get(scrollLevel + i);
+                isInvLine = lineObj instanceof ClientDCInternalInv;
             }
-            offset += 18;
+
+            Rect2i bbox = selectRowBackgroundBox(isInvLine, firstLine, lastLine);
+            blit(matrixStack, offsetX, currentY, bbox);
+            currentY += SLOT_SIZE;
         }
-
-        if(searchField != null) searchField.render(matrices, mouseX, mouseY, partialTicks);
+        if(searchField != null) searchField.render(matrixStack, mouseX, mouseY, partialTicks);
     }
 
-    @Override
+    private Rect2i selectRowBackgroundBox(boolean isInvLine, boolean firstLine, boolean lastLine) {
+        if(isInvLine) if(firstLine) return ROW_INVENTORY_TOP_BBOX;
+        else return lastLine ? ROW_INVENTORY_BOTTOM_BBOX : ROW_INVENTORY_MIDDLE_BBOX;
+        else if(firstLine) return ROW_TEXT_TOP_BBOX;
+        else return lastLine ? ROW_TEXT_BOTTOM_BBOX : ROW_TEXT_MIDDLE_BBOX;
+    }
+
     public boolean charTyped(char character, int key) {
-        if(character == ' ' && searchField.getText().isEmpty()) return true;
-        return super.charTyped(character, key);
+        return character == ' ' && searchField.getText().isEmpty() || super.charTyped(character, key);
     }
 
-    @Override
     public boolean keyPressed(int keyCode, int scanCode, int p_keyPressed_3_) {
         InputUtil.Key input = InputUtil.fromKeyCode(keyCode, scanCode);
-        if(keyCode != GLFW.GLFW_KEY_ESCAPE) {
+        if(keyCode != 256) {
             if(AppEng.instance().isActionKey(ActionKey.TOGGLE_FOCUS, input)) {
                 searchField.setTextFieldFocused(!searchField.isFocused());
                 return true;
             }
 
-            // Forward keypresses to the search field
             if(searchField.isFocused()) {
-                if(keyCode == GLFW.GLFW_KEY_ENTER) {
+                if(keyCode == 257) {
                     searchField.setTextFieldFocused(false);
                     return true;
                 }
-
                 searchField.keyPressed(keyCode, scanCode, p_keyPressed_3_);
-
-                // We need to swallow key presses if the field is focused because typing 'e'
-                // would otherwise close the screen
                 return true;
             }
         }
@@ -164,154 +183,152 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
         return super.keyPressed(keyCode, scanCode, p_keyPressed_3_);
     }
 
-    public void postUpdate(final CompoundTag in) {
+    public void postUpdate(CompoundTag in) {
         if(in.getBoolean("clear")) {
             byId.clear();
             refreshList = true;
         }
 
-        for(final String key : in.getKeys()) {
-            if(key.startsWith("=")) {
-                try {
-                    final long id = Long.parseLong(key.substring(1), Character.MAX_RADIX);
-                    final CompoundTag invData = in.getCompound(key);
-                    Text un = Text.Serializer.fromJson(invData.getString("un"));
-                    final ClientDCInternalInv current = getById(id, invData.getLong("sortBy"), un);
+        Iterator var2 = in.getKeys().iterator();
 
-                    for(int x = 0; x < current.getInventory().getSlotCount(); x++) {
-                        final String which = Integer.toString(x);
-                        if(invData.contains(which))
-                            current.getInventory().setInvStack(x, ItemStack.fromTag(invData.getCompound(which)), Simulation.ACTION);
+        while(true) {
+            String key;
+            do {
+                if(!var2.hasNext()) {
+                    if(refreshList) {
+                        refreshList = false;
+                        cachedSearches.clear();
+                        refreshList();
                     }
-                } catch(final NumberFormatException ignored) {}
-            }
-        }
+                    return;
+                }
 
-        if(refreshList) {
-            refreshList = false;
-            // invalid caches on refresh
-            cachedSearches.clear();
-            refreshList();
+                Object oKey = var2.next();
+                key = (String) oKey;
+            } while(!key.startsWith("="));
+
+            try {
+                long id = Long.parseLong(key.substring(1), 36);
+                CompoundTag invData = in.getCompound(key);
+                Text un = Text.Serializer.fromJson(invData.getString("un"));
+                ClientDCInternalInv current = getById(id, invData.getLong("sortBy"), un);
+
+                for(int x = 0; x < current.getInventory().getSlotCount(); ++x) {
+                    String which = Integer.toString(x);
+                    if(invData.contains(which))
+                        current.getInventory().setInvStack(x, ItemStack.fromTag(invData.getCompound(which)), Simulation.ACTION);
+                }
+            } catch(NumberFormatException ignored) {}
         }
     }
 
-    /**
-     * Rebuilds the list of interfaces.
-     * <p>
-     * Respects a search term if present (ignores case) and adding only matching patterns.
-     */
     private void refreshList() {
         byName.clear();
+        String searchFilterLowerCase = searchField.getText().toLowerCase();
+        Set<Object> cachedSearch = getCacheForSearchTerm(searchFilterLowerCase);
+        boolean rebuild = cachedSearch.isEmpty();
+        Iterator var4 = byId.values().iterator();
 
-        final String searchFilterLowerCase = searchField.getText().toLowerCase();
+        while(true) {
+            ClientDCInternalInv entry;
+            do {
+                if(!var4.hasNext()) {
+                    names.clear();
+                    names.addAll(byName.keySet());
+                    Collections.sort(names);
+                    lines.clear();
+                    lines.ensureCapacity(getMaxRows());
+                    var4 = names.iterator();
 
-        final Set<Object> cachedSearch = getCacheForSearchTerm(searchFilterLowerCase);
-        final boolean rebuild = cachedSearch.isEmpty();
+                    while(var4.hasNext()) {
+                        String n = (String) var4.next();
+                        lines.add(n);
+                        List<ClientDCInternalInv> clientInventories = new ArrayList<>(byName.get(n));
+                        Collections.sort(clientInventories);
+                        lines.addAll(clientInventories);
+                    }
+                    resetScrollbar();
+                    return;
+                }
 
-        for(final ClientDCInternalInv entry : byId.values()) {
-            // ignore inventory if not doing a full rebuild or cache already marks it as
-            // miss.
-            if(!rebuild && !cachedSearch.contains(entry)) continue;
+                entry = (ClientDCInternalInv) var4.next();
+            } while(!rebuild && !cachedSearch.contains(entry));
 
-            // Shortcut to skip any filter if search term is ""/empty
             boolean found = searchFilterLowerCase.isEmpty();
-
-            // Search if the current inventory holds a pattern containing the search term.
             if(!found) {
-                for(final ItemStack itemStack : entry.getInventory()) {
+
+                for(ItemStack itemStack : entry.getInventory()) {
                     found = itemStackMatchesSearchTerm(itemStack, searchFilterLowerCase);
                     if(found) break;
                 }
             }
 
-            // if found, filter skipped or machine name matching the search term, add it
-            if(found || entry.getSearchName().contains(searchFilterLowerCase)) {
+            if(!found && !entry.getSearchName().contains(searchFilterLowerCase)) cachedSearch.remove(entry);
+            else {
                 byName.put(entry.getFormattedName(), entry);
                 cachedSearch.add(entry);
-            } else cachedSearch.remove(entry);
+            }
         }
-
-        names.clear();
-        names.addAll(byName.keySet());
-
-        Collections.sort(names);
-
-        lines.clear();
-        lines.ensureCapacity(getMaxRows());
-
-        for(final String n : names) {
-            lines.add(n);
-
-            List<ClientDCInternalInv> clientInventories = new ArrayList<>(byName.get(n));
-
-            Collections.sort(clientInventories);
-            lines.addAll(clientInventories);
-        }
-
-        getScrollBar().setRange(0, lines.size() - LINES_ON_PAGE, 2);
     }
 
-    private boolean itemStackMatchesSearchTerm(final ItemStack itemStack, final String searchTerm) {
-        if(itemStack.isEmpty()) return false;
+    private void resetScrollbar() {
+        Scrollbar bar = getScrollBar();
+        bar.setLeft(175).setTop(SLOT_SIZE).setHeight(numLines * SLOT_SIZE - INTERFACE_NAME_MARGIN_X);
+        bar.setRange(0, lines.size() - numLines, INTERFACE_NAME_MARGIN_X);
+    }
 
-        final CompoundTag encodedValue = itemStack.getTag();
+    private boolean itemStackMatchesSearchTerm(ItemStack itemStack, String searchTerm) {
+        if(!itemStack.isEmpty()) {
+            CompoundTag encodedValue = itemStack.getTag();
+            if(encodedValue != null) {
+                ListTag outTag = encodedValue.getList("out", 10);
 
-        if(encodedValue == null) return false;
-
-        // Potential later use to filter by input
-        // ListNBT inTag = encodedValue.getTagList( "in", 10 );
-        final ListTag outTag = encodedValue.getList("out", 10);
-
-        for(int i = 0; i < outTag.size(); i++) {
-
-            final ItemStack parsedItemStack = ItemStack.fromTag(outTag.getCompound(i));
-            if(!parsedItemStack.isEmpty()) {
-                final String displayName = Platform.getItemDisplayName(Api.instance().storage()
-                        .getStorageChannel(IItemStorageChannel.class).createStack(parsedItemStack)).getString().toLowerCase();
-                if(displayName.contains(searchTerm)) return true;
+                for(int i = 0; i < outTag.size(); ++i) {
+                    ItemStack parsedItemStack = ItemStack.fromTag(outTag.getCompound(i));
+                    if(!parsedItemStack.isEmpty() && Platform.getItemDisplayName(Api.instance().storage().getStorageChannel(IItemStorageChannel.class).createStack(parsedItemStack)).getString().toLowerCase().contains(searchTerm))
+                        return true;
+                }
             }
         }
         return false;
     }
 
-    /**
-     * Tries to retrieve a cache for a with search term as keyword.
-     * <p>
-     * If this cache should be empty, it will populate it with an earlier cache if available or at least the cache for
-     * the empty string.
-     *
-     * @param searchTerm the corresponding search
-     * @return a Set matching a superset of the search term
-     */
-    private Set<Object> getCacheForSearchTerm(final String searchTerm) {
+    private Set<Object> getCacheForSearchTerm(String searchTerm) {
         if(!cachedSearches.containsKey(searchTerm)) cachedSearches.put(searchTerm, new HashSet<>());
 
-        final Set<Object> cache = cachedSearches.get(searchTerm);
-
-        if(cache.isEmpty() && searchTerm.length() > 1) {
+        Set<Object> cache = cachedSearches.get(searchTerm);
+        if(cache.isEmpty() && searchTerm.length() > 1)
             cache.addAll(getCacheForSearchTerm(searchTerm.substring(0, searchTerm.length() - 1)));
-            return cache;
-        }
-
         return cache;
     }
 
-    /**
-     * The max amount of unique names and each inv row. Not affected by the filtering.
-     *
-     * @return max amount of unique names and each inv row
-     */
+    private void reinitialize() {
+        children.removeAll(buttons);
+        buttons.clear();
+        init();
+    }
+
+    private void toggleTerminalStyle(SettingToggleButton<TerminalStyle> btn, boolean backwards) {
+        TerminalStyle next = btn.getNextValue(backwards);
+        AEConfig.instance().setTerminalStyle(next);
+        btn.set(next);
+        reinitialize();
+    }
+
     private int getMaxRows() {
         return names.size() + byId.size();
     }
 
-    private ClientDCInternalInv getById(final long id, final long sortBy, final Text name) {
+    private ClientDCInternalInv getById(long id, long sortBy, Text name) {
         ClientDCInternalInv o = byId.get(id);
-
         if(o == null) {
             byId.put(id, o = new ClientDCInternalInv(9, id, sortBy, name));
             refreshList = true;
         }
         return o;
+    }
+
+    private void blit(MatrixStack matrixStack, int offsetX, int offsetY, Rect2i srcRect) {
+        drawTexture(matrixStack, offsetX, offsetY, srcRect.getX(), srcRect.getY(), srcRect.getWidth(), srcRect.getHeight());
     }
 }
