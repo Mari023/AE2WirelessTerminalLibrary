@@ -34,22 +34,14 @@ import net.minecraft.util.math.MathHelper;
 import java.util.*;
 
 public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalTerminalCapable {
-    private static final int GUI_WIDTH = 195;
-    private static final int GUI_BUTTON_X_MARGIN = -18;
-    private static final int GUI_HEADER_HEIGHT = 17;
-    private static final int GUI_FOOTER_HEIGHT = 97;
-    private static final int INTERFACE_NAME_MARGIN_X = 2;
-    private static final int TEXT_MAX_WIDTH = 155;
-    private static final int MIN_ROW_COUNT = 3;
-    private static final int SLOT_SIZE = 18;
-    private static final Rect2i HEADER_BBOX = new Rect2i(0, 0, GUI_WIDTH, GUI_HEADER_HEIGHT);
-    private static final Rect2i ROW_TEXT_TOP_BBOX = new Rect2i(0, GUI_HEADER_HEIGHT, GUI_WIDTH, SLOT_SIZE);
-    private static final Rect2i ROW_TEXT_MIDDLE_BBOX = new Rect2i(0, 53, GUI_WIDTH, SLOT_SIZE);
-    private static final Rect2i ROW_TEXT_BOTTOM_BBOX = new Rect2i(0, 89, GUI_WIDTH, SLOT_SIZE);
-    private static final Rect2i ROW_INVENTORY_TOP_BBOX = new Rect2i(0, 35, GUI_WIDTH, SLOT_SIZE);
-    private static final Rect2i ROW_INVENTORY_MIDDLE_BBOX = new Rect2i(0, 71, GUI_WIDTH, SLOT_SIZE);
-    private static final Rect2i ROW_INVENTORY_BOTTOM_BBOX = new Rect2i(0, 107, GUI_WIDTH, SLOT_SIZE);
-    private static final Rect2i FOOTER_BBOX = new Rect2i(0, 125, GUI_WIDTH, GUI_FOOTER_HEIGHT);
+    private static final Rect2i HEADER_BBOX = new Rect2i(0, 0, 195, 17);
+    private static final Rect2i ROW_TEXT_TOP_BBOX = new Rect2i(0, 17, 195, 18);
+    private static final Rect2i ROW_TEXT_MIDDLE_BBOX = new Rect2i(0, 53, 195, 18);
+    private static final Rect2i ROW_TEXT_BOTTOM_BBOX = new Rect2i(0, 89, 195, 18);
+    private static final Rect2i ROW_INVENTORY_TOP_BBOX = new Rect2i(0, 35, 195, 18);
+    private static final Rect2i ROW_INVENTORY_MIDDLE_BBOX = new Rect2i(0, 71, 195, 18);
+    private static final Rect2i ROW_INVENTORY_BOTTOM_BBOX = new Rect2i(0, 107, 195, 18);
+    private static final Rect2i FOOTER_BBOX = new Rect2i(0, 125, 195, 97);
     private final HashMap<Long, ClientDCInternalInv> byId = new HashMap<>();
     private final HashMultimap<String, ClientDCInternalInv> byName = HashMultimap.create();
     private final ArrayList<String> names = new ArrayList<>();
@@ -63,15 +55,15 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
         super(container, playerInventory, title);
         Scrollbar scrollbar = new Scrollbar();
         setScrollBar(scrollbar);
-        backgroundWidth = GUI_WIDTH;
+        backgroundWidth = 195;
     }
 
     public void init() {
         TerminalStyle terminalStyle = AEConfig.instance().getTerminalStyle();
         int maxLines = terminalStyle == TerminalStyle.SMALL ? 6 : 2147483647;
-        numLines = (height - GUI_HEADER_HEIGHT - GUI_FOOTER_HEIGHT) / SLOT_SIZE;
-        numLines = MathHelper.clamp(numLines, MIN_ROW_COUNT, maxLines);
-        backgroundHeight = 114 + numLines * SLOT_SIZE;
+        numLines = (height - 17 - 97) / 18;
+        numLines = MathHelper.clamp(numLines, 3, maxLines);
+        backgroundHeight = 114 + numLines * 18;
         super.init();
         searchField = new AETextField(textRenderer, x + 104, y + 4, 65, 12);
         searchField.setDrawsBackground(false);
@@ -82,9 +74,9 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
         addChild(searchField);
         changeFocus(true);
         int offset = y + 8;
-        addButton(new SettingToggleButton<>(x + GUI_BUTTON_X_MARGIN, offset, Settings.TERMINAL_STYLE, terminalStyle, this::toggleTerminalStyle));
+        addButton(new SettingToggleButton<>(x + -18, offset, Settings.TERMINAL_STYLE, terminalStyle, this::toggleTerminalStyle));
 
-        for(Slot s : handler.slots)
+        for(Slot s : (handler).slots)
             if(s instanceof AppEngSlot) ((SlotMixin) s).setY(((AppEngSlot) s).getY() + backgroundHeight - 83);
 
         resetScrollbar();
@@ -92,7 +84,7 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
 
     public void drawFG(MatrixStack matrixStack, int offsetX, int offsetY, int mouseX, int mouseY) {
         textRenderer.draw(matrixStack, getGuiDisplayName(GuiText.InterfaceTerminal.text()).getString(), 8.0F, 6.0F, 4210752);
-        handler.slots.removeIf((slot) -> slot instanceof SlotDisconnected);
+        (handler).slots.removeIf((slot) -> slot instanceof SlotDisconnected);
         int scrollLevel = getScrollBar().getCurrentScroll();
 
         int i;
@@ -104,36 +96,34 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
                     ClientDCInternalInv inv = (ClientDCInternalInv) lineObj;
 
                     for(rows = 0; rows < inv.getInventory().getSlotCount(); ++rows)
-                        handler.slots.add(new SlotDisconnected(inv, rows, rows * SLOT_SIZE + 8, (i + 1) * SLOT_SIZE));
+                        (handler).slots.add(new SlotDisconnected(inv, rows, rows * 18 + 8, (i + 1) * 18));
                 } else if(lineObj instanceof String) {
                     String name = (String) lineObj;
                     rows = byName.get(name).size();
                     if(rows > 1) name = name + " (" + rows + ')';
 
-                    name = textRenderer.trimToWidth(name, TEXT_MAX_WIDTH, true);
-                    textRenderer.draw(matrixStack, name, 10.0F, (float) (23 + i * SLOT_SIZE), 4210752);
+                    name = textRenderer.trimToWidth(name, 155, true);
+                    textRenderer.draw(matrixStack, name, 10.0F, (float) (23 + i * 18), 4210752);
                 }
             }
         }
-
-        textRenderer.draw(matrixStack, GuiText.inventory.text().getString(), 8.0F, (float) (20 + i * SLOT_SIZE), 4210752);
+        textRenderer.draw(matrixStack, GuiText.inventory.text().getString(), 8.0F, (float) (20 + i * 18), 4210752);
     }
 
     public boolean mouseClicked(double xCoord, double yCoord, int btn) {
         if(searchField.mouseClicked(xCoord, yCoord, btn)) return true;
-        if(btn == 1 && searchField.isMouseOver(xCoord, yCoord)) {
+        else if(btn == 1 && searchField.isMouseOver(xCoord, yCoord)) {
             searchField.setText("");
             return true;
-        }
-        return super.mouseClicked(xCoord, yCoord, btn);
+        } else return super.mouseClicked(xCoord, yCoord, btn);
     }
 
     public void drawBG(MatrixStack matrixStack, int offsetX, int offsetY, int mouseX, int mouseY, float partialTicks) {
         bindTexture("wtlib/gui/interface.png");
         blit(matrixStack, offsetX, offsetY, HEADER_BBOX);
         int scrollLevel = getScrollBar().getCurrentScroll();
-        int currentY = offsetY + GUI_HEADER_HEIGHT;
-        blit(matrixStack, offsetX, currentY + numLines * SLOT_SIZE, FOOTER_BBOX);
+        int currentY = offsetY + 17;
+        blit(matrixStack, offsetX, currentY + numLines * 18, FOOTER_BBOX);
 
         for(int i = 0; i < numLines; ++i) {
             boolean firstLine = i == 0;
@@ -146,14 +136,15 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
 
             Rect2i bbox = selectRowBackgroundBox(isInvLine, firstLine, lastLine);
             blit(matrixStack, offsetX, currentY, bbox);
-            currentY += SLOT_SIZE;
+            currentY += 18;
         }
         if(searchField != null) searchField.render(matrixStack, mouseX, mouseY, partialTicks);
     }
 
     private Rect2i selectRowBackgroundBox(boolean isInvLine, boolean firstLine, boolean lastLine) {
-        if(isInvLine) if(firstLine) return ROW_INVENTORY_TOP_BBOX;
-        else return lastLine ? ROW_INVENTORY_BOTTOM_BBOX : ROW_INVENTORY_MIDDLE_BBOX;
+        if(isInvLine)
+            if(firstLine) return ROW_INVENTORY_TOP_BBOX;
+            else return lastLine ? ROW_INVENTORY_BOTTOM_BBOX : ROW_INVENTORY_MIDDLE_BBOX;
         else if(firstLine) return ROW_TEXT_TOP_BBOX;
         else return lastLine ? ROW_TEXT_BOTTOM_BBOX : ROW_TEXT_MIDDLE_BBOX;
     }
@@ -189,7 +180,7 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
             refreshList = true;
         }
 
-        Iterator var2 = in.getKeys().iterator();
+        Iterator<String> var2 = in.getKeys().iterator();
 
         while(true) {
             String key;
@@ -203,8 +194,7 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
                     return;
                 }
 
-                Object oKey = var2.next();
-                key = (String) oKey;
+                key = var2.next();
             } while(!key.startsWith("="));
 
             try {
@@ -273,8 +263,8 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
 
     private void resetScrollbar() {
         Scrollbar bar = getScrollBar();
-        bar.setLeft(175).setTop(SLOT_SIZE).setHeight(numLines * SLOT_SIZE - INTERFACE_NAME_MARGIN_X);
-        bar.setRange(0, lines.size() - numLines, INTERFACE_NAME_MARGIN_X);
+        bar.setLeft(175).setTop(18).setHeight(numLines * 18 - 2);
+        bar.setRange(0, lines.size() - numLines, 2);
     }
 
     private boolean itemStackMatchesSearchTerm(ItemStack itemStack, String searchTerm) {
@@ -285,8 +275,10 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
 
                 for(int i = 0; i < outTag.size(); ++i) {
                     ItemStack parsedItemStack = ItemStack.fromTag(outTag.getCompound(i));
-                    if(!parsedItemStack.isEmpty() && Platform.getItemDisplayName(Api.instance().storage().getStorageChannel(IItemStorageChannel.class).createStack(parsedItemStack)).getString().toLowerCase().contains(searchTerm))
-                        return true;
+                    if(!parsedItemStack.isEmpty()) {
+                        String displayName = Platform.getItemDisplayName(Api.instance().storage().getStorageChannel(IItemStorageChannel.class).createStack(parsedItemStack)).getString().toLowerCase();
+                        if(displayName.contains(searchTerm)) return true;
+                    }
                 }
             }
         }
