@@ -19,6 +19,7 @@ import appeng.core.localization.GuiText;
 import appeng.util.Platform;
 import com.google.common.collect.HashMultimap;
 import de.mari_023.fabric.ae2wtlib.mixin.SlotMixin;
+import de.mari_023.fabric.ae2wtlib.wut.CycleTerminalButton;
 import de.mari_023.fabric.ae2wtlib.wut.IUniversalTerminalCapable;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.client.util.Rect2i;
@@ -80,6 +81,7 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
             if(s instanceof AppEngSlot) ((SlotMixin) s).setY(((AppEngSlot) s).getY() + backgroundHeight - 83);
 
         resetScrollbar();
+        if(handler.isWUT()) addButton(new CycleTerminalButton(x - 18, offset + 20, btn -> cycleTerminal()));
     }
 
     public void drawFG(MatrixStack matrixStack, int offsetX, int offsetY, int mouseX, int mouseY) {
