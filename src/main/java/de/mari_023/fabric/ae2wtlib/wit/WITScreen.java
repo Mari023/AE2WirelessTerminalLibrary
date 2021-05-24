@@ -146,7 +146,6 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
         // numLines may have changed, recalculate scroll bar.
         resetScrollbar();
         if(handler.isWUT()) addButton(new CycleTerminalButton(x - 18, offset + 20, btn -> cycleTerminal()));
-        handler.getPlayerInventory().player.sendMessage(new LiteralText("X: " + (x - 18) + " Y: " + (offset + 20)), false);
     }
 
     @Override
