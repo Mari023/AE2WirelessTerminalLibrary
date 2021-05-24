@@ -75,10 +75,10 @@ public class WITContainer extends AEBaseContainer implements IWTInvHolder {
             grid = witGUIObject.getActionableNode().getGrid();
         }
 
-        bindPlayerInventory(ip, 0, 83 - /* height of player inventory */82);
+        bindPlayerInventory(ip, 0, 0);
 
         final FixedWTInv fixedWITInv = new FixedWTInv(getPlayerInv(), witGUIObject.getItemStack(), this);
-        addSlot(new AppEngSlot(fixedWITInv, FixedWTInv.INFINITY_BOOSTER_CARD, 173, -10));
+        addSlot(new AppEngSlot(fixedWITInv, FixedWTInv.INFINITY_BOOSTER_CARD, 173, -11));
     }
 
     private double powerMultiplier = 1;
