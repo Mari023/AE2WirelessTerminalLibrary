@@ -156,9 +156,9 @@ public class WPTScreen extends MEMonitorableScreen<WPTContainer> implements IUni
             drawTexture(matrices, offsetX + 109, offsetY + 36 + rows * 18, 109, 108, 18, 18);
             drawTexture(matrices, offsetX + 109, offsetY + 72 + rows * 18, 109, 108, 18, 18);
         }
-        searchField.render(matrices, mouseX, mouseY, partialTicks);
         bindTexture("guis/crafting.png");
         drawTexture(matrices, offsetX + 197, offsetY, 197, 0, 46, 128); //draw viewcell background
+        searchField.render(matrices, mouseX, mouseY, partialTicks);
     }
 
     @Override
