@@ -82,11 +82,9 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
         craftingGrid = new ae2wtlibInternalInventory(this, 9, "crafting", wctGUIObject.getItemStack());
         final FixedItemInv crafting = getInventoryByName("crafting");
 
-        for(int y = 0; y < 3; y++) {
-            for(int x = 0; x < 3; x++) {
+        for(int y = 0; y < 3; y++)
+            for(int x = 0; x < 3; x++)
                 addSlot(craftingSlots[x + y * 3] = new CraftingMatrixSlot(this, crafting, x + y * 3, 37 + x * 18 + 43, -72 + y * 18 - 4));
-            }
-        }
         AppEngInternalInventory output = new AppEngInternalInventory(this, 1);
         addSlot(outputSlot = new CraftingTermSlot(getPlayerInv().player, getActionSource(), getPowerSource(), gui.getIStorageGrid(), crafting, crafting, output, 131 + 43, -72 + 18 - 4, this));
 
@@ -211,11 +209,8 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
 
     @Override
     public FixedItemInv getInventoryByName(String name) {
-        if(name.equals("player")) {
-            return new FixedInventoryVanillaWrapper(getPlayerInventory());
-        } else if(name.equals("crafting")) {
-            return craftingGrid;
-        }
+        if(name.equals("player")) return new FixedInventoryVanillaWrapper(getPlayerInventory());
+        else if(name.equals("crafting")) return craftingGrid;
         return null;
     }
 

@@ -511,9 +511,16 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
     }
 
     private boolean isPointOverSlot(Slot slot, double a, double b) {
-        if(TrinketsClient.slotGroup == null && slot instanceof AppEngTrinketSlot) return false;
-        if(TrinketsClient.activeSlots != null && TrinketsClient.activeSlots.contains(slot))
-            return isPointWithinBounds(slot.x, slot.y, 16, 16, a, b);
+        if(TrinketsClient.slotGroup == null) {
+            if(slot instanceof AppEngTrinketSlot) return false;
+            return ((ScreenMixin) this).invokeIsPointOverSlot(slot, a, b);
+        }
+        if(TrinketsClient.activeSlots != null) {
+            for(Slot s : TrinketsClient.activeSlots) {
+                if(s == null) continue;
+                if(s == slot) return isPointWithinBounds(slot.x, slot.y, 16, 16, a, b);
+            }
+        }
         return false;
     }
 }

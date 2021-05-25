@@ -10,4 +10,7 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 public interface ScreenMixin {
     @Invoker("drawSlot")
     void invokeDrawSlot(MatrixStack matrices, Slot slot);
+
+    @Invoker("isPointOverSlot")
+    boolean invokeIsPointOverSlot(Slot slot, double a, double b);
 }
