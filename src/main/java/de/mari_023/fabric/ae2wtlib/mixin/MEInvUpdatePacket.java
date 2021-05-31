@@ -29,11 +29,9 @@ public class MEInvUpdatePacket {
     private byte ref;
 
     @Environment(EnvType.CLIENT)
-    @Inject(method = "clientPacketData", at = @At(value = "TAIL"), require = 1, allow = 1)
+    @Inject(method = "clientPacketData", at = @At(value = "TAIL"))
     public void clientPacketData(INetworkInfo manager, PlayerEntity player, CallbackInfo ci) {
-        final Screen gs = MinecraftClient.getInstance().currentScreen;
-        if(gs instanceof WirelessCraftConfirmScreen) {
-            ((WirelessCraftConfirmScreen) gs).postUpdate(list, ref);
-        }
+        if(MinecraftClient.getInstance().currentScreen instanceof WirelessCraftConfirmScreen)
+            ((WirelessCraftConfirmScreen) MinecraftClient.getInstance().currentScreen).postUpdate(list, ref);
     }
 }
