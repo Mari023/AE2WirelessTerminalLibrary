@@ -3,8 +3,7 @@ package de.mari_023.fabric.ae2wtlib.rei;
 import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import de.mari_023.fabric.ae2wtlib.wct.WCTContainer;
 import de.mari_023.fabric.ae2wtlib.wpt.WPTContainer;
-import de.mari_023.fabric.ae2wtlib.wut.recipe.Combine;
-import de.mari_023.fabric.ae2wtlib.wut.recipe.Upgrade;
+import de.mari_023.fabric.ae2wtlib.wut.recipe.Common;
 import me.shedaniel.rei.api.EntryStack;
 import me.shedaniel.rei.api.RecipeHelper;
 import me.shedaniel.rei.api.plugins.REIPluginV0;
@@ -29,7 +28,6 @@ public class Plugin implements REIPluginV0 {
 
     @Override
     public void registerRecipeDisplays(RecipeHelper recipeHelper) {
-        recipeHelper.registerRecipes(DefaultPlugin.CRAFTING, Combine.class, CombineDisplay::new);
-        recipeHelper.registerRecipes(DefaultPlugin.CRAFTING, Upgrade.class, UpgradeDisplay::new);
+        recipeHelper.registerRecipes(DefaultPlugin.CRAFTING, Common.class, WUTDisplay::new);
     }
 }

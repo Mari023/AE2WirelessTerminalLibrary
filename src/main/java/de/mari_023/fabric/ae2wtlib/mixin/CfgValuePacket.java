@@ -4,7 +4,6 @@ import appeng.container.implementations.WirelessCraftConfirmContainer;
 import appeng.core.sync.network.INetworkInfo;
 import appeng.core.sync.packets.ConfigValuePacket;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.screen.ScreenHandler;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

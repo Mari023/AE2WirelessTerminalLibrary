@@ -1,34 +1,29 @@
 package de.mari_023.fabric.ae2wtlib.wut.recipe;
 
-import de.mari_023.fabric.ae2wtlib.ae2wtlib;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.recipe.*;
+import net.minecraft.recipe.Ingredient;
+import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
-public class Combine implements CraftingRecipe {
+public class Combine extends Common {
     private final Ingredient TerminalA;
     private final Ingredient TerminalB;
     private final String TerminalAName;
     private final String TerminalBName;
-    private final ItemStack outputStack;
-    private final Identifier id;
 
     public Combine(Ingredient TerminalA, Ingredient TerminalB, String TerminalAName, String TerminalBName, Identifier id) {
+        super(id);
         this.TerminalA = TerminalA;
         this.TerminalB = TerminalB;
         this.TerminalAName = TerminalAName;
         this.TerminalBName = TerminalBName;
-        this.outputStack = new ItemStack(ae2wtlib.UNIVERSAL_TERMINAL);
         if(!outputStack.hasTag()) outputStack.setTag(new CompoundTag());
         outputStack.getTag().putBoolean(TerminalAName, true);
         outputStack.getTag().putBoolean(TerminalBName, true);
-        this.id = id;
     }
 
     public Ingredient getTerminalA() {
@@ -67,25 +62,9 @@ public class Combine implements CraftingRecipe {
         return wut;
     }
 
-    @Environment(EnvType.CLIENT)
-    @Override
-    public boolean fits(int width, int height) {
-        return width > 1 || height > 1;
-    }
-
-    @Override
-    public ItemStack getOutput() {
-        return outputStack;
-    }
-
-    @Override
-    public Identifier getId() {
-        return id;
-    }
-
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return CombineRecipeSerializer.INSTANCE;
+        return CombineSerializer.INSTANCE;
     }
 
     public DefaultedList<Ingredient> getPreviewInputs() {
