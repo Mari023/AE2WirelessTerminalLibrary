@@ -1,6 +1,6 @@
 package de.mari_023.fabric.ae2wtlib.rei;
 
-import de.mari_023.fabric.ae2wtlib.wut.recipe.Upgrade;
+import de.mari_023.fabric.ae2wtlib.wut.recipe.Common;
 import me.shedaniel.rei.api.EntryStack;
 import me.shedaniel.rei.plugin.crafting.DefaultCraftingDisplay;
 import net.fabricmc.api.EnvType;
@@ -14,13 +14,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Environment(EnvType.CLIENT)
-public class UpgradeDisplay implements DefaultCraftingDisplay {
+public class WUTDisplay implements DefaultCraftingDisplay {
 
-    private final Upgrade display;
+    private final Common display;
     private final List<List<EntryStack>> input;
     private final List<EntryStack> output;
 
-    public UpgradeDisplay(Upgrade recipe) {
+    public WUTDisplay(Common recipe) {
         this.display = recipe;
         this.input = EntryStack.ofIngredients(recipe.getPreviewInputs());
         this.output = Collections.singletonList(EntryStack.create(recipe.getOutput()));
@@ -33,7 +33,7 @@ public class UpgradeDisplay implements DefaultCraftingDisplay {
 
     @Override
     public @NotNull Optional<Identifier> getRecipeLocation() {
-        return Optional.ofNullable(display).map(Upgrade::getId);
+        return Optional.ofNullable(display).map(Common::getId);
     }
 
     @Override

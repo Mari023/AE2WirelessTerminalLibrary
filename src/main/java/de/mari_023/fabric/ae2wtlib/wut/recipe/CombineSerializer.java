@@ -3,16 +3,12 @@ package de.mari_023.fabric.ae2wtlib.wut.recipe;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.Identifier;
 
-public class CombineRecipeSerializer implements RecipeSerializer<Combine> {
-    private CombineRecipeSerializer() { }
-
-    public static final CombineRecipeSerializer INSTANCE = new CombineRecipeSerializer();
+public class CombineSerializer extends Serializer<Combine> {
+    public static final CombineSerializer INSTANCE = new CombineSerializer();
 
     public static final Identifier ID = new Identifier("ae2wtlib", "combine");
 
@@ -43,10 +39,5 @@ public class CombineRecipeSerializer implements RecipeSerializer<Combine> {
         String TerminalAName = packetData.readString(32767);
         String TerminalBName = packetData.readString(32767);
         return new Combine(TerminalA, TerminalB, TerminalAName, TerminalBName, id);
-    }
-
-    private boolean validateOutput(String s) {
-        if(s == null) return true;
-        return !WUTHandler.terminalNames.contains(s);
     }
 }
