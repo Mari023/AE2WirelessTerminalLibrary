@@ -50,6 +50,14 @@ repositories {
             includeGroup "alexiil.mc.lib"
         }
     }
+    maven {
+        name = "Technici4n"
+        url = "https://raw.githubusercontent.com/Technici4n/Technici4n-maven/master/"
+        content {
+            includeGroup "dev.technici4n"
+            includeGroup "net.fabricmc.fabric-api" // until ItemApiLookup PR #1352 is merged.
+        }
+    }
 
     /*maven {
         url = "https://maven.theillusivec4.top/"
