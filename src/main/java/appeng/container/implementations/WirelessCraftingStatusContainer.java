@@ -39,11 +39,8 @@ public class WirelessCraftingStatusContainer extends CraftingCPUContainer implem
 
     @Override
     public void sendContentUpdates() {
-        IGrid network = this.getNetwork();
-        if (isServer() && network != null) {
-            cpuCycler.detectAndSendChanges(network);
-        }
-
+        IGrid network = getNetwork();
+        if(isServer() && network != null) cpuCycler.detectAndSendChanges(network);
         super.sendContentUpdates();
     }
 
@@ -53,7 +50,7 @@ public class WirelessCraftingStatusContainer extends CraftingCPUContainer implem
 
     private void onCPUSelectionChanged(CraftingCPURecord cpuRecord, boolean cpusAvailable) {
         noCPU = !cpusAvailable;
-        if (cpuRecord == null) {
+        if(cpuRecord == null) {
             cpuName = null;
             setCPU(null);
         } else {
