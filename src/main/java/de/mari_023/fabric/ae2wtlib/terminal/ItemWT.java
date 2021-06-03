@@ -39,36 +39,35 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
 
     @Override
     public TypedActionResult<ItemStack> use(final World w, final PlayerEntity player, final Hand hand) {
-        openWirelessTerminalGui(player.getStackInHand(hand), player, hand);
+        if(canOpen(player.getStackInHand(hand), player)) open(player, ContainerLocator.forHand(player, hand));
         return new TypedActionResult<>(ActionResult.SUCCESS, player.getStackInHand(hand));
     }
 
-    protected void openWirelessTerminalGui(ItemStack item, PlayerEntity player, Hand hand) {
-        if(Platform.isClient()) {
-            return;
-        }
+    public boolean canOpen(ItemStack item, PlayerEntity player) {
+        if(Platform.isClient()) return false;
 
         final String unparsedKey = getEncryptionKey(item);
         if(unparsedKey.isEmpty()) {
             player.sendSystemMessage(PlayerMessages.DeviceNotLinked.get(), Util.NIL_UUID);
-            return;
+            return false;
         }
 
         final long parsedKey = Long.parseLong(unparsedKey);
         final ILocatable securityStation = Api.instance().registries().locatable().getLocatableBy(parsedKey);
         if(securityStation == null) {
             player.sendSystemMessage(PlayerMessages.StationCanNotBeLocated.get(), Util.NIL_UUID);
-            return;
+            return false;
         }
-
-        if(hasPower(player, 0.5, item)) {
-            open(player, ContainerLocator.forHand(player, hand));
-        } else {
+        if(hasPower(player, 0.5, item)) return true;
+        else {
             player.sendSystemMessage(PlayerMessages.DeviceNotPowered.get(), Util.NIL_UUID);
+            return false;
         }
     }
 
-    //TODO add a check if it can be opened
+    public void tryOpen(PlayerEntity player, ContainerLocator locator) {
+        if(canOpen(player.inventory.getStack(locator.getItemIndex()), player)) open(player, locator);
+    }
 
     public abstract void open(final PlayerEntity player, final ContainerLocator locator);
 
