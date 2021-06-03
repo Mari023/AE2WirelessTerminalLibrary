@@ -68,6 +68,8 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
         }
     }
 
+    //TODO add a check if it can be opened
+
     public abstract void open(final PlayerEntity player, final ContainerLocator locator);
 
     @Override
