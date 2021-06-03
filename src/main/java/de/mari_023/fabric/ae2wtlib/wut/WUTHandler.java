@@ -76,7 +76,8 @@ public class WUTHandler {
             player.sendMessage(new LiteralText("This terminal does not contain any other Terminals"), false);
             return;
         }
-        wirelessTerminals.get(currentTerminal).open(player, locator);
+        containerOpener terminal = wirelessTerminals.get(currentTerminal);
+        terminal.tryOpen(player, locator);
     }
 
     private static final HashMap<String, containerOpener> wirelessTerminals = new HashMap<>();
@@ -90,6 +91,6 @@ public class WUTHandler {
 
     @FunctionalInterface
     public interface containerOpener {
-        void open(final PlayerEntity player, final ContainerLocator locator);
+        void tryOpen(PlayerEntity player, ContainerLocator locator);
     }
 }

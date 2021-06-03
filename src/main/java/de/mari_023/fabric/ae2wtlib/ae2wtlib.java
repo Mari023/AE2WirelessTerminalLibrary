@@ -77,9 +77,9 @@ public class ae2wtlib implements ModInitializer {
         WirelessCraftAmountContainer.TYPE = ScreenHandlerRegistry.registerExtended(new Identifier("ae2wtlib", "wireless_craft_amount"), WirelessCraftAmountContainer::fromNetwork);
         WirelessCraftConfirmContainer.TYPE = ScreenHandlerRegistry.registerExtended(new Identifier("ae2wtlib", "wireless_craft_confirm"), WirelessCraftConfirmContainer::fromNetwork);
 
-        WUTHandler.addTerminal("crafting", CRAFTING_TERMINAL::open);
-        WUTHandler.addTerminal("pattern", PATTERN_TERMINAL::open);
-        WUTHandler.addTerminal("interface", INTERFACE_TERMINAL::open);
+        WUTHandler.addTerminal("crafting", CRAFTING_TERMINAL::tryOpen);
+        WUTHandler.addTerminal("pattern", PATTERN_TERMINAL::tryOpen);
+        WUTHandler.addTerminal("interface", INTERFACE_TERMINAL::tryOpen);
 
         Api.instance().registries().charger().addChargeRate(CRAFTING_TERMINAL, Config.getChargeRate());
         Api.instance().registries().charger().addChargeRate(PATTERN_TERMINAL, Config.getChargeRate());
@@ -228,8 +228,9 @@ public class ae2wtlib implements ModInitializer {
                 String terminalName = buf.readString(32767);
                 if(terminalName.equalsIgnoreCase("crafting")) {
                     int slot = -1;
+                    ItemStack terminal = null;
                     for(int i = 0; i < player.inventory.size(); i++) {
-                        ItemStack terminal = player.inventory.getStack(i);
+                        terminal = player.inventory.getStack(i);
                         if(terminal.getItem() instanceof ItemWCT || (terminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(terminal, "crafting"))) {
                             slot = i;
                             WUTHandler.setCurrentTerminal(player, slot, terminal, "crafting");
@@ -241,12 +242,14 @@ public class ae2wtlib implements ModInitializer {
                         return;
                     }
 
-                    CRAFTING_TERMINAL.open(player, ContainerHelper.getContainerLocatorForSlot(slot));
+                    if(CRAFTING_TERMINAL.canOpen(terminal, player))
+                        CRAFTING_TERMINAL.open(player, ContainerHelper.getContainerLocatorForSlot(slot));
                 } else if(terminalName.equalsIgnoreCase("pattern")) {
                     PlayerInventory inv = player.inventory;
                     int slot = -1;
+                    ItemStack terminal = null;
                     for(int i = 0; i < inv.size(); i++) {
-                        ItemStack terminal = inv.getStack(i);
+                        terminal = inv.getStack(i);
                         if(terminal.getItem() instanceof ItemWPT || (terminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(terminal, "pattern"))) {
                             slot = i;
                             WUTHandler.setCurrentTerminal(player, slot, terminal, "pattern");
@@ -259,12 +262,14 @@ public class ae2wtlib implements ModInitializer {
                         return;
                     }
 
-                    PATTERN_TERMINAL.open(player, ContainerHelper.getContainerLocatorForSlot(slot));
+                    if(PATTERN_TERMINAL.canOpen(terminal, player))
+                        PATTERN_TERMINAL.open(player, ContainerHelper.getContainerLocatorForSlot(slot));
                 } else if(terminalName.equalsIgnoreCase("interface")) {
                     PlayerInventory inv = player.inventory;
                     int slot = -1;
+                    ItemStack terminal = null;
                     for(int i = 0; i < inv.size(); i++) {
-                        ItemStack terminal = inv.getStack(i);
+                        terminal = inv.getStack(i);
                         if(terminal.getItem() instanceof ItemWIT || (terminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(terminal, "interface"))) {
                             slot = i;
                             WUTHandler.setCurrentTerminal(player, slot, terminal, "interface");
@@ -277,7 +282,8 @@ public class ae2wtlib implements ModInitializer {
                         return;
                     }
 
-                    INTERFACE_TERMINAL.open(player, ContainerHelper.getContainerLocatorForSlot(slot));
+                    if(INTERFACE_TERMINAL.canOpen(terminal, player))
+                        INTERFACE_TERMINAL.open(player, ContainerHelper.getContainerLocatorForSlot(slot));
                 } else if(terminalName.equalsIgnoreCase("toggleRestock")) {
                     CraftingTerminalHandler craftingTerminalHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
                     ItemStack terminal = craftingTerminalHandler.getCraftingTerminal();
