@@ -85,7 +85,7 @@ public abstract class WTGuiObject implements IGuiItemObject, IEnergySource, IAct
                     return testWap(myWap) || hasBoosterCard;
                 }
                 return hasBoosterCard;
-            }
+            } else isOutOfRange = true;
 
             myWap = null;
 
