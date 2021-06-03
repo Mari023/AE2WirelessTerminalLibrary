@@ -306,10 +306,11 @@ public class ae2wtlib implements ModInitializer {
                     if(Config.allowTrinket()) {
                         TrinketInventory trinketInv = (TrinketInventory) TrinketsApi.getTrinketsInventory(player);
                         for(int i = 0; i < trinketInv.size(); i++) {
-                            ItemStack terminal = trinketInv.getStack(i);
-                            if(terminal.getItem() instanceof ItemWCT || (terminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(terminal, "crafting"))) {
+                            ItemStack trinketTerminal = trinketInv.getStack(i);
+                            if(trinketTerminal.getItem() instanceof ItemWCT || (trinketTerminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(trinketTerminal, "crafting"))) {
                                 slot = i + 100;
-                                WUTHandler.setCurrentTerminal(player, slot, terminal, "crafting");
+                                WUTHandler.setCurrentTerminal(player, slot, trinketTerminal, "crafting");
+                                terminal = trinketTerminal;
                                 break;
                             }
                         }
@@ -336,10 +337,11 @@ public class ae2wtlib implements ModInitializer {
                     if(Config.allowTrinket()) {
                         TrinketInventory trinketInv = (TrinketInventory) TrinketsApi.getTrinketsInventory(player);
                         for(int i = 0; i < trinketInv.size(); i++) {
-                            ItemStack terminal = trinketInv.getStack(i);
-                            if(terminal.getItem() instanceof ItemWPT || (terminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(terminal, "pattern"))) {
+                            ItemStack trinketTerminal = trinketInv.getStack(i);
+                            if(trinketTerminal.getItem() instanceof ItemWPT || (trinketTerminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(trinketTerminal, "pattern"))) {
                                 slot = i + 100;
-                                WUTHandler.setCurrentTerminal(player, slot, terminal, "pattern");
+                                WUTHandler.setCurrentTerminal(player, slot, trinketTerminal, "pattern");
+                                terminal = trinketTerminal;
                                 break;
                             }
                         }
@@ -367,10 +369,11 @@ public class ae2wtlib implements ModInitializer {
                     if(Config.allowTrinket()) {
                         TrinketInventory trinketInv = (TrinketInventory) TrinketsApi.getTrinketsInventory(player);
                         for(int i = 0; i < trinketInv.size(); i++) {
-                            ItemStack terminal = trinketInv.getStack(i);
-                            if(terminal.getItem() instanceof ItemWIT || (terminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(terminal, "interface"))) {
+                            ItemStack trinketTerminal = trinketInv.getStack(i);
+                            if(trinketTerminal.getItem() instanceof ItemWIT || (trinketTerminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(trinketTerminal, "interface"))) {
                                 slot = i + 100;
-                                WUTHandler.setCurrentTerminal(player, slot, terminal, "interface");
+                                WUTHandler.setCurrentTerminal(player, slot, trinketTerminal, "interface");
+                                terminal = trinketTerminal;
                                 break;
                             }
                         }
