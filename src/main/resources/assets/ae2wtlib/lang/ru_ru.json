@@ -15,6 +15,10 @@
   "gui.ae2wtlib.magnetcard.desc.inv": "Подбирать в инвентарь",
   "gui.ae2wtlib.magnetcard.desc.me": "Подбирать в МЕ систему",
   "gui.ae2wtlib.cycle_terminal.desc": "Открыть следующей терминал",
+  "gui.ae2wtlib.magnetcard.hotkey": "Магнитная карта: ",
+  "gui.ae2wtlib.restock": "Автопополнение: ",
+  "gui.ae2wtlib.off": "Вкл",
+  "gui.ae2wtlib.on": "Выкл",
 
   "item.ae2wtlib.wireless_crafting_terminal": "Беспроводной терминал крафта",
   "item.ae2wtlib.wireless_pattern_terminal": "Беспроводной терминал шаблонов",
@@ -24,5 +28,7 @@
 
   "key.ae2wtlib.wct": "Открыть беспроводной терминал крафта",
   "key.ae2wtlib.wpt": "Открыть беспроводной терминал шаблонов",
-  "key.ae2wtlib.wit": "Открыть беспроводной терминал интерфейсов"
+  "key.ae2wtlib.wit": "Открыть беспроводной терминал интерфейсов",
+  "key.ae2wtlib.toggleRestock": "Переключить автопополнение",
+  "key.ae2wtlib.toggleMagnet": "Переключить магнитную карту"
 }
