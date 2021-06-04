@@ -73,11 +73,10 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
 
     boolean checkedTrinket = false;
     boolean trinket = false;
+
     private boolean useTrinket() {
         if(checkedTrinket) return trinket;
-        if(Config.allowTrinket() && MinecraftClient.getInstance().getGame().getCurrentSession() == null) {
-            return false;
-        }
+        if(Config.allowTrinket() || MinecraftClient.getInstance().getGame().getCurrentSession() == null) return false;
         checkedTrinket = true;
         return trinket = Config.allowTrinket() && MinecraftClient.getInstance().getGame().getCurrentSession().isRemoteServer();
     }
