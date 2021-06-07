@@ -71,16 +71,6 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
         } catch(IllegalAccessException | NoSuchFieldException ignored) {}
     }
 
-    boolean checkedTrinket = false;
-    boolean trinket = false;
-
-    private boolean useTrinket() {
-        if(checkedTrinket) return trinket;
-        if(MinecraftClient.getInstance().getGame().getCurrentSession() == null) return false;
-        checkedTrinket = true;
-        return trinket = Config.allowTrinket() && MinecraftClient.getInstance().getGame().getCurrentSession().isRemoteServer();
-    }
-
     @Override
     public void init() {
         super.init();
@@ -118,7 +108,7 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
             searchField = (AETextField) value;
         } catch(IllegalAccessException | NoSuchFieldException ignored) {}
 
-        if(useTrinket()) {
+        if(Config.allowTrinket()) {
             TrinketsClient.displayEquipped = 0;
             trinketSlots = new ArrayList<>();
             for(Slot slot : getScreenHandler().slots)
@@ -149,7 +139,7 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
         if(client != null && client.player != null)
             drawEntity(offsetX + 52, offsetY + 94 + rows * 18, 30, (float) (offsetX + 52) - mouseX, (float) offsetY + 55 + rows * 18 - mouseY, client.player);
 
-        if(useTrinket()) {
+        if(Config.allowTrinket()) {
             RenderSystem.disableDepthTest();
             List<TrinketSlots.Slot> trinketSlots = TrinketSlots.getAllSlots();
             setZOffset(100);
@@ -185,7 +175,7 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
     public void drawFG(MatrixStack matrices, final int offsetX, final int offsetY, final int mouseX, final int mouseY) {
         super.drawFG(matrices, offsetX, offsetY, mouseX, mouseY);
         textRenderer.draw(matrices, GuiText.CraftingTerminal.text(), 8, backgroundHeight - 96 + 1 - reservedSpace, 4210752);
-        if(useTrinket() && client != null) {
+        if(Config.allowTrinket() && client != null) {
             if(TrinketsClient.slotGroup != null)
                 TrinketInvRenderer.renderGroupFront(matrices, this, client.getTextureManager(), 0, 0, TrinketsClient.slotGroup, getGroupX(TrinketsClient.slotGroup), getGroupY(TrinketsClient.slotGroup));
             else if(TrinketsClient.displayEquipped > 0 && TrinketsClient.lastEquipped != null)
@@ -343,7 +333,7 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
     @Override
     public void tick() {
         super.tick();
-        if(!useTrinket()) return;
+        if(!Config.allowTrinket()) return;
         float relX = mouseX - x;
         float relY = mouseY - y;
         if(TrinketsClient.slotGroup == null || !inBounds(TrinketsClient.slotGroup, relX, relY, true)) {
