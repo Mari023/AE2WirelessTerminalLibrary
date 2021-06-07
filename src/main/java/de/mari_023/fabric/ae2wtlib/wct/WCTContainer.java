@@ -44,6 +44,7 @@ import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
@@ -88,32 +89,32 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
         AppEngInternalInventory output = new AppEngInternalInventory(this, 1);
         addSlot(outputSlot = new CraftingTermSlot(getPlayerInv().player, getActionSource(), getPowerSource(), gui.getIStorageGrid(), crafting, crafting, output, 131 + 43, -72 + 18 - 4, this));
 
-        addSlot(new AppEngSlot(fixedWTInv, 3, 8, -76) {
+        SlotsWithTrinket[5] = addSlot(new AppEngSlot(fixedWTInv, 3, 8, -76) {
             @Environment(EnvType.CLIENT)
             public Pair<Identifier, Identifier> getBackgroundSprite() {
                 return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, PlayerScreenHandler.EMPTY_HELMET_SLOT_TEXTURE);
             }
         });
-        addSlot(new AppEngSlot(fixedWTInv, 2, 8, -58) {
+        SlotsWithTrinket[6] = addSlot(new AppEngSlot(fixedWTInv, 2, 8, -58) {
             @Environment(EnvType.CLIENT)
             public Pair<Identifier, Identifier> getBackgroundSprite() {
                 return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, PlayerScreenHandler.EMPTY_CHESTPLATE_SLOT_TEXTURE);
             }
         });
-        addSlot(new AppEngSlot(fixedWTInv, 1, 8, -40) {
+        SlotsWithTrinket[7] = addSlot(new AppEngSlot(fixedWTInv, 1, 8, -40) {
             @Environment(EnvType.CLIENT)
             public Pair<Identifier, Identifier> getBackgroundSprite() {
                 return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, PlayerScreenHandler.EMPTY_LEGGINGS_SLOT_TEXTURE);
             }
         });
-        addSlot(new AppEngSlot(fixedWTInv, 0, 8, -22) {
+        SlotsWithTrinket[8] = addSlot(new AppEngSlot(fixedWTInv, 0, 8, -22) {
             @Environment(EnvType.CLIENT)
             public Pair<Identifier, Identifier> getBackgroundSprite() {
                 return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, PlayerScreenHandler.EMPTY_BOOTS_SLOT_TEXTURE);
             }
         });
 
-        addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.OFFHAND, 80, -22) {
+        SlotsWithTrinket[45] = addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.OFFHAND, 80, -22) {
             @Environment(EnvType.CLIENT)
             public Pair<Identifier, Identifier> getBackgroundSprite() {
                 return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, PlayerScreenHandler.EMPTY_OFFHAND_ARMOR_SLOT);
@@ -261,4 +262,6 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
     public ItemStack[] getViewCells() {
         return wctGUIObject.getViewCellStorage().getViewCells();
     }
+
+    public final Slot[] SlotsWithTrinket = new Slot[46];
 }

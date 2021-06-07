@@ -76,7 +76,7 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
 
     private boolean useTrinket() {
         if(checkedTrinket) return trinket;
-        if(Config.allowTrinket() || MinecraftClient.getInstance().getGame().getCurrentSession() == null) return false;
+        if(MinecraftClient.getInstance().getGame().getCurrentSession() == null) return false;
         checkedTrinket = true;
         return trinket = Config.allowTrinket() && MinecraftClient.getInstance().getGame().getCurrentSession().isRemoteServer();
     }
@@ -380,8 +380,10 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
                         ((SlotMixin) tSlots.get(i + l + offset)).setYPosition(groupY + 1);
                     }
                     TrinketsClient.activeSlots = new ArrayList<>();
-                    if(group.vanillaSlot != -1)
-                        TrinketsClient.activeSlots.add(getScreenHandler().getSlot(group.vanillaSlot));
+                    if(group.vanillaSlot != -1) {
+                        Slot slot = getScreenHandler().SlotsWithTrinket[group.vanillaSlot];
+                        if(slot != null) TrinketsClient.activeSlots.add(slot);
+                    }
                     TrinketsClient.activeSlots.addAll(tSlots);
                     break;
                 }
