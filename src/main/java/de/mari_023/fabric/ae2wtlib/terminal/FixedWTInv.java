@@ -3,12 +3,14 @@ package de.mari_023.fabric.ae2wtlib.terminal;
 import alexiil.mc.lib.attributes.Simulation;
 import alexiil.mc.lib.attributes.item.FixedItemInv;
 import alexiil.mc.lib.attributes.item.filter.ItemFilter;
-import de.mari_023.fabric.ae2wtlib.wct.magnet_card.ItemMagnetCard;
 import de.mari_023.fabric.ae2wtlib.wct.WCTContainer;
+import de.mari_023.fabric.ae2wtlib.wct.magnet_card.ItemMagnetCard;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ArmorItem;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Wearable;
 
 public class FixedWTInv implements FixedItemInv {
 
@@ -58,7 +60,8 @@ public class FixedWTInv implements FixedItemInv {
         } else if(i == 2) {
             return playerInventory.isValid(slotOffset + 2, itemStack) && itemStack.getItem() instanceof ArmorItem && ((ArmorItem) itemStack.getItem()).getSlotType().equals(EquipmentSlot.CHEST);
         } else if(i == 3) {
-            return playerInventory.isValid(slotOffset + 3, itemStack) && itemStack.getItem() instanceof ArmorItem && ((ArmorItem) itemStack.getItem()).getSlotType().equals(EquipmentSlot.HEAD);
+            return playerInventory.isValid(slotOffset + 3, itemStack) && ((itemStack.getItem() instanceof ArmorItem && ((ArmorItem) itemStack.getItem()).getSlotType().equals(EquipmentSlot.HEAD))
+                    || (itemStack.getItem() instanceof BlockItem && ((BlockItem) itemStack.getItem()).getBlock() instanceof Wearable));
         } else if(i == OFFHAND) return playerInventory.isValid(offHandSlot, itemStack);
         else if(i == TRASH) return true;
         else if(i == INFINITY_BOOSTER_CARD)
