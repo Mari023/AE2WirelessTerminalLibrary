@@ -44,7 +44,7 @@ public class FixedTrinketInv implements FixedItemInv.ModifiableFixedItemInv {
     @Override
     public ItemStack extractStack(int slot, ItemFilter filter, ItemStack mergeWith, int maxCount, Simulation simulation) {
         if(mergeWith.isEmpty()) {
-            if(Simulation.SIMULATE.isAction()) return inventory.removeStack(slot);
+            if(simulation.isAction()) return inventory.removeStack(slot);
             return inventory.getStack(slot);
         }
         return ItemStack.EMPTY;
