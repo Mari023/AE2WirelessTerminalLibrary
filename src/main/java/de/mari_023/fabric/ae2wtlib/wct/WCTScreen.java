@@ -426,7 +426,7 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
 
     @Override
     protected boolean isClickOutsideBounds(double x, double y, int i, int j, int k) {
-        if(TrinketsClient.slotGroup != null && inBounds(TrinketsClient.slotGroup, (float) x - this.x, (float) y - this.y, true))
+        if(Config.allowTrinket() && TrinketsClient.slotGroup != null && inBounds(TrinketsClient.slotGroup, (float) x - this.x, (float) y - this.y, true))
             return false;
         return super.isClickOutsideBounds(x, y, i, j, k);
     }
