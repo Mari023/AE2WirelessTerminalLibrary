@@ -26,7 +26,7 @@ public class TrinketInvRenderer {
 
     public static <T extends ScreenHandler> void renderExcessSlotGroups(MatrixStack matrices, HandledScreen<T> screen, TextureManager manager, int left, int top, int lastX, int lastY) {
         int xIndex = (lastX + 15) / -18;
-        int yIndex = (lastY - 7) / 18;
+        int yIndex = (lastY - 132) / 18;
         manager.bindTexture(TrinketInventoryRenderer.MORE_SLOTS_TEX);
         //Top segments
         for(int i = 0; i <= xIndex; i++) screen.drawTexture(matrices, left - 15 - i * 18, top + 3, 4, 0, 18, 4);
