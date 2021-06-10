@@ -73,11 +73,12 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
     private final WCTGuiObject wctGUIObject;
 
     public WCTContainer(int id, final PlayerInventory ip, final WCTGuiObject gui) {
-        super(TYPE, id, ip, gui, true);
+        super(TYPE, id, ip, gui, false);
         wctGUIObject = gui;
 
         final int slotIndex = ((IInventorySlotAware) wctGUIObject).getInventorySlot();
         lockPlayerInventorySlot(slotIndex);
+        bindPlayerInventory(ip, 0, 0);
 
         fixedWTInv = new FixedWTInv(getPlayerInv(), wctGUIObject.getItemStack(), this);
         craftingGrid = new ae2wtlibInternalInventory(this, 9, "crafting", wctGUIObject.getItemStack());
