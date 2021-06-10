@@ -130,8 +130,9 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
             for(TrinketSlots.SlotGroup group : TrinketSlots.slotGroups) {
                 int j = 0;
                 for(TrinketSlots.Slot slot : group.slots) {
+                    boolean locked = slotIndex-100 == i;
                     AppEngTrinketSlot ts;
-                    ts = new AppEngTrinketSlot(inv, i, Integer.MIN_VALUE, 8, group.getName(), slot.getName());
+                    ts = new AppEngTrinketSlot(inv, i, Integer.MIN_VALUE, 8, group.getName(), slot.getName(), locked);
                     if(j == 0 && !group.onReal) ts.keepVisible = true;
                     addSlot(ts);
                     i++;
