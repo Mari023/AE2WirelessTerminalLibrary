@@ -31,6 +31,7 @@ import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
 import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
 import de.mari_023.fabric.ae2wtlib.wut.recipe.CombineSerializer;
 import de.mari_023.fabric.ae2wtlib.wut.recipe.UpgradeSerializer;
+import dev.emi.trinkets.api.*;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -215,7 +216,10 @@ public class ae2wtlib implements ModInitializer {
 
             final ContainerLocator locator = ((AEBaseContainer) screenHandler).getLocator();
             int slot = locator.getItemIndex();
-            ItemStack item = player.inventory.getStack(slot);
+            ItemStack item;
+            if(slot >= 100 && slot < 200 && Config.allowTrinket())
+                item = TrinketsApi.getTrinketsInventory(player).getStack(slot - 100);
+            else item = player.inventory.getStack(slot);
 
             if(!(item.getItem() instanceof ItemWUT)) return;
             WUTHandler.cycle(player, slot, item);
@@ -237,6 +241,18 @@ public class ae2wtlib implements ModInitializer {
                             break;
                         }
                     }
+                    if(Config.allowTrinket()) {
+                        TrinketInventory trinketInv = (TrinketInventory) TrinketsApi.getTrinketsInventory(player);
+                        for(int i = 0; i < trinketInv.size(); i++) {
+                            ItemStack trinketTerminal = trinketInv.getStack(i);
+                            if(trinketTerminal.getItem() instanceof ItemWCT || (trinketTerminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(trinketTerminal, "crafting"))) {
+                                slot = i + 100;
+                                WUTHandler.setCurrentTerminal(player, slot, trinketTerminal, "crafting");
+                                terminal = trinketTerminal;
+                                break;
+                            }
+                        }
+                    }
                     if(slot == -1) {
                         buf.release();
                         return;
@@ -254,6 +270,18 @@ public class ae2wtlib implements ModInitializer {
                             slot = i;
                             WUTHandler.setCurrentTerminal(player, slot, terminal, "pattern");
                             break;
+                        }
+                    }
+                    if(Config.allowTrinket()) {
+                        TrinketInventory trinketInv = (TrinketInventory) TrinketsApi.getTrinketsInventory(player);
+                        for(int i = 0; i < trinketInv.size(); i++) {
+                            ItemStack trinketTerminal = trinketInv.getStack(i);
+                            if(trinketTerminal.getItem() instanceof ItemWPT || (trinketTerminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(trinketTerminal, "pattern"))) {
+                                slot = i + 100;
+                                WUTHandler.setCurrentTerminal(player, slot, trinketTerminal, "pattern");
+                                terminal = trinketTerminal;
+                                break;
+                            }
                         }
                     }
 
@@ -274,6 +302,18 @@ public class ae2wtlib implements ModInitializer {
                             slot = i;
                             WUTHandler.setCurrentTerminal(player, slot, terminal, "interface");
                             break;
+                        }
+                    }
+                    if(Config.allowTrinket()) {
+                        TrinketInventory trinketInv = (TrinketInventory) TrinketsApi.getTrinketsInventory(player);
+                        for(int i = 0; i < trinketInv.size(); i++) {
+                            ItemStack trinketTerminal = trinketInv.getStack(i);
+                            if(trinketTerminal.getItem() instanceof ItemWIT || (trinketTerminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(trinketTerminal, "interface"))) {
+                                slot = i + 100;
+                                WUTHandler.setCurrentTerminal(player, slot, trinketTerminal, "interface");
+                                terminal = trinketTerminal;
+                                break;
+                            }
                         }
                     }
 

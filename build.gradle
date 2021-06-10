@@ -77,6 +77,14 @@ repositories {
         name "Siphalor's Maven"
         url "https://maven.siphalor.de"
     }
+    maven {
+        name = "TerraformersMC"
+        url = "https://maven.terraformersmc.com/"
+    }
+    maven {
+        name = "NerdHubMC"
+        url = "https://maven.abusedmaster.xyz/"
+    }
 }
 
 dependencies {
@@ -95,6 +103,8 @@ dependencies {
     modImplementation "curse.maven:minemenufabric-478687:${project.minemenufabric_version}"
     modImplementation "com.terraformersmc:modmenu:1.16.7"//dependency for minemenu
     modApi("me.shedaniel.cloth:cloth-config-fabric:4.11.14")//dependency for minemenu
+    modImplementation "dev.emi:trinkets:${project.trinkets_version}"
+    modRuntime "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:2.8.3"
 }
 
 processResources {
@@ -160,6 +170,7 @@ curseforge {
                 requiredDependency 'applied-energistics-2'
                 optionalDependency 'roughly-enough-items'
                 optionalDependency 'minemenufabric'
+                optionalDependency 'trinkets-fabric'
             }
             afterEvaluate {
                 uploadTask.dependsOn(remapJar)

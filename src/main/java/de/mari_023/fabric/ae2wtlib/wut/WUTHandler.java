@@ -1,9 +1,12 @@
 package de.mari_023.fabric.ae2wtlib.wut;
 
 import appeng.container.ContainerLocator;
+import de.mari_023.fabric.ae2wtlib.Config;
+import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.wct.ItemWCT;
 import de.mari_023.fabric.ae2wtlib.wit.ItemWIT;
 import de.mari_023.fabric.ae2wtlib.wpt.ItemWPT;
+import dev.emi.trinkets.api.TrinketsApi;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.player.PlayerEntity;
@@ -20,11 +23,14 @@ import java.util.List;
 public class WUTHandler {
 
     public static String getCurrentTerminal(ItemStack wirelessUniversalTerminal) {
-        if(wirelessUniversalTerminal.getItem() instanceof ItemWCT) return "crafting";
-        if(wirelessUniversalTerminal.getItem() instanceof ItemWPT) return "pattern";
-        if(wirelessUniversalTerminal.getItem() instanceof ItemWIT) return "interface";
-        if(!(wirelessUniversalTerminal.getItem() instanceof ItemWUT) || wirelessUniversalTerminal.getTag() == null)
+        if(!(wirelessUniversalTerminal.getItem() instanceof ItemWT) || wirelessUniversalTerminal.getTag() == null)
             return "noTerminal";
+        if(!(wirelessUniversalTerminal.getItem() instanceof ItemWUT)) {
+            if(wirelessUniversalTerminal.getItem() instanceof ItemWCT) return "crafting";
+            else if(wirelessUniversalTerminal.getItem() instanceof ItemWPT) return "pattern";
+            else if(wirelessUniversalTerminal.getItem() instanceof ItemWIT) return "interface";
+            else return "noTerminal";
+        }
         String currentTerminal = wirelessUniversalTerminal.getTag().getString("currentTerminal");
 
         if(!wirelessTerminals.containsKey(currentTerminal)) for(String terminal : terminalNames)
@@ -69,7 +75,12 @@ public class WUTHandler {
     }
 
     public static void open(final PlayerEntity player, final ContainerLocator locator) {
-        ItemStack is = player.inventory.getStack(locator.getItemIndex());
+        int slot = locator.getItemIndex();
+        ItemStack is;
+        if(slot >= 100 && slot < 200 && Config.allowTrinket())
+            is = TrinketsApi.getTrinketsInventory(player).getStack(slot - 100);
+        else is = player.inventory.getStack(slot);
+
         if(is.getTag() == null) return;
         String currentTerminal = getCurrentTerminal(is);
         if(!wirelessTerminals.containsKey(currentTerminal)) {

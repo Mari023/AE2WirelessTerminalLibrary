@@ -20,13 +20,18 @@ import appeng.util.inv.IAEAppEngInventory;
 import appeng.util.inv.InvOperation;
 import com.mojang.datafixers.util.Pair;
 import de.mari_023.fabric.ae2wtlib.Config;
-import de.mari_023.fabric.ae2wtlib.util.ContainerHelper;
 import de.mari_023.fabric.ae2wtlib.terminal.FixedWTInv;
 import de.mari_023.fabric.ae2wtlib.terminal.IWTInvHolder;
 import de.mari_023.fabric.ae2wtlib.terminal.ae2wtlibInternalInventory;
+import de.mari_023.fabric.ae2wtlib.trinket.AppEngTrinketSlot;
+import de.mari_023.fabric.ae2wtlib.trinket.FixedTrinketInv;
+import de.mari_023.fabric.ae2wtlib.util.ContainerHelper;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.ItemMagnetCard;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetSettings;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
+import dev.emi.trinkets.api.TrinketInventory;
+import dev.emi.trinkets.api.TrinketSlots;
+import dev.emi.trinkets.api.TrinketsApi;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.player.PlayerEntity;
@@ -39,6 +44,7 @@ import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
+import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
@@ -78,40 +84,38 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
         craftingGrid = new ae2wtlibInternalInventory(this, 9, "crafting", wctGUIObject.getItemStack());
         final FixedItemInv crafting = getInventoryByName("crafting");
 
-        for(int y = 0; y < 3; y++) {
-            for(int x = 0; x < 3; x++) {
+        for(int y = 0; y < 3; y++)
+            for(int x = 0; x < 3; x++)
                 addSlot(craftingSlots[x + y * 3] = new CraftingMatrixSlot(this, crafting, x + y * 3, 37 + x * 18 + 43, -72 + y * 18 - 4));
-            }
-        }
         AppEngInternalInventory output = new AppEngInternalInventory(this, 1);
         addSlot(outputSlot = new CraftingTermSlot(getPlayerInv().player, getActionSource(), getPowerSource(), gui.getIStorageGrid(), crafting, crafting, output, 131 + 43, -72 + 18 - 4, this));
 
-        addSlot(new AppEngSlot(fixedWTInv, 3, 8, -76) {
+        SlotsWithTrinket[5] = addSlot(new AppEngSlot(fixedWTInv, 3, 8, -76) {
             @Environment(EnvType.CLIENT)
             public Pair<Identifier, Identifier> getBackgroundSprite() {
                 return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, PlayerScreenHandler.EMPTY_HELMET_SLOT_TEXTURE);
             }
         });
-        addSlot(new AppEngSlot(fixedWTInv, 2, 8, -58) {
+        SlotsWithTrinket[6] = addSlot(new AppEngSlot(fixedWTInv, 2, 8, -58) {
             @Environment(EnvType.CLIENT)
             public Pair<Identifier, Identifier> getBackgroundSprite() {
                 return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, PlayerScreenHandler.EMPTY_CHESTPLATE_SLOT_TEXTURE);
             }
         });
-        addSlot(new AppEngSlot(fixedWTInv, 1, 8, -40) {
+        SlotsWithTrinket[7] = addSlot(new AppEngSlot(fixedWTInv, 1, 8, -40) {
             @Environment(EnvType.CLIENT)
             public Pair<Identifier, Identifier> getBackgroundSprite() {
                 return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, PlayerScreenHandler.EMPTY_LEGGINGS_SLOT_TEXTURE);
             }
         });
-        addSlot(new AppEngSlot(fixedWTInv, 0, 8, -22) {
+        SlotsWithTrinket[8] = addSlot(new AppEngSlot(fixedWTInv, 0, 8, -22) {
             @Environment(EnvType.CLIENT)
             public Pair<Identifier, Identifier> getBackgroundSprite() {
                 return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, PlayerScreenHandler.EMPTY_BOOTS_SLOT_TEXTURE);
             }
         });
 
-        addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.OFFHAND, 80, -22) {
+        SlotsWithTrinket[45] = addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.OFFHAND, 80, -22) {
             @Environment(EnvType.CLIENT)
             public Pair<Identifier, Identifier> getBackgroundSprite() {
                 return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, PlayerScreenHandler.EMPTY_OFFHAND_ARMOR_SLOT);
@@ -120,6 +124,22 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
         addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.TRASH, 98, -22));
         addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.INFINITY_BOOSTER_CARD, 134, -20));
         addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.MAGNET_CARD, 152, -20));//TODO fetch texture for card background
+        if(Config.allowTrinket()) {
+            FixedTrinketInv inv = new FixedTrinketInv((TrinketInventory) TrinketsApi.getTrinketsInventory(getPlayerInv().player));
+            int i = 0;
+            for(TrinketSlots.SlotGroup group : TrinketSlots.slotGroups) {
+                int j = 0;
+                for(TrinketSlots.Slot slot : group.slots) {
+                    boolean locked = slotIndex-100 == i;
+                    AppEngTrinketSlot ts;
+                    ts = new AppEngTrinketSlot(inv, i, Integer.MIN_VALUE, 8, group.getName(), slot.getName(), locked);
+                    if(j == 0 && !group.onReal) ts.keepVisible = true;
+                    addSlot(ts);
+                    i++;
+                    j++;
+                }
+            }
+        }
     }
 
     private int ticks = 0;
@@ -192,11 +212,8 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
 
     @Override
     public FixedItemInv getInventoryByName(String name) {
-        if(name.equals("player")) {
-            return new FixedInventoryVanillaWrapper(getPlayerInventory());
-        } else if(name.equals("crafting")) {
-            return craftingGrid;
-        }
+        if(name.equals("player")) return new FixedInventoryVanillaWrapper(getPlayerInventory());
+        else if(name.equals("crafting")) return craftingGrid;
         return null;
     }
 
@@ -247,4 +264,6 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
     public ItemStack[] getViewCells() {
         return wctGUIObject.getViewCellStorage().getViewCells();
     }
+
+    public final Slot[] SlotsWithTrinket = new Slot[46];
 }

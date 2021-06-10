@@ -2,6 +2,7 @@ package de.mari_023.fabric.ae2wtlib.client;
 
 import appeng.container.implementations.WirelessCraftConfirmContainer;
 import appeng.container.implementations.WirelessCraftingStatusContainer;
+import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.util.WirelessCraftAmountContainer;
 import de.mari_023.fabric.ae2wtlib.util.WirelessCraftAmountScreen;
@@ -14,6 +15,7 @@ import de.mari_023.fabric.ae2wtlib.wit.WITContainer;
 import de.mari_023.fabric.ae2wtlib.wit.WITScreen;
 import de.mari_023.fabric.ae2wtlib.wpt.WPTContainer;
 import de.mari_023.fabric.ae2wtlib.wpt.WPTScreen;
+import dev.emi.trinkets.api.TrinketsApi;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -75,7 +77,12 @@ public class ae2wtlibclient implements ClientModInitializer {
             client.execute(() -> {
                 if(client.player == null) return;
                 int slot = buf.readInt();
-                client.player.inventory.getStack(slot).setTag(buf.readCompoundTag());
+                ItemStack is;
+                CompoundTag tag = buf.readCompoundTag();
+                if(slot >= 100 && slot < 200 && Config.allowTrinket())
+                    is = TrinketsApi.getTrinketsInventory(client.player).getStack(slot - 100);
+                else is = client.player.inventory.getStack(slot);
+                is.setTag(tag);
                 buf.release();
             });
         });

@@ -38,6 +38,7 @@
     "appliedenergistics2": ">=8.3.0-alpha.3"
   },
   "suggests": {
-    "minemenufabric": "*"
+    "minemenufabric": "*",
+    "trinkets": "*"
   }
 }

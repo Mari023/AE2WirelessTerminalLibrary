@@ -206,4 +206,8 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
         }
         return ItemStack.EMPTY;
     }
+
+    public boolean canWearInSlot(String group, String slot) {
+        return true;
+    }
 }
