@@ -21,7 +21,7 @@ public class RestockRender {
     public void renderGuiItemOverlay(TextRenderer renderer, ItemStack stack, int x, int y, CallbackInfo ci) {
         if(MinecraftClient.getInstance().player == null) return;
         CraftingTerminalHandler handler = CraftingTerminalHandler.getCraftingTerminalHandler(MinecraftClient.getInstance().player);
-        if(MinecraftClient.getInstance().player.isCreative() || !ItemWT.getBoolean(handler.getCraftingTerminal(), "restock") || !handler.inRange())
+        if(MinecraftClient.getInstance().player.isCreative() || !ItemWT.getBoolean(handler.getCraftingTerminal(), "restock") || !handler.inRange() || stack.getCount() == 1)
             return;
         ((ItemRenderer) (Object) this).renderGuiItemOverlay(renderer, stack, x, y, "Restock");
         ci.cancel();
