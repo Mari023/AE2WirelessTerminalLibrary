@@ -121,9 +121,11 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
                 return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, PlayerScreenHandler.EMPTY_OFFHAND_ARMOR_SLOT);
             }
         });
+
         addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.TRASH, 98, -22));
         addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.INFINITY_BOOSTER_CARD, 134, -20));
         addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.MAGNET_CARD, 152, -20));//TODO fetch texture for card background
+
         if(Config.allowTrinket()) {
             FixedTrinketInv inv = new FixedTrinketInv((TrinketInventory) TrinketsApi.getTrinketsInventory(getPlayerInv().player));
             int i = 0;
