@@ -47,6 +47,8 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Future;
 
 public class ae2wtlib implements ModInitializer {
@@ -356,6 +358,15 @@ public class ae2wtlib implements ModInitializer {
                     ItemMagnetCard.saveMagnetSettings(terminal, settings);
                 }
                 buf.release();
+            });
+        });
+        ServerPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "restock_amounts"), (server, player, handler, buf, sender) -> {
+            buf.retain();
+            server.execute(() -> {
+                CraftingTerminalHandler ctHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
+                List<ItemStack> items = new ArrayList<>();
+                while(buf.isReadable()) items.add(buf.readItemStack());
+                ctHandler.setRestockAbleItems(items);
             });
         });
 

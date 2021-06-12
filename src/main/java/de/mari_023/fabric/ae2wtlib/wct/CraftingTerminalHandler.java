@@ -22,6 +22,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 public class CraftingTerminalHandler {
@@ -142,10 +143,15 @@ public class CraftingTerminalHandler {
         return false;
     }
 
-    private HashMap<Item, Integer> storedItems = new HashMap<>();
+    private final HashMap<Item, Integer> restockAbleItems = new HashMap<>();
 
     public int getAccessibleAmount(ItemStack stack) {
-        int i = storedItems.get(stack.getItem()) == null ? 0 : storedItems.get(stack.getItem());
+        int i = restockAbleItems.get(stack.getItem()) == null ? 0 : restockAbleItems.get(stack.getItem());
         return stack.getCount() + i;
+    }
+
+    public void setRestockAbleItems(List<ItemStack> items) {
+        restockAbleItems.clear();
+        for(ItemStack stack : items) restockAbleItems.put(stack.getItem(), stack.getCount());
     }
 }
