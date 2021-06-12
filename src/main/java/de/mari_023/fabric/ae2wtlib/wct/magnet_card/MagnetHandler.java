@@ -34,6 +34,8 @@ public class MagnetHandler {
         }
     }
 
+
+    private boolean sendEmpty;
     public void sendRestockAble(ServerPlayerEntity player) {//FIXME wait until the player properly joined
         CraftingTerminalHandler handler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
         boolean canRestock = !player.isCreative() && ItemWT.getBoolean(handler.getCraftingTerminal(), "restock") && handler.inRange();
@@ -50,7 +52,9 @@ public class MagnetHandler {
         PacketByteBuf buf = PacketByteBufs.create();
         for(Map.Entry<Item, Integer> entry : items.entrySet())
             buf.writeItemStack(new ItemStack(entry.getKey(), entry.getValue()));
-        ClientPlayNetworking.send(new Identifier("ae2wtlib", "restock_amounts"), buf);
+        if(canRestock || sendEmpty) ClientPlayNetworking.send(new Identifier("ae2wtlib", "restock_amounts"), buf);
+        if(canRestock) sendEmpty = true;
+        else if(sendEmpty) sendEmpty = false;
     }
 
     private int getCount(PlayerEntity player, ItemStack stack) {
