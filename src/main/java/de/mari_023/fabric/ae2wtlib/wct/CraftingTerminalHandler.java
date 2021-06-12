@@ -18,6 +18,7 @@ import dev.emi.trinkets.api.TrinketInventory;
 import dev.emi.trinkets.api.TrinketsApi;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import java.util.HashMap;
@@ -139,5 +140,12 @@ public class CraftingTerminalHandler {
             }
         }
         return false;
+    }
+
+    private HashMap<Item, Integer> storedItems = new HashMap<>();
+
+    public int getAccessibleAmount(ItemStack stack) {
+        int i = storedItems.get(stack.getItem()) == null ? 0 : storedItems.get(stack.getItem());
+        return stack.getCount() + i;
     }
 }
