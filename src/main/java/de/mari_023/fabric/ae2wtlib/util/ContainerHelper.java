@@ -135,15 +135,10 @@ public final class ContainerHelper<C extends AEBaseContainer, I> {
         }
 
         String currentTerminal = WUTHandler.getCurrentTerminal(it);
-        //TODO do something generic, I don't want to hardcode everything
-        if(interfaceClass.isAssignableFrom(WCTGuiObject.class) && currentTerminal.equals("crafting"))
+
+        if(interfaceClass.isAssignableFrom(WCTGuiObject.class) && (currentTerminal.equals("crafting") || currentTerminal.equals("pattern") || currentTerminal.equals("interface")))
             return interfaceClass.cast(new WCTGuiObject((ItemWT) it.getItem(), it, player, locator.getItemIndex()));
 
-        if(interfaceClass.isAssignableFrom(WPTGuiObject.class) && currentTerminal.equals("pattern"))
-            return interfaceClass.cast(new WPTGuiObject((ItemWT) it.getItem(), it, player, locator.getItemIndex()));
-
-        if(interfaceClass.isAssignableFrom(WITGuiObject.class) && currentTerminal.equals("interface"))
-            return interfaceClass.cast(new WITGuiObject((ItemWT) it.getItem(), it, player, locator.getItemIndex()));
         return null;
     }
 
