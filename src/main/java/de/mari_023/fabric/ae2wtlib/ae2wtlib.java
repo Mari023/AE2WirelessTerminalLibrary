@@ -360,15 +360,6 @@ public class ae2wtlib implements ModInitializer {
                 buf.release();
             });
         });
-        ServerPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "restock_amounts"), (server, player, handler, buf, sender) -> {
-            buf.retain();
-            server.execute(() -> {
-                CraftingTerminalHandler ctHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
-                List<ItemStack> items = new ArrayList<>();
-                while(buf.isReadable()) items.add(buf.readItemStack());
-                ctHandler.setRestockAbleItems(items);
-            });
-        });
 
         ServerTickEvents.START_SERVER_TICK.register(new MagnetHandler()::doMagnet);
     }

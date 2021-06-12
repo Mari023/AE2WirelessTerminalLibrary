@@ -37,6 +37,9 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Environment(EnvType.CLIENT)
 public class ae2wtlibclient implements ClientModInitializer {
     @Override
@@ -86,6 +89,17 @@ public class ae2wtlibclient implements ClientModInitializer {
                 buf.release();
             });
         });
+        ClientPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "restock_amounts"), (client, handler, buf, responseSender) -> {
+            buf.retain();
+            client.execute(() -> {
+                if(client.player == null) return;
+                CraftingTerminalHandler ctHandler = CraftingTerminalHandler.getCraftingTerminalHandler(client.player);
+                List<ItemStack> items = new ArrayList<>();
+                while(buf.isReadable()) items.add(buf.readItemStack());
+                ctHandler.setRestockAbleItems(items);
+            });
+        });
+
         registerKeybindings();
     }
 
