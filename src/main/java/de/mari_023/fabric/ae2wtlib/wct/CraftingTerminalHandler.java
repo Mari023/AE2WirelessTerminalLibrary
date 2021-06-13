@@ -8,6 +8,7 @@ import appeng.api.networking.IMachineSet;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.util.DimensionalCoord;
 import appeng.core.Api;
+import appeng.util.item.AEItemStack;
 import de.mari_023.fabric.ae2wtlib.Config;
 import appeng.tile.networking.WirelessTileEntity;
 import de.mari_023.fabric.ae2wtlib.terminal.IInfinityBoosterCardHolder;
@@ -143,15 +144,14 @@ public class CraftingTerminalHandler {
         return false;
     }
 
-    private final HashMap<Item, Integer> restockAbleItems = new HashMap<>();
+    private final HashMap<Item, Long> restockAbleItems = new HashMap<>();
 
-    public int getAccessibleAmount(ItemStack stack) {
-        int i = restockAbleItems.get(stack.getItem()) == null ? 0 : restockAbleItems.get(stack.getItem());
-        return stack.getCount() + i;
+    public long getAccessibleAmount(ItemStack stack) {
+        return stack.getCount() + (restockAbleItems.get(stack.getItem()) == null ? 0 : restockAbleItems.get(stack.getItem()));
     }
 
-    public void setRestockAbleItems(List<ItemStack> items) {
+    public void setRestockAbleItems(List<AEItemStack> items) {
         restockAbleItems.clear();
-        for(ItemStack stack : items) restockAbleItems.put(stack.getItem(), stack.getCount());
+        for(AEItemStack stack : items) restockAbleItems.put(stack.getItem(), stack.getStackSize());
     }
 }

@@ -2,6 +2,7 @@ package de.mari_023.fabric.ae2wtlib.client;
 
 import appeng.container.implementations.WirelessCraftConfirmContainer;
 import appeng.container.implementations.WirelessCraftingStatusContainer;
+import appeng.util.item.AEItemStack;
 import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.util.WirelessCraftAmountContainer;
@@ -94,8 +95,8 @@ public class ae2wtlibclient implements ClientModInitializer {
             client.execute(() -> {
                 if(client.player == null) return;
                 CraftingTerminalHandler ctHandler = CraftingTerminalHandler.getCraftingTerminalHandler(client.player);
-                List<ItemStack> items = new ArrayList<>();
-                while(buf.isReadable()) items.add(buf.readItemStack());
+                List<AEItemStack> items = new ArrayList<>();
+                while(buf.isReadable()) items.add(AEItemStack.fromPacket(buf));
                 ctHandler.setRestockAbleItems(items);
             });
         });

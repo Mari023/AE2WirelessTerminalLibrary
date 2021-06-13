@@ -47,18 +47,14 @@ public class MagnetHandler {
         CraftingTerminalHandler handler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
         boolean canRestock = !player.isCreative() && ItemWT.getBoolean(handler.getCraftingTerminal(), "restock") && handler.inRange();
         HashMap<Item, Integer> items = new HashMap<>();
-        if(canRestock) {
-            for(int i = 0; i < player.inventory.size(); i++) {
-                ItemStack stack = player.inventory.getStack(i);
-                if(!items.containsKey(stack.getItem())) {
-                    items.put(stack.getItem(), getCount(player, stack));
-                }
-            }
+        if(canRestock) for(int i = 0; i < player.inventory.size(); i++) {
+            ItemStack stack = player.inventory.getStack(i);
+            if(!items.containsKey(stack.getItem())) items.put(stack.getItem(), getCount(player, stack));
         }
 
         PacketByteBuf buf = PacketByteBufs.create();
         for(Map.Entry<Item, Integer> entry : items.entrySet())
-            buf.writeItemStack(new ItemStack(entry.getKey(), entry.getValue()));
+            AEItemStack.fromItemStack(new ItemStack(entry.getKey(), 1)).setStackSize(entry.getValue()).writeToPacket(buf);
         if(canRestock || sendEmpty)
             ServerPlayNetworking.send(player, new Identifier("ae2wtlib", "restock_amounts"), buf);
         if(canRestock) sendEmpty = true;
