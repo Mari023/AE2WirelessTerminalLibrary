@@ -55,7 +55,7 @@ public class MagnetHandler {
 
         PacketByteBuf buf = PacketByteBufs.create();
         for(Map.Entry<Item, Integer> entry : items.entrySet())
-            AEItemStack.fromItemStack(new ItemStack(entry.getKey(), 1)).setStackSize(entry.getValue()).writeToPacket(buf);
+            AEItemStack.fromItemStack(new ItemStack(entry.getKey())).setStackSize(entry.getValue()).writeToPacket(buf);
         if(canRestock || sendEmpty)
             ServerPlayNetworking.send(player, new Identifier("ae2wtlib", "restock_amounts"), buf);
         if(canRestock) sendEmpty = true;

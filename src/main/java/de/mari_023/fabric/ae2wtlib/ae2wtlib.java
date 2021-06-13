@@ -31,7 +31,8 @@ import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
 import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
 import de.mari_023.fabric.ae2wtlib.wut.recipe.CombineSerializer;
 import de.mari_023.fabric.ae2wtlib.wut.recipe.UpgradeSerializer;
-import dev.emi.trinkets.api.*;
+import dev.emi.trinkets.api.TrinketInventory;
+import dev.emi.trinkets.api.TrinketsApi;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -47,8 +48,6 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.Future;
 
 public class ae2wtlib implements ModInitializer {

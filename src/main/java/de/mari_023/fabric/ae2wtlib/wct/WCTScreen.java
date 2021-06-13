@@ -160,7 +160,7 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
             int lastX = getGroupX(lastGroup);
             int lastY = getGroupY(lastGroup);
             if(lastX < 0)
-                TrinketInvRenderer.renderExcessSlotGroups(matrices, this, client.getTextureManager(), x, y + backgroundHeight-167, lastX, lastY);
+                TrinketInvRenderer.renderExcessSlotGroups(matrices, this, client.getTextureManager(), x, y + backgroundHeight - 167, lastX, lastY);
             for(TrinketSlots.SlotGroup group : TrinketSlots.slotGroups)
                 if(!group.onReal && group.slots.size() > 0) {
                     client.getTextureManager().bindTexture(TrinketInventoryRenderer.MORE_SLOTS_TEX);
@@ -473,7 +473,7 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
         for(int i = 6; i < TrinketSlots.slotGroups.size(); i++) {
             if(TrinketSlots.slotGroups.get(i) == group) {
                 j += i;
-                return ((j - 5) % 4) * 18 + backgroundHeight-160;
+                return ((j - 5) % 4) * 18 + backgroundHeight - 160;
             } else if(TrinketSlots.slotGroups.get(i).slots.size() == 0) j--;
         }
         return 0;
