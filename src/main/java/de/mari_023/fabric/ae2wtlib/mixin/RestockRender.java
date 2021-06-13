@@ -1,5 +1,6 @@
 package de.mari_023.fabric.ae2wtlib.mixin;
 
+import appeng.util.ReadableNumberConverter;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.wct.CraftingTerminalHandler;
 import net.fabricmc.api.EnvType;
@@ -23,7 +24,7 @@ public class RestockRender {
         CraftingTerminalHandler handler = CraftingTerminalHandler.getCraftingTerminalHandler(MinecraftClient.getInstance().player);
         if(MinecraftClient.getInstance().player.isCreative() || !ItemWT.getBoolean(handler.getCraftingTerminal(), "restock") || !handler.inRange() || stack.getCount() == 1)
             return;
-        ((ItemRenderer) (Object) this).renderGuiItemOverlay(renderer, stack, x, y, ""+handler.getAccessibleAmount(stack));
+        ((ItemRenderer) (Object) this).renderGuiItemOverlay(renderer, stack, x, y, ReadableNumberConverter.INSTANCE.toSlimReadableForm(handler.getAccessibleAmount(stack)));
         ci.cancel();
     }
 }
