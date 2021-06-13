@@ -23,7 +23,7 @@ public class InvActionPacket {
     @Final
     private InventoryAction action;
 
-    @Inject(method = "serverPacketData", at = @At(value = "TAIL"))
+    @Inject(method = "serverPacketData", at = @At(value = "INVOKE"))
     public void serverPacketData(INetworkInfo manager, PlayerEntity player, CallbackInfo ci) {
         if(action == InventoryAction.AUTO_CRAFT) {
             if(player.currentScreenHandler instanceof WCTContainer || player.currentScreenHandler instanceof WPTContainer) {
