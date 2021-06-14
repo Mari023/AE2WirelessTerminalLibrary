@@ -23,7 +23,6 @@ import net.minecraft.util.Identifier;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 public class MagnetHandler {
     public void doMagnet(MinecraftServer server) {
@@ -38,12 +37,7 @@ public class MagnetHandler {
         }
     }
 
-
-    private final HashMap<UUID, Boolean> sendEmpty = new HashMap<>();
-
     public void sendRestockAble(ServerPlayerEntity player) {
-        if(!sendEmpty.containsKey(player.getUuid())) sendEmpty.put(player.getUuid(), false);
-        boolean sendEmpty = this.sendEmpty.get(player.getUuid());
         CraftingTerminalHandler handler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
         boolean canRestock = !player.isCreative() && ItemWT.getBoolean(handler.getCraftingTerminal(), "restock") && handler.inRange();
         HashMap<Item, Long> items = new HashMap<>();
@@ -59,10 +53,7 @@ public class MagnetHandler {
         PacketByteBuf buf = PacketByteBufs.create();
         for(Map.Entry<Item, Long> entry : items.entrySet())
             AEItemStack.fromItemStack(new ItemStack(entry.getKey())).setStackSize(entry.getValue()).writeToPacket(buf);
-        if(canRestock || sendEmpty)
-            ServerPlayNetworking.send(player, new Identifier("ae2wtlib", "restock_amounts"), buf);
-        if(canRestock) this.sendEmpty.replace(player.getUuid(), true);
-        else if(sendEmpty) this.sendEmpty.replace(player.getUuid(), false);
+        if(canRestock) ServerPlayNetworking.send(player, new Identifier("ae2wtlib", "restock_amounts"), buf);
     }
 
     private long getCount(IItemList<IAEItemStack> storageList, ItemStack stack) {
