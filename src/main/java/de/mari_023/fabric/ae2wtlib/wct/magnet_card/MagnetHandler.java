@@ -39,12 +39,12 @@ public class MagnetHandler {
 
     public void sendRestockAble(ServerPlayerEntity player) {
         CraftingTerminalHandler handler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
-        boolean canRestock = !player.isCreative() && ItemWT.getBoolean(handler.getCraftingTerminal(), "restock") && handler.inRange();
+        if(player.isCreative() || !ItemWT.getBoolean(handler.getCraftingTerminal(), "restock") || !handler.inRange()) return;
         HashMap<Item, Long> items = new HashMap<>();
 
         IItemList<IAEItemStack> storageList = ((NetworkMonitor<IAEItemStack>) ((IStorageGrid) handler.getTargetGrid().getCache(IStorageGrid.class)).getInventory(Api.instance().storage().getStorageChannel(IItemStorageChannel.class))).getStorageList();
 
-        if(canRestock) for(int i = 0; i < player.inventory.size(); i++) {
+        for(int i = 0; i < player.inventory.size(); i++) {
             ItemStack stack = player.inventory.getStack(i);
             if(stack.isEmpty()) continue;
             if(!items.containsKey(stack.getItem())) items.put(stack.getItem(), getCount(storageList, stack));
@@ -53,7 +53,7 @@ public class MagnetHandler {
         PacketByteBuf buf = PacketByteBufs.create();
         for(Map.Entry<Item, Long> entry : items.entrySet())
             AEItemStack.fromItemStack(new ItemStack(entry.getKey())).setStackSize(entry.getValue()).writeToPacket(buf);
-        if(canRestock) ServerPlayNetworking.send(player, new Identifier("ae2wtlib", "restock_amounts"), buf);
+        ServerPlayNetworking.send(player, new Identifier("ae2wtlib", "restock_amounts"), buf);
     }
 
     private long getCount(IItemList<IAEItemStack> storageList, ItemStack stack) {
