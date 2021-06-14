@@ -65,8 +65,8 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
         }
     }
 
-    public void tryOpen(PlayerEntity player, ContainerLocator locator) {
-        if(canOpen(player.inventory.getStack(locator.getItemIndex()), player)) open(player, locator);
+    public void tryOpen(PlayerEntity player, ContainerLocator locator, ItemStack stack) {
+        if(canOpen(stack, player)) open(player, locator);
     }
 
     public abstract void open(final PlayerEntity player, final ContainerLocator locator);
@@ -205,9 +205,5 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
             return getSavedSlot(hostItem, "boosterCard");
         }
         return ItemStack.EMPTY;
-    }
-
-    public boolean canWearInSlot(String group, String slot) {
-        return true;
     }
 }
