@@ -30,8 +30,8 @@ public class MagnetHandler {
         for(ServerPlayerEntity player : playerList) {
             if(ItemMagnetCard.isActiveMagnet(CraftingTerminalHandler.getCraftingTerminalHandler(player).getCraftingTerminal())) {
                 List<ItemEntity> entityItems = player.getServerWorld().getEntitiesByClass(ItemEntity.class, player.getBoundingBox().expand(16.0D), EntityPredicates.VALID_ENTITY);
-                for(ItemEntity entityItemNearby : entityItems)
-                    if(!player.isSneaking()) entityItemNearby.onPlayerCollision(player);
+                boolean sneaking = !player.isSneaking();
+                for(ItemEntity entityItemNearby : entityItems) if(sneaking) entityItemNearby.onPlayerCollision(player);
             }
             sendRestockAble(player);
         }
@@ -39,7 +39,8 @@ public class MagnetHandler {
 
     public void sendRestockAble(ServerPlayerEntity player) {
         CraftingTerminalHandler handler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
-        if(player.isCreative() || !ItemWT.getBoolean(handler.getCraftingTerminal(), "restock") || !handler.inRange()) return;
+        if(player.isCreative() || !ItemWT.getBoolean(handler.getCraftingTerminal(), "restock") || !handler.inRange())
+            return;
         HashMap<Item, Long> items = new HashMap<>();
 
         IItemList<IAEItemStack> storageList = ((NetworkMonitor<IAEItemStack>) ((IStorageGrid) handler.getTargetGrid().getCache(IStorageGrid.class)).getInventory(Api.instance().storage().getStorageChannel(IItemStorageChannel.class))).getStorageList();
