@@ -88,7 +88,7 @@ public class WUTHandler {
             return;
         }
         containerOpener terminal = wirelessTerminals.get(currentTerminal);
-        terminal.tryOpen(player, locator);
+        terminal.tryOpen(player, locator, is);
     }
 
     private static final HashMap<String, containerOpener> wirelessTerminals = new HashMap<>();
@@ -102,6 +102,6 @@ public class WUTHandler {
 
     @FunctionalInterface
     public interface containerOpener {
-        void tryOpen(PlayerEntity player, ContainerLocator locator);
+        void tryOpen(PlayerEntity player, ContainerLocator locator, ItemStack stack);
     }
 }
