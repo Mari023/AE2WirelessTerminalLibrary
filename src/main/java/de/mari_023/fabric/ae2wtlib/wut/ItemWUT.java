@@ -34,7 +34,7 @@ public class ItemWUT extends ItemWT implements IInfinityBoosterCardHolder {
     public TypedActionResult<ItemStack> use(final World w, final PlayerEntity player, final Hand hand) {
         if(player.isSneaking()) {
             if(w.isClient() && Config.allowMineMenu()) MineMenuIntegration.openMineMenu(player.getStackInHand(hand));
-            else;//This is here to trick java into not loading MineMenuIntegration when it can't
+            else ;//This is here to trick java into not loading MineMenuIntegration when it can't
         } else super.use(w, player, hand);
         return new TypedActionResult<>(ActionResult.SUCCESS, player.getStackInHand(hand));
     }

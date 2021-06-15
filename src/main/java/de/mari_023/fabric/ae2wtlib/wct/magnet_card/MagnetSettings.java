@@ -9,6 +9,7 @@ public class MagnetSettings {
 
     /**
      * loads {@link MagnetSettings} from a tag.
+     *
      * @param tag tag to load the settings from.
      *            An empty tag will result in Default {@link MagnetSettings}
      */

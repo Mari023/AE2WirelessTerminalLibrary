@@ -8,8 +8,9 @@ import appeng.api.networking.IMachineSet;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.util.DimensionalCoord;
 import appeng.core.Api;
-import de.mari_023.fabric.ae2wtlib.Config;
 import appeng.tile.networking.WirelessTileEntity;
+import appeng.util.item.AEItemStack;
+import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.terminal.IInfinityBoosterCardHolder;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
@@ -18,9 +19,11 @@ import dev.emi.trinkets.api.TrinketInventory;
 import dev.emi.trinkets.api.TrinketsApi;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 public class CraftingTerminalHandler {
@@ -139,5 +142,16 @@ public class CraftingTerminalHandler {
             }
         }
         return false;
+    }
+
+    private final HashMap<Item, Long> restockAbleItems = new HashMap<>();
+
+    public long getAccessibleAmount(ItemStack stack) {
+        return stack.getCount() + (restockAbleItems.get(stack.getItem()) == null ? 0 : restockAbleItems.get(stack.getItem()));
+    }
+
+    public void setRestockAbleItems(List<AEItemStack> items) {
+        restockAbleItems.clear();
+        for(AEItemStack stack : items) restockAbleItems.put(stack.getItem(), stack.getStackSize());
     }
 }

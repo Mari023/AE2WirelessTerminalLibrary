@@ -12,11 +12,11 @@
     "Restock",
     "ScreenHandlerMixin",
     "SlotMixin",
-    "Restock",
     "TrinketWT"
   ],
   "client": [
     "MeMonitorableScreenWireless",
+    "RestockRender",
     "ScreenMixin",
     "MineMenuMixin",
     "MineMenuTerminalHandler"

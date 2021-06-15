@@ -42,4 +42,8 @@ public class Config {
     private static boolean isTrinketEnabled() {
         return true;
     }
+
+    public static double magnetCardRange() {
+        return 16D;
+    }
 }
