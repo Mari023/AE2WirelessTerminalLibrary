@@ -10,6 +10,7 @@ import appeng.core.localization.GuiText;
 import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.InventoryActionPacket;
 import appeng.helpers.InventoryAction;
+import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.mixin.ScreenMixin;
@@ -42,6 +43,7 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Quaternion;
+import org.lwjgl.opengl.GL11;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -140,7 +142,7 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
             drawEntity(offsetX + 52, offsetY + 94 + rows * 18, 30, (float) (offsetX + 52) - mouseX, (float) offsetY + 55 + rows * 18 - mouseY, client.player);
 
         if(Config.allowTrinket()) {
-            RenderSystem.disableDepthTest();
+            GlStateManager.disableDepthTest();
             List<TrinketSlots.Slot> trinketSlots = TrinketSlots.getAllSlots();
             setZOffset(100);
             itemRenderer.zOffset = 100.0F;
@@ -155,7 +157,7 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
             }
             setZOffset(0);
             itemRenderer.zOffset = 0.0F;
-            RenderSystem.enableDepthTest();
+            GlStateManager.enableDepthTest();
             TrinketSlots.SlotGroup lastGroup = TrinketSlots.slotGroups.get(TrinketSlots.slotGroups.size() - 1);
             int lastX = getGroupX(lastGroup);
             int lastY = getGroupY(lastGroup);
@@ -181,7 +183,7 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
             else if(TrinketsClient.displayEquipped > 0 && TrinketsClient.lastEquipped != null)
                 TrinketInvRenderer.renderGroupFront(matrices, this, client.getTextureManager(), 0, 0, TrinketsClient.lastEquipped, getGroupX(TrinketsClient.lastEquipped), getGroupY(TrinketsClient.lastEquipped));
 
-            RenderSystem.disableDepthTest();
+            GlStateManager.disableDepthTest();
             List<TrinketSlots.Slot> trinketSlots = TrinketSlots.getAllSlots();
             int trinketOffset = -1;
             for(int i = 0; i < handler.slots.size(); i++) {
@@ -202,7 +204,7 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
                 if(s.getSlotGroup() == TrinketsClient.slotGroup || (s.getSlotGroup() == TrinketsClient.lastEquipped && TrinketsClient.displayEquipped > 0))
                     renderSlot(matrices, ts, s, mouseX, mouseY);
             }
-            RenderSystem.enableDepthTest();
+            GlStateManager.enableDepthTest();
         }
     }
 
@@ -281,9 +283,9 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
     public static void drawEntity(int x, int y, int size, float mouseX, float mouseY, LivingEntity entity) {
         float f = (float) Math.atan((mouseX / 40.0F));
         float g = (float) Math.atan((mouseY / 40.0F));
-        RenderSystem.pushMatrix();
-        RenderSystem.translatef((float) x, (float) y, 1050.0F);
-        RenderSystem.scalef(1.0F, 1.0F, -1.0F);
+        GL11.glPushMatrix();
+        GL11.glTranslatef((float) x, (float) y, 1050.0F);
+        GL11.glScalef(1.0F, 1.0F, -1.0F);
         MatrixStack matrixStack = new MatrixStack();
         matrixStack.translate(0.0D, 0.0D, 1000.0D);
         matrixStack.scale((float) size, (float) size, (float) size);
@@ -314,7 +316,7 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
         entity.pitch = j;
         entity.prevHeadYaw = k;
         entity.headYaw = l;
-        RenderSystem.popMatrix();
+        GL11.glPopMatrix();
     }
 
     @Override
@@ -483,27 +485,27 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
 
     public void renderSlotBack(MatrixStack matrices, Slot ts, TrinketSlots.Slot s, int x, int y) {
         assert client != null;
-        RenderSystem.disableLighting();
+        GlStateManager.disableLighting();
         if(ts.getStack().isEmpty()) client.getTextureManager().bindTexture(s.texture);
         else client.getTextureManager().bindTexture(BLANK_BACK);
         DrawableHelper.drawTexture(matrices, x + ts.x, y + ts.y, 0, 0, 0, 16, 16, 16, 16);
+        GlStateManager.enableLighting();
     }
 
     public void renderSlot(MatrixStack matrices, Slot ts, TrinketSlots.Slot s, int x, int y) {
         assert client != null;
         matrices.push();
-        RenderSystem.disableLighting();
-        RenderSystem.disableDepthTest();
+        GlStateManager.disableLighting();
+        GlStateManager.disableDepthTest();
         if(ts.getStack().isEmpty()) client.getTextureManager().bindTexture(s.texture);
         else client.getTextureManager().bindTexture(BLANK_BACK);
         DrawableHelper.drawTexture(matrices, ts.x, ts.y, 0, 0, 0, 16, 16, 16, 16);
         ((ScreenMixin) this).invokeDrawSlot(matrices, ts);
         if(isPointOverSlot(ts, x, y) && ts.doDrawHoveringEffect()) {
             focusedSlot = ts;
-            RenderSystem.disableDepthTest();
-            RenderSystem.colorMask(true, true, true, false);
+            GlStateManager.colorMask(true, true, true, false);
             fillGradient(matrices, ts.x, ts.y, ts.x + 16, ts.y + 16, -2130706433, -2130706433);
-            RenderSystem.colorMask(true, true, true, true);
+            GlStateManager.colorMask(true, true, true, true);
         }
         matrices.pop();
     }
