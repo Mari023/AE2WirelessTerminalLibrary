@@ -7,7 +7,7 @@ import appeng.container.ContainerLocator;
 import appeng.core.AELog;
 import appeng.core.localization.GuiText;
 import appeng.util.Platform;
-import de.mari_023.fabric.ae2wtlib.Config;
+import de.mari_023.fabric.ae2wtlib.ae2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.wct.WCTGuiObject;
 import de.mari_023.fabric.ae2wtlib.wit.WITGuiObject;
@@ -125,7 +125,7 @@ public final class ContainerHelper<C extends AEBaseContainer, I> {
         int slot = locator.getItemIndex();
         ItemStack it;
 
-        if(slot >= 100 && slot < 200 && Config.allowTrinket())
+        if(slot >= 100 && slot < 200 && ae2wtlibConfig.allowTrinket())
             it = TrinketsApi.getTrinketsInventory(player).getStack(slot - 100);
         else it = player.inventory.getStack(slot);
 

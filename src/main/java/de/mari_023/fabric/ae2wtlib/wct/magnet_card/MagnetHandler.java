@@ -7,7 +7,7 @@ import appeng.api.storage.data.IItemList;
 import appeng.core.Api;
 import appeng.me.cache.NetworkMonitor;
 import appeng.util.item.AEItemStack;
-import de.mari_023.fabric.ae2wtlib.Config;
+import de.mari_023.fabric.ae2wtlib.ae2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.wct.CraftingTerminalHandler;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -30,7 +30,7 @@ public class MagnetHandler {
         List<ServerPlayerEntity> playerList = server.getPlayerManager().getPlayerList();
         for(ServerPlayerEntity player : playerList) {
             if(ItemMagnetCard.isActiveMagnet(CraftingTerminalHandler.getCraftingTerminalHandler(player).getCraftingTerminal())) {
-                List<ItemEntity> entityItems = player.getServerWorld().getEntitiesByClass(ItemEntity.class, player.getBoundingBox().expand(Config.magnetCardRange()), EntityPredicates.VALID_ENTITY);
+                List<ItemEntity> entityItems = player.getServerWorld().getEntitiesByClass(ItemEntity.class, player.getBoundingBox().expand(ae2wtlibConfig.magnetCardRange()), EntityPredicates.VALID_ENTITY);
                 boolean sneaking = !player.isSneaking();
                 for(ItemEntity entityItemNearby : entityItems) if(sneaking) entityItemNearby.onPlayerCollision(player);
             }

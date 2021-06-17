@@ -1,7 +1,7 @@
 package de.mari_023.fabric.ae2wtlib.wut;
 
 import appeng.container.ContainerLocator;
-import de.mari_023.fabric.ae2wtlib.Config;
+import de.mari_023.fabric.ae2wtlib.ae2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.wct.ItemWCT;
 import de.mari_023.fabric.ae2wtlib.wit.ItemWIT;
@@ -77,7 +77,7 @@ public class WUTHandler {
     public static void open(final PlayerEntity player, final ContainerLocator locator) {
         int slot = locator.getItemIndex();
         ItemStack is;
-        if(slot >= 100 && slot < 200 && Config.allowTrinket())
+        if(slot >= 100 && slot < 200 && ae2wtlibConfig.allowTrinket())
             is = TrinketsApi.getTrinketsInventory(player).getStack(slot - 100);
         else is = player.inventory.getStack(slot);
 

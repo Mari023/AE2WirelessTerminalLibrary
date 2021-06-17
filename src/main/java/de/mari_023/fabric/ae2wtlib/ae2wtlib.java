@@ -83,10 +83,10 @@ public class ae2wtlib implements ModInitializer {
         WUTHandler.addTerminal("pattern", PATTERN_TERMINAL::tryOpen);
         WUTHandler.addTerminal("interface", INTERFACE_TERMINAL::tryOpen);
 
-        Api.instance().registries().charger().addChargeRate(CRAFTING_TERMINAL, Config.getChargeRate());
-        Api.instance().registries().charger().addChargeRate(PATTERN_TERMINAL, Config.getChargeRate());
-        Api.instance().registries().charger().addChargeRate(INTERFACE_TERMINAL, Config.getChargeRate());
-        Api.instance().registries().charger().addChargeRate(UNIVERSAL_TERMINAL, Config.getChargeRate() * Config.WUTChargeRateMultiplier());
+        Api.instance().registries().charger().addChargeRate(CRAFTING_TERMINAL, ae2wtlibConfig.getChargeRate());
+        Api.instance().registries().charger().addChargeRate(PATTERN_TERMINAL, ae2wtlibConfig.getChargeRate());
+        Api.instance().registries().charger().addChargeRate(INTERFACE_TERMINAL, ae2wtlibConfig.getChargeRate());
+        Api.instance().registries().charger().addChargeRate(UNIVERSAL_TERMINAL, ae2wtlibConfig.getChargeRate() * ae2wtlibConfig.WUTChargeRateMultiplier());
 
         Registry.register(Registry.RECIPE_SERIALIZER, CombineSerializer.ID, CombineSerializer.INSTANCE);
         Registry.register(Registry.RECIPE_SERIALIZER, UpgradeSerializer.ID, UpgradeSerializer.INSTANCE);
@@ -218,7 +218,7 @@ public class ae2wtlib implements ModInitializer {
             final ContainerLocator locator = ((AEBaseContainer) screenHandler).getLocator();
             int slot = locator.getItemIndex();
             ItemStack item;
-            if(slot >= 100 && slot < 200 && Config.allowTrinket())
+            if(slot >= 100 && slot < 200 && ae2wtlibConfig.allowTrinket())
                 item = TrinketsApi.getTrinketsInventory(player).getStack(slot - 100);
             else item = player.inventory.getStack(slot);
 
@@ -242,7 +242,7 @@ public class ae2wtlib implements ModInitializer {
                             break;
                         }
                     }
-                    if(Config.allowTrinket()) {
+                    if(ae2wtlibConfig.allowTrinket()) {
                         TrinketInventory trinketInv = (TrinketInventory) TrinketsApi.getTrinketsInventory(player);
                         for(int i = 0; i < trinketInv.size(); i++) {
                             ItemStack trinketTerminal = trinketInv.getStack(i);
@@ -273,7 +273,7 @@ public class ae2wtlib implements ModInitializer {
                             break;
                         }
                     }
-                    if(Config.allowTrinket()) {
+                    if(ae2wtlibConfig.allowTrinket()) {
                         TrinketInventory trinketInv = (TrinketInventory) TrinketsApi.getTrinketsInventory(player);
                         for(int i = 0; i < trinketInv.size(); i++) {
                             ItemStack trinketTerminal = trinketInv.getStack(i);
@@ -305,7 +305,7 @@ public class ae2wtlib implements ModInitializer {
                             break;
                         }
                     }
-                    if(Config.allowTrinket()) {
+                    if(ae2wtlibConfig.allowTrinket()) {
                         TrinketInventory trinketInv = (TrinketInventory) TrinketsApi.getTrinketsInventory(player);
                         for(int i = 0; i < trinketInv.size(); i++) {
                             ItemStack trinketTerminal = trinketInv.getStack(i);

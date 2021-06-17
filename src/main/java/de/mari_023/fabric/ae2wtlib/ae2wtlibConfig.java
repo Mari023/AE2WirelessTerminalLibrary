@@ -3,7 +3,7 @@ package de.mari_023.fabric.ae2wtlib;
 import appeng.core.AEConfig;
 import net.fabricmc.loader.api.FabricLoader;
 
-public class Config {
+public class ae2wtlibConfig {
 
     private static boolean mineMenuChecked, mineMenuPresent, trinketPresent, trinketChecked;
 
@@ -32,9 +32,7 @@ public class Config {
     }
 
     public static boolean allowTrinket() {
-        if(!trinketChecked) {
-            trinketPresent = isTrinketEnabled() && FabricLoader.getInstance().isModLoaded("trinkets");
-        }
+        if(!trinketChecked) trinketPresent = isTrinketEnabled() && FabricLoader.getInstance().isModLoaded("trinkets");
         trinketChecked = true;
         return trinketPresent;
     }
