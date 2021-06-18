@@ -43,6 +43,7 @@ public abstract class WTGuiObject implements IGuiItemObject, IEnergySource, IAct
     private double myRange = Double.MAX_VALUE;
     private IStorageGrid sg;
     private final int inventorySlot;
+    private final IGridNode gridNode;
 
     public WTGuiObject(final IWirelessTermHandler wh, final ItemStack is, final PlayerEntity ep, int inventorySlot) {
         String encryptionKey = wh.getEncryptionKey(is);
@@ -60,13 +61,13 @@ public abstract class WTGuiObject implements IGuiItemObject, IEnergySource, IAct
         } catch(final NumberFormatException ignored) {}
 
         if(obj instanceof IActionHost) {
-            final IGridNode n = ((IActionHost) obj).getActionableNode();
-            if(n != null) {
-                targetGrid = n.getGrid();
+            gridNode = ((IActionHost) obj).getActionableNode();
+            if(gridNode != null) {
+                targetGrid = gridNode.getGrid();
                 sg = targetGrid.getCache(IStorageGrid.class);
                 itemStorage = sg.getInventory(Api.instance().storage().getStorageChannel(IItemStorageChannel.class));
             }
-        }
+        } else gridNode = null;
     }
 
     public abstract boolean open(PlayerEntity player, ContainerLocator locator);
@@ -142,11 +143,7 @@ public abstract class WTGuiObject implements IGuiItemObject, IEnergySource, IAct
 
     @Override
     public IGridNode getActionableNode() {
-        rangeCheck();
-        if(myWap != null) {
-            return myWap.getActionableNode();
-        }
-        return null;
+        return gridNode;
     }
 
     @Override
