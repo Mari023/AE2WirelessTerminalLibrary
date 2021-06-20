@@ -44,6 +44,7 @@ public class MagnetHandler {
             return;
         HashMap<Item, Long> items = new HashMap<>();
 
+        if(handler.getTargetGrid() == null) return;
         IItemList<IAEItemStack> storageList = ((NetworkMonitor<IAEItemStack>) ((IStorageGrid) handler.getTargetGrid().getCache(IStorageGrid.class)).getInventory(Api.instance().storage().getStorageChannel(IItemStorageChannel.class))).getStorageList();
 
         for(int i = 0; i < player.inventory.size(); i++) {
