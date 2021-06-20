@@ -67,9 +67,6 @@ public class ae2wtlib implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        AutoConfig.register(ae2wtlibConfig.class, JanksonConfigSerializer::new);
-        ae2wtlibConfig.INSTANCE = AutoConfig.getConfigHolder(ae2wtlibConfig.class).getConfig();
-
         Registry.register(Registry.ITEM, new Identifier("ae2wtlib", "infinity_booster_card"), INFINITY_BOOSTER);
         Registry.register(Registry.ITEM, new Identifier("ae2wtlib", "magnet_card"), MAGNET_CARD);
         Registry.register(Registry.ITEM, new Identifier("ae2wtlib", "wireless_crafting_terminal"), CRAFTING_TERMINAL);
