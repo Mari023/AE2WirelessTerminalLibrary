@@ -84,10 +84,8 @@ public class CraftingTerminalHandler {
         if(getSecurityStation() == null) return targetGrid = null;
         final IGridNode n = ((IActionHost) securityStation).getActionableNode();
 
-        if(n != null) {
-            return targetGrid = n.getGrid();
-        }
-        return targetGrid = null;
+        if(n == null) return targetGrid = null;
+        return targetGrid = n.getGrid();
     }
 
     private IWirelessAccessPoint myWap;
@@ -99,27 +97,19 @@ public class CraftingTerminalHandler {
         sqRange = Double.MAX_VALUE;
 
         if(getTargetGrid() == null) return false;
-        if(targetGrid != null) {
-            if(myWap != null) {
-                if(myWap.getGrid() == targetGrid) {
-                    if(testWap(myWap)) return true;
-                }
-            }
+        if(targetGrid == null) return false;
+        if(myWap != null && myWap.getGrid() == targetGrid && testWap(myWap)) return true;
 
-            final IMachineSet tw = targetGrid.getMachines(WirelessTileEntity.class);
+        final IMachineSet tw = targetGrid.getMachines(WirelessTileEntity.class);
 
-            myWap = null;
+        myWap = null;
 
-            for(final IGridNode n : tw) {
-                final IWirelessAccessPoint wap = (IWirelessAccessPoint) n.getMachine();
-                if(testWap(wap)) {
-                    myWap = wap;
-                }
-            }
-
-            return myWap != null;
+        for(final IGridNode n : tw) {
+            final IWirelessAccessPoint wap = (IWirelessAccessPoint) n.getMachine();
+            if(testWap(wap)) myWap = wap;
         }
-        return false;
+
+        return myWap != null;
     }
 
     private boolean testWap(final IWirelessAccessPoint wap) {
@@ -128,18 +118,16 @@ public class CraftingTerminalHandler {
 
         final DimensionalCoord dc = wap.getLocation();
 
-        if(dc.getWorld() == player.world) {
-            final double offX = dc.x - player.getX();
-            final double offY = dc.y - player.getY();
-            final double offZ = dc.z - player.getZ();
+        if(dc.getWorld() != player.world) return false;
 
-            final double r = offX * offX + offY * offY + offZ * offZ;
-            if(r < rangeLimit && sqRange > r) {
-                if(wap.isActive()) {
-                    sqRange = r;
-                    return true;
-                }
-            }
+        final double offX = dc.x - player.getX();
+        final double offY = dc.y - player.getY();
+        final double offZ = dc.z - player.getZ();
+
+        final double r = offX * offX + offY * offY + offZ * offZ;
+        if(r < rangeLimit && sqRange > r && wap.isActive()) {
+            sqRange = r;
+            return true;
         }
         return false;
     }
