@@ -6,6 +6,10 @@ import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.IMachineSet;
 import appeng.api.networking.security.IActionHost;
+import appeng.api.networking.storage.IStorageGrid;
+import appeng.api.storage.IMEMonitor;
+import appeng.api.storage.channels.IItemStorageChannel;
+import appeng.api.storage.data.IAEItemStack;
 import appeng.api.util.DimensionalCoord;
 import appeng.core.Api;
 import appeng.tile.networking.WirelessTileEntity;
@@ -33,6 +37,8 @@ public class CraftingTerminalHandler {
     private ItemStack craftingTerminal = ItemStack.EMPTY;
     private ILocatable securityStation;
     private IGrid targetGrid;
+    private IStorageGrid storageGrid;
+    private IMEMonitor<IAEItemStack> itemStorageChannel;
 
     private CraftingTerminalHandler(PlayerEntity player) {
         this.player = player;
@@ -86,6 +92,18 @@ public class CraftingTerminalHandler {
 
         if(n == null) return targetGrid = null;
         return targetGrid = n.getGrid();
+    }
+
+    public IStorageGrid getStorageGrid() {
+        if(getTargetGrid() == null) return storageGrid = null;
+        if(storageGrid == null) return storageGrid = targetGrid.getCache(IStorageGrid.class);
+        return storageGrid;
+    }
+
+    public IMEMonitor<IAEItemStack> getItemStorageChannel() {
+        if(getStorageGrid() == null) return itemStorageChannel = null;
+        if(itemStorageChannel == null) return itemStorageChannel = storageGrid.getInventory(Api.instance().storage().getStorageChannel(IItemStorageChannel.class));
+        return itemStorageChannel;
     }
 
     private IWirelessAccessPoint myWap;

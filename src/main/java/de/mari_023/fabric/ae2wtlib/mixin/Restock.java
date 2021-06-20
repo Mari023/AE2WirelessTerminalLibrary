@@ -2,10 +2,7 @@ package de.mari_023.fabric.ae2wtlib.mixin;
 
 import appeng.api.config.Actionable;
 import appeng.api.networking.security.IActionHost;
-import appeng.api.networking.storage.IStorageGrid;
-import appeng.api.storage.channels.IItemStorageChannel;
 import appeng.api.storage.data.IAEItemStack;
-import appeng.core.Api;
 import appeng.me.helpers.PlayerSource;
 import appeng.util.item.AEItemStack;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
@@ -58,12 +55,12 @@ public abstract class Restock {
     private void restock(PlayerEntity playerEntity, ActionResult result) {
         if(result.equals(ActionResult.CONSUME) && !isEmpty() && !playerEntity.isCreative()) {
             CraftingTerminalHandler CTHandler = CraftingTerminalHandler.getCraftingTerminalHandler(playerEntity);
-            if(CTHandler.inRange() && ItemWT.getBoolean(CTHandler.getCraftingTerminal(), "restock")) {
+            if(CTHandler.inRange() && ItemWT.getBoolean(CTHandler.getCraftingTerminal(), "restock") && CTHandler.getItemStorageChannel() != null) {
                 int toAdd = getMaxCount() - getCount();
                 if(toAdd == 0) return;
                 ItemStack request = copy();
                 request.setCount(toAdd);
-                IAEItemStack stack = ((IStorageGrid) CTHandler.getTargetGrid().getCache(IStorageGrid.class)).getInventory(Api.instance().storage().getStorageChannel(IItemStorageChannel.class)).extractItems(AEItemStack.fromItemStack(request), Actionable.MODULATE, new PlayerSource(playerEntity, (IActionHost) CTHandler.getSecurityStation()));
+                IAEItemStack stack = CTHandler.getItemStorageChannel().extractItems(AEItemStack.fromItemStack(request), Actionable.MODULATE, new PlayerSource(playerEntity, (IActionHost) CTHandler.getSecurityStation()));
                 if(stack == null) return;
                 ItemStack extraction = stack.createItemStack();
                 int extractedItems = 0;
