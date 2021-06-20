@@ -54,7 +54,7 @@ public class CraftingTerminalHandler {
     public ItemStack getCraftingTerminal() {
         PlayerInventory inv = player.inventory;
         if((!craftingTerminal.isEmpty()) && inv.contains(craftingTerminal)) return craftingTerminal;
-        if(ae2wtlibConfig.allowTrinket()) {
+        if(ae2wtlibConfig.INSTANCE.allowTrinket()) {
             TrinketInventory trinketInv = (TrinketInventory) TrinketsApi.getTrinketsInventory(player);
             for(int i = 0; i < trinketInv.size(); i++) {
                 ItemStack terminal = trinketInv.getStack(i);

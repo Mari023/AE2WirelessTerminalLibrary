@@ -96,7 +96,7 @@ public class WITContainer extends AEBaseContainer implements IWTInvHolder {
             }
             setValidContainer(false);
         } else {
-            powerMultiplier = ae2wtlibConfig.getPowerMultiplier(witGUIObject.getRange(), witGUIObject.isOutOfRange());
+            powerMultiplier = ae2wtlibConfig.INSTANCE.getPowerMultiplier(witGUIObject.getRange(), witGUIObject.isOutOfRange());
 
             if(witGUIObject.extractAEPower(1, Actionable.SIMULATE, PowerMultiplier.ONE) == 0) {
                 if(isValidContainer()) {

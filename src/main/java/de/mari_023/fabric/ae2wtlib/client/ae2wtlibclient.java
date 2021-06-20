@@ -83,7 +83,7 @@ public class ae2wtlibclient implements ClientModInitializer {
                 int slot = buf.readInt();
                 ItemStack is;
                 CompoundTag tag = buf.readCompoundTag();
-                if(slot >= 100 && slot < 200 && ae2wtlibConfig.allowTrinket())
+                if(slot >= 100 && slot < 200 && ae2wtlibConfig.INSTANCE.allowTrinket())
                     is = TrinketsApi.getTrinketsInventory(client.player).getStack(slot - 100);
                 else is = client.player.inventory.getStack(slot);
                 is.setTag(tag);

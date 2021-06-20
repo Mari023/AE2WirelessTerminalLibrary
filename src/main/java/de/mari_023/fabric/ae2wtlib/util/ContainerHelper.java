@@ -125,7 +125,7 @@ public final class ContainerHelper<C extends AEBaseContainer, I> {
         int slot = locator.getItemIndex();
         ItemStack it;
 
-        if(slot >= 100 && slot < 200 && ae2wtlibConfig.allowTrinket())
+        if(slot >= 100 && slot < 200 && ae2wtlibConfig.INSTANCE.allowTrinket())
             it = TrinketsApi.getTrinketsInventory(player).getStack(slot - 100);
         else it = player.inventory.getStack(slot);
 

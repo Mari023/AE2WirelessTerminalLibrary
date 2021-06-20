@@ -77,7 +77,7 @@ public class WUTHandler {
     public static void open(final PlayerEntity player, final ContainerLocator locator) {
         int slot = locator.getItemIndex();
         ItemStack is;
-        if(slot >= 100 && slot < 200 && ae2wtlibConfig.allowTrinket())
+        if(slot >= 100 && slot < 200 && ae2wtlibConfig.INSTANCE.allowTrinket())
             is = TrinketsApi.getTrinketsInventory(player).getStack(slot - 100);
         else is = player.inventory.getStack(slot);
 

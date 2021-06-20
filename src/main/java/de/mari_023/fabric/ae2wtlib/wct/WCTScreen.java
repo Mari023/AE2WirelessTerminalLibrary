@@ -110,7 +110,7 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
             searchField = (AETextField) value;
         } catch(IllegalAccessException | NoSuchFieldException ignored) {}
 
-        if(ae2wtlibConfig.allowTrinket()) {
+        if(ae2wtlibConfig.INSTANCE.allowTrinket()) {
             TrinketsClient.displayEquipped = 0;
             trinketSlots = new ArrayList<>();
             for(Slot slot : getScreenHandler().slots)
@@ -141,7 +141,7 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
         if(client != null && client.player != null)
             drawEntity(offsetX + 52, offsetY + 94 + rows * 18, 30, (float) (offsetX + 52) - mouseX, (float) offsetY + 55 + rows * 18 - mouseY, client.player);
 
-        if(ae2wtlibConfig.allowTrinket()) {
+        if(ae2wtlibConfig.INSTANCE.allowTrinket()) {
             GlStateManager.disableDepthTest();
             List<TrinketSlots.Slot> trinketSlots = TrinketSlots.getAllSlots();
             setZOffset(100);
@@ -177,7 +177,7 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
     public void drawFG(MatrixStack matrices, final int offsetX, final int offsetY, final int mouseX, final int mouseY) {
         super.drawFG(matrices, offsetX, offsetY, mouseX, mouseY);
         textRenderer.draw(matrices, GuiText.CraftingTerminal.text(), 8, backgroundHeight - 96 + 1 - reservedSpace, 4210752);
-        if(ae2wtlibConfig.allowTrinket() && client != null) {
+        if(ae2wtlibConfig.INSTANCE.allowTrinket() && client != null) {
             if(TrinketsClient.slotGroup != null)
                 TrinketInvRenderer.renderGroupFront(matrices, this, client.getTextureManager(), 0, 0, TrinketsClient.slotGroup, getGroupX(TrinketsClient.slotGroup), getGroupY(TrinketsClient.slotGroup));
             else if(TrinketsClient.displayEquipped > 0 && TrinketsClient.lastEquipped != null)
@@ -335,7 +335,7 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
     @Override
     public void tick() {
         super.tick();
-        if(!ae2wtlibConfig.allowTrinket()) return;
+        if(!ae2wtlibConfig.INSTANCE.allowTrinket()) return;
         float relX = mouseX - x;
         float relY = mouseY - y;
         if(TrinketsClient.slotGroup == null || !inBounds(TrinketsClient.slotGroup, relX, relY, true)) {
@@ -428,7 +428,7 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
 
     @Override
     protected boolean isClickOutsideBounds(double x, double y, int i, int j, int k) {
-        if(ae2wtlibConfig.allowTrinket() && TrinketsClient.slotGroup != null && inBounds(TrinketsClient.slotGroup, (float) x - this.x, (float) y - this.y, true))
+        if(ae2wtlibConfig.INSTANCE.allowTrinket() && TrinketsClient.slotGroup != null && inBounds(TrinketsClient.slotGroup, (float) x - this.x, (float) y - this.y, true))
             return false;
         return super.isClickOutsideBounds(x, y, i, j, k);
     }

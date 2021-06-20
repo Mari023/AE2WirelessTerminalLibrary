@@ -124,7 +124,7 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
         addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.TRASH, 98, -22));
         addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.INFINITY_BOOSTER_CARD, 134, -20));
         addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.MAGNET_CARD, 152, -20));//TODO fetch texture for card background
-        if(ae2wtlibConfig.allowTrinket()) {
+        if(ae2wtlibConfig.INSTANCE.allowTrinket()) {
             FixedTrinketInv inv = new FixedTrinketInv((TrinketInventory) TrinketsApi.getTrinketsInventory(getPlayerInv().player));
             int i = 0;
             for(TrinketSlots.SlotGroup group : TrinketSlots.slotGroups) {
@@ -156,7 +156,7 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
             }
             setValidContainer(false);
         } else {
-            double powerMultiplier = ae2wtlibConfig.getPowerMultiplier(wctGUIObject.getRange(), wctGUIObject.isOutOfRange());
+            double powerMultiplier = ae2wtlibConfig.INSTANCE.getPowerMultiplier(wctGUIObject.getRange(), wctGUIObject.isOutOfRange());
             ticks++;
             if(ticks > 10) {
                 wctGUIObject.extractAEPower((powerMultiplier) * ticks, Actionable.MODULATE, PowerMultiplier.CONFIG);

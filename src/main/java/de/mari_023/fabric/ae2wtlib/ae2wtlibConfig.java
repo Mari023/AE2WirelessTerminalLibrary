@@ -1,28 +1,37 @@
 package de.mari_023.fabric.ae2wtlib;
 
 import appeng.core.AEConfig;
+import me.shedaniel.autoconfig.ConfigData;
 import net.fabricmc.loader.api.FabricLoader;
 
-public class ae2wtlibConfig {
+@me.shedaniel.autoconfig.annotation.Config(name = "ae2wtlib")
+public class ae2wtlibConfig implements ConfigData {
 
+    private double chargeRate = 8000;
+    private double wutChargeRateMultiplier = 1;
+    private double outOfRangePowerMultiplier = 2;
+    private boolean enableTrinket = true;
+    private double magnetCardRange = 16;
+
+    public static ae2wtlibConfig INSTANCE;
     private static boolean mineMenuChecked, mineMenuPresent, trinketPresent, trinketChecked;
 
-    public static double getPowerMultiplier(double range, boolean isOutOfRange) {
+    public double getPowerMultiplier(double range, boolean isOutOfRange) {
         if(isOutOfRange)
             return AEConfig.instance().wireless_getDrainRate(528 * getOutOfRangePowerMultiplier());
         return AEConfig.instance().wireless_getDrainRate(range);
     }
 
-    public static double getChargeRate() {
-        return 8000;
+    public double getChargeRate() {
+        return chargeRate;
     }
 
-    public static double WUTChargeRateMultiplier() {
-        return 1;
+    public double WUTChargeRateMultiplier() {
+        return wutChargeRateMultiplier;
     }
 
-    private static int getOutOfRangePowerMultiplier() {
-        return 2;
+    private double getOutOfRangePowerMultiplier() {
+        return outOfRangePowerMultiplier;
     }
 
     public static boolean allowMineMenu() {
@@ -31,17 +40,17 @@ public class ae2wtlibConfig {
         return mineMenuPresent;
     }
 
-    public static boolean allowTrinket() {
+    public boolean allowTrinket() {
         if(!trinketChecked) trinketPresent = isTrinketEnabled() && FabricLoader.getInstance().isModLoaded("trinkets");
         trinketChecked = true;
         return trinketPresent;
     }
 
-    private static boolean isTrinketEnabled() {
-        return true;
+    private boolean isTrinketEnabled() {
+        return enableTrinket;
     }
 
-    public static double magnetCardRange() {
-        return 16D;
+    public double magnetCardRange() {
+        return magnetCardRange;
     }
 }

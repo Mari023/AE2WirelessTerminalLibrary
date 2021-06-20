@@ -18,8 +18,8 @@ public class MixinPlugin implements IMixinConfigPlugin {
     }
 
     @Override
-    public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-        return ae2wtlibConfig.allowTrinket() || !targetClassName.equals("de.mari_023.fabric.ae2wtlib.terminal.ItemWT") || !mixinClassName.equals("de.mari_023.fabric.ae2wtlib.mixin.TrinketWT");
+    public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {//TODO check what's loaded first
+        return ae2wtlibConfig.INSTANCE.allowTrinket() || !targetClassName.equals("de.mari_023.fabric.ae2wtlib.terminal.ItemWT") || !mixinClassName.equals("de.mari_023.fabric.ae2wtlib.mixin.TrinketWT");
     }
 
     @Override

@@ -155,7 +155,7 @@ public class WPTContainer extends MEMonitorableContainer implements IAEAppEngInv
             }
             setValidContainer(false);
         } else {
-            double powerMultiplier = ae2wtlibConfig.getPowerMultiplier(wptGUIObject.getRange(), wptGUIObject.isOutOfRange());
+            double powerMultiplier = ae2wtlibConfig.INSTANCE.getPowerMultiplier(wptGUIObject.getRange(), wptGUIObject.isOutOfRange());
             ticks++;
             if(ticks > 10) {
                 wptGUIObject.extractAEPower((powerMultiplier) * ticks, Actionable.MODULATE, PowerMultiplier.CONFIG);
