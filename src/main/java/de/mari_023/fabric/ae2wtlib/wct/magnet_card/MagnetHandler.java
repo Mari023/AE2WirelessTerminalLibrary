@@ -1,11 +1,7 @@
 package de.mari_023.fabric.ae2wtlib.wct.magnet_card;
 
-import appeng.api.networking.storage.IStorageGrid;
-import appeng.api.storage.channels.IItemStorageChannel;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IItemList;
-import appeng.core.Api;
-import appeng.me.cache.NetworkMonitor;
 import appeng.util.item.AEItemStack;
 import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
@@ -44,8 +40,8 @@ public class MagnetHandler {
             return;
         HashMap<Item, Long> items = new HashMap<>();
 
-        if(handler.getTargetGrid() == null) return;
-        IItemList<IAEItemStack> storageList = ((NetworkMonitor<IAEItemStack>) ((IStorageGrid) handler.getTargetGrid().getCache(IStorageGrid.class)).getInventory(Api.instance().storage().getStorageChannel(IItemStorageChannel.class))).getStorageList();
+        if(handler.getItemStorageChannel() == null) return;
+        IItemList<IAEItemStack> storageList = handler.getItemStorageChannel().getStorageList();
 
         for(int i = 0; i < player.inventory.size(); i++) {
             ItemStack stack = player.inventory.getStack(i);
