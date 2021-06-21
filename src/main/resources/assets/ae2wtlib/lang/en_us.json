@@ -47,6 +47,6 @@
   "text.autoconfig.ae2wtlib.option.magnetCardRange.@Tooltip": "",
 
   "text.autoconfig.ae2wtlib.option.enableTrinket.@Tooltip[0]": "This will break things if it is different than a server you might connect to.",
-  "text.autoconfig.ae2wtlib.option.enableTrinket.@Tooltip[1]": "It won't change anything if Trinkets isn't installed."
+  "text.autoconfig.ae2wtlib.option.enableTrinket.@Tooltip[1]": "It is only effective if Trinkets is installed."
 
 }
