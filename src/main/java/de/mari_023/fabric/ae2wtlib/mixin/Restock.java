@@ -56,20 +56,22 @@ public abstract class Restock {
         if(result.equals(ActionResult.CONSUME) && !isEmpty() && !playerEntity.isCreative()) {
             CraftingTerminalHandler CTHandler = CraftingTerminalHandler.getCraftingTerminalHandler(playerEntity);
             if(CTHandler.inRange() && ItemWT.getBoolean(CTHandler.getCraftingTerminal(), "restock") && CTHandler.getItemStorageChannel() != null) {
-                int toAdd = getMaxCount() - getCount();
-                if(toAdd == 0) return;
-                ItemStack request = copy();
-                request.setCount(toAdd);
-                IAEItemStack stack = CTHandler.getItemStorageChannel().extractItems(AEItemStack.fromItemStack(request), Actionable.MODULATE, new PlayerSource(playerEntity, (IActionHost) CTHandler.getSecurityStation()));
-                if(stack == null) return;
-                ItemStack extraction = stack.createItemStack();
-                int extractedItems = 0;
-                if(extraction != null && !extraction.isEmpty()) extractedItems = extraction.getCount();
-                setCount(getCount() + extractedItems);
-                PacketByteBuf buf = PacketByteBufs.create();
-                buf.writeInt(playerEntity.inventory.getSlotWithStack((ItemStack) (Object) this));
-                buf.writeInt(getCount());
-                ServerPlayNetworking.send((ServerPlayerEntity) playerEntity, new Identifier("ae2wtlib", "update_restock"), buf);
+                try {
+                    int toAdd = getMaxCount() - getCount();
+                    if(toAdd == 0) return;
+                    ItemStack request = copy();
+                    request.setCount(toAdd);
+                    IAEItemStack stack = CTHandler.getItemStorageChannel().extractItems(AEItemStack.fromItemStack(request), Actionable.MODULATE, new PlayerSource(playerEntity, (IActionHost) CTHandler.getSecurityStation()));
+                    if(stack == null) return;
+                    ItemStack extraction = stack.createItemStack();
+                    int extractedItems = 0;
+                    if(extraction != null && !extraction.isEmpty()) extractedItems = extraction.getCount();
+                    setCount(getCount() + extractedItems);
+                    PacketByteBuf buf = PacketByteBufs.create();
+                    buf.writeInt(playerEntity.inventory.getSlotWithStack((ItemStack) (Object) this));
+                    buf.writeInt(getCount());
+                    ServerPlayNetworking.send((ServerPlayerEntity) playerEntity, new Identifier("ae2wtlib", "update_restock"), buf);
+                } catch(NullPointerException ignored) {}
             }
         }
     }

@@ -35,24 +35,26 @@ public class MagnetHandler {
     }
 
     public void sendRestockAble(ServerPlayerEntity player) {
-        CraftingTerminalHandler handler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
-        if(player.isCreative() || !ItemWT.getBoolean(handler.getCraftingTerminal(), "restock") || !handler.inRange())
-            return;
-        HashMap<Item, Long> items = new HashMap<>();
+        try {
+            CraftingTerminalHandler handler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
+            if(player.isCreative() || !ItemWT.getBoolean(handler.getCraftingTerminal(), "restock") || !handler.inRange())
+                return;
+            HashMap<Item, Long> items = new HashMap<>();
 
-        if(handler.getItemStorageChannel() == null) return;
-        IItemList<IAEItemStack> storageList = handler.getItemStorageChannel().getStorageList();
+            if(handler.getItemStorageChannel() == null) return;
+            IItemList<IAEItemStack> storageList = handler.getItemStorageChannel().getStorageList();
 
-        for(int i = 0; i < player.inventory.size(); i++) {
-            ItemStack stack = player.inventory.getStack(i);
-            if(stack.isEmpty()) continue;
-            if(!items.containsKey(stack.getItem())) items.put(stack.getItem(), getCount(storageList, stack));
-        }
+            for(int i = 0; i < player.inventory.size(); i++) {
+                ItemStack stack = player.inventory.getStack(i);
+                if(stack.isEmpty()) continue;
+                if(!items.containsKey(stack.getItem())) items.put(stack.getItem(), getCount(storageList, stack));
+            }
 
-        PacketByteBuf buf = PacketByteBufs.create();
-        for(Map.Entry<Item, Long> entry : items.entrySet())
-            AEItemStack.fromItemStack(new ItemStack(entry.getKey())).setStackSize(entry.getValue()).writeToPacket(buf);
-        ServerPlayNetworking.send(player, new Identifier("ae2wtlib", "restock_amounts"), buf);
+            PacketByteBuf buf = PacketByteBufs.create();
+            for(Map.Entry<Item, Long> entry : items.entrySet())
+                AEItemStack.fromItemStack(new ItemStack(entry.getKey())).setStackSize(entry.getValue()).writeToPacket(buf);
+            ServerPlayNetworking.send(player, new Identifier("ae2wtlib", "restock_amounts"), buf);
+        } catch(NullPointerException ignored) {}
     }
 
     private long getCount(IItemList<IAEItemStack> storageList, ItemStack stack) {
