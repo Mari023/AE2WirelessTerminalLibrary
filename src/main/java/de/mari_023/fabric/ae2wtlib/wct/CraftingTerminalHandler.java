@@ -81,7 +81,7 @@ public class CraftingTerminalHandler {
         if(getCraftingTerminal().isEmpty()) return securityStation = null;
         if(securityStation != null) return securityStation;
         final String unParsedKey = ((ItemWT) craftingTerminal.getItem()).getEncryptionKey(craftingTerminal);
-        if(unParsedKey.isEmpty()) return null;
+        if(unParsedKey.isEmpty()) return securityStation = null;
         final long parsedKey = Long.parseLong(unParsedKey);
         return securityStation = Api.instance().registries().locatable().getLocatableBy(parsedKey);
     }
