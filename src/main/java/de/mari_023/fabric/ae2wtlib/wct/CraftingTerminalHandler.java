@@ -40,6 +40,9 @@ public class CraftingTerminalHandler {
     private IStorageGrid storageGrid;
     private IMEMonitor<IAEItemStack> itemStorageChannel;
     private int slot = -1;
+    private IWirelessAccessPoint myWap;
+    private double sqRange = Double.MAX_VALUE;
+    private final HashMap<Item, Long> restockAbleItems = new HashMap<>();
 
     private CraftingTerminalHandler(PlayerEntity player) {
         this.player = player;
@@ -59,6 +62,9 @@ public class CraftingTerminalHandler {
         targetGrid = null;
         storageGrid = null;
         itemStorageChannel = null;
+        myWap = null;
+        sqRange = Double.MAX_VALUE;
+        restockAbleItems.clear();
     }
 
     public ItemStack getCraftingTerminal() {
@@ -125,9 +131,6 @@ public class CraftingTerminalHandler {
         return itemStorageChannel;
     }
 
-    private IWirelessAccessPoint myWap;
-    private double sqRange = Double.MAX_VALUE;
-
     public boolean inRange() {
         if(getCraftingTerminal().isEmpty()) return false;
         if(((IInfinityBoosterCardHolder) craftingTerminal.getItem()).hasBoosterCard(craftingTerminal)) return true;
@@ -168,8 +171,6 @@ public class CraftingTerminalHandler {
         }
         return false;
     }
-
-    private final HashMap<Item, Long> restockAbleItems = new HashMap<>();
 
     public long getAccessibleAmount(ItemStack stack) {
         return stack.getCount() + (restockAbleItems.get(stack.getItem()) == null ? 0 : restockAbleItems.get(stack.getItem()));
