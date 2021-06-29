@@ -77,7 +77,7 @@ public class CraftingTerminalHandler {
                 return craftingTerminal = terminal;
             }
         }
-        return ItemStack.EMPTY;
+        return craftingTerminal = ItemStack.EMPTY;
     }
 
     public int getSlot() {
