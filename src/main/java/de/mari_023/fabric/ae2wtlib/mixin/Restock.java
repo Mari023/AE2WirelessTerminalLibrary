@@ -50,7 +50,6 @@ public abstract class Restock {
 
     @Inject(method = "use", at = @At(value = "RETURN"))
     public void useRestock(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir) {
-        System.out.println(cir.getReturnValue().getResult());
         if(!world.isClient() && cir.getReturnValue().getResult().equals(ActionResult.CONSUME)) restock(user);
     }
 
