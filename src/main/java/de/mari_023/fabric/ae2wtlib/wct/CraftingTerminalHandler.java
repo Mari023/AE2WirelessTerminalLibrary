@@ -39,6 +39,7 @@ public class CraftingTerminalHandler {
     private IGrid targetGrid;
     private IStorageGrid storageGrid;
     private IMEMonitor<IAEItemStack> itemStorageChannel;
+    private int slot = -1;
 
     private CraftingTerminalHandler(PlayerEntity player) {
         this.player = player;
@@ -61,6 +62,7 @@ public class CraftingTerminalHandler {
                 if(terminal.getItem() instanceof ItemWCT || (terminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(terminal, "crafting"))) {
                     securityStation = null;
                     targetGrid = null;
+                    slot = i;
                     return craftingTerminal = terminal;
                 }
             }
@@ -71,10 +73,16 @@ public class CraftingTerminalHandler {
             if(terminal.getItem() instanceof ItemWCT || (terminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(terminal, "crafting"))) {
                 securityStation = null;
                 targetGrid = null;
+                slot = i;
                 return craftingTerminal = terminal;
             }
         }
         return ItemStack.EMPTY;
+    }
+
+    public int getSlot() {
+        if(getCraftingTerminal().isEmpty()) return slot = 0;
+        return slot;
     }
 
     public ILocatable getSecurityStation() {

@@ -11,6 +11,7 @@ import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.LiteralText;
@@ -43,14 +44,10 @@ public class WUTHandler {
     }
 
     public static void setCurrentTerminal(PlayerEntity playerEntity, int slot, ItemStack itemStack, String terminal) {
-        if(hasTerminal(itemStack, terminal)) {
-            assert itemStack.getTag() != null;
-            itemStack.getTag().putString("currentTerminal", terminal);
-            PacketByteBuf buf = PacketByteBufs.create();
-            buf.writeInt(slot);
-            buf.writeCompoundTag(itemStack.getTag());
-            ServerPlayNetworking.send((ServerPlayerEntity) playerEntity, new Identifier("ae2wtlib", "update_wut"), buf);
-        }
+        if(!hasTerminal(itemStack, terminal)) return;
+        assert itemStack.getTag() != null;
+        itemStack.getTag().putString("currentTerminal", terminal);
+        updateClientTerminal((ServerPlayerEntity) playerEntity, slot, itemStack.getTag());
     }
 
     public static boolean hasTerminal(ItemStack itemStack, String terminal) {
@@ -68,10 +65,14 @@ public class WUTHandler {
             nextTerminal = terminalNames.get(i);
         } while(!itemStack.getTag().getBoolean(nextTerminal));
         itemStack.getTag().putString("currentTerminal", nextTerminal);
+        updateClientTerminal((ServerPlayerEntity) playerEntity, slot, itemStack.getTag());
+    }
+
+    public static void updateClientTerminal(ServerPlayerEntity playerEntity, int slot, CompoundTag tag) {
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeInt(slot);
-        buf.writeCompoundTag(itemStack.getTag());
-        ServerPlayNetworking.send((ServerPlayerEntity) playerEntity, new Identifier("ae2wtlib", "update_wut"), buf);
+        buf.writeCompoundTag(tag);
+        ServerPlayNetworking.send(playerEntity, new Identifier("ae2wtlib", "update_wut"), buf);
     }
 
     public static void open(final PlayerEntity player, final ContainerLocator locator) {
