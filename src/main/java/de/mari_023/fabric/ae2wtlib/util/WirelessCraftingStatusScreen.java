@@ -44,9 +44,7 @@ public class WirelessCraftingStatusScreen extends CraftingCPUScreen<WirelessCraf
     }
 
     private Text getNextCpuButtonLabel() {
-        if(handler.noCPU) {
-            return GuiText.NoCraftingJobs.text();
-        }
+        if(handler.noCPU) return GuiText.NoCraftingJobs.text();
         return GuiText.CraftingCPU.withSuffix(": ").append(handler.cpuName);
     }
 

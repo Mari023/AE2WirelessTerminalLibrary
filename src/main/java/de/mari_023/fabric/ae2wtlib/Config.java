@@ -32,9 +32,7 @@ public class Config {
     }
 
     public static boolean allowTrinket() {
-        if(!trinketChecked) {
-            trinketPresent = isTrinketEnabled() && FabricLoader.getInstance().isModLoaded("trinkets");
-        }
+        if(!trinketChecked) trinketPresent = isTrinketEnabled() && FabricLoader.getInstance().isModLoaded("trinkets");
         trinketChecked = true;
         return trinketPresent;
     }

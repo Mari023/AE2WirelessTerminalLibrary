@@ -58,12 +58,10 @@ public final class ContainerHelper<C extends AEBaseContainer, I> {
      */
     public C fromNetwork(int windowId, PlayerInventory inv, PacketByteBuf packetBuf, InitialDataDeserializer<C, I> initialDataDeserializer) {
         I host = getHostFromPlayerInventory(inv.player, ContainerLocator.read(packetBuf));
-        if(host != null) {
-            C container = factory.create(windowId, inv, host);
-            initialDataDeserializer.deserializeInitialData(host, container, packetBuf);
-            return container;
-        }
-        return null;
+        if(host == null) return null;
+        C container = factory.create(windowId, inv, host);
+        initialDataDeserializer.deserializeInitialData(host, container, packetBuf);
+        return container;
     }
 
     public boolean open(PlayerEntity player, ContainerLocator locator) {

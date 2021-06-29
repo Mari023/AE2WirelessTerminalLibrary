@@ -25,24 +25,24 @@ public class InvActionPacket {
 
     @Inject(method = "serverPacketData", at = @At(value = "INVOKE"))
     public void serverPacketData(INetworkInfo manager, PlayerEntity player, CallbackInfo ci) {
-        if(action == InventoryAction.AUTO_CRAFT) {
-            if(player.currentScreenHandler instanceof WCTContainer || player.currentScreenHandler instanceof WPTContainer) {
-                final AEBaseContainer baseContainer = (AEBaseContainer) player.currentScreenHandler;
-                final ContainerLocator locator = baseContainer.getLocator();
-                if(locator != null) {
-                    WirelessCraftAmountContainer.open(player, locator);
+        if(action != InventoryAction.AUTO_CRAFT) return;
+        if(!(player.currentScreenHandler instanceof WCTContainer) && !(player.currentScreenHandler instanceof WPTContainer))
+            return;
 
-                    if(player.currentScreenHandler instanceof WirelessCraftAmountContainer) {
-                        final WirelessCraftAmountContainer cca = (WirelessCraftAmountContainer) player.currentScreenHandler;
+        final AEBaseContainer baseContainer = (AEBaseContainer) player.currentScreenHandler;
+        final ContainerLocator locator = baseContainer.getLocator();
 
-                        if(baseContainer.getTargetStack() != null) {
-                            cca.getCraftingItem().setStack(baseContainer.getTargetStack().asItemStackRepresentation());
-                            cca.setItemToCraft(baseContainer.getTargetStack());
-                        }
-                        cca.sendContentUpdates();
-                    }
-                }
-            }
+        if(locator == null) return;
+
+        WirelessCraftAmountContainer.open(player, locator);
+
+        if(!(player.currentScreenHandler instanceof WirelessCraftAmountContainer)) return;
+        final WirelessCraftAmountContainer cca = (WirelessCraftAmountContainer) player.currentScreenHandler;
+
+        if(baseContainer.getTargetStack() != null) {
+            cca.getCraftingItem().setStack(baseContainer.getTargetStack().asItemStackRepresentation());
+            cca.setItemToCraft(baseContainer.getTargetStack());
         }
+        cca.sendContentUpdates();
     }
 }

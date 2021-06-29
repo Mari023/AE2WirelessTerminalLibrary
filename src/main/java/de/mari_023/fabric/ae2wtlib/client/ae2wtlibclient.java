@@ -109,31 +109,19 @@ public class ae2wtlibclient implements ClientModInitializer {
         KeyBinding toggleMagnet = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.ae2wtlib.toggleMagnet", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "key.category.ae2wtlib"));
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            while(wct.wasPressed()) {
-                PacketByteBuf buf = PacketByteBufs.create();
-                buf.writeString("crafting");
-                ClientPlayNetworking.send(new Identifier("ae2wtlib", "hotkey"), buf);
-            }
-            while(wpt.wasPressed()) {
-                PacketByteBuf buf = PacketByteBufs.create();
-                buf.writeString("pattern");
-                ClientPlayNetworking.send(new Identifier("ae2wtlib", "hotkey"), buf);
-            }
-            while(wit.wasPressed()) {
-                PacketByteBuf buf = PacketByteBufs.create();
-                buf.writeString("interface");
-                ClientPlayNetworking.send(new Identifier("ae2wtlib", "hotkey"), buf);
-            }
-            while(toggleRestock.wasPressed()) {
-                PacketByteBuf buf = PacketByteBufs.create();
-                buf.writeString("toggleRestock");
-                ClientPlayNetworking.send(new Identifier("ae2wtlib", "hotkey"), buf);
-            }
-            while(toggleMagnet.wasPressed()) {
-                PacketByteBuf buf = PacketByteBufs.create();
-                buf.writeString("toggleMagnet");
-                ClientPlayNetworking.send(new Identifier("ae2wtlib", "hotkey"), buf);
-            }
+            checkKeybindings(wct, "crafting");
+            checkKeybindings(wpt, "pattern");
+            checkKeybindings(wit, "interface");
+            checkKeybindings(toggleRestock, "toggleRestock");
+            checkKeybindings(toggleMagnet, "toggleMagnet");
         });
+    }
+
+    private static void checkKeybindings(KeyBinding binding, String type) {
+        while(binding.wasPressed()) {
+            PacketByteBuf buf = PacketByteBufs.create();
+            buf.writeString(type);
+            ClientPlayNetworking.send(new Identifier("ae2wtlib", "hotkey"), buf);
+        }
     }
 }

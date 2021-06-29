@@ -37,40 +37,34 @@ public class ItemButton extends ButtonWidget implements ITooltip {
 
         MinecraftClient minecraft = MinecraftClient.getInstance();
 
-        if(visible) {
-            TextureManager textureManager = minecraft.getTextureManager();
-            textureManager.bindTexture(TEXTURE_STATES);
-            RenderSystem.disableDepthTest();
-            RenderSystem.enableBlend();
-            if(halfSize) {
-                width = 8;
-                height = 8;
+        if(!visible) return;
+        TextureManager textureManager = minecraft.getTextureManager();
+        textureManager.bindTexture(TEXTURE_STATES);
+        RenderSystem.disableDepthTest();
+        RenderSystem.enableBlend();
+        if(halfSize) {
+            width = 8;
+            height = 8;
 
-                RenderSystem.pushMatrix();
-                RenderSystem.translatef(x, y, 0.0F);
+            RenderSystem.pushMatrix();
+            RenderSystem.translatef(x, y, 0.0F);
 
-                RenderSystem.scalef(0.5f, 0.5f, 0.5f);
-            } else {
-                RenderSystem.pushMatrix();
-                RenderSystem.translatef(x, y, 0.0F);
-            }
-            drawTexture(matrices, 0, 0, 256 - 16, 256 - 16, 16, 16);
-            RenderSystem.scalef(1f / 16f, 1f / 16f, 1f / 16f);
-            if(active) {
-                RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
-            } else {
-                RenderSystem.color4f(0.5f, 0.5f, 0.5f, 1.0f);
-            }
-            textureManager.bindTexture(texture);
-            drawTexture(matrices, 0, 0, 0, 0, 256, 256);
-            RenderSystem.popMatrix();
-            RenderSystem.enableDepthTest();
-            RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
-
-            if(isHovered()) {
-                renderToolTip(matrices, mouseX, mouseY);
-            }
+            RenderSystem.scalef(0.5f, 0.5f, 0.5f);
+        } else {
+            RenderSystem.pushMatrix();
+            RenderSystem.translatef(x, y, 0.0F);
         }
+        drawTexture(matrices, 0, 0, 256 - 16, 256 - 16, 16, 16);
+        RenderSystem.scalef(1f / 16f, 1f / 16f, 1f / 16f);
+        if(active) RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
+        else RenderSystem.color4f(0.5f, 0.5f, 0.5f, 1.0f);
+        textureManager.bindTexture(texture);
+        drawTexture(matrices, 0, 0, 0, 0, 256, 256);
+        RenderSystem.popMatrix();
+        RenderSystem.enableDepthTest();
+        RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
+
+        if(isHovered()) renderToolTip(matrices, mouseX, mouseY);
     }
 
     @Override

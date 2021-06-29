@@ -33,20 +33,14 @@ public class FixedViewCellInventory implements FixedItemInv {
 
     @Override
     public boolean setInvStack(int i, ItemStack itemStack, Simulation simulation) {
-        if(isItemValidForSlot(i, itemStack)) {
-            if(simulation.isAction()) {
-                ItemWT.setSavedSlot(hostStack, itemStack, "viewCell" + i);
-                return true;
-            }
-        }
+        if(isItemValidForSlot(i, itemStack) && simulation.isAction())
+            ItemWT.setSavedSlot(hostStack, itemStack, "viewCell" + i);
         return true;
     }
 
     public ItemStack[] getViewCells() {
         ItemStack[] viewCells = new ItemStack[viewCellCount];
-        for(int i = 0; i < viewCellCount; i++) {
-            viewCells[i] = getInvStack(i);
-        }
+        for(int i = 0; i < viewCellCount; i++) viewCells[i] = getInvStack(i);
         return viewCells;
     }
 

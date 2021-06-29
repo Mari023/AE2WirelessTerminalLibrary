@@ -54,32 +54,29 @@ public class CycleTerminalButton extends ButtonWidget implements ITooltip {
 
     @Override
     public void renderButton(MatrixStack matrices, final int mouseX, final int mouseY, float partial) {
-        MinecraftClient minecraft = MinecraftClient.getInstance();
-        if(visible) {
+        if(!visible) return;
+        TextureManager textureManager = MinecraftClient.getInstance().getTextureManager();
+        textureManager.bindTexture(TEXTURE_STATES);
+        GlStateManager.disableDepthTest();
+        GlStateManager.enableBlend();
 
-            TextureManager textureManager = minecraft.getTextureManager();
-            textureManager.bindTexture(TEXTURE_STATES);
-            GlStateManager.disableDepthTest();
-            GlStateManager.enableBlend();
+        drawTexture(matrices, x, y, 256 - 16, 256 - 16, 16, 16);
 
-            drawTexture(matrices, x, y, 256 - 16, 256 - 16, 16, 16);
+        textureManager.bindTexture(nextTerminal);
+        GL11.glPushMatrix();
+        GL11.glTranslatef(x, y, 0.0F);
+        GL11.glScalef(1f / 20f, 1f / 20f, 1f / 20f);
 
-            textureManager.bindTexture(nextTerminal);
-            GL11.glPushMatrix();
-            GL11.glTranslatef(x, y, 0.0F);
-            GL11.glScalef(1f / 20f, 1f / 20f, 1f / 20f);
+        if(active) GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+        else GL11.glColor4f(0.5f, 0.5f, 0.5f, 1.0f);
 
-            if(active) GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-            else GL11.glColor4f(0.5f, 0.5f, 0.5f, 1.0f);
+        drawTexture(matrices, 32, 32, 0, 0, 256, 256);
 
-            drawTexture(matrices, 32, 32, 0, 0, 256, 256);
+        GL11.glPopMatrix();
 
-            GL11.glPopMatrix();
+        GlStateManager.enableDepthTest();
+        GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 
-            GlStateManager.enableDepthTest();
-            GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-
-            if(isHovered()) renderToolTip(matrices, mouseX, mouseY);
-        }
+        if(isHovered()) renderToolTip(matrices, mouseX, mouseY);
     }
 }

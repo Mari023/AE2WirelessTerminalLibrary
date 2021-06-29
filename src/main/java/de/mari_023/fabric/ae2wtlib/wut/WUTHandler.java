@@ -34,7 +34,8 @@ public class WUTHandler {
         }
         String currentTerminal = wirelessUniversalTerminal.getTag().getString("currentTerminal");
 
-        if(!wirelessTerminals.containsKey(currentTerminal)) for(String terminal : terminalNames)
+        if(wirelessTerminals.containsKey(currentTerminal)) return currentTerminal;
+        for(String terminal : terminalNames)
             if(wirelessUniversalTerminal.getTag().getBoolean(terminal)) {
                 currentTerminal = terminal;
                 wirelessUniversalTerminal.getTag().putString("currentTerminal", currentTerminal);
