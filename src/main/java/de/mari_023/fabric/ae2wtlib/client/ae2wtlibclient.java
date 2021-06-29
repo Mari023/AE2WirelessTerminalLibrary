@@ -4,7 +4,6 @@ import appeng.container.implementations.WirelessCraftConfirmContainer;
 import appeng.container.implementations.WirelessCraftingStatusContainer;
 import appeng.util.item.AEItemStack;
 import de.mari_023.fabric.ae2wtlib.Config;
-import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.util.WirelessCraftAmountContainer;
 import de.mari_023.fabric.ae2wtlib.util.WirelessCraftAmountScreen;
 import de.mari_023.fabric.ae2wtlib.util.WirelessCraftConfirmScreen;
@@ -32,9 +31,6 @@ import net.minecraft.client.util.InputUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.text.Style;
-import net.minecraft.text.TextColor;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
 
@@ -131,15 +127,6 @@ public class ae2wtlibclient implements ClientModInitializer {
                 PacketByteBuf buf = PacketByteBufs.create();
                 buf.writeString("toggleRestock");
                 ClientPlayNetworking.send(new Identifier("ae2wtlib", "hotkey"), buf);
-                if(MinecraftClient.getInstance().player == null) return;
-                CraftingTerminalHandler craftingTerminalHandler = CraftingTerminalHandler.getCraftingTerminalHandler(MinecraftClient.getInstance().player);
-                ItemStack terminal = craftingTerminalHandler.getCraftingTerminal();
-                if(terminal.isEmpty()) return;
-                if(ItemWT.getBoolean(terminal, "restock")) {
-                    MinecraftClient.getInstance().player.sendMessage(new TranslatableText("gui.ae2wtlib.restock").append(new TranslatableText("gui.ae2wtlib.off").setStyle(Style.EMPTY.withColor(TextColor.parse("red")))), true);
-                } else {
-                    MinecraftClient.getInstance().player.sendMessage(new TranslatableText("gui.ae2wtlib.restock").append(new TranslatableText("gui.ae2wtlib.on").setStyle(Style.EMPTY.withColor(TextColor.parse("green")))), true);
-                }
             }
             while(toggleMagnet.wasPressed()) {
                 PacketByteBuf buf = PacketByteBufs.create();
