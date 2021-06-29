@@ -84,6 +84,7 @@ public class ae2wtlibclient implements ClientModInitializer {
                 else is = client.player.inventory.getStack(slot);
                 is.setTag(tag);
                 buf.release();
+                CraftingTerminalHandler.getCraftingTerminalHandler(client.player).invalidateCache();
             });
         });
         ClientPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "restock_amounts"), (client, handler, buf, responseSender) -> {

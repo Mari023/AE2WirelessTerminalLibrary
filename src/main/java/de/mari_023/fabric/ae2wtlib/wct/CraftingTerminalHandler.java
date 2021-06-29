@@ -52,6 +52,15 @@ public class CraftingTerminalHandler {
         return handler;
     }
 
+    public void invalidateCache() {
+        craftingTerminal = ItemStack.EMPTY;
+        slot = -1;
+        securityStation = null;
+        targetGrid = null;
+        storageGrid = null;
+        itemStorageChannel = null;
+    }
+
     public ItemStack getCraftingTerminal() {
         PlayerInventory inv = player.inventory;
         if((!craftingTerminal.isEmpty()) && inv.contains(craftingTerminal)) return craftingTerminal;
@@ -77,7 +86,8 @@ public class CraftingTerminalHandler {
                 return craftingTerminal = terminal;
             }
         }
-        return craftingTerminal = ItemStack.EMPTY;
+        invalidateCache();
+        return ItemStack.EMPTY;
     }
 
     public int getSlot() {
@@ -110,7 +120,8 @@ public class CraftingTerminalHandler {
 
     public IMEMonitor<IAEItemStack> getItemStorageChannel() {
         if(getStorageGrid() == null) return itemStorageChannel = null;
-        if(itemStorageChannel == null) return itemStorageChannel = storageGrid.getInventory(Api.instance().storage().getStorageChannel(IItemStorageChannel.class));
+        if(itemStorageChannel == null)
+            return itemStorageChannel = storageGrid.getInventory(Api.instance().storage().getStorageChannel(IItemStorageChannel.class));
         return itemStorageChannel;
     }
 
