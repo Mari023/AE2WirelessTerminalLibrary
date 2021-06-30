@@ -39,6 +39,10 @@ public class CraftingTerminalHandler {
     private IGrid targetGrid;
     private IStorageGrid storageGrid;
     private IMEMonitor<IAEItemStack> itemStorageChannel;
+    private int slot = -1;
+    private IWirelessAccessPoint myWap;
+    private double sqRange = Double.MAX_VALUE;
+    private final HashMap<Item, Long> restockAbleItems = new HashMap<>();
 
     private CraftingTerminalHandler(PlayerEntity player) {
         this.player = player;
@@ -51,6 +55,18 @@ public class CraftingTerminalHandler {
         return handler;
     }
 
+    public void invalidateCache() {
+        craftingTerminal = ItemStack.EMPTY;
+        slot = -1;
+        securityStation = null;
+        targetGrid = null;
+        storageGrid = null;
+        itemStorageChannel = null;
+        myWap = null;
+        sqRange = Double.MAX_VALUE;
+        restockAbleItems.clear();
+    }
+
     public ItemStack getCraftingTerminal() {
         PlayerInventory inv = player.inventory;
         if((!craftingTerminal.isEmpty()) && inv.contains(craftingTerminal)) return craftingTerminal;
@@ -61,6 +77,7 @@ public class CraftingTerminalHandler {
                 if(terminal.getItem() instanceof ItemWCT || (terminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(terminal, "crafting"))) {
                     securityStation = null;
                     targetGrid = null;
+                    slot = i;
                     return craftingTerminal = terminal;
                 }
             }
@@ -71,17 +88,24 @@ public class CraftingTerminalHandler {
             if(terminal.getItem() instanceof ItemWCT || (terminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(terminal, "crafting"))) {
                 securityStation = null;
                 targetGrid = null;
+                slot = i;
                 return craftingTerminal = terminal;
             }
         }
+        invalidateCache();
         return ItemStack.EMPTY;
+    }
+
+    public int getSlot() {
+        if(getCraftingTerminal().isEmpty()) return slot = 0;
+        return slot;
     }
 
     public ILocatable getSecurityStation() {
         if(getCraftingTerminal().isEmpty()) return securityStation = null;
         if(securityStation != null) return securityStation;
         final String unParsedKey = ((ItemWT) craftingTerminal.getItem()).getEncryptionKey(craftingTerminal);
-        if(unParsedKey.isEmpty()) return null;
+        if(unParsedKey.isEmpty()) return securityStation = null;
         final long parsedKey = Long.parseLong(unParsedKey);
         return securityStation = Api.instance().registries().locatable().getLocatableBy(parsedKey);
     }
@@ -102,12 +126,10 @@ public class CraftingTerminalHandler {
 
     public IMEMonitor<IAEItemStack> getItemStorageChannel() {
         if(getStorageGrid() == null) return itemStorageChannel = null;
-        if(itemStorageChannel == null) return itemStorageChannel = storageGrid.getInventory(Api.instance().storage().getStorageChannel(IItemStorageChannel.class));
+        if(itemStorageChannel == null)
+            return itemStorageChannel = storageGrid.getInventory(Api.instance().storage().getStorageChannel(IItemStorageChannel.class));
         return itemStorageChannel;
     }
-
-    private IWirelessAccessPoint myWap;
-    private double sqRange = Double.MAX_VALUE;
 
     public boolean inRange() {
         if(getCraftingTerminal().isEmpty()) return false;
@@ -149,8 +171,6 @@ public class CraftingTerminalHandler {
         }
         return false;
     }
-
-    private final HashMap<Item, Long> restockAbleItems = new HashMap<>();
 
     public long getAccessibleAmount(ItemStack stack) {
         return stack.getCount() + (restockAbleItems.get(stack.getItem()) == null ? 0 : restockAbleItems.get(stack.getItem()));

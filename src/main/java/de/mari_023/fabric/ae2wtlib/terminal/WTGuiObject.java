@@ -62,11 +62,11 @@ public abstract class WTGuiObject implements IGuiItemObject, IEnergySource, IAct
 
         if(obj instanceof IActionHost) {
             gridNode = ((IActionHost) obj).getActionableNode();
-            if(gridNode != null) {
-                targetGrid = gridNode.getGrid();
-                sg = targetGrid.getCache(IStorageGrid.class);
-                itemStorage = sg.getInventory(Api.instance().storage().getStorageChannel(IItemStorageChannel.class));
-            }
+            if(gridNode == null) return;
+            targetGrid = gridNode.getGrid();
+            sg = targetGrid.getCache(IStorageGrid.class);
+            itemStorage = sg.getInventory(Api.instance().storage().getStorageChannel(IItemStorageChannel.class));
+
         } else gridNode = null;
     }
 
@@ -82,9 +82,7 @@ public abstract class WTGuiObject implements IGuiItemObject, IEnergySource, IAct
 
         if(targetGrid != null && itemStorage != null) {
             if(myWap != null) {
-                if(myWap.getGrid() == targetGrid) {
-                    return testWap(myWap) || hasBoosterCard;
-                }
+                if(myWap.getGrid() == targetGrid) return testWap(myWap) || hasBoosterCard;
                 return hasBoosterCard;
             } else isOutOfRange = true;
 
@@ -92,9 +90,7 @@ public abstract class WTGuiObject implements IGuiItemObject, IEnergySource, IAct
 
             for(final IGridNode n : targetGrid.getMachines(WirelessTileEntity.class)) {
                 final IWirelessAccessPoint wap = (IWirelessAccessPoint) n.getMachine();
-                if(testWap(wap)) {
-                    myWap = wap;
-                }
+                if(testWap(wap)) myWap = wap;
             }
 
             return myWap != null || hasBoosterCard;
@@ -124,13 +120,11 @@ public abstract class WTGuiObject implements IGuiItemObject, IEnergySource, IAct
             final double offZ = dc.z - myPlayer.getZ();
 
             final double r = offX * offX + offY * offY + offZ * offZ;
-            if(r < rangeLimit && sqRange > r) {
-                if(wap.isActive()) {
-                    sqRange = r;
-                    myRange = Math.sqrt(r);
-                    isOutOfRange = false;
-                    return true;
-                }
+            if(r < rangeLimit && sqRange > r && wap.isActive()) {
+                sqRange = r;
+                myRange = Math.sqrt(r);
+                isOutOfRange = false;
+                return true;
             }
         }
         isOutOfRange = true;
@@ -154,9 +148,7 @@ public abstract class WTGuiObject implements IGuiItemObject, IEnergySource, IAct
     @Override
     public double extractAEPower(final double amt, final Actionable mode, final PowerMultiplier usePowerMultiplier) {
         if(wth != null && effectiveItem != null) {
-            if(mode == Actionable.SIMULATE) {
-                return wth.hasPower(myPlayer, amt, effectiveItem) ? amt : 0;
-            }
+            if(mode == Actionable.SIMULATE) return wth.hasPower(myPlayer, amt, effectiveItem) ? amt : 0;
             return wth.usePower(myPlayer, amt, effectiveItem) ? amt : 0;
         }
         return 0.0;
@@ -181,63 +173,45 @@ public abstract class WTGuiObject implements IGuiItemObject, IEnergySource, IAct
     }
 
     public void addListener(final IMEMonitorHandlerReceiver<IAEItemStack> l, final Object verificationToken) {
-        if(itemStorage != null) {
-            itemStorage.addListener(l, verificationToken);
-        }
+        if(itemStorage != null) itemStorage.addListener(l, verificationToken);
     }
 
     public void removeListener(final IMEMonitorHandlerReceiver<IAEItemStack> l) {
-        if(itemStorage != null) {
-            itemStorage.removeListener(l);
-        }
+        if(itemStorage != null) itemStorage.removeListener(l);
     }
 
     public IItemList<IAEItemStack> getAvailableItems(final IItemList<IAEItemStack> out) {
-        if(itemStorage != null) {
-            return itemStorage.getAvailableItems(out);
-        }
+        if(itemStorage != null) return itemStorage.getAvailableItems(out);
         return out;
     }
 
     public IItemList<IAEItemStack> getStorageList() {
-        if(itemStorage != null) {
-            return itemStorage.getStorageList();
-        }
+        if(itemStorage != null) return itemStorage.getStorageList();
         return null;
     }
 
     public AccessRestriction getAccess() {
-        if(itemStorage != null) {
-            return itemStorage.getAccess();
-        }
+        if(itemStorage != null) return itemStorage.getAccess();
         return AccessRestriction.NO_ACCESS;
     }
 
     public boolean isPrioritized(final IAEItemStack input) {
-        if(itemStorage != null) {
-            return itemStorage.isPrioritized(input);
-        }
+        if(itemStorage != null) return itemStorage.isPrioritized(input);
         return false;
     }
 
     public boolean canAccept(final IAEItemStack input) {
-        if(itemStorage != null) {
-            return itemStorage.canAccept(input);
-        }
+        if(itemStorage != null) return itemStorage.canAccept(input);
         return false;
     }
 
     public int getPriority() {
-        if(itemStorage != null) {
-            return itemStorage.getPriority();
-        }
+        if(itemStorage != null) return itemStorage.getPriority();
         return 0;
     }
 
     public int getSlot() {
-        if(itemStorage != null) {
-            return itemStorage.getSlot();
-        }
+        if(itemStorage != null) return itemStorage.getSlot();
         return 0;
     }
 
@@ -246,23 +220,17 @@ public abstract class WTGuiObject implements IGuiItemObject, IEnergySource, IAct
     }
 
     public IAEItemStack injectItems(final IAEItemStack input, final Actionable type, final IActionSource src) {
-        if(itemStorage != null) {
-            return itemStorage.injectItems(input, type, src);
-        }
+        if(itemStorage != null) return itemStorage.injectItems(input, type, src);
         return input;
     }
 
     public IAEItemStack extractItems(final IAEItemStack request, final Actionable mode, final IActionSource src) {
-        if(itemStorage != null) {
-            return itemStorage.extractItems(request, mode, src);
-        }
+        if(itemStorage != null) return itemStorage.extractItems(request, mode, src);
         return null;
     }
 
     public IStorageChannel getChannel() {
-        if(itemStorage != null) {
-            return itemStorage.getChannel();
-        }
+        if(itemStorage != null) return itemStorage.getChannel();
         return Api.instance().storage().getStorageChannel(IItemStorageChannel.class);
     }
 

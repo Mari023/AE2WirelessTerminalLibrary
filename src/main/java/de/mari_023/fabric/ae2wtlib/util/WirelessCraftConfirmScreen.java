@@ -115,11 +115,8 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
         }
 
         Text cpuName;
-        if(handler.cpuName == null) {
-            cpuName = GuiText.Automatic.text();
-        } else {
-            cpuName = handler.cpuName;
-        }
+        if(handler.cpuName == null) cpuName = GuiText.Automatic.text();
+        else cpuName = handler.cpuName;
 
         return GuiText.CraftingCPU.withSuffix(": ").append(cpuName);
     }
@@ -135,9 +132,8 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
 
         Text dsp;
 
-        if(isSimulation()) {
-            dsp = GuiText.Simulation.text();
-        } else {
+        if(isSimulation()) dsp = GuiText.Simulation.text();
+        else {
             dsp = handler.getCpuAvailableBytes() > 0 ? (GuiText.Bytes.withSuffix(": " + handler.getCpuAvailableBytes() + " : ")
                     .append(GuiText.CoProcessors.text()).append(": " + handler.getCpuCoProcessors()))
                     : GuiText.Bytes.withSuffix(": N/A : ").append(GuiText.CoProcessors.text()).append(": N/A");
@@ -174,36 +170,25 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
 
                 int lines = 0;
 
-                if(stored != null && stored.getStackSize() > 0) {
-                    lines++;
-                }
-                if(missingStack != null && missingStack.getStackSize() > 0) {
-                    lines++;
-                }
-                if(pendingStack != null && pendingStack.getStackSize() > 0) {
-                    lines++;
-                }
+                if(stored != null && stored.getStackSize() > 0) lines++;
+                if(missingStack != null && missingStack.getStackSize() > 0) lines++;
+                if(pendingStack != null && pendingStack.getStackSize() > 0) lines++;
 
                 final int negY = ((lines - 1) * 5) / 2;
                 int downY = 0;
 
                 if(stored != null && stored.getStackSize() > 0) {
                     String str = Long.toString(stored.getStackSize());
-                    if(stored.getStackSize() >= 10000) {
-                        str = Long.toString(stored.getStackSize() / 1000) + 'k';
-                    }
-                    if(stored.getStackSize() >= 10000000) {
-                        str = Long.toString(stored.getStackSize() / 1000000) + 'm';
-                    }
+                    if(stored.getStackSize() >= 10000) str = Long.toString(stored.getStackSize() / 1000) + 'k';
+                    if(stored.getStackSize() >= 10000000) str = Long.toString(stored.getStackSize() / 1000000) + 'm';
 
                     str = GuiText.FromStorage.getLocal() + ": " + str;
                     final int w = 4 + textRenderer.getWidth(str);
                     textRenderer.draw(matrices, str, (int) ((x * (1 + sectionLength) + xo + sectionLength - 19 - (w * 0.5)) * 2),
                             (y * offY + yo + 6 - negY + downY) * 2, 4210752);
 
-                    if(tooltip == z - viewStart) {
+                    if(tooltip == z - viewStart)
                         lineList.add(GuiText.FromStorage.withSuffix(": " + stored.getStackSize()));
-                    }
 
                     downY += 5;
                 }
@@ -211,12 +196,10 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
                 boolean red = false;
                 if(missingStack != null && missingStack.getStackSize() > 0) {
                     String str = Long.toString(missingStack.getStackSize());
-                    if(missingStack.getStackSize() >= 10000) {
+                    if(missingStack.getStackSize() >= 10000)
                         str = Long.toString(missingStack.getStackSize() / 1000) + 'k';
-                    }
-                    if(missingStack.getStackSize() >= 10000000) {
+                    if(missingStack.getStackSize() >= 10000000)
                         str = Long.toString(missingStack.getStackSize() / 1000000) + 'm';
-                    }
 
                     str = GuiText.Missing.getLocal() + ": " + str;
                     final int w = 4 + textRenderer.getWidth(str);
@@ -224,9 +207,8 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
                             (int) ((x * (1 + sectionLength) + xo + sectionLength - 19 - (w * 0.5)) * 2),
                             (y * offY + yo + 6 - negY + downY) * 2, 4210752);
 
-                    if(tooltip == z - viewStart) {
+                    if(tooltip == z - viewStart)
                         lineList.add(GuiText.Missing.withSuffix(": " + missingStack.getStackSize()));
-                    }
 
                     red = true;
                     downY += 5;
@@ -234,12 +216,10 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
 
                 if(pendingStack != null && pendingStack.getStackSize() > 0) {
                     String str = Long.toString(pendingStack.getStackSize());
-                    if(pendingStack.getStackSize() >= 10000) {
+                    if(pendingStack.getStackSize() >= 10000)
                         str = Long.toString(pendingStack.getStackSize() / 1000) + 'k';
-                    }
-                    if(pendingStack.getStackSize() >= 10000000) {
+                    if(pendingStack.getStackSize() >= 10000000)
                         str = Long.toString(pendingStack.getStackSize() / 1000000) + 'm';
-                    }
 
                     str = GuiText.ToCraft.getLocal() + ": " + str;
                     final int w = 4 + textRenderer.getWidth(str);
@@ -247,9 +227,8 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
                             (int) ((x * (1 + sectionLength) + xo + sectionLength - 19 - (w * 0.5)) * 2),
                             (y * offY + yo + 6 - negY + downY) * 2, 4210752);
 
-                    if(tooltip == z - viewStart) {
+                    if(tooltip == z - viewStart)
                         lineList.add(GuiText.ToCraft.withSuffix(": " + pendingStack.getStackSize()));
-                    }
                 }
 
                 RenderSystem.popMatrix();
@@ -261,9 +240,7 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
                 if(tooltip == z - viewStart) {
                     dspToolTip.add(Platform.getItemDisplayName(refStack));
 
-                    if(lineList.size() > 0) {
-                        dspToolTip.addAll(lineList);
-                    }
+                    if(lineList.size() > 0) dspToolTip.addAll(lineList);
 
                     toolPosX = x * (1 + sectionLength) + xo + sectionLength - 8;
                     toolPosY = y * offY + yo;
@@ -319,11 +296,8 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
         for(final IAEItemStack l : list) {
             final long amt = getTotal(l);
 
-            if(amt <= 0) {
-                deleteVisualStack(l);
-            } else {
-                findVisualStack(l).setStackSize(amt);
-            }
+            if(amt <= 0) deleteVisualStack(l);
+            else findVisualStack(l).setStackSize(amt);
         }
         setScrollBar();
     }
@@ -371,9 +345,7 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
     }
 
     private IAEItemStack findVisualStack(final IAEItemStack l) {
-        for(final IAEItemStack o : visual) {
-            if(o.equals(l)) return o;
-        }
+        for(final IAEItemStack o : visual) if(o.equals(l)) return o;
 
         final IAEItemStack stack = l.copy();
         visual.add(stack);
@@ -382,11 +354,9 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int p_keyPressed_3_) {
-        if(!checkHotbarKeys(InputUtil.fromKeyCode(keyCode, scanCode))) {
-            if(keyCode == GLFW.GLFW_KEY_ENTER || keyCode == GLFW.GLFW_KEY_KP_ENTER) {
-                start();
-                return true;
-            }
+        if(!checkHotbarKeys(InputUtil.fromKeyCode(keyCode, scanCode)) && (keyCode == GLFW.GLFW_KEY_ENTER || keyCode == GLFW.GLFW_KEY_KP_ENTER)) {
+            start();
+            return true;
         }
         return super.keyPressed(keyCode, scanCode, p_keyPressed_3_);
     }

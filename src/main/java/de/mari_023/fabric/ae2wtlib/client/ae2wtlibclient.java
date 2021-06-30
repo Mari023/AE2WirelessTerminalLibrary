@@ -4,7 +4,6 @@ import appeng.container.implementations.WirelessCraftConfirmContainer;
 import appeng.container.implementations.WirelessCraftingStatusContainer;
 import appeng.util.item.AEItemStack;
 import de.mari_023.fabric.ae2wtlib.ae2wtlibConfig;
-import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.util.WirelessCraftAmountContainer;
 import de.mari_023.fabric.ae2wtlib.util.WirelessCraftAmountScreen;
 import de.mari_023.fabric.ae2wtlib.util.WirelessCraftConfirmScreen;
@@ -32,9 +31,6 @@ import net.minecraft.client.util.InputUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.text.Style;
-import net.minecraft.text.TextColor;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
 
@@ -88,6 +84,7 @@ public class ae2wtlibclient implements ClientModInitializer {
                 else is = client.player.inventory.getStack(slot);
                 is.setTag(tag);
                 buf.release();
+                CraftingTerminalHandler.getCraftingTerminalHandler(client.player).invalidateCache();
             });
         });
         ClientPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "restock_amounts"), (client, handler, buf, responseSender) -> {
@@ -112,40 +109,19 @@ public class ae2wtlibclient implements ClientModInitializer {
         KeyBinding toggleMagnet = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.ae2wtlib.toggleMagnet", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "key.category.ae2wtlib"));
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            while(wct.wasPressed()) {
-                PacketByteBuf buf = PacketByteBufs.create();
-                buf.writeString("crafting");
-                ClientPlayNetworking.send(new Identifier("ae2wtlib", "hotkey"), buf);
-            }
-            while(wpt.wasPressed()) {
-                PacketByteBuf buf = PacketByteBufs.create();
-                buf.writeString("pattern");
-                ClientPlayNetworking.send(new Identifier("ae2wtlib", "hotkey"), buf);
-            }
-            while(wit.wasPressed()) {
-                PacketByteBuf buf = PacketByteBufs.create();
-                buf.writeString("interface");
-                ClientPlayNetworking.send(new Identifier("ae2wtlib", "hotkey"), buf);
-            }
-            while(toggleRestock.wasPressed()) {
-                PacketByteBuf buf = PacketByteBufs.create();
-                buf.writeString("toggleRestock");
-                ClientPlayNetworking.send(new Identifier("ae2wtlib", "hotkey"), buf);
-                if(MinecraftClient.getInstance().player == null) return;
-                CraftingTerminalHandler craftingTerminalHandler = CraftingTerminalHandler.getCraftingTerminalHandler(MinecraftClient.getInstance().player);
-                ItemStack terminal = craftingTerminalHandler.getCraftingTerminal();
-                if(terminal.isEmpty()) return;
-                if(ItemWT.getBoolean(terminal, "restock")) {
-                    MinecraftClient.getInstance().player.sendMessage(new TranslatableText("gui.ae2wtlib.restock").append(new TranslatableText("gui.ae2wtlib.off").setStyle(Style.EMPTY.withColor(TextColor.parse("red")))), true);
-                } else {
-                    MinecraftClient.getInstance().player.sendMessage(new TranslatableText("gui.ae2wtlib.restock").append(new TranslatableText("gui.ae2wtlib.on").setStyle(Style.EMPTY.withColor(TextColor.parse("green")))), true);
-                }
-            }
-            while(toggleMagnet.wasPressed()) {
-                PacketByteBuf buf = PacketByteBufs.create();
-                buf.writeString("toggleMagnet");
-                ClientPlayNetworking.send(new Identifier("ae2wtlib", "hotkey"), buf);
-            }
+            checkKeybindings(wct, "crafting");
+            checkKeybindings(wpt, "pattern");
+            checkKeybindings(wit, "interface");
+            checkKeybindings(toggleRestock, "toggleRestock");
+            checkKeybindings(toggleMagnet, "toggleMagnet");
         });
+    }
+
+    private static void checkKeybindings(KeyBinding binding, String type) {
+        while(binding.wasPressed()) {
+            PacketByteBuf buf = PacketByteBufs.create();
+            buf.writeString(type);
+            ClientPlayNetworking.send(new Identifier("ae2wtlib", "hotkey"), buf);
+        }
     }
 }

@@ -334,73 +334,72 @@ public class WPTContainer extends MEMonitorableContainer implements IAEAppEngInv
         IAEItemStack[] pattern = new IAEItemStack[9];
         for(int x = 0; x < 9; x++) pattern[x] = readItem(packetByteBuf);
 
-        if(slotItem != null && getCellInventory() != null) {
-            final IAEItemStack out = slotItem.copy();
-            InventoryAdaptor inv = new AdaptorFixedInv(new WrapperCursorItemHandler(getPlayerInv().player.inventory));
-            final InventoryAdaptor playerInv = InventoryAdaptor.getAdaptor(getPlayerInv().player);
+        if(slotItem == null || getCellInventory() == null) return;
+        final IAEItemStack out = slotItem.copy();
+        InventoryAdaptor inv = new AdaptorFixedInv(new WrapperCursorItemHandler(getPlayerInv().player.inventory));
+        final InventoryAdaptor playerInv = InventoryAdaptor.getAdaptor(getPlayerInv().player);
 
-            if(shift) inv = playerInv;
+        if(shift) inv = playerInv;
 
-            if(!inv.simulateAdd(out.createItemStack()).isEmpty()) return;
+        if(!inv.simulateAdd(out.createItemStack()).isEmpty()) return;
 
-            final IAEItemStack extracted = Platform.poweredExtraction(getPowerSource(), getCellInventory(), out, getActionSource());
-            final PlayerEntity p = getPlayerInv().player;
+        final IAEItemStack extracted = Platform.poweredExtraction(getPowerSource(), getCellInventory(), out, getActionSource());
+        final PlayerEntity p = getPlayerInv().player;
 
-            if(extracted != null) {
-                inv.addItems(extracted.createItemStack());
-                if(p instanceof ServerPlayerEntity) updateHeld((ServerPlayerEntity) p);
-                sendContentUpdates();
-                return;
+        if(extracted != null) {
+            inv.addItems(extracted.createItemStack());
+            if(p instanceof ServerPlayerEntity) updateHeld((ServerPlayerEntity) p);
+            sendContentUpdates();
+            return;
+        }
+
+        final CraftingInventory ic = new CraftingInventory(new ContainerNull(), 3, 3);
+        final CraftingInventory real = new CraftingInventory(new ContainerNull(), 3, 3);
+
+        for(int x = 0; x < 9; x++)
+            ic.setStack(x, pattern[x] == null ? ItemStack.EMPTY : pattern[x].createItemStack());
+
+        final Recipe<CraftingInventory> r = p.world.getRecipeManager().getFirstMatch(RecipeType.CRAFTING, ic, p.world).orElse(null);
+
+        if(r == null) return;
+
+        final IMEMonitor<IAEItemStack> storage = getPatternTerminal()
+                .getInventory(Api.instance().storage().getStorageChannel(IItemStorageChannel.class));
+        final IItemList<IAEItemStack> all = storage.getStorageList();
+
+        final ItemStack is = r.craft(ic);
+
+        for(int x = 0; x < ic.size(); x++) {
+            if(!ic.getStack(x).isEmpty()) {
+                final ItemStack pulled = Platform.extractItemsByRecipe(getPowerSource(), getActionSource(), storage, p.world, r, is, ic, ic.getStack(x), x, all, Actionable.MODULATE, ViewCellItem.createFilter(getViewCells()));
+                real.setStack(x, pulled);
+            }
+        }
+
+        final Recipe<CraftingInventory> rr = p.world.getRecipeManager()
+                .getFirstMatch(RecipeType.CRAFTING, real, p.world).orElse(null);
+
+        if(rr == r && Platform.itemComparisons().isSameItem(rr.craft(real), is)) {
+            final CraftingResultInventory craftingResult = new CraftingResultInventory();
+            craftingResult.setLastRecipe(rr);
+
+            final CraftingResultSlot sc = new CraftingResultSlot(p, real, craftingResult, 0, 0, 0);
+            sc.onTakeItem(p, is);
+
+            for(int x = 0; x < real.size(); x++) {
+                final ItemStack failed = playerInv.addItems(real.getStack(x));
+
+                if(!failed.isEmpty()) p.dropItem(failed, false);
             }
 
-            final CraftingInventory ic = new CraftingInventory(new ContainerNull(), 3, 3);
-            final CraftingInventory real = new CraftingInventory(new ContainerNull(), 3, 3);
-
-            for(int x = 0; x < 9; x++)
-                ic.setStack(x, pattern[x] == null ? ItemStack.EMPTY : pattern[x].createItemStack());
-
-            final Recipe<CraftingInventory> r = p.world.getRecipeManager().getFirstMatch(RecipeType.CRAFTING, ic, p.world).orElse(null);
-
-            if(r == null) return;
-
-            final IMEMonitor<IAEItemStack> storage = getPatternTerminal()
-                    .getInventory(Api.instance().storage().getStorageChannel(IItemStorageChannel.class));
-            final IItemList<IAEItemStack> all = storage.getStorageList();
-
-            final ItemStack is = r.craft(ic);
-
-            for(int x = 0; x < ic.size(); x++) {
-                if(!ic.getStack(x).isEmpty()) {
-                    final ItemStack pulled = Platform.extractItemsByRecipe(getPowerSource(), getActionSource(), storage, p.world, r, is, ic, ic.getStack(x), x, all, Actionable.MODULATE, ViewCellItem.createFilter(getViewCells()));
-                    real.setStack(x, pulled);
-                }
-            }
-
-            final Recipe<CraftingInventory> rr = p.world.getRecipeManager()
-                    .getFirstMatch(RecipeType.CRAFTING, real, p.world).orElse(null);
-
-            if(rr == r && Platform.itemComparisons().isSameItem(rr.craft(real), is)) {
-                final CraftingResultInventory craftingResult = new CraftingResultInventory();
-                craftingResult.setLastRecipe(rr);
-
-                final CraftingResultSlot sc = new CraftingResultSlot(p, real, craftingResult, 0, 0, 0);
-                sc.onTakeItem(p, is);
-
-                for(int x = 0; x < real.size(); x++) {
-                    final ItemStack failed = playerInv.addItems(real.getStack(x));
-
-                    if(!failed.isEmpty()) p.dropItem(failed, false);
-                }
-
-                inv.addItems(is);
-                if(p instanceof ServerPlayerEntity) updateHeld((ServerPlayerEntity) p);
-                sendContentUpdates();
-            } else {
-                for(int x = 0; x < real.size(); x++) {
-                    final ItemStack failed = real.getStack(x);
-                    if(!failed.isEmpty()) getCellInventory().injectItems(AEItemStack.fromItemStack(failed),
-                            Actionable.MODULATE, new MachineSource(getPatternTerminal()));
-                }
+            inv.addItems(is);
+            if(p instanceof ServerPlayerEntity) updateHeld((ServerPlayerEntity) p);
+            sendContentUpdates();
+        } else {
+            for(int x = 0; x < real.size(); x++) {
+                final ItemStack failed = real.getStack(x);
+                if(!failed.isEmpty()) getCellInventory().injectItems(AEItemStack.fromItemStack(failed),
+                        Actionable.MODULATE, new MachineSource(getPatternTerminal()));
             }
         }
     }
@@ -447,10 +446,9 @@ public class WPTContainer extends MEMonitorableContainer implements IAEAppEngInv
     }
 
     private void setCraftingMode(final boolean craftingMode) {
-        if(craftingMode != this.craftingMode) {
-            this.craftingMode = craftingMode;
-            ItemWT.setBoolean(wptGUIObject.getItemStack(), craftingMode, "craftingMode");
-        }
+        if(craftingMode == this.craftingMode) return;
+        this.craftingMode = craftingMode;
+        ItemWT.setBoolean(wptGUIObject.getItemStack(), craftingMode, "craftingMode");
     }
 
     public void clear() {

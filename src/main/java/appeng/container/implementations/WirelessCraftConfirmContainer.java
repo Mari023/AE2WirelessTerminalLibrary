@@ -183,13 +183,12 @@ public class WirelessCraftConfirmContainer extends AEBaseContainer implements Cr
 
     public void startJob() {
         final IActionHost ah = getActionHost();
-        if(ah instanceof WTGuiObject) {
-            if(result == null && isSimulation()) return;
+        if(!(ah instanceof WTGuiObject)) return;
+        if(result == null && isSimulation()) return;
 
-            setAutoStart(false);
-            if(((ICraftingGrid) getGrid().getCache(ICraftingGrid.class)).submitJob(result, null, selectedCpu, true, getActionSrc()) != null && getLocator() != null)
-                ((WTGuiObject) ah).open(getPlayerInv().player, getLocator());
-        }
+        setAutoStart(false);
+        if(((ICraftingGrid) getGrid().getCache(ICraftingGrid.class)).submitJob(result, null, selectedCpu, true, getActionSrc()) != null && getLocator() != null)
+            ((WTGuiObject) ah).open(getPlayerInv().player, getLocator());
     }
 
     private IActionSource getActionSrc() {
@@ -199,19 +198,18 @@ public class WirelessCraftConfirmContainer extends AEBaseContainer implements Cr
     @Override
     public void removeListener(final ScreenHandlerListener c) {
         super.removeListener(c);
-        if(getJob() != null) {
-            getJob().cancel(true);
-            setJob(null);
-        }
+        if(getJob() == null) return;
+        getJob().cancel(true);
+        setJob(null);
     }
 
     @Override
     public void close(final PlayerEntity par1PlayerEntity) {
         super.close(par1PlayerEntity);
-        if(getJob() != null) {
-            getJob().cancel(true);
-            setJob(null);
-        }
+        if(getJob() == null) return;
+        getJob().cancel(true);
+        setJob(null);
+
     }
 
     private void onCPUSelectionChanged(CraftingCPURecord cpuRecord, boolean cpusAvailable) {

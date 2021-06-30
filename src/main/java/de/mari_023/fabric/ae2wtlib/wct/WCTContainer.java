@@ -124,20 +124,20 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
         addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.TRASH, 98, -22));
         addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.INFINITY_BOOSTER_CARD, 134, -20));
         addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.MAGNET_CARD, 152, -20));//TODO fetch texture for card background
-        if(ae2wtlibConfig.INSTANCE.allowTrinket()) {
-            FixedTrinketInv inv = new FixedTrinketInv((TrinketInventory) TrinketsApi.getTrinketsInventory(getPlayerInv().player));
-            int i = 0;
-            for(TrinketSlots.SlotGroup group : TrinketSlots.slotGroups) {
-                int j = 0;
-                for(TrinketSlots.Slot slot : group.slots) {
-                    boolean locked = slotIndex - 100 == i;
-                    AppEngTrinketSlot ts;
-                    ts = new AppEngTrinketSlot(inv, i, Integer.MIN_VALUE, 8, group.getName(), slot.getName(), locked);
-                    if(j == 0 && !group.onReal) ts.keepVisible = true;
-                    addSlot(ts);
-                    i++;
-                    j++;
-                }
+
+        if(!ae2wtlibConfig.INSTANCE.allowTrinket()) return;//Trinkets only starting here
+        FixedTrinketInv inv = new FixedTrinketInv((TrinketInventory) TrinketsApi.getTrinketsInventory(getPlayerInv().player));
+        int i = 0;
+        for(TrinketSlots.SlotGroup group : TrinketSlots.slotGroups) {
+            int j = 0;
+            for(TrinketSlots.Slot slot : group.slots) {
+                boolean locked = slotIndex - 100 == i;
+                AppEngTrinketSlot ts;
+                ts = new AppEngTrinketSlot(inv, i, Integer.MIN_VALUE, 8, group.getName(), slot.getName(), locked);
+                if(j == 0 && !group.onReal) ts.keepVisible = true;
+                addSlot(ts);
+                i++;
+                j++;
             }
         }
     }
@@ -154,7 +154,6 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
                 getPlayerInv().player.sendSystemMessage(PlayerMessages.OutOfRange.get(), Util.NIL_UUID);
                 ((ServerPlayerEntity) getPlayerInv().player).closeHandledScreen();
             }
-            setValidContainer(false);
         } else {
             double powerMultiplier = ae2wtlibConfig.INSTANCE.getPowerMultiplier(wctGUIObject.getRange(), wctGUIObject.isOutOfRange());
             ticks++;
@@ -163,14 +162,13 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
                 ticks = 0;
             }
 
-            if(wctGUIObject.extractAEPower(1, Actionable.SIMULATE, PowerMultiplier.ONE) == 0) {
-                if(isValidContainer()) {
-                    getPlayerInv().player.sendSystemMessage(PlayerMessages.DeviceNotPowered.get(), Util.NIL_UUID);
-                    ((ServerPlayerEntity) getPlayerInv().player).closeHandledScreen();
-                }
-                setValidContainer(false);
+            if(wctGUIObject.extractAEPower(1, Actionable.SIMULATE, PowerMultiplier.ONE) != 0) return;
+            if(isValidContainer()) {
+                getPlayerInv().player.sendSystemMessage(PlayerMessages.DeviceNotPowered.get(), Util.NIL_UUID);
+                ((ServerPlayerEntity) getPlayerInv().player).closeHandledScreen();
             }
         }
+        setValidContainer(false);
     }
 
     /**
@@ -182,18 +180,15 @@ public class WCTContainer extends MEMonitorableContainer implements IAEAppEngInv
         final ContainerNull cn = new ContainerNull();
         final CraftingInventory ic = new CraftingInventory(cn, 3, 3);
 
-        for(int x = 0; x < 9; x++) {
-            ic.setStack(x, craftingSlots[x].getStack());
-        }
+        for(int x = 0; x < 9; x++) ic.setStack(x, craftingSlots[x].getStack());
 
         if(currentRecipe == null || !currentRecipe.matches(ic, this.getPlayerInv().player.world)) {
             World world = this.getPlayerInv().player.world;
             currentRecipe = world.getRecipeManager().getFirstMatch(RecipeType.CRAFTING, ic, world).orElse(null);
         }
 
-        if(currentRecipe == null) {
-            outputSlot.setStack(ItemStack.EMPTY);
-        } else {
+        if(currentRecipe == null) outputSlot.setStack(ItemStack.EMPTY);
+        else {
             final ItemStack craftingResult = currentRecipe.craft(ic);
             outputSlot.setStack(craftingResult);
         }

@@ -81,15 +81,10 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
             if(tag != null) {
                 final String encKey = tag.getString("encryptionKey");
 
-                if(encKey == null || encKey.isEmpty()) {
-                    lines.add(GuiText.Unlinked.text());
-                } else {
-                    lines.add(GuiText.Linked.text());
-                }
+                if(encKey == null || encKey.isEmpty()) lines.add(GuiText.Unlinked.text());
+                else lines.add(GuiText.Linked.text());
             }
-        } else {
-            lines.add(new TranslatableText("AppEng.GuiITooltip.Unlinked"));
-        }
+        } else lines.add(new TranslatableText("AppEng.GuiITooltip.Unlinked"));
     }
 
     @Override
@@ -158,11 +153,8 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
     public static void setSavedSlot(ItemStack hostItem, ItemStack savedItem, String slot) {
         if(!(hostItem.getItem() instanceof ItemWT)) return;
         CompoundTag wctTag = hostItem.getOrCreateTag();
-        if(savedItem.isEmpty()) {
-            wctTag.remove(slot);
-        } else {
-            wctTag.put(slot, savedItem.toTag(new CompoundTag()));
-        }
+        if(savedItem.isEmpty()) wctTag.remove(slot);
+        else wctTag.put(slot, savedItem.toTag(new CompoundTag()));
     }
 
     /**
@@ -195,15 +187,11 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
     }
 
     public void setBoosterCard(ItemStack hostItem, ItemStack boosterCard) {
-        if(hostItem.getItem() instanceof IInfinityBoosterCardHolder) {
-            setSavedSlot(hostItem, boosterCard, "boosterCard");
-        }
+        if(hostItem.getItem() instanceof IInfinityBoosterCardHolder) setSavedSlot(hostItem, boosterCard, "boosterCard");
     }
 
     public ItemStack getBoosterCard(ItemStack hostItem) {
-        if(hostItem.getItem() instanceof IInfinityBoosterCardHolder) {
-            return getSavedSlot(hostItem, "boosterCard");
-        }
+        if(hostItem.getItem() instanceof IInfinityBoosterCardHolder) return getSavedSlot(hostItem, "boosterCard");
         return ItemStack.EMPTY;
     }
 }
