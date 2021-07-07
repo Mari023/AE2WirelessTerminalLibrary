@@ -21,10 +21,12 @@ import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
 import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
 import dev.emi.trinkets.api.TrinketInventory;
 import dev.emi.trinkets.api.TrinketsApi;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +34,7 @@ import java.util.UUID;
 
 public class CraftingTerminalHandler {
 
-    private static final HashMap<UUID, CraftingTerminalHandler> players = new HashMap<>();
+    private static final HashMap<UUID, CraftingTerminalHandler> players = new HashMap<>();//TODO clear on leave (client)
     private final PlayerEntity player;
     private ItemStack craftingTerminal = ItemStack.EMPTY;
     private ILocatable securityStation;
@@ -50,7 +52,9 @@ public class CraftingTerminalHandler {
 
     public static CraftingTerminalHandler getCraftingTerminalHandler(PlayerEntity player) {
         if(players.containsKey(player.getUuid())) {
-            if(player == players.get(player.getUuid()).player) return players.get(player.getUuid());
+            if(player == players.get(player.getUuid()).player ||
+                    ((player instanceof ClientPlayerEntity) && (players.get(player.getUuid()).player instanceof ServerPlayerEntity)))
+                return players.get(player.getUuid());
             removePlayer(player);
         }
         CraftingTerminalHandler handler = new CraftingTerminalHandler(player);
@@ -58,7 +62,7 @@ public class CraftingTerminalHandler {
         return handler;
     }
 
-    public static void removePlayer(PlayerEntity player) {
+    public static void removePlayer(PlayerEntity player) {//TODO remove on disconnect (server)
         players.remove(player.getUuid());
     }
 
