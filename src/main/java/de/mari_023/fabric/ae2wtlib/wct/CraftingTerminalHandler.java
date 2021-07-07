@@ -28,11 +28,10 @@ import net.minecraft.item.ItemStack;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
 public class CraftingTerminalHandler {
 
-    private static final HashMap<UUID, CraftingTerminalHandler> players = new HashMap<>();
+    private static final HashMap<PlayerEntity, CraftingTerminalHandler> players = new HashMap<>();
     private final PlayerEntity player;
     private ItemStack craftingTerminal = ItemStack.EMPTY;
     private ILocatable securityStation;
@@ -49,9 +48,9 @@ public class CraftingTerminalHandler {
     }
 
     public static CraftingTerminalHandler getCraftingTerminalHandler(PlayerEntity player) {
-        if(players.containsKey(player.getUuid())) return players.get(player.getUuid());
+        if(players.containsKey(player)) return players.get(player);
         CraftingTerminalHandler handler = new CraftingTerminalHandler(player);
-        players.put(player.getUuid(), handler);
+        players.put(player, handler);
         return handler;
     }
 
