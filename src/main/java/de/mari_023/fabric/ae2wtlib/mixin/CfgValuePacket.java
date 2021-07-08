@@ -1,6 +1,6 @@
 package de.mari_023.fabric.ae2wtlib.mixin;
 
-import appeng.container.implementations.WirelessCraftConfirmContainer;
+import appeng.container.me.crafting.WirelessCraftConfirmContainer;
 import appeng.core.sync.network.INetworkInfo;
 import appeng.core.sync.packets.ConfigValuePacket;
 import net.minecraft.entity.player.PlayerEntity;

@@ -7,7 +7,7 @@ import appeng.api.networking.crafting.ICraftingJob;
 import appeng.api.networking.security.IActionHost;
 import appeng.container.AEBaseContainer;
 import appeng.container.ContainerLocator;
-import appeng.container.implementations.WirelessCraftConfirmContainer;
+import appeng.container.me.crafting.WirelessCraftConfirmContainer;
 import appeng.container.implementations.WirelessCraftingStatusContainer;
 import appeng.core.AELog;
 import appeng.core.Api;
