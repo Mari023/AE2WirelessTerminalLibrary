@@ -15,7 +15,7 @@
     "TrinketWT"
   ],
   "client": [
-    "MeMonitorableScreenWireless",
+    "ItemTerminalScreenWireless",
     "RestockRender",
     "ScreenMixin",
     "MineMenuMixin",

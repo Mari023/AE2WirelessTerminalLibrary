@@ -20,7 +20,7 @@ import java.util.List;
 @Mixin(value = MEInventoryUpdatePacket.class, remap = false)
 public class MEInvUpdatePacket {
 
-    @Shadow
+    /*@Shadow
     @Final
     private List<IAEItemStack> list;
     @Shadow
@@ -32,5 +32,5 @@ public class MEInvUpdatePacket {
     public void clientPacketData(INetworkInfo manager, PlayerEntity player, CallbackInfo ci) {
         if(MinecraftClient.getInstance().currentScreen instanceof WirelessCraftConfirmScreen)
             ((WirelessCraftConfirmScreen) MinecraftClient.getInstance().currentScreen).postUpdate(list, ref);
-    }
+    }*/
 }

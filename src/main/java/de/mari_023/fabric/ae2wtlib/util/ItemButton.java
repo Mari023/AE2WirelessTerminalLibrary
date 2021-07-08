@@ -11,6 +11,11 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 public class ItemButton extends ButtonWidget implements ITooltip {
 
     private final Identifier texture;
@@ -68,8 +73,8 @@ public class ItemButton extends ButtonWidget implements ITooltip {
     }
 
     @Override
-    public Text getTooltipMessage() {
-        return getMessage();
+    public List<Text> getTooltipMessage() {
+        return Collections.singletonList(getMessage());
     }
 
     @Override

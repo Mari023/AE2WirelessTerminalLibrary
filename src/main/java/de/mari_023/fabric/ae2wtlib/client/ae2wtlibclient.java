@@ -57,7 +57,7 @@ public class ae2wtlibclient implements ClientModInitializer {
                 if(screen instanceof WITScreen) {
                     CompoundTag tag = buf.readCompoundTag();
                     if(tag != null)
-                        ((WITScreen) screen).postUpdate(tag);
+                        ((WITScreen) screen).postUpdate(false, tag);
                 }
                 buf.release();
             });

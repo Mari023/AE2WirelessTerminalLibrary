@@ -11,7 +11,7 @@ public class AppEngTrinketSlot extends AppEngSlot {
     public final boolean locked;
 
     public AppEngTrinketSlot(FixedTrinketInv inv, int invSlot, int x, int y, String group, String slot, boolean locked) {
-        super(inv, invSlot, x, y);
+        super(inv, invSlot/*, x, y*/);
         this.group = group;
         this.slot = slot;
         this.locked = locked;

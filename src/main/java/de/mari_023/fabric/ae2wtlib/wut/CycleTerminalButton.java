@@ -11,6 +11,9 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import org.lwjgl.opengl.GL11;
 
+import java.util.Collections;
+import java.util.List;
+
 public class CycleTerminalButton extends ButtonWidget implements ITooltip {
 
     public CycleTerminalButton(int x, int y, PressAction onPress) {
@@ -20,8 +23,8 @@ public class CycleTerminalButton extends ButtonWidget implements ITooltip {
     }
 
     @Override
-    public Text getTooltipMessage() {
-        return new TranslatableText("gui.ae2wtlib.cycle_terminal.desc");
+    public List<Text> getTooltipMessage() {
+        return Collections.singletonList(new TranslatableText("gui.ae2wtlib.cycle_terminal.desc"));
     }
 
     @Override

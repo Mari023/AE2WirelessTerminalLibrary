@@ -109,14 +109,14 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
     private AETextField searchField;
     private int numLines = 0;
 
-    public WITScreen(WITContainer container, PlayerInventory playerInventory, Text title, ScreenStyle style) {
-        super(container, playerInventory, title, style);
-        this.scrollbar = widgets.addScrollBar("scrollbar");
-        this.backgroundWidth = GUI_WIDTH;
+    public WITScreen(WITContainer container, PlayerInventory playerInventory, Text title) {
+        super(container, playerInventory, title, new ScreenStyle());//FIXME
+        scrollbar = widgets.addScrollBar("scrollbar");
+        backgroundWidth = GUI_WIDTH;
 
         // Add a terminalstyle button
         TerminalStyle terminalStyle = AEConfig.instance().getTerminalStyle();
-        this.addToLeftToolbar(
+        addToLeftToolbar(
                 new SettingToggleButton<>(Settings.TERMINAL_STYLE, terminalStyle, this::toggleTerminalStyle));
     }
 
@@ -125,56 +125,56 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
         // Decide on number of rows.
         TerminalStyle terminalStyle = AEConfig.instance().getTerminalStyle();
         int maxLines = terminalStyle == TerminalStyle.SMALL ? DEFAULT_ROW_COUNT : Integer.MAX_VALUE;
-        this.numLines = (this.height - GUI_HEADER_HEIGHT - GUI_FOOTER_HEIGHT) / ROW_HEIGHT;
-        this.numLines = MathHelper.clamp(this.numLines, MIN_ROW_COUNT, maxLines);
+        numLines = (height - GUI_HEADER_HEIGHT - GUI_FOOTER_HEIGHT) / ROW_HEIGHT;
+        numLines = MathHelper.clamp(numLines, MIN_ROW_COUNT, maxLines);
         // Render inventory in correct place.
-        this.backgroundHeight = GUI_HEADER_HEIGHT + GUI_FOOTER_HEIGHT + this.numLines * ROW_HEIGHT;
+        backgroundHeight = GUI_HEADER_HEIGHT + GUI_FOOTER_HEIGHT + numLines * ROW_HEIGHT;
 
         super.init();
-        this.searchField = new AETextField(this.textRenderer, this.getGuiLeft() + 104, this.getGuiTop() + 4, 65, 12);
-        this.searchField.setDrawsBackground(false);
-        this.searchField.setMaxLength(25);
-        this.searchField.setEditableColor(0xFFFFFF);
-        this.searchField.setVisible(true);
-        this.searchField.setChangedListener(str -> this.refreshList());
-        this.addChild(this.searchField);
-        this.focusOn(this.searchField);
-        this.changeFocus(true);
+        searchField = new AETextField(textRenderer, getGuiLeft() + 104, getGuiTop() + 4, 65, 12);
+        searchField.setDrawsBackground(false);
+        searchField.setMaxLength(25);
+        searchField.setEditableColor(0xFFFFFF);
+        searchField.setVisible(true);
+        searchField.setChangedListener(str -> refreshList());
+        addChild(searchField);
+        focusOn(searchField);
+        changeFocus(true);
 
         // numLines may have changed, recalculate scroll bar.
-        this.resetScrollbar();
+        resetScrollbar();
     }
 
     @Override
     public void drawFG(MatrixStack matrixStack, final int offsetX, final int offsetY, final int mouseX,
                        final int mouseY) {
 
-        this.handler.slots.removeIf(slot -> slot instanceof InterfaceSlot);
+        handler.slots.removeIf(slot -> slot instanceof InterfaceSlot);
 
         int textColor = style.getColor(PaletteColor.DEFAULT_TEXT_COLOR).toARGB();
 
         final int scrollLevel = scrollbar.getCurrentScroll();
         int i = 0;
-        for (; i < this.numLines; ++i) {
-            if (scrollLevel + i < this.lines.size()) {
-                final Object lineObj = this.lines.get(scrollLevel + i);
-                if (lineObj instanceof InterfaceRecord) {
+        for(; i < numLines; ++i) {
+            if(scrollLevel + i < lines.size()) {
+                final Object lineObj = lines.get(scrollLevel + i);
+                if(lineObj instanceof InterfaceRecord) {
                     // Note: We have to shift everything after the header up by 1 to avoid black line duplication.
                     final InterfaceRecord inv = (InterfaceRecord) lineObj;
-                    for (int z = 0; z < inv.getInventory().getSlotCount(); z++) {
-                        this.handler.slots
+                    for(int z = 0; z < inv.getInventory().getSlotCount(); z++) {
+                        handler.slots
                                 .add(new InterfaceSlot(inv, z, z * SLOT_SIZE + GUI_PADDING_X, (i + 1) * SLOT_SIZE));
                     }
-                } else if (lineObj instanceof String) {
+                } else if(lineObj instanceof String) {
                     String name = (String) lineObj;
-                    final int rows = this.byName.get(name).size();
-                    if (rows > 1) {
+                    final int rows = byName.get(name).size();
+                    if(rows > 1) {
                         name = name + " (" + rows + ')';
                     }
 
-                    name = this.textRenderer.trimToWidth(name, TEXT_MAX_WIDTH, true);
+                    name = textRenderer.trimToWidth(name, TEXT_MAX_WIDTH, true);
 
-                    this.textRenderer.draw(matrixStack, name, GUI_PADDING_X + INTERFACE_NAME_MARGIN_X,
+                    textRenderer.draw(matrixStack, name, GUI_PADDING_X + INTERFACE_NAME_MARGIN_X,
                             GUI_PADDING_Y + GUI_HEADER_HEIGHT + i * ROW_HEIGHT, textColor);
                 }
             }
@@ -183,12 +183,12 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
 
     @Override
     public boolean mouseClicked(final double xCoord, final double yCoord, final int btn) {
-        if (this.searchField.mouseClicked(xCoord, yCoord, btn)) {
+        if(searchField.mouseClicked(xCoord, yCoord, btn)) {
             return true;
         }
 
-        if (btn == 1 && this.searchField.isMouseOver(xCoord, yCoord)) {
-            this.searchField.setText("");
+        if(btn == 1 && searchField.isMouseOver(xCoord, yCoord)) {
+            searchField.setText("");
             return true;
         }
 
@@ -197,10 +197,10 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
 
     @Override
     protected void onMouseClick(Slot slot, int slotIdx, int mouseButton, SlotActionType clickType) {
-        if (slot instanceof InterfaceSlot) {
+        if(slot instanceof InterfaceSlot) {
             InventoryAction action = null;
 
-            switch (clickType) {
+            switch(clickType) {
                 case PICKUP: // pickup / set-down.
                     action = mouseButton == 1 ? InventoryAction.SPLIT_OR_PLACE_SINGLE
                             : InventoryAction.PICKUP_OR_SET_DOWN;
@@ -210,7 +210,7 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
                     break;
 
                 case CLONE: // creative dupe:
-                    if (getPlayer().abilities.creativeMode) {
+                    if(getPlayer().abilities.creativeMode) {
                         action = InventoryAction.CREATIVE_DUPLICATE;
                     }
 
@@ -220,7 +220,7 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
                 case THROW: // drop item:
             }
 
-            if (action != null) {
+            if(action != null) {
                 InterfaceSlot machineSlot = (InterfaceSlot) slot;
                 final InventoryActionPacket p = new InventoryActionPacket(action, getSlotIndex(machineSlot),
                         machineSlot.getMachineInv().getServerId());
@@ -236,7 +236,7 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
     @Override
     public void drawBG(MatrixStack matrixStack, final int offsetX, final int offsetY, final int mouseX,
                        final int mouseY, float partialTicks) {
-        this.bindTexture("guis/interfaceterminal.png");
+        bindTexture("guis/interfaceterminal.png");
 
         // Draw the top of the dialog
         blit(matrixStack, offsetX, offsetY, HEADER_BBOX);
@@ -247,19 +247,19 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
         int currentY = offsetY + GUI_HEADER_HEIGHT;
 
         // Draw the footer now so slots will draw on top of it
-        blit(matrixStack, offsetX, currentY + this.numLines * ROW_HEIGHT, FOOTER_BBOX);
+        blit(matrixStack, offsetX, currentY + numLines * ROW_HEIGHT, FOOTER_BBOX);
 
-        for (int i = 0; i < this.numLines; ++i) {
+        for(int i = 0; i < numLines; ++i) {
             // Draw the dialog background for this row
             // Skip 1 pixel for the first row in order to not over-draw on the top scrollbox border,
             // and do the same but for the bottom border on the last row
             boolean firstLine = i == 0;
-            boolean lastLine = i == this.numLines - 1;
+            boolean lastLine = i == numLines - 1;
 
             // Draw the background for the slots in an inventory row
             isInvLine = false;
-            if (scrollLevel + i < this.lines.size()) {
-                final Object lineObj = this.lines.get(scrollLevel + i);
+            if(scrollLevel + i < lines.size()) {
+                final Object lineObj = lines.get(scrollLevel + i);
                 isInvLine = lineObj instanceof InterfaceRecord;
             }
 
@@ -270,23 +270,23 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
         }
 
         // Draw search field.
-        if (this.searchField != null) {
-            this.searchField.render(matrixStack, mouseX, mouseY, partialTicks);
+        if(searchField != null) {
+            searchField.render(matrixStack, mouseX, mouseY, partialTicks);
         }
     }
 
     private Rect2i selectRowBackgroundBox(boolean isInvLine, boolean firstLine, boolean lastLine) {
-        if (isInvLine) {
-            if (firstLine) {
+        if(isInvLine) {
+            if(firstLine) {
                 return ROW_INVENTORY_TOP_BBOX;
-            } else if (lastLine) {
+            } else if(lastLine) {
                 return ROW_INVENTORY_BOTTOM_BBOX;
             } else {
                 return ROW_INVENTORY_MIDDLE_BBOX;
             }
-        } else if (firstLine) {
+        } else if(firstLine) {
             return ROW_TEXT_TOP_BBOX;
-        } else if (lastLine) {
+        } else if(lastLine) {
             return ROW_TEXT_BOTTOM_BBOX;
         } else {
             return ROW_TEXT_MIDDLE_BBOX;
@@ -295,7 +295,7 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
 
     @Override
     public boolean charTyped(char character, int key) {
-        if (character == ' ' && this.searchField.getText().isEmpty()) {
+        if(character == ' ' && searchField.getText().isEmpty()) {
             return true;
         }
         return super.charTyped(character, key);
@@ -306,20 +306,20 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
 
         InputUtil.Key input = InputUtil.fromKeyCode(keyCode, scanCode);
 
-        if (keyCode != GLFW.GLFW_KEY_ESCAPE) {
-            if (AppEng.instance().isActionKey(ActionKey.TOGGLE_FOCUS, input)) {
-                this.searchField.setFocusUnlocked(!this.searchField.isFocused());
+        if(keyCode != GLFW.GLFW_KEY_ESCAPE) {
+            if(AppEng.instance().isActionKey(ActionKey.TOGGLE_FOCUS, input)) {
+                searchField.setFocusUnlocked(!searchField.isFocused());
                 return true;
             }
 
             // Forward keypresses to the search field
-            if (this.searchField.isFocused()) {
-                if (keyCode == GLFW.GLFW_KEY_ENTER) {
-                    this.searchField.setFocusUnlocked(false);
+            if(searchField.isFocused()) {
+                if(keyCode == GLFW.GLFW_KEY_ENTER) {
+                    searchField.setFocusUnlocked(false);
                     return true;
                 }
 
-                this.searchField.keyPressed(keyCode, scanCode, p_keyPressed_3_);
+                searchField.keyPressed(keyCode, scanCode, p_keyPressed_3_);
 
                 // We need to swallow key presses if the field is focused because typing 'e'
                 // would otherwise close the screen
@@ -331,36 +331,36 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
     }
 
     public void postUpdate(boolean fullUpdate, final CompoundTag in) {
-        if (fullUpdate) {
-            this.byId.clear();
-            this.refreshList = true;
+        if(fullUpdate) {
+            byId.clear();
+            refreshList = true;
         }
 
-        for (final String key : in.getKeys()) {
-            if (key.startsWith("=")) {
+        for(final String key : in.getKeys()) {
+            if(key.startsWith("=")) {
                 try {
                     final long id = Long.parseLong(key.substring(1), Character.MAX_RADIX);
                     final CompoundTag invData = in.getCompound(key);
                     Text un = Text.Serializer.fromJson(invData.getString("un"));
-                    final InterfaceRecord current = this.getById(id, invData.getLong("sortBy"), un);
+                    final InterfaceRecord current = getById(id, invData.getLong("sortBy"), un);
 
-                    for (int x = 0; x < current.getInventory().getSlotCount(); x++) {
+                    for(int x = 0; x < current.getInventory().getSlotCount(); x++) {
                         final String which = Integer.toString(x);
-                        if (invData.contains(which)) {
+                        if(invData.contains(which)) {
                             current.getInventory().setInvStack(x, ItemStack.fromTag(invData.getCompound(which)),
                                     Simulation.ACTION);
                         }
                     }
-                } catch (final NumberFormatException ignored) {
+                } catch(final NumberFormatException ignored) {
                 }
             }
         }
 
-        if (this.refreshList) {
-            this.refreshList = false;
+        if(refreshList) {
+            refreshList = false;
             // invalid caches on refresh
-            this.cachedSearches.clear();
-            this.refreshList();
+            cachedSearches.clear();
+            refreshList();
         }
     }
 
@@ -370,94 +370,82 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
      * Respects a search term if present (ignores case) and adding only matching patterns.
      */
     private void refreshList() {
-        this.byName.clear();
+        byName.clear();
 
-        final String searchFilterLowerCase = this.searchField.getText().toLowerCase();
+        final String searchFilterLowerCase = searchField.getText().toLowerCase();
 
-        final Set<Object> cachedSearch = this.getCacheForSearchTerm(searchFilterLowerCase);
+        final Set<Object> cachedSearch = getCacheForSearchTerm(searchFilterLowerCase);
         final boolean rebuild = cachedSearch.isEmpty();
 
-        for (final InterfaceRecord entry : this.byId.values()) {
+        for(final InterfaceRecord entry : byId.values()) {
             // ignore inventory if not doing a full rebuild or cache already marks it as miss.
-            if (!rebuild && !cachedSearch.contains(entry)) {
-                continue;
-            }
+            if(!rebuild && !cachedSearch.contains(entry)) continue;
 
             // Shortcut to skip any filter if search term is ""/empty
             boolean found = searchFilterLowerCase.isEmpty();
 
             // Search if the current inventory holds a pattern containing the search term.
-            if (!found) {
-                for (final ItemStack itemStack : entry.getInventory()) {
-                    found = this.itemStackMatchesSearchTerm(itemStack, searchFilterLowerCase);
-                    if (found) {
-                        break;
-                    }
+            if(!found) for(final ItemStack itemStack : entry.getInventory()) {
+                    found = itemStackMatchesSearchTerm(itemStack, searchFilterLowerCase);
+                    if(found) break;
                 }
-            }
 
             // if found, filter skipped or machine name matching the search term, add it
-            if (found || entry.getSearchName().contains(searchFilterLowerCase)) {
-                this.byName.put(entry.getDisplayName(), entry);
+            if(found || entry.getSearchName().contains(searchFilterLowerCase)) {
+                byName.put(entry.getDisplayName(), entry);
                 cachedSearch.add(entry);
-            } else {
-                cachedSearch.remove(entry);
-            }
+            } else cachedSearch.remove(entry);
         }
 
-        this.names.clear();
-        this.names.addAll(this.byName.keySet());
+        names.clear();
+        names.addAll(byName.keySet());
 
-        Collections.sort(this.names);
+        Collections.sort(names);
 
-        this.lines.clear();
-        this.lines.ensureCapacity(this.getMaxRows());
+        lines.clear();
+        lines.ensureCapacity(getMaxRows());
 
-        for (String n : this.names) {
-            this.lines.add(n);
+        for(String n : names) {
+            lines.add(n);
 
-            List<InterfaceRecord> clientInventories = new ArrayList<>(this.byName.get(n));
+            List<InterfaceRecord> clientInventories = new ArrayList<>(byName.get(n));
 
             Collections.sort(clientInventories);
-            this.lines.addAll(clientInventories);
+            lines.addAll(clientInventories);
         }
 
         // lines may have changed - recalculate scroll bar.
-        this.resetScrollbar();
+        resetScrollbar();
     }
 
     /**
-     * Should be called whenever this.lines.size() or this.numLines changes.
+     * Should be called whenever lines.size() or numLines changes.
      */
     private void resetScrollbar() {
         // Needs to take the border into account, so offset for 1 px on the top and bottom.
-        scrollbar.setHeight(this.numLines * ROW_HEIGHT - 2);
-        scrollbar.setRange(0, this.lines.size() - this.numLines, 2);
+        scrollbar.setHeight(numLines * ROW_HEIGHT - 2);
+        scrollbar.setRange(0, lines.size() - numLines, 2);
     }
 
     private boolean itemStackMatchesSearchTerm(final ItemStack itemStack, final String searchTerm) {
-        if (itemStack.isEmpty()) {
-            return false;
-        }
+        if(itemStack.isEmpty()) return false;
 
         final CompoundTag encodedValue = itemStack.getTag();
 
-        if (encodedValue == null) {
-            return false;
-        }
+        if(encodedValue == null) return false;
 
         // Potential later use to filter by input
         // ListNBT inTag = encodedValue.getTagList( "in", 10 );
         final ListTag outTag = encodedValue.getList("out", 10);
 
-        for (int i = 0; i < outTag.size(); i++) {
+        for(int i = 0; i < outTag.size(); i++) {
 
             final ItemStack parsedItemStack = ItemStack.fromTag(outTag.getCompound(i));
-            if (!parsedItemStack.isEmpty()) {
+            if(!parsedItemStack.isEmpty()) {
                 final String displayName = Platform.getItemDisplayName(Api.instance().storage()
                         .getStorageChannel(IItemStorageChannel.class).createStack(parsedItemStack)).getString()
                         .toLowerCase();
-                if (displayName.contains(searchTerm)) {
+                if(displayName.contains(searchTerm)) {
                     return true;
                 }
             }
@@ -475,30 +463,30 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
      * @return a Set matching a superset of the search term
      */
     private Set<Object> getCacheForSearchTerm(final String searchTerm) {
-        if (!this.cachedSearches.containsKey(searchTerm)) {
-            this.cachedSearches.put(searchTerm, new HashSet<>());
+        if(!cachedSearches.containsKey(searchTerm)) {
+            cachedSearches.put(searchTerm, new HashSet<>());
         }
 
-        final Set<Object> cache = this.cachedSearches.get(searchTerm);
+        final Set<Object> cache = cachedSearches.get(searchTerm);
 
-        if (cache.isEmpty() && searchTerm.length() > 1) {
-            cache.addAll(this.getCacheForSearchTerm(searchTerm.substring(0, searchTerm.length() - 1)));
+        if(cache.isEmpty() && searchTerm.length() > 1) {
+            cache.addAll(getCacheForSearchTerm(searchTerm.substring(0, searchTerm.length() - 1)));
         }
 
         return cache;
     }
 
     private void reinitialize() {
-        this.children.removeAll(this.buttons);
-        this.buttons.clear();
-        this.init();
+        children.removeAll(buttons);
+        buttons.clear();
+        init();
     }
 
     private void toggleTerminalStyle(SettingToggleButton<TerminalStyle> btn, boolean backwards) {
         TerminalStyle next = btn.getNextValue(backwards);
         AEConfig.instance().setTerminalStyle(next);
         btn.set(next);
-        this.reinitialize();
+        reinitialize();
     }
 
     /**
@@ -507,15 +495,15 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
      * @return max amount of unique names and each inv row
      */
     private int getMaxRows() {
-        return this.names.size() + this.byId.size();
+        return names.size() + byId.size();
     }
 
     private InterfaceRecord getById(final long id, final long sortBy, final Text name) {
-        InterfaceRecord o = this.byId.get(id);
+        InterfaceRecord o = byId.get(id);
 
-        if (o == null) {
-            this.byId.put(id, o = new InterfaceRecord(id, DualityInterface.NUMBER_OF_PATTERN_SLOTS, sortBy, name));
-            this.refreshList = true;
+        if(o == null) {
+            byId.put(id, o = new InterfaceRecord(id, DualityInterface.NUMBER_OF_PATTERN_SLOTS, sortBy, name));
+            refreshList = true;
         }
 
         return o;

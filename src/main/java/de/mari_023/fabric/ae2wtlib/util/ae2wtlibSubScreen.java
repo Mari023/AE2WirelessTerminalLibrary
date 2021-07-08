@@ -16,14 +16,14 @@ import java.util.function.Consumer;
 
 public final class ae2wtlibSubScreen {
 
-    private final AEBaseScreen<?> gui;
+    /*private final AEBaseScreen<?> gui;//FIXME
     private final ScreenHandlerType<?> previousContainerType;
     private final ItemStack previousContainerIcon;
 
-    /**
+    *//**
      * Based on the container we're opening for, try to determine what it's "primary" GUI would be so that we can go
      * back to it.
-     */
+     *//*
     public ae2wtlibSubScreen(AEBaseScreen<?> gui, Object containerTarget) {
         this.gui = gui;
 
@@ -52,5 +52,5 @@ public final class ae2wtlibSubScreen {
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeIdentifier(Registry.SCREEN_HANDLER.getId(previousContainerType));
         ClientPlayNetworking.send(new Identifier("ae2wtlib", "switch_gui"), buf);
-    }
+    }*/
 }
