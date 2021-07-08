@@ -5,29 +5,21 @@ import appeng.api.networking.IGrid;
 import appeng.api.networking.crafting.ICraftingCPU;
 import appeng.api.networking.crafting.ICraftingGrid;
 import appeng.api.networking.crafting.ICraftingJob;
-import appeng.api.networking.crafting.ICraftingLink;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.security.IActionSource;
 import appeng.api.storage.ITerminalHost;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.container.AEBaseContainer;
-import appeng.container.ContainerOpener;
+import appeng.container.ContainerLocator;
 import appeng.container.guisync.GuiSync;
-import appeng.container.implementations.ContainerTypeBuilder;
-import appeng.container.me.items.CraftingTermContainer;
-import appeng.container.me.items.ItemTerminalContainer;
-import appeng.container.me.items.PatternTermContainer;
-import appeng.container.me.items.WirelessTermContainer;
 import appeng.core.AELog;
 import appeng.core.sync.packets.CraftConfirmPlanPacket;
-import appeng.helpers.WirelessTerminalGuiObject;
 import appeng.me.helpers.PlayerSource;
-import appeng.parts.reporting.CraftingTerminalPart;
-import appeng.parts.reporting.PatternTerminalPart;
-import appeng.parts.reporting.TerminalPart;
 import de.mari_023.fabric.ae2wtlib.terminal.WTGuiObject;
+import de.mari_023.fabric.ae2wtlib.util.ContainerHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -40,10 +32,18 @@ import java.util.concurrent.Future;
 public class WirelessCraftConfirmContainer extends AEBaseContainer implements CraftingCPUCyclingContainer {
     private static final String ACTION_BACK = "back";
 
-    public static final ScreenHandlerType<WirelessCraftConfirmContainer> TYPE = ContainerTypeBuilder
-            .create(WirelessCraftConfirmContainer::new, ITerminalHost.class)
-            .requirePermission(SecurityPermissions.CRAFT)
-            .build("craftconfirm");
+    public static ScreenHandlerType<WirelessCraftConfirmContainer> TYPE;
+
+    private static final ContainerHelper<WirelessCraftConfirmContainer, ITerminalHost> helper = new ContainerHelper<>(
+            WirelessCraftConfirmContainer::new, ITerminalHost.class, SecurityPermissions.CRAFT);
+
+    public static WirelessCraftConfirmContainer fromNetwork(int windowId, PlayerInventory inv, PacketByteBuf buf) {
+        return helper.fromNetwork(windowId, inv, buf);
+    }
+
+    public static boolean open(PlayerEntity player, ContainerLocator locator) {
+        return helper.open(player, locator);
+    }
 
     private final CraftingCPUCycler cpuCycler;
 
