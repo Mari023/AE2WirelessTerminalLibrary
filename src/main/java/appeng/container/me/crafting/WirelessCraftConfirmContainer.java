@@ -118,8 +118,7 @@ public class WirelessCraftConfirmContainer extends AEBaseContainer implements Cr
     }
 
     private IGrid getGrid() {
-        final IActionHost h = (IActionHost) getTarget();
-        return h.getActionableNode().getGrid();
+        return ((IActionHost) getTarget()).getActionableNode().getGrid();
     }
 
     private boolean cpuMatches(final ICraftingCPU c) {
@@ -130,7 +129,7 @@ public class WirelessCraftConfirmContainer extends AEBaseContainer implements Cr
     public void startJob() {
         final IActionHost ah = getActionHost();
         if(!(ah instanceof WTGuiObject)) return;
-        if(result == null && result.isSimulation()) return;
+        if(result == null || result.isSimulation()) return;
 
         setAutoStart(false);
         if(((ICraftingGrid) getGrid().getCache(ICraftingGrid.class)).submitJob(result, null, selectedCpu, true, getActionSrc()) != null && getLocator() != null)

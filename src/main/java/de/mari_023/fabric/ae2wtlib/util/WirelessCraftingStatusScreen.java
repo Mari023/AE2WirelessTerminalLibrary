@@ -1,7 +1,7 @@
 package de.mari_023.fabric.ae2wtlib.util;
 
 import appeng.client.gui.implementations.CraftingCPUScreen;
-import appeng.container.implementations.WirelessCraftingStatusContainer;
+import appeng.container.me.crafting.WirelessCraftingStatusContainer;
 import appeng.core.localization.GuiText;
 import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.ConfigValuePacket;

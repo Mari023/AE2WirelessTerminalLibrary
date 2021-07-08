@@ -1,7 +1,7 @@
 package de.mari_023.fabric.ae2wtlib.mixin;
 
 import appeng.client.gui.implementations.MEMonitorableScreen;
-import appeng.container.implementations.WirelessCraftingStatusContainer;
+import appeng.container.me.crafting.WirelessCraftingStatusContainer;
 import de.mari_023.fabric.ae2wtlib.wct.WCTScreen;
 import de.mari_023.fabric.ae2wtlib.wpt.WPTScreen;
 import net.fabricmc.api.EnvType;

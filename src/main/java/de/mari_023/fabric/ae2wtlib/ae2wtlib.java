@@ -8,7 +8,7 @@ import appeng.api.networking.security.IActionHost;
 import appeng.container.AEBaseContainer;
 import appeng.container.ContainerLocator;
 import appeng.container.me.crafting.WirelessCraftConfirmContainer;
-import appeng.container.implementations.WirelessCraftingStatusContainer;
+import appeng.container.me.crafting.WirelessCraftingStatusContainer;
 import appeng.core.AELog;
 import appeng.core.Api;
 import de.mari_023.fabric.ae2wtlib.rei.REIRecipePacket;

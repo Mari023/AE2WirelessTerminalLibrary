@@ -6,6 +6,9 @@ import alexiil.mc.lib.attributes.item.filter.ItemFilter;
 import appeng.items.storage.ViewCellItem;
 import net.minecraft.item.ItemStack;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FixedViewCellInventory implements FixedItemInv {
 
     private static final int viewCellCount = 5;
@@ -38,9 +41,9 @@ public class FixedViewCellInventory implements FixedItemInv {
         return true;
     }
 
-    public ItemStack[] getViewCells() {
-        ItemStack[] viewCells = new ItemStack[viewCellCount];
-        for(int i = 0; i < viewCellCount; i++) viewCells[i] = getInvStack(i);
+    public List<ItemStack> getViewCells() {
+        List<ItemStack> viewCells = new ArrayList<>();
+        for(int i = 0; i < viewCellCount; i++) viewCells.add(getInvStack(i));
         return viewCells;
     }
 
