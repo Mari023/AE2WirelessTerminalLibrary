@@ -23,6 +23,7 @@ import appeng.me.helpers.PlayerSource;
 import appeng.tile.inventory.AppEngInternalInventory;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.world.World;
@@ -35,6 +36,14 @@ public class WirelessCraftAmountContainer extends AEBaseContainer {
 
     private static final ContainerHelper<WirelessCraftAmountContainer, ITerminalHost> helper = new ContainerHelper<>(
             WirelessCraftAmountContainer::new, ITerminalHost.class);
+
+    public static WirelessCraftAmountContainer fromNetwork(int windowId, PlayerInventory inv, PacketByteBuf buf) {
+        return helper.fromNetwork(windowId, inv, buf);
+    }
+
+    public static boolean open(PlayerEntity player, ContainerLocator locator) {
+        return helper.open(player, locator);
+    }
 
     /**
      * This slot is used to synchronize a visual representation of what is to be crafted to the client.

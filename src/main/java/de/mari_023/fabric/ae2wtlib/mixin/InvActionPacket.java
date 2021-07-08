@@ -39,10 +39,10 @@ public class InvActionPacket {
         if(!(player.currentScreenHandler instanceof WirelessCraftAmountContainer)) return;
         final WirelessCraftAmountContainer cca = (WirelessCraftAmountContainer) player.currentScreenHandler;
 
-        if(baseContainer.getTargetStack() != null) {
+        /*if(baseContainer.getTargetStack() != null) {
             cca.getCraftingItem().setStack(baseContainer.getTargetStack().asItemStackRepresentation());
             cca.setItemToCraft(baseContainer.getTargetStack());
-        }
+        }*/
         cca.sendContentUpdates();
     }
 }

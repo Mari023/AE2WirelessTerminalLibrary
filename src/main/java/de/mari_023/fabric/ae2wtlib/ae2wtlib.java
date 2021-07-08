@@ -1,16 +1,11 @@
 package de.mari_023.fabric.ae2wtlib;
 
-import appeng.api.networking.IGrid;
-import appeng.api.networking.IGridNode;
-import appeng.api.networking.crafting.ICraftingGrid;
-import appeng.api.networking.crafting.ICraftingJob;
-import appeng.api.networking.security.IActionHost;
 import appeng.container.AEBaseContainer;
 import appeng.container.ContainerLocator;
 import appeng.container.me.crafting.WirelessCraftConfirmContainer;
 import appeng.container.me.crafting.WirelessCraftingStatusContainer;
-import appeng.core.AELog;
 import appeng.core.Api;
+import appeng.core.sync.packets.PatternSlotPacket;
 import de.mari_023.fabric.ae2wtlib.rei.REIRecipePacket;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemInfinityBooster;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
@@ -47,8 +42,6 @@ import net.minecraft.text.TextColor;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-
-import java.util.concurrent.Future;
 
 public class ae2wtlib implements ModInitializer {
 
@@ -126,7 +119,7 @@ public class ae2wtlib implements ModInitializer {
             buf.retain();
             server.execute(() -> {
                 if(player.currentScreenHandler instanceof WPTContainer)
-                    ((WPTContainer) player.currentScreenHandler).craftOrGetItem(buf);
+                    ((WPTContainer) player.currentScreenHandler).craftOrGetItem(new PatternSlotPacket(buf));
                 buf.release();
             });
         });
@@ -168,7 +161,7 @@ public class ae2wtlib implements ModInitializer {
                 buf.release();
             });
         });
-        ServerPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "craft_request"), (server, player, handler, buf, sender) -> {
+        /*ServerPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "craft_request"), (server, player, handler, buf, sender) -> {
             buf.retain();
             server.execute(() -> {
                 int amount = buf.readInt();
@@ -209,7 +202,7 @@ public class ae2wtlib implements ModInitializer {
                     buf.release();
                 }
             });
-        });
+        });*/
         ServerPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "cycle_terminal"), (server, player, handler, buf, sender) -> server.execute(() -> {
             final ScreenHandler screenHandler = player.currentScreenHandler;
 
