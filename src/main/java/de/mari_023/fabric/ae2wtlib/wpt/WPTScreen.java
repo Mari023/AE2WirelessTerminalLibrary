@@ -1,7 +1,8 @@
 package de.mari_023.fabric.ae2wtlib.wpt;
 
 import appeng.api.config.ActionItems;
-import appeng.client.gui.implementations.MEMonitorableScreen;
+import appeng.client.gui.me.items.ItemTerminalScreen;
+import appeng.client.gui.style.ScreenStyle;
 import appeng.client.gui.widgets.AETextField;
 import appeng.client.gui.widgets.ActionButton;
 import appeng.client.gui.widgets.TabButton;
@@ -22,7 +23,7 @@ import net.minecraft.util.Identifier;
 import java.lang.reflect.Field;
 import java.util.List;
 
-public class WPTScreen extends MEMonitorableScreen<WPTContainer> implements IUniversalTerminalCapable {
+public class WPTScreen extends ItemTerminalScreen<WPTContainer> implements IUniversalTerminalCapable {
 
     private int rows = 0;
     private AETextField searchField;
@@ -41,62 +42,62 @@ public class WPTScreen extends MEMonitorableScreen<WPTContainer> implements IUni
     private ActionButton substitutionsDisabledBtn;
 
     public WPTScreen(WPTContainer container, PlayerInventory playerInventory, Text title) {
-        super(container, playerInventory, title);
+        super(container, playerInventory, title, new ScreenStyle());//FIXME
         this.container = container;
         reservedSpace = 81;
 
-        try {
-            Field f = MEMonitorableScreen.class.getDeclaredField("reservedSpace");
+        /*try {//FIXME
+            Field f = ItemTerminalScreen.class.getDeclaredField("reservedSpace");
             f.setAccessible(true);
             f.set(this, reservedSpace);
             f.setAccessible(false);
-        } catch(IllegalAccessException | NoSuchFieldException ignored) {}
+        } catch(IllegalAccessException | NoSuchFieldException ignored) {}*/
     }
 
     @Override
     public void init() {
         super.init();
 
-        tabCraftButton = new TabButton(x + 173, y + backgroundHeight - 177,
+        tabCraftButton = new TabButton(/*x + 173, y + backgroundHeight - 177,*/
                 new ItemStack(Blocks.CRAFTING_TABLE), GuiText.CraftingPattern.text(), itemRenderer,
                 btn -> toggleCraftMode(CRAFTMODE_PROCESSING));
         addButton(tabCraftButton);
 
-        tabProcessButton = new TabButton(x + 173, y + backgroundHeight - 177,
+        tabProcessButton = new TabButton(/*x + 173, y + backgroundHeight - 177,*/
                 new ItemStack(Blocks.FURNACE), GuiText.ProcessingPattern.text(), itemRenderer,
                 btn -> toggleCraftMode(CRAFTMODE_CRAFTING));
         addButton(tabProcessButton);
 
-        substitutionsEnabledBtn = new ActionButton(x + 84, y + backgroundHeight - 165, ActionItems.ENABLE_SUBSTITUTION, act -> toggleSubstitutions(SUBSITUTION_DISABLE));
+        substitutionsEnabledBtn = new ActionButton(/*x + 84, y + backgroundHeight - 165,*/ ActionItems.ENABLE_SUBSTITUTION, act -> toggleSubstitutions(SUBSITUTION_DISABLE));
         substitutionsEnabledBtn.setHalfSize(true);
         addButton(substitutionsEnabledBtn);
 
-        substitutionsDisabledBtn = new ActionButton(x + 84, y + backgroundHeight - 165, ActionItems.DISABLE_SUBSTITUTION, act -> toggleSubstitutions(SUBSITUTION_ENABLE));
+        substitutionsDisabledBtn = new ActionButton(/*x + 84, y + backgroundHeight - 165,*/ ActionItems.DISABLE_SUBSTITUTION, act -> toggleSubstitutions(SUBSITUTION_ENABLE));
         substitutionsDisabledBtn.setHalfSize(true);
         addButton(substitutionsDisabledBtn);
 
-        ActionButton clearBtn = addButton(new ActionButton(x + 74, y + backgroundHeight - 165, ActionItems.CLOSE, btn -> clear()));
+        ActionButton clearBtn = addButton(new ActionButton(/*x + 74, y + backgroundHeight - 165,*/ ActionItems.CLOSE, btn -> clear()));
         clearBtn.setHalfSize(true);
 
-        ActionButton encodeBtn = new ActionButton(x + 147, y + backgroundHeight - 144, ActionItems.ENCODE, act -> encode());
+        ActionButton encodeBtn = new ActionButton(/*x + 147, y + backgroundHeight - 144,*/ ActionItems.ENCODE, act -> encode());
         addButton(encodeBtn);
 
         if(container.isWUT()) addButton(new CycleTerminalButton(x - 18, y + 108, btn -> cycleTerminal()));
 
-        try {
-            Field field = MEMonitorableScreen.class.getDeclaredField("rows");
+        /*try {//FIXME
+            Field field = ItemTerminalScreen.class.getDeclaredField("rows");
             field.setAccessible(true);
             Object value = field.get(this);
             field.setAccessible(false);
             rows = (int) value;
         } catch(IllegalAccessException | NoSuchFieldException ignored) {}
         try {
-            Field field = MEMonitorableScreen.class.getDeclaredField("searchField");
+            Field field = ItemTerminalScreen.class.getDeclaredField("searchField");
             field.setAccessible(true);
             Object value = field.get(this);
             field.setAccessible(false);
             searchField = (AETextField) value;
-        } catch(IllegalAccessException | NoSuchFieldException ignored) {}
+        } catch(IllegalAccessException | NoSuchFieldException ignored) {}*/
     }
 
     private void toggleCraftMode(byte mode) {
@@ -167,15 +168,14 @@ public class WPTScreen extends MEMonitorableScreen<WPTContainer> implements IUni
         textRenderer.draw(matrices, GuiText.PatternTerminal.text(), 8, backgroundHeight - 96 + 1 - reservedSpace, 4210752);
     }
 
-    @Override
     protected String getBackground() {
         return "wtlib/gui/pattern.png";
-    }
+    }//FIXME
 
-    @Override
+    /*@Override
     public List<Rectangle> getExclusionZones() {
         List<Rectangle> zones = super.getExclusionZones();
         zones.add(new Rectangle(x + 195, y, 24, backgroundHeight - 110));
         return zones;
-    }
+    }*/
 }

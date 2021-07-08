@@ -1,8 +1,9 @@
 package de.mari_023.fabric.ae2wtlib.wct;
 
-import appeng.api.config.ActionItems;
+import appeng.client.gui.Icon;
+import appeng.client.gui.me.items.ItemTerminalScreen;
+import appeng.client.gui.style.ScreenStyle;
 import appeng.client.gui.widgets.AETextField;
-import appeng.client.gui.widgets.ActionButton;
 import appeng.client.gui.widgets.IconButton;
 import appeng.container.slot.CraftingMatrixSlot;
 import appeng.core.localization.GuiText;
@@ -25,7 +26,6 @@ import dev.emi.trinkets.TrinketsClient;
 import dev.emi.trinkets.api.SlotGroups;
 import dev.emi.trinkets.api.TrinketSlots;
 import dev.emi.trinkets.mixin.SlotMixin;
-import me.shedaniel.math.Rectangle;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
@@ -44,11 +44,10 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Quaternion;
 import org.lwjgl.opengl.GL11;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUniversalTerminalCapable {
+public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniversalTerminalCapable {
 
     private int rows = 0;
     private AETextField searchField;
@@ -60,28 +59,33 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
     private float mouseY;
 
     public WCTScreen(WCTContainer container, PlayerInventory playerInventory, Text title) {
-        super(container, playerInventory, title);
-        reservedSpace = 73;
+        super(container, playerInventory, title, new ScreenStyle());//FIXME
+        reservedSpace = 73;//FIXME
         this.container = container;
 
-        try {
-            Field f = MEMonitorableScreen.class.getDeclaredField("reservedSpace");
+        /*try {
+            Field f = ItemTerminalScreen.class.getDeclaredField("reservedSpace");
             f.setAccessible(true);
             f.set(this, reservedSpace);
             f.setAccessible(false);
-        } catch(IllegalAccessException | NoSuchFieldException ignored) {}
+        } catch(IllegalAccessException | NoSuchFieldException ignored) {}*/
     }
 
     @Override
     public void init() {
         super.init();
-        ActionButton clearBtn = addButton(new ActionButton(x + 92 + 43, y + backgroundHeight - 156 - 4, ActionItems.STASH, btn -> clear()));
+        IconButton clearBtn = addButton(new IconButton(/*x + 92 + 43, y + backgroundHeight - 156 - 4, ActionItems.STASH,*/ btn -> clear()) {
+            @Override
+            protected Icon getIcon() {
+                return Icon.CLEAR;
+            }
+        });
         clearBtn.setHalfSize(true);
 
-        IconButton deleteButton = addButton(new IconButton(x + 92 + 25, y + backgroundHeight - 156 + 52, btn -> delete()) {
+        IconButton deleteButton = addButton(new IconButton(/*x + 92 + 25, y + backgroundHeight - 156 + 52,*/ btn -> delete()) {
             @Override
-            protected int getIconIndex() {
-                return 6;
+            protected Icon getIcon() {
+                return Icon.CONDENSER_OUTPUT_TRASH;
             }
         });
         deleteButton.setHalfSize(true);
@@ -94,7 +98,7 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
 
         if(container.isWUT()) addButton(new CycleTerminalButton(x - 18, y + 108, btn -> cycleTerminal()));
 
-        try {
+        /*try {//FIXME
             Field field = MEMonitorableScreen.class.getDeclaredField("rows");
             field.setAccessible(true);
             Object value = field.get(this);
@@ -107,7 +111,7 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
             Object value = field.get(this);
             field.setAccessible(false);
             searchField = (AETextField) value;
-        } catch(IllegalAccessException | NoSuchFieldException ignored) {}
+        } catch(IllegalAccessException | NoSuchFieldException ignored) {}*/
 
         if(!Config.allowTrinket()) return;//Trinkets only starting here
         TrinketsClient.displayEquipped = 0;
@@ -272,7 +276,6 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
         }
     }
 
-    @Override
     protected String getBackground() {
         return "wtlib/gui/crafting.png";
     }
@@ -316,12 +319,12 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
         GL11.glPopMatrix();
     }
 
-    @Override
+    /*@Override
     public List<Rectangle> getExclusionZones() {
         List<Rectangle> zones = super.getExclusionZones();
         zones.add(new Rectangle(x + 195, y, 24, backgroundHeight - 110));
         return zones;
-    }
+    }*/
 
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         this.mouseX = (float) mouseX;
