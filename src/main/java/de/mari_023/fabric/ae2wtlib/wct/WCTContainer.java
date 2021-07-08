@@ -90,7 +90,7 @@ public class WCTContainer extends ItemTerminalContainer implements IAEAppEngInve
             for(int x = 0; x < 3; x++)
                 addSlot(craftingSlots[x + y * 3] = new CraftingMatrixSlot(this, crafting, x + y * 3/*, 37 + x * 18 + 43, -72 + y * 18 - 4*/));
         AppEngInternalInventory output = new AppEngInternalInventory(this, 1);
-            addSlot(outputSlot = new CraftingTermSlot(getPlayerInventory().player, getActionSource(), gui, gui.getIStorageGrid(), crafting/*, crafting*/, output/*, 131 + 43, -72 + 18 - 4*/, this));
+            addSlot(outputSlot = new CraftingTermSlot(getPlayerInventory().player, getActionSource(), gui, gui.getIStorageGrid(), crafting, crafting/*, output, 131 + 43, -72 + 18 - 4*/, this));
 
         SlotsWithTrinket[5] = addSlot(new AppEngSlot(fixedWTInv, 3/*, 8, -76*/) {
             @Environment(EnvType.CLIENT)

@@ -73,10 +73,10 @@ public class WITContainer extends AEBaseContainer implements IWTInvHolder {
 
         if(isServer() && witGUIObject.getActionableNode() != null) grid = witGUIObject.getActionableNode().getGrid();
 
-        bindPlayerInventory(ip, 0, 0);
+        createPlayerInventorySlots(ip);
 
-        final FixedWTInv fixedWITInv = new FixedWTInv(getPlayerInv(), witGUIObject.getItemStack(), this);
-        addSlot(new AppEngSlot(fixedWITInv, FixedWTInv.INFINITY_BOOSTER_CARD, 173, -11));
+        final FixedWTInv fixedWITInv = new FixedWTInv(getPlayerInventory(), witGUIObject.getItemStack(), this);
+        addSlot(new AppEngSlot(fixedWITInv, FixedWTInv.INFINITY_BOOSTER_CARD/*, 173, -11*/));
     }
 
     private double powerMultiplier = 1;
@@ -89,8 +89,8 @@ public class WITContainer extends AEBaseContainer implements IWTInvHolder {
 
         if(!witGUIObject.rangeCheck()) {
             if(isValidContainer()) {
-                getPlayerInv().player.sendSystemMessage(PlayerMessages.OutOfRange.get(), Util.NIL_UUID);
-                ((ServerPlayerEntity) getPlayerInv().player).closeHandledScreen();
+                getPlayerInventory().player.sendSystemMessage(PlayerMessages.OutOfRange.get(), Util.NIL_UUID);
+                ((ServerPlayerEntity) getPlayerInventory().player).closeHandledScreen();
             }
             setValidContainer(false);
         } else {
@@ -98,8 +98,8 @@ public class WITContainer extends AEBaseContainer implements IWTInvHolder {
 
             if(witGUIObject.extractAEPower(1, Actionable.SIMULATE, PowerMultiplier.ONE) == 0) {
                 if(isValidContainer()) {
-                    getPlayerInv().player.sendSystemMessage(PlayerMessages.DeviceNotPowered.get(), Util.NIL_UUID);
-                    ((ServerPlayerEntity) getPlayerInv().player).closeHandledScreen();
+                    getPlayerInventory().player.sendSystemMessage(PlayerMessages.DeviceNotPowered.get(), Util.NIL_UUID);
+                    ((ServerPlayerEntity) getPlayerInventory().player).closeHandledScreen();
                 }
                 setValidContainer(false);
             }
@@ -171,7 +171,7 @@ public class WITContainer extends AEBaseContainer implements IWTInvHolder {
         if(data.isEmpty()) return;
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeCompoundTag(data);
-        ServerPlayNetworking.send((ServerPlayerEntity) getPlayerInv().player, new Identifier("ae2wtlib", "interface_terminal"), buf);
+        ServerPlayNetworking.send((ServerPlayerEntity) getPlayerInventory().player, new Identifier("ae2wtlib", "interface_terminal"), buf);
         data = new CompoundTag();
     }
 
