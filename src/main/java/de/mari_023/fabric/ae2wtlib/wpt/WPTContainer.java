@@ -98,7 +98,7 @@ public class WPTContainer extends ItemTerminalContainer implements IAEAppEngInve
         wptGUIObject = gui;
 
         final int slotIndex = ((IInventorySlotAware) wptGUIObject).getInventorySlot();
-        lockPlayerInventorySlot(slotIndex);
+        if(slotIndex < 100) lockPlayerInventorySlot(slotIndex);
 
         final FixedItemInv patternInv = getPatternTerminal().getInventoryByName("pattern");
 

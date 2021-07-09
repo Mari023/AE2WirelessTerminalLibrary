@@ -79,7 +79,7 @@ public class WCTContainer extends ItemTerminalContainer implements IAEAppEngInve
         wctGUIObject = gui;
 
         final int slotIndex = ((IInventorySlotAware) wctGUIObject).getInventorySlot();
-        lockPlayerInventorySlot(slotIndex);
+        if(slotIndex < 100) lockPlayerInventorySlot(slotIndex);
         createPlayerInventorySlots(ip);
 
         fixedWTInv = new FixedWTInv(getPlayerInventory(), wctGUIObject.getItemStack(), this);

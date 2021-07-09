@@ -12,6 +12,7 @@ import appeng.api.networking.IGridNode;
 import appeng.api.networking.security.IActionHost;
 import appeng.container.AEBaseContainer;
 import appeng.container.ContainerLocator;
+import appeng.container.interfaces.IInventorySlotAware;
 import appeng.container.slot.AppEngSlot;
 import appeng.core.localization.PlayerMessages;
 import appeng.helpers.DualityInterface;
@@ -73,6 +74,8 @@ public class WITContainer extends AEBaseContainer implements IWTInvHolder {
 
         if(isServer() && witGUIObject.getActionableNode() != null) grid = witGUIObject.getActionableNode().getGrid();
 
+        final int slotIndex = ((IInventorySlotAware) witGUIObject).getInventorySlot();
+        if(slotIndex < 100) lockPlayerInventorySlot(slotIndex);
         createPlayerInventorySlots(ip);
 
         final FixedWTInv fixedWITInv = new FixedWTInv(getPlayerInventory(), witGUIObject.getItemStack(), this);
