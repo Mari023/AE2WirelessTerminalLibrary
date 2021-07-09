@@ -19,7 +19,7 @@
       },
       "position": {
         "left": 8,
-        "top": 6
+        "top": 8
       }
     },
     "crafting_grid_title": {
@@ -51,16 +51,16 @@
     },
     "bottom": {
       "texture": "wtlib/guis/crafting.png",
-      "srcRect": [0, 71, 195, 172]
+      "srcRect": [0, 71, 200, 172]
     }
   },
   "widgets": {
     "clearCraftingGrid": {
-      "left": 130,
-      "bottom": 156
+      "left": 132,
+      "bottom": 158
     },
     "emptyTrash": {
-      "left": 100,
+      "left": 110,
       "bottom": 106
     }
   }

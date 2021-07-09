@@ -10,6 +10,7 @@ import appeng.client.gui.me.interfaceterminal.InterfaceRecord;
 import appeng.client.gui.me.interfaceterminal.InterfaceSlot;
 import appeng.client.gui.style.PaletteColor;
 import appeng.client.gui.style.ScreenStyle;
+import appeng.client.gui.style.StyleManager;
 import appeng.client.gui.widgets.AETextField;
 import appeng.client.gui.widgets.Scrollbar;
 import appeng.client.gui.widgets.SettingToggleButton;
@@ -36,10 +37,22 @@ import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
 import org.lwjgl.glfw.GLFW;
 
+import java.io.IOException;
 import java.util.*;
 
 public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalTerminalCapable {
 
+    private static final ScreenStyle STYLE;
+
+    static {
+        ScreenStyle style;
+        try {
+            style = StyleManager.loadStyleDoc("/screens/wireless_interface_terminal.json");
+        } catch(IOException ignored) {
+            style = null;
+        }
+        STYLE = style;
+    }
 
     private static final int GUI_WIDTH = 195;
 
@@ -110,7 +123,7 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
     private int numLines = 0;
 
     public WITScreen(WITContainer container, PlayerInventory playerInventory, Text title) {
-        super(container, playerInventory, title, new ScreenStyle());//FIXME
+        super(container, playerInventory, title, STYLE);
         scrollbar = widgets.addScrollBar("scrollbar");
         backgroundWidth = GUI_WIDTH;
 
@@ -386,9 +399,9 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
 
             // Search if the current inventory holds a pattern containing the search term.
             if(!found) for(final ItemStack itemStack : entry.getInventory()) {
-                    found = itemStackMatchesSearchTerm(itemStack, searchFilterLowerCase);
-                    if(found) break;
-                }
+                found = itemStackMatchesSearchTerm(itemStack, searchFilterLowerCase);
+                if(found) break;
+            }
 
             // if found, filter skipped or machine name matching the search term, add it
             if(found || entry.getSearchName().contains(searchFilterLowerCase)) {
