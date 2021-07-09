@@ -1,27 +1,22 @@
 package de.mari_023.fabric.ae2wtlib.wct;
 
+import appeng.api.config.ActionItems;
 import appeng.client.gui.Icon;
 import appeng.client.gui.me.items.ItemTerminalScreen;
 import appeng.client.gui.style.ScreenStyle;
-import appeng.client.gui.widgets.AETextField;
+import appeng.client.gui.style.StyleManager;
+import appeng.client.gui.widgets.ActionButton;
 import appeng.client.gui.widgets.IconButton;
-import appeng.container.slot.CraftingMatrixSlot;
-import appeng.core.localization.GuiText;
-import appeng.core.sync.network.NetworkHandler;
-import appeng.core.sync.packets.InventoryActionPacket;
-import appeng.helpers.InventoryAction;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.mixin.ScreenMixin;
 import de.mari_023.fabric.ae2wtlib.trinket.AppEngTrinketSlot;
-import de.mari_023.fabric.ae2wtlib.trinket.TrinketInvRenderer;
 import de.mari_023.fabric.ae2wtlib.util.ItemButton;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetMode;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetSettings;
 import de.mari_023.fabric.ae2wtlib.wut.CycleTerminalButton;
 import de.mari_023.fabric.ae2wtlib.wut.IUniversalTerminalCapable;
-import dev.emi.trinkets.TrinketInventoryRenderer;
 import dev.emi.trinkets.TrinketsClient;
 import dev.emi.trinkets.api.SlotGroups;
 import dev.emi.trinkets.api.TrinketSlots;
@@ -44,61 +39,59 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Quaternion;
 import org.lwjgl.opengl.GL11;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniversalTerminalCapable {
 
-    private int rows = 0;
-    private AETextField searchField;
-    private final int reservedSpace;
     ItemButton magnetCardToggleButton;
-    private final WCTContainer container;
     private List<AppEngTrinketSlot> trinketSlots;
     private float mouseX;
     private float mouseY;
 
-    public WCTScreen(WCTContainer container, PlayerInventory playerInventory, Text title) {
-        super(container, playerInventory, title, new ScreenStyle());//FIXME
-        reservedSpace = 73;//FIXME
-        this.container = container;
+    private static final ScreenStyle STYLE;
 
-        /*try {
-            Field f = ItemTerminalScreen.class.getDeclaredField("reservedSpace");
-            f.setAccessible(true);
-            f.set(this, reservedSpace);
-            f.setAccessible(false);
-        } catch(IllegalAccessException | NoSuchFieldException ignored) {}*/
+    static {
+        ScreenStyle STYLE1;
+        try {
+            STYLE1 = StyleManager.loadStyleDoc("/screens/wireless_crafting_terminal.json");
+        } catch(IOException ignored) {
+            STYLE1 = null;
+        }
+        STYLE = STYLE1;
     }
 
-    @Override
-    public void init() {
-        super.init();
-        IconButton clearBtn = addButton(new IconButton(/*x + 92 + 43, y + backgroundHeight - 156 - 4, ActionItems.STASH,*/ btn -> clear()) {
-            @Override
-            protected Icon getIcon() {
-                return Icon.CLEAR;
-            }
+    public WCTScreen(WCTContainer container, PlayerInventory playerInventory, Text title) {
+        super(container, playerInventory, title, STYLE);
+        ActionButton clearBtn = new ActionButton(ActionItems.STASH, (btn) -> {
+            container.clearCraftingGrid();
         });
         clearBtn.setHalfSize(true);
-
-        IconButton deleteButton = addButton(new IconButton(/*x + 92 + 25, y + backgroundHeight - 156 + 52,*/ btn -> delete()) {
+        widgets.add("clearCraftingGrid", clearBtn);
+        IconButton deleteButton = new IconButton(/*x + 92 + 25, y + backgroundHeight - 156 + 52,*/ btn -> delete()) {
             @Override
             protected Icon getIcon() {
                 return Icon.CONDENSER_OUTPUT_TRASH;
             }
-        });
+        };
         deleteButton.setHalfSize(true);
         deleteButton.setMessage(new TranslatableText("gui.ae2wtlib.emptytrash").append("\n").append(new TranslatableText("gui.ae2wtlib.emptytrash.desc")));
+        widgets.add("emptyTrash", deleteButton);
 
         magnetCardToggleButton = addButton(new ItemButton(x + 92 + 60, y + backgroundHeight - 114, btn -> setMagnetMode(), new Identifier("ae2wtlib", "textures/magnet_card.png")));
         magnetCardToggleButton.setHalfSize(true);
         resetMagnetSettings();
-        container.setScreen(this);
+        getScreenHandler().setScreen(this);
 
-        if(container.isWUT()) addButton(new CycleTerminalButton(x - 18, y + 108, btn -> cycleTerminal()));
+        if(getScreenHandler().isWUT()) addButton(new CycleTerminalButton(x - 18, y + 108, btn -> cycleTerminal()));
+    }
 
-        /*try {//FIXME
+    /*@Override
+    public void init() {
+        super.init();
+
+        *//*try {//FIXME
             Field field = MEMonitorableScreen.class.getDeclaredField("rows");
             field.setAccessible(true);
             Object value = field.get(this);
@@ -111,7 +104,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
             Object value = field.get(this);
             field.setAccessible(false);
             searchField = (AETextField) value;
-        } catch(IllegalAccessException | NoSuchFieldException ignored) {}*/
+        } catch(IllegalAccessException | NoSuchFieldException ignored) {}*//*
 
         if(!Config.allowTrinket()) return;//Trinkets only starting here
         TrinketsClient.displayEquipped = 0;
@@ -208,16 +201,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
                 renderSlot(matrices, ts, s, mouseX, mouseY);
         }
         GlStateManager.enableDepthTest();
-    }
-
-    private void clear() {
-        Slot s = null;
-        for(final Slot j : handler.slots) if(j instanceof CraftingMatrixSlot) s = j;
-
-        if(s == null) return;
-        final InventoryActionPacket p = new InventoryActionPacket(InventoryAction.MOVE_REGION, s.id, 0);
-        NetworkHandler.instance().sendToServer(p);
-    }
+    }*/
 
     private void delete() {
         PacketByteBuf buf = PacketByteBufs.create();
@@ -229,7 +213,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
     private MagnetSettings magnetSettings = null;
 
     public void resetMagnetSettings() {
-        magnetSettings = container.getMagnetSettings();
+        magnetSettings = getScreenHandler().getMagnetSettings();
         setMagnetModeText();
     }
 
@@ -415,7 +399,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
                 }
             }
         }
-        for(AppEngTrinketSlot ts : trinketSlots) {
+        /*for(AppEngTrinketSlot ts : trinketSlots) {//FIXME
             if(((TrinketsClient.lastEquipped == null || TrinketsClient.displayEquipped <= 0 || !ts.group.equals(TrinketsClient.lastEquipped.getName()))
                     && (TrinketsClient.slotGroup == null || !ts.group.equals(TrinketsClient.slotGroup.getName()))) && !ts.keepVisible)
                 ((SlotMixin) ts).setXPosition(Integer.MIN_VALUE);
@@ -423,7 +407,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
         for(AppEngTrinketSlot ts : trinketSlots) {
             int groupX = getGroupX(TrinketSlots.getSlotFromName(ts.group, ts.slot).getSlotGroup());
             if(ts.keepVisible && groupX < 0) ((SlotMixin) ts).setXPosition(groupX + 1);
-        }
+        }*/
     }
 
     @Override

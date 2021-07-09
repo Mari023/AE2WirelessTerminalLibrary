@@ -14,10 +14,14 @@ import appeng.container.slot.AppEngSlot;
 import appeng.container.slot.CraftingMatrixSlot;
 import appeng.container.slot.CraftingTermSlot;
 import appeng.core.localization.PlayerMessages;
+import appeng.core.sync.network.NetworkHandler;
+import appeng.core.sync.packets.InventoryActionPacket;
 import appeng.helpers.IContainerCraftingPacket;
+import appeng.helpers.InventoryAction;
 import appeng.tile.inventory.AppEngInternalInventory;
 import appeng.util.inv.IAEAppEngInventory;
 import appeng.util.inv.InvOperation;
+import com.google.common.base.Preconditions;
 import com.mojang.datafixers.util.Pair;
 import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.terminal.FixedWTInv;
@@ -194,6 +198,13 @@ public class WCTContainer extends ItemTerminalContainer implements IAEAppEngInve
             final ItemStack craftingResult = currentRecipe.craft(ic);
             outputSlot.setStack(craftingResult);
         }
+    }
+
+    public void clearCraftingGrid() {
+        Preconditions.checkState(this.isClient());
+        CraftingMatrixSlot slot = this.craftingSlots[0];
+        InventoryActionPacket p = new InventoryActionPacket(InventoryAction.MOVE_REGION, slot.id, 0L);
+        NetworkHandler.instance().sendToServer(p);
     }
 
     @Override
