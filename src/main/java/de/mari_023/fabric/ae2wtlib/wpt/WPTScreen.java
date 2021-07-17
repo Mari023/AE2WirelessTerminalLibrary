@@ -9,7 +9,6 @@ import appeng.client.gui.widgets.TabButton;
 import appeng.core.localization.GuiText;
 import de.mari_023.fabric.ae2wtlib.wut.CycleTerminalButton;
 import de.mari_023.fabric.ae2wtlib.wut.IUniversalTerminalCapable;
-import me.shedaniel.math.Rectangle;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.block.Blocks;
@@ -19,9 +18,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-
-import java.lang.reflect.Field;
-import java.util.List;
 
 public class WPTScreen extends ItemTerminalScreen<WPTContainer> implements IUniversalTerminalCapable {
 
@@ -82,7 +78,7 @@ public class WPTScreen extends ItemTerminalScreen<WPTContainer> implements IUniv
         ActionButton encodeBtn = new ActionButton(/*x + 147, y + backgroundHeight - 144,*/ ActionItems.ENCODE, act -> encode());
         addButton(encodeBtn);
 
-        if(container.isWUT()) addButton(new CycleTerminalButton(x - 18, y + 108, btn -> cycleTerminal()));
+        if(container.isWUT()) addButton(new CycleTerminalButton(btn -> cycleTerminal()));
 
         /*try {//FIXME
             Field field = ItemTerminalScreen.class.getDeclaredField("rows");
