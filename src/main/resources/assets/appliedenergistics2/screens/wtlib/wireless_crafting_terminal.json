@@ -114,12 +114,12 @@
       "bottom": 106
     },
     "magnetCardToggleButton": {
-      "left": 124,
-      "bottom": 104
+      "left": 142,
+      "bottom": 114
     },
     "cycleTerminal": {
-      "left": 116,
-      "bottom": 106
+      "left": -20,
+      "top": 108
     }
   }
 }

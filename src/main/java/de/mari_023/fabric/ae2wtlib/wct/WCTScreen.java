@@ -12,13 +12,11 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.mixin.ScreenMixin;
 import de.mari_023.fabric.ae2wtlib.trinket.AppEngTrinketSlot;
-import de.mari_023.fabric.ae2wtlib.trinket.TrinketInvRenderer;
 import de.mari_023.fabric.ae2wtlib.util.ItemButton;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetMode;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetSettings;
 import de.mari_023.fabric.ae2wtlib.wut.CycleTerminalButton;
 import de.mari_023.fabric.ae2wtlib.wut.IUniversalTerminalCapable;
-import dev.emi.trinkets.TrinketInventoryRenderer;
 import dev.emi.trinkets.TrinketsClient;
 import dev.emi.trinkets.api.SlotGroups;
 import dev.emi.trinkets.api.TrinketSlots;
@@ -112,12 +110,11 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
 
     @Override
     public void drawBG(MatrixStack matrices, final int offsetX, final int offsetY, final int mouseX, final int mouseY, float partialTicks) {
-        bindTexture(getBackground());
-
+        super.drawBG(matrices, offsetX, offsetY, mouseX, mouseY, partialTicks);
         if(client != null && client.player != null)
-            drawEntity(offsetX + 52, offsetY + 94, 30, (float) (offsetX + 52) - mouseX, (float) offsetY + 55 + 18 - mouseY, client.player);
+            drawEntity(offsetX + 52, offsetY + 194, 30, (float) (offsetX + 52) - mouseX, (float) offsetY + 194 - mouseY, client.player);
 
-        if(!Config.allowTrinket()) return;//Trinkets only starting here
+        /*if(!Config.allowTrinket()) return;//Trinkets only starting here
         GlStateManager.disableDepthTest();
         List<TrinketSlots.Slot> trinketSlots = TrinketSlots.getAllSlots();
         setZOffset(100);
@@ -143,14 +140,14 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
             if(group.onReal && group.slots.size() > 0) continue;
             client.getTextureManager().bindTexture(TrinketInventoryRenderer.MORE_SLOTS_TEX);
             drawTexture(matrices, x + getGroupX(group), y + getGroupY(group), 4, 4, 18, 18);
-        }
+        }*/
     }
 
     @Override
     public void drawFG(MatrixStack matrices, final int offsetX, final int offsetY, final int mouseX, final int mouseY) {
         super.drawFG(matrices, offsetX, offsetY, mouseX, mouseY);
 
-        if(!Config.allowTrinket() || client == null) return;//Trinkets client-only starting here
+        /*if(!Config.allowTrinket() || client == null) return;//Trinkets client-only starting here
         if(TrinketsClient.slotGroup != null)
             TrinketInvRenderer.renderGroupFront(matrices, this, client.getTextureManager(), 0, 0, TrinketsClient.slotGroup, getGroupX(TrinketsClient.slotGroup), getGroupY(TrinketsClient.slotGroup));
         else if(TrinketsClient.displayEquipped > 0 && TrinketsClient.lastEquipped != null)
@@ -177,7 +174,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
             if(s.getSlotGroup() == TrinketsClient.slotGroup || (s.getSlotGroup() == TrinketsClient.lastEquipped && TrinketsClient.displayEquipped > 0))
                 renderSlot(matrices, ts, s, mouseX, mouseY);
         }
-        GlStateManager.enableDepthTest();
+        GlStateManager.enableDepthTest();*/
     }
 
     private void delete() {
@@ -237,11 +234,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
         }
     }
 
-    protected String getBackground() {
-        return "wtlib/gui/crafting.png";
-    }
-
-    public static void drawEntity(int x, int y, int size, float mouseX, float mouseY, LivingEntity entity) {
+    public static void drawEntity(int x, int y, int size, float mouseX, float mouseY, LivingEntity entity) {//TODO move to widget
         float f = (float) Math.atan((mouseX / 40.0F));
         float g = (float) Math.atan((mouseY / 40.0F));
         GL11.glPushMatrix();
