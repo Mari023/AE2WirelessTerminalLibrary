@@ -59,7 +59,7 @@ repositories {
         }
     }
     maven {
-        url = "https://maven.terraformersmc.com/releases/"
+        url = "https://raw.githubusercontent.com/TerraformersMC/Archive/main/releases/"
     }
     maven {
         url = "https://jitpack.io"
@@ -76,10 +76,6 @@ repositories {
     maven {
         name "Siphalor's Maven"
         url "https://maven.siphalor.de"
-    }
-    maven {
-        name = "TerraformersMC"
-        url = "https://maven.terraformersmc.com/"
     }
     maven {
         name = "NerdHubMC"

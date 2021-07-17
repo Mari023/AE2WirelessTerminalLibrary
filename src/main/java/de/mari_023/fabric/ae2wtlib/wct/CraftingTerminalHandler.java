@@ -21,7 +21,6 @@ import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
 import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
 import dev.emi.trinkets.api.TrinketInventory;
 import dev.emi.trinkets.api.TrinketsApi;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
@@ -53,7 +52,7 @@ public class CraftingTerminalHandler {
     public static CraftingTerminalHandler getCraftingTerminalHandler(PlayerEntity player) {
         if(players.containsKey(player.getUuid())) {
             if(player == players.get(player.getUuid()).player ||
-                    ((player instanceof ClientPlayerEntity) && (players.get(player.getUuid()).player instanceof ServerPlayerEntity)))
+                    (!(player instanceof ServerPlayerEntity) && (players.get(player.getUuid()).player instanceof ServerPlayerEntity)))
                 return players.get(player.getUuid());
             removePlayer(player);
         }
