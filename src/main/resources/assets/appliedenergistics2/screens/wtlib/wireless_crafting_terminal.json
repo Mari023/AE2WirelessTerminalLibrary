@@ -120,6 +120,10 @@
     "cycleTerminal": {
       "left": -20,
       "top": 108
+    },
+    "player": {
+      "left": 52,
+      "bottom": 94
     }
   }
 }

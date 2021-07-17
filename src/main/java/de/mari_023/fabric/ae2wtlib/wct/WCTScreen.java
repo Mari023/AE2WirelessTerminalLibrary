@@ -87,12 +87,13 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
 
         if(getScreenHandler().isWUT())
             widgets.add("cycleTerminal", new CycleTerminalButton(btn -> cycleTerminal()));
+
+        widgets.add("player", new PlayerEntityWidget(MinecraftClient.getInstance().player));
     }
 
     @Override
     public void init() {
         super.init();
-
         if(!Config.allowTrinket()) return;//Trinkets only starting here
         TrinketsClient.displayEquipped = 0;
         trinketSlots = new ArrayList<>();
@@ -111,9 +112,6 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
     @Override
     public void drawBG(MatrixStack matrices, final int offsetX, final int offsetY, final int mouseX, final int mouseY, float partialTicks) {
         super.drawBG(matrices, offsetX, offsetY, mouseX, mouseY, partialTicks);
-        if(client != null && client.player != null)
-            drawEntity(offsetX + 52, offsetY + 194, 30, (float) (offsetX + 52) - mouseX, (float) offsetY + 194 - mouseY, client.player);
-
         /*if(!Config.allowTrinket()) return;//Trinkets only starting here
         GlStateManager.disableDepthTest();
         List<TrinketSlots.Slot> trinketSlots = TrinketSlots.getAllSlots();
@@ -232,45 +230,6 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
                 magnetCardToggleButton.setMessage(new TranslatableText("gui.ae2wtlib.magnetcard").append("\n").append(new TranslatableText("gui.ae2wtlib.magnetcard.desc.me")));
                 break;
         }
-    }
-
-    public static void drawEntity(int x, int y, int size, float mouseX, float mouseY, LivingEntity entity) {//TODO move to widget
-        float f = (float) Math.atan((mouseX / 40.0F));
-        float g = (float) Math.atan((mouseY / 40.0F));
-        GL11.glPushMatrix();
-        GL11.glTranslatef((float) x, (float) y, 1050.0F);
-        GL11.glScalef(1.0F, 1.0F, -1.0F);
-        MatrixStack matrixStack = new MatrixStack();
-        matrixStack.translate(0.0D, 0.0D, 1000.0D);
-        matrixStack.scale((float) size, (float) size, (float) size);
-        Quaternion quaternion = Vector3f.POSITIVE_Z.getDegreesQuaternion(180.0F);
-        Quaternion quaternion2 = Vector3f.POSITIVE_X.getDegreesQuaternion(g * 20.0F);
-        quaternion.hamiltonProduct(quaternion2);
-        matrixStack.multiply(quaternion);
-        float h = entity.bodyYaw;
-        float i = entity.yaw;
-        float j = entity.pitch;
-        float k = entity.prevHeadYaw;
-        float l = entity.headYaw;
-        entity.bodyYaw = 180.0F + f * 20.0F;
-        entity.yaw = 180.0F + f * 40.0F;
-        entity.pitch = -g * 20.0F;
-        entity.headYaw = entity.yaw;
-        entity.prevHeadYaw = entity.yaw;
-        EntityRenderDispatcher entityRenderDispatcher = MinecraftClient.getInstance().getEntityRenderDispatcher();
-        quaternion2.conjugate();
-        entityRenderDispatcher.setRotation(quaternion2);
-        entityRenderDispatcher.setRenderShadows(false);
-        VertexConsumerProvider.Immediate immediate = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers();
-        RenderSystem.runAsFancy(() -> entityRenderDispatcher.render(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, matrixStack, immediate, 15728880));
-        immediate.draw();
-        entityRenderDispatcher.setRenderShadows(true);
-        entity.bodyYaw = h;
-        entity.yaw = i;
-        entity.pitch = j;
-        entity.prevHeadYaw = k;
-        entity.headYaw = l;
-        GL11.glPopMatrix();
     }
 
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
