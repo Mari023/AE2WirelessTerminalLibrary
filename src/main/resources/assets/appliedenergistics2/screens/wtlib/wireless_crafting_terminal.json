@@ -1,6 +1,6 @@
 {
   "$schema": "schema.json",
-  "includes": ["terminals/item_terminal.json"],
+  "includes": ["../terminals/item_terminal.json"],
   "slots": {
     "CRAFTING_GRID": {
       "left": 37,
@@ -10,6 +10,16 @@
     "CRAFTING_RESULT": {
       "left": 131,
       "bottom": 136
+    },
+    "PLAYER_INVENTORY": {
+      "left": 8,
+      "bottom": 84,
+      "grid": "BREAK_AFTER_9COLS"
+    },
+    "PLAYER_HOTBAR": {
+      "left": 8,
+      "bottom": 26,
+      "grid": "HORIZONTAL"
     }
   },
   "text": {

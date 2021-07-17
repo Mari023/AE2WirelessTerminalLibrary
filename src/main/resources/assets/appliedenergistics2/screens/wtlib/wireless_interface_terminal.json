@@ -1,6 +1,6 @@
 {
   "$schema": "schema.json",
-  "includes": ["common/common.json", "common/player_inventory.json"],
+  "includes": ["../common/common.json", "../common/player_inventory.json"],
   "text": {
     "dialog_title": {
       "text": {
@@ -13,6 +13,7 @@
     }
   },
   "terminalStyle": {
+    "searchFieldRect": [80, 4, 90, 12],
     "header": {
       "texture": "wtlib/guis/interface.png",
       "srcRect": [0, 0, 195, 17]

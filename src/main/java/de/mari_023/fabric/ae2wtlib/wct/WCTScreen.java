@@ -55,7 +55,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
     static {
         ScreenStyle STYLE1;
         try {
-            STYLE1 = StyleManager.loadStyleDoc("/screens/wireless_crafting_terminal.json");
+            STYLE1 = StyleManager.loadStyleDoc("/screens/wtlib/wireless_crafting_terminal.json");
         } catch(IOException ignored) {
             STYLE1 = null;
         }
@@ -319,7 +319,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
     @Override
     public void tick() {
         super.tick();
-        if(!Config.allowTrinket()) return;
+        /*if(!Config.allowTrinket()) return;//FIXME
         float relX = mouseX - x;
         float relY = mouseY - y;
         if(TrinketsClient.slotGroup == null || !inBounds(TrinketsClient.slotGroup, relX, relY, true)) {
@@ -398,7 +398,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
                     TrinketsClient.activeSlots.addAll(tSlots);
                 }
             }
-        }
+        }*/
         /*for(AppEngTrinketSlot ts : trinketSlots) {//FIXME
             if(((TrinketsClient.lastEquipped == null || TrinketsClient.displayEquipped <= 0 || !ts.group.equals(TrinketsClient.lastEquipped.getName()))
                     && (TrinketsClient.slotGroup == null || !ts.group.equals(TrinketsClient.slotGroup.getName()))) && !ts.keepVisible)

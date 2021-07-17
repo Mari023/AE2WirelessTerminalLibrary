@@ -47,7 +47,7 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
     static {
         ScreenStyle style;
         try {
-            style = StyleManager.loadStyleDoc("/screens/wireless_interface_terminal.json");
+            style = StyleManager.loadStyleDoc("/screens/wtlib/wireless_interface_terminal.json");
         } catch(IOException ignored) {
             style = null;
         }
