@@ -16,8 +16,8 @@ import java.util.List;
 
 public class CycleTerminalButton extends ButtonWidget implements ITooltip {
 
-    public CycleTerminalButton(int x, int y, PressAction onPress) {
-        super(x, y, 16, 16, new TranslatableText("gui.ae2wtlib.cycle_terminal"), onPress);
+    public CycleTerminalButton(PressAction onPress) {
+        super(0, 0, 16, 16, new TranslatableText("gui.ae2wtlib.cycle_terminal"), onPress);
         visible = true;
         active = true;
     }

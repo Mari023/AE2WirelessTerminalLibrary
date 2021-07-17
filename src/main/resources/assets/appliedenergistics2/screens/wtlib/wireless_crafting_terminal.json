@@ -112,6 +112,14 @@
     "emptyTrash": {
       "left": 116,
       "bottom": 106
+    },
+    "magnetCardToggleButton": {
+      "left": 124,
+      "bottom": 104
+    },
+    "cycleTerminal": {
+      "left": 116,
+      "bottom": 106
     }
   }
 }

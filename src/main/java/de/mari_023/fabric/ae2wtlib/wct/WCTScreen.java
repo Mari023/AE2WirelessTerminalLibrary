@@ -12,11 +12,13 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.mixin.ScreenMixin;
 import de.mari_023.fabric.ae2wtlib.trinket.AppEngTrinketSlot;
+import de.mari_023.fabric.ae2wtlib.trinket.TrinketInvRenderer;
 import de.mari_023.fabric.ae2wtlib.util.ItemButton;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetMode;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetSettings;
 import de.mari_023.fabric.ae2wtlib.wut.CycleTerminalButton;
 import de.mari_023.fabric.ae2wtlib.wut.IUniversalTerminalCapable;
+import dev.emi.trinkets.TrinketInventoryRenderer;
 import dev.emi.trinkets.TrinketsClient;
 import dev.emi.trinkets.api.SlotGroups;
 import dev.emi.trinkets.api.TrinketSlots;
@@ -69,7 +71,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
         });
         clearBtn.setHalfSize(true);
         widgets.add("clearCraftingGrid", clearBtn);
-        IconButton deleteButton = new IconButton(/*x + 92 + 25, y + backgroundHeight - 156 + 52,*/ btn -> delete()) {
+        IconButton deleteButton = new IconButton(btn -> delete()) {
             @Override
             protected Icon getIcon() {
                 return Icon.CONDENSER_OUTPUT_TRASH;
@@ -79,32 +81,19 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
         deleteButton.setMessage(new TranslatableText("gui.ae2wtlib.emptytrash").append("\n").append(new TranslatableText("gui.ae2wtlib.emptytrash.desc")));
         widgets.add("emptyTrash", deleteButton);
 
-        magnetCardToggleButton = addButton(new ItemButton(x + 92 + 60, y + backgroundHeight - 114, btn -> setMagnetMode(), new Identifier("ae2wtlib", "textures/magnet_card.png")));
+        magnetCardToggleButton = new ItemButton(btn -> setMagnetMode(), new Identifier("ae2wtlib", "textures/magnet_card.png"));
         magnetCardToggleButton.setHalfSize(true);
+        widgets.add("magnetCardToggleButton", magnetCardToggleButton);
         resetMagnetSettings();
         getScreenHandler().setScreen(this);
 
-        if(getScreenHandler().isWUT()) addButton(new CycleTerminalButton(x - 18, y + 108, btn -> cycleTerminal()));
+        if(getScreenHandler().isWUT())
+            widgets.add("cycleTerminal", new CycleTerminalButton(btn -> cycleTerminal()));
     }
 
-    /*@Override
+    @Override
     public void init() {
         super.init();
-
-        *//*try {//FIXME
-            Field field = MEMonitorableScreen.class.getDeclaredField("rows");
-            field.setAccessible(true);
-            Object value = field.get(this);
-            field.setAccessible(false);
-            rows = (int) value;
-        } catch(IllegalAccessException | NoSuchFieldException ignored) {}
-        try {
-            Field field = MEMonitorableScreen.class.getDeclaredField("searchField");
-            field.setAccessible(true);
-            Object value = field.get(this);
-            field.setAccessible(false);
-            searchField = (AETextField) value;
-        } catch(IllegalAccessException | NoSuchFieldException ignored) {}*//*
 
         if(!Config.allowTrinket()) return;//Trinkets only starting here
         TrinketsClient.displayEquipped = 0;
@@ -124,20 +113,9 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
     @Override
     public void drawBG(MatrixStack matrices, final int offsetX, final int offsetY, final int mouseX, final int mouseY, float partialTicks) {
         bindTexture(getBackground());
-        final int x_width = 199;
-        drawTexture(matrices, offsetX, offsetY, 0, 0, x_width, 18);
-
-        for(int x = 0; x < rows; x++) drawTexture(matrices, offsetX, offsetY + 18 + x * 18, 0, 18, x_width, 18);
-
-        drawTexture(matrices, offsetX, offsetY + 16 + rows * 18, 0, 106 - 18 - 18, x_width, 99 + reservedSpace);
-
-        searchField.render(matrices, mouseX, mouseY, partialTicks);
 
         if(client != null && client.player != null)
-            drawEntity(offsetX + 52, offsetY + 94 + rows * 18, 30, (float) (offsetX + 52) - mouseX, (float) offsetY + 55 + rows * 18 - mouseY, client.player);
-
-        bindTexture("guis/crafting.png");
-        drawTexture(matrices, offsetX + 197, offsetY, 197, 0, 46, 128); //draw viewcell background
+            drawEntity(offsetX + 52, offsetY + 94, 30, (float) (offsetX + 52) - mouseX, (float) offsetY + 55 + 18 - mouseY, client.player);
 
         if(!Config.allowTrinket()) return;//Trinkets only starting here
         GlStateManager.disableDepthTest();
@@ -171,7 +149,6 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
     @Override
     public void drawFG(MatrixStack matrices, final int offsetX, final int offsetY, final int mouseX, final int mouseY) {
         super.drawFG(matrices, offsetX, offsetY, mouseX, mouseY);
-        textRenderer.draw(matrices, GuiText.CraftingTerminal.text(), 8, backgroundHeight - 96 + 1 - reservedSpace, 4210752);
 
         if(!Config.allowTrinket() || client == null) return;//Trinkets client-only starting here
         if(TrinketsClient.slotGroup != null)
@@ -201,7 +178,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
                 renderSlot(matrices, ts, s, mouseX, mouseY);
         }
         GlStateManager.enableDepthTest();
-    }*/
+    }
 
     private void delete() {
         PacketByteBuf buf = PacketByteBufs.create();
@@ -302,13 +279,6 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
         entity.headYaw = l;
         GL11.glPopMatrix();
     }
-
-    /*@Override
-    public List<Rectangle> getExclusionZones() {
-        List<Rectangle> zones = super.getExclusionZones();
-        zones.add(new Rectangle(x + 195, y, 24, backgroundHeight - 110));
-        return zones;
-    }*/
 
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         this.mouseX = (float) mouseX;
