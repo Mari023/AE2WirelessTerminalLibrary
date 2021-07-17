@@ -3,13 +3,13 @@
   "includes": ["../terminals/item_terminal.json"],
   "slots": {
     "CRAFTING_GRID": {
-      "left": 37,
-      "bottom": 154,
+      "left": 80,
+      "bottom": 160,
       "grid": "BREAK_AFTER_3COLS"
     },
     "CRAFTING_RESULT": {
-      "left": 131,
-      "bottom": 136
+      "left": 174,
+      "bottom": 142
     },
     "PLAYER_INVENTORY": {
       "left": 8,
@@ -20,6 +20,46 @@
       "left": 8,
       "bottom": 26,
       "grid": "HORIZONTAL"
+    },
+    "INSCRIBER_PLATE_BOTTOM": {
+      "$comment": "TRASH",
+      "left": 98,
+      "bottom": 106
+    },
+    "INSCRIBER_PLATE_TOP": {
+      "$comment": "MAGNET_CARD",
+      "left": 134,
+      "bottom": 104
+    },
+    "BIOMETRIC_CARD": {
+      "$comment": "INFINITY_BOOSTER_CARD",
+      "left": 152,
+      "bottom": 104
+    },
+    "MACHINE_INPUT": {
+      "$comment": "HELMET",
+      "left": 8,
+      "bottom": 160
+    },
+    "MACHINE_PROCESSING": {
+      "$comment": "CHESTPLATE",
+      "left": 8,
+      "bottom": 142
+    },
+    "MACHINE_OUTPUT": {
+      "$comment": "LEGGINGS",
+      "left": 8,
+      "bottom": 124
+    },
+    "MACHINE_CRAFTING_GRID": {
+      "$comment": "BOOT",
+      "left": 8,
+      "bottom": 106
+    },
+    "PROCESSING_RESULT": {
+      "$comment": "OFFHAND",
+      "left": 80,
+      "bottom": 106
     }
   },
   "text": {
@@ -29,7 +69,7 @@
       },
       "position": {
         "left": 8,
-        "top": 8
+        "top": 6
       }
     },
     "crafting_grid_title": {
@@ -38,7 +78,7 @@
       },
       "position": {
         "left": 8,
-        "bottom": 168
+        "bottom": 170
       }
     }
   },
@@ -66,11 +106,11 @@
   },
   "widgets": {
     "clearCraftingGrid": {
-      "left": 132,
-      "bottom": 158
+      "left": 135,
+      "bottom": 162
     },
     "emptyTrash": {
-      "left": 110,
+      "left": 116,
       "bottom": 106
     }
   }

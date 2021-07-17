@@ -8,6 +8,7 @@ import appeng.api.config.PowerMultiplier;
 import appeng.api.networking.IGridNode;
 import appeng.container.ContainerLocator;
 import appeng.container.ContainerNull;
+import appeng.container.SlotSemantic;
 import appeng.container.interfaces.IInventorySlotAware;
 import appeng.container.me.items.ItemTerminalContainer;
 import appeng.container.slot.AppEngSlot;
@@ -92,44 +93,43 @@ public class WCTContainer extends ItemTerminalContainer implements IAEAppEngInve
 
         for(int y = 0; y < 3; y++)
             for(int x = 0; x < 3; x++)
-                addSlot(craftingSlots[x + y * 3] = new CraftingMatrixSlot(this, crafting, x + y * 3/*, 37 + x * 18 + 43, -72 + y * 18 - 4*/));
-        AppEngInternalInventory output = new AppEngInternalInventory(this, 1);
-            addSlot(outputSlot = new CraftingTermSlot(getPlayerInventory().player, getActionSource(), gui, gui.getIStorageGrid(), crafting, crafting/*, output, 131 + 43, -72 + 18 - 4*/, this));
+                addSlot(craftingSlots[x + y * 3] = new CraftingMatrixSlot(this, crafting, x + y * 3), SlotSemantic.CRAFTING_GRID);
+            addSlot(outputSlot = new CraftingTermSlot(getPlayerInventory().player, getActionSource(), gui, gui.getIStorageGrid(), crafting, crafting/*, output, 131 + 43, -72 + 18 - 4*/, this), SlotSemantic.CRAFTING_RESULT);
 
         SlotsWithTrinket[5] = addSlot(new AppEngSlot(fixedWTInv, 3/*, 8, -76*/) {
             @Environment(EnvType.CLIENT)
             public Pair<Identifier, Identifier> getBackgroundSprite() {
                 return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, PlayerScreenHandler.EMPTY_HELMET_SLOT_TEXTURE);
             }
-        });
+        }, SlotSemantic.MACHINE_INPUT);
         SlotsWithTrinket[6] = addSlot(new AppEngSlot(fixedWTInv, 2/*, 8, -58*/) {
             @Environment(EnvType.CLIENT)
             public Pair<Identifier, Identifier> getBackgroundSprite() {
                 return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, PlayerScreenHandler.EMPTY_CHESTPLATE_SLOT_TEXTURE);
             }
-        });
+        }, SlotSemantic.MACHINE_PROCESSING);
         SlotsWithTrinket[7] = addSlot(new AppEngSlot(fixedWTInv, 1/*, 8, -40*/) {
             @Environment(EnvType.CLIENT)
             public Pair<Identifier, Identifier> getBackgroundSprite() {
                 return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, PlayerScreenHandler.EMPTY_LEGGINGS_SLOT_TEXTURE);
             }
-        });
+        }, SlotSemantic.MACHINE_OUTPUT);
         SlotsWithTrinket[8] = addSlot(new AppEngSlot(fixedWTInv, 0/*, 8, -22*/) {
             @Environment(EnvType.CLIENT)
             public Pair<Identifier, Identifier> getBackgroundSprite() {
                 return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, PlayerScreenHandler.EMPTY_BOOTS_SLOT_TEXTURE);
             }
-        });
+        }, SlotSemantic.MACHINE_CRAFTING_GRID);
 
         SlotsWithTrinket[45] = addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.OFFHAND/*, 80, -22*/) {
             @Environment(EnvType.CLIENT)
             public Pair<Identifier, Identifier> getBackgroundSprite() {
                 return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, PlayerScreenHandler.EMPTY_OFFHAND_ARMOR_SLOT);
             }
-        });
-        addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.TRASH/*, 98, -22*/));
-        addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.INFINITY_BOOSTER_CARD/*, 134, -20*/));
-        addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.MAGNET_CARD/*, 152, -20*/));//TODO fetch texture for card background
+        }, SlotSemantic.PROCESSING_RESULT);
+        addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.TRASH), SlotSemantic.INSCRIBER_PLATE_BOTTOM);
+        addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.INFINITY_BOOSTER_CARD), SlotSemantic.BIOMETRIC_CARD);
+        addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.MAGNET_CARD), SlotSemantic.INSCRIBER_PLATE_TOP);//TODO fetch texture for card background
 
         if(!Config.allowTrinket()) return;//Trinkets only starting here
         FixedTrinketInv inv = new FixedTrinketInv((TrinketInventory) TrinketsApi.getTrinketsInventory(getPlayerInventory().player));
