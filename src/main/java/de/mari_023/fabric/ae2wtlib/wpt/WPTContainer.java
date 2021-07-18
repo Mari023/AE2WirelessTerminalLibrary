@@ -185,16 +185,6 @@ public class WPTContainer extends ItemTerminalContainer implements IAEAppEngInve
         }
     }
 
-    /*@Override
-    public void onUpdate(final String field, final Object oldValue, final Object newValue) {
-        super.onUpdate(field, oldValue, newValue);
-
-        if(field.equals("craftingMode")) {
-            getAndUpdateOutput();
-            updateOrderOfOutputSlots();
-        }
-    }*/
-
     @Override
     public void onSlotChange(final Slot s) {
         if(s == encodedPatternSlot && isServer()) {
@@ -393,12 +383,6 @@ public class WPTContainer extends ItemTerminalContainer implements IAEAppEngInve
                     monitor.injectItems(AEItemStack.fromItemStack(failed), Actionable.MODULATE, new MachineSource(getPatternTerminal()));
             }
         }
-    }
-
-    private IAEItemStack readItem(final PacketByteBuf buf) {
-        final boolean hasItem = buf.readBoolean();
-        if(hasItem) return AEItemStack.fromPacket(buf);
-        return null;
     }
 
     private ItemStack getAndUpdateOutput() {
