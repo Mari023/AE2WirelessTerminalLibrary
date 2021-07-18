@@ -8,7 +8,6 @@ import appeng.client.gui.style.StyleManager;
 import appeng.client.gui.widgets.ActionButton;
 import appeng.client.gui.widgets.IconButton;
 import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.systems.RenderSystem;
 import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.mixin.ScreenMixin;
 import de.mari_023.fabric.ae2wtlib.trinket.AppEngTrinketSlot;
@@ -25,19 +24,13 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.util.math.Vector3f;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Quaternion;
-import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -64,9 +57,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
 
     public WCTScreen(WCTContainer container, PlayerInventory playerInventory, Text title) {
         super(container, playerInventory, title, STYLE);
-        ActionButton clearBtn = new ActionButton(ActionItems.STASH, (btn) -> {
-            container.clearCraftingGrid();
-        });
+        ActionButton clearBtn = new ActionButton(ActionItems.STASH, (btn) -> container.clearCraftingGrid());
         clearBtn.setHalfSize(true);
         widgets.add("clearCraftingGrid", clearBtn);
         IconButton deleteButton = new IconButton(btn -> delete()) {
@@ -85,8 +76,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
         resetMagnetSettings();
         getScreenHandler().setScreen(this);
 
-        if(getScreenHandler().isWUT())
-            widgets.add("cycleTerminal", new CycleTerminalButton(btn -> cycleTerminal()));
+        if(getScreenHandler().isWUT()) widgets.add("cycleTerminal", new CycleTerminalButton(btn -> cycleTerminal()));
 
         widgets.add("player", new PlayerEntityWidget(MinecraftClient.getInstance().player));
     }
