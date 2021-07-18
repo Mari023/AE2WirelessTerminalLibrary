@@ -34,6 +34,7 @@ import appeng.util.item.AEItemStack;
 import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.mixin.ScreenHandlerMixin;
 import de.mari_023.fabric.ae2wtlib.mixin.SlotMixin;
+import de.mari_023.fabric.ae2wtlib.terminal.FixedWTInv;
 import de.mari_023.fabric.ae2wtlib.terminal.IWTInvHolder;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.util.ContainerHelper;
@@ -119,33 +120,9 @@ public class WPTContainer extends ItemTerminalContainer implements IAEAppEngInve
 
         encodedPatternSlot.setStackLimit(1);
 
-        createPlayerInventorySlots(ip);
-
         final int slotIndex = ((IInventorySlotAware) wptGUIObject).getInventorySlot();
         if(slotIndex < 100) lockPlayerInventorySlot(slotIndex);
-
-        /*final FixedItemInv patternInv = getPatternTerminal().getInventoryByName("pattern");
-
-        crafting = getPatternTerminal().getInventoryByName("crafting");
-
-        for(int y = 0; y < 3; y++) {
-            for(int x = 0; x < 3; x++)
-                addSlot(craftingSlots[x + y * 3] = new FakeCraftingMatrixSlot(crafting, x + y * 3), SlotSemantic.CRAFTING_GRID);
-        }
-
-        addSlot(craftSlot = new WirelessPatternTermSlot(ip.player, getActionSource(), gui, gui, crafting, patternInv, cOut, 110, this));
-        craftSlot.setIcon(Icon.INVALID);
-
-        for(int y = 0; y < 3; y++) {
-            addSlot(outputSlots[y] = new PatternOutputsSlot(getPatternTerminal().getInventoryByName("output"), this, y, 110));
-            outputSlots[y].setRenderDisabled(false);
-            outputSlots[y].setIcon(Icon.INVALID);
-        }
-
-        addSlot(patternSlotIN = new RestrictedInputSlot(RestrictedInputSlot.PlacableItemType.BLANK_PATTERN,
-                patternInv, 0));
-        addSlot(patternSlotOUT = new RestrictedInputSlot(RestrictedInputSlot.PlacableItemType.ENCODED_PATTERN,
-                patternInv, 1));*/
+        addSlot(new AppEngSlot(new FixedWTInv(getPlayerInventory(), wptGUIObject.getItemStack(), this), FixedWTInv.INFINITY_BOOSTER_CARD), SlotSemantic.BIOMETRIC_CARD);
 
         if(isClient()) {//FIXME set craftingMode and substitute serverside
             craftingMode = ItemWT.getBoolean(wptGUIObject.getItemStack(), "craftingMode");

@@ -118,5 +118,6 @@ public class WPTScreen extends ItemTerminalScreen<WPTContainer> implements IUniv
             substitutionsEnabledBtn.visible = false;
             substitutionsDisabledBtn.visible = false;
         }
+        super.drawBG(matrices, offsetX, offsetY, mouseX, mouseY, partialTicks);
     }
 }
