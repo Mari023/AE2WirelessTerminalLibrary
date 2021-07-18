@@ -241,7 +241,7 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
     @Override
     public void drawBG(MatrixStack matrixStack, final int offsetX, final int offsetY, final int mouseX,
                        final int mouseY, float partialTicks) {
-        bindTexture("guis/interfaceterminal.png");
+        bindTexture("wtlib/guis/interface.png");
 
         // Draw the top of the dialog
         blit(matrixStack, offsetX, offsetY, HEADER_BBOX);

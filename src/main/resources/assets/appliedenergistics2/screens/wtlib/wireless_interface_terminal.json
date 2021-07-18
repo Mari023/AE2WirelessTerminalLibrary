@@ -5,7 +5,7 @@
     "BIOMETRIC_CARD": {
       "$comment": "INFINITY_BOOSTER_CARD",
       "left": 173,
-      "bottom": 104
+      "bottom": 93
     }
   },
   "text": {
@@ -17,29 +17,6 @@
         "left": 8,
         "top": 6
       }
-    }
-  },
-  "terminalStyle": {
-    "searchFieldRect": [80, 4, 90, 12],
-    "header": {
-      "texture": "wtlib/guis/interface.png",
-      "srcRect": [0, 0, 195, 17]
-    },
-    "firstRow": {
-      "texture": "wtlib/guis/interface.png",
-      "srcRect": [0, 17, 195, 18]
-    },
-    "row": {
-      "texture": "wtlib/guis/interface.png",
-      "srcRect": [0, 35, 195, 18]
-    },
-    "lastRow": {
-      "texture": "wtlib/guis/interface.png",
-      "srcRect": [0, 53, 195, 18]
-    },
-    "bottom": {
-      "texture": "wtlib/guis/interface.png",
-      "srcRect": [0, 71, 200, 172]
     }
   },
   "widgets": {
