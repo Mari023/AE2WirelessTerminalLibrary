@@ -22,6 +22,7 @@ import appeng.helpers.InventoryAction;
 import appeng.tile.inventory.AppEngInternalInventory;
 import appeng.util.inv.IAEAppEngInventory;
 import appeng.util.inv.InvOperation;
+import appeng.util.inv.WrapperInvItemHandler;
 import com.google.common.base.Preconditions;
 import com.mojang.datafixers.util.Pair;
 import de.mari_023.fabric.ae2wtlib.Config;
@@ -67,7 +68,7 @@ public class WCTContainer extends ItemTerminalContainer implements IAEAppEngInve
         return helper.fromNetwork(windowId, inv, buf);
     }
 
-    private final AppEngInternalInventory craftingGrid;
+    private final AppEngInternalInventory crafting;
     private final CraftingMatrixSlot[] craftingSlots = new CraftingMatrixSlot[9];
     private final CraftingTermSlot outputSlot;
     private Recipe<CraftingInventory> currentRecipe;
@@ -83,18 +84,21 @@ public class WCTContainer extends ItemTerminalContainer implements IAEAppEngInve
         super(TYPE, id, ip, gui, false);
         wctGUIObject = gui;
 
+        fixedWTInv = new FixedWTInv(getPlayerInventory(), wctGUIObject.getItemStack(), this);
+
         final int slotIndex = ((IInventorySlotAware) wctGUIObject).getInventorySlot();
         if(slotIndex < 100) lockPlayerInventorySlot(slotIndex);
+
+        crafting = new ae2wtlibInternalInventory(this, 9, "crafting", wctGUIObject.getItemStack());
+
+        for(int i = 0; i < 9; i++)
+            addSlot(craftingSlots[i] = new CraftingMatrixSlot(this, crafting, i), SlotSemantic.CRAFTING_GRID);
+
+        addSlot(outputSlot = new CraftingTermSlot(getPlayerInventory().player, getActionSource(), powerSource, wctGUIObject, crafting, crafting, this), SlotSemantic.CRAFTING_RESULT);
+
         createPlayerInventorySlots(ip);
 
-        fixedWTInv = new FixedWTInv(getPlayerInventory(), wctGUIObject.getItemStack(), this);
-        craftingGrid = new ae2wtlibInternalInventory(this, 9, "crafting", wctGUIObject.getItemStack());//FIXME output is now part of crafting grid
-        final FixedItemInv crafting = getInventoryByName("crafting");
-
-        for(int y = 0; y < 3; y++)
-            for(int x = 0; x < 3; x++)
-                addSlot(craftingSlots[x + y * 3] = new CraftingMatrixSlot(this, crafting, x + y * 3), SlotSemantic.CRAFTING_GRID);
-        addSlot(outputSlot = new CraftingTermSlot(getPlayerInventory().player, getActionSource(), gui, gui.getIStorageGrid(), crafting, crafting, this), SlotSemantic.CRAFTING_RESULT);
+        onContentChanged(new WrapperInvItemHandler(crafting));
 
         SlotsWithTrinket[5] = addSlot(new AppEngSlot(fixedWTInv, 3) {
             @Environment(EnvType.CLIENT)
@@ -188,8 +192,8 @@ public class WCTContainer extends ItemTerminalContainer implements IAEAppEngInve
 
         for(int x = 0; x < 9; x++) ic.setStack(x, craftingSlots[x].getStack());
 
-        if(currentRecipe == null || !currentRecipe.matches(ic, this.getPlayerInventory().player.world)) {
-            World world = this.getPlayerInventory().player.world;
+        if(currentRecipe == null || !currentRecipe.matches(ic, getPlayerInventory().player.world)) {
+            World world = getPlayerInventory().player.world;
             currentRecipe = world.getRecipeManager().getFirstMatch(RecipeType.CRAFTING, ic, world).orElse(null);
         }
 
@@ -201,8 +205,8 @@ public class WCTContainer extends ItemTerminalContainer implements IAEAppEngInve
     }
 
     public void clearCraftingGrid() {
-        Preconditions.checkState(this.isClient());
-        CraftingMatrixSlot slot = this.craftingSlots[0];
+        Preconditions.checkState(isClient());
+        CraftingMatrixSlot slot = craftingSlots[0];
         InventoryActionPacket p = new InventoryActionPacket(InventoryAction.MOVE_REGION, slot.id, 0L);
         NetworkHandler.instance().sendToServer(p);
     }
@@ -221,7 +225,7 @@ public class WCTContainer extends ItemTerminalContainer implements IAEAppEngInve
     @Override
     public FixedItemInv getInventoryByName(String name) {
         if(name.equals("player")) return new FixedInventoryVanillaWrapper(getPlayerInventory());
-        else if(name.equals("crafting")) return craftingGrid;
+        else if(name.equals("crafting")) return crafting;
         return null;
     }
 
