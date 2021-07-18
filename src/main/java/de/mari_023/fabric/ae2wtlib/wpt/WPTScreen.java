@@ -3,7 +3,6 @@ package de.mari_023.fabric.ae2wtlib.wpt;
 import appeng.api.config.ActionItems;
 import appeng.client.gui.me.items.ItemTerminalScreen;
 import appeng.client.gui.style.ScreenStyle;
-import appeng.client.gui.widgets.AETextField;
 import appeng.client.gui.widgets.ActionButton;
 import appeng.client.gui.widgets.TabButton;
 import appeng.core.localization.GuiText;
@@ -21,9 +20,6 @@ import net.minecraft.util.Identifier;
 
 public class WPTScreen extends ItemTerminalScreen<WPTContainer> implements IUniversalTerminalCapable {
 
-    private int rows = 0;
-    private AETextField searchField;
-    private final int reservedSpace;
     private final WPTContainer container;
 
     private static final byte SUBSITUTION_DISABLE = 0;
@@ -40,14 +36,6 @@ public class WPTScreen extends ItemTerminalScreen<WPTContainer> implements IUniv
     public WPTScreen(WPTContainer container, PlayerInventory playerInventory, Text title) {
         super(container, playerInventory, title, new ScreenStyle());//FIXME
         this.container = container;
-        reservedSpace = 81;
-
-        /*try {//FIXME
-            Field f = ItemTerminalScreen.class.getDeclaredField("reservedSpace");
-            f.setAccessible(true);
-            f.set(this, reservedSpace);
-            f.setAccessible(false);
-        } catch(IllegalAccessException | NoSuchFieldException ignored) {}*/
     }
 
     @Override
@@ -79,21 +67,6 @@ public class WPTScreen extends ItemTerminalScreen<WPTContainer> implements IUniv
         addButton(encodeBtn);
 
         if(container.isWUT()) addButton(new CycleTerminalButton(btn -> cycleTerminal()));
-
-        /*try {//FIXME
-            Field field = ItemTerminalScreen.class.getDeclaredField("rows");
-            field.setAccessible(true);
-            Object value = field.get(this);
-            field.setAccessible(false);
-            rows = (int) value;
-        } catch(IllegalAccessException | NoSuchFieldException ignored) {}
-        try {
-            Field field = ItemTerminalScreen.class.getDeclaredField("searchField");
-            field.setAccessible(true);
-            Object value = field.get(this);
-            field.setAccessible(false);
-            searchField = (AETextField) value;
-        } catch(IllegalAccessException | NoSuchFieldException ignored) {}*/
     }
 
     private void toggleCraftMode(byte mode) {
@@ -126,14 +99,6 @@ public class WPTScreen extends ItemTerminalScreen<WPTContainer> implements IUniv
 
     @Override
     public void drawBG(MatrixStack matrices, final int offsetX, final int offsetY, final int mouseX, final int mouseY, float partialTicks) {
-        bindTexture(getBackground());
-        final int x_width = 197;
-        drawTexture(matrices, offsetX, offsetY, 0, 0, x_width, 18);
-
-        for(int x = 0; x < rows; x++) drawTexture(matrices, offsetX, offsetY + 18 + x * 18, 0, 18, x_width, 18);
-
-        drawTexture(matrices, offsetX, offsetY + 16 + rows * 18, 0, 106 - 18 - 18, x_width, 99 + reservedSpace);
-
         if(handler.isCraftingMode()) {
             tabCraftButton.visible = true;
             tabProcessButton.visible = false;
@@ -150,28 +115,6 @@ public class WPTScreen extends ItemTerminalScreen<WPTContainer> implements IUniv
             tabProcessButton.visible = true;
             substitutionsEnabledBtn.visible = false;
             substitutionsDisabledBtn.visible = false;
-            drawTexture(matrices, offsetX + 109, offsetY + 36 + rows * 18, 109, 108, 18, 18);
-            drawTexture(matrices, offsetX + 109, offsetY + 72 + rows * 18, 109, 108, 18, 18);
         }
-        bindTexture("guis/crafting.png");
-        drawTexture(matrices, offsetX + 197, offsetY, 197, 0, 46, 128); //draw viewcell background
-        searchField.render(matrices, mouseX, mouseY, partialTicks);
     }
-
-    @Override
-    public void drawFG(MatrixStack matrices, final int offsetX, final int offsetY, final int mouseX, final int mouseY) {
-        super.drawFG(matrices, offsetX, offsetY, mouseX, mouseY);
-        textRenderer.draw(matrices, GuiText.PatternTerminal.text(), 8, backgroundHeight - 96 + 1 - reservedSpace, 4210752);
-    }
-
-    protected String getBackground() {
-        return "wtlib/gui/pattern.png";
-    }//FIXME
-
-    /*@Override
-    public List<Rectangle> getExclusionZones() {
-        List<Rectangle> zones = super.getExclusionZones();
-        zones.add(new Rectangle(x + 195, y, 24, backgroundHeight - 110));
-        return zones;
-    }*/
 }
