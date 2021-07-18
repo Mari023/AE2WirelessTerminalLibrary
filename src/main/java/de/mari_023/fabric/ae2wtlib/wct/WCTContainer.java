@@ -88,40 +88,40 @@ public class WCTContainer extends ItemTerminalContainer implements IAEAppEngInve
         createPlayerInventorySlots(ip);
 
         fixedWTInv = new FixedWTInv(getPlayerInventory(), wctGUIObject.getItemStack(), this);
-        craftingGrid = new ae2wtlibInternalInventory(this, 9, "crafting", wctGUIObject.getItemStack());
+        craftingGrid = new ae2wtlibInternalInventory(this, 9, "crafting", wctGUIObject.getItemStack());//FIXME output is now part of crafting grid
         final FixedItemInv crafting = getInventoryByName("crafting");
 
         for(int y = 0; y < 3; y++)
             for(int x = 0; x < 3; x++)
                 addSlot(craftingSlots[x + y * 3] = new CraftingMatrixSlot(this, crafting, x + y * 3), SlotSemantic.CRAFTING_GRID);
-            addSlot(outputSlot = new CraftingTermSlot(getPlayerInventory().player, getActionSource(), gui, gui.getIStorageGrid(), crafting, crafting/*, output, 131 + 43, -72 + 18 - 4*/, this), SlotSemantic.CRAFTING_RESULT);
+        addSlot(outputSlot = new CraftingTermSlot(getPlayerInventory().player, getActionSource(), gui, gui.getIStorageGrid(), crafting, crafting, this), SlotSemantic.CRAFTING_RESULT);
 
-        SlotsWithTrinket[5] = addSlot(new AppEngSlot(fixedWTInv, 3/*, 8, -76*/) {
+        SlotsWithTrinket[5] = addSlot(new AppEngSlot(fixedWTInv, 3) {
             @Environment(EnvType.CLIENT)
             public Pair<Identifier, Identifier> getBackgroundSprite() {
                 return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, PlayerScreenHandler.EMPTY_HELMET_SLOT_TEXTURE);
             }
         }, SlotSemantic.MACHINE_INPUT);
-        SlotsWithTrinket[6] = addSlot(new AppEngSlot(fixedWTInv, 2/*, 8, -58*/) {
+        SlotsWithTrinket[6] = addSlot(new AppEngSlot(fixedWTInv, 2) {
             @Environment(EnvType.CLIENT)
             public Pair<Identifier, Identifier> getBackgroundSprite() {
                 return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, PlayerScreenHandler.EMPTY_CHESTPLATE_SLOT_TEXTURE);
             }
         }, SlotSemantic.MACHINE_PROCESSING);
-        SlotsWithTrinket[7] = addSlot(new AppEngSlot(fixedWTInv, 1/*, 8, -40*/) {
+        SlotsWithTrinket[7] = addSlot(new AppEngSlot(fixedWTInv, 1) {
             @Environment(EnvType.CLIENT)
             public Pair<Identifier, Identifier> getBackgroundSprite() {
                 return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, PlayerScreenHandler.EMPTY_LEGGINGS_SLOT_TEXTURE);
             }
         }, SlotSemantic.MACHINE_OUTPUT);
-        SlotsWithTrinket[8] = addSlot(new AppEngSlot(fixedWTInv, 0/*, 8, -22*/) {
+        SlotsWithTrinket[8] = addSlot(new AppEngSlot(fixedWTInv, 0) {
             @Environment(EnvType.CLIENT)
             public Pair<Identifier, Identifier> getBackgroundSprite() {
                 return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, PlayerScreenHandler.EMPTY_BOOTS_SLOT_TEXTURE);
             }
         }, SlotSemantic.MACHINE_CRAFTING_GRID);
 
-        SlotsWithTrinket[45] = addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.OFFHAND/*, 80, -22*/) {
+        SlotsWithTrinket[45] = addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.OFFHAND) {
             @Environment(EnvType.CLIENT)
             public Pair<Identifier, Identifier> getBackgroundSprite() {
                 return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, PlayerScreenHandler.EMPTY_OFFHAND_ARMOR_SLOT);
