@@ -41,8 +41,13 @@ public class WirelessCraftAmountContainer extends AEBaseContainer {
         return helper.fromNetwork(windowId, inv, buf);
     }
 
-    public static boolean open(PlayerEntity player, ContainerLocator locator) {
-        return helper.open(player, locator);
+    public static boolean open(PlayerEntity player, ContainerLocator locator, final IAEItemStack itemToCraft, int initialAmount) {
+        boolean b = helper.open(player, locator);
+        if(!b || !(player.currentScreenHandler instanceof WirelessCraftAmountContainer)) return b;
+        WirelessCraftAmountContainer cca = (WirelessCraftAmountContainer) player.currentScreenHandler;
+        cca.setItemToCraft(itemToCraft, initialAmount);
+        cca.sendContentUpdates();
+        return true;
     }
 
     /**
@@ -61,34 +66,34 @@ public class WirelessCraftAmountContainer extends AEBaseContainer {
 
     public WirelessCraftAmountContainer(int id, PlayerInventory ip, final ITerminalHost te) {
         super(TYPE, id, ip, te);
-        this.craftingItem = new InaccessibleSlot(new AppEngInternalInventory(null, 1), 0);
-        this.addSlot(this.craftingItem, SlotSemantic.MACHINE_OUTPUT);
+        craftingItem = new InaccessibleSlot(new AppEngInternalInventory(null, 1), 0);
+        addSlot(craftingItem, SlotSemantic.MACHINE_OUTPUT);
     }
 
     @Override
     public void sendContentUpdates() {
         super.sendContentUpdates();
-        this.verifyPermissions(SecurityPermissions.CRAFT, false);
+        verifyPermissions(SecurityPermissions.CRAFT, false);
     }
 
     public IGrid getGrid() {
-        final IActionHost h = (IActionHost) this.getTarget();
+        final IActionHost h = (IActionHost) getTarget();
         return h.getActionableNode().getGrid();
     }
 
     public World getWorld() {
-        return this.getPlayerInventory().player.world;
+        return getPlayerInventory().player.world;
     }
 
     public IActionSource getActionSrc() {
-        return new PlayerSource(this.getPlayerInventory().player, (IActionHost) this.getTarget());
+        return new PlayerSource(getPlayerInventory().player, (IActionHost) getTarget());
     }
 
-    private void setItemToCraft(final IAEItemStack itemToCreate, int initialAmount) {
+    public void setItemToCraft(final IAEItemStack itemToCreate, int initialAmount) {
         // Make a copy because this stack will be modified with the requested amount
         this.itemToCreate = itemToCreate.copy();
         this.initialAmount = initialAmount;
-        this.craftingItem.setStack(itemToCreate.asItemStackRepresentation());
+        craftingItem.setStack(itemToCreate.asItemStackRepresentation());
     }
 
     /**
@@ -111,25 +116,25 @@ public class WirelessCraftAmountContainer extends AEBaseContainer {
             if(gn == null) return;
 
             final IGrid g = gn.getGrid();
-            if(g == null || this.itemToCreate == null) return;
+            if(itemToCreate == null) return;
 
-            this.itemToCreate.setStackSize(amount);
+            itemToCreate.setStackSize(amount);
 
             Future<ICraftingJob> futureJob = null;
             try {
                 final ICraftingGrid cg = g.getCache(ICraftingGrid.class);
                 futureJob = cg.beginCraftingJob(getWorld(), getGrid(), getActionSrc(),
-                        this.itemToCreate, null);
+                        itemToCreate, null);
 
                 final ContainerLocator locator = getLocator();
                 if(locator != null) {
-                    PlayerEntity player = this.getPlayerInventory().player;
+                    PlayerEntity player = getPlayerInventory().player;
                     ContainerOpener.openContainer(WirelessCraftConfirmContainer.TYPE, player, locator);
 
                     if(player.currentScreenHandler instanceof WirelessCraftConfirmContainer) {
                         final WirelessCraftConfirmContainer ccc = (WirelessCraftConfirmContainer) player.currentScreenHandler;
                         ccc.setAutoStart(autoStart);
-                        ccc.setItemToCreate(this.itemToCreate.copy());
+                        ccc.setItemToCreate(itemToCreate.copy());
                         ccc.setJob(futureJob);
                         sendContentUpdates();
                     }

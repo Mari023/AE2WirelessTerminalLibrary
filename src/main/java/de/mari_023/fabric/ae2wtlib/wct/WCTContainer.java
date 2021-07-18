@@ -6,10 +6,12 @@ import alexiil.mc.lib.attributes.item.compat.FixedInventoryVanillaWrapper;
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
 import appeng.api.networking.IGridNode;
+import appeng.api.storage.data.IAEItemStack;
 import appeng.container.ContainerLocator;
 import appeng.container.ContainerNull;
 import appeng.container.SlotSemantic;
 import appeng.container.interfaces.IInventorySlotAware;
+import appeng.container.me.crafting.CraftAmountContainer;
 import appeng.container.me.items.ItemTerminalContainer;
 import appeng.container.slot.AppEngSlot;
 import appeng.container.slot.CraftingMatrixSlot;
@@ -209,6 +211,14 @@ public class WCTContainer extends ItemTerminalContainer implements IAEAppEngInve
         CraftingMatrixSlot slot = craftingSlots[0];
         InventoryActionPacket p = new InventoryActionPacket(InventoryAction.MOVE_REGION, slot.id, 0L);
         NetworkHandler.instance().sendToServer(p);
+    }
+
+    protected void handleNetworkInteraction(ServerPlayerEntity player, IAEItemStack stack, InventoryAction action) {
+        if(action != InventoryAction.AUTO_CRAFT) {
+            super.handleNetworkInteraction(player, stack, action);
+            return;
+        }
+        CraftAmountContainer.open(player, getLocator(), stack, 1);
     }
 
     @Override
