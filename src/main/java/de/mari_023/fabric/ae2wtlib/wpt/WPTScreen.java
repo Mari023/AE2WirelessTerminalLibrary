@@ -2,10 +2,12 @@ package de.mari_023.fabric.ae2wtlib.wpt;
 
 import appeng.api.config.ActionItems;
 import appeng.client.gui.me.items.ItemTerminalScreen;
+import appeng.client.gui.style.Blitter;
 import appeng.client.gui.style.ScreenStyle;
 import appeng.client.gui.style.StyleManager;
 import appeng.client.gui.widgets.ActionButton;
 import appeng.client.gui.widgets.TabButton;
+import appeng.container.SlotSemantic;
 import appeng.core.localization.GuiText;
 import de.mari_023.fabric.ae2wtlib.wut.CycleTerminalButton;
 import de.mari_023.fabric.ae2wtlib.wut.IUniversalTerminalCapable;
@@ -99,12 +101,11 @@ public class WPTScreen extends ItemTerminalScreen<WPTContainer> implements IUniv
         ClientPlayNetworking.send(new Identifier("ae2wtlib", "general"), buf);
     }
 
-    @Override
-    public void drawBG(MatrixStack matrices, final int offsetX, final int offsetY, final int mouseX, final int mouseY, float partialTicks) {
+    protected void updateBeforeRender() {
+        super.updateBeforeRender();
         if(handler.isCraftingMode()) {
             tabCraftButton.visible = true;
             tabProcessButton.visible = false;
-
             if(handler.substitute) {
                 substitutionsEnabledBtn.visible = true;
                 substitutionsDisabledBtn.visible = false;
@@ -118,6 +119,14 @@ public class WPTScreen extends ItemTerminalScreen<WPTContainer> implements IUniv
             substitutionsEnabledBtn.visible = false;
             substitutionsDisabledBtn.visible = false;
         }
-        super.drawBG(matrices, offsetX, offsetY, mouseX, mouseY, partialTicks);
+
+        setSlotsHidden(SlotSemantic.CRAFTING_RESULT, !(handler).isCraftingMode());
+        setSlotsHidden(SlotSemantic.PROCESSING_RESULT, (handler).isCraftingMode());
+    }
+
+    public void drawBG(MatrixStack matrixStack, int offsetX, int offsetY, int mouseX, int mouseY, float partialTicks) {
+        super.drawBG(matrixStack, offsetX, offsetY, mouseX, mouseY, partialTicks);
+        if(handler.isCraftingMode()) return;
+        Blitter.texture("guis/pattern_modes.png").src(100, 77, 18, 54).dest(x + 109, y + backgroundHeight - 159).blit(matrixStack, getZOffset());
     }
 }
