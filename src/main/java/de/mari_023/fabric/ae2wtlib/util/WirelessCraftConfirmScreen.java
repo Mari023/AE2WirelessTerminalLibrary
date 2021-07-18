@@ -4,6 +4,7 @@ import appeng.client.gui.AEBaseScreen;
 import appeng.client.gui.me.crafting.AbstractTableRenderer;
 import appeng.client.gui.me.crafting.CraftConfirmTableRenderer;
 import appeng.client.gui.style.ScreenStyle;
+import appeng.client.gui.style.StyleManager;
 import appeng.client.gui.widgets.Scrollbar;
 import appeng.container.me.crafting.CraftingPlanSummary;
 import appeng.container.me.crafting.WirelessCraftConfirmContainer;
@@ -18,6 +19,7 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import org.lwjgl.glfw.GLFW;
 
+import java.io.IOException;
 import java.text.NumberFormat;
 
 public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfirmContainer> {
@@ -26,8 +28,20 @@ public class WirelessCraftConfirmScreen extends AEBaseScreen<WirelessCraftConfir
     private final ButtonWidget selectCPU;
     private final Scrollbar scrollbar;
 
+    private static final ScreenStyle STYLE;
+
+    static {
+        ScreenStyle STYLE1;
+        try {
+            STYLE1 = StyleManager.loadStyleDoc("/screens/craft_confirm.json");
+        } catch(IOException ignored) {
+            STYLE1 = null;
+        }
+        STYLE = STYLE1;
+    }
+
     public WirelessCraftConfirmScreen(WirelessCraftConfirmContainer container, PlayerInventory playerInventory, Text title) {
-        super(container, playerInventory, title, new ScreenStyle());//FIXME
+        super(container, playerInventory, title, STYLE);
         this.table = new CraftConfirmTableRenderer(this, 9, 19);
 
         scrollbar = widgets.addScrollBar("scrollbar");
