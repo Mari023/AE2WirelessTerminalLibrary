@@ -159,8 +159,7 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
     }
 
     @Override
-    public void drawFG(MatrixStack matrixStack, final int offsetX, final int offsetY, final int mouseX,
-                       final int mouseY) {
+    public void drawFG(MatrixStack matrixStack, final int offsetX, final int offsetY, final int mouseX, final int mouseY) {
 
         handler.slots.removeIf(slot -> slot instanceof InterfaceSlot);
 
@@ -175,15 +174,12 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
                     // Note: We have to shift everything after the header up by 1 to avoid black line duplication.
                     final InterfaceRecord inv = (InterfaceRecord) lineObj;
                     for(int z = 0; z < inv.getInventory().getSlotCount(); z++) {
-                        handler.slots
-                                .add(new InterfaceSlot(inv, z, z * SLOT_SIZE + GUI_PADDING_X, (i + 1) * SLOT_SIZE));
+                        handler.slots.add(new InterfaceSlot(inv, z, z * SLOT_SIZE + GUI_PADDING_X, (i + 1) * SLOT_SIZE));
                     }
                 } else if(lineObj instanceof String) {
                     String name = (String) lineObj;
                     final int rows = byName.get(name).size();
-                    if(rows > 1) {
-                        name = name + " (" + rows + ')';
-                    }
+                    if(rows > 1) name = name + " (" + rows + ')';
 
                     name = textRenderer.trimToWidth(name, TEXT_MAX_WIDTH, true);
 
@@ -196,9 +192,7 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
 
     @Override
     public boolean mouseClicked(final double xCoord, final double yCoord, final int btn) {
-        if(searchField.mouseClicked(xCoord, yCoord, btn)) {
-            return true;
-        }
+        if(searchField.mouseClicked(xCoord, yCoord, btn)) return true;
 
         if(btn == 1 && searchField.isMouseOver(xCoord, yCoord)) {
             searchField.setText("");
@@ -210,40 +204,35 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
 
     @Override
     protected void onMouseClick(Slot slot, int slotIdx, int mouseButton, SlotActionType clickType) {
-        if(slot instanceof InterfaceSlot) {
-            InventoryAction action = null;
-
-            switch(clickType) {
-                case PICKUP: // pickup / set-down.
-                    action = mouseButton == 1 ? InventoryAction.SPLIT_OR_PLACE_SINGLE
-                            : InventoryAction.PICKUP_OR_SET_DOWN;
-                    break;
-                case QUICK_MOVE:
-                    action = mouseButton == 1 ? InventoryAction.PICKUP_SINGLE : InventoryAction.SHIFT_CLICK;
-                    break;
-
-                case CLONE: // creative dupe:
-                    if(getPlayer().abilities.creativeMode) {
-                        action = InventoryAction.CREATIVE_DUPLICATE;
-                    }
-
-                    break;
-
-                default:
-                case THROW: // drop item:
-            }
-
-            if(action != null) {
-                InterfaceSlot machineSlot = (InterfaceSlot) slot;
-                final InventoryActionPacket p = new InventoryActionPacket(action, getSlotIndex(machineSlot),
-                        machineSlot.getMachineInv().getServerId());
-                NetworkHandler.instance().sendToServer(p);
-            }
-
+        if(!(slot instanceof InterfaceSlot)) {
+            super.onMouseClick(slot, slotIdx, mouseButton, clickType);
             return;
         }
 
-        super.onMouseClick(slot, slotIdx, mouseButton, clickType);
+        InventoryAction action = null;
+
+        switch(clickType) {
+            case PICKUP: // pickup / set-down.
+                action = mouseButton == 1 ? InventoryAction.SPLIT_OR_PLACE_SINGLE : InventoryAction.PICKUP_OR_SET_DOWN;
+                break;
+            case QUICK_MOVE:
+                action = mouseButton == 1 ? InventoryAction.PICKUP_SINGLE : InventoryAction.SHIFT_CLICK;
+                break;
+
+            case CLONE: // creative dupe:
+                if(getPlayer().abilities.creativeMode) action = InventoryAction.CREATIVE_DUPLICATE;
+
+                break;
+
+            default:
+            case THROW: // drop item:
+        }
+
+        if(action == null) return;
+
+        InterfaceSlot machineSlot = (InterfaceSlot) slot;
+        final InventoryActionPacket p = new InventoryActionPacket(action, getSlotIndex(machineSlot), machineSlot.getMachineInv().getServerId());
+        NetworkHandler.instance().sendToServer(p);
     }
 
     @Override
@@ -283,34 +272,22 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
         }
 
         // Draw search field.
-        if(searchField != null) {
-            searchField.render(matrixStack, mouseX, mouseY, partialTicks);
-        }
+        if(searchField != null) searchField.render(matrixStack, mouseX, mouseY, partialTicks);
     }
 
     private Rect2i selectRowBackgroundBox(boolean isInvLine, boolean firstLine, boolean lastLine) {
         if(isInvLine) {
-            if(firstLine) {
-                return ROW_INVENTORY_TOP_BBOX;
-            } else if(lastLine) {
-                return ROW_INVENTORY_BOTTOM_BBOX;
-            } else {
-                return ROW_INVENTORY_MIDDLE_BBOX;
-            }
-        } else if(firstLine) {
-            return ROW_TEXT_TOP_BBOX;
-        } else if(lastLine) {
-            return ROW_TEXT_BOTTOM_BBOX;
-        } else {
-            return ROW_TEXT_MIDDLE_BBOX;
-        }
+            if(firstLine) return ROW_INVENTORY_TOP_BBOX;
+            else if(lastLine) return ROW_INVENTORY_BOTTOM_BBOX;
+            else return ROW_INVENTORY_MIDDLE_BBOX;
+        } else if(firstLine) return ROW_TEXT_TOP_BBOX;
+        else if(lastLine) return ROW_TEXT_BOTTOM_BBOX;
+        else return ROW_TEXT_MIDDLE_BBOX;
     }
 
     @Override
     public boolean charTyped(char character, int key) {
-        if(character == ' ' && searchField.getText().isEmpty()) {
-            return true;
-        }
+        if(character == ' ' && searchField.getText().isEmpty()) return true;
         return super.charTyped(character, key);
     }
 
@@ -360,12 +337,10 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
                     for(int x = 0; x < current.getInventory().getSlotCount(); x++) {
                         final String which = Integer.toString(x);
                         if(invData.contains(which)) {
-                            current.getInventory().setInvStack(x, ItemStack.fromTag(invData.getCompound(which)),
-                                    Simulation.ACTION);
+                            current.getInventory().setInvStack(x, ItemStack.fromTag(invData.getCompound(which)), Simulation.ACTION);
                         }
                     }
-                } catch(final NumberFormatException ignored) {
-                }
+                } catch(final NumberFormatException ignored) {}
             }
         }
 
@@ -455,12 +430,8 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
 
             final ItemStack parsedItemStack = ItemStack.fromTag(outTag.getCompound(i));
             if(!parsedItemStack.isEmpty()) {
-                final String displayName = Platform.getItemDisplayName(Api.instance().storage()
-                        .getStorageChannel(IItemStorageChannel.class).createStack(parsedItemStack)).getString()
-                        .toLowerCase();
-                if(displayName.contains(searchTerm)) {
-                    return true;
-                }
+                final String displayName = Platform.getItemDisplayName(Api.instance().storage().getStorageChannel(IItemStorageChannel.class).createStack(parsedItemStack)).getString().toLowerCase();
+                if(displayName.contains(searchTerm)) return true;
             }
         }
         return false;
@@ -476,15 +447,11 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
      * @return a Set matching a superset of the search term
      */
     private Set<Object> getCacheForSearchTerm(final String searchTerm) {
-        if(!cachedSearches.containsKey(searchTerm)) {
-            cachedSearches.put(searchTerm, new HashSet<>());
-        }
+        if(!cachedSearches.containsKey(searchTerm)) cachedSearches.put(searchTerm, new HashSet<>());
 
         final Set<Object> cache = cachedSearches.get(searchTerm);
 
-        if(cache.isEmpty() && searchTerm.length() > 1) {
-            cache.addAll(getCacheForSearchTerm(searchTerm.substring(0, searchTerm.length() - 1)));
-        }
+        if(cache.isEmpty() && searchTerm.length() > 1) cache.addAll(getCacheForSearchTerm(searchTerm.substring(0, searchTerm.length() - 1)));
 
         return cache;
     }

@@ -12,6 +12,7 @@ import appeng.api.networking.IGridNode;
 import appeng.api.networking.security.IActionHost;
 import appeng.container.AEBaseContainer;
 import appeng.container.ContainerLocator;
+import appeng.container.SlotSemantic;
 import appeng.container.interfaces.IInventorySlotAware;
 import appeng.container.slot.AppEngSlot;
 import appeng.core.localization.PlayerMessages;
@@ -79,7 +80,7 @@ public class WITContainer extends AEBaseContainer implements IWTInvHolder {
         createPlayerInventorySlots(ip);
 
         final FixedWTInv fixedWITInv = new FixedWTInv(getPlayerInventory(), witGUIObject.getItemStack(), this);
-        addSlot(new AppEngSlot(fixedWITInv, FixedWTInv.INFINITY_BOOSTER_CARD/*, 173, -11*/));
+        addSlot(new AppEngSlot(fixedWITInv, FixedWTInv.INFINITY_BOOSTER_CARD/*, , -11*/), SlotSemantic.BIOMETRIC_CARD);
     }
 
     private double powerMultiplier = 1;

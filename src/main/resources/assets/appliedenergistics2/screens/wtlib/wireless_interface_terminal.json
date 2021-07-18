@@ -1,6 +1,13 @@
 {
   "$schema": "schema.json",
   "includes": ["../common/common.json", "../common/player_inventory.json"],
+  "slots": {
+    "BIOMETRIC_CARD": {
+      "$comment": "INFINITY_BOOSTER_CARD",
+      "left": 173,
+      "bottom": 104
+    }
+  },
   "text": {
     "dialog_title": {
       "text": {
