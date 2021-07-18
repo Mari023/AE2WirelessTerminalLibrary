@@ -23,7 +23,7 @@ public class WirelessCraftingStatusScreen extends CraftingCPUScreen<WirelessCraf
     static {
         ScreenStyle STYLE1;
         try {
-            STYLE1 = StyleManager.loadStyleDoc("/screens/wtlib/crafting_status.json");
+            STYLE1 = StyleManager.loadStyleDoc("/screens/crafting_status.json");
         } catch(IOException ignored) {
             STYLE1 = null;
         }
