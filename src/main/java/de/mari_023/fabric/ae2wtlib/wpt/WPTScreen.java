@@ -3,6 +3,7 @@ package de.mari_023.fabric.ae2wtlib.wpt;
 import appeng.api.config.ActionItems;
 import appeng.client.gui.me.items.ItemTerminalScreen;
 import appeng.client.gui.style.ScreenStyle;
+import appeng.client.gui.style.StyleManager;
 import appeng.client.gui.widgets.ActionButton;
 import appeng.client.gui.widgets.TabButton;
 import appeng.core.localization.GuiText;
@@ -18,9 +19,9 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
-public class WPTScreen extends ItemTerminalScreen<WPTContainer> implements IUniversalTerminalCapable {
+import java.io.IOException;
 
-    private final WPTContainer container;
+public class WPTScreen extends ItemTerminalScreen<WPTContainer> implements IUniversalTerminalCapable {
 
     private static final byte SUBSITUTION_DISABLE = 0;
     private static final byte SUBSITUTION_ENABLE = 1;
@@ -28,45 +29,46 @@ public class WPTScreen extends ItemTerminalScreen<WPTContainer> implements IUniv
     private static final byte CRAFTMODE_CRAFTING = 1;
     private static final byte CRAFTMODE_PROCESSING = 0;
 
-    private TabButton tabCraftButton;
-    private TabButton tabProcessButton;
-    private ActionButton substitutionsEnabledBtn;
-    private ActionButton substitutionsDisabledBtn;
+    private final TabButton tabCraftButton;
+    private final TabButton tabProcessButton;
+    private final ActionButton substitutionsEnabledBtn;
+    private final ActionButton substitutionsDisabledBtn;
 
-    public WPTScreen(WPTContainer container, PlayerInventory playerInventory, Text title) {
-        super(container, playerInventory, title, new ScreenStyle());//FIXME
-        this.container = container;
+    private static final ScreenStyle STYLE;
+
+    static {
+        ScreenStyle STYLE1;
+        try {
+            STYLE1 = StyleManager.loadStyleDoc("/screens/wtlib/wireless_pattern_terminal.json");
+        } catch(IOException ignored) {
+            STYLE1 = null;
+        }
+        STYLE = STYLE1;
     }
 
-    @Override
-    public void init() {
-        super.init();
+    public WPTScreen(WPTContainer container, PlayerInventory playerInventory, Text title) {
+        super(container, playerInventory, title, STYLE);
 
-        tabCraftButton = new TabButton(/*x + 173, y + backgroundHeight - 177,*/
-                new ItemStack(Blocks.CRAFTING_TABLE), GuiText.CraftingPattern.text(), itemRenderer,
-                btn -> toggleCraftMode(CRAFTMODE_PROCESSING));
-        addButton(tabCraftButton);
+        tabCraftButton = new TabButton(new ItemStack(Blocks.CRAFTING_TABLE), GuiText.CraftingPattern.text(), itemRenderer, btn -> toggleCraftMode(CRAFTMODE_PROCESSING));
+        widgets.add("craftingPatternMode", tabCraftButton);
 
-        tabProcessButton = new TabButton(/*x + 173, y + backgroundHeight - 177,*/
-                new ItemStack(Blocks.FURNACE), GuiText.ProcessingPattern.text(), itemRenderer,
-                btn -> toggleCraftMode(CRAFTMODE_CRAFTING));
-        addButton(tabProcessButton);
+        tabProcessButton = new TabButton(new ItemStack(Blocks.FURNACE), GuiText.ProcessingPattern.text(), itemRenderer, btn -> toggleCraftMode(CRAFTMODE_CRAFTING));
+        widgets.add("processingPatternMode", tabProcessButton);
 
-        substitutionsEnabledBtn = new ActionButton(/*x + 84, y + backgroundHeight - 165,*/ ActionItems.ENABLE_SUBSTITUTION, act -> toggleSubstitutions(SUBSITUTION_DISABLE));
+        substitutionsEnabledBtn = new ActionButton(ActionItems.ENABLE_SUBSTITUTION, act -> toggleSubstitutions(SUBSITUTION_DISABLE));
         substitutionsEnabledBtn.setHalfSize(true);
-        addButton(substitutionsEnabledBtn);
+        widgets.add("substitutionsEnabled", substitutionsEnabledBtn);
 
-        substitutionsDisabledBtn = new ActionButton(/*x + 84, y + backgroundHeight - 165,*/ ActionItems.DISABLE_SUBSTITUTION, act -> toggleSubstitutions(SUBSITUTION_ENABLE));
+        substitutionsDisabledBtn = new ActionButton(ActionItems.DISABLE_SUBSTITUTION, act -> toggleSubstitutions(SUBSITUTION_ENABLE));
         substitutionsDisabledBtn.setHalfSize(true);
-        addButton(substitutionsDisabledBtn);
+        widgets.add("substitutionsDisabled", substitutionsDisabledBtn);
 
-        ActionButton clearBtn = addButton(new ActionButton(/*x + 74, y + backgroundHeight - 165,*/ ActionItems.CLOSE, btn -> clear()));
+        ActionButton clearBtn = addButton(new ActionButton(ActionItems.CLOSE, btn -> clear()));
         clearBtn.setHalfSize(true);
+        widgets.add("clearPattern", clearBtn);
+        widgets.add("encodePattern", new ActionButton(ActionItems.ENCODE, act -> encode()));
 
-        ActionButton encodeBtn = new ActionButton(/*x + 147, y + backgroundHeight - 144,*/ ActionItems.ENCODE, act -> encode());
-        addButton(encodeBtn);
-
-        if(container.isWUT()) addButton(new CycleTerminalButton(btn -> cycleTerminal()));
+        if(getScreenHandler().isWUT()) widgets.add("cycleTerminal", new CycleTerminalButton(btn -> cycleTerminal()));
     }
 
     private void toggleCraftMode(byte mode) {
