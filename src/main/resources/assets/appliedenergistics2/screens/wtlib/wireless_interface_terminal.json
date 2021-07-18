@@ -46,6 +46,10 @@
     "scrollbar": {
       "left": 175,
       "top": 18
+    },
+    "cycleTerminal": {
+      "left": -20,
+      "top": 28
     }
   }
 }

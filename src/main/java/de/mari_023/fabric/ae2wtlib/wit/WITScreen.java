@@ -23,6 +23,7 @@ import appeng.helpers.DualityInterface;
 import appeng.helpers.InventoryAction;
 import appeng.util.Platform;
 import com.google.common.collect.HashMultimap;
+import de.mari_023.fabric.ae2wtlib.wut.CycleTerminalButton;
 import de.mari_023.fabric.ae2wtlib.wut.IUniversalTerminalCapable;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.client.util.Rect2i;
@@ -131,6 +132,8 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
         TerminalStyle terminalStyle = AEConfig.instance().getTerminalStyle();
         addToLeftToolbar(
                 new SettingToggleButton<>(Settings.TERMINAL_STYLE, terminalStyle, this::toggleTerminalStyle));
+        if(getScreenHandler().isWUT())
+            widgets.add("cycleTerminal", new CycleTerminalButton(btn -> cycleTerminal()));
     }
 
     @Override

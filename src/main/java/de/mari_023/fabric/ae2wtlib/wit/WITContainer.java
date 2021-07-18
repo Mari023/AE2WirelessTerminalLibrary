@@ -80,7 +80,7 @@ public class WITContainer extends AEBaseContainer implements IWTInvHolder {
         createPlayerInventorySlots(ip);
 
         final FixedWTInv fixedWITInv = new FixedWTInv(getPlayerInventory(), witGUIObject.getItemStack(), this);
-        addSlot(new AppEngSlot(fixedWITInv, FixedWTInv.INFINITY_BOOSTER_CARD/*, , -11*/), SlotSemantic.BIOMETRIC_CARD);
+        addSlot(new AppEngSlot(fixedWITInv, FixedWTInv.INFINITY_BOOSTER_CARD), SlotSemantic.BIOMETRIC_CARD);
     }
 
     private double powerMultiplier = 1;
