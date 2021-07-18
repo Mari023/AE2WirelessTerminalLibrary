@@ -1,8 +1,8 @@
 package de.mari_023.fabric.ae2wtlib.util;
 
-import appeng.client.gui.implementations.AESubScreen;
 import appeng.client.gui.me.crafting.CraftingCPUScreen;
 import appeng.client.gui.style.ScreenStyle;
+import appeng.client.gui.style.StyleManager;
 import appeng.container.me.crafting.WirelessCraftingStatusContainer;
 import appeng.core.localization.GuiText;
 import appeng.core.sync.network.NetworkHandler;
@@ -12,15 +12,29 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 
+import java.io.IOException;
+
 public class WirelessCraftingStatusScreen extends CraftingCPUScreen<WirelessCraftingStatusContainer> {
 
     private final ButtonWidget selectCPU;
 
+    private static final ScreenStyle STYLE;
+
+    static {
+        ScreenStyle STYLE1;
+        try {
+            STYLE1 = StyleManager.loadStyleDoc("/screens/wtlib/crafting_status.json");
+        } catch(IOException ignored) {
+            STYLE1 = null;
+        }
+        STYLE = STYLE1;
+    }
+
     public WirelessCraftingStatusScreen(WirelessCraftingStatusContainer container, PlayerInventory playerInventory, Text title) {
-        super(container, playerInventory, title, new ScreenStyle());//FIXME
+        super(container, playerInventory, title, STYLE);
         selectCPU = widgets.addButton("selectCpu", getNextCpuButtonLabel(), this::selectNextCpu);
 
-        AESubScreen subGui = new AESubScreen(container.getTarget());
+        ae2wtlibSubScreen subGui = new ae2wtlibSubScreen(container.getTarget());
         subGui.addBackButton("back", widgets);
     }
 
