@@ -59,7 +59,7 @@ repositories {
         }
     }
     maven {
-        url = "https://maven.terraformersmc.com/releases/"
+        url = "https://raw.githubusercontent.com/TerraformersMC/Archive/main/releases/"
     }
     maven {
         url = "https://jitpack.io"
@@ -78,10 +78,6 @@ repositories {
         url "https://maven.siphalor.de"
     }
     maven {
-        name = "TerraformersMC"
-        url = "https://maven.terraformersmc.com/"
-    }
-    maven {
         name = "NerdHubMC"
         url = "https://maven.abusedmaster.xyz/"
     }
@@ -98,13 +94,18 @@ dependencies {
 
     // PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
     // You may need to force-disable transitiveness on them.
-    modImplementation "appeng:appliedenergistics2-fabric:${project.ae2_version}"
+    modImplementation "appeng:appliedenergistics2-fabric:${project.ae2_version}", {
+        exclude group: "FastTransferLib"
+    }
     modImplementation "me.shedaniel:RoughlyEnoughItems:${project.rei_version}"
     modImplementation "curse.maven:minemenufabric-478687:${project.minemenufabric_version}"
     modImplementation "com.terraformersmc:modmenu:1.16.7"//dependency for minemenu
     modApi("me.shedaniel.cloth:cloth-config-fabric:4.11.14")//dependency for minemenu
     modImplementation "dev.emi:trinkets:${project.trinkets_version}"
     modRuntime "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:2.8.3"
+    modApi include("dev.technici4n:FastTransferLib:${project.ftl_version}", {
+        exclude group: "dev.technici4n"
+    })
 }
 
 processResources {
