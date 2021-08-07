@@ -1,4 +1,4 @@
-package appeng.container.implementations;
+package appeng.container.me.crafting;
 
 import appeng.api.networking.IGrid;
 import appeng.api.networking.crafting.ICraftingCPU;
@@ -39,7 +39,7 @@ public class WirelessCraftingStatusContainer extends CraftingCPUContainer implem
 
     @Override
     public void sendContentUpdates() {
-        IGrid network = getNetwork();
+        IGrid network = getGrid();
         if(isServer() && network != null) cpuCycler.detectAndSendChanges(network);
         super.sendContentUpdates();
     }

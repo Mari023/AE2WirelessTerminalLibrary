@@ -11,14 +11,17 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
+import java.util.Collections;
+import java.util.List;
+
 public class ItemButton extends ButtonWidget implements ITooltip {
 
     private final Identifier texture;
     public static final Identifier TEXTURE_STATES = new Identifier("appliedenergistics2", "textures/guis/states.png");
     private boolean halfSize = false;
 
-    public ItemButton(final int x, final int y, PressAction onPress, Identifier texture) {
-        super(x, y, 16, 16, LiteralText.EMPTY, onPress);
+    public ItemButton(PressAction onPress, Identifier texture) {
+        super(0, 0, 16, 16, LiteralText.EMPTY, onPress);
         this.texture = texture;
     }
 
@@ -68,8 +71,8 @@ public class ItemButton extends ButtonWidget implements ITooltip {
     }
 
     @Override
-    public Text getTooltipMessage() {
-        return getMessage();
+    public List<Text> getTooltipMessage() {
+        return Collections.singletonList(getMessage());
     }
 
     @Override

@@ -1,7 +1,7 @@
 package de.mari_023.fabric.ae2wtlib.client;
 
-import appeng.container.implementations.WirelessCraftConfirmContainer;
-import appeng.container.implementations.WirelessCraftingStatusContainer;
+import appeng.container.me.crafting.WirelessCraftConfirmContainer;
+import appeng.container.me.crafting.WirelessCraftingStatusContainer;
 import appeng.util.item.AEItemStack;
 import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.util.WirelessCraftAmountContainer;
@@ -57,7 +57,7 @@ public class ae2wtlibclient implements ClientModInitializer {
                 if(screen instanceof WITScreen) {
                     CompoundTag tag = buf.readCompoundTag();
                     if(tag != null)
-                        ((WITScreen) screen).postUpdate(tag);
+                        ((WITScreen) screen).postUpdate(false, tag);
                 }
                 buf.release();
             });
