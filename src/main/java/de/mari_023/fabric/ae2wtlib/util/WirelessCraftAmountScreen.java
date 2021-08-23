@@ -2,7 +2,6 @@ package de.mari_023.fabric.ae2wtlib.util;
 
 import appeng.client.gui.AEBaseScreen;
 import appeng.client.gui.NumberEntryType;
-import appeng.client.gui.implementations.AESubScreen;
 import appeng.client.gui.implementations.NumberEntryWidget;
 import appeng.client.gui.style.ScreenStyle;
 import appeng.client.gui.style.StyleManager;
@@ -39,7 +38,7 @@ public class WirelessCraftAmountScreen extends AEBaseScreen<WirelessCraftAmountC
 
         next = widgets.addButton("next", GuiText.Next.text(), this::confirm);
 
-        AESubScreen subGui = new AESubScreen(container.getTarget());
+        ae2wtlibSubScreen subGui = new ae2wtlibSubScreen(container.getTarget());
         subGui.addBackButton("back", widgets);
 
         amountToCraft = new NumberEntryWidget(NumberEntryType.CRAFT_ITEM_COUNT);

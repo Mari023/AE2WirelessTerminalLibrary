@@ -11,7 +11,6 @@ import appeng.api.storage.ITerminalHost;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.container.AEBaseContainer;
 import appeng.container.ContainerLocator;
-import appeng.container.ContainerOpener;
 import appeng.container.SlotSemantic;
 import appeng.container.guisync.GuiSync;
 import appeng.container.me.crafting.WirelessCraftConfirmContainer;
@@ -129,7 +128,7 @@ public class WirelessCraftAmountContainer extends AEBaseContainer {
                 final ContainerLocator locator = getLocator();
                 if(locator != null) {
                     PlayerEntity player = getPlayerInventory().player;
-                    ContainerOpener.openContainer(WirelessCraftConfirmContainer.TYPE, player, locator);
+                    WirelessCraftConfirmContainer.open(player, locator);
 
                     if(player.currentScreenHandler instanceof WirelessCraftConfirmContainer) {
                         final WirelessCraftConfirmContainer ccc = (WirelessCraftConfirmContainer) player.currentScreenHandler;

@@ -11,7 +11,6 @@ import appeng.container.ContainerLocator;
 import appeng.container.ContainerNull;
 import appeng.container.SlotSemantic;
 import appeng.container.interfaces.IInventorySlotAware;
-import appeng.container.me.crafting.CraftAmountContainer;
 import appeng.container.me.items.ItemTerminalContainer;
 import appeng.container.slot.AppEngSlot;
 import appeng.container.slot.CraftingMatrixSlot;
@@ -34,6 +33,7 @@ import de.mari_023.fabric.ae2wtlib.terminal.ae2wtlibInternalInventory;
 import de.mari_023.fabric.ae2wtlib.trinket.AppEngTrinketSlot;
 import de.mari_023.fabric.ae2wtlib.trinket.FixedTrinketInv;
 import de.mari_023.fabric.ae2wtlib.util.ContainerHelper;
+import de.mari_023.fabric.ae2wtlib.util.WirelessCraftAmountContainer;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.ItemMagnetCard;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetSettings;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
@@ -218,7 +218,7 @@ public class WCTContainer extends ItemTerminalContainer implements IAEAppEngInve
             super.handleNetworkInteraction(player, stack, action);
             return;
         }
-        CraftAmountContainer.open(player, getLocator(), stack, 1);
+        WirelessCraftAmountContainer.open(player, getLocator(), stack, 1);
     }
 
     @Override
