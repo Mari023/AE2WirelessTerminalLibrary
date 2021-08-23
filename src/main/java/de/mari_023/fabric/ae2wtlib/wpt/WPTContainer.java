@@ -22,6 +22,7 @@ import appeng.core.Api;
 import appeng.core.localization.PlayerMessages;
 import appeng.core.sync.packets.PatternSlotPacket;
 import appeng.helpers.IContainerCraftingPacket;
+import appeng.helpers.InventoryAction;
 import appeng.items.storage.ViewCellItem;
 import appeng.me.helpers.MachineSource;
 import appeng.util.InventoryAdaptor;
@@ -38,6 +39,7 @@ import de.mari_023.fabric.ae2wtlib.terminal.FixedWTInv;
 import de.mari_023.fabric.ae2wtlib.terminal.IWTInvHolder;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.util.ContainerHelper;
+import de.mari_023.fabric.ae2wtlib.util.WirelessCraftAmountContainer;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -206,6 +208,14 @@ public class WPTContainer extends ItemTerminalContainer implements IAEAppEngInve
             for(Slot slot : craftingGridSlots) if(s == slot) getAndUpdateOutput();
             for(Slot slot : processingOutputSlots) if(s == slot) getAndUpdateOutput();
         }
+    }
+
+    protected void handleNetworkInteraction(ServerPlayerEntity player, IAEItemStack stack, InventoryAction action) {
+        if(action != InventoryAction.AUTO_CRAFT) {
+            super.handleNetworkInteraction(player, stack, action);
+            return;
+        }
+        WirelessCraftAmountContainer.open(player, getLocator(), stack, 1);
     }
 
     private void setSlotX(Slot s, int x) {
