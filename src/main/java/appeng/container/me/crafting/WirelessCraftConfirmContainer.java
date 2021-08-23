@@ -17,6 +17,7 @@ import appeng.core.sync.packets.CraftConfirmPlanPacket;
 import appeng.me.helpers.PlayerSource;
 import de.mari_023.fabric.ae2wtlib.terminal.WTGuiObject;
 import de.mari_023.fabric.ae2wtlib.util.ContainerHelper;
+import de.mari_023.fabric.ae2wtlib.util.WirelessCraftAmountContainer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.network.PacketByteBuf;
@@ -221,7 +222,7 @@ public class WirelessCraftConfirmContainer extends AEBaseContainer implements Cr
         if(player instanceof ServerPlayerEntity) {
             ServerPlayerEntity serverPlayer = (ServerPlayerEntity) player;
             if(itemToCreate != null)
-                CraftAmountContainer.open(serverPlayer, getLocator(), itemToCreate, (int) itemToCreate.getStackSize());
+                WirelessCraftAmountContainer.open(serverPlayer, getLocator(), itemToCreate, (int) itemToCreate.getStackSize());
         } else sendClientAction(ACTION_BACK);
     }
 }
