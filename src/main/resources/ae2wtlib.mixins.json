@@ -7,6 +7,7 @@
   "mixins": [
     "CfgValuePacket",
     "ConfirmAutoCraftPacketMixin",
+    "CraftConfirmPlanPacketMixin",
     "PlayerInventoryInsertStack",
     "Restock",
     "ScreenHandlerMixin",
