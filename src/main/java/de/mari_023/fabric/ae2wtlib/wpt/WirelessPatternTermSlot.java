@@ -22,8 +22,8 @@ import net.minecraft.util.Identifier;
 import java.lang.reflect.Field;
 
 public class WirelessPatternTermSlot extends PatternTermSlot {
-    public WirelessPatternTermSlot(PlayerEntity player, IActionSource mySrc, IEnergySource energySrc, IStorageMonitorable storage, FixedItemInv cMatrix, FixedItemInv secondMatrix, FixedItemInv output, int x, int y, IOptionalSlotHost h, int groupNumber, IContainerCraftingPacket c) {
-        super(player, mySrc, energySrc, storage, cMatrix, secondMatrix, output, x, y, h, groupNumber, c);
+    public WirelessPatternTermSlot(PlayerEntity player, IActionSource mySrc, IEnergySource energySrc, IStorageMonitorable storage, FixedItemInv cMatrix, FixedItemInv secondMatrix, IOptionalSlotHost h, int groupNumber, IContainerCraftingPacket c) {
+        super(player, mySrc, energySrc, storage, cMatrix, secondMatrix, h, groupNumber, c);
     }
 
     @Override

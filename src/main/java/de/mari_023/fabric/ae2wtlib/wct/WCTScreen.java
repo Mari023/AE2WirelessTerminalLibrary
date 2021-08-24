@@ -1,17 +1,13 @@
 package de.mari_023.fabric.ae2wtlib.wct;
 
 import appeng.api.config.ActionItems;
-import appeng.client.gui.implementations.MEMonitorableScreen;
-import appeng.client.gui.widgets.AETextField;
+import appeng.client.gui.Icon;
+import appeng.client.gui.me.items.ItemTerminalScreen;
+import appeng.client.gui.style.ScreenStyle;
+import appeng.client.gui.style.StyleManager;
 import appeng.client.gui.widgets.ActionButton;
 import appeng.client.gui.widgets.IconButton;
-import appeng.container.slot.CraftingMatrixSlot;
-import appeng.core.localization.GuiText;
-import appeng.core.sync.network.NetworkHandler;
-import appeng.core.sync.packets.InventoryActionPacket;
-import appeng.helpers.InventoryAction;
 import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.systems.RenderSystem;
 import de.mari_023.fabric.ae2wtlib.ae2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.mixin.ScreenMixin;
 import de.mari_023.fabric.ae2wtlib.trinket.AppEngTrinketSlot;
@@ -26,91 +22,71 @@ import dev.emi.trinkets.TrinketsClient;
 import dev.emi.trinkets.api.SlotGroups;
 import dev.emi.trinkets.api.TrinketSlots;
 import dev.emi.trinkets.mixin.SlotMixin;
-import me.shedaniel.math.Rectangle;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.util.math.Vector3f;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Quaternion;
-import org.lwjgl.opengl.GL11;
 
-import java.lang.reflect.Field;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUniversalTerminalCapable {
+public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniversalTerminalCapable {
 
-    private int rows = 0;
-    private AETextField searchField;
-    private final int reservedSpace;
     ItemButton magnetCardToggleButton;
-    private final WCTContainer container;
     private List<AppEngTrinketSlot> trinketSlots;
     private float mouseX;
     private float mouseY;
 
-    public WCTScreen(WCTContainer container, PlayerInventory playerInventory, Text title) {
-        super(container, playerInventory, title);
-        reservedSpace = 73;
-        this.container = container;
+    private static final ScreenStyle STYLE;
 
+    static {
+        ScreenStyle STYLE1;
         try {
-            Field f = MEMonitorableScreen.class.getDeclaredField("reservedSpace");
-            f.setAccessible(true);
-            f.set(this, reservedSpace);
-            f.setAccessible(false);
-        } catch(IllegalAccessException | NoSuchFieldException ignored) {}
+            STYLE1 = StyleManager.loadStyleDoc("/screens/wtlib/wireless_crafting_terminal.json");
+        } catch(IOException ignored) {
+            STYLE1 = null;
+        }
+        STYLE = STYLE1;
+    }
+
+    public WCTScreen(WCTContainer container, PlayerInventory playerInventory, Text title) {
+        super(container, playerInventory, title, STYLE);
+        ActionButton clearBtn = new ActionButton(ActionItems.STASH, (btn) -> container.clearCraftingGrid());
+        clearBtn.setHalfSize(true);
+        widgets.add("clearCraftingGrid", clearBtn);
+        IconButton deleteButton = new IconButton(btn -> delete()) {
+            @Override
+            protected Icon getIcon() {
+                return Icon.CONDENSER_OUTPUT_TRASH;
+            }
+        };
+        deleteButton.setHalfSize(true);
+        deleteButton.setMessage(new TranslatableText("gui.ae2wtlib.emptytrash").append("\n").append(new TranslatableText("gui.ae2wtlib.emptytrash.desc")));
+        widgets.add("emptyTrash", deleteButton);
+
+        magnetCardToggleButton = new ItemButton(btn -> setMagnetMode(), new Identifier("ae2wtlib", "textures/magnet_card.png"));
+        magnetCardToggleButton.setHalfSize(true);
+        widgets.add("magnetCardToggleButton", magnetCardToggleButton);
+        resetMagnetSettings();
+        getScreenHandler().setScreen(this);
+
+        if(getScreenHandler().isWUT()) widgets.add("cycleTerminal", new CycleTerminalButton(btn -> cycleTerminal()));
+
+        widgets.add("player", new PlayerEntityWidget(MinecraftClient.getInstance().player));
     }
 
     @Override
     public void init() {
         super.init();
-        ActionButton clearBtn = addButton(new ActionButton(x + 92 + 43, y + backgroundHeight - 156 - 4, ActionItems.STASH, btn -> clear()));
-        clearBtn.setHalfSize(true);
-
-        IconButton deleteButton = addButton(new IconButton(x + 92 + 25, y + backgroundHeight - 156 + 52, btn -> delete()) {
-            @Override
-            protected int getIconIndex() {
-                return 6;
-            }
-        });
-        deleteButton.setHalfSize(true);
-        deleteButton.setMessage(new TranslatableText("gui.ae2wtlib.emptytrash").append("\n").append(new TranslatableText("gui.ae2wtlib.emptytrash.desc")));
-
-        magnetCardToggleButton = addButton(new ItemButton(x + 92 + 60, y + backgroundHeight - 114, btn -> setMagnetMode(), new Identifier("ae2wtlib", "textures/magnet_card.png")));
-        magnetCardToggleButton.setHalfSize(true);
-        resetMagnetSettings();
-        container.setScreen(this);
-
-        if(container.isWUT()) addButton(new CycleTerminalButton(x - 18, y + 108, btn -> cycleTerminal()));
-
-        try {
-            Field field = MEMonitorableScreen.class.getDeclaredField("rows");
-            field.setAccessible(true);
-            Object value = field.get(this);
-            field.setAccessible(false);
-            rows = (int) value;
-        } catch(IllegalAccessException | NoSuchFieldException ignored) {}
-        try {
-            Field field = MEMonitorableScreen.class.getDeclaredField("searchField");
-            field.setAccessible(true);
-            Object value = field.get(this);
-            field.setAccessible(false);
-            searchField = (AETextField) value;
-        } catch(IllegalAccessException | NoSuchFieldException ignored) {}
-
-        if(!ae2wtlibConfig.INSTANCE.allowTrinket()) return;//Trinkets only starting here
+        if(!ae2wtlibConfig.INSTANCE.allowTrinket()) return;//Trinkets only
         TrinketsClient.displayEquipped = 0;
         trinketSlots = new ArrayList<>();
         for(Slot slot : getScreenHandler().slots) {
@@ -127,22 +103,7 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
 
     @Override
     public void drawBG(MatrixStack matrices, final int offsetX, final int offsetY, final int mouseX, final int mouseY, float partialTicks) {
-        bindTexture(getBackground());
-        final int x_width = 199;
-        drawTexture(matrices, offsetX, offsetY, 0, 0, x_width, 18);
-
-        for(int x = 0; x < rows; x++) drawTexture(matrices, offsetX, offsetY + 18 + x * 18, 0, 18, x_width, 18);
-
-        drawTexture(matrices, offsetX, offsetY + 16 + rows * 18, 0, 106 - 18 - 18, x_width, 99 + reservedSpace);
-
-        searchField.render(matrices, mouseX, mouseY, partialTicks);
-
-        if(client != null && client.player != null)
-            drawEntity(offsetX + 52, offsetY + 94 + rows * 18, 30, (float) (offsetX + 52) - mouseX, (float) offsetY + 55 + rows * 18 - mouseY, client.player);
-
-        bindTexture("guis/crafting.png");
-        drawTexture(matrices, offsetX + 197, offsetY, 197, 0, 46, 128); //draw viewcell background
-
+        super.drawBG(matrices, offsetX, offsetY, mouseX, mouseY, partialTicks);
         if(!ae2wtlibConfig.INSTANCE.allowTrinket()) return;//Trinkets only starting here
         GlStateManager.disableDepthTest();
         List<TrinketSlots.Slot> trinketSlots = TrinketSlots.getAllSlots();
@@ -175,7 +136,6 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
     @Override
     public void drawFG(MatrixStack matrices, final int offsetX, final int offsetY, final int mouseX, final int mouseY) {
         super.drawFG(matrices, offsetX, offsetY, mouseX, mouseY);
-        textRenderer.draw(matrices, GuiText.CraftingTerminal.text(), 8, backgroundHeight - 96 + 1 - reservedSpace, 4210752);
 
         if(!ae2wtlibConfig.INSTANCE.allowTrinket() || client == null) return;//Trinkets client-only starting here
         if(TrinketsClient.slotGroup != null)
@@ -207,15 +167,6 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
         GlStateManager.enableDepthTest();
     }
 
-    private void clear() {
-        Slot s = null;
-        for(final Slot j : handler.slots) if(j instanceof CraftingMatrixSlot) s = j;
-
-        if(s == null) return;
-        final InventoryActionPacket p = new InventoryActionPacket(InventoryAction.MOVE_REGION, s.id, 0);
-        NetworkHandler.instance().sendToServer(p);
-    }
-
     private void delete() {
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeString("CraftingTerminal.Delete");
@@ -226,7 +177,7 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
     private MagnetSettings magnetSettings = null;
 
     public void resetMagnetSettings() {
-        magnetSettings = container.getMagnetSettings();
+        magnetSettings = getScreenHandler().getMagnetSettings();
         setMagnetModeText();
     }
 
@@ -271,57 +222,6 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
                 magnetCardToggleButton.setMessage(new TranslatableText("gui.ae2wtlib.magnetcard").append("\n").append(new TranslatableText("gui.ae2wtlib.magnetcard.desc.me")));
                 break;
         }
-    }
-
-    @Override
-    protected String getBackground() {
-        return "wtlib/gui/crafting.png";
-    }
-
-    public static void drawEntity(int x, int y, int size, float mouseX, float mouseY, LivingEntity entity) {
-        float f = (float) Math.atan((mouseX / 40.0F));
-        float g = (float) Math.atan((mouseY / 40.0F));
-        GL11.glPushMatrix();
-        GL11.glTranslatef((float) x, (float) y, 1050.0F);
-        GL11.glScalef(1.0F, 1.0F, -1.0F);
-        MatrixStack matrixStack = new MatrixStack();
-        matrixStack.translate(0.0D, 0.0D, 1000.0D);
-        matrixStack.scale((float) size, (float) size, (float) size);
-        Quaternion quaternion = Vector3f.POSITIVE_Z.getDegreesQuaternion(180.0F);
-        Quaternion quaternion2 = Vector3f.POSITIVE_X.getDegreesQuaternion(g * 20.0F);
-        quaternion.hamiltonProduct(quaternion2);
-        matrixStack.multiply(quaternion);
-        float h = entity.bodyYaw;
-        float i = entity.yaw;
-        float j = entity.pitch;
-        float k = entity.prevHeadYaw;
-        float l = entity.headYaw;
-        entity.bodyYaw = 180.0F + f * 20.0F;
-        entity.yaw = 180.0F + f * 40.0F;
-        entity.pitch = -g * 20.0F;
-        entity.headYaw = entity.yaw;
-        entity.prevHeadYaw = entity.yaw;
-        EntityRenderDispatcher entityRenderDispatcher = MinecraftClient.getInstance().getEntityRenderDispatcher();
-        quaternion2.conjugate();
-        entityRenderDispatcher.setRotation(quaternion2);
-        entityRenderDispatcher.setRenderShadows(false);
-        VertexConsumerProvider.Immediate immediate = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers();
-        RenderSystem.runAsFancy(() -> entityRenderDispatcher.render(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, matrixStack, immediate, 15728880));
-        immediate.draw();
-        entityRenderDispatcher.setRenderShadows(true);
-        entity.bodyYaw = h;
-        entity.yaw = i;
-        entity.pitch = j;
-        entity.prevHeadYaw = k;
-        entity.headYaw = l;
-        GL11.glPopMatrix();
-    }
-
-    @Override
-    public List<Rectangle> getExclusionZones() {
-        List<Rectangle> zones = super.getExclusionZones();
-        zones.add(new Rectangle(x + 195, y, 24, backgroundHeight - 110));
-        return zones;
     }
 
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
@@ -462,18 +362,18 @@ public class WCTScreen extends MEMonitorableScreen<WCTContainer> implements IUni
     }
 
     public int getGroupY(TrinketSlots.SlotGroup group) {
-        if(group.vanillaSlot == 5) return -160 + backgroundHeight;
-        if(group.vanillaSlot == 6) return -142 + backgroundHeight;
-        if(group.vanillaSlot == 7) return -124 + backgroundHeight;
-        if(group.vanillaSlot == 8) return -106 + backgroundHeight;
-        if(group.vanillaSlot == 45) return -106 + backgroundHeight;
-        if(group.getName().equals(SlotGroups.HAND)) return -106 + backgroundHeight;
+        if(group.vanillaSlot == 5) return -161 + backgroundHeight;
+        if(group.vanillaSlot == 6) return -143 + backgroundHeight;
+        if(group.vanillaSlot == 7) return -125 + backgroundHeight;
+        if(group.vanillaSlot == 8) return -107 + backgroundHeight;
+        if(group.vanillaSlot == 45) return -107 + backgroundHeight;
+        if(group.getName().equals(SlotGroups.HAND)) return -107 + backgroundHeight;
         int j = 0;
         if(TrinketSlots.slotGroups.get(5).slots.size() == 0) j = -1;
         for(int i = 6; i < TrinketSlots.slotGroups.size(); i++) {
             if(TrinketSlots.slotGroups.get(i) == group) {
                 j += i;
-                return ((j - 5) % 4) * 18 + backgroundHeight - 160;
+                return ((j - 5) % 4) * 18 + backgroundHeight - 161;
             } else if(TrinketSlots.slotGroups.get(i).slots.size() == 0) j--;
         }
         return 0;

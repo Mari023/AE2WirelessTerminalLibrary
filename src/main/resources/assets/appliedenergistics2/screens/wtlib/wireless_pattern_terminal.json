@@ -1,0 +1,115 @@
+{
+  "$schema": "schema.json",
+  "includes": ["../terminals/item_terminal.json"],
+  "slots": {
+    "PLAYER_INVENTORY": {
+      "left": 8,
+      "bottom": 82,
+      "grid": "BREAK_AFTER_9COLS"
+    },
+    "PLAYER_HOTBAR": {
+      "left": 8,
+      "bottom": 24,
+      "grid": "HORIZONTAL"
+    },
+    "BIOMETRIC_CARD": {
+      "$comment": "INFINITY_BOOSTER_CARD",
+      "left": 80,
+      "bottom": 102
+    },
+    "BLANK_PATTERN": {
+      "left": 147,
+      "bottom": 163
+    },
+    "ENCODED_PATTERN": {
+      "left": 147,
+      "bottom": 120
+    },
+    "CRAFTING_GRID": {
+      "left": 18,
+      "bottom": 158,
+      "grid": "BREAK_AFTER_3COLS"
+    },
+    "CRAFTING_RESULT": {
+      "left": 110,
+      "bottom": 140
+    },
+    "PROCESSING_RESULT": {
+      "left": 110,
+      "bottom": 158,
+      "grid": "VERTICAL"
+    }
+  },
+  "text": {
+    "dialog_title": {
+      "text": {
+        "translate": "gui.appliedenergistics2.Terminal"
+      },
+      "position": {
+        "left": 8,
+        "top": 6
+      }
+    },
+    "crafting_grid_title": {
+      "text": {
+        "translate": "gui.appliedenergistics2.PatternTerminal"
+      },
+      "position": {
+        "left": 8,
+        "bottom": 174
+      }
+    }
+  },
+  "terminalStyle": {
+    "header": {
+      "texture": "wtlib/guis/pattern.png",
+      "srcRect": [0, 0, 195, 17]
+    },
+    "firstRow": {
+      "texture": "wtlib/guis/pattern.png",
+      "srcRect": [0, 17, 195, 18]
+    },
+    "row": {
+      "texture": "wtlib/guis/pattern.png",
+      "srcRect": [0, 35, 195, 18]
+    },
+    "lastRow": {
+      "texture": "wtlib/guis/pattern.png",
+      "srcRect": [0, 53, 195, 18]
+    },
+    "bottom": {
+      "texture": "wtlib/guis/pattern.png",
+      "srcRect": [0, 71, 195, 178]
+    }
+  },
+  "widgets": {
+    "craftingPatternMode": {
+      "left": 173,
+      "bottom": 177
+    },
+    "processingPatternMode": {
+      "left": 173,
+      "bottom": 177
+    },
+    "substitutionsEnabled": {
+      "left": 84,
+      "bottom": 163
+    },
+    "substitutionsDisabled": {
+      "left": 84,
+      "bottom": 163
+    },
+    "clearPattern": {
+      "left": 74,
+      "bottom": 163
+    },
+    "encodePattern": {
+      "left": 147,
+      "bottom": 142
+    },
+    "cycleTerminal": {
+      "left": -20,
+      "top": 108
+    }
+  }
+}

@@ -1,14 +1,16 @@
 package de.mari_023.fabric.ae2wtlib.wpt;
 
 import appeng.api.config.ActionItems;
-import appeng.client.gui.implementations.MEMonitorableScreen;
-import appeng.client.gui.widgets.AETextField;
+import appeng.client.gui.me.items.ItemTerminalScreen;
+import appeng.client.gui.style.Blitter;
+import appeng.client.gui.style.ScreenStyle;
+import appeng.client.gui.style.StyleManager;
 import appeng.client.gui.widgets.ActionButton;
 import appeng.client.gui.widgets.TabButton;
+import appeng.container.SlotSemantic;
 import appeng.core.localization.GuiText;
 import de.mari_023.fabric.ae2wtlib.wut.CycleTerminalButton;
 import de.mari_023.fabric.ae2wtlib.wut.IUniversalTerminalCapable;
-import me.shedaniel.math.Rectangle;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.block.Blocks;
@@ -19,15 +21,9 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
-import java.lang.reflect.Field;
-import java.util.List;
+import java.io.IOException;
 
-public class WPTScreen extends MEMonitorableScreen<WPTContainer> implements IUniversalTerminalCapable {
-
-    private int rows = 0;
-    private AETextField searchField;
-    private final int reservedSpace;
-    private final WPTContainer container;
+public class WPTScreen extends ItemTerminalScreen<WPTContainer> implements IUniversalTerminalCapable {
 
     private static final byte SUBSITUTION_DISABLE = 0;
     private static final byte SUBSITUTION_ENABLE = 1;
@@ -35,68 +31,46 @@ public class WPTScreen extends MEMonitorableScreen<WPTContainer> implements IUni
     private static final byte CRAFTMODE_CRAFTING = 1;
     private static final byte CRAFTMODE_PROCESSING = 0;
 
-    private TabButton tabCraftButton;
-    private TabButton tabProcessButton;
-    private ActionButton substitutionsEnabledBtn;
-    private ActionButton substitutionsDisabledBtn;
+    private final TabButton tabCraftButton;
+    private final TabButton tabProcessButton;
+    private final ActionButton substitutionsEnabledBtn;
+    private final ActionButton substitutionsDisabledBtn;
 
-    public WPTScreen(WPTContainer container, PlayerInventory playerInventory, Text title) {
-        super(container, playerInventory, title);
-        this.container = container;
-        reservedSpace = 81;
+    private static final ScreenStyle STYLE;
 
+    static {
+        ScreenStyle STYLE1;
         try {
-            Field f = MEMonitorableScreen.class.getDeclaredField("reservedSpace");
-            f.setAccessible(true);
-            f.set(this, reservedSpace);
-            f.setAccessible(false);
-        } catch(IllegalAccessException | NoSuchFieldException ignored) {}
+            STYLE1 = StyleManager.loadStyleDoc("/screens/wtlib/wireless_pattern_terminal.json");
+        } catch(IOException ignored) {
+            STYLE1 = null;
+        }
+        STYLE = STYLE1;
     }
 
-    @Override
-    public void init() {
-        super.init();
+    public WPTScreen(WPTContainer container, PlayerInventory playerInventory, Text title) {
+        super(container, playerInventory, title, STYLE);
 
-        tabCraftButton = new TabButton(x + 173, y + backgroundHeight - 177,
-                new ItemStack(Blocks.CRAFTING_TABLE), GuiText.CraftingPattern.text(), itemRenderer,
-                btn -> toggleCraftMode(CRAFTMODE_PROCESSING));
-        addButton(tabCraftButton);
+        tabCraftButton = new TabButton(new ItemStack(Blocks.CRAFTING_TABLE), GuiText.CraftingPattern.text(), itemRenderer, btn -> toggleCraftMode(CRAFTMODE_PROCESSING));
+        widgets.add("craftingPatternMode", tabCraftButton);
 
-        tabProcessButton = new TabButton(x + 173, y + backgroundHeight - 177,
-                new ItemStack(Blocks.FURNACE), GuiText.ProcessingPattern.text(), itemRenderer,
-                btn -> toggleCraftMode(CRAFTMODE_CRAFTING));
-        addButton(tabProcessButton);
+        tabProcessButton = new TabButton(new ItemStack(Blocks.FURNACE), GuiText.ProcessingPattern.text(), itemRenderer, btn -> toggleCraftMode(CRAFTMODE_CRAFTING));
+        widgets.add("processingPatternMode", tabProcessButton);
 
-        substitutionsEnabledBtn = new ActionButton(x + 84, y + backgroundHeight - 165, ActionItems.ENABLE_SUBSTITUTION, act -> toggleSubstitutions(SUBSITUTION_DISABLE));
+        substitutionsEnabledBtn = new ActionButton(ActionItems.ENABLE_SUBSTITUTION, act -> toggleSubstitutions(SUBSITUTION_DISABLE));
         substitutionsEnabledBtn.setHalfSize(true);
-        addButton(substitutionsEnabledBtn);
+        widgets.add("substitutionsEnabled", substitutionsEnabledBtn);
 
-        substitutionsDisabledBtn = new ActionButton(x + 84, y + backgroundHeight - 165, ActionItems.DISABLE_SUBSTITUTION, act -> toggleSubstitutions(SUBSITUTION_ENABLE));
+        substitutionsDisabledBtn = new ActionButton(ActionItems.DISABLE_SUBSTITUTION, act -> toggleSubstitutions(SUBSITUTION_ENABLE));
         substitutionsDisabledBtn.setHalfSize(true);
-        addButton(substitutionsDisabledBtn);
+        widgets.add("substitutionsDisabled", substitutionsDisabledBtn);
 
-        ActionButton clearBtn = addButton(new ActionButton(x + 74, y + backgroundHeight - 165, ActionItems.CLOSE, btn -> clear()));
+        ActionButton clearBtn = addButton(new ActionButton(ActionItems.CLOSE, btn -> clear()));
         clearBtn.setHalfSize(true);
+        widgets.add("clearPattern", clearBtn);
+        widgets.add("encodePattern", new ActionButton(ActionItems.ENCODE, act -> encode()));
 
-        ActionButton encodeBtn = new ActionButton(x + 147, y + backgroundHeight - 144, ActionItems.ENCODE, act -> encode());
-        addButton(encodeBtn);
-
-        if(container.isWUT()) addButton(new CycleTerminalButton(x - 18, y + 108, btn -> cycleTerminal()));
-
-        try {
-            Field field = MEMonitorableScreen.class.getDeclaredField("rows");
-            field.setAccessible(true);
-            Object value = field.get(this);
-            field.setAccessible(false);
-            rows = (int) value;
-        } catch(IllegalAccessException | NoSuchFieldException ignored) {}
-        try {
-            Field field = MEMonitorableScreen.class.getDeclaredField("searchField");
-            field.setAccessible(true);
-            Object value = field.get(this);
-            field.setAccessible(false);
-            searchField = (AETextField) value;
-        } catch(IllegalAccessException | NoSuchFieldException ignored) {}
+        if(getScreenHandler().isWUT()) widgets.add("cycleTerminal", new CycleTerminalButton(btn -> cycleTerminal()));
     }
 
     private void toggleCraftMode(byte mode) {
@@ -127,20 +101,11 @@ public class WPTScreen extends MEMonitorableScreen<WPTContainer> implements IUni
         ClientPlayNetworking.send(new Identifier("ae2wtlib", "general"), buf);
     }
 
-    @Override
-    public void drawBG(MatrixStack matrices, final int offsetX, final int offsetY, final int mouseX, final int mouseY, float partialTicks) {
-        bindTexture(getBackground());
-        final int x_width = 197;
-        drawTexture(matrices, offsetX, offsetY, 0, 0, x_width, 18);
-
-        for(int x = 0; x < rows; x++) drawTexture(matrices, offsetX, offsetY + 18 + x * 18, 0, 18, x_width, 18);
-
-        drawTexture(matrices, offsetX, offsetY + 16 + rows * 18, 0, 106 - 18 - 18, x_width, 99 + reservedSpace);
-
+    protected void updateBeforeRender() {
+        super.updateBeforeRender();
         if(handler.isCraftingMode()) {
             tabCraftButton.visible = true;
             tabProcessButton.visible = false;
-
             if(handler.substitute) {
                 substitutionsEnabledBtn.visible = true;
                 substitutionsDisabledBtn.visible = false;
@@ -153,29 +118,15 @@ public class WPTScreen extends MEMonitorableScreen<WPTContainer> implements IUni
             tabProcessButton.visible = true;
             substitutionsEnabledBtn.visible = false;
             substitutionsDisabledBtn.visible = false;
-            drawTexture(matrices, offsetX + 109, offsetY + 36 + rows * 18, 109, 108, 18, 18);
-            drawTexture(matrices, offsetX + 109, offsetY + 72 + rows * 18, 109, 108, 18, 18);
         }
-        bindTexture("guis/crafting.png");
-        drawTexture(matrices, offsetX + 197, offsetY, 197, 0, 46, 128); //draw viewcell background
-        searchField.render(matrices, mouseX, mouseY, partialTicks);
+
+        setSlotsHidden(SlotSemantic.CRAFTING_RESULT, !(handler).isCraftingMode());
+        setSlotsHidden(SlotSemantic.PROCESSING_RESULT, (handler).isCraftingMode());
     }
 
-    @Override
-    public void drawFG(MatrixStack matrices, final int offsetX, final int offsetY, final int mouseX, final int mouseY) {
-        super.drawFG(matrices, offsetX, offsetY, mouseX, mouseY);
-        textRenderer.draw(matrices, GuiText.PatternTerminal.text(), 8, backgroundHeight - 96 + 1 - reservedSpace, 4210752);
-    }
-
-    @Override
-    protected String getBackground() {
-        return "wtlib/gui/pattern.png";
-    }
-
-    @Override
-    public List<Rectangle> getExclusionZones() {
-        List<Rectangle> zones = super.getExclusionZones();
-        zones.add(new Rectangle(x + 195, y, 24, backgroundHeight - 110));
-        return zones;
+    public void drawBG(MatrixStack matrixStack, int offsetX, int offsetY, int mouseX, int mouseY, float partialTicks) {
+        super.drawBG(matrixStack, offsetX, offsetY, mouseX, mouseY, partialTicks);
+        if(handler.isCraftingMode()) return;
+        Blitter.texture("guis/pattern_modes.png").src(100, 77, 18, 54).dest(x + 109, y + backgroundHeight - 159).blit(matrixStack, getZOffset());
     }
 }

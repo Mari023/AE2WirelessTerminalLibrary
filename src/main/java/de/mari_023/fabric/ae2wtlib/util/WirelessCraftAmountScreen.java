@@ -3,69 +3,75 @@ package de.mari_023.fabric.ae2wtlib.util;
 import appeng.client.gui.AEBaseScreen;
 import appeng.client.gui.NumberEntryType;
 import appeng.client.gui.implementations.NumberEntryWidget;
+import appeng.client.gui.style.ScreenStyle;
+import appeng.client.gui.style.StyleManager;
 import appeng.core.localization.GuiText;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+
+import java.io.IOException;
 
 public class WirelessCraftAmountScreen extends AEBaseScreen<WirelessCraftAmountContainer> {
-    private final ae2wtlibSubScreen subGui;
 
-    private NumberEntryWidget amountToCraft;
+    private final ButtonWidget next;
 
-    private ButtonWidget next;
+    private final NumberEntryWidget amountToCraft;
 
-    public WirelessCraftAmountScreen(WirelessCraftAmountContainer container, PlayerInventory playerInventory, Text title) {
-        super(container, playerInventory, title);
-        subGui = new ae2wtlibSubScreen(this, container.getTarget());
+    private boolean initialAmountInitialized;
+
+    private static final ScreenStyle STYLE;
+
+    static {
+        ScreenStyle STYLE1;
+        try {
+            STYLE1 = StyleManager.loadStyleDoc("/screens/craft_amount.json");
+        } catch(IOException ignored) {
+            STYLE1 = null;
+        }
+        STYLE = STYLE1;
     }
 
-    @Override
-    public void init() {
-        super.init();
+    public WirelessCraftAmountScreen(WirelessCraftAmountContainer container, PlayerInventory playerInventory, Text title) {
+        super(container, playerInventory, title, STYLE);
 
-        amountToCraft = new NumberEntryWidget(this, 20, 30, 138, 62, NumberEntryType.CRAFT_ITEM_COUNT);
+        next = widgets.addButton("next", GuiText.Next.text(), this::confirm);
+
+        ae2wtlibSubScreen subGui = new ae2wtlibSubScreen(container.getTarget());
+        subGui.addBackButton("back", widgets);
+
+        amountToCraft = new NumberEntryWidget(NumberEntryType.CRAFT_ITEM_COUNT);
         amountToCraft.setValue(1);
         amountToCraft.setTextFieldBounds(62, 57, 50);
         amountToCraft.setMinValue(1);
         amountToCraft.setHideValidationIcon(true);
-        amountToCraft.addButtons(children::add, this::addButton);
-
-        next = addButton(new ButtonWidget(x + 128, y + 51, 38, 20, GuiText.Next.text(), this::confirm));
-        amountToCraft.setOnConfirm(() -> confirm(next));
-
-        subGui.addBackButton(this::addButton, 154, 0);
-
-        changeFocus(true);
-    }
-
-    private void confirm(ButtonWidget button) {
-        int amount = amountToCraft.getIntValue().orElse(0);
-        if(amount <= 0) return;
-        PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeInt(amount);
-        buf.writeBoolean(hasShiftDown());
-        ClientPlayNetworking.send(new Identifier("ae2wtlib", "craft_request"), buf);
+        amountToCraft.setOnConfirm(this::confirm);
+        widgets.add("amountToCraft", amountToCraft);
     }
 
     @Override
-    public void drawFG(MatrixStack matrices, final int offsetX, final int offsetY, final int mouseX, final int mouseY) {
-        textRenderer.draw(matrices, GuiText.SelectAmount.text(), 8, 6, 4210752);
+    protected void updateBeforeRender() {
+        super.updateBeforeRender();
+
+        if(handler.getInitialAmount() != -1 && !initialAmountInitialized) {
+            amountToCraft.setValue(handler.getInitialAmount());
+            initialAmountInitialized = true;
+        }
+
+        next.setMessage(hasShiftDown() ? GuiText.Start.text() : GuiText.Next.text());
+        next.active = amountToCraft.getIntValue().orElse(0) > 0;
+    }
+
+    private void confirm() {
+        int amount = amountToCraft.getIntValue().orElse(0);
+        if(amount <= 0) return;
+        handler.confirm(amount, hasShiftDown());
     }
 
     @Override
     public void drawBG(MatrixStack matrices, final int offsetX, final int offsetY, final int mouseX, final int mouseY, float partialTicks) {
-        next.setMessage(hasShiftDown() ? GuiText.Start.text() : GuiText.Next.text());
-
-        bindTexture("guis/craft_amt.png");
-        drawTexture(matrices, offsetX, offsetY, 0, 0, backgroundWidth, backgroundHeight);
-
-        next.active = amountToCraft.getIntValue().orElse(0) > 0;
+        super.drawBG(matrices, offsetX, offsetY, mouseX, mouseY, partialTicks);
 
         amountToCraft.render(matrices, offsetX, offsetY, partialTicks);
     }

@@ -1,0 +1,129 @@
+{
+  "$schema": "schema.json",
+  "includes": ["../terminals/item_terminal.json"],
+  "slots": {
+    "CRAFTING_GRID": {
+      "left": 80,
+      "bottom": 160,
+      "grid": "BREAK_AFTER_3COLS"
+    },
+    "CRAFTING_RESULT": {
+      "left": 174,
+      "bottom": 142
+    },
+    "PLAYER_INVENTORY": {
+      "left": 8,
+      "bottom": 84,
+      "grid": "BREAK_AFTER_9COLS"
+    },
+    "PLAYER_HOTBAR": {
+      "left": 8,
+      "bottom": 26,
+      "grid": "HORIZONTAL"
+    },
+    "INSCRIBER_PLATE_BOTTOM": {
+      "$comment": "TRASH",
+      "left": 98,
+      "bottom": 106
+    },
+    "INSCRIBER_PLATE_TOP": {
+      "$comment": "MAGNET_CARD",
+      "left": 134,
+      "bottom": 104
+    },
+    "BIOMETRIC_CARD": {
+      "$comment": "INFINITY_BOOSTER_CARD",
+      "left": 152,
+      "bottom": 104
+    },
+    "MACHINE_INPUT": {
+      "$comment": "HELMET",
+      "left": 8,
+      "bottom": 160
+    },
+    "MACHINE_PROCESSING": {
+      "$comment": "CHESTPLATE",
+      "left": 8,
+      "bottom": 142
+    },
+    "MACHINE_OUTPUT": {
+      "$comment": "LEGGINGS",
+      "left": 8,
+      "bottom": 124
+    },
+    "MACHINE_CRAFTING_GRID": {
+      "$comment": "BOOT",
+      "left": 8,
+      "bottom": 106
+    },
+    "PROCESSING_RESULT": {
+      "$comment": "OFFHAND",
+      "left": 80,
+      "bottom": 106
+    }
+  },
+  "text": {
+    "dialog_title": {
+      "text": {
+        "translate": "gui.appliedenergistics2.Terminal"
+      },
+      "position": {
+        "left": 8,
+        "top": 6
+      }
+    },
+    "crafting_grid_title": {
+      "text": {
+        "translate": "gui.appliedenergistics2.CraftingTerminal"
+      },
+      "position": {
+        "left": 8,
+        "bottom": 170
+      }
+    }
+  },
+  "terminalStyle": {
+    "header": {
+      "texture": "wtlib/guis/crafting.png",
+      "srcRect": [0, 0, 195, 17]
+    },
+    "firstRow": {
+      "texture": "wtlib/guis/crafting.png",
+      "srcRect": [0, 17, 195, 18]
+    },
+    "row": {
+      "texture": "wtlib/guis/crafting.png",
+      "srcRect": [0, 35, 195, 18]
+    },
+    "lastRow": {
+      "texture": "wtlib/guis/crafting.png",
+      "srcRect": [0, 53, 195, 18]
+    },
+    "bottom": {
+      "texture": "wtlib/guis/crafting.png",
+      "srcRect": [0, 71, 200, 172]
+    }
+  },
+  "widgets": {
+    "clearCraftingGrid": {
+      "left": 135,
+      "bottom": 162
+    },
+    "emptyTrash": {
+      "left": 116,
+      "bottom": 106
+    },
+    "magnetCardToggleButton": {
+      "left": 142,
+      "bottom": 114
+    },
+    "cycleTerminal": {
+      "left": -20,
+      "top": 108
+    },
+    "player": {
+      "left": 52,
+      "bottom": 94
+    }
+  }
+}
