@@ -5,7 +5,7 @@ import appeng.container.AEBaseContainer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
-@Mixin(AEBaseContainer.class)
+@Mixin(value = AEBaseContainer.class, remap = false)
 public interface AEBaseContainerMixin {
 
     @Invoker("getActionHost")
