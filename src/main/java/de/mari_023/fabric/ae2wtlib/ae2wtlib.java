@@ -146,7 +146,7 @@ public class ae2wtlib implements ModInitializer {
 
             WUTHandler.open(player, locator);
         }));
-        ServerPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "hotkey"), (server, player, handler, buf, sender) -> {//TODO this can probably be optimized
+        ServerPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "hotkey"), (server, player, handler, buf, sender) -> {
             buf.retain();
             server.execute(() -> {
                 String terminalName = buf.readString(32767);
