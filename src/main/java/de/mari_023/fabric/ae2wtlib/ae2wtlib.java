@@ -2,15 +2,13 @@ package de.mari_023.fabric.ae2wtlib;
 
 import appeng.container.AEBaseContainer;
 import appeng.container.ContainerLocator;
-import appeng.container.me.crafting.WirelessCraftConfirmContainer;
-import appeng.container.me.crafting.WirelessCraftingStatusContainer;
+import appeng.container.ContainerOpener;
 import appeng.core.Api;
 import appeng.core.sync.packets.PatternSlotPacket;
 import de.mari_023.fabric.ae2wtlib.rei.REIRecipePacket;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemInfinityBooster;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.util.ContainerHelper;
-import de.mari_023.fabric.ae2wtlib.util.WirelessCraftAmountContainer;
 import de.mari_023.fabric.ae2wtlib.wct.CraftingTerminalHandler;
 import de.mari_023.fabric.ae2wtlib.wct.ItemWCT;
 import de.mari_023.fabric.ae2wtlib.wct.WCTContainer;
@@ -68,9 +66,6 @@ public class ae2wtlib implements ModInitializer {
         WCTContainer.TYPE = ScreenHandlerRegistry.registerExtended(new Identifier("ae2wtlib", "wireless_crafting_terminal"), WCTContainer::fromNetwork);
         WPTContainer.TYPE = ScreenHandlerRegistry.registerExtended(new Identifier("ae2wtlib", "wireless_pattern_terminal"), WPTContainer::fromNetwork);
         WITContainer.TYPE = ScreenHandlerRegistry.registerExtended(new Identifier("ae2wtlib", "wireless_interface_terminal"), WITContainer::fromNetwork);
-        WirelessCraftingStatusContainer.TYPE = ScreenHandlerRegistry.registerExtended(new Identifier("ae2wtlib", "wireless_crafting_status"), WirelessCraftingStatusContainer::fromNetwork);
-        WirelessCraftAmountContainer.TYPE = ScreenHandlerRegistry.registerExtended(new Identifier("ae2wtlib", "wireless_craft_amount"), WirelessCraftAmountContainer::fromNetwork);
-        WirelessCraftConfirmContainer.TYPE = ScreenHandlerRegistry.registerExtended(new Identifier("ae2wtlib", "wireless_craft_confirm"), WirelessCraftConfirmContainer::fromNetwork);
 
         WUTHandler.addTerminal("crafting", CRAFTING_TERMINAL::tryOpen);
         WUTHandler.addTerminal("pattern", PATTERN_TERMINAL::tryOpen);
@@ -80,6 +75,10 @@ public class ae2wtlib implements ModInitializer {
         Api.instance().registries().charger().addChargeRate(PATTERN_TERMINAL, Config.getChargeRate());
         Api.instance().registries().charger().addChargeRate(INTERFACE_TERMINAL, Config.getChargeRate());
         Api.instance().registries().charger().addChargeRate(UNIVERSAL_TERMINAL, Config.getChargeRate() * Config.WUTChargeRateMultiplier());
+
+        ContainerOpener.addOpener(WCTContainer.TYPE, WCTContainer::open);
+        ContainerOpener.addOpener(WPTContainer.TYPE, WPTContainer::open);
+        ContainerOpener.addOpener(WITContainer.TYPE, WITContainer::open);
 
         Registry.register(Registry.RECIPE_SERIALIZER, CombineSerializer.ID, CombineSerializer.INSTANCE);
         Registry.register(Registry.RECIPE_SERIALIZER, UpgradeSerializer.ID, UpgradeSerializer.INSTANCE);
@@ -123,37 +122,6 @@ public class ae2wtlib implements ModInitializer {
                 buf.release();
             });
         });
-        ServerPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "switch_gui"), (server, player, handler, buf, sender) -> {
-            buf.retain();
-            server.execute(() -> {
-                Identifier id = buf.readIdentifier();
-                if(!(player.currentScreenHandler instanceof AEBaseContainer)) {
-                    buf.release();
-                    return;
-                }
-
-                final ContainerLocator locator = ((AEBaseContainer) player.currentScreenHandler).getLocator();
-                if(locator == null) {
-                    buf.release();
-                    return;
-                }
-
-                switch(id.getPath()) {
-                    case "wireless_crafting_terminal":
-                        WCTContainer.open(player, locator);
-                        break;
-                    case "wireless_pattern_terminal":
-                        WPTContainer.open(player, locator);
-                        break;
-                    case "wireless_interface_terminal":
-                        WITContainer.open(player, locator);
-                        break;
-                    case "wireless_crafting_status":
-                        WirelessCraftingStatusContainer.open(player, locator);
-                }
-                buf.release();
-            });
-        });
         ServerPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "rei_recipe"), (server, player, handler, buf, sender) -> {
             buf.retain();
             server.execute(() -> {
@@ -161,48 +129,6 @@ public class ae2wtlib implements ModInitializer {
                 buf.release();
             });
         });
-        /*ServerPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "craft_request"), (server, player, handler, buf, sender) -> {
-            buf.retain();
-            server.execute(() -> {
-                int amount = buf.readInt();
-                boolean heldShift = buf.readBoolean();
-                if(player.currentScreenHandler instanceof WirelessCraftAmountContainer) {
-                    final WirelessCraftAmountContainer cca = (WirelessCraftAmountContainer) player.currentScreenHandler;
-                    final Object target = cca.getTarget();
-                    if(target instanceof IActionHost) {
-                        final IGridNode gn = ((IActionHost) target).getActionableNode();
-                        if(gn == null) return;
-
-                        final IGrid g = gn.getGrid();
-                        if(cca.getItemToCraft() == null) return;
-
-                        cca.getItemToCraft().setStackSize(amount);
-
-                        Future<ICraftingJob> futureJob = null;
-                        try {
-                            final ICraftingGrid cg = g.getCache(ICraftingGrid.class);
-                            futureJob = cg.beginCraftingJob(cca.getWorld(), cca.getGrid(), cca.getActionSrc(), cca.getItemToCraft(), null);
-
-                            final ContainerLocator locator = cca.getLocator();
-                            if(locator != null) {
-                                WirelessCraftConfirmContainer.open(player, locator);
-
-                                if(player.currentScreenHandler instanceof WirelessCraftConfirmContainer) {
-                                    final WirelessCraftConfirmContainer ccc = (WirelessCraftConfirmContainer) player.currentScreenHandler;
-                                    ccc.setAutoStart(heldShift);
-                                    ccc.setJob(futureJob);
-                                    cca.sendContentUpdates();
-                                }
-                            }
-                        } catch(final Throwable e) {
-                            if(futureJob != null) futureJob.cancel(true);
-                            AELog.info(e);
-                        }
-                    }
-                    buf.release();
-                }
-            });
-        });*/
         ServerPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "cycle_terminal"), (server, player, handler, buf, sender) -> server.execute(() -> {
             final ScreenHandler screenHandler = player.currentScreenHandler;
 
@@ -220,7 +146,7 @@ public class ae2wtlib implements ModInitializer {
 
             WUTHandler.open(player, locator);
         }));
-        ServerPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "hotkey"), (server, player, handler, buf, sender) -> {
+        ServerPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "hotkey"), (server, player, handler, buf, sender) -> {//TODO this can probably be optimized
             buf.retain();
             server.execute(() -> {
                 String terminalName = buf.readString(32767);

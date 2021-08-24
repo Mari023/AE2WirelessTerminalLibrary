@@ -1,13 +1,7 @@
 package de.mari_023.fabric.ae2wtlib.client;
 
-import appeng.container.me.crafting.WirelessCraftConfirmContainer;
-import appeng.container.me.crafting.WirelessCraftingStatusContainer;
 import appeng.util.item.AEItemStack;
 import de.mari_023.fabric.ae2wtlib.Config;
-import de.mari_023.fabric.ae2wtlib.util.WirelessCraftAmountContainer;
-import de.mari_023.fabric.ae2wtlib.util.WirelessCraftAmountScreen;
-import de.mari_023.fabric.ae2wtlib.util.WirelessCraftConfirmScreen;
-import de.mari_023.fabric.ae2wtlib.util.WirelessCraftingStatusScreen;
 import de.mari_023.fabric.ae2wtlib.wct.CraftingTerminalHandler;
 import de.mari_023.fabric.ae2wtlib.wct.WCTContainer;
 import de.mari_023.fabric.ae2wtlib.wct.WCTScreen;
@@ -44,9 +38,6 @@ public class ae2wtlibclient implements ClientModInitializer {
         ScreenRegistry.register(WCTContainer.TYPE, WCTScreen::new);
         ScreenRegistry.register(WPTContainer.TYPE, WPTScreen::new);
         ScreenRegistry.register(WITContainer.TYPE, WITScreen::new);
-        ScreenRegistry.register(WirelessCraftingStatusContainer.TYPE, WirelessCraftingStatusScreen::new);
-        ScreenRegistry.register(WirelessCraftAmountContainer.TYPE, WirelessCraftAmountScreen::new);
-        ScreenRegistry.register(WirelessCraftConfirmContainer.TYPE, WirelessCraftConfirmScreen::new);
 
         ClientPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "interface_terminal"), (client, handler, buf, responseSender) -> {
             buf.retain();

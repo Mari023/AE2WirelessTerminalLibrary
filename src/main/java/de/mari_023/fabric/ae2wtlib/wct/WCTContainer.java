@@ -6,7 +6,6 @@ import alexiil.mc.lib.attributes.item.compat.FixedInventoryVanillaWrapper;
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
 import appeng.api.networking.IGridNode;
-import appeng.api.storage.data.IAEItemStack;
 import appeng.container.ContainerLocator;
 import appeng.container.ContainerNull;
 import appeng.container.SlotSemantic;
@@ -33,7 +32,6 @@ import de.mari_023.fabric.ae2wtlib.terminal.ae2wtlibInternalInventory;
 import de.mari_023.fabric.ae2wtlib.trinket.AppEngTrinketSlot;
 import de.mari_023.fabric.ae2wtlib.trinket.FixedTrinketInv;
 import de.mari_023.fabric.ae2wtlib.util.ContainerHelper;
-import de.mari_023.fabric.ae2wtlib.util.WirelessCraftAmountContainer;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.ItemMagnetCard;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetSettings;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
@@ -211,14 +209,6 @@ public class WCTContainer extends ItemTerminalContainer implements IAEAppEngInve
         CraftingMatrixSlot slot = craftingSlots[0];
         InventoryActionPacket p = new InventoryActionPacket(InventoryAction.MOVE_REGION, slot.id, 0L);
         NetworkHandler.instance().sendToServer(p);
-    }
-
-    protected void handleNetworkInteraction(ServerPlayerEntity player, IAEItemStack stack, InventoryAction action) {
-        if(action != InventoryAction.AUTO_CRAFT) {
-            super.handleNetworkInteraction(player, stack, action);
-            return;
-        }
-        WirelessCraftAmountContainer.open(player, getLocator(), stack, 1);
     }
 
     @Override
