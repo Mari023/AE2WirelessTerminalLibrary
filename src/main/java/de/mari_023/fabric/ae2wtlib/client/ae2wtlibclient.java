@@ -3,7 +3,7 @@ package de.mari_023.fabric.ae2wtlib.client;
 import appeng.container.me.crafting.WirelessCraftConfirmContainer;
 import appeng.container.me.crafting.WirelessCraftingStatusContainer;
 import appeng.util.item.AEItemStack;
-import de.mari_023.fabric.ae2wtlib.Config;
+import de.mari_023.fabric.ae2wtlib.ae2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.util.WirelessCraftAmountContainer;
 import de.mari_023.fabric.ae2wtlib.util.WirelessCraftAmountScreen;
 import de.mari_023.fabric.ae2wtlib.util.WirelessCraftConfirmScreen;
@@ -79,7 +79,7 @@ public class ae2wtlibclient implements ClientModInitializer {
                 int slot = buf.readInt();
                 ItemStack is;
                 CompoundTag tag = buf.readCompoundTag();
-                if(slot >= 100 && slot < 200 && Config.allowTrinket())
+                if(slot >= 100 && slot < 200 && ae2wtlibConfig.INSTANCE.allowTrinket())
                     is = TrinketsApi.getTrinketsInventory(client.player).getStack(slot - 100);
                 else is = client.player.inventory.getStack(slot);
                 is.setTag(tag);

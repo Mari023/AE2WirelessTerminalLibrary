@@ -27,7 +27,7 @@ import appeng.util.InventoryAdaptor;
 import appeng.util.helpers.ItemHandlerUtil;
 import appeng.util.inv.AdaptorFixedInv;
 import appeng.util.inv.WrapperCursorItemHandler;
-import de.mari_023.fabric.ae2wtlib.Config;
+import de.mari_023.fabric.ae2wtlib.ae2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.terminal.FixedWTInv;
 import de.mari_023.fabric.ae2wtlib.terminal.IWTInvHolder;
 import de.mari_023.fabric.ae2wtlib.util.ContainerHelper;
@@ -98,7 +98,7 @@ public class WITContainer extends AEBaseContainer implements IWTInvHolder {
             }
             setValidContainer(false);
         } else {
-            powerMultiplier = Config.getPowerMultiplier(witGUIObject.getRange(), witGUIObject.isOutOfRange());
+            powerMultiplier = ae2wtlibConfig.INSTANCE.getPowerMultiplier(witGUIObject.getRange(), witGUIObject.isOutOfRange());
 
             if(witGUIObject.extractAEPower(1, Actionable.SIMULATE, PowerMultiplier.ONE) == 0) {
                 if(isValidContainer()) {
