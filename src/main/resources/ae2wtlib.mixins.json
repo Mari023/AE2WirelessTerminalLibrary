@@ -7,7 +7,6 @@
   "mixins": [
     "AEBaseContainerMixin",
     "AESubScreenMixin",
-    "CfgValuePacket",
     "ContainerTypeBuilderMixin",
     "CraftConfirmContainerMixin",
     "PlayerInventoryInsertStack",
