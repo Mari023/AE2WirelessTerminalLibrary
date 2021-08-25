@@ -132,7 +132,7 @@ public class WCTContainer extends ItemTerminalContainer implements IAEAppEngInve
             for(TrinketSlots.Slot slot : group.slots) {
                 boolean locked = slotIndex - 100 == i;
                 AppEngTrinketSlot ts;
-                ts = new AppEngTrinketSlot(inv, i, Integer.MIN_VALUE, 8, group.getName(), slot.getName(), locked);
+                ts = new AppEngTrinketSlot(inv, i, group.getName(), slot.getName(), locked);
                 if(j == 0 && !group.onReal) ts.keepVisible = true;
                 addSlot(ts);
                 i++;
