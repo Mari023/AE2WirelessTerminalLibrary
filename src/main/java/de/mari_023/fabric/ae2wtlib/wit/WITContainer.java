@@ -45,7 +45,7 @@ import java.util.Map;
 
 public class WITContainer extends AEBaseContainer implements IWTInvHolder {
 
-    public static ScreenHandlerType<WITContainer> TYPE = ContainerTypeBuilder.create(WITContainer::new, WITGuiObject.class).requirePermission(SecurityPermissions.CRAFT).build("wireless_interface_terminal");
+    public static ScreenHandlerType<WITContainer> TYPE = ContainerTypeBuilder.create(WITContainer::new, WITGuiObject.class).requirePermission(SecurityPermissions.BUILD).build("wireless_interface_terminal");
 
     private final WITGuiObject witGUIObject;
     private static long autoBase = Long.MIN_VALUE;
