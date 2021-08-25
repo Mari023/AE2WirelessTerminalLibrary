@@ -2,7 +2,6 @@ package de.mari_023.fabric.ae2wtlib;
 
 import appeng.container.AEBaseContainer;
 import appeng.container.ContainerLocator;
-import appeng.container.ContainerOpener;
 import appeng.core.Api;
 import appeng.core.sync.packets.PatternSlotPacket;
 import de.mari_023.fabric.ae2wtlib.rei.REIRecipePacket;
@@ -17,7 +16,6 @@ import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetHandler;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetMode;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetSettings;
 import de.mari_023.fabric.ae2wtlib.wit.ItemWIT;
-import de.mari_023.fabric.ae2wtlib.wit.WITContainer;
 import de.mari_023.fabric.ae2wtlib.wpt.ItemWPT;
 import de.mari_023.fabric.ae2wtlib.wpt.WPTContainer;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
@@ -30,7 +28,6 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -63,10 +60,6 @@ public class ae2wtlib implements ModInitializer {
         Registry.register(Registry.ITEM, new Identifier("ae2wtlib", "wireless_interface_terminal"), INTERFACE_TERMINAL);
         Registry.register(Registry.ITEM, new Identifier("ae2wtlib", "wireless_universal_terminal"), UNIVERSAL_TERMINAL);
 
-        WCTContainer.TYPE = ScreenHandlerRegistry.registerExtended(new Identifier("ae2wtlib", "wireless_crafting_terminal"), WCTContainer::fromNetwork);
-        WPTContainer.TYPE = ScreenHandlerRegistry.registerExtended(new Identifier("ae2wtlib", "wireless_pattern_terminal"), WPTContainer::fromNetwork);
-        WITContainer.TYPE = ScreenHandlerRegistry.registerExtended(new Identifier("ae2wtlib", "wireless_interface_terminal"), WITContainer::fromNetwork);
-
         WUTHandler.addTerminal("crafting", CRAFTING_TERMINAL::tryOpen);
         WUTHandler.addTerminal("pattern", PATTERN_TERMINAL::tryOpen);
         WUTHandler.addTerminal("interface", INTERFACE_TERMINAL::tryOpen);
@@ -75,10 +68,6 @@ public class ae2wtlib implements ModInitializer {
         Api.instance().registries().charger().addChargeRate(PATTERN_TERMINAL, Config.getChargeRate());
         Api.instance().registries().charger().addChargeRate(INTERFACE_TERMINAL, Config.getChargeRate());
         Api.instance().registries().charger().addChargeRate(UNIVERSAL_TERMINAL, Config.getChargeRate() * Config.WUTChargeRateMultiplier());
-
-        ContainerOpener.addOpener(WCTContainer.TYPE, WCTContainer::open);
-        ContainerOpener.addOpener(WPTContainer.TYPE, WPTContainer::open);
-        ContainerOpener.addOpener(WITContainer.TYPE, WITContainer::open);
 
         Registry.register(Registry.RECIPE_SERIALIZER, CombineSerializer.ID, CombineSerializer.INSTANCE);
         Registry.register(Registry.RECIPE_SERIALIZER, UpgradeSerializer.ID, UpgradeSerializer.INSTANCE);

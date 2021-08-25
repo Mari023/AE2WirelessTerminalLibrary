@@ -22,7 +22,6 @@ import appeng.api.storage.data.IAEStack;
 import appeng.api.storage.data.IItemList;
 import appeng.api.util.DimensionalCoord;
 import appeng.api.util.IConfigManager;
-import appeng.container.ContainerLocator;
 import appeng.container.interfaces.IInventorySlotAware;
 import appeng.core.Api;
 import appeng.tile.networking.WirelessTileEntity;
@@ -70,7 +69,6 @@ public abstract class WTGuiObject implements IGuiItemObject, IEnergySource, IAct
         } else gridNode = null;
     }
 
-    public abstract boolean open(PlayerEntity player, ContainerLocator locator);
 
     public abstract ScreenHandlerType<?> getType();
 
@@ -85,8 +83,6 @@ public abstract class WTGuiObject implements IGuiItemObject, IEnergySource, IAct
                 if(myWap.getGrid() == targetGrid) return testWap(myWap) || hasBoosterCard;
                 return hasBoosterCard;
             } else isOutOfRange = true;
-
-            myWap = null;
 
             for(final IGridNode n : targetGrid.getMachines(WirelessTileEntity.class)) {
                 final IWirelessAccessPoint wap = (IWirelessAccessPoint) n.getMachine();
