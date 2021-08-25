@@ -6,7 +6,6 @@ import appeng.api.implementations.guiobjects.IPortableCell;
 import appeng.api.implementations.tiles.IViewCellStorage;
 import appeng.api.networking.crafting.ICraftingPatternDetails;
 import appeng.api.storage.data.IAEItemStack;
-import appeng.container.ContainerLocator;
 import appeng.core.Api;
 import appeng.tile.inventory.AppEngInternalInventory;
 import appeng.util.inv.IAEAppEngInventory;
@@ -34,11 +33,6 @@ public class WPTGuiObject extends WTGuiObject implements IPortableCell, IAEAppEn
         crafting = new ae2wtlibInternalInventory(this, 9, "pattern_crafting", is);
         output = new ae2wtlibInternalInventory(this, 3, "output", is);
         pattern = new ae2wtlibInternalInventory(this, 2, "pattern", is);
-    }
-
-    @Override
-    public boolean open(PlayerEntity player, ContainerLocator locator) {
-        return WPTContainer.open(player, locator);
     }
 
     @Override
