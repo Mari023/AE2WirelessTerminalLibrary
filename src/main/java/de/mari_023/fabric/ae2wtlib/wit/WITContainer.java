@@ -61,7 +61,7 @@ public class WITContainer extends AEBaseContainer implements IWTInvHolder {
         if(isServer() && witGUIObject.getActionableNode() != null) grid = witGUIObject.getActionableNode().getGrid();
 
         final int slotIndex = ((IInventorySlotAware) witGUIObject).getInventorySlot();
-        if(slotIndex < 100) lockPlayerInventorySlot(slotIndex);
+        if(slotIndex < 100 && slotIndex != 40) lockPlayerInventorySlot(slotIndex);
         createPlayerInventorySlots(ip);
 
         final FixedWTInv fixedWITInv = new FixedWTInv(getPlayerInventory(), witGUIObject.getItemStack(), this);

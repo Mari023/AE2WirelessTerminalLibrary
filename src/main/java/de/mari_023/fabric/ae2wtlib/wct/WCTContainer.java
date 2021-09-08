@@ -15,6 +15,7 @@ import appeng.container.me.items.ItemTerminalContainer;
 import appeng.container.slot.AppEngSlot;
 import appeng.container.slot.CraftingMatrixSlot;
 import appeng.container.slot.CraftingTermSlot;
+import appeng.container.slot.DisabledSlot;
 import appeng.core.localization.PlayerMessages;
 import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.InventoryActionPacket;
@@ -76,7 +77,7 @@ public class WCTContainer extends ItemTerminalContainer implements IAEAppEngInve
         fixedWTInv = new FixedWTInv(getPlayerInventory(), wctGUIObject.getItemStack(), this);
 
         final int slotIndex = ((IInventorySlotAware) wctGUIObject).getInventorySlot();
-        if(slotIndex < 100) lockPlayerInventorySlot(slotIndex);
+        if(slotIndex < 100 && slotIndex != 40) lockPlayerInventorySlot(slotIndex);
 
         crafting = new ae2wtlibInternalInventory(this, 9, "crafting", wctGUIObject.getItemStack());
 
@@ -114,7 +115,13 @@ public class WCTContainer extends ItemTerminalContainer implements IAEAppEngInve
             }
         }, SlotSemantic.MACHINE_CRAFTING_GRID);
 
-        SlotsWithTrinket[45] = addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.OFFHAND) {
+        if(slotIndex == 40) SlotsWithTrinket[45] = addSlot(new DisabledSlot(fixedWTInv, FixedWTInv.OFFHAND) {
+            @Environment(EnvType.CLIENT)
+            public Pair<Identifier, Identifier> getBackgroundSprite() {
+                return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, PlayerScreenHandler.EMPTY_OFFHAND_ARMOR_SLOT);
+            }
+        }, SlotSemantic.PROCESSING_RESULT);
+        else SlotsWithTrinket[45] = addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.OFFHAND) {
             @Environment(EnvType.CLIENT)
             public Pair<Identifier, Identifier> getBackgroundSprite() {
                 return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, PlayerScreenHandler.EMPTY_OFFHAND_ARMOR_SLOT);

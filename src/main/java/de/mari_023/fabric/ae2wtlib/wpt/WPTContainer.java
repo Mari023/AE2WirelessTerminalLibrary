@@ -111,7 +111,7 @@ public class WPTContainer extends ItemTerminalContainer implements IAEAppEngInve
         encodedPatternSlot.setStackLimit(1);
 
         final int slotIndex = ((IInventorySlotAware) wptGUIObject).getInventorySlot();
-        if(slotIndex < 100) lockPlayerInventorySlot(slotIndex);
+        if(slotIndex < 100 && slotIndex != 40) lockPlayerInventorySlot(slotIndex);
         addSlot(new AppEngSlot(new FixedWTInv(getPlayerInventory(), wptGUIObject.getItemStack(), this), FixedWTInv.INFINITY_BOOSTER_CARD), SlotSemantic.BIOMETRIC_CARD);
 
         if(isClient()) {//FIXME set craftingMode and substitute serverside
