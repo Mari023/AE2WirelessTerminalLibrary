@@ -11,13 +11,16 @@ import de.mari_023.fabric.ae2wtlib.util.ContainerHelper;
 import de.mari_023.fabric.ae2wtlib.wct.CraftingTerminalHandler;
 import de.mari_023.fabric.ae2wtlib.wct.ItemWCT;
 import de.mari_023.fabric.ae2wtlib.wct.WCTContainer;
+import de.mari_023.fabric.ae2wtlib.wct.WCTGuiObject;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.ItemMagnetCard;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetHandler;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetMode;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetSettings;
 import de.mari_023.fabric.ae2wtlib.wit.ItemWIT;
+import de.mari_023.fabric.ae2wtlib.wit.WITGuiObject;
 import de.mari_023.fabric.ae2wtlib.wpt.ItemWPT;
 import de.mari_023.fabric.ae2wtlib.wpt.WPTContainer;
+import de.mari_023.fabric.ae2wtlib.wpt.WPTGuiObject;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
 import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
 import de.mari_023.fabric.ae2wtlib.wut.recipe.CombineSerializer;
@@ -60,9 +63,9 @@ public class ae2wtlib implements ModInitializer {
         Registry.register(Registry.ITEM, new Identifier("ae2wtlib", "wireless_interface_terminal"), INTERFACE_TERMINAL);
         Registry.register(Registry.ITEM, new Identifier("ae2wtlib", "wireless_universal_terminal"), UNIVERSAL_TERMINAL);
 
-        WUTHandler.addTerminal("crafting", CRAFTING_TERMINAL::tryOpen);
-        WUTHandler.addTerminal("pattern", PATTERN_TERMINAL::tryOpen);
-        WUTHandler.addTerminal("interface", INTERFACE_TERMINAL::tryOpen);
+        WUTHandler.addTerminal("crafting", CRAFTING_TERMINAL::tryOpen, WCTGuiObject::new);
+        WUTHandler.addTerminal("pattern", PATTERN_TERMINAL::tryOpen, WPTGuiObject::new);
+        WUTHandler.addTerminal("interface", INTERFACE_TERMINAL::tryOpen, WITGuiObject::new);
 
         Api.instance().registries().charger().addChargeRate(CRAFTING_TERMINAL, Config.getChargeRate());
         Api.instance().registries().charger().addChargeRate(PATTERN_TERMINAL, Config.getChargeRate());
