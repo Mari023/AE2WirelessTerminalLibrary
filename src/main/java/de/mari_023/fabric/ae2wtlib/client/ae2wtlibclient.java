@@ -57,9 +57,7 @@ public class ae2wtlibclient implements ClientModInitializer {
             buf.retain();
             client.execute(() -> {
                 if(client.player == null) return;
-                int slot = buf.readInt();
-                int count = buf.readInt();
-                client.player.inventory.getStack(slot).setCount(count);
+                client.player.inventory.getStack(buf.readInt()).setCount(buf.readInt());
                 buf.release();
             });
         });

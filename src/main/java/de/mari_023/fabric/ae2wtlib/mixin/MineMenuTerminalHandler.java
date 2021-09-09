@@ -20,11 +20,11 @@ public class MineMenuTerminalHandler {
 
     @Inject(method = "handleTypes(Lcom/google/gson/JsonObject;)V", at = @At(value = "INVOKE"))
     void handleTypes(JsonObject value, CallbackInfo ci) {
-        String type = value.get("type").getAsString();
-        if(!type.equals("ae2wtlib.open")) return;
-        PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeString(value.get("data").getAsString());
-        ClientPlayNetworking.send(new Identifier("ae2wtlib", "hotkey"), buf);
-        MinecraftClient.getInstance().openScreen(null);
+        if(value.get("type").getAsString().equals("ae2wtlib.open")) {
+            PacketByteBuf buf = PacketByteBufs.create();
+            buf.writeString(value.get("data").getAsString());
+            ClientPlayNetworking.send(new Identifier("ae2wtlib", "hotkey"), buf);
+            MinecraftClient.getInstance().openScreen(null); // TODO: WTF?
+        }
     }
 }

@@ -73,6 +73,6 @@ public abstract class Restock {
             buf.writeInt(playerEntity.inventory.method_7371((ItemStack) (Object) this));
             buf.writeInt(getCount());
             ServerPlayNetworking.send((ServerPlayerEntity) playerEntity, new Identifier("ae2wtlib", "update_restock"), buf);
-        } catch(NullPointerException ignored) {}
+        } catch(NullPointerException ignored) {} // TODO: REPLACE THIS TO NULL SAFE BLOCK!
     }
 }

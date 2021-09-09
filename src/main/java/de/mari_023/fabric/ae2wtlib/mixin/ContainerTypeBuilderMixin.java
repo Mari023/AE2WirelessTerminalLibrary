@@ -14,9 +14,12 @@ import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.lang.reflect.InvocationTargetException;
 
 @Mixin(value = ContainerTypeBuilder.class, remap = false)
 public class ContainerTypeBuilderMixin<I> {
@@ -26,7 +29,7 @@ public class ContainerTypeBuilderMixin<I> {
     private Class<I> hostInterface;
 
     @Inject(method = "getHostFromPlayerInventory", at = @At(value = "HEAD"), cancellable = true)
-    public void serverPacketData(PlayerEntity player, ContainerLocator locator, CallbackInfoReturnable<I> cir) {
+    public void serverPacketData(PlayerEntity player, ContainerLocator locator, CallbackInfoReturnable<I> cir) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         int slot = locator.getItemIndex();
         ItemStack it;
 
@@ -37,14 +40,18 @@ public class ContainerTypeBuilderMixin<I> {
         if(it.isEmpty()) return;
 
         String currentTerminal = WUTHandler.getCurrentTerminal(it);//get the current Terminal, we need to differentiate to return a different WxTgUIObject
-        //TODO do something generic, I don't want to hardcode everything
-        if(hostInterface.isAssignableFrom(WCTGuiObject.class) && currentTerminal.equals("crafting"))
-            cir.setReturnValue(hostInterface.cast(new WCTGuiObject((ItemWT) it.getItem(), it, player, locator.getItemIndex())));
+        I result = terminalCheck(WCTGuiObject.class, currentTerminal, "crafting", it, player, locator);
+        if (result == null)
+            result = terminalCheck(WPTGuiObject.class, currentTerminal, "pattern", it, player, locator);
+        if (result == null)
+            result = terminalCheck(WITGuiObject.class, currentTerminal, "interface", it, player, locator);
+        cir.setReturnValue(result);
+    }
 
-        if(hostInterface.isAssignableFrom(WPTGuiObject.class) && currentTerminal.equals("pattern"))
-            cir.setReturnValue(hostInterface.cast(new WPTGuiObject((ItemWT) it.getItem(), it, player, locator.getItemIndex())));
-
-        if(hostInterface.isAssignableFrom(WITGuiObject.class) && currentTerminal.equals("interface"))
-            cir.setReturnValue(hostInterface.cast(new WITGuiObject((ItemWT) it.getItem(), it, player, locator.getItemIndex())));
+    @Unique
+    public I terminalCheck(Class<?> clazz, String ct, String nt, ItemStack stack, PlayerEntity player, ContainerLocator locator) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        if (hostInterface.isAssignableFrom(clazz) && ct.equals(nt))
+            return (hostInterface.cast(clazz.getConstructor().newInstance(stack.getItem(), stack, player, locator.getItemIndex())));
+        return null;
     }
 }

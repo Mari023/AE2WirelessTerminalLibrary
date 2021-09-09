@@ -11,6 +11,7 @@ import net.minecraft.recipe.ShapedRecipe;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -24,7 +25,7 @@ abstract class RecipeTransferHandler<T extends ScreenHandler & IContainerCraftin
     }
 
     @Override
-    public AutoTransferHandler.Result handle(AutoTransferHandler.Context context) {
+    public AutoTransferHandler.@NotNull Result handle(AutoTransferHandler.Context context) {
         RecipeDisplay recipe = context.getRecipe();
 
         if(!containerClass.isInstance(context.getContainerScreen().getScreenHandler())) {
@@ -66,27 +67,22 @@ abstract class RecipeTransferHandler<T extends ScreenHandler & IContainerCraftin
                 // items.
                 DefaultedList<Ingredient> flatIngredients = DefaultedList.ofSize(9, Ingredient.EMPTY);
                 ItemStack output = null;
-                for(EntryStack entryStack : recipe.getResultingEntries().get(0)) {
-                    if(entryStack.getType() == EntryStack.Type.ITEM) {
+                for(EntryStack entryStack : recipe.getResultingEntries().get(0))
+                    if(entryStack.getType() == EntryStack.Type.ITEM)
                         output = entryStack.getItemStack();
-                    }
-                }
-                if(output == null || output.isEmpty()) {
+                if(output == null || output.isEmpty())
                     return AutoTransferHandler.Result.createFailed("jei.appliedenergistics2.no_output");
-                }
 
                 // Now map the actual ingredients into the output/input
                 for(int i = 0; i < recipe.getInputEntries().size(); i++) {
                     List<EntryStack> inputEntry = recipe.getInputEntries().get(i);
-                    if(inputEntry.isEmpty()) {
+                    if(inputEntry.isEmpty())
                         continue;
-                    }
                     EntryStack first = inputEntry.get(0);
                     if(i < flatIngredients.size()) {
                         ItemStack displayedIngredient = first.getItemStack();
-                        if(displayedIngredient != null) {
+                        if(displayedIngredient != null)
                             flatIngredients.set(i, Ingredient.ofStacks(Stream.of(displayedIngredient)));
-                        }
                     }
                 }
 

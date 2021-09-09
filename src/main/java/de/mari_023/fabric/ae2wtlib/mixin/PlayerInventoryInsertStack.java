@@ -29,14 +29,16 @@ public class PlayerInventoryInsertStack {
         if(stack.isEmpty()) return;
         CraftingTerminalHandler CTHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
         ItemStack terminal = CTHandler.getCraftingTerminal();
-        if(!ItemMagnetCard.isPickupME(terminal) && CTHandler.inRange()) return;
-        if(CTHandler.getItemStorageChannel() == null) return;
-        try {
-            IAEItemStack leftover = CTHandler.getItemStorageChannel().injectItems(AEItemStack.fromItemStack(stack), Actionable.MODULATE, new PlayerSource(player, (IActionHost) CTHandler.getSecurityStation()));
-            if(leftover == null || leftover.createItemStack().isEmpty()) {
-                stack.setCount(0);
-                cir.setReturnValue(true);
-            } else stack.setCount(leftover.createItemStack().getCount());
-        } catch(NullPointerException ignored) {}
+        if(ItemMagnetCard.isPickupME(terminal) && CTHandler.inRange()) {
+            if (CTHandler.getItemStorageChannel() == null) return;
+            try {
+                IAEItemStack leftover = CTHandler.getItemStorageChannel().injectItems(AEItemStack.fromItemStack(stack), Actionable.MODULATE, new PlayerSource(player, (IActionHost) CTHandler.getSecurityStation()));
+                if (leftover == null || leftover.createItemStack().isEmpty()) {
+                    stack.setCount(0);
+                    cir.setReturnValue(true);
+                } else stack.setCount(leftover.createItemStack().getCount());
+            } catch (NullPointerException ignored) { // TODO: REPLACE THIS TO NULL SAFE BLOCK!
+            }
+        }
     }
 }
