@@ -1,8 +1,10 @@
 package de.mari_023.fabric.ae2wtlib.wut;
 
+import appeng.api.features.IWirelessTermHandler;
 import appeng.container.ContainerLocator;
 import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
+import de.mari_023.fabric.ae2wtlib.terminal.WTGuiObject;
 import de.mari_023.fabric.ae2wtlib.wct.ItemWCT;
 import de.mari_023.fabric.ae2wtlib.wit.ItemWIT;
 import de.mari_023.fabric.ae2wtlib.wpt.ItemWPT;
@@ -89,21 +91,26 @@ public class WUTHandler {
             player.sendMessage(new LiteralText("This terminal does not contain any other Terminals"), false);
             return;
         }
-        containerOpener terminal = wirelessTerminals.get(currentTerminal);
+        containerOpener terminal = wirelessTerminals.get(currentTerminal).containerOpener;
         terminal.tryOpen(player, locator, is);
     }
 
-    private static final HashMap<String, containerOpener> wirelessTerminals = new HashMap<>();
+    public static final HashMap<String, WTDefinition> wirelessTerminals = new HashMap<>();
     public static final List<String> terminalNames = new ArrayList<>();
 
-    public static void addTerminal(String Name, containerOpener open) {
+    public static void addTerminal(String Name, containerOpener open, WTGUIObjectFactory wtguiObjectFactory) {
         if(terminalNames.contains(Name)) return;
-        wirelessTerminals.put(Name, open);
+        wirelessTerminals.put(Name, new WTDefinition(Name, open, wtguiObjectFactory));
         terminalNames.add(Name);
     }
 
     @FunctionalInterface
     public interface containerOpener {
         void tryOpen(PlayerEntity player, ContainerLocator locator, ItemStack stack);
+    }
+
+    @FunctionalInterface
+    public interface WTGUIObjectFactory {
+        WTGuiObject create(final IWirelessTermHandler wh, final ItemStack is, final PlayerEntity ep, int inventorySlot);
     }
 }
