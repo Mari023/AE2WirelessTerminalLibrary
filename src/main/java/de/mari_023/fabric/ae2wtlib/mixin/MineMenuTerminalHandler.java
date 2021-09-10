@@ -24,7 +24,7 @@ public class MineMenuTerminalHandler {
             PacketByteBuf buf = PacketByteBufs.create();
             buf.writeString(value.get("data").getAsString());
             ClientPlayNetworking.send(new Identifier("ae2wtlib", "hotkey"), buf);
-            MinecraftClient.getInstance().openScreen(null); // TODO: WTF?
+            MinecraftClient.getInstance().openScreen(null);
         }
     }
 }

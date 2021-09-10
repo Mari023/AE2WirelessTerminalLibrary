@@ -31,14 +31,11 @@ public class PlayerInventoryInsertStack {
         ItemStack terminal = CTHandler.getCraftingTerminal();
         if(ItemMagnetCard.isPickupME(terminal) && CTHandler.inRange()) {
             if (CTHandler.getItemStorageChannel() == null) return;
-            try {
-                IAEItemStack leftover = CTHandler.getItemStorageChannel().injectItems(AEItemStack.fromItemStack(stack), Actionable.MODULATE, new PlayerSource(player, (IActionHost) CTHandler.getSecurityStation()));
-                if (leftover == null || leftover.createItemStack().isEmpty()) {
-                    stack.setCount(0);
-                    cir.setReturnValue(true);
-                } else stack.setCount(leftover.createItemStack().getCount());
-            } catch (NullPointerException ignored) { // TODO: REPLACE THIS TO NULL SAFE BLOCK!
-            }
+            IAEItemStack leftover = CTHandler.getItemStorageChannel().injectItems(AEItemStack.fromItemStack(stack), Actionable.MODULATE, new PlayerSource(player, (IActionHost) CTHandler.getSecurityStation()));
+            if (leftover == null || leftover.createItemStack().isEmpty()) {
+                stack.setCount(0);
+                cir.setReturnValue(true);
+            } else stack.setCount(leftover.createItemStack().getCount());
         }
     }
 }
