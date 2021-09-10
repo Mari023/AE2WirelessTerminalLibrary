@@ -28,19 +28,14 @@ public class ContainerTypeBuilderMixin<I> {
         int slot = locator.getItemIndex();
         ItemStack it;
 
-        if(slot >= 100 && slot < 200 && Config.allowTrinket())
+        if (slot >= 100 && slot < 200 && Config.allowTrinket())
             it = TrinketsApi.getTrinketsInventory(player).getStack(slot - 100);
         else it = player.inventory.getStack(slot);
 
-        if(it.isEmpty()) return;
+        if (it.isEmpty()) return;
 
         String currentTerminal = WUTHandler.getCurrentTerminal(it);
-        if(WUTHandler.terminalNames.contains(currentTerminal)) cir.setReturnValue(getTerminal(currentTerminal, it, player, locator));
-    }
-
-    @Unique
-    private I getTerminal(String terminal, ItemStack stack, PlayerEntity player, ContainerLocator locator) {
-        WUTHandler.WTGUIObjectFactory initializer = WUTHandler.wirelessTerminals.get(terminal).wtguiObjectFactory;
-        return (hostInterface.cast(initializer.create((IWirelessTermHandler) stack.getItem(), stack, player, locator.getItemIndex())));
+        if (WUTHandler.terminalNames.contains(currentTerminal))
+            cir.setReturnValue(hostInterface.cast(WUTHandler.wirelessTerminals.get(currentTerminal).wtguiObjectFactory.create((IWirelessTermHandler) it.getItem(), it, player, locator.getItemIndex())));
     }
 }
