@@ -8,7 +8,8 @@ import org.jetbrains.annotations.NotNull;
 public class AppEngTrinketSlot extends AppEngSlot {
 
     public boolean keepVisible = false;
-    public String group, slot;
+    public final String group;
+    public final String slot;
     public final boolean locked;
 
     public AppEngTrinketSlot(FixedTrinketInv inv, int invSlot, String group, String slot, boolean locked) {

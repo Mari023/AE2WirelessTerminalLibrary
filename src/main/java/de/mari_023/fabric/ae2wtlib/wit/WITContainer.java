@@ -25,6 +25,7 @@ import appeng.util.helpers.ItemHandlerUtil;
 import appeng.util.inv.AdaptorFixedInv;
 import appeng.util.inv.WrapperCursorItemHandler;
 import de.mari_023.fabric.ae2wtlib.Config;
+import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import de.mari_023.fabric.ae2wtlib.terminal.FixedWTInv;
 import de.mari_023.fabric.ae2wtlib.terminal.IWTInvHolder;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
@@ -45,7 +46,7 @@ import java.util.Map;
 
 public class WITContainer extends AEBaseContainer implements IWTInvHolder {
 
-    public static ScreenHandlerType<WITContainer> TYPE = ContainerTypeBuilder.create(WITContainer::new, WITGuiObject.class).requirePermission(SecurityPermissions.BUILD).build("wireless_interface_terminal");
+    public static final ScreenHandlerType<WITContainer> TYPE = ContainerTypeBuilder.create(WITContainer::new, WITGuiObject.class).requirePermission(SecurityPermissions.BUILD).build("wireless_interface_terminal");
 
     private final WITGuiObject witGUIObject;
     private static long autoBase = Long.MIN_VALUE;
@@ -76,7 +77,7 @@ public class WITContainer extends AEBaseContainer implements IWTInvHolder {
         if(isClient()) return;
         super.sendContentUpdates();
 
-        if(!witGUIObject.rangeCheck()) {
+        if(witGUIObject.notInRange()) {
             if(isValidContainer()) {
                 getPlayerInventory().player.sendSystemMessage(PlayerMessages.OutOfRange.get(), Util.NIL_UUID);
                 ((ServerPlayerEntity) getPlayerInventory().player).closeHandledScreen();
@@ -160,7 +161,7 @@ public class WITContainer extends AEBaseContainer implements IWTInvHolder {
         if(data.isEmpty()) return;
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeCompoundTag(data);
-        ServerPlayNetworking.send((ServerPlayerEntity) getPlayerInventory().player, new Identifier("ae2wtlib", "interface_terminal"), buf);
+        ServerPlayNetworking.send((ServerPlayerEntity) getPlayerInventory().player, new Identifier(ae2wtlib.MOD_NAME, "interface_terminal"), buf);
         data = new CompoundTag();
     }
 

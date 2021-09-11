@@ -60,7 +60,7 @@ import java.util.List;
 
 public class WCTContainer extends ItemTerminalContainer implements IAEAppEngInventory, IContainerCraftingPacket, IWTInvHolder {
 
-    public static ScreenHandlerType<WCTContainer> TYPE = ContainerTypeBuilder.create(WCTContainer::new, WCTGuiObject.class).requirePermission(SecurityPermissions.CRAFT).build("wireless_crafting_terminal");
+    public static final ScreenHandlerType<WCTContainer> TYPE = ContainerTypeBuilder.create(WCTContainer::new, WCTGuiObject.class).requirePermission(SecurityPermissions.CRAFT).build("wireless_crafting_terminal");
 
     private final AppEngInternalInventory crafting;
     private final CraftingMatrixSlot[] craftingSlots = new CraftingMatrixSlot[9];
@@ -155,7 +155,7 @@ public class WCTContainer extends ItemTerminalContainer implements IAEAppEngInve
         if(isClient()) return;
         super.sendContentUpdates();
 
-        if(!wctGUIObject.rangeCheck()) {
+        if(wctGUIObject.notInRange()) {
             if(isValidContainer()) {
                 getPlayerInventory().player.sendSystemMessage(PlayerMessages.OutOfRange.get(), Util.NIL_UUID);
                 ((ServerPlayerEntity) getPlayerInventory().player).closeHandledScreen();

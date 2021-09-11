@@ -4,6 +4,7 @@ import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IItemList;
 import appeng.util.item.AEItemStack;
 import de.mari_023.fabric.ae2wtlib.Config;
+import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.wct.CraftingTerminalHandler;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -53,7 +54,7 @@ public class MagnetHandler {
             PacketByteBuf buf = PacketByteBufs.create();
             for(Map.Entry<Item, Long> entry : items.entrySet())
                 AEItemStack.fromItemStack(new ItemStack(entry.getKey())).setStackSize(entry.getValue()).writeToPacket(buf);
-            ServerPlayNetworking.send(player, new Identifier("ae2wtlib", "restock_amounts"), buf);
+            ServerPlayNetworking.send(player, new Identifier(ae2wtlib.MOD_NAME, "restock_amounts"), buf);
         } catch(NullPointerException ignored) {}
     }
 

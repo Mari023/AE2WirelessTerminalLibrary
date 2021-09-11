@@ -28,6 +28,7 @@ import appeng.tile.networking.WirelessTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerType;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class WTGuiObject implements IGuiItemObject, IEnergySource, IActionHost, IInventorySlotAware {
 
@@ -73,14 +74,14 @@ public abstract class WTGuiObject implements IGuiItemObject, IEnergySource, IAct
 
     public abstract ItemStack getIcon();
 
-    public boolean rangeCheck() {
+    public boolean notInRange() {
         boolean hasBoosterCard = ((IInfinityBoosterCardHolder) effectiveItem.getItem()).hasBoosterCard(effectiveItem);
         sqRange = myRange = Double.MAX_VALUE;
 
         if(targetGrid != null && itemStorage != null) {
             if(myWap != null) {
-                if(myWap.getGrid() == targetGrid) return testWap(myWap) || hasBoosterCard;
-                return hasBoosterCard;
+                if(myWap.getGrid() == targetGrid) return !testWap(myWap) && !hasBoosterCard;
+                return !hasBoosterCard;
             } else isOutOfRange = true;
 
             for(final IGridNode n : targetGrid.getMachines(WirelessTileEntity.class)) {
@@ -88,9 +89,9 @@ public abstract class WTGuiObject implements IGuiItemObject, IEnergySource, IAct
                 if(testWap(wap)) myWap = wap;
             }
 
-            return myWap != null || hasBoosterCard;
+            return myWap == null && !hasBoosterCard;
         }
-        return hasBoosterCard;
+        return !hasBoosterCard;
     }
 
     public double getRange() {
@@ -126,10 +127,6 @@ public abstract class WTGuiObject implements IGuiItemObject, IEnergySource, IAct
         return false;
     }
 
-    public IStorageGrid getIStorageGrid() {
-        return sg;
-    }
-
     @Override
     public IGridNode getActionableNode() {
         return gridNode;
@@ -141,7 +138,7 @@ public abstract class WTGuiObject implements IGuiItemObject, IEnergySource, IAct
     }
 
     @Override
-    public double extractAEPower(final double amt, final Actionable mode, final PowerMultiplier usePowerMultiplier) {
+    public double extractAEPower(final double amt, final @NotNull Actionable mode, final @NotNull PowerMultiplier usePowerMultiplier) {
         if(wth != null && effectiveItem != null) {
             if(mode == Actionable.SIMULATE) return wth.hasPower(myPlayer, amt, effectiveItem) ? amt : 0;
             return wth.usePower(myPlayer, amt, effectiveItem) ? amt : 0;

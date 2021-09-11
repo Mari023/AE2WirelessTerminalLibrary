@@ -2,6 +2,7 @@ package de.mari_023.fabric.ae2wtlib.client;
 
 import appeng.util.item.AEItemStack;
 import de.mari_023.fabric.ae2wtlib.Config;
+import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import de.mari_023.fabric.ae2wtlib.wct.CraftingTerminalHandler;
 import de.mari_023.fabric.ae2wtlib.wct.WCTContainer;
 import de.mari_023.fabric.ae2wtlib.wct.WCTScreen;
@@ -39,7 +40,7 @@ public class ae2wtlibclient implements ClientModInitializer {
         ScreenRegistry.register(WPTContainer.TYPE, WPTScreen::new);
         ScreenRegistry.register(WITContainer.TYPE, WITScreen::new);
 
-        ClientPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "interface_terminal"), (client, handler, buf, responseSender) -> {
+        ClientPlayNetworking.registerGlobalReceiver(new Identifier(ae2wtlib.MOD_NAME, "interface_terminal"), (client, handler, buf, responseSender) -> {
             buf.retain();
             client.execute(() -> {
                 if(client.player == null) return;
@@ -53,7 +54,7 @@ public class ae2wtlibclient implements ClientModInitializer {
                 buf.release();
             });
         });
-        ClientPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "update_restock"), (client, handler, buf, responseSender) -> {
+        ClientPlayNetworking.registerGlobalReceiver(new Identifier(ae2wtlib.MOD_NAME, "update_restock"), (client, handler, buf, responseSender) -> {
             buf.retain();
             client.execute(() -> {
                 if(client.player == null) return;
@@ -61,7 +62,7 @@ public class ae2wtlibclient implements ClientModInitializer {
                 buf.release();
             });
         });
-        ClientPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "update_wut"), (client, handler, buf, responseSender) -> {
+        ClientPlayNetworking.registerGlobalReceiver(new Identifier(ae2wtlib.MOD_NAME, "update_wut"), (client, handler, buf, responseSender) -> {
             buf.retain();
             client.execute(() -> {
                 if(client.player == null) return;
@@ -76,7 +77,7 @@ public class ae2wtlibclient implements ClientModInitializer {
                 CraftingTerminalHandler.getCraftingTerminalHandler(client.player).invalidateCache();
             });
         });
-        ClientPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "restock_amounts"), (client, handler, buf, responseSender) -> {
+        ClientPlayNetworking.registerGlobalReceiver(new Identifier(ae2wtlib.MOD_NAME, "restock_amounts"), (client, handler, buf, responseSender) -> {
             buf.retain();
             client.execute(() -> {
                 if(client.player == null) return;
@@ -110,7 +111,7 @@ public class ae2wtlibclient implements ClientModInitializer {
         while(binding.wasPressed()) {
             PacketByteBuf buf = PacketByteBufs.create();
             buf.writeString(type);
-            ClientPlayNetworking.send(new Identifier("ae2wtlib", "hotkey"), buf);
+            ClientPlayNetworking.send(new Identifier(ae2wtlib.MOD_NAME, "hotkey"), buf);
         }
     }
 }

@@ -42,8 +42,9 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public class ae2wtlib implements ModInitializer {
+    public static final String MOD_NAME = "ae2wtlib";
 
-    public static final ItemGroup ITEM_GROUP = FabricItemGroupBuilder.build(new Identifier("ae2wtlib", "general"), () -> new ItemStack(ae2wtlib.CRAFTING_TERMINAL));
+    public static final ItemGroup ITEM_GROUP = FabricItemGroupBuilder.build(new Identifier(MOD_NAME, "general"), () -> new ItemStack(ae2wtlib.CRAFTING_TERMINAL));
 
     public static final ItemWCT CRAFTING_TERMINAL = new ItemWCT();
     public static final ItemWPT PATTERN_TERMINAL = new ItemWPT();
@@ -56,12 +57,12 @@ public class ae2wtlib implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        Registry.register(Registry.ITEM, new Identifier("ae2wtlib", "infinity_booster_card"), INFINITY_BOOSTER);
-        Registry.register(Registry.ITEM, new Identifier("ae2wtlib", "magnet_card"), MAGNET_CARD);
-        Registry.register(Registry.ITEM, new Identifier("ae2wtlib", "wireless_crafting_terminal"), CRAFTING_TERMINAL);
-        Registry.register(Registry.ITEM, new Identifier("ae2wtlib", "wireless_pattern_terminal"), PATTERN_TERMINAL);
-        Registry.register(Registry.ITEM, new Identifier("ae2wtlib", "wireless_interface_terminal"), INTERFACE_TERMINAL);
-        Registry.register(Registry.ITEM, new Identifier("ae2wtlib", "wireless_universal_terminal"), UNIVERSAL_TERMINAL);
+        Registry.register(Registry.ITEM, new Identifier(MOD_NAME, "infinity_booster_card"), INFINITY_BOOSTER);
+        Registry.register(Registry.ITEM, new Identifier(MOD_NAME, "magnet_card"), MAGNET_CARD);
+        Registry.register(Registry.ITEM, new Identifier(MOD_NAME, "wireless_crafting_terminal"), CRAFTING_TERMINAL);
+        Registry.register(Registry.ITEM, new Identifier(MOD_NAME, "wireless_pattern_terminal"), PATTERN_TERMINAL);
+        Registry.register(Registry.ITEM, new Identifier(MOD_NAME, "wireless_interface_terminal"), INTERFACE_TERMINAL);
+        Registry.register(Registry.ITEM, new Identifier(MOD_NAME, "wireless_universal_terminal"), UNIVERSAL_TERMINAL);
 
         WUTHandler.addTerminal("crafting", CRAFTING_TERMINAL::tryOpen, WCTGuiObject::new);
         WUTHandler.addTerminal("pattern", PATTERN_TERMINAL::tryOpen, WPTGuiObject::new);
@@ -75,7 +76,7 @@ public class ae2wtlib implements ModInitializer {
         Registry.register(Registry.RECIPE_SERIALIZER, CombineSerializer.ID, CombineSerializer.INSTANCE);
         Registry.register(Registry.RECIPE_SERIALIZER, UpgradeSerializer.ID, UpgradeSerializer.INSTANCE);
 
-        ServerPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "general"), (server, player, handler, buf, sender) -> {
+        ServerPlayNetworking.registerGlobalReceiver(new Identifier(MOD_NAME, "general"), (server, player, handler, buf, sender) -> {
             buf.retain();
             server.execute(() -> {
                 String Name = buf.readString(32767);
@@ -106,7 +107,7 @@ public class ae2wtlib implements ModInitializer {
                 buf.release();
             });
         });
-        ServerPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "patternslotpacket"), (server, player, handler, buf, sender) -> {
+        ServerPlayNetworking.registerGlobalReceiver(new Identifier(MOD_NAME, "patternslotpacket"), (server, player, handler, buf, sender) -> {
             buf.retain();
             server.execute(() -> {
                 if(player.currentScreenHandler instanceof WPTContainer)
@@ -114,14 +115,14 @@ public class ae2wtlib implements ModInitializer {
                 buf.release();
             });
         });
-        ServerPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "rei_recipe"), (server, player, handler, buf, sender) -> {
+        ServerPlayNetworking.registerGlobalReceiver(new Identifier(MOD_NAME, "rei_recipe"), (server, player, handler, buf, sender) -> {
             buf.retain();
             server.execute(() -> {
                 new REIRecipePacket(buf, player);
                 buf.release();
             });
         });
-        ServerPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "cycle_terminal"), (server, player, handler, buf, sender) -> server.execute(() -> {
+        ServerPlayNetworking.registerGlobalReceiver(new Identifier(MOD_NAME, "cycle_terminal"), (server, player, handler, buf, sender) -> server.execute(() -> {
             final ScreenHandler screenHandler = player.currentScreenHandler;
 
             if(!(screenHandler instanceof AEBaseContainer)) return;
@@ -138,7 +139,7 @@ public class ae2wtlib implements ModInitializer {
 
             WUTHandler.open(player, locator);
         }));
-        ServerPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "hotkey"), (server, player, handler, buf, sender) -> {
+        ServerPlayNetworking.registerGlobalReceiver(new Identifier(MOD_NAME, "hotkey"), (server, player, handler, buf, sender) -> {
             buf.retain();
             server.execute(() -> {
                 String terminalName = buf.readString(32767);

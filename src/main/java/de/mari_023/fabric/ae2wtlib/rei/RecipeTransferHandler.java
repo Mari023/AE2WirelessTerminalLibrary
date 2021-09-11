@@ -28,9 +28,8 @@ abstract class RecipeTransferHandler<T extends ScreenHandler & IContainerCraftin
     public AutoTransferHandler.@NotNull Result handle(AutoTransferHandler.Context context) {
         RecipeDisplay recipe = context.getRecipe();
 
-        if(!containerClass.isInstance(context.getContainerScreen().getScreenHandler())) {
+        if(!containerClass.isInstance(context.getContainerScreen().getScreenHandler()))
             return AutoTransferHandler.Result.createNotApplicable();
-        }
 
         T container = containerClass.cast(context.getContainerScreen().getScreenHandler());
 
@@ -43,23 +42,20 @@ abstract class RecipeTransferHandler<T extends ScreenHandler & IContainerCraftin
 
         if(recipe instanceof TransferRecipeDisplay) {
             TransferRecipeDisplay trd = (TransferRecipeDisplay) recipe;
-            if(trd.getWidth() > 3 || trd.getHeight() > 3) {
+            if(trd.getWidth() > 3 || trd.getHeight() > 3)
                 return AutoTransferHandler.Result.createFailed("jei.appliedenergistics2.recipe_too_large");
-            }
-        } else if(recipe.getInputEntries().size() > 9) {
+
+        } else if(recipe.getInputEntries().size() > 9)
             return AutoTransferHandler.Result.createFailed("jei.appliedenergistics2.recipe_too_large");
-        }
 
-        final AutoTransferHandler.Result error = doTransferRecipe(container, recipe, context);
 
-        if(error != null) {
-            return error;
-        }
+        final AutoTransferHandler.Result error = doTransferRecipe(container, recipe);
+
+        if(error != null) return error;
 
         if(context.isActuallyCrafting()) {
-            if(canSendReference) {
-                new REIRecipePacket(recipeId, isCrafting()).send();
-            } else {
+            if(canSendReference) new REIRecipePacket(recipeId, isCrafting()).send();
+            else {
                 // To avoid earlier problems of too large packets being sent that crashed the
                 // client,
                 // as a fallback when the recipe ID could not be resolved, we'll just send the
@@ -76,8 +72,7 @@ abstract class RecipeTransferHandler<T extends ScreenHandler & IContainerCraftin
                 // Now map the actual ingredients into the output/input
                 for(int i = 0; i < recipe.getInputEntries().size(); i++) {
                     List<EntryStack> inputEntry = recipe.getInputEntries().get(i);
-                    if(inputEntry.isEmpty())
-                        continue;
+                    if(inputEntry.isEmpty()) continue;
                     EntryStack first = inputEntry.get(0);
                     if(i < flatIngredients.size()) {
                         ItemStack displayedIngredient = first.getItemStack();
@@ -93,7 +88,7 @@ abstract class RecipeTransferHandler<T extends ScreenHandler & IContainerCraftin
         return Result.createSuccessful().blocksFurtherHandling();
     }
 
-    protected abstract AutoTransferHandler.Result doTransferRecipe(T container, RecipeDisplay recipe, AutoTransferHandler.Context context);
+    protected abstract AutoTransferHandler.Result doTransferRecipe(T container, RecipeDisplay recipe);
 
     protected abstract boolean isCrafting();
 }

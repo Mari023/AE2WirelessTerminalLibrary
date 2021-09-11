@@ -33,6 +33,7 @@ import appeng.util.inv.InvOperation;
 import appeng.util.inv.WrapperCursorItemHandler;
 import appeng.util.item.AEItemStack;
 import de.mari_023.fabric.ae2wtlib.Config;
+import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import de.mari_023.fabric.ae2wtlib.mixin.ScreenHandlerMixin;
 import de.mari_023.fabric.ae2wtlib.mixin.SlotMixin;
 import de.mari_023.fabric.ae2wtlib.terminal.FixedWTInv;
@@ -63,7 +64,7 @@ import java.util.List;
 
 public class WPTContainer extends ItemTerminalContainer implements IAEAppEngInventory, IOptionalSlotHost, IContainerCraftingPacket, IWTInvHolder {
 
-    public static ScreenHandlerType<WPTContainer> TYPE = ContainerTypeBuilder.create(WPTContainer::new, WPTGuiObject.class).requirePermission(SecurityPermissions.CRAFT).build("wireless_pattern_terminal");
+    public static final ScreenHandlerType<WPTContainer> TYPE = ContainerTypeBuilder.create(WPTContainer::new, WPTGuiObject.class).requirePermission(SecurityPermissions.CRAFT).build("wireless_pattern_terminal");
 
     private final FixedItemInv craftingGridInv;
     private final FakeCraftingMatrixSlot[] craftingGridSlots = new FakeCraftingMatrixSlot[9];
@@ -124,13 +125,13 @@ public class WPTContainer extends ItemTerminalContainer implements IAEAppEngInve
             if(craftingMode) i = 1;
             else i = 0;
             buf.writeByte(i);
-            ClientPlayNetworking.send(new Identifier("ae2wtlib", "general"), buf);
+            ClientPlayNetworking.send(new Identifier(ae2wtlib.MOD_NAME, "general"), buf);
             buf = PacketByteBufs.create();
             buf.writeString("PatternTerminal.Substitute");
             if(substitute) i = 1;
             else i = 0;
             buf.writeByte(i);
-            ClientPlayNetworking.send(new Identifier("ae2wtlib", "general"), buf);
+            ClientPlayNetworking.send(new Identifier(ae2wtlib.MOD_NAME, "general"), buf);
         }
     }
 
@@ -141,7 +142,7 @@ public class WPTContainer extends ItemTerminalContainer implements IAEAppEngInve
         if(isClient()) return;
         super.sendContentUpdates();
 
-        if(!wptGUIObject.rangeCheck()) {
+        if(wptGUIObject.notInRange()) {
             if(isValidContainer()) {
                 getPlayerInventory().player.sendSystemMessage(PlayerMessages.OutOfRange.get(), Util.NIL_UUID);
                 ((ServerPlayerEntity) getPlayerInventory().player).closeHandledScreen();

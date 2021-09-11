@@ -3,6 +3,7 @@ package de.mari_023.fabric.ae2wtlib.wut;
 import appeng.api.features.IWirelessTermHandler;
 import appeng.container.ContainerLocator;
 import de.mari_023.fabric.ae2wtlib.Config;
+import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.terminal.WTGuiObject;
 import de.mari_023.fabric.ae2wtlib.wct.ItemWCT;
@@ -75,7 +76,7 @@ public class WUTHandler {
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeInt(slot);
         buf.writeCompoundTag(tag);
-        ServerPlayNetworking.send(playerEntity, new Identifier("ae2wtlib", "update_wut"), buf);
+        ServerPlayNetworking.send(playerEntity, new Identifier(ae2wtlib.MOD_NAME, "update_wut"), buf);
     }
 
     public static void open(final PlayerEntity player, final ContainerLocator locator) {
@@ -100,7 +101,7 @@ public class WUTHandler {
 
     public static void addTerminal(String Name, containerOpener open, WTGUIObjectFactory wtguiObjectFactory) {
         if(terminalNames.contains(Name)) return;
-        wirelessTerminals.put(Name, new WTDefinition(Name, open, wtguiObjectFactory));
+        wirelessTerminals.put(Name, new WTDefinition(open, wtguiObjectFactory));
         terminalNames.add(Name);
     }
 

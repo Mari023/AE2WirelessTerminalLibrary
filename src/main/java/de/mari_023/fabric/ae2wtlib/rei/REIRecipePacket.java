@@ -24,6 +24,7 @@ import appeng.util.item.AEItemStack;
 import appeng.util.prioritylist.IPartitionList;
 import com.google.common.base.Preconditions;
 import com.mojang.datafixers.util.Pair;
+import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import de.mari_023.fabric.ae2wtlib.wpt.WPTContainer;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -86,11 +87,11 @@ public class REIRecipePacket {
     }
 
     public void send() {
-        ClientPlayNetworking.send(new Identifier("ae2wtlib", "rei_recipe"), data);
+        ClientPlayNetworking.send(new Identifier(ae2wtlib.MOD_NAME, "rei_recipe"), data);
     }
 
     /**
-     * Incomming Packets
+     * Incoming Packets
      *
      * @param buf    the packets buffer, needs to be retained and released
      * @param player the player who sent the package
@@ -291,7 +292,7 @@ public class REIRecipePacket {
     }
 
     private void handleProcessing(ScreenHandler con, IContainerCraftingPacket cct, Recipe<?> recipe) {
-        if (con instanceof WPTContainer && !((WPTContainer) con).craftingMode) {
+        if(con instanceof WPTContainer && !((WPTContainer) con).craftingMode) {
             final FixedItemInv output = cct.getInventoryByName("output");
             ItemHandlerUtil.setStackInSlot(output, 0, recipe.getOutput());
             ItemHandlerUtil.setStackInSlot(output, 1, ItemStack.EMPTY);

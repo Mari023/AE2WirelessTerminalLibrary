@@ -11,7 +11,6 @@ import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -28,14 +27,14 @@ public class ContainerTypeBuilderMixin<I> {
         int slot = locator.getItemIndex();
         ItemStack it;
 
-        if (slot >= 100 && slot < 200 && Config.allowTrinket())
+        if(slot >= 100 && slot < 200 && Config.allowTrinket())
             it = TrinketsApi.getTrinketsInventory(player).getStack(slot - 100);
         else it = player.inventory.getStack(slot);
 
-        if (it.isEmpty()) return;
+        if(it.isEmpty()) return;
 
         String currentTerminal = WUTHandler.getCurrentTerminal(it);
-        if (WUTHandler.terminalNames.contains(currentTerminal))
+        if(WUTHandler.terminalNames.contains(currentTerminal))
             cir.setReturnValue(hostInterface.cast(WUTHandler.wirelessTerminals.get(currentTerminal).wtguiObjectFactory.create((IWirelessTermHandler) it.getItem(), it, player, locator.getItemIndex())));
     }
 }

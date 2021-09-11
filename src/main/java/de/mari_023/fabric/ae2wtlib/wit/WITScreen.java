@@ -101,7 +101,7 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
     private static final Rect2i ROW_TEXT_TOP_BBOX = new Rect2i(0, 17, GUI_WIDTH, ROW_HEIGHT);
     private static final Rect2i ROW_TEXT_MIDDLE_BBOX = new Rect2i(0, 53, GUI_WIDTH, ROW_HEIGHT);
     private static final Rect2i ROW_TEXT_BOTTOM_BBOX = new Rect2i(0, 89, GUI_WIDTH, ROW_HEIGHT);
-    // Background for a inventory row in the scroll-box.
+    // Background for an inventory row in the scroll-box.
     // Spans across the whole texture including the right and left borders including the scrollbar.
     // Covers separate textures for the top, middle and bottoms rows for more customization.
     private static final Rect2i ROW_INVENTORY_TOP_BBOX = new Rect2i(0, 35, GUI_WIDTH, ROW_HEIGHT);
@@ -425,7 +425,7 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
 
         if(encodedValue == null) return false;
 
-        // Potential later use to filter by input
+        // Potential later used to filter by input
         // ListNBT inTag = encodedValue.getTagList( "in", 10 );
         final ListTag outTag = encodedValue.getList("out", 10);
 
@@ -454,7 +454,8 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
 
         final Set<Object> cache = cachedSearches.get(searchTerm);
 
-        if(cache.isEmpty() && searchTerm.length() > 1) cache.addAll(getCacheForSearchTerm(searchTerm.substring(0, searchTerm.length() - 1)));
+        if(cache.isEmpty() && searchTerm.length() > 1)
+            cache.addAll(getCacheForSearchTerm(searchTerm.substring(0, searchTerm.length() - 1)));
 
         return cache;
     }
