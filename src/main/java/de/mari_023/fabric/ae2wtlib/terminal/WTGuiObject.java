@@ -3,16 +3,15 @@ package de.mari_023.fabric.ae2wtlib.terminal;
 import appeng.api.config.AccessRestriction;
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
-import appeng.api.features.ILocatable;
-import appeng.api.features.IWirelessTermHandler;
+import appeng.api.features.IWirelessTerminalHandler;
+import appeng.api.implementations.blockentities.IWirelessAccessPoint;
 import appeng.api.implementations.guiobjects.IGuiItemObject;
-import appeng.api.implementations.tiles.IWirelessAccessPoint;
 import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.energy.IEnergySource;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.security.IActionSource;
-import appeng.api.networking.storage.IStorageGrid;
+import appeng.api.networking.storage.IStorageService;
 import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.IMEMonitorHandlerReceiver;
 import appeng.api.storage.IStorageChannel;
@@ -20,11 +19,11 @@ import appeng.api.storage.channels.IItemStorageChannel;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IAEStack;
 import appeng.api.storage.data.IItemList;
-import appeng.api.util.DimensionalCoord;
+import appeng.api.util.DimensionalBlockPos;
 import appeng.api.util.IConfigManager;
-import appeng.container.interfaces.IInventorySlotAware;
+import appeng.blockentity.networking.WirelessBlockEntity;
 import appeng.core.Api;
-import appeng.tile.networking.WirelessTileEntity;
+import appeng.menu.interfaces.IInventorySlotAware;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerType;
@@ -35,17 +34,17 @@ public abstract class WTGuiObject implements IGuiItemObject, IEnergySource, IAct
     private final FixedViewCellInventory fixedViewCellInventory;
     private final ItemStack effectiveItem;
     private IGrid targetGrid;
-    private final IWirelessTermHandler wth;
+    private final IWirelessTerminalHandler wth;
     private final PlayerEntity myPlayer;
     private IMEMonitor<IAEItemStack> itemStorage;
     private IWirelessAccessPoint myWap;
     private double sqRange = Double.MAX_VALUE;
     private double myRange = Double.MAX_VALUE;
-    private IStorageGrid sg;
+    private IStorageService sg;
     private final int inventorySlot;
     private final IGridNode gridNode;
 
-    public WTGuiObject(final IWirelessTermHandler wh, final ItemStack is, final PlayerEntity ep, int inventorySlot) {
+    public WTGuiObject(final IWirelessTerminalHandler wh, final ItemStack is, final PlayerEntity ep, int inventorySlot) {
         String encryptionKey = wh.getEncryptionKey(is);
         effectiveItem = is;
         fixedViewCellInventory = new FixedViewCellInventory(is);
@@ -84,7 +83,7 @@ public abstract class WTGuiObject implements IGuiItemObject, IEnergySource, IAct
                 return !hasBoosterCard;
             } else isOutOfRange = true;
 
-            for(final IGridNode n : targetGrid.getMachines(WirelessTileEntity.class)) {
+            for(final IGridNode n : targetGrid.getMachines(WirelessBlockEntity.class)) {
                 final IWirelessAccessPoint wap = (IWirelessAccessPoint) n.getMachine();
                 if(testWap(wap)) myWap = wap;
             }
@@ -108,7 +107,7 @@ public abstract class WTGuiObject implements IGuiItemObject, IEnergySource, IAct
         double rangeLimit = wap.getRange();
         rangeLimit *= rangeLimit;
 
-        final DimensionalCoord dc = wap.getLocation();
+        final DimensionalBlockPos dc = wap.getLocation();
 
         if(dc.getWorld() == myPlayer.world) {
             final double offX = dc.x - myPlayer.getX();

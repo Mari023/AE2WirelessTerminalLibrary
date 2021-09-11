@@ -1,7 +1,7 @@
 package de.mari_023.fabric.ae2wtlib.wut;
 
-import appeng.container.ContainerLocator;
 import appeng.core.AEConfig;
+import appeng.menu.MenuLocator;
 import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import de.mari_023.fabric.ae2wtlib.client.MineMenuIntegration;
@@ -41,7 +41,7 @@ public class ItemWUT extends ItemWT implements IInfinityBoosterCardHolder {
     }
 
     @Override
-    public void open(final PlayerEntity player, final ContainerLocator locator) {
+    public void open(final PlayerEntity player, final MenuLocator locator) {
         WUTHandler.open(player, locator);
     }
 

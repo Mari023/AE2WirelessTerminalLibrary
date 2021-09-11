@@ -1,8 +1,8 @@
 package de.mari_023.fabric.ae2wtlib.wit;
 
-import appeng.container.ContainerLocator;
-import appeng.container.ContainerOpener;
 import appeng.core.AEConfig;
+import appeng.menu.MenuLocator;
+import appeng.menu.MenuOpener;
 import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import de.mari_023.fabric.ae2wtlib.terminal.IInfinityBoosterCardHolder;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
@@ -16,7 +16,7 @@ public class ItemWIT extends ItemWT implements IInfinityBoosterCardHolder {
     }
 
     @Override
-    public void open(final PlayerEntity player, final ContainerLocator locator) {
-        ContainerOpener.openContainer(WITContainer.TYPE, player, locator);
+    public void open(final PlayerEntity player, final MenuLocator locator) {
+        MenuOpener.open(WITContainer.TYPE, player, locator);
     }
 }

@@ -1,13 +1,13 @@
 package de.mari_023.fabric.ae2wtlib.wpt;
 
 import alexiil.mc.lib.attributes.item.FixedItemInv;
-import appeng.api.features.IWirelessTermHandler;
+import appeng.api.features.IWirelessTerminalHandler;
 import appeng.api.implementations.guiobjects.IPortableCell;
-import appeng.api.implementations.tiles.IViewCellStorage;
+import appeng.api.implementations.blockentities.IViewCellStorage;
 import appeng.api.networking.crafting.ICraftingPatternDetails;
 import appeng.api.storage.data.IAEItemStack;
+import appeng.blockentity.inventory.AppEngInternalInventory;
 import appeng.core.Api;
-import appeng.tile.inventory.AppEngInternalInventory;
 import appeng.util.inv.IAEAppEngInventory;
 import appeng.util.inv.InvOperation;
 import de.mari_023.fabric.ae2wtlib.ae2wtlib;
@@ -27,7 +27,7 @@ public class WPTGuiObject extends WTGuiObject implements IPortableCell, IAEAppEn
     private final AppEngInternalInventory pattern;
     private final boolean isRemote;
 
-    public WPTGuiObject(final IWirelessTermHandler wh, final ItemStack is, final PlayerEntity ep, int inventorySlot) {
+    public WPTGuiObject(final IWirelessTerminalHandler wh, final ItemStack is, final PlayerEntity ep, int inventorySlot) {
         super(wh, is, ep, inventorySlot);
         isRemote = ep instanceof ServerPlayerEntity;
         crafting = new ae2wtlibInternalInventory(this, 9, "pattern_crafting", is);

@@ -1,13 +1,13 @@
 package de.mari_023.fabric.ae2wtlib;
 
+import appeng.api.features.ChargerRegistry;
 import appeng.container.AEBaseContainer;
-import appeng.container.ContainerLocator;
 import appeng.core.Api;
 import appeng.core.sync.packets.PatternSlotPacket;
+import appeng.menu.MenuLocator;
 import de.mari_023.fabric.ae2wtlib.rei.REIRecipePacket;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemInfinityBooster;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
-import de.mari_023.fabric.ae2wtlib.util.ContainerHelper;
 import de.mari_023.fabric.ae2wtlib.wct.CraftingTerminalHandler;
 import de.mari_023.fabric.ae2wtlib.wct.ItemWCT;
 import de.mari_023.fabric.ae2wtlib.wct.WCTContainer;
@@ -68,10 +68,10 @@ public class ae2wtlib implements ModInitializer {
         WUTHandler.addTerminal("pattern", PATTERN_TERMINAL::tryOpen, WPTGuiObject::new);
         WUTHandler.addTerminal("interface", INTERFACE_TERMINAL::tryOpen, WITGuiObject::new);
 
-        Api.instance().registries().charger().addChargeRate(CRAFTING_TERMINAL, Config.getChargeRate());
-        Api.instance().registries().charger().addChargeRate(PATTERN_TERMINAL, Config.getChargeRate());
-        Api.instance().registries().charger().addChargeRate(INTERFACE_TERMINAL, Config.getChargeRate());
-        Api.instance().registries().charger().addChargeRate(UNIVERSAL_TERMINAL, Config.getChargeRate() * Config.WUTChargeRateMultiplier());
+        ChargerRegistry.setChargeRate(CRAFTING_TERMINAL, Config.getChargeRate());
+        ChargerRegistry.setChargeRate(PATTERN_TERMINAL, Config.getChargeRate());
+        ChargerRegistry.setChargeRate(INTERFACE_TERMINAL, Config.getChargeRate());
+        ChargerRegistry.setChargeRate(UNIVERSAL_TERMINAL, Config.getChargeRate() * Config.WUTChargeRateMultiplier());
 
         Registry.register(Registry.RECIPE_SERIALIZER, CombineSerializer.ID, CombineSerializer.INSTANCE);
         Registry.register(Registry.RECIPE_SERIALIZER, UpgradeSerializer.ID, UpgradeSerializer.INSTANCE);
@@ -127,12 +127,12 @@ public class ae2wtlib implements ModInitializer {
 
             if(!(screenHandler instanceof AEBaseContainer)) return;
 
-            final ContainerLocator locator = ((AEBaseContainer) screenHandler).getLocator();
+            final MenuLocator locator = ((AEBaseContainer) screenHandler).getLocator();
             int slot = locator.getItemIndex();
             ItemStack item;
             if(slot >= 100 && slot < 200 && Config.allowTrinket())
                 item = TrinketsApi.getTrinketsInventory(player).getStack(slot - 100);
-            else item = player.inventory.getStack(slot);
+            else item = player.getInventory().getStack(slot);
 
             if(!(item.getItem() instanceof ItemWUT)) return;
             WUTHandler.cycle(player, slot, item);
@@ -146,8 +146,8 @@ public class ae2wtlib implements ModInitializer {
                 if(terminalName.equalsIgnoreCase("crafting")) {
                     int slot = -1;
                     ItemStack terminal = null;
-                    for(int i = 0; i < player.inventory.size(); i++) {
-                        terminal = player.inventory.getStack(i);
+                    for(int i = 0; i < player.getInventory().size(); i++) {
+                        terminal = player.getInventory().getStack(i);
                         if(terminal.getItem() instanceof ItemWCT || (terminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(terminal, "crafting"))) {
                             slot = i;
                             WUTHandler.setCurrentTerminal(player, slot, terminal, "crafting");
@@ -172,9 +172,9 @@ public class ae2wtlib implements ModInitializer {
                     }
 
                     if(CRAFTING_TERMINAL.canOpen(terminal, player))
-                        CRAFTING_TERMINAL.open(player, ContainerHelper.getContainerLocatorForSlot(slot));
+                        CRAFTING_TERMINAL.open(player, MenuLocator.forInventorySlot(slot));
                 } else if(terminalName.equalsIgnoreCase("pattern")) {
-                    PlayerInventory inv = player.inventory;
+                    PlayerInventory inv = player.getInventory();
                     int slot = -1;
                     ItemStack terminal = null;
                     for(int i = 0; i < inv.size(); i++) {
@@ -204,9 +204,9 @@ public class ae2wtlib implements ModInitializer {
                     }
 
                     if(PATTERN_TERMINAL.canOpen(terminal, player))
-                        PATTERN_TERMINAL.open(player, ContainerHelper.getContainerLocatorForSlot(slot));
+                        PATTERN_TERMINAL.open(player, MenuLocator.forInventorySlot(slot));
                 } else if(terminalName.equalsIgnoreCase("interface")) {
-                    PlayerInventory inv = player.inventory;
+                    PlayerInventory inv = player.getInventory();
                     int slot = -1;
                     ItemStack terminal = null;
                     for(int i = 0; i < inv.size(); i++) {
@@ -236,7 +236,7 @@ public class ae2wtlib implements ModInitializer {
                     }
 
                     if(INTERFACE_TERMINAL.canOpen(terminal, player))
-                        INTERFACE_TERMINAL.open(player, ContainerHelper.getContainerLocatorForSlot(slot));
+                        INTERFACE_TERMINAL.open(player, MenuLocator.forInventorySlot(slot));
                 } else if(terminalName.equalsIgnoreCase("toggleRestock")) {
                     CraftingTerminalHandler craftingTerminalHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
                     ItemStack terminal = craftingTerminalHandler.getCraftingTerminal();
@@ -245,7 +245,7 @@ public class ae2wtlib implements ModInitializer {
                         return;
                     }
                     ItemWT.setBoolean(terminal, !ItemWT.getBoolean(terminal, "restock"), "restock");
-                    WUTHandler.updateClientTerminal(player, craftingTerminalHandler.getSlot(), terminal.getTag());
+                    WUTHandler.updateClientTerminal(player, craftingTerminalHandler.getSlot(), terminal.getNbt());
 
                     if(ItemWT.getBoolean(terminal, "restock"))
                         player.sendMessage(new TranslatableText("gui.ae2wtlib.restock").append(new TranslatableText("gui.ae2wtlib.on").setStyle(Style.EMPTY.withColor(TextColor.parse("green")))), true);

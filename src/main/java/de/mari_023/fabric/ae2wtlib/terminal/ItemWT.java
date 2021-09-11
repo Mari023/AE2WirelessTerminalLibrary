@@ -5,21 +5,22 @@ import appeng.api.config.SortDir;
 import appeng.api.config.SortOrder;
 import appeng.api.config.ViewItems;
 import appeng.api.features.ILocatable;
-import appeng.api.features.IWirelessTermHandler;
+import appeng.api.features.IWirelessTerminalHandler;
 import appeng.api.util.IConfigManager;
-import appeng.container.ContainerLocator;
 import appeng.core.Api;
 import appeng.core.localization.GuiText;
 import appeng.core.localization.PlayerMessages;
 import appeng.items.tools.powered.powersink.AEBasePoweredItem;
+import appeng.menu.MenuLocator;
 import appeng.util.ConfigManager;
 import appeng.util.Platform;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
@@ -31,15 +32,15 @@ import net.minecraft.world.World;
 import java.util.List;
 import java.util.function.DoubleSupplier;
 
-public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermHandler {
+public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTerminalHandler {
 
-    public ItemWT(DoubleSupplier powerCapacity, Settings props) {
+    public ItemWT(DoubleSupplier powerCapacity, Item.Settings props) {
         super(powerCapacity, props);
     }
 
     @Override
     public TypedActionResult<ItemStack> use(final World w, final PlayerEntity player, final Hand hand) {
-        if(canOpen(player.getStackInHand(hand), player)) open(player, ContainerLocator.forHand(player, hand));
+        if(canOpen(player.getStackInHand(hand), player)) open(player, MenuLocator.forHand(player, hand));
         return new TypedActionResult<>(ActionResult.SUCCESS, player.getStackInHand(hand));
     }
 
@@ -65,19 +66,19 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
         }
     }
 
-    public void tryOpen(PlayerEntity player, ContainerLocator locator, ItemStack stack) {
+    public void tryOpen(PlayerEntity player, MenuLocator locator, ItemStack stack) {
         if(canOpen(stack, player)) open(player, locator);
     }
 
-    public abstract void open(final PlayerEntity player, final ContainerLocator locator);
+    public abstract void open(final PlayerEntity player, final MenuLocator locator);
 
     @Override
     @Environment(EnvType.CLIENT)
     public void appendTooltip(final ItemStack stack, final World world, final List<Text> lines, final TooltipContext advancedTooltips) {
         super.appendTooltip(stack, world, lines, advancedTooltips);
 
-        if(stack.hasTag()) {
-            final CompoundTag tag = stack.getOrCreateTag();
+        if(stack.hasNbt()) {
+            final NbtCompound tag = stack.getOrCreateNbt();
             if(tag != null) {
                 final String encKey = tag.getString("encryptionKey");
 
@@ -105,7 +106,7 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
     @Override
     public IConfigManager getConfigManager(ItemStack is) {
         final ConfigManager out = new ConfigManager((manager, settingName, newValue) -> {
-            final CompoundTag data = is.getOrCreateTag();
+            final NbtCompound data = is.getOrCreateNbt();
             manager.writeToNBT(data);
         });
 
@@ -113,19 +114,19 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
         out.registerSetting(appeng.api.config.Settings.VIEW_MODE, ViewItems.ALL);
         out.registerSetting(appeng.api.config.Settings.SORT_DIRECTION, SortDir.ASCENDING);
 
-        out.readFromNBT(is.getOrCreateTag().copy());
+        out.readFromNBT(is.getOrCreateNbt().copy());
         return out;
     }
 
     @Override
     public String getEncryptionKey(ItemStack item) {
-        final CompoundTag tag = item.getOrCreateTag();
+        final NbtCompound tag = item.getOrCreateNbt();
         return tag.getString("encryptionKey");
     }
 
     @Override
     public void setEncryptionKey(ItemStack item, String encKey, String name) {
-        final CompoundTag tag = item.getOrCreateTag();
+        final NbtCompound tag = item.getOrCreateNbt();
         tag.putString("encryptionKey", encKey);
         tag.putString("name", name);
     }
@@ -139,7 +140,7 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
      */
     public static ItemStack getSavedSlot(ItemStack hostItem, String slot) {
         if(!(hostItem.getItem() instanceof ItemWT)) return ItemStack.EMPTY;
-        return ItemStack.fromTag(hostItem.getOrCreateTag().getCompound(slot));
+        return ItemStack.fromNbt(hostItem.getOrCreateNbt().getCompound(slot));
     }
 
     /**
@@ -152,9 +153,9 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
      */
     public static void setSavedSlot(ItemStack hostItem, ItemStack savedItem, String slot) {
         if(!(hostItem.getItem() instanceof ItemWT)) return;
-        CompoundTag wctTag = hostItem.getOrCreateTag();
+        NbtCompound wctTag = hostItem.getOrCreateNbt();
         if(savedItem.isEmpty()) wctTag.remove(slot);
-        else wctTag.put(slot, savedItem.toTag(new CompoundTag()));
+        else wctTag.put(slot, savedItem.writeNbt(new NbtCompound()));
     }
 
     /**
@@ -165,7 +166,7 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
      */
     public static boolean getBoolean(ItemStack hostItem, String key) {
         if(!(hostItem.getItem() instanceof ItemWT)) return false;
-        return hostItem.getOrCreateTag().getBoolean(key);
+        return hostItem.getOrCreateNbt().getBoolean(key);
     }
 
     /**
@@ -178,7 +179,7 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
      */
     public static void setBoolean(ItemStack hostItem, boolean b, String key) {
         if(!(hostItem.getItem() instanceof ItemWT)) return;
-        CompoundTag wctTag = hostItem.getOrCreateTag();
+        NbtCompound wctTag = hostItem.getOrCreateNbt();
         wctTag.putBoolean(key, b);
     }
 
