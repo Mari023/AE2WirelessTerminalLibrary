@@ -55,8 +55,7 @@ public abstract class WTGuiObject implements IGuiItemObject, IEnergySource, IAct
         ILocatable obj = null;
 
         try {
-            final long encKey = Long.parseLong(encryptionKey);
-            obj = Api.instance().registries().locatable().getLocatableBy(encKey);
+            obj = Api.instance().registries().locatable().getLocatableBy(Long.parseLong(encryptionKey));
         } catch(final NumberFormatException ignored) {}
 
         if(obj instanceof IActionHost) {

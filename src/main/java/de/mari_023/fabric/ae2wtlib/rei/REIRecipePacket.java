@@ -266,8 +266,7 @@ public class REIRecipePacket {
      * Finds the first matching itemstack with the highest stored amount.
      */
     private IAEItemStack findBestMatchingItemStack(Ingredient ingredients, IPartitionList<IAEItemStack> filter, IMEMonitor<IAEItemStack> storage, IContainerCraftingPacket cct) {
-        Stream<AEItemStack> stacks = Arrays.stream(getMatchingStacks(ingredients)).map(AEItemStack::fromItemStack).filter(r -> r != null && (filter == null || filter.isListed(r)));
-        return getMostStored(stacks, storage, cct);
+        return getMostStored(Arrays.stream(getMatchingStacks(ingredients)).map(AEItemStack::fromItemStack).filter(r -> r != null && (filter == null || filter.isListed(r))), storage, cct);
     }
 
     /**
@@ -276,8 +275,7 @@ public class REIRecipePacket {
      * As additional condition, it sorts by the stored amount to return the one with the highest stored amount.
      */
     private IAEItemStack findBestMatchingPattern(Ingredient ingredients, IPartitionList<IAEItemStack> filter, ICraftingGrid crafting, IMEMonitor<IAEItemStack> storage, IContainerCraftingPacket cct) {
-        Stream<IAEItemStack> stacks = Arrays.stream(getMatchingStacks(ingredients)).map(AEItemStack::fromItemStack).filter(r -> r != null && (filter == null || filter.isListed(r))).map(s -> s.setCraftable(!crafting.getCraftingFor(s, null, 0, null).isEmpty())).filter(IAEItemStack::isCraftable);
-        return getMostStored(stacks, storage, cct);
+        return getMostStored(Arrays.stream(getMatchingStacks(ingredients)).map(AEItemStack::fromItemStack).filter(r -> r != null && (filter == null || filter.isListed(r))).map(s -> s.setCraftable(!crafting.getCraftingFor(s, null, 0, null).isEmpty())).filter(IAEItemStack::isCraftable), storage, cct);
     }
 
     /**
@@ -293,14 +291,11 @@ public class REIRecipePacket {
     }
 
     private void handleProcessing(ScreenHandler con, IContainerCraftingPacket cct, Recipe<?> recipe) {
-        if(con instanceof WPTContainer) {
-            WPTContainer patternTerm = (WPTContainer) con;
-            if(!patternTerm.craftingMode) {
-                final FixedItemInv output = cct.getInventoryByName("output");
-                ItemHandlerUtil.setStackInSlot(output, 0, recipe.getOutput());
-                ItemHandlerUtil.setStackInSlot(output, 1, ItemStack.EMPTY);
-                ItemHandlerUtil.setStackInSlot(output, 2, ItemStack.EMPTY);
-            }
+        if (con instanceof WPTContainer && !((WPTContainer) con).craftingMode) {
+            final FixedItemInv output = cct.getInventoryByName("output");
+            ItemHandlerUtil.setStackInSlot(output, 0, recipe.getOutput());
+            ItemHandlerUtil.setStackInSlot(output, 1, ItemStack.EMPTY);
+            ItemHandlerUtil.setStackInSlot(output, 2, ItemStack.EMPTY);
         }
     }
 }
