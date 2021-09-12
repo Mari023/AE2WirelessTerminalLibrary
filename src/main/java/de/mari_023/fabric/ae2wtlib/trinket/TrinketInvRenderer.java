@@ -1,21 +1,22 @@
 package de.mari_023.fabric.ae2wtlib.trinket;
 
 import com.mojang.blaze3d.platform.GlStateManager;
-import dev.emi.trinkets.TrinketInventoryRenderer;
-import dev.emi.trinkets.api.TrinketSlots;
+import dev.emi.trinkets.api.SlotGroup;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.texture.TextureManager;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.util.Identifier;
 
 public class TrinketInvRenderer {
-    public static <T extends ScreenHandler> void renderGroupFront(MatrixStack matrices, HandledScreen<T> screen, TextureManager manager, int left, int top, TrinketSlots.SlotGroup group, int groupX, int groupY) {
-        int count = group.slots.size();
+    private static final Identifier MORE_SLOTS = new Identifier("trinkets", "textures/gui/more_slots.png");
+    public static <T extends ScreenHandler> void renderGroupFront(MatrixStack matrices, HandledScreen<T> screen, TextureManager manager, int left, int top, SlotGroup group, int groupX, int groupY) {
+        int count = group.getSlots().size();
         if(group.onReal) count++;
         int l = count / 2;
         int r = count - l - 1;
         GlStateManager.disableDepthTest();
-        manager.bindTexture(TrinketInventoryRenderer.MORE_SLOTS_TEX);
+        manager.bindTexture(MORE_SLOTS);
         screen.drawTexture(matrices, left + groupX, top + groupY - 4, 4, 0, 18, 26);
         screen.drawTexture(matrices, left + groupX - 18 * l - 4, top + groupY - 4, 0, 0, 4, 26);
         screen.drawTexture(matrices, left + groupX + 18 * (r + 1), top + groupY - 4, 22, 0, 4, 26);
@@ -29,7 +30,7 @@ public class TrinketInvRenderer {
     public static <T extends ScreenHandler> void renderExcessSlotGroups(MatrixStack matrices, HandledScreen<T> screen, TextureManager manager, int left, int top, int lastX, int lastY) {
         int xIndex = (lastX + 15) / -18;
         int yIndex = (lastY - 132) / 18;
-        manager.bindTexture(TrinketInventoryRenderer.MORE_SLOTS_TEX);
+        manager.bindTexture(MORE_SLOTS);
         //Top segments
         for(int i = 0; i <= xIndex; i++) screen.drawTexture(matrices, left - 15 - i * 18, top + 3, 4, 0, 18, 4);
         //Top left corner

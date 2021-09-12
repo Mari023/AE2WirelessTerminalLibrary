@@ -16,19 +16,20 @@ import appeng.api.networking.storage.IStorageService;
 import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.IMEMonitorHandlerReceiver;
 import appeng.api.storage.IStorageChannel;
-import appeng.api.storage.channels.IItemStorageChannel;
+import appeng.api.storage.StorageChannels;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IAEStack;
 import appeng.api.storage.data.IItemList;
 import appeng.api.util.DimensionalBlockPos;
 import appeng.api.util.IConfigManager;
 import appeng.blockentity.networking.WirelessBlockEntity;
-import appeng.core.Api;
 import appeng.menu.interfaces.IInventorySlotAware;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerType;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.OptionalLong;
 
 public abstract class WTGuiObject implements IGuiItemObject, IEnergySource, IActionHost, IInventorySlotAware {
 
@@ -46,26 +47,22 @@ public abstract class WTGuiObject implements IGuiItemObject, IEnergySource, IAct
     private final IGridNode gridNode;
 
     public WTGuiObject(final IWirelessTerminalHandler wh, final ItemStack is, final PlayerEntity ep, int inventorySlot) {
-        String encryptionKey = wh.getEncryptionKey(is);
+        final OptionalLong unparsedKey = wh.getGridKey(is);
         effectiveItem = is;
         fixedViewCellInventory = new FixedViewCellInventory(is);
         myPlayer = ep;
         wth = wh;
         this.inventorySlot = inventorySlot;
 
-        Locatables obj = null;
-
-        try {
-            obj = Api.instance().registries().locatable().getLocatableBy(Long.parseLong(encryptionKey));
-        } catch(final NumberFormatException ignored) {}
-
-        if(obj instanceof IActionHost) {
-            gridNode = ((IActionHost) obj).getActionableNode();
-            if(gridNode == null) return;
-            targetGrid = gridNode.getGrid();
-            sg = targetGrid.getStorageService();
-            itemStorage = sg.getInventory(Api.instance().storage().getStorageChannel(IItemStorageChannel.class));
-
+        if(unparsedKey.isPresent()) {
+            final IActionHost securityStation = Locatables.securityStations().get(ep.world, unparsedKey.getAsLong());
+            if(securityStation != null) {
+                gridNode = securityStation.getActionableNode();
+                if(gridNode == null) return;
+                targetGrid = gridNode.getGrid();
+                sg = targetGrid.getStorageService();
+                itemStorage = sg.getInventory(StorageChannels.items());
+            } else gridNode = null;
         } else gridNode = null;
     }
 
@@ -84,9 +81,8 @@ public abstract class WTGuiObject implements IGuiItemObject, IEnergySource, IAct
                 return !hasBoosterCard;
             } else isOutOfRange = true;
 
-            for(final IGridNode n : targetGrid.getMachines(WirelessBlockEntity.class)) {
-                final IWirelessAccessPoint wap = (IWirelessAccessPoint) n.getMachine();
-                if(testWap(wap)) myWap = wap;
+            for(final WirelessBlockEntity n : targetGrid.getMachines(WirelessBlockEntity.class)) {
+                if(testWap(n)) myWap = n;
             }
 
             return myWap == null && !hasBoosterCard;
@@ -110,10 +106,10 @@ public abstract class WTGuiObject implements IGuiItemObject, IEnergySource, IAct
 
         final DimensionalBlockPos dc = wap.getLocation();
 
-        if(dc.getWorld() == myPlayer.world) {
-            final double offX = dc.x - myPlayer.getX();
-            final double offY = dc.y - myPlayer.getY();
-            final double offZ = dc.z - myPlayer.getZ();
+        if(dc.getLevel() == myPlayer.world) {
+            final double offX = dc.getPos().getX() - myPlayer.getX();
+            final double offY = dc.getPos().getY() - myPlayer.getY();
+            final double offZ = dc.getPos().getZ() - myPlayer.getZ();
 
             final double r = offX * offX + offY * offY + offZ * offZ;
             if(r < rangeLimit && sqRange > r && wap.isActive()) {
@@ -173,7 +169,7 @@ public abstract class WTGuiObject implements IGuiItemObject, IEnergySource, IAct
     }
 
     public IItemList<IAEItemStack> getAvailableItems(final IItemList<IAEItemStack> out) {
-        if(itemStorage != null) return itemStorage.getAvailableItems(out);
+        if(itemStorage != null) return itemStorage.getAvailableItems();
         return out;
     }
 
@@ -202,11 +198,6 @@ public abstract class WTGuiObject implements IGuiItemObject, IEnergySource, IAct
         return 0;
     }
 
-    public int getSlot() {
-        if(itemStorage != null) return itemStorage.getSlot();
-        return 0;
-    }
-
     public boolean validForPass(final int i) {
         return itemStorage.validForPass(i);
     }
@@ -222,8 +213,7 @@ public abstract class WTGuiObject implements IGuiItemObject, IEnergySource, IAct
     }
 
     public IStorageChannel getChannel() {
-        if(itemStorage != null) return itemStorage.getChannel();
-        return Api.instance().storage().getStorageChannel(IItemStorageChannel.class);
+        return itemStorage != null ? itemStorage.getChannel() : StorageChannels.items();
     }
 
     public FixedViewCellInventory getViewCellStorage() {

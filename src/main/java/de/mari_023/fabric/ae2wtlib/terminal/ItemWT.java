@@ -4,12 +4,13 @@ import appeng.api.config.Actionable;
 import appeng.api.config.SortDir;
 import appeng.api.config.SortOrder;
 import appeng.api.config.ViewItems;
-import appeng.api.features.Locatables;
 import appeng.api.features.IWirelessTerminalHandler;
+import appeng.api.features.Locatables;
+import appeng.api.networking.security.IActionHost;
 import appeng.api.util.IConfigManager;
-import appeng.core.Api;
 import appeng.core.localization.GuiText;
 import appeng.core.localization.PlayerMessages;
+import appeng.hooks.ICustomReequipAnimation;
 import appeng.items.tools.powered.powersink.AEBasePoweredItem;
 import appeng.menu.MenuLocator;
 import appeng.util.ConfigManager;
@@ -30,9 +31,10 @@ import net.minecraft.util.Util;
 import net.minecraft.world.World;
 
 import java.util.List;
+import java.util.OptionalLong;
 import java.util.function.DoubleSupplier;
 
-public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTerminalHandler {
+public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTerminalHandler, ICustomReequipAnimation {
 
     public ItemWT(DoubleSupplier powerCapacity, Item.Settings props) {
         super(powerCapacity, props);
@@ -47,14 +49,14 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermi
     public boolean canOpen(ItemStack item, PlayerEntity player) {
         if(Platform.isClient()) return false;
 
-        final String unparsedKey = getEncryptionKey(item);
-        if(unparsedKey.isEmpty()) {
+        final OptionalLong unparsedKey = getGridKey(item);
+        if(!unparsedKey.isPresent()) {
             player.sendSystemMessage(PlayerMessages.DeviceNotLinked.get(), Util.NIL_UUID);
             return false;
         }
 
-        final long parsedKey = Long.parseLong(unparsedKey);
-        final Locatables securityStation = Api.instance().registries().locatable().getLocatableBy(parsedKey);
+        final long parsedKey = unparsedKey.getAsLong();
+        final IActionHost securityStation = Locatables.securityStations().get(player.world, parsedKey);
         if(securityStation == null) {
             player.sendSystemMessage(PlayerMessages.StationCanNotBeLocated.get(), Util.NIL_UUID);
             return false;
@@ -89,11 +91,6 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermi
     }
 
     @Override
-    public boolean canHandle(ItemStack is) {
-        return is.getItem() instanceof ItemWT;
-    }
-
-    @Override
     public boolean usePower(PlayerEntity player, double amount, ItemStack is) {
         return extractAEPower(is, amount, Actionable.MODULATE) >= amount - 0.5;
     }
@@ -105,10 +102,7 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermi
 
     @Override
     public IConfigManager getConfigManager(ItemStack is) {
-        final ConfigManager out = new ConfigManager((manager, settingName, newValue) -> {
-            final NbtCompound data = is.getOrCreateNbt();
-            manager.writeToNBT(data);
-        });
+        ConfigManager out = new ConfigManager((manager, settingName) -> manager.writeToNBT(is.getOrCreateNbt()));
 
         out.registerSetting(appeng.api.config.Settings.SORT_BY, SortOrder.NAME);
         out.registerSetting(appeng.api.config.Settings.VIEW_MODE, ViewItems.ALL);
@@ -119,16 +113,14 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermi
     }
 
     @Override
-    public String getEncryptionKey(ItemStack item) {
-        final NbtCompound tag = item.getOrCreateNbt();
-        return tag.getString("encryptionKey");
+    public OptionalLong getGridKey(ItemStack item) {
+        NbtCompound tag = item.getNbt();
+        return tag != null && tag.contains("gridKey", 4) ? OptionalLong.of(tag.getLong("gridKey")) : OptionalLong.empty();
     }
 
     @Override
-    public void setEncryptionKey(ItemStack item, String encKey, String name) {
-        final NbtCompound tag = item.getOrCreateNbt();
-        tag.putString("encryptionKey", encKey);
-        tag.putString("name", name);
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+        return slotChanged;
     }
 
     /**

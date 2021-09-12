@@ -112,6 +112,6 @@ public class WUTHandler {
 
     @FunctionalInterface
     public interface WTGUIObjectFactory {
-        WTGuiObject create(final IWirelessTerminalHandler wh, final ItemStack is, final PlayerEntity ep, int getInventory()Slot);
+        WTGuiObject create(final IWirelessTerminalHandler wh, final ItemStack is, final PlayerEntity ep, int inventorySlot);
     }
 }
