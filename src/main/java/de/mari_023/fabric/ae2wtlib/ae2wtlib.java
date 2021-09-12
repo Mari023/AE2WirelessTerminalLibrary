@@ -1,7 +1,6 @@
 package de.mari_023.fabric.ae2wtlib;
 
 import appeng.api.features.ChargerRegistry;
-import appeng.core.Api;
 import appeng.core.sync.packets.PatternSlotPacket;
 import appeng.menu.AEBaseMenu;
 import appeng.menu.MenuLocator;

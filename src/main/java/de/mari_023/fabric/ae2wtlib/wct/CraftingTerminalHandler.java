@@ -1,12 +1,11 @@
 package de.mari_023.fabric.ae2wtlib.wct;
 
-import appeng.api.features.ILocatable;
+import appeng.api.features.Locatables;
 import appeng.api.implementations.blockentities.IWirelessAccessPoint;
 import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridNode;
-import appeng.api.networking.IMachineSet;
 import appeng.api.networking.security.IActionHost;
-import appeng.api.networking.storage.IStorageGrid;
+import appeng.api.networking.storage.IStorageService;
 import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.channels.IItemStorageChannel;
 import appeng.api.storage.data.IAEItemStack;
@@ -30,6 +29,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public class CraftingTerminalHandler {
@@ -37,9 +37,9 @@ public class CraftingTerminalHandler {
     private static final HashMap<UUID, CraftingTerminalHandler> players = new HashMap<>();//TODO clear on leave (client)
     private final PlayerEntity player;
     private ItemStack craftingTerminal = ItemStack.EMPTY;
-    private ILocatable securityStation;
+    private Locatables securityStation;
     private IGrid targetGrid;
-    private IStorageGrid storageGrid;
+    private IStorageService storageGrid;
     private IMEMonitor<IAEItemStack> itemStorageChannel;
     private int slot = -1;
     private IWirelessAccessPoint myWap;
@@ -112,7 +112,7 @@ public class CraftingTerminalHandler {
         return slot;
     }
 
-    public ILocatable getSecurityStation() {
+    public Locatables getSecurityStation() {
         if(getCraftingTerminal().isEmpty()) return securityStation = null;
         if(securityStation != null) return securityStation;
         final String unParsedKey = ((ItemWT) craftingTerminal.getItem()).getEncryptionKey(craftingTerminal);
@@ -129,9 +129,9 @@ public class CraftingTerminalHandler {
         return targetGrid = n.getGrid();
     }
 
-    public IStorageGrid getStorageGrid() {
+    public IStorageService getStorageGrid() {
         if(getTargetGrid() == null) return storageGrid = null;
-        if(storageGrid == null) return storageGrid = targetGrid.getCache(IStorageGrid.class);
+        if(storageGrid == null) return storageGrid = targetGrid.getStorageService();
         return storageGrid;
     }
 
@@ -151,13 +151,12 @@ public class CraftingTerminalHandler {
         if(targetGrid == null) return false;
         if(myWap != null && myWap.getGrid() == targetGrid && testWap(myWap)) return true;
 
-        final IMachineSet tw = targetGrid.getMachines(WirelessBlockEntity.class);
+        final Set<WirelessBlockEntity> tw = targetGrid.getMachines(WirelessBlockEntity.class);
 
         myWap = null;
 
-        for(final IGridNode n : tw) {
-            final IWirelessAccessPoint wap = (IWirelessAccessPoint) n.getMachine();
-            if(testWap(wap)) myWap = wap;
+        for(final WirelessBlockEntity n : tw) {
+            if(testWap(n)) myWap = n;
         }
 
         return myWap != null;

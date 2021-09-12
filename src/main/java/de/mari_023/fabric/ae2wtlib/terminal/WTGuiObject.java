@@ -4,6 +4,7 @@ import appeng.api.config.AccessRestriction;
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
 import appeng.api.features.IWirelessTerminalHandler;
+import appeng.api.features.Locatables;
 import appeng.api.implementations.blockentities.IWirelessAccessPoint;
 import appeng.api.implementations.guiobjects.IGuiItemObject;
 import appeng.api.networking.IGrid;
@@ -52,7 +53,7 @@ public abstract class WTGuiObject implements IGuiItemObject, IEnergySource, IAct
         wth = wh;
         this.inventorySlot = inventorySlot;
 
-        ILocatable obj = null;
+        Locatables obj = null;
 
         try {
             obj = Api.instance().registries().locatable().getLocatableBy(Long.parseLong(encryptionKey));
@@ -62,7 +63,7 @@ public abstract class WTGuiObject implements IGuiItemObject, IEnergySource, IAct
             gridNode = ((IActionHost) obj).getActionableNode();
             if(gridNode == null) return;
             targetGrid = gridNode.getGrid();
-            sg = targetGrid.getCache(IStorageGrid.class);
+            sg = targetGrid.getStorageService();
             itemStorage = sg.getInventory(Api.instance().storage().getStorageChannel(IItemStorageChannel.class));
 
         } else gridNode = null;
