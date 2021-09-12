@@ -7,14 +7,19 @@ import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.crafting.ICraftingGrid;
 import appeng.api.networking.energy.IEnergyGrid;
+import appeng.api.networking.energy.IEnergyService;
 import appeng.api.networking.security.ISecurityGrid;
+import appeng.api.networking.security.ISecurityService;
 import appeng.api.networking.storage.IStorageGrid;
+import appeng.api.networking.storage.IStorageService;
 import appeng.api.storage.IMEMonitor;
+import appeng.api.storage.StorageChannels;
 import appeng.api.storage.channels.IItemStorageChannel;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.core.Api;
 import appeng.helpers.IMenuCraftingPacket;
 import appeng.items.storage.ViewCellItem;
+import appeng.me.service.SecurityService;
 import appeng.mixins.IngredientAccessor;
 import appeng.util.Platform;
 import appeng.util.helpers.ItemHandlerUtil;
@@ -128,11 +133,11 @@ public class REIRecipePacket {
 
         final IGrid grid = node.getGrid();
 
-        final ISecurityGrid security = grid.getCache(ISecurityGrid.class);
-        final IEnergyGrid energy = grid.getCache(IEnergyGrid.class);
-        final FixedItemInv craftMatrix = cct.getInventoryByName("crafting");
+        final ISecurityService security = grid.getSecurityService();
+        final IEnergyService energy = grid.getEnergyService();
+        final FixedItemInv craftMatrix = cct.getSubInventory("crafting");
 
-        final IMEMonitor<IAEItemStack> storage = ((IStorageGrid) grid.getCache(IStorageGrid.class)).getInventory(Api.instance().storage().getStorageChannel(IItemStorageChannel.class));
+        final IMEMonitor<IAEItemStack> storage = grid.getStorageService().getInventory(StorageChannels.items());
         final IPartitionList<IAEItemStack> filter = ViewCellItem.createFilter(cct.getViewCells());
 
         // Handle each slot
@@ -224,7 +229,7 @@ public class REIRecipePacket {
      * higher than 3. ingredients.
      */
     private DefaultedList<Ingredient> ensure3by3CraftingMatrix(Recipe<?> recipe) {
-        DefaultedList<Ingredient> ingredients = recipe.getPreviewInputs();
+        DefaultedList<Ingredient> ingredients = recipe.getIngredients();
         DefaultedList<Ingredient> expandedIngredients = DefaultedList.ofSize(9, Ingredient.EMPTY);
 
         Preconditions.checkArgument(ingredients.size() <= 9);
@@ -293,7 +298,7 @@ public class REIRecipePacket {
 
     private void handleProcessing(ScreenHandler con, IMenuCraftingPacket cct, Recipe<?> recipe) {
         if(con instanceof WPTContainer && !((WPTContainer) con).craftingMode) {
-            final FixedItemInv output = cct.getInventoryByName("output");
+            final FixedItemInv output = cct.getSubInventory("output");
             ItemHandlerUtil.setStackInSlot(output, 0, recipe.getOutput());
             ItemHandlerUtil.setStackInSlot(output, 1, ItemStack.EMPTY);
             ItemHandlerUtil.setStackInSlot(output, 2, ItemStack.EMPTY);

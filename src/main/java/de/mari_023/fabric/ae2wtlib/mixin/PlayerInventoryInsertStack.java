@@ -1,7 +1,6 @@
 package de.mari_023.fabric.ae2wtlib.mixin;
 
 import appeng.api.config.Actionable;
-import appeng.api.networking.security.IActionHost;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.me.helpers.PlayerSource;
 import appeng.util.item.AEItemStack;
@@ -31,7 +30,7 @@ public class PlayerInventoryInsertStack {
         ItemStack terminal = CTHandler.getCraftingTerminal();
         if(ItemMagnetCard.isPickupME(terminal) && CTHandler.inRange()) {
             if(CTHandler.getItemStorageChannel() == null) return;
-            IAEItemStack leftover = CTHandler.getItemStorageChannel().injectItems(AEItemStack.fromItemStack(stack), Actionable.MODULATE, new PlayerSource(player, (IActionHost) CTHandler.getSecurityStation()));
+            IAEItemStack leftover = CTHandler.getItemStorageChannel().injectItems(AEItemStack.fromItemStack(stack), Actionable.MODULATE, new PlayerSource(player, CTHandler.getSecurityStation()));
             if(leftover == null || leftover.createItemStack().isEmpty()) {
                 stack.setCount(0);
                 cir.setReturnValue(true);

@@ -18,18 +18,18 @@ public class AESubScreenMixin {
     @Mutable
     @Shadow
     @Final
-    private ScreenHandlerType<?> previousContainerType;
+    private ScreenHandlerType<?> previousMenuType;
 
     @Mutable
     @Shadow
     @Final
-    private ItemStack previousContainerIcon;
+    private ItemStack previousMenuIcon;
 
     @Inject(method = "<init>(Ljava/lang/Object;)V", at = @At(value = "TAIL"))
     public void serverPacketData(Object containerHost, CallbackInfo ci) {
         if(containerHost instanceof WTGuiObject) {
-            previousContainerType = ((WTGuiObject) containerHost).getType();
-            previousContainerIcon = ((WTGuiObject) containerHost).getIcon();
+            previousMenuType = ((WTGuiObject) containerHost).getType();
+            previousMenuIcon = ((WTGuiObject) containerHost).getIcon();
         }
     }
 }

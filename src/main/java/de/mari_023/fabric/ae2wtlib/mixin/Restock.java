@@ -1,7 +1,6 @@
 package de.mari_023.fabric.ae2wtlib.mixin;
 
 import appeng.api.config.Actionable;
-import appeng.api.networking.security.IActionHost;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.me.helpers.PlayerSource;
 import appeng.util.item.AEItemStack;
@@ -63,14 +62,14 @@ public abstract class Restock {
         if(toAdd == 0) return;
         ItemStack request = copy();
         request.setCount(toAdd);
-        IAEItemStack stack = CTHandler.getItemStorageChannel().extractItems(AEItemStack.fromItemStack(request), Actionable.MODULATE, new PlayerSource(playerEntity, (IActionHost) CTHandler.getSecurityStation()));
+        IAEItemStack stack = CTHandler.getItemStorageChannel().extractItems(AEItemStack.fromItemStack(request), Actionable.MODULATE, new PlayerSource(playerEntity, CTHandler.getSecurityStation()));
         if(stack == null) return;
         ItemStack extraction = stack.createItemStack();
         int extractedItems = 0;
         if(extraction != null && !extraction.isEmpty()) extractedItems = extraction.getCount();
         setCount(getCount() + extractedItems);
         PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeInt(playerEntity.getInventory().method_7371((ItemStack) (Object) this));
+        buf.writeInt(playerEntity.getInventory().method_7371((ItemStack) (Object) this));//TODO probably "getSlotWithStack" (look up ym tho)
         buf.writeInt(getCount());
         ServerPlayNetworking.send((ServerPlayerEntity) playerEntity, new Identifier(ae2wtlib.MOD_NAME, "update_restock"), buf);
     }
