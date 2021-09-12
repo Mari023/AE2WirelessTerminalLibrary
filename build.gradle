@@ -81,6 +81,14 @@ repositories {
         name = "NerdHubMC"
         url = "https://maven.abusedmaster.xyz/"
     }
+    maven {
+        name = "TerraformersMC"
+        url = "https://maven.terraformersmc.com/"
+    }
+    maven {
+        name = "Ladysnake Libs"
+        url = "https://ladysnake.jfrog.io/artifactory/mods"
+    }
     flatDir {
         dirs '/home/mari/Schreibtisch/ae2'
     }
@@ -100,13 +108,12 @@ dependencies {
     /*modImplementation "appeng:appliedenergistics2-fabric:${project.ae2_version}", {
         exclude group: "FastTransferLib"
     }
-    modImplementation "me.shedaniel:RoughlyEnoughItems:${project.rei_version}"
     modImplementation "curse.maven:minemenufabric-478687:${project.minemenufabric_version}"
     modImplementation "com.terraformersmc:modmenu:1.16.7"//dependency for minemenu
-    modApi("me.shedaniel.cloth:cloth-config-fabric:4.11.14")//dependency for minemenu
+    modApi("me.shedaniel.cloth:cloth-config-fabric:4.11.14")//dependency for minemenu*/
+    modImplementation "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
     modImplementation "dev.emi:trinkets:${project.trinkets_version}"
-    modRuntime "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:2.8.3"
-    modApi("dev.technici4n:FastTransferLib:${project.ftl_version}", {
+    /*modApi("dev.technici4n:FastTransferLib:${project.ftl_version}", {
         exclude group: "dev.technici4n"
     })*/
     modImplementation "appeng:appliedenergistics2:0.0.0"
