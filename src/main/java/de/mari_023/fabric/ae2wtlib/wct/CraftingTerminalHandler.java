@@ -1,7 +1,7 @@
 package de.mari_023.fabric.ae2wtlib.wct;
 
 import appeng.api.features.ILocatable;
-import appeng.api.implementations.tiles.IWirelessAccessPoint;
+import appeng.api.implementations.blockentities.IWirelessAccessPoint;
 import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.IMachineSet;
@@ -11,6 +11,7 @@ import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.channels.IItemStorageChannel;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.util.DimensionalCoord;
+import appeng.blockentity.networking.WirelessBlockEntity;
 import appeng.core.Api;
 import appeng.tile.networking.WirelessTileEntity;
 import appeng.util.item.AEItemStack;
@@ -78,7 +79,7 @@ public class CraftingTerminalHandler {
     }
 
     public ItemStack getCraftingTerminal() {
-        PlayerInventory inv = player.inventory;
+        PlayerInventory inv = player.getInventory();
         if((!craftingTerminal.isEmpty()) && inv.contains(craftingTerminal)) return craftingTerminal;
         if(Config.allowTrinket()) {
             TrinketInventory trinketInv = (TrinketInventory) TrinketsApi.getTrinketsInventory(player);
@@ -150,7 +151,7 @@ public class CraftingTerminalHandler {
         if(targetGrid == null) return false;
         if(myWap != null && myWap.getGrid() == targetGrid && testWap(myWap)) return true;
 
-        final IMachineSet tw = targetGrid.getMachines(WirelessTileEntity.class);
+        final IMachineSet tw = targetGrid.getMachines(WirelessBlockEntity.class);
 
         myWap = null;
 

@@ -2,7 +2,7 @@ package de.mari_023.fabric.ae2wtlib.wut.recipe;
 
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.Identifier;
@@ -21,9 +21,8 @@ public class Combine extends Common {
         this.TerminalB = TerminalB;
         this.TerminalAName = TerminalAName;
         this.TerminalBName = TerminalBName;
-        if(!outputStack.hasTag()) outputStack.setTag(new CompoundTag());
-        outputStack.getTag().putBoolean(TerminalAName, true);
-        outputStack.getTag().putBoolean(TerminalBName, true);
+        outputStack.getOrCreateNbt().putBoolean(TerminalAName, true);
+        outputStack.getOrCreateNbt().putBoolean(TerminalBName, true);
     }
 
     public Ingredient getTerminalA() {
@@ -49,16 +48,16 @@ public class Combine extends Common {
 
     @Override
     public ItemStack craft(CraftingInventory inv) {
-        CompoundTag terminalA = InputHelper.getInputStack(inv, TerminalA).getTag();
-        if(terminalA == null) terminalA = new CompoundTag();
+        NbtCompound terminalA = InputHelper.getInputStack(inv, TerminalA).getNbt();
+        if(terminalA == null) terminalA = new NbtCompound();
         else terminalA = terminalA.copy();
 
-        CompoundTag terminalB = InputHelper.getInputStack(inv, TerminalB).getTag();
-        if(terminalB == null) terminalB = new CompoundTag();
+        NbtCompound terminalB = InputHelper.getInputStack(inv, TerminalB).getNbt();
+        if(terminalB == null) terminalB = new NbtCompound();
         else terminalB = terminalB.copy();
 
         ItemStack wut = outputStack.copy();
-        wut.getTag().copyFrom(terminalB).copyFrom(terminalA);
+        wut.getOrCreateNbt().copyFrom(terminalB).copyFrom(terminalA);
         return wut;
     }
 

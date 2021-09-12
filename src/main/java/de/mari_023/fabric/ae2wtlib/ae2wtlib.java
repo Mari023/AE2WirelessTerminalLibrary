@@ -1,9 +1,9 @@
 package de.mari_023.fabric.ae2wtlib;
 
 import appeng.api.features.ChargerRegistry;
-import appeng.container.AEBaseContainer;
 import appeng.core.Api;
 import appeng.core.sync.packets.PatternSlotPacket;
+import appeng.menu.AEBaseMenu;
 import appeng.menu.MenuLocator;
 import de.mari_023.fabric.ae2wtlib.rei.REIRecipePacket;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemInfinityBooster;
@@ -125,9 +125,9 @@ public class ae2wtlib implements ModInitializer {
         ServerPlayNetworking.registerGlobalReceiver(new Identifier(MOD_NAME, "cycle_terminal"), (server, player, handler, buf, sender) -> server.execute(() -> {
             final ScreenHandler screenHandler = player.currentScreenHandler;
 
-            if(!(screenHandler instanceof AEBaseContainer)) return;
+            if(!(screenHandler instanceof AEBaseMenu)) return;
 
-            final MenuLocator locator = ((AEBaseContainer) screenHandler).getLocator();
+            final MenuLocator locator = ((AEBaseMenu) screenHandler).getLocator();
             int slot = locator.getItemIndex();
             ItemStack item;
             if(slot >= 100 && slot < 200 && Config.allowTrinket())

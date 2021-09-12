@@ -7,19 +7,18 @@ import appeng.api.config.*;
 import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.security.IActionHost;
-import appeng.container.AEBaseContainer;
-import appeng.container.SlotSemantic;
-import appeng.container.implementations.ContainerTypeBuilder;
-import appeng.container.interfaces.IInventorySlotAware;
-import appeng.container.slot.AppEngSlot;
+import appeng.blockentity.misc.ItemInterfaceBlockEntity;
+import appeng.menu.interfaces.IInventorySlotAware;
+import appeng.menu.slot.AppEngSlot;
 import appeng.core.localization.PlayerMessages;
 import appeng.helpers.DualityInterface;
 import appeng.helpers.IInterfaceHost;
 import appeng.helpers.InventoryAction;
 import appeng.items.misc.EncodedPatternItem;
-import appeng.parts.misc.InterfacePart;
-import appeng.tile.getInventory().AppEngInternalInventory;
-import appeng.tile.misc.InterfaceTileEntity;
+import appeng.menu.AEBaseMenu;
+import appeng.menu.SlotSemantic;
+import appeng.menu.implementations.MenuTypeBuilder;
+import appeng.parts.misc.ItemInterfacePart;
 import appeng.util.InventoryAdaptor;
 import appeng.util.helpers.ItemHandlerUtil;
 import appeng.util.inv.AdaptorFixedInv;
@@ -34,7 +33,6 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -45,9 +43,9 @@ import net.minecraft.util.Util;
 import java.util.HashMap;
 import java.util.Map;
 
-public class WITContainer extends AEBaseContainer implements IWTInvHolder {
+public class WITContainer extends AEBaseMenu implements IWTInvHolder {
 
-    public static final ScreenHandlerType<WITContainer> TYPE = ContainerTypeBuilder.create(WITContainer::new, WITGuiObject.class).requirePermission(SecurityPermissions.BUILD).build("wireless_interface_terminal");
+    public static final ScreenHandlerType<WITContainer> TYPE = MenuTypeBuilder.create(WITContainer::new, WITGuiObject.class).requirePermission(SecurityPermissions.BUILD).build("wireless_interface_terminal");
 
     private final WITGuiObject witGUIObject;
     private static long autoBase = Long.MIN_VALUE;
@@ -111,7 +109,7 @@ public class WITContainer extends AEBaseContainer implements IWTInvHolder {
         if(host != null) {
             final IGridNode agn = host.getActionableNode();
             if(agn != null && agn.isActive()) {
-                for(final IGridNode gn : grid.getMachines(InterfaceTileEntity.class)) {
+                for(final IGridNode gn : grid.getMachines(ItemInterfaceBlockEntity.class)) {
                     if(gn.isActive()) {
                         final IInterfaceHost ih = (IInterfaceHost) gn.getMachine();
                         if(ih.getInterfaceDuality().getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.NO)
@@ -251,14 +249,14 @@ public class WITContainer extends AEBaseContainer implements IWTInvHolder {
         if(host != null) {
             final IGridNode agn = host.getActionableNode();
             if(agn != null && agn.isActive()) {
-                for(final IGridNode gn : grid.getMachines(InterfaceTileEntity.class)) {
+                for(final IGridNode gn : grid.getMachines(ItemInterfaceBlockEntity.class)) {
                     final IInterfaceHost ih = (IInterfaceHost) gn.getMachine();
                     final DualityInterface dual = ih.getInterfaceDuality();
                     if(gn.isActive() && dual.getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.YES)
                         diList.put(ih, new WITContainer.InvTracker(dual, dual.getPatterns(), dual.getTermName()));
                 }
 
-                for(final IGridNode gn : grid.getMachines(InterfacePart.class)) {
+                for(final IGridNode gn : grid.getMachines(ItemInterfacePart.class)) {
                     final IInterfaceHost ih = (IInterfaceHost) gn.getMachine();
                     final DualityInterface dual = ih.getInterfaceDuality();
                     if(gn.isActive() && dual.getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.YES)

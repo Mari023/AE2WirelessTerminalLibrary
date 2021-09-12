@@ -70,7 +70,7 @@ public abstract class Restock {
         if(extraction != null && !extraction.isEmpty()) extractedItems = extraction.getCount();
         setCount(getCount() + extractedItems);
         PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeInt(playerEntity.inventory.method_7371((ItemStack) (Object) this));
+        buf.writeInt(playerEntity.getInventory().method_7371((ItemStack) (Object) this));
         buf.writeInt(getCount());
         ServerPlayNetworking.send((ServerPlayerEntity) playerEntity, new Identifier(ae2wtlib.MOD_NAME, "update_restock"), buf);
     }

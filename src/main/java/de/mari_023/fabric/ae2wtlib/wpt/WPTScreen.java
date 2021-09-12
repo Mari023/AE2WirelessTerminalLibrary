@@ -7,8 +7,8 @@ import appeng.client.gui.style.ScreenStyle;
 import appeng.client.gui.style.StyleManager;
 import appeng.client.gui.widgets.ActionButton;
 import appeng.client.gui.widgets.TabButton;
-import appeng.container.SlotSemantic;
 import appeng.core.localization.GuiText;
+import appeng.menu.SlotSemantic;
 import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import de.mari_023.fabric.ae2wtlib.wut.CycleTerminalButton;
 import de.mari_023.fabric.ae2wtlib.wut.IUniversalTerminalCapable;
@@ -105,20 +105,20 @@ public class WPTScreen extends ItemTerminalScreen<WPTContainer> implements IUniv
     protected void updateBeforeRender() {
         super.updateBeforeRender();
         if(handler.isCraftingMode()) {
-            tabCraftButton.visible = true;
-            tabProcessButton.visible = false;
+            tabCraftButton.setVisibility(true);
+            tabProcessButton.setVisibility(false);
             if(handler.substitute) {
-                substitutionsEnabledBtn.visible = true;
-                substitutionsDisabledBtn.visible = false;
+                substitutionsEnabledBtn.setVisibility(true);
+                substitutionsDisabledBtn.setVisibility(false);
             } else {
-                substitutionsEnabledBtn.visible = false;
-                substitutionsDisabledBtn.visible = true;
+                substitutionsEnabledBtn.setVisibility(false);
+                substitutionsDisabledBtn.setVisibility(true);
             }
         } else {
-            tabCraftButton.visible = false;
-            tabProcessButton.visible = true;
-            substitutionsEnabledBtn.visible = false;
-            substitutionsDisabledBtn.visible = false;
+            tabCraftButton.setVisibility(false);
+            tabProcessButton.setVisibility(true);
+            substitutionsEnabledBtn.setVisibility(false);
+            substitutionsDisabledBtn.setVisibility(false);
         }
 
         setSlotsHidden(SlotSemantic.CRAFTING_RESULT, !(handler).isCraftingMode());

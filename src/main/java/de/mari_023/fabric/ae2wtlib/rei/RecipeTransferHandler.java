@@ -1,6 +1,6 @@
 package de.mari_023.fabric.ae2wtlib.rei;
 
-import appeng.helpers.IContainerCraftingPacket;
+import appeng.helpers.IMenuCraftingPacket;
 import me.shedaniel.rei.api.AutoTransferHandler;
 import me.shedaniel.rei.api.EntryStack;
 import me.shedaniel.rei.api.RecipeDisplay;
@@ -13,10 +13,9 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
 import java.util.stream.Stream;
 
-abstract class RecipeTransferHandler<T extends ScreenHandler & IContainerCraftingPacket> implements AutoTransferHandler {
+abstract class RecipeTransferHandler<T extends ScreenHandler & IMenuCraftingPacket> implements AutoTransferHandler {
 
     private final Class<T> containerClass;
 

@@ -7,21 +7,21 @@ import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
 import appeng.api.config.SecurityPermissions;
 import appeng.api.networking.IGridNode;
-import appeng.container.ContainerNull;
-import appeng.container.SlotSemantic;
-import appeng.container.implementations.ContainerTypeBuilder;
-import appeng.container.interfaces.IInventorySlotAware;
-import appeng.container.me.items.ItemTerminalContainer;
-import appeng.container.slot.AppEngSlot;
-import appeng.container.slot.CraftingMatrixSlot;
-import appeng.container.slot.CraftingTermSlot;
-import appeng.container.slot.DisabledSlot;
+import appeng.helpers.IMenuCraftingPacket;
+import appeng.menu.NullMenu;
+import appeng.menu.SlotSemantic;
+import appeng.menu.interfaces.IInventorySlotAware;
+import appeng.menu.me.items.ItemTerminalMenu;
+import appeng.menu.slot.AppEngSlot;
+import appeng.menu.slot.DisabledSlot;
 import appeng.core.localization.PlayerMessages;
 import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.InventoryActionPacket;
-import appeng.helpers.IContainerCraftingPacket;
 import appeng.helpers.InventoryAction;
-import appeng.tile.inventory.AppEngInternalInventory;
+import appeng.blockentity.inventory.AppEngInternalInventory;
+import appeng.menu.implementations.MenuTypeBuilder;
+import appeng.menu.slot.CraftingMatrixSlot;
+import appeng.menu.slot.CraftingTermSlot;
 import appeng.util.inv.IAEAppEngInventory;
 import appeng.util.inv.InvOperation;
 import appeng.util.inv.WrapperInvItemHandler;
@@ -58,9 +58,9 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class WCTContainer extends ItemTerminalContainer implements IAEAppEngInventory, IContainerCraftingPacket, IWTInvHolder {
+public class WCTContainer extends ItemTerminalMenu implements IAEAppEngInventory, IMenuCraftingPacket, IWTInvHolder {
 
-    public static final ScreenHandlerType<WCTContainer> TYPE = ContainerTypeBuilder.create(WCTContainer::new, WCTGuiObject.class).requirePermission(SecurityPermissions.CRAFT).build("wireless_crafting_terminal");
+    public static final ScreenHandlerType<WCTContainer> TYPE = MenuTypeBuilder.create(WCTContainer::new, WCTGuiObject.class).requirePermission(SecurityPermissions.CRAFT).build("wireless_crafting_terminal");
 
     private final AppEngInternalInventory crafting;
     private final CraftingMatrixSlot[] craftingSlots = new CraftingMatrixSlot[9];
@@ -183,20 +183,20 @@ public class WCTContainer extends ItemTerminalContainer implements IAEAppEngInve
 
     @Override
     public void onContentChanged(Inventory inventory) {
-        final ContainerNull cn = new ContainerNull();
+        final NullMenu cn = new NullMenu();
         final CraftingInventory ic = new CraftingInventory(cn, 3, 3);
 
-        for(int x = 0; x < 9; x++) ic.setStack(x, craftingSlots[x].getStack());
+        for(int x = 0; x < 9; x++) ic.setStack(x, craftingSlots[x].getItem());
 
         if(currentRecipe == null || !currentRecipe.matches(ic, getPlayerInventory().player.world)) {
             World world = getPlayerInventory().player.world;
             currentRecipe = world.getRecipeManager().getFirstMatch(RecipeType.CRAFTING, ic, world).orElse(null);
         }
 
-        if(currentRecipe == null) outputSlot.setStack(ItemStack.EMPTY);
+        if(currentRecipe == null) outputSlot.set(ItemStack.EMPTY);
         else {
             final ItemStack craftingResult = currentRecipe.craft(ic);
-            outputSlot.setStack(craftingResult);
+            outputSlot.set(craftingResult);
         }
     }
 

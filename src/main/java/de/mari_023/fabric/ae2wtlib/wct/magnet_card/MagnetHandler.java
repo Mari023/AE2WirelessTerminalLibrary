@@ -45,8 +45,8 @@ public class MagnetHandler {
             if(handler.getItemStorageChannel() == null) return;
             IItemList<IAEItemStack> storageList = handler.getItemStorageChannel().getStorageList();
 
-            for(int i = 0; i < player.inventory.size(); i++) {
-                ItemStack stack = player.inventory.getStack(i);
+            for(int i = 0; i < player.getInventory().size(); i++) {
+                ItemStack stack = player.getInventory().getStack(i);
                 if(stack.isEmpty()) continue;
                 if(!items.containsKey(stack.getItem())) items.put(stack.getItem(), getCount(storageList, stack));
             }

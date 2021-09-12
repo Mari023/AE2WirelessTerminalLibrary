@@ -12,19 +12,18 @@ import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.channels.IItemStorageChannel;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IItemList;
-import appeng.container.ContainerNull;
-import appeng.container.SlotSemantic;
-import appeng.container.guisync.GuiSync;
-import appeng.container.implementations.ContainerTypeBuilder;
-import appeng.container.interfaces.IInventorySlotAware;
-import appeng.container.me.items.ItemTerminalContainer;
-import appeng.container.slot.*;
 import appeng.core.Api;
 import appeng.core.localization.PlayerMessages;
 import appeng.core.sync.packets.PatternSlotPacket;
-import appeng.helpers.IContainerCraftingPacket;
+import appeng.helpers.IMenuCraftingPacket;
 import appeng.items.storage.ViewCellItem;
 import appeng.me.helpers.MachineSource;
+import appeng.menu.NullMenu;
+import appeng.menu.SlotSemantic;
+import appeng.menu.implementations.MenuTypeBuilder;
+import appeng.menu.interfaces.IInventorySlotAware;
+import appeng.menu.me.items.ItemTerminalMenu;
+import appeng.menu.slot.*;
 import appeng.util.InventoryAdaptor;
 import appeng.util.Platform;
 import appeng.util.inv.AdaptorFixedInv;
@@ -62,9 +61,9 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class WPTContainer extends ItemTerminalContainer implements IAEAppEngInventory, IOptionalSlotHost, IContainerCraftingPacket, IWTInvHolder {
+public class WPTContainer extends ItemTerminalMenu implements IAEAppEngInventory, IOptionalSlotHost, IMenuCraftingPacket, IWTInvHolder {
 
-    public static final ScreenHandlerType<WPTContainer> TYPE = ContainerTypeBuilder.create(WPTContainer::new, WPTGuiObject.class).requirePermission(SecurityPermissions.CRAFT).build("wireless_pattern_terminal");
+    public static final ScreenHandlerType<WPTContainer> TYPE = MenuTypeBuilder.create(WPTContainer::new, WPTGuiObject.class).requirePermission(SecurityPermissions.CRAFT).build("wireless_pattern_terminal");
 
     private final FixedItemInv craftingGridInv;
     private final FakeCraftingMatrixSlot[] craftingGridSlots = new FakeCraftingMatrixSlot[9];
@@ -331,8 +330,8 @@ public class WPTContainer extends ItemTerminalContainer implements IAEAppEngInve
             return;
         }
 
-        CraftingInventory ic = new CraftingInventory(new ContainerNull(), 3, 3);
-        CraftingInventory real = new CraftingInventory(new ContainerNull(), 3, 3);
+        CraftingInventory ic = new CraftingInventory(new NullMenu(), 3, 3);
+        CraftingInventory real = new CraftingInventory(new NullMenu(), 3, 3);
 
         for(int x = 0; x < 9; ++x)
             ic.setStack(x, packetPatternSlot.pattern[x] == null ? ItemStack.EMPTY : packetPatternSlot.pattern[x].createItemStack());

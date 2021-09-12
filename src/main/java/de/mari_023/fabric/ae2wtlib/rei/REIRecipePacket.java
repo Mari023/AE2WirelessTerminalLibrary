@@ -13,7 +13,7 @@ import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.channels.IItemStorageChannel;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.core.Api;
-import appeng.helpers.IContainerCraftingPacket;
+import appeng.helpers.IMenuCraftingPacket;
 import appeng.items.storage.ViewCellItem;
 import appeng.mixins.IngredientAccessor;
 import appeng.util.Platform;
@@ -112,7 +112,7 @@ public class REIRecipePacket {
                 throw new IllegalArgumentException("Invalid inline recipe type.");
         }
         final ScreenHandler con = player.currentScreenHandler;
-        Preconditions.checkArgument(con instanceof IContainerCraftingPacket);
+        Preconditions.checkArgument(con instanceof IMenuCraftingPacket);
 
         Recipe<?> recipe = player.getEntityWorld().getRecipeManager().get(recipeId).orElse(null);
         if(recipe == null && this.recipe != null) {
@@ -121,7 +121,7 @@ public class REIRecipePacket {
         }
         Preconditions.checkArgument(recipe != null);
 
-        final IContainerCraftingPacket cct = (IContainerCraftingPacket) con;
+        final IMenuCraftingPacket cct = (IMenuCraftingPacket) con;
         final IGridNode node = cct.getNetworkNode();
 
         Preconditions.checkArgument(node != null);
@@ -266,7 +266,7 @@ public class REIRecipePacket {
     /**
      * Finds the first matching itemstack with the highest stored amount.
      */
-    private IAEItemStack findBestMatchingItemStack(Ingredient ingredients, IPartitionList<IAEItemStack> filter, IMEMonitor<IAEItemStack> storage, IContainerCraftingPacket cct) {
+    private IAEItemStack findBestMatchingItemStack(Ingredient ingredients, IPartitionList<IAEItemStack> filter, IMEMonitor<IAEItemStack> storage, IMenuCraftingPacket cct) {
         return getMostStored(Arrays.stream(getMatchingStacks(ingredients)).map(AEItemStack::fromItemStack).filter(r -> r != null && (filter == null || filter.isListed(r))), storage, cct);
     }
 
@@ -275,14 +275,14 @@ public class REIRecipePacket {
      * <p>
      * As additional condition, it sorts by the stored amount to return the one with the highest stored amount.
      */
-    private IAEItemStack findBestMatchingPattern(Ingredient ingredients, IPartitionList<IAEItemStack> filter, ICraftingGrid crafting, IMEMonitor<IAEItemStack> storage, IContainerCraftingPacket cct) {
+    private IAEItemStack findBestMatchingPattern(Ingredient ingredients, IPartitionList<IAEItemStack> filter, ICraftingGrid crafting, IMEMonitor<IAEItemStack> storage, IMenuCraftingPacket cct) {
         return getMostStored(Arrays.stream(getMatchingStacks(ingredients)).map(AEItemStack::fromItemStack).filter(r -> r != null && (filter == null || filter.isListed(r))).map(s -> s.setCraftable(!crafting.getCraftingFor(s, null, 0, null).isEmpty())).filter(IAEItemStack::isCraftable), storage, cct);
     }
 
     /**
      * From a stream of AE item stacks, pick the one with the highest available amount in the network. Returns null if the stream is empty.
      */
-    private static IAEItemStack getMostStored(Stream<? extends IAEItemStack> stacks, IMEMonitor<IAEItemStack> storage, IContainerCraftingPacket cct) {
+    private static IAEItemStack getMostStored(Stream<? extends IAEItemStack> stacks, IMEMonitor<IAEItemStack> storage, IMenuCraftingPacket cct) {
         return stacks.map(s -> {
             // Determine the stored count
             IAEItemStack stored = storage.extractItems(s.copy().setStackSize(Long.MAX_VALUE),
@@ -291,7 +291,7 @@ public class REIRecipePacket {
         }).min((left, right) -> Long.compare(right.getSecond(), left.getSecond())).map(Pair::getFirst).orElse(null);
     }
 
-    private void handleProcessing(ScreenHandler con, IContainerCraftingPacket cct, Recipe<?> recipe) {
+    private void handleProcessing(ScreenHandler con, IMenuCraftingPacket cct, Recipe<?> recipe) {
         if(con instanceof WPTContainer && !((WPTContainer) con).craftingMode) {
             final FixedItemInv output = cct.getInventoryByName("output");
             ItemHandlerUtil.setStackInSlot(output, 0, recipe.getOutput());

@@ -1,7 +1,7 @@
 package de.mari_023.fabric.ae2wtlib.terminal;
 
 import alexiil.mc.lib.attributes.Simulation;
-import appeng.tile.inventory.AppEngInternalInventory;
+import appeng.blockentity.inventory.AppEngInternalInventory;
 import appeng.util.inv.IAEAppEngInventory;
 import net.minecraft.item.ItemStack;
 

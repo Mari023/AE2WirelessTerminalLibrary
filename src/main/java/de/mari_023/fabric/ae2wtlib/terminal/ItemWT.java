@@ -4,7 +4,7 @@ import appeng.api.config.Actionable;
 import appeng.api.config.SortDir;
 import appeng.api.config.SortOrder;
 import appeng.api.config.ViewItems;
-import appeng.api.features.ILocatable;
+import appeng.api.features.Locatables;
 import appeng.api.features.IWirelessTerminalHandler;
 import appeng.api.util.IConfigManager;
 import appeng.core.Api;
@@ -54,7 +54,7 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermi
         }
 
         final long parsedKey = Long.parseLong(unparsedKey);
-        final ILocatable securityStation = Api.instance().registries().locatable().getLocatableBy(parsedKey);
+        final Locatables securityStation = Api.instance().registries().locatable().getLocatableBy(parsedKey);
         if(securityStation == null) {
             player.sendSystemMessage(PlayerMessages.StationCanNotBeLocated.get(), Util.NIL_UUID);
             return false;

@@ -1,6 +1,6 @@
 package de.mari_023.fabric.ae2wtlib.trinket;
 
-import appeng.container.slot.AppEngSlot;
+import appeng.menu.slot.AppEngSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
