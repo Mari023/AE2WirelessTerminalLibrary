@@ -3,6 +3,7 @@ package de.mari_023.fabric.ae2wtlib.wit;
 import alexiil.mc.lib.attributes.Simulation;
 import appeng.api.config.Settings;
 import appeng.api.config.TerminalStyle;
+import appeng.api.storage.StorageChannels;
 import appeng.api.storage.channels.IItemStorageChannel;
 import appeng.client.ActionKey;
 import appeng.client.gui.AEBaseScreen;
@@ -15,8 +16,8 @@ import appeng.client.gui.widgets.AETextField;
 import appeng.client.gui.widgets.Scrollbar;
 import appeng.client.gui.widgets.SettingToggleButton;
 import appeng.core.AEConfig;
-import appeng.core.Api;
 import appeng.core.AppEng;
+import appeng.core.AppEngClient;
 import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.InventoryActionPacket;
 import appeng.helpers.DualityInterface;
@@ -153,7 +154,7 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
         searchField.setEditableColor(0xFFFFFF);
         searchField.setVisible(true);
         searchField.setChangedListener(str -> refreshList());
-        addChild(searchField);
+        addSelectableChild(searchField);
         focusOn(searchField);
         changeFocus(true);
 
@@ -207,7 +208,7 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
 
     @Override
     protected void onMouseClick(Slot slot, int slotIdx, int mouseButton, SlotActionType clickType) {
-        if(!(slot instanceof InterfaceSlot)) {
+        if(!(slot instanceof InterfaceSlot machineSlot)) {
             super.onMouseClick(slot, slotIdx, mouseButton, clickType);
             return;
         }
@@ -223,7 +224,7 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
                 break;
 
             case CLONE: // creative dupe:
-                if(getPlayer().abilities.creativeMode) action = InventoryAction.CREATIVE_DUPLICATE;
+                if(getPlayer().getAbilities().creativeMode) action = InventoryAction.CREATIVE_DUPLICATE;
 
                 break;
 
@@ -233,7 +234,6 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
 
         if(action == null) return;
 
-        InterfaceSlot machineSlot = (InterfaceSlot) slot;
         final InventoryActionPacket p = new InventoryActionPacket(action, getSlotIndex(machineSlot), machineSlot.getMachineInv().getServerId());
         NetworkHandler.instance().sendToServer(p);
     }
@@ -300,7 +300,7 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
         InputUtil.Key input = InputUtil.fromKeyCode(keyCode, scanCode);
 
         if(keyCode != GLFW.GLFW_KEY_ESCAPE) {
-            if(AppEng.instance().isActionKey(ActionKey.TOGGLE_FOCUS, input)) {
+            if(AppEngClient.instance().isActionKey(ActionKey.TOGGLE_FOCUS, input)) {
                 searchField.setFocusUnlocked(!searchField.isFocused());
                 return true;
             }
@@ -433,7 +433,7 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
 
             final ItemStack parsedItemStack = ItemStack.fromNbt(outTag.getCompound(i));
             if(!parsedItemStack.isEmpty()) {
-                final String displayName = Platform.getItemDisplayName(Api.instance().storage().getStorageChannel(IItemStorageChannel.class).createStack(parsedItemStack)).getString().toLowerCase();
+                final String displayName = Platform.getItemDisplayName(StorageChannels.items().createStack(parsedItemStack)).getString().toLowerCase();
                 if(displayName.contains(searchTerm)) return true;
             }
         }
@@ -461,8 +461,8 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
     }
 
     private void reinitialize() {
-        children.removeAll(buttons);
-        buttons.clear();
+        children().removeAll(drawables);
+        drawables.clear();
         init();
     }
 
@@ -486,7 +486,7 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
         InterfaceRecord o = byId.get(id);
 
         if(o == null) {
-            byId.put(id, o = new InterfaceRecord(id, DualityInterface.NUMBER_OF_PATTERN_SLOTS, sortBy, name));
+            byId.put(id, o = new InterfaceRecord(id, 9, sortBy, name));
             refreshList = true;
         }
 

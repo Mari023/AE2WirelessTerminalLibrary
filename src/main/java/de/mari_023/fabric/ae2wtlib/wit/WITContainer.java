@@ -7,6 +7,7 @@ import appeng.api.config.*;
 import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.security.IActionHost;
+import appeng.blockentity.inventory.AppEngInternalInventory;
 import appeng.blockentity.misc.ItemInterfaceBlockEntity;
 import appeng.menu.interfaces.IInventorySlotAware;
 import appeng.menu.slot.AppEngSlot;
@@ -18,7 +19,6 @@ import appeng.items.misc.EncodedPatternItem;
 import appeng.menu.AEBaseMenu;
 import appeng.menu.SlotSemantic;
 import appeng.menu.implementations.MenuTypeBuilder;
-import appeng.parts.misc.ItemInterfacePart;
 import appeng.util.InventoryAdaptor;
 import appeng.util.helpers.ItemHandlerUtil;
 import appeng.util.inv.AdaptorFixedInv;
@@ -77,20 +77,20 @@ public class WITContainer extends AEBaseMenu implements IWTInvHolder {
         super.sendContentUpdates();
 
         if(witGUIObject.notInRange()) {
-            if(isValidContainer()) {
+            if(isValidMenu()) {
                 getPlayerInventory().player.sendSystemMessage(PlayerMessages.OutOfRange.get(), Util.NIL_UUID);
                 ((ServerPlayerEntity) getPlayerInventory().player).closeHandledScreen();
             }
-            setValidContainer(false);
+            setValidMenu(false);
         } else {
             powerMultiplier = Config.getPowerMultiplier(witGUIObject.getRange(), witGUIObject.isOutOfRange());
 
             if(witGUIObject.extractAEPower(1, Actionable.SIMULATE, PowerMultiplier.ONE) == 0) {
-                if(isValidContainer()) {
+                if(isValidMenu()) {
                     getPlayerInventory().player.sendSystemMessage(PlayerMessages.DeviceNotPowered.get(), Util.NIL_UUID);
                     ((ServerPlayerEntity) getPlayerInventory().player).closeHandledScreen();
                 }
-                setValidContainer(false);
+                setValidMenu(false);
             }
         }
 
@@ -109,7 +109,7 @@ public class WITContainer extends AEBaseMenu implements IWTInvHolder {
         if(host != null) {
             final IGridNode agn = host.getActionableNode();
             if(agn != null && agn.isActive()) {
-                for(final IGridNode gn : grid.getMachines(ItemInterfaceBlockEntity.class)) {
+                for(final ItemInterfaceBlockEntity gn : grid.getMachines(ItemInterfaceBlockEntity.class)) {
                     if(gn.isActive()) {
                         final IInterfaceHost ih = (IInterfaceHost) gn.getMachine();
                         if(ih.getInterfaceDuality().getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.NO)
@@ -127,7 +127,7 @@ public class WITContainer extends AEBaseMenu implements IWTInvHolder {
                     }
                 }
 
-                for(final IGridNode gn : grid.getMachines(InterfacePart.class)) {
+                for(final ItemInterfaceBlockEntity gn : grid.getMachines(ItemInterfaceBlockEntity.class)) {
                     if(gn.isActive()) {
                         final IInterfaceHost ih = (IInterfaceHost) gn.getMachine();
                         if(ih.getInterfaceDuality().getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.NO)
@@ -249,14 +249,14 @@ public class WITContainer extends AEBaseMenu implements IWTInvHolder {
         if(host != null) {
             final IGridNode agn = host.getActionableNode();
             if(agn != null && agn.isActive()) {
-                for(final IGridNode gn : grid.getMachines(ItemInterfaceBlockEntity.class)) {
+                for(final ItemInterfaceBlockEntity gn : grid.getMachines(ItemInterfaceBlockEntity.class)) {
                     final IInterfaceHost ih = (IInterfaceHost) gn.getMachine();
                     final DualityInterface dual = ih.getInterfaceDuality();
                     if(gn.isActive() && dual.getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.YES)
                         diList.put(ih, new WITContainer.InvTracker(dual, dual.getPatterns(), dual.getTermName()));
                 }
 
-                for(final IGridNode gn : grid.getMachines(ItemInterfacePart.class)) {
+                for(final ItemInterfaceBlockEntity gn : grid.getMachines(ItemInterfaceBlockEntity.class)) {
                     final IInterfaceHost ih = (IInterfaceHost) gn.getMachine();
                     final DualityInterface dual = ih.getInterfaceDuality();
                     if(gn.isActive() && dual.getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.YES)

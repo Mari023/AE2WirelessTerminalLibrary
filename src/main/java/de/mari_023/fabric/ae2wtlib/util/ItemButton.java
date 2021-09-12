@@ -68,7 +68,7 @@ public class ItemButton extends ButtonWidget implements ITooltip {
         RenderSystem.enableDepthTest();
         RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
 
-        if(isHovered()) renderToolTip(matrices, mouseX, mouseY);
+        if(isHovered()) renderTooltip(matrices, mouseX, mouseY);
     }
 
     @Override

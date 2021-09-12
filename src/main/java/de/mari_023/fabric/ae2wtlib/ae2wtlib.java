@@ -83,18 +83,10 @@ public class ae2wtlib implements ModInitializer {
                 final ScreenHandler c = player.currentScreenHandler;
                 if(Name.startsWith("PatternTerminal.") && c instanceof WPTContainer) {
                     switch(Name) {
-                        case "PatternTerminal.CraftMode":
-                            ((WPTContainer) c).getPatternTerminal().setCraftingRecipe(value != 0);
-                            break;
-                        case "PatternTerminal.Encode":
-                            ((WPTContainer) c).encode();
-                            break;
-                        case "PatternTerminal.Clear":
-                            ((WPTContainer) c).clear();
-                            break;
-                        case "PatternTerminal.Substitute":
-                            ((WPTContainer) c).getPatternTerminal().setSubstitution(value != 0);
-                            break;
+                        case "PatternTerminal.CraftMode" -> ((WPTContainer) c).getPatternTerminal().setCraftingRecipe(value != 0);
+                        case "PatternTerminal.Encode" -> ((WPTContainer) c).encode();
+                        case "PatternTerminal.Clear" -> ((WPTContainer) c).clear();
+                        case "PatternTerminal.Substitute" -> ((WPTContainer) c).getPatternTerminal().setSubstitution(value != 0);
                     }
                 } else if(Name.startsWith("CraftingTerminal.") && c instanceof WCTContainer) {
                     if(Name.equals("CraftingTerminal.Delete")) ((WCTContainer) c).deleteTrashSlot();
@@ -258,18 +250,18 @@ public class ae2wtlib implements ModInitializer {
                     }
                     MagnetSettings settings = ItemMagnetCard.loadMagnetSettings(terminal);
                     switch(settings.magnetMode) {
-                        case OFF:
+                        case OFF -> {
                             player.sendMessage(new TranslatableText("gui.ae2wtlib.magnetcard.hotkey").append(new TranslatableText("Pickup to Inventory").setStyle(Style.EMPTY.withColor(TextColor.parse("green")))), true);
                             settings.magnetMode = MagnetMode.PICKUP_INVENTORY;
-                            break;
-                        case PICKUP_INVENTORY:
+                        }
+                        case PICKUP_INVENTORY -> {
                             player.sendMessage(new TranslatableText("gui.ae2wtlib.magnetcard.hotkey").append(new TranslatableText("Pickup to ME").setStyle(Style.EMPTY.withColor(TextColor.parse("green")))), true);
                             settings.magnetMode = MagnetMode.PICKUP_ME;
-                            break;
-                        case PICKUP_ME:
+                        }
+                        case PICKUP_ME -> {
                             player.sendMessage(new TranslatableText("gui.ae2wtlib.magnetcard.hotkey").append(new TranslatableText("gui.ae2wtlib.magnetcard.desc.off").setStyle(Style.EMPTY.withColor(TextColor.parse("red")))), true);
                             settings.magnetMode = MagnetMode.OFF;
-                            break;
+                        }
                     }
                     ItemMagnetCard.saveMagnetSettings(terminal, settings);
                 }

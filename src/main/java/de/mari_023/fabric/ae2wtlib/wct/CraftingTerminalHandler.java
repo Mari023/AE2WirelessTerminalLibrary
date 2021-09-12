@@ -7,12 +7,10 @@ import appeng.api.networking.IGridNode;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.storage.IStorageService;
 import appeng.api.storage.IMEMonitor;
-import appeng.api.storage.channels.IItemStorageChannel;
+import appeng.api.storage.StorageChannels;
 import appeng.api.storage.data.IAEItemStack;
-import appeng.api.util.DimensionalCoord;
+import appeng.api.util.DimensionalBlockPos;
 import appeng.blockentity.networking.WirelessBlockEntity;
-import appeng.core.Api;
-import appeng.tile.networking.WirelessTileEntity;
 import appeng.util.item.AEItemStack;
 import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.terminal.IInfinityBoosterCardHolder;
@@ -27,17 +25,14 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public class CraftingTerminalHandler {
 
     private static final HashMap<UUID, CraftingTerminalHandler> players = new HashMap<>();//TODO clear on leave (client)
     private final PlayerEntity player;
     private ItemStack craftingTerminal = ItemStack.EMPTY;
-    private Locatables securityStation;
+    private IActionHost securityStation;
     private IGrid targetGrid;
     private IStorageService storageGrid;
     private IMEMonitor<IAEItemStack> itemStorageChannel;
@@ -112,18 +107,18 @@ public class CraftingTerminalHandler {
         return slot;
     }
 
-    public Locatables getSecurityStation() {
+    public IActionHost getSecurityStation() {
         if(getCraftingTerminal().isEmpty()) return securityStation = null;
         if(securityStation != null) return securityStation;
-        final String unParsedKey = ((ItemWT) craftingTerminal.getItem()).getEncryptionKey(craftingTerminal);
+        final OptionalLong unParsedKey = ((ItemWT) craftingTerminal.getItem()).getGridKey(craftingTerminal);
         if(unParsedKey.isEmpty()) return securityStation = null;
-        final long parsedKey = Long.parseLong(unParsedKey);
-        return securityStation = Api.instance().registries().locatable().getLocatableBy(parsedKey);
+        final long parsedKey = unParsedKey.getAsLong();
+        return securityStation = Locatables.securityStations().get(player.world, parsedKey);
     }
 
     public IGrid getTargetGrid() {
         if(getSecurityStation() == null) return targetGrid = null;
-        final IGridNode n = ((IActionHost) securityStation).getActionableNode();
+        final IGridNode n = securityStation.getActionableNode();
 
         if(n == null) return targetGrid = null;
         return targetGrid = n.getGrid();
@@ -138,7 +133,7 @@ public class CraftingTerminalHandler {
     public IMEMonitor<IAEItemStack> getItemStorageChannel() {
         if(getStorageGrid() == null) return itemStorageChannel = null;
         if(itemStorageChannel == null)
-            return itemStorageChannel = storageGrid.getInventory(Api.instance().storage().getStorageChannel(IItemStorageChannel.class));
+            return itemStorageChannel = storageGrid.getInventory(StorageChannels.items());
         return itemStorageChannel;
     }
 
@@ -166,13 +161,13 @@ public class CraftingTerminalHandler {
         double rangeLimit = wap.getRange();
         rangeLimit *= rangeLimit;
 
-        final DimensionalCoord dc = wap.getLocation();
+        final DimensionalBlockPos dc = wap.getLocation();
 
-        if(dc.getWorld() != player.world) return false;
+        if(dc.getLevel() != player.world) return false;
 
-        final double offX = dc.x - player.getX();
-        final double offY = dc.y - player.getY();
-        final double offZ = dc.z - player.getZ();
+        final double offX = dc.getPos().getX() - player.getX();
+        final double offY = dc.getPos().getY() - player.getY();
+        final double offZ = dc.getPos().getZ() - player.getZ();
 
         final double r = offX * offX + offY * offY + offZ * offZ;
         if(r < rangeLimit && sqRange > r && wap.isActive()) {

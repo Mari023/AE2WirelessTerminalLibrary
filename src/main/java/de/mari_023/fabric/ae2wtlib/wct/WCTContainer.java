@@ -156,7 +156,7 @@ public class WCTContainer extends ItemTerminalMenu implements IAEAppEngInventory
         super.sendContentUpdates();
 
         if(wctGUIObject.notInRange()) {
-            if(isValidContainer()) {
+            if(isValidMenu()) {
                 getPlayerInventory().player.sendSystemMessage(PlayerMessages.OutOfRange.get(), Util.NIL_UUID);
                 ((ServerPlayerEntity) getPlayerInventory().player).closeHandledScreen();
             }
@@ -169,12 +169,12 @@ public class WCTContainer extends ItemTerminalMenu implements IAEAppEngInventory
             }
 
             if(wctGUIObject.extractAEPower(1, Actionable.SIMULATE, PowerMultiplier.ONE) != 0) return;
-            if(isValidContainer()) {
+            if(isValidMenu()) {
                 getPlayerInventory().player.sendSystemMessage(PlayerMessages.DeviceNotPowered.get(), Util.NIL_UUID);
                 ((ServerPlayerEntity) getPlayerInventory().player).closeHandledScreen();
             }
         }
-        setValidContainer(false);
+        setValidMenu(false);
     }
 
     /**

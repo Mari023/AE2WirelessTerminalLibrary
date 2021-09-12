@@ -50,7 +50,7 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermi
         if(Platform.isClient()) return false;
 
         final OptionalLong unparsedKey = getGridKey(item);
-        if(!unparsedKey.isPresent()) {
+        if(unparsedKey.isEmpty()) {
             player.sendSystemMessage(PlayerMessages.DeviceNotLinked.get(), Util.NIL_UUID);
             return false;
         }

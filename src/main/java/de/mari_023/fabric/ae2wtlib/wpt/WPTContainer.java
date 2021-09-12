@@ -2,17 +2,18 @@ package de.mari_023.fabric.ae2wtlib.wpt;
 
 import alexiil.mc.lib.attributes.item.FixedItemInv;
 import alexiil.mc.lib.attributes.item.compat.FixedInventoryVanillaWrapper;
+import appeng.api.AEApi;
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
 import appeng.api.config.SecurityPermissions;
 import appeng.api.crafting.ICraftingHelper;
-import appeng.api.definitions.IDefinitions;
 import appeng.api.networking.IGridNode;
 import appeng.api.storage.IMEMonitor;
-import appeng.api.storage.channels.IItemStorageChannel;
+import appeng.api.storage.StorageChannels;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IItemList;
-import appeng.core.Api;
+import appeng.blockentity.inventory.AppEngInternalInventory;
+import appeng.core.definitions.AEItems;
 import appeng.core.localization.PlayerMessages;
 import appeng.core.sync.packets.PatternSlotPacket;
 import appeng.helpers.IMenuCraftingPacket;
@@ -20,13 +21,13 @@ import appeng.items.storage.ViewCellItem;
 import appeng.me.helpers.MachineSource;
 import appeng.menu.NullMenu;
 import appeng.menu.SlotSemantic;
+import appeng.menu.guisync.GuiSync;
 import appeng.menu.implementations.MenuTypeBuilder;
 import appeng.menu.interfaces.IInventorySlotAware;
 import appeng.menu.me.items.ItemTerminalMenu;
 import appeng.menu.slot.*;
 import appeng.util.InventoryAdaptor;
 import appeng.util.Platform;
-import appeng.util.inv.AdaptorFixedInv;
 import appeng.util.inv.IAEAppEngInventory;
 import appeng.util.inv.InvOperation;
 import appeng.util.inv.WrapperCursorItemHandler;
@@ -65,14 +66,14 @@ public class WPTContainer extends ItemTerminalMenu implements IAEAppEngInventory
 
     public static final ScreenHandlerType<WPTContainer> TYPE = MenuTypeBuilder.create(WPTContainer::new, WPTGuiObject.class).requirePermission(SecurityPermissions.CRAFT).build("wireless_pattern_terminal");
 
-    private final FixedItemInv craftingGridInv;
+    private final AppEngInternalInventory craftingGridInv;
     private final FakeCraftingMatrixSlot[] craftingGridSlots = new FakeCraftingMatrixSlot[9];
     private final OptionalFakeSlot[] processingOutputSlots = new OptionalFakeSlot[3];
     private final PatternTermSlot craftOutputSlot;
     private final RestrictedInputSlot blankPatternSlot;
     private final RestrictedInputSlot encodedPatternSlot;
     private CraftingRecipe currentRecipe;
-    private final ICraftingHelper craftingHelper = Api.INSTANCE.crafting();
+    private final ICraftingHelper craftingHelper = AEApi.crafting();
 
     private final WPTGuiObject wptGUIObject;
 
@@ -85,8 +86,8 @@ public class WPTContainer extends ItemTerminalMenu implements IAEAppEngInventory
         super(TYPE, id, ip, gui, true);
         wptGUIObject = gui;
 
-        final FixedItemInv patternInv = getPatternTerminal().getInventoryByName("pattern");
-        final FixedItemInv output = getPatternTerminal().getInventoryByName("output");
+        final AppEngInternalInventory patternInv = getPatternTerminal().getInventoryByName("pattern");
+        final AppEngInternalInventory output = getPatternTerminal().getInventoryByName("output");
 
         // Create the 3x3 crafting input grid, which is used for both processing and crafting mode
         craftingGridInv = getPatternTerminal().getInventoryByName("crafting");
@@ -142,11 +143,11 @@ public class WPTContainer extends ItemTerminalMenu implements IAEAppEngInventory
         super.sendContentUpdates();
 
         if(wptGUIObject.notInRange()) {
-            if(isValidContainer()) {
+            if(isValidMenu()) {
                 getPlayerInventory().player.sendSystemMessage(PlayerMessages.OutOfRange.get(), Util.NIL_UUID);
                 ((ServerPlayerEntity) getPlayerInventory().player).closeHandledScreen();
             }
-            setValidContainer(false);
+            setValidMenu(false);
         } else {
             double powerMultiplier = Config.getPowerMultiplier(wptGUIObject.getRange(), wptGUIObject.isOutOfRange());
             ticks++;
@@ -156,11 +157,11 @@ public class WPTContainer extends ItemTerminalMenu implements IAEAppEngInventory
             }
 
             if(wptGUIObject.extractAEPower(1, Actionable.SIMULATE, PowerMultiplier.ONE) == 0) {
-                if(isValidContainer()) {
+                if(isValidMenu()) {
                     getPlayerInventory().player.sendSystemMessage(PlayerMessages.DeviceNotPowered.get(), Util.NIL_UUID);
                     ((ServerPlayerEntity) getPlayerInventory().player).closeHandledScreen();
                 }
-                setValidContainer(false);
+                setValidMenu(false);
             }
         }
 
@@ -298,10 +299,7 @@ public class WPTContainer extends ItemTerminalMenu implements IAEAppEngInventory
     }
 
     private boolean isPattern(final ItemStack output) {
-        if(output.isEmpty()) return false;
-
-        final IDefinitions definitions = Api.instance().definitions();
-        return definitions.materials().blankPattern().isSameAs(output);
+        return !output.isEmpty() && AEItems.BLANK_PATTERN.isSameAs(output);
     }
 
     @Override
@@ -339,7 +337,7 @@ public class WPTContainer extends ItemTerminalMenu implements IAEAppEngInventory
         Recipe<CraftingInventory> r = p.world.getRecipeManager().getFirstMatch(RecipeType.CRAFTING, ic, p.world).orElse(null);
         if(r == null) return;
 
-        IMEMonitor<IAEItemStack> storage = getPatternTerminal().getInventory(Api.instance().storage().getStorageChannel(IItemStorageChannel.class));
+        IMEMonitor<IAEItemStack> storage = getPatternTerminal().getInventory(StorageChannels.items());
         IItemList<IAEItemStack> all = storage.getStorageList();
         ItemStack is = r.craft(ic);
 

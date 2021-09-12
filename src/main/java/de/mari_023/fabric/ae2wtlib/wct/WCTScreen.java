@@ -23,7 +23,6 @@ import dev.emi.trinkets.TrinketInventoryRenderer;
 import dev.emi.trinkets.TrinketsClient;
 import dev.emi.trinkets.api.SlotGroups;
 import dev.emi.trinkets.api.TrinketSlots;
-import dev.emi.trinkets.mixin.SlotMixin;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
@@ -97,8 +96,8 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
             trinketSlots.add(ts);
             if(!ts.keepVisible) ((SlotMixin) slot).setXPosition(Integer.MIN_VALUE);
             else {
-                ((SlotMixin) ts).setXPosition(getGroupX(TrinketSlots.getSlotFromName(ts.group, ts.slot).getSlotGroup()) + 1);
-                ((SlotMixin) ts).setYPosition(getGroupY(TrinketSlots.getSlotFromName(ts.group, ts.slot).getSlotGroup()) + 1);
+                ((SlotMixin) ts).setX(getGroupX(TrinketSlots.getSlotFromName(ts.group, ts.slot).getSlotGroup()) + 1);
+                ((SlotMixin) ts).setY(getGroupY(TrinketSlots.getSlotFromName(ts.group, ts.slot).getSlotGroup()) + 1);
             }
         }
     }

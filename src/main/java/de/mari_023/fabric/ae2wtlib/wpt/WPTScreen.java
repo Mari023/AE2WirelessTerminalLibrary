@@ -66,7 +66,7 @@ public class WPTScreen extends ItemTerminalScreen<WPTContainer> implements IUniv
         substitutionsDisabledBtn.setHalfSize(true);
         widgets.add("substitutionsDisabled", substitutionsDisabledBtn);
 
-        ActionButton clearBtn = addButton(new ActionButton(ActionItems.CLOSE, btn -> clear()));
+        ActionButton clearBtn = addDrawable(new ActionButton(ActionItems.CLOSE, btn -> clear()));
         clearBtn.setHalfSize(true);
         widgets.add("clearPattern", clearBtn);
         widgets.add("encodePattern", new ActionButton(ActionItems.ENCODE, act -> encode()));
@@ -105,20 +105,20 @@ public class WPTScreen extends ItemTerminalScreen<WPTContainer> implements IUniv
     protected void updateBeforeRender() {
         super.updateBeforeRender();
         if(handler.isCraftingMode()) {
-            tabCraftButton.setVisibility(true);
-            tabProcessButton.setVisibility(false);
+            tabCraftButton.visible = true;
+            tabProcessButton.visible = false;
             if(handler.substitute) {
-                substitutionsEnabledBtn.setVisibility(true);
-                substitutionsDisabledBtn.setVisibility(false);
+                substitutionsEnabledBtn.visible = true;
+                substitutionsDisabledBtn.visible = false;
             } else {
-                substitutionsEnabledBtn.setVisibility(false);
-                substitutionsDisabledBtn.setVisibility(true);
+                substitutionsEnabledBtn.visible = false;
+                substitutionsDisabledBtn.visible = true;
             }
         } else {
-            tabCraftButton.setVisibility(false);
-            tabProcessButton.setVisibility(true);
-            substitutionsEnabledBtn.setVisibility(false);
-            substitutionsDisabledBtn.setVisibility(false);
+            tabCraftButton.visible = false;
+            tabProcessButton.visible = true;
+            substitutionsEnabledBtn.visible = false;
+            substitutionsDisabledBtn.visible = false;
         }
 
         setSlotsHidden(SlotSemantic.CRAFTING_RESULT, !(handler).isCraftingMode());

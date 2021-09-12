@@ -49,7 +49,7 @@ public class WPTGuiObject extends WTGuiObject implements IPortableCell, IAEAppEn
         return craftingMode;
     }
 
-    public FixedItemInv getInventoryByName(final String name) {
+    public AppEngInternalInventory getInventoryByName(final String name) {
         if(name.equals("crafting")) return crafting;
 
         if(name.equals("output")) return output;
