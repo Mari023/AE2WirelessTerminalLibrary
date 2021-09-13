@@ -174,14 +174,12 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
         for(; i < numLines; ++i) {
             if(scrollLevel + i < lines.size()) {
                 final Object lineObj = lines.get(scrollLevel + i);
-                if(lineObj instanceof InterfaceRecord) {
+                if(lineObj instanceof final InterfaceRecord inv) {
                     // Note: We have to shift everything after the header up by 1 to avoid black line duplication.
-                    final InterfaceRecord inv = (InterfaceRecord) lineObj;
                     for(int z = 0; z < inv.getInventory().getSlotCount(); z++) {
                         handler.slots.add(new InterfaceSlot(inv, z, z * SLOT_SIZE + GUI_PADDING_X, (i + 1) * SLOT_SIZE));
                     }
-                } else if(lineObj instanceof String) {
-                    String name = (String) lineObj;
+                } else if(lineObj instanceof String name) {
                     final int rows = byName.get(name).size();
                     if(rows > 1) name = name + " (" + rows + ')';
 

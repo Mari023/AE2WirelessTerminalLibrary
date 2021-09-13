@@ -50,12 +50,12 @@ public class ItemButton extends ButtonWidget implements ITooltip {
             width = 8;
             height = 8;
 
-            RenderSystem.pushMatrix();
+            matrices.push();
             RenderSystem.translatef(x, y, 0.0F);
 
             RenderSystem.scalef(0.5f, 0.5f, 0.5f);
         } else {
-            RenderSystem.pushMatrix();
+            matrices.push();
             RenderSystem.translatef(x, y, 0.0F);
         }
         drawTexture(matrices, 0, 0, 256 - 16, 256 - 16, 16, 16);
@@ -64,7 +64,7 @@ public class ItemButton extends ButtonWidget implements ITooltip {
         else RenderSystem.color4f(0.5f, 0.5f, 0.5f, 1.0f);
         textureManager.bindTexture(texture);
         drawTexture(matrices, 0, 0, 0, 0, 256, 256);
-        RenderSystem.popMatrix();
+        matrices.pop();
         RenderSystem.enableDepthTest();
         RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
 

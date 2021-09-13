@@ -91,8 +91,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
         TrinketsClient.displayEquipped = 0;
         trinketSlots = new ArrayList<>();
         for(Slot slot : getScreenHandler().slots) {
-            if(!(slot instanceof AppEngTrinketSlot)) continue;
-            AppEngTrinketSlot ts = (AppEngTrinketSlot) slot;
+            if(!(slot instanceof AppEngTrinketSlot ts)) continue;
             trinketSlots.add(ts);
             if(!ts.keepVisible) ((SlotMixin) slot).setXPosition(Integer.MIN_VALUE);
             else {
@@ -206,22 +205,19 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
 
     private void setMagnetModeText() {
         switch(magnetSettings.magnetMode) {
-            case INVALID:
-            case NO_CARD:
-                magnetCardToggleButton.setVisibility(false);
-                break;
-            case OFF:
+            case INVALID, NO_CARD -> magnetCardToggleButton.setVisibility(false);
+            case OFF -> {
                 magnetCardToggleButton.setVisibility(true);
                 magnetCardToggleButton.setMessage(new TranslatableText("gui.ae2wtlib.magnetcard").append("\n").append(new TranslatableText("gui.ae2wtlib.magnetcard.desc.off")));
-                break;
-            case PICKUP_INVENTORY:
+            }
+            case PICKUP_INVENTORY -> {
                 magnetCardToggleButton.setVisibility(true);
                 magnetCardToggleButton.setMessage(new TranslatableText("gui.ae2wtlib.magnetcard").append("\n").append(new TranslatableText("gui.ae2wtlib.magnetcard.desc.inv")));
-                break;
-            case PICKUP_ME:
+            }
+            case PICKUP_ME -> {
                 magnetCardToggleButton.setVisibility(true);
                 magnetCardToggleButton.setMessage(new TranslatableText("gui.ae2wtlib.magnetcard").append("\n").append(new TranslatableText("gui.ae2wtlib.magnetcard.desc.me")));
-                break;
+            }
         }
     }
 
