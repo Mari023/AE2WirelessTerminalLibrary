@@ -116,7 +116,7 @@ dependencies {
     /*modApi("dev.technici4n:FastTransferLib:${project.ftl_version}", {
         exclude group: "dev.technici4n"
     })*/
-    modImplementation "appeng:appliedenergistics2:0.0.0"
+    modImplementation "appeng:appliedenergistics2:0.0.0-portaforgy"
 }
 
 processResources {
