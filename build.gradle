@@ -113,7 +113,7 @@ dependencies {
     modApi("com.terraformersmc:modmenu:${project.mod_menu_version}")//dependency for minemenu
     modImplementation "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
     modImplementation "dev.emi:trinkets:${project.trinkets_version}"
-    modImplementation "appeng:appliedenergistics2:0.0.0-portaforgy"
+    modImplementation "appeng:appliedenergistics2:0.0.0"
 }
 
 processResources {
