@@ -1,32 +1,43 @@
 package de.mari_023.fabric.ae2wtlib.rei;
 
 import de.mari_023.fabric.ae2wtlib.ae2wtlib;
-import de.mari_023.fabric.ae2wtlib.wct.WCTContainer;
-import de.mari_023.fabric.ae2wtlib.wut.recipe.Common;
-import me.shedaniel.rei.api.EntryStack;
-import me.shedaniel.rei.api.RecipeHelper;
-import me.shedaniel.rei.api.plugins.REIPluginV0;
-import me.shedaniel.rei.plugin.DefaultPlugin;
-import net.minecraft.util.Identifier;
+import de.mari_023.fabric.ae2wtlib.wut.recipe.Combine;
+import de.mari_023.fabric.ae2wtlib.wut.recipe.CombineSerializer;
+import de.mari_023.fabric.ae2wtlib.wut.recipe.Upgrade;
+import de.mari_023.fabric.ae2wtlib.wut.recipe.UpgradeSerializer;
+import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
+import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
+import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
+import me.shedaniel.rei.api.client.registry.transfer.TransferHandlerRegistry;
+import me.shedaniel.rei.api.common.util.EntryStacks;
+import me.shedaniel.rei.plugin.common.DefaultPlugin;
+import net.minecraft.item.ItemStack;
+import net.minecraft.recipe.RecipeType;
 
-public class Plugin implements REIPluginV0 {
+public class Plugin implements REIClientPlugin {
+
 
     @Override
-    public Identifier getPluginIdentifier() {
-        return new Identifier(ae2wtlib.MOD_NAME, "rei");
+    public String getPluginProviderName() {
+        return ae2wtlib.MOD_NAME;
     }
 
     @Override
-    public void registerOthers(RecipeHelper recipeHelper) {
-        recipeHelper.registerAutoCraftingHandler(new CraftingRecipeTransferHandler(WCTContainer.class));
-        recipeHelper.registerAutoCraftingHandler(new PatternRecipeTransferHandler());
-
-        recipeHelper.registerWorkingStations(DefaultPlugin.CRAFTING, EntryStack.create(ae2wtlib.CRAFTING_TERMINAL));
+    public void registerCategories(CategoryRegistry registry) {
+        ItemStack grindstone = new ItemStack(ae2wtlib.CRAFTING_TERMINAL);
+        registry.addWorkstations(DefaultPlugin.CRAFTING, EntryStacks.of(grindstone));
     }
 
+    @Override
+    public void registerDisplays(DisplayRegistry registry) {
+        registry.registerRecipeFiller(Combine.class, RecipeType.register(CombineSerializer.Name), WUTDisplay::new);
+        registry.registerRecipeFiller(Upgrade.class, RecipeType.register(UpgradeSerializer.Name), WUTDisplay::new);
+    }
 
     @Override
-    public void registerRecipeDisplays(RecipeHelper recipeHelper) {
-        recipeHelper.registerRecipes(DefaultPlugin.CRAFTING, Common.class, WUTDisplay::new);
+    public void registerTransferHandlers(TransferHandlerRegistry registry) {
+        // Allow recipe transfer from JEI to crafting and pattern terminal
+        registry.register(new CraftingRecipeTransferHandler());
+        registry.register(new PatternRecipeTransferHandler());
     }
 }

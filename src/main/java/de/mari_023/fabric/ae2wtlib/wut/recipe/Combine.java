@@ -6,7 +6,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
 public class Combine extends Common {
@@ -64,12 +63,5 @@ public class Combine extends Common {
     @Override
     public RecipeSerializer<?> getSerializer() {
         return CombineSerializer.INSTANCE;
-    }
-
-    public DefaultedList<Ingredient> getPreviewInputs() {
-        DefaultedList<Ingredient> inputs = DefaultedList.of();
-        inputs.add(TerminalA);
-        inputs.add(TerminalB);
-        return inputs;
     }
 }

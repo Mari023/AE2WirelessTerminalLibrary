@@ -7,7 +7,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
 public class Upgrade extends Common {
@@ -50,12 +49,5 @@ public class Upgrade extends Common {
     @Override
     public RecipeSerializer<?> getSerializer() {
         return UpgradeSerializer.INSTANCE;
-    }
-
-    public DefaultedList<Ingredient> getPreviewInputs() {
-        DefaultedList<Ingredient> inputs = DefaultedList.of();
-        inputs.add(Terminal);
-        inputs.add(InputHelper.wut);
-        return inputs;
     }
 }
