@@ -1,6 +1,6 @@
 package de.mari_023.fabric.ae2wtlib.trinket;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import dev.emi.trinkets.api.SlotGroup;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.texture.TextureManager;
@@ -15,7 +15,7 @@ public class TrinketInvRenderer {
         if(group.onReal) count++;
         int l = count / 2;
         int r = count - l - 1;
-        GlStateManager.disableDepthTest();
+        RenderSystem.enableDepthTest();
         manager.bindTexture(MORE_SLOTS);
         screen.drawTexture(matrices, left + groupX, top + groupY - 4, 4, 0, 18, 26);
         screen.drawTexture(matrices, left + groupX - 18 * l - 4, top + groupY - 4, 0, 0, 4, 26);
@@ -24,7 +24,7 @@ public class TrinketInvRenderer {
             screen.drawTexture(matrices, left + groupX - 18 * (i + 1), top + groupY - 4, 4, 0, 18, 26);
         for(int i = 0; i < r; i++)
             screen.drawTexture(matrices, left + groupX + 18 * (i + 1), top + groupY - 4, 4, 0, 18, 26);
-        GlStateManager.enableDepthTest();
+        RenderSystem.enableDepthTest();
     }
 
     public static <T extends ScreenHandler> void renderExcessSlotGroups(MatrixStack matrices, HandledScreen<T> screen, TextureManager manager, int left, int top, int lastX, int lastY) {
