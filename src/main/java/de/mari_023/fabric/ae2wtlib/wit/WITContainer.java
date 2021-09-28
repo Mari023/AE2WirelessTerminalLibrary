@@ -1,64 +1,58 @@
 package de.mari_023.fabric.ae2wtlib.wit;
 
-import alexiil.mc.lib.attributes.item.FixedItemInv;
-import alexiil.mc.lib.attributes.item.LimitedFixedItemInv;
-import alexiil.mc.lib.attributes.item.SingleItemSlot;
 import appeng.api.config.*;
+import appeng.api.inventories.InternalInventory;
 import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.security.IActionHost;
-import appeng.blockentity.inventory.AppEngInternalInventory;
 import appeng.blockentity.misc.ItemInterfaceBlockEntity;
-import appeng.menu.interfaces.IInventorySlotAware;
-import appeng.menu.slot.AppEngSlot;
+import appeng.core.AELog;
 import appeng.core.localization.PlayerMessages;
-import appeng.helpers.DualityInterface;
+import appeng.core.sync.network.NetworkHandler;
+import appeng.core.sync.packets.InterfaceTerminalPacket;
+import appeng.helpers.DualityItemInterface;
 import appeng.helpers.IInterfaceHost;
+import appeng.helpers.IItemInterfaceHost;
 import appeng.helpers.InventoryAction;
 import appeng.items.misc.EncodedPatternItem;
 import appeng.menu.AEBaseMenu;
 import appeng.menu.SlotSemantic;
 import appeng.menu.implementations.MenuTypeBuilder;
-import appeng.util.InventoryAdaptor;
-import appeng.util.helpers.ItemHandlerUtil;
-import appeng.util.inv.AdaptorFixedInv;
-import appeng.util.inv.WrapperCursorItemHandler;
+import appeng.menu.interfaces.IInventorySlotAware;
+import appeng.menu.slot.AppEngSlot;
+import appeng.parts.misc.ItemInterfacePart;
+import appeng.util.inv.AppEngInternalInventory;
+import appeng.util.inv.FilteredInternalInventory;
+import appeng.util.inv.filter.IAEItemFilter;
 import de.mari_023.fabric.ae2wtlib.Config;
-import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import de.mari_023.fabric.ae2wtlib.terminal.FixedWTInv;
 import de.mari_023.fabric.ae2wtlib.terminal.IWTInvHolder;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class WITContainer extends AEBaseMenu implements IWTInvHolder {
 
     public static final ScreenHandlerType<WITContainer> TYPE = MenuTypeBuilder.create(WITContainer::new, WITGuiObject.class).requirePermission(SecurityPermissions.BUILD).build("wireless_interface_terminal");
+    private static long inventorySerial = Long.MIN_VALUE;
 
     private final WITGuiObject witGUIObject;
-    private static long autoBase = Long.MIN_VALUE;
     private final Map<IInterfaceHost, WITContainer.InvTracker> diList = new HashMap<>();
     private final Map<Long, WITContainer.InvTracker> byId = new HashMap<>();
-    private IGrid grid;
-    private NbtCompound data = new NbtCompound();
 
     public WITContainer(int id, final PlayerInventory ip, final WITGuiObject anchor) {
         super(TYPE, id, ip, anchor);
         witGUIObject = anchor;
-
-        if(isServer() && witGUIObject.getActionableNode() != null) grid = witGUIObject.getActionableNode().getGrid();
 
         final int slotIndex = ((IInventorySlotAware) witGUIObject).getInventorySlot();
         if(slotIndex < 100 && slotIndex != 40) lockPlayerInventorySlot(slotIndex);
@@ -100,178 +94,186 @@ public class WITContainer extends AEBaseMenu implements IWTInvHolder {
             ticks = 0;
         }
 
-        if(grid == null) return;
+        IGrid grid = getGrid();
+        VisitorState state = new VisitorState();
+        if(grid != null) {
+            visitInterfaceHosts(grid, ItemInterfaceBlockEntity.class, state);
+            visitInterfaceHosts(grid, ItemInterfacePart.class, state);
+        }
 
-        int total = 0;
-        boolean missing = false;
+        InterfaceTerminalPacket packet;
+        if(state.total == diList.size() && !state.forceFullUpdate) packet = createIncrementalUpdate();
+        else packet = createFullUpdate(grid);
 
-        final IActionHost host = getActionHost();
+        if(packet != null) NetworkHandler.instance().sendTo(packet, (ServerPlayerEntity) getPlayerInventory().player);
+    }
+
+    @Nullable
+    private IGrid getGrid() {
+        IActionHost host = getActionHost();
         if(host != null) {
-            final IGridNode agn = host.getActionableNode();
-            if(agn != null && agn.isActive()) {
-                for(final ItemInterfaceBlockEntity gn : grid.getMachines(ItemInterfaceBlockEntity.class)) {
-                    if(gn.isActive()) {
-                        final IInterfaceHost ih = (IInterfaceHost) gn.getMachine();
-                        if(ih.getInterfaceDuality().getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.NO)
-                            continue;
+            IGridNode agn = host.getActionableNode();
+            if(agn != null && agn.isActive()) return agn.getGrid();
+        }
+        return null;
+    }
 
-                        final WITContainer.InvTracker t = diList.get(ih);
+    private <T extends IItemInterfaceHost> void visitInterfaceHosts(IGrid grid, Class<T> machineClass, VisitorState state) {
+        Iterator var4 = grid.getActiveMachines(machineClass).iterator();
 
-                        if(t == null) missing = true;
-                        else {
-                            final DualityInterface dual = ih.getInterfaceDuality();
-                            if(!t.name.equals(dual.getTermName())) missing = true;
+        while(true) {
+            IItemInterfaceHost ih;
+            DualityItemInterface dual;
+            do {
+                if(!var4.hasNext()) return;
+
+                ih = (IItemInterfaceHost) var4.next();
+                dual = ih.getInterfaceDuality();
+            } while(dual.getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.NO);
+
+            InvTracker t = diList.get(ih);
+            if(t == null || !t.name.equals(dual.getTermName())) {
+                state.forceFullUpdate = true;
+            }
+
+            ++state.total;
+        }
+    }
+
+    public void doAction(ServerPlayerEntity player, InventoryAction action, int slot, long id) {
+        InvTracker inv = byId.get(id);
+        if(inv != null) {
+            if(slot >= 0 && slot < inv.server.size()) {
+                ItemStack is = inv.server.getStackInSlot(slot);
+                FilteredInternalInventory interfaceSlot = new FilteredInternalInventory(inv.server.getSlotInv(slot), new PatternSlotFilter());
+                ItemStack carried = getCursorStack();
+                ItemStack inHand;
+                ItemStack extra;
+                switch(action) {
+                    case PICKUP_OR_SET_DOWN:
+                        if(!carried.isEmpty()) {
+                            extra = interfaceSlot.getStackInSlot(0);
+                            if(extra.isEmpty()) {
+                                setCursorStack(interfaceSlot.addItems(carried));
+                            } else {
+                                extra = extra.copy();
+                                inHand = carried.copy();
+                                interfaceSlot.setItemDirect(0, ItemStack.EMPTY);
+                                setCursorStack(ItemStack.EMPTY);
+                                setCursorStack(interfaceSlot.addItems(inHand.copy()));
+                                if(carried.isEmpty()) {
+                                    setCursorStack(extra);
+                                } else {
+                                    setCursorStack(inHand);
+                                    interfaceSlot.setItemDirect(0, extra);
+                                }
+                            }
+                        } else {
+                            setCursorStack(interfaceSlot.getStackInSlot(0));
+                            interfaceSlot.setItemDirect(0, ItemStack.EMPTY);
                         }
+                        break;
+                    case SPLIT_OR_PLACE_SINGLE:
+                        if(!carried.isEmpty()) {
+                            extra = carried.split(1);
+                            if(!extra.isEmpty()) {
+                                extra = interfaceSlot.addItems(extra);
+                            }
 
-                        total++;
-                    }
-                }
-
-                for(final ItemInterfaceBlockEntity gn : grid.getMachines(ItemInterfaceBlockEntity.class)) {
-                    if(gn.isActive()) {
-                        final IInterfaceHost ih = (IInterfaceHost) gn.getMachine();
-                        if(ih.getInterfaceDuality().getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.NO)
-                            continue;
-
-                        final WITContainer.InvTracker t = diList.get(ih);
-
-                        if(t == null) missing = true;
-                        else {
-                            final DualityInterface dual = ih.getInterfaceDuality();
-                            if(!t.name.equals(dual.getTermName())) {
-                                missing = true;
+                            if(!extra.isEmpty()) {
+                                carried.increment(extra.getCount());
+                            }
+                        } else if(!is.isEmpty()) {
+                            setCursorStack(interfaceSlot.extractItem(0, (is.getCount() + 1) / 2, false));
+                        }
+                        break;
+                    case SHIFT_CLICK:
+                        extra = interfaceSlot.getStackInSlot(0).copy();
+                        if(!player.getInventory().insertStack(extra)) {
+                            interfaceSlot.setItemDirect(0, extra);
+                        } else {
+                            interfaceSlot.setItemDirect(0, ItemStack.EMPTY);
+                        }
+                        break;
+                    case MOVE_REGION:
+                        for(int x = 0; x < inv.server.size(); ++x) {
+                            inHand = inv.server.getStackInSlot(x);
+                            if(!player.getInventory().insertStack(inHand)) {
+                                interfaceSlot.setItemDirect(0, inHand);
+                            } else {
+                                interfaceSlot.setItemDirect(0, ItemStack.EMPTY);
                             }
                         }
-                        total++;
-                    }
-                }
-            }
-        }
 
-        if(total != diList.size() || missing) regenList(data);
-        else {
-            for(final Map.Entry<IInterfaceHost, WITContainer.InvTracker> en : diList.entrySet()) {
-                final WITContainer.InvTracker inv = en.getValue();
-                for(int x = 0; x < inv.server.getSlotCount(); x++)
-                    if(isDifferent(inv.server.getInvStack(x), inv.client.getInvStack(x))) addItems(data, inv, x, 1);
-            }
-        }
-
-        if(data.isEmpty()) return;
-        PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeNbt(data);
-        ServerPlayNetworking.send((ServerPlayerEntity) getPlayerInventory().player, new Identifier(ae2wtlib.MOD_NAME, "interface_terminal"), buf);
-        data = new NbtCompound();
-    }
-
-    @Override
-    public void doAction(final ServerPlayerEntity player, final InventoryAction action, final int slot, final long id) {
-        final WITContainer.InvTracker inv = byId.get(id);
-        if(inv == null) return;
-        final ItemStack is = inv.server.getInvStack(slot);
-        final boolean hasItemInHand = !player.getInventory().getCursorStack().isEmpty();
-
-        final InventoryAdaptor playerHand = new AdaptorFixedInv(new WrapperCursorItemHandler(player.getInventory()));
-
-        // Create a wrapper around the targeted slot that will only allow insertions of
-        // patterns
-        LimitedFixedItemInv limitedSlotInv = inv.server.createLimitedFixedInv();
-        limitedSlotInv.getAllRule().filterInserts(this::isValidPattern);
-        SingleItemSlot theSlot = limitedSlotInv.getSlot(slot);
-
-        switch(action) {
-            case PICKUP_OR_SET_DOWN:
-                if(hasItemInHand) {
-                    ItemStack inSlot = theSlot.get();
-                    if(inSlot.isEmpty())
-                        player.getInventory().setCursorStack(theSlot.insert(player.getInventory().getCursorStack()));
-                    else {
-                        inSlot = inSlot.copy();
-                        final ItemStack inHand = player.getInventory().getCursorStack().copy();
-
-                        theSlot.set(ItemStack.EMPTY);
-                        player.getInventory().setCursorStack(ItemStack.EMPTY);
-
-                        player.getInventory().setCursorStack(theSlot.insert(inHand.copy()));
-
-                        if(player.getInventory().getCursorStack().isEmpty()) player.getInventory().setCursorStack(inSlot);
-                        else {
-                            player.getInventory().setCursorStack(inHand);
-                            theSlot.set(inSlot);
+                        return;
+                    case CREATIVE_DUPLICATE:
+                        if(player.getAbilities().creativeMode && carried.isEmpty()) {
+                            setCursorStack(is.isEmpty() ? ItemStack.EMPTY : is.copy());
                         }
-                    }
-                } else theSlot.set(playerHand.addItems(theSlot.get()));
-                break;
-
-            case SPLIT_OR_PLACE_SINGLE:
-                if(hasItemInHand) {
-                    ItemStack extra = playerHand.removeItems(1, ItemStack.EMPTY, null);
-                    if(!extra.isEmpty()) extra = theSlot.insert(extra);
-                    if(!extra.isEmpty()) playerHand.addItems(extra);
-                } else if(!is.isEmpty()) {
-                    ItemStack extra = theSlot.extract((is.getCount() + 1) / 2);
-                    if(!extra.isEmpty()) extra = playerHand.addItems(extra);
-                    if(!extra.isEmpty()) theSlot.insert(extra);
                 }
-                break;
 
-            case SHIFT_CLICK:
-                final InventoryAdaptor playerInv = InventoryAdaptor.getAdaptor(player);
-                theSlot.set(playerInv.addItems(theSlot.get()));
-                break;
-
-            case MOVE_REGION:
-                final InventoryAdaptor playerInvAd = InventoryAdaptor.getAdaptor(player);
-                for(int x = 0; x < inv.server.getSlotCount(); x++)
-                    ItemHandlerUtil.setStackInSlot(inv.server, x, playerInvAd.addItems(inv.server.getInvStack(x)));
-                break;
-
-            case CREATIVE_DUPLICATE:
-                if(player.isCreative() && !hasItemInHand)
-                    player.getInventory().setCursorStack(is.isEmpty() ? ItemStack.EMPTY : is.copy());
-                break;
-
-            default:
-                return;
+            } else {
+                AELog.warn("Client refers to invalid slot %d of inventory %s", slot, inv.name.getString());
+            }
         }
-        updateHeld(player);
     }
 
-    private boolean isValidPattern(ItemStack stack) {
-        return !stack.isEmpty() && stack.getItem() instanceof EncodedPatternItem;
-    }
-
-    private void regenList(final NbtCompound data) {
+    private InterfaceTerminalPacket createFullUpdate(@Nullable IGrid grid) {
         byId.clear();
         diList.clear();
+        if(grid == null) {
+            return new InterfaceTerminalPacket(true, new NbtCompound());
+        } else {
+            Iterator var2 = grid.getActiveMachines(ItemInterfaceBlockEntity.class).iterator();
 
-        final IActionHost host = getActionHost();
-        if(host != null) {
-            final IGridNode agn = host.getActionableNode();
-            if(agn != null && agn.isActive()) {
-                for(final ItemInterfaceBlockEntity gn : grid.getMachines(ItemInterfaceBlockEntity.class)) {
-                    final IInterfaceHost ih = (IInterfaceHost) gn.getMachine();
-                    final DualityInterface dual = ih.getInterfaceDuality();
-                    if(gn.isActive() && dual.getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.YES)
-                        diList.put(ih, new WITContainer.InvTracker(dual, dual.getPatterns(), dual.getTermName()));
+            DualityItemInterface dual;
+            while(var2.hasNext()) {
+                ItemInterfaceBlockEntity ih = (ItemInterfaceBlockEntity) var2.next();
+                dual = ih.getInterfaceDuality();
+                if(dual.getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.YES) {
+                    diList.put(ih, new InvTracker(dual, dual.getPatterns(), dual.getTermName()));
                 }
+            }
 
-                for(final ItemInterfaceBlockEntity gn : grid.getMachines(ItemInterfaceBlockEntity.class)) {
-                    final IInterfaceHost ih = (IInterfaceHost) gn.getMachine();
-                    final DualityInterface dual = ih.getInterfaceDuality();
-                    if(gn.isActive() && dual.getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.YES)
-                        diList.put(ih, new WITContainer.InvTracker(dual, dual.getPatterns(), dual.getTermName()));
+            var2 = grid.getActiveMachines(ItemInterfacePart.class).iterator();
+
+            while(var2.hasNext()) {
+                ItemInterfacePart ih = (ItemInterfacePart) var2.next();
+                dual = ih.getInterfaceDuality();
+                if(dual.getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.YES) {
+                    diList.put(ih, new InvTracker(dual, dual.getPatterns(), dual.getTermName()));
+                }
+            }
+
+            NbtCompound data = new NbtCompound();
+
+            for(Map.Entry<IInterfaceHost, InvTracker> iInterfaceHostInvTrackerEntry : diList.entrySet()) {
+                Map.Entry<IItemInterfaceHost, InvTracker> en = (Map.Entry) iInterfaceHostInvTrackerEntry;
+                InvTracker inv = en.getValue();
+                byId.put(inv.serverId, inv);
+                addItems(data, inv, 0, inv.server.size());
+            }
+
+            return new InterfaceTerminalPacket(true, data);
+        }
+    }
+
+    private InterfaceTerminalPacket createIncrementalUpdate() {
+        NbtCompound data = null;
+
+        for(Map.Entry<IInterfaceHost, InvTracker> iInterfaceHostInvTrackerEntry : diList.entrySet()) {
+            Map.Entry<IItemInterfaceHost, InvTracker> en = (Map.Entry) iInterfaceHostInvTrackerEntry;
+            InvTracker inv = en.getValue();
+
+            for(int x = 0; x < inv.server.size(); ++x) {
+                if(isDifferent(inv.server.getStackInSlot(x), inv.client.getStackInSlot(x))) {
+                    if(data == null) data = new NbtCompound();
+
+                    addItems(data, inv, x, 1);
                 }
             }
         }
-
-        data.putBoolean("clear", true);
-
-        for(final Map.Entry<IInterfaceHost, WITContainer.InvTracker> en : diList.entrySet()) {
-            final WITContainer.InvTracker inv = en.getValue();
-            byId.put(inv.which, inv);
-            addItems(data, inv, 0, inv.server.getSlotCount());
-        }
+        return data == null ? null : new InterfaceTerminalPacket(false, data);
     }
 
     private boolean isDifferent(final ItemStack a, final ItemStack b) {
@@ -280,23 +282,18 @@ public class WITContainer extends AEBaseMenu implements IWTInvHolder {
         return !ItemStack.areEqual(a, b);
     }
 
-    private void addItems(final NbtCompound data, final WITContainer.InvTracker inv, final int offset, final int length) {
-        final String name = '=' + Long.toString(inv.which, Character.MAX_RADIX);
-        final NbtCompound tag = data.getCompound(name);
-
+    private void addItems(NbtCompound data, InvTracker inv, int offset, int length) {
+        String name = "=" + Long.toString(inv.serverId, 36);
+        NbtCompound tag = data.getCompound(name);
         if(tag.isEmpty()) {
             tag.putLong("sortBy", inv.sortBy);
             tag.putString("un", Text.Serializer.toJson(inv.name));
         }
 
-        for(int x = 0; x < length; x++) {
-            final NbtCompound itemNBT = new NbtCompound();
-
-            final ItemStack is = inv.server.getInvStack(x + offset);
-
-            // "update" client side.
-            ItemHandlerUtil.setStackInSlot(inv.client, x + offset, is.isEmpty() ? ItemStack.EMPTY : is.copy());
-
+        for(int x = 0; x < length; ++x) {
+            NbtCompound itemNBT = new NbtCompound();
+            ItemStack is = inv.server.getStackInSlot(x + offset);
+            inv.client.setItemDirect(x + offset, is.isEmpty() ? ItemStack.EMPTY : is.copy());
             if(!is.isEmpty()) is.writeNbt(itemNBT);
 
             tag.put(Integer.toString(x + offset), itemNBT);
@@ -304,21 +301,40 @@ public class WITContainer extends AEBaseMenu implements IWTInvHolder {
         data.put(name, tag);
     }
 
+    private static class VisitorState {
+        int total;
+        boolean forceFullUpdate;
+
+        private VisitorState() {}
+    }
+
     private static class InvTracker {
         private final long sortBy;
-        private final long which = autoBase++;
+        private final long serverId;
         private final Text name;
-        private final FixedItemInv client;
-        private final FixedItemInv server;
+        private final InternalInventory client;
+        private final InternalInventory server;
 
-        public InvTracker(final DualityInterface dual, final FixedItemInv patterns, final Text name) {
-            this.server = patterns;
-            this.client = new AppEngInternalInventory(null, server.getSlotCount());
+        public InvTracker(DualityItemInterface dual, InternalInventory patterns, Text name) {
+            serverId = inventorySerial++;
+            server = patterns;
+            client = new AppEngInternalInventory(server.size());
             this.name = name;
             sortBy = dual.getSortValue();
         }
     }
 
+    private static class PatternSlotFilter implements IAEItemFilter {
+        private PatternSlotFilter() {}
+
+        public boolean allowExtract(InternalInventory inv, int slot, int amount) {
+            return true;
+        }
+
+        public boolean allowInsert(InternalInventory inv, int slot, ItemStack stack) {
+            return !stack.isEmpty() && stack.getItem() instanceof EncodedPatternItem;
+        }
+    }
 
     public boolean isWUT() {
         return witGUIObject.getItemStack().getItem() instanceof ItemWUT;
