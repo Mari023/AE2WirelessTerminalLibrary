@@ -151,6 +151,7 @@ public abstract class WTGuiObject implements IGuiItemObject, IEnergySource, IAct
         return myPlayer;
     }
 
+    @NotNull
     public IConfigManager getConfigManager() {
         return wth.getConfigManager(getItemStack());
     }

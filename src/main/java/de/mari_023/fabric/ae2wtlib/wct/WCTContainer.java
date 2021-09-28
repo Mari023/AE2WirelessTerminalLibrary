@@ -1,30 +1,27 @@
 package de.mari_023.fabric.ae2wtlib.wct;
 
-import alexiil.mc.lib.attributes.Simulation;
-import alexiil.mc.lib.attributes.item.FixedItemInv;
-import alexiil.mc.lib.attributes.item.compat.FixedInventoryVanillaWrapper;
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
 import appeng.api.config.SecurityPermissions;
+import appeng.api.inventories.InternalInventory;
 import appeng.api.networking.IGridNode;
-import appeng.helpers.IMenuCraftingPacket;
-import appeng.menu.NullMenu;
-import appeng.menu.SlotSemantic;
-import appeng.menu.interfaces.IInventorySlotAware;
-import appeng.menu.me.items.ItemTerminalMenu;
-import appeng.menu.slot.AppEngSlot;
-import appeng.menu.slot.DisabledSlot;
 import appeng.core.localization.PlayerMessages;
 import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.InventoryActionPacket;
+import appeng.helpers.IMenuCraftingPacket;
 import appeng.helpers.InventoryAction;
-import appeng.blockentity.inventory.AppEngInternalInventory;
+import appeng.menu.NullMenu;
+import appeng.menu.SlotSemantic;
 import appeng.menu.implementations.MenuTypeBuilder;
+import appeng.menu.interfaces.IInventorySlotAware;
+import appeng.menu.me.items.ItemTerminalMenu;
+import appeng.menu.slot.AppEngSlot;
 import appeng.menu.slot.CraftingMatrixSlot;
 import appeng.menu.slot.CraftingTermSlot;
-import appeng.util.inv.IAEAppEngInventory;
-import appeng.util.inv.InvOperation;
-import appeng.util.inv.WrapperInvItemHandler;
+import appeng.menu.slot.DisabledSlot;
+import appeng.parts.reporting.CraftingTerminalPart;
+import appeng.util.inv.AppEngInternalInventory;
+import appeng.util.inv.InternalInventoryHost;
 import com.google.common.base.Preconditions;
 import com.mojang.datafixers.util.Pair;
 import de.mari_023.fabric.ae2wtlib.Config;
@@ -36,6 +33,7 @@ import de.mari_023.fabric.ae2wtlib.trinket.FixedTrinketInv;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.ItemMagnetCard;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetSettings;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
+import dev.emi.trinkets.api.SlotGroup;
 import dev.emi.trinkets.api.TrinketInventory;
 import dev.emi.trinkets.api.TrinketSlots;
 import dev.emi.trinkets.api.TrinketsApi;
@@ -58,7 +56,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class WCTContainer extends ItemTerminalMenu implements IAEAppEngInventory, IMenuCraftingPacket, IWTInvHolder {
+public class WCTContainer extends ItemTerminalMenu implements IMenuCraftingPacket, IWTInvHolder, InternalInventoryHost {
 
     public static final ScreenHandlerType<WCTContainer> TYPE = MenuTypeBuilder.create(WCTContainer::new, WCTGuiObject.class).requirePermission(SecurityPermissions.CRAFT).build("wireless_crafting_terminal");
 
@@ -88,7 +86,7 @@ public class WCTContainer extends ItemTerminalMenu implements IAEAppEngInventory
 
         createPlayerInventorySlots(ip);
 
-        onContentChanged(new WrapperInvItemHandler(crafting));
+        onContentChanged(crafting.toContainer());
 
         SlotsWithTrinket[5] = addSlot(new AppEngSlot(fixedWTInv, 3) {
             @Environment(EnvType.CLIENT)
@@ -115,7 +113,7 @@ public class WCTContainer extends ItemTerminalMenu implements IAEAppEngInventory
             }
         }, SlotSemantic.MACHINE_CRAFTING_GRID);
 
-        if(slotIndex == 40) SlotsWithTrinket[45] = addSlot(new DisabledSlot(fixedWTInv, FixedWTInv.OFFHAND) {
+        if(slotIndex == 40) SlotsWithTrinket[45] = addSlot(new DisabledSlot(fixedWTInv.toContainer(), FixedWTInv.OFFHAND) {
             @Environment(EnvType.CLIENT)
             public Pair<Identifier, Identifier> getBackgroundSprite() {
                 return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, PlayerScreenHandler.EMPTY_OFFHAND_ARMOR_SLOT);
@@ -186,17 +184,17 @@ public class WCTContainer extends ItemTerminalMenu implements IAEAppEngInventory
         final NullMenu cn = new NullMenu();
         final CraftingInventory ic = new CraftingInventory(cn, 3, 3);
 
-        for(int x = 0; x < 9; x++) ic.setStack(x, craftingSlots[x].getItem());
+        for(int x = 0; x < 9; x++) ic.setStack(x, craftingSlots[x].getStack());
 
         if(currentRecipe == null || !currentRecipe.matches(ic, getPlayerInventory().player.world)) {
             World world = getPlayerInventory().player.world;
             currentRecipe = world.getRecipeManager().getFirstMatch(RecipeType.CRAFTING, ic, world).orElse(null);
         }
 
-        if(currentRecipe == null) outputSlot.set(ItemStack.EMPTY);
+        if(currentRecipe == null) outputSlot.setStack(ItemStack.EMPTY);
         else {
             final ItemStack craftingResult = currentRecipe.craft(ic);
-            outputSlot.set(craftingResult);
+            outputSlot.setStack(craftingResult);
         }
     }
 
@@ -213,16 +211,8 @@ public class WCTContainer extends ItemTerminalMenu implements IAEAppEngInventory
     }
 
     @Override
-    public void saveChanges() {}
-
-    @Override
-    public void onChangeInventory(FixedItemInv inv, int slot, InvOperation mc, ItemStack removedStack, ItemStack newStack) {}
-
-    @Override
-    public FixedItemInv getInventoryByName(String name) {
-        if(name.equals("player")) return new FixedInventoryVanillaWrapper(getPlayerInventory());
-        else if(name.equals("crafting")) return crafting;
-        return null;
+    public InternalInventory getSubInventory(Identifier id) {
+        return id.equals(CraftingTerminalPart.INV_CRAFTING) ? crafting : null;
     }
 
     @Override
@@ -236,7 +226,7 @@ public class WCTContainer extends ItemTerminalMenu implements IAEAppEngInventory
     }
 
     public void deleteTrashSlot() {
-        fixedWTInv.setInvStack(FixedWTInv.TRASH, ItemStack.EMPTY, Simulation.ACTION);
+        fixedWTInv.setItemDirect(FixedWTInv.TRASH, ItemStack.EMPTY);
     }
 
     private MagnetSettings magnetSettings;
@@ -274,4 +264,10 @@ public class WCTContainer extends ItemTerminalMenu implements IAEAppEngInventory
     }
 
     public final Slot[] SlotsWithTrinket = new Slot[46];
+
+    @Override
+    public void saveChanges() {}
+
+    @Override
+    public void onChangeInventory(InternalInventory internalInventory, int i, ItemStack itemStack, ItemStack itemStack1) {}
 }
