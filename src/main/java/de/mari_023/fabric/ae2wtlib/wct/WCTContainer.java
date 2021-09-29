@@ -29,14 +29,12 @@ import de.mari_023.fabric.ae2wtlib.terminal.FixedWTInv;
 import de.mari_023.fabric.ae2wtlib.terminal.IWTInvHolder;
 import de.mari_023.fabric.ae2wtlib.terminal.ae2wtlibInternalInventory;
 import de.mari_023.fabric.ae2wtlib.trinket.AppEngTrinketSlot;
-import de.mari_023.fabric.ae2wtlib.trinket.FixedTrinketInv;
+import de.mari_023.fabric.ae2wtlib.trinket.TrinketInventoryWrapper;
+import de.mari_023.fabric.ae2wtlib.trinket.TrinketsHelper;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.ItemMagnetCard;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetSettings;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
-import dev.emi.trinkets.api.SlotGroup;
-import dev.emi.trinkets.api.TrinketInventory;
-import dev.emi.trinkets.api.TrinketSlots;
-import dev.emi.trinkets.api.TrinketsApi;
+import dev.emi.trinkets.api.*;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.player.PlayerEntity;
@@ -55,6 +53,8 @@ import net.minecraft.util.Util;
 import net.minecraft.world.World;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 public class WCTContainer extends ItemTerminalMenu implements IMenuCraftingPacket, IWTInvHolder, InternalInventoryHost {
 
@@ -130,15 +130,18 @@ public class WCTContainer extends ItemTerminalMenu implements IMenuCraftingPacke
         addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.MAGNET_CARD), SlotSemantic.INSCRIBER_PLATE_TOP);//TODO fetch texture for card background
 
         if(!Config.allowTrinket()) return;//Trinkets only starting here
-        FixedTrinketInv inv = new FixedTrinketInv((TrinketInventory) TrinketsApi.getTrinketsInventory(getPlayerInventory().player));
+        Optional<TrinketComponent> optionalComponent = TrinketsApi.getTrinketComponent(getPlayerInventory().player);
+        if(optionalComponent.isEmpty()) return;
+        TrinketComponent component = optionalComponent.get();
+        TrinketInventoryWrapper inv = TrinketsHelper.getTrinketsInventory(getPlayerInventory().player);
         int i = 0;
-        for(TrinketSlots.SlotGroup group : TrinketSlots.slotGroups) {
+        for(Map.Entry<String, SlotGroup> group : component.getGroups().entrySet()) {
             int j = 0;
-            for(TrinketSlots.Slot slot : group.slots) {
+            for(Map.Entry<String, SlotType> slot : group.getValue().getSlots().entrySet()) {
                 boolean locked = slotIndex - 100 == i;
                 AppEngTrinketSlot ts;
-                ts = new AppEngTrinketSlot(inv, i, group.getName(), slot.getName(), locked);
-                if(j == 0 && !group.onReal) ts.keepVisible = true;
+                ts = new AppEngTrinketSlot(inv, i, group.getValue().getName(), slot.getValue().getName(), locked);
+                if(j == 0) ts.keepVisible = true;
                 addSlot(ts);
                 i++;
                 j++;

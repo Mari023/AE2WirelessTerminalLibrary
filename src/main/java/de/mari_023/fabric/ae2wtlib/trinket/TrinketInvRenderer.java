@@ -11,8 +11,7 @@ import net.minecraft.util.Identifier;
 public class TrinketInvRenderer {
     private static final Identifier MORE_SLOTS = new Identifier("trinkets", "textures/gui/more_slots.png");
     public static <T extends ScreenHandler> void renderGroupFront(MatrixStack matrices, HandledScreen<T> screen, TextureManager manager, int left, int top, SlotGroup group, int groupX, int groupY) {
-        int count = group.getSlots().size();
-        if(group.onReal) count++;
+        int count = group.getSlots().size()+1;//TODO +1 might not be necessary
         int l = count / 2;
         int r = count - l - 1;
         RenderSystem.enableDepthTest();
