@@ -16,10 +16,11 @@
     "TrinketWT"
   ],
   "client": [
+    "HandledScreenMixin",
+    "ScreenMixin",
     "MineMenuMixin",
     "MineMenuTerminalHandler",
-    "RestockRender",
-    "HandledScreenMixin"
+    "RestockRender"
   ],
   "injectors": {
     "defaultRequire": 1

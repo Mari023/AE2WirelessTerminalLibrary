@@ -1,10 +1,8 @@
 package de.mari_023.fabric.ae2wtlib.wit;
 
-import alexiil.mc.lib.attributes.Simulation;
 import appeng.api.config.Settings;
 import appeng.api.config.TerminalStyle;
 import appeng.api.storage.StorageChannels;
-import appeng.api.storage.channels.IItemStorageChannel;
 import appeng.client.ActionKey;
 import appeng.client.gui.AEBaseScreen;
 import appeng.client.gui.me.interfaceterminal.InterfaceRecord;
@@ -16,14 +14,13 @@ import appeng.client.gui.widgets.AETextField;
 import appeng.client.gui.widgets.Scrollbar;
 import appeng.client.gui.widgets.SettingToggleButton;
 import appeng.core.AEConfig;
-import appeng.core.AppEng;
 import appeng.core.AppEngClient;
 import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.InventoryActionPacket;
-import appeng.helpers.DualityInterface;
 import appeng.helpers.InventoryAction;
 import appeng.util.Platform;
 import com.google.common.collect.HashMultimap;
+import de.mari_023.fabric.ae2wtlib.mixin.ScreenMixin;
 import de.mari_023.fabric.ae2wtlib.wut.CycleTerminalButton;
 import de.mari_023.fabric.ae2wtlib.wut.IUniversalTerminalCapable;
 import net.minecraft.client.util.InputUtil;
@@ -176,7 +173,7 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
                 final Object lineObj = lines.get(scrollLevel + i);
                 if(lineObj instanceof final InterfaceRecord inv) {
                     // Note: We have to shift everything after the header up by 1 to avoid black line duplication.
-                    for(int z = 0; z < inv.getInventory().getSlotCount(); z++) {
+                    for(int z = 0; z < inv.getInventory().size(); z++) {
                         handler.slots.add(new InterfaceSlot(inv, z, z * SLOT_SIZE + GUI_PADDING_X, (i + 1) * SLOT_SIZE));
                     }
                 } else if(lineObj instanceof String name) {
@@ -232,13 +229,12 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
 
         if(action == null) return;
 
-        final InventoryActionPacket p = new InventoryActionPacket(action, getSlotIndex(machineSlot), machineSlot.getMachineInv().getServerId());
+        final InventoryActionPacket p = new InventoryActionPacket(action, slotIdx/*getSlotIndex(machineSlot)*/, machineSlot.getMachineInv().getServerId());
         NetworkHandler.instance().sendToServer(p);
     }
 
     @Override
-    public void drawBG(MatrixStack matrixStack, final int offsetX, final int offsetY, final int mouseX,
-                       final int mouseY, float partialTicks) {
+    public void drawBG(MatrixStack matrixStack, final int offsetX, final int offsetY, final int mouseX, final int mouseY, float partialTicks) {
         bindTexture("wtlib/guis/interface.png");
 
         // Draw the top of the dialog
@@ -335,10 +331,10 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
                     Text un = Text.Serializer.fromJson(invData.getString("un"));
                     final InterfaceRecord current = getById(id, invData.getLong("sortBy"), un);
 
-                    for(int x = 0; x < current.getInventory().getSlotCount(); x++) {
+                    for(int x = 0; x < current.getInventory().size(); x++) {
                         final String which = Integer.toString(x);
                         if(invData.contains(which)) {
-                            current.getInventory().setInvStack(x, ItemStack.fromNbt(invData.getCompound(which)), Simulation.ACTION);
+                            current.getInventory().setItemDirect(x, ItemStack.fromNbt(invData.getCompound(which)));
                         }
                     }
                 } catch(final NumberFormatException ignored) {}
@@ -459,8 +455,8 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
     }
 
     private void reinitialize() {
-        children().removeAll(drawables);
-        drawables.clear();
+        children().removeAll(((ScreenMixin) this).getDrawables());
+        ((ScreenMixin) this).getDrawables().clear();
         init();
     }
 
