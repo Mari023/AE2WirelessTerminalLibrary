@@ -11,7 +11,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.ae2wtlib;
-import de.mari_023.fabric.ae2wtlib.mixin.ScreenMixin;
+import de.mari_023.fabric.ae2wtlib.mixin.HandledScreenMixin;
 import de.mari_023.fabric.ae2wtlib.mixin.SlotMixin;
 import de.mari_023.fabric.ae2wtlib.trinket.AppEngTrinketSlot;
 import de.mari_023.fabric.ae2wtlib.trinket.TrinketInvRenderer;
@@ -40,8 +40,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniversalTerminalCapable {
-
-    private static final Identifier TRINKETS_MORE_SLOTS = new Identifier("trinkets", "textures/gui/more_slots.png");
 
     ItemButton magnetCardToggleButton;
     private List<AppEngTrinketSlot> trinketSlots;
@@ -190,7 +188,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
             TrinketInvRenderer.renderExcessSlotGroups(matrices, this, client.getTextureManager(), x, y + backgroundHeight - 167, lastX, lastY);
         for(SlotGroup group : TrinketSlots.slotGroups) {
             if(group.onReal && group.getSlots().size() > 0) continue;
-            client.getTextureManager().bindTexture(TRINKETS_MORE_SLOTS);
+            client.getTextureManager().bindTexture(MORE_SLOTS);
             drawTexture(matrices, x + getGroupX(group), y + getGroupY(group), 4, 4, 18, 18);
         }
     }
@@ -230,7 +228,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
     }
 
     @Override
-    public void tick() {
+    public void handledScreenTick() {
         super.tick();
         if(!Config.allowTrinket()) return;
         float relX = mouseX - x;
@@ -240,7 +238,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
                 if(ts.group.equals(TrinketsClient.slotGroup.getName()) && !ts.keepVisible)
                     ((SlotMixin) ts).setX(Integer.MIN_VALUE);
             TrinketsClient.slotGroup = null;
-            for(TrinketSlots.SlotGroup group : TrinketSlots.slotGroups)
+            for(SlotGroup group : TrinketSlots.slotGroups)
                 if(inBounds(group, relX, relY, false) && group.slots.size() > 0) {
                     TrinketsClient.displayEquipped = 0;
                     TrinketsClient.slotGroup = group;
@@ -330,7 +328,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
         return super.isClickOutsideBounds(x, y, i, j, k);
     }
 
-    public boolean inBounds(TrinketSlots.SlotGroup group, float x, float y, boolean focused) {
+    public boolean inBounds(SlotGroup group, float x, float y, boolean focused) {
         int groupX = getGroupX(group);
         int groupY = getGroupY(group);
         if(focused) {
@@ -360,7 +358,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
         return 0;
     }
 
-    public int getGroupY(TrinketSlots.SlotGroup group) {
+    public int getGroupY(SlotGroup group) {
         if(group.vanillaSlot == 5) return -161 + backgroundHeight;
         if(group.vanillaSlot == 6) return -143 + backgroundHeight;
         if(group.vanillaSlot == 7) return -125 + backgroundHeight;
@@ -378,9 +376,10 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
         return 0;
     }
 
+    private static final Identifier MORE_SLOTS = new Identifier("trinkets", "textures/gui/more_slots.png");
     private static final Identifier BLANK_BACK = new Identifier("trinkets", "textures/gui/blank_back.png");
 
-    public void renderSlotBack(MatrixStack matrices, Slot ts, TrinketSlots.Slot s, int x, int y) {
+    public void renderSlotBack(MatrixStack matrices, Slot ts, TrinketSlot s, int x, int y) {
         assert client != null;
         GlStateManager.disableLighting();
         if(ts.getStack().isEmpty()) client.getTextureManager().bindTexture(s.texture);
@@ -397,7 +396,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
         if(ts.getStack().isEmpty()) client.getTextureManager().bindTexture(s.texture);
         else client.getTextureManager().bindTexture(BLANK_BACK);
         DrawableHelper.drawTexture(matrices, ts.x, ts.y, 0, 0, 0, 16, 16, 16, 16);
-        ((ScreenMixin) this).invokeDrawSlot(matrices, ts);
+        ((HandledScreenMixin) this).invokeDrawSlot(matrices, ts);
         if(isPointOverSlot(ts, x, y) && ts.doDrawHoveringEffect()) {
             focusedSlot = ts;
             RenderSystem.colorMask(true, true, true, false);
@@ -410,7 +409,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
     private boolean isPointOverSlot(Slot slot, double a, double b) {
         if(TrinketsClient.slotGroup == null) {
             if(slot instanceof AppEngTrinketSlot) return false;
-            return ((ScreenMixin) this).invokeIsPointOverSlot(slot, a, b);
+            return ((HandledScreenMixin) this).invokeIsPointOverSlot(slot, a, b);
         }
         if(TrinketsClient.activeSlots == null) return false;
         for(Slot s : TrinketsClient.activeSlots) {
