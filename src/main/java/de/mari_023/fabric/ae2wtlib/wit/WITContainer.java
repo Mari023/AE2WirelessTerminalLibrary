@@ -38,7 +38,6 @@ import net.minecraft.util.Util;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 public class WITContainer extends AEBaseMenu implements IWTInvHolder {
@@ -119,26 +118,17 @@ public class WITContainer extends AEBaseMenu implements IWTInvHolder {
     }
 
     private <T extends IItemInterfaceHost> void visitInterfaceHosts(IGrid grid, Class<T> machineClass, VisitorState state) {
-        Iterator var4 = grid.getActiveMachines(machineClass).iterator();
+        for(var ih : grid.getActiveMachines(machineClass)) {
+            final DualityItemInterface dual = ih.getInterfaceDuality();
+            if(dual.getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.NO) continue;
 
-        while(true) {
-            IItemInterfaceHost ih;
-            DualityItemInterface dual;
-            do {
-                if(!var4.hasNext()) return;
+            final InvTracker t = diList.get(ih);
+            if(t == null || !t.name.equals(dual.getTermName())) state.forceFullUpdate = true;
 
-                ih = (IItemInterfaceHost) var4.next();
-                dual = ih.getInterfaceDuality();
-            } while(dual.getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.NO);
-
-            InvTracker t = diList.get(ih);
-            if(t == null || !t.name.equals(dual.getTermName())) {
-                state.forceFullUpdate = true;
-            }
-
-            ++state.total;
+            state.total++;
         }
     }
+
 
     public void doAction(ServerPlayerEntity player, InventoryAction action, int slot, long id) {
         InvTracker inv = byId.get(id);
@@ -221,54 +211,39 @@ public class WITContainer extends AEBaseMenu implements IWTInvHolder {
     private InterfaceTerminalPacket createFullUpdate(@Nullable IGrid grid) {
         byId.clear();
         diList.clear();
-        if(grid == null) {
-            return new InterfaceTerminalPacket(true, new NbtCompound());
-        } else {
-            Iterator var2 = grid.getActiveMachines(ItemInterfaceBlockEntity.class).iterator();
 
-            DualityItemInterface dual;
-            while(var2.hasNext()) {
-                ItemInterfaceBlockEntity ih = (ItemInterfaceBlockEntity) var2.next();
-                dual = ih.getInterfaceDuality();
-                if(dual.getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.YES) {
-                    diList.put(ih, new InvTracker(dual, dual.getPatterns(), dual.getTermName()));
-                }
+        if(grid == null) return new InterfaceTerminalPacket(true, new NbtCompound());
+
+        for(var ih : grid.getActiveMachines(ItemInterfaceBlockEntity.class)) {
+            final DualityItemInterface dual = ih.getInterfaceDuality();
+            if(dual.getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.YES) {
+                diList.put(ih, new InvTracker(dual, dual.getPatterns(), dual.getTermName()));
             }
-
-            var2 = grid.getActiveMachines(ItemInterfacePart.class).iterator();
-
-            while(var2.hasNext()) {
-                ItemInterfacePart ih = (ItemInterfacePart) var2.next();
-                dual = ih.getInterfaceDuality();
-                if(dual.getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.YES) {
-                    diList.put(ih, new InvTracker(dual, dual.getPatterns(), dual.getTermName()));
-                }
-            }
-
-            NbtCompound data = new NbtCompound();
-
-            for(Map.Entry<IInterfaceHost, InvTracker> iInterfaceHostInvTrackerEntry : diList.entrySet()) {
-                Map.Entry<IItemInterfaceHost, InvTracker> en = (Map.Entry) iInterfaceHostInvTrackerEntry;
-                InvTracker inv = en.getValue();
-                byId.put(inv.serverId, inv);
-                addItems(data, inv, 0, inv.server.size());
-            }
-
-            return new InterfaceTerminalPacket(true, data);
         }
+
+        for(var ih : grid.getActiveMachines(ItemInterfacePart.class)) {
+            final DualityItemInterface dual = ih.getInterfaceDuality();
+            if(dual.getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.YES) {
+                diList.put(ih, new InvTracker(dual, dual.getPatterns(), dual.getTermName()));
+            }
+        }
+
+        NbtCompound data = new NbtCompound();
+        for(var en : diList.entrySet()) {
+            final InvTracker inv = en.getValue();
+            byId.put(inv.serverId, inv);
+            addItems(data, inv, 0, inv.server.size());
+        }
+        return new InterfaceTerminalPacket(true, data);
     }
 
     private InterfaceTerminalPacket createIncrementalUpdate() {
         NbtCompound data = null;
-
-        for(Map.Entry<IInterfaceHost, InvTracker> iInterfaceHostInvTrackerEntry : diList.entrySet()) {
-            Map.Entry<IItemInterfaceHost, InvTracker> en = (Map.Entry) iInterfaceHostInvTrackerEntry;
-            InvTracker inv = en.getValue();
-
-            for(int x = 0; x < inv.server.size(); ++x) {
+        for(final var en : diList.entrySet()) {
+            final InvTracker inv = en.getValue();
+            for(int x = 0; x < inv.server.size(); x++) {
                 if(isDifferent(inv.server.getStackInSlot(x), inv.client.getStackInSlot(x))) {
                     if(data == null) data = new NbtCompound();
-
                     addItems(data, inv, x, 1);
                 }
             }
