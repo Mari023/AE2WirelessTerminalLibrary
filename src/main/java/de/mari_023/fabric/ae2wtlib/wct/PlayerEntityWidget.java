@@ -2,17 +2,18 @@ package de.mari_023.fabric.ae2wtlib.wct;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.widget.AbstractButtonWidget;
+import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
+import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.util.math.Vector3f;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.math.Quaternion;
+import net.minecraft.util.math.Vec3f;
 import org.lwjgl.opengl.GL11;
 
-public class PlayerEntityWidget extends AbstractButtonWidget {
+public class PlayerEntityWidget extends ClickableWidget {
     private final LivingEntity entity;
 
     public PlayerEntityWidget(LivingEntity entity) {
@@ -21,7 +22,7 @@ public class PlayerEntityWidget extends AbstractButtonWidget {
     }
 
     @Override
-    public void renderBg(MatrixStack matrices, MinecraftClient client, int mouseX, int mouseY) {
+    public void renderBackground(MatrixStack matrices, MinecraftClient client, int mouseX, int mouseY) {
         float f = (float) Math.atan((x - mouseX) / 40.0F);
         float g = (float) Math.atan((y - 36 - mouseY) / 40.0F);
         GL11.glPushMatrix();
@@ -30,8 +31,8 @@ public class PlayerEntityWidget extends AbstractButtonWidget {
         MatrixStack matrixStack = new MatrixStack();
         matrixStack.translate(0.0D, 0.0D, 1000.0D);
         matrixStack.scale(30F, 30F, 30F);
-        Quaternion quaternion = Vector3f.POSITIVE_Z.getDegreesQuaternion(180.0F);
-        Quaternion quaternion2 = Vector3f.POSITIVE_X.getDegreesQuaternion(g * 20.0F);
+        Quaternion quaternion = Vec3f.POSITIVE_Z.getDegreesQuaternion(180.0F);
+        Quaternion quaternion2 = Vec3f.POSITIVE_X.getDegreesQuaternion(g * 20.0F);
         quaternion.hamiltonProduct(quaternion2);
         matrixStack.multiply(quaternion);
         float h = entity.bodyYaw;
@@ -59,4 +60,7 @@ public class PlayerEntityWidget extends AbstractButtonWidget {
         entity.headYaw = l;
         GL11.glPopMatrix();
     }
+
+    @Override
+    public void appendNarrations(NarrationMessageBuilder builder) {}
 }
