@@ -8,6 +8,7 @@ import appeng.client.gui.style.StyleManager;
 import appeng.client.gui.widgets.ActionButton;
 import appeng.client.gui.widgets.IconButton;
 import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import de.mari_023.fabric.ae2wtlib.mixin.ScreenMixin;
@@ -105,7 +106,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
     public void drawBG(MatrixStack matrices, final int offsetX, final int offsetY, final int mouseX, final int mouseY, float partialTicks) {
         super.drawBG(matrices, offsetX, offsetY, mouseX, mouseY, partialTicks);
         if(!Config.allowTrinket()) return;//Trinkets only starting here
-        GlStateManager.disableDepthTest();
+        RenderSystem.disableDepthTest();
         List<TrinketSlots.Slot> trinketSlots = TrinketSlots.getAllSlots();
         setZOffset(100);
         itemRenderer.zOffset = 100.0F;
@@ -120,7 +121,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
         }
         setZOffset(0);
         itemRenderer.zOffset = 0.0F;
-        GlStateManager.enableDepthTest();
+        RenderSystem.enableDepthTest();
         TrinketSlots.SlotGroup lastGroup = TrinketSlots.slotGroups.get(TrinketSlots.slotGroups.size() - 1);
         int lastX = getGroupX(lastGroup);
         int lastY = getGroupY(lastGroup);
@@ -143,7 +144,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
         else if(TrinketsClient.displayEquipped > 0 && TrinketsClient.lastEquipped != null)
             TrinketInvRenderer.renderGroupFront(matrices, this, client.getTextureManager(), 0, 0, TrinketsClient.lastEquipped, getGroupX(TrinketsClient.lastEquipped), getGroupY(TrinketsClient.lastEquipped));
 
-        GlStateManager.disableDepthTest();
+        RenderSystem.disableDepthTest();
         List<TrinketSlots.Slot> trinketSlots = TrinketSlots.getAllSlots();
         int trinketOffset = -1;
         for(int i = 0; i < handler.slots.size(); i++) {
@@ -164,7 +165,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
             if(s.getSlotGroup() == TrinketsClient.slotGroup || (s.getSlotGroup() == TrinketsClient.lastEquipped && TrinketsClient.displayEquipped > 0))
                 renderSlot(matrices, ts, s, mouseX, mouseY);
         }
-        GlStateManager.enableDepthTest();
+        RenderSystem.enableDepthTest();
     }
 
     private void delete() {
@@ -391,16 +392,16 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
         assert client != null;
         matrices.push();
         GlStateManager.disableLighting();
-        GlStateManager.disableDepthTest();
+        RenderSystem.disableDepthTest();
         if(ts.getStack().isEmpty()) client.getTextureManager().bindTexture(s.texture);
         else client.getTextureManager().bindTexture(BLANK_BACK);
         DrawableHelper.drawTexture(matrices, ts.x, ts.y, 0, 0, 0, 16, 16, 16, 16);
         ((ScreenMixin) this).invokeDrawSlot(matrices, ts);
         if(isPointOverSlot(ts, x, y) && ts.doDrawHoveringEffect()) {
             focusedSlot = ts;
-            GlStateManager.colorMask(true, true, true, false);
+            RenderSystem.colorMask(true, true, true, false);
             fillGradient(matrices, ts.x, ts.y, ts.x + 16, ts.y + 16, -2130706433, -2130706433);
-            GlStateManager.colorMask(true, true, true, true);
+            RenderSystem.colorMask(true, true, true, true);
         }
         matrices.pop();
     }
