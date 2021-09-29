@@ -86,6 +86,66 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
         widgets.add("player", new PlayerEntityWidget(MinecraftClient.getInstance().player));
     }
 
+    private void delete() {
+        PacketByteBuf buf = PacketByteBufs.create();
+        buf.writeString("CraftingTerminal.Delete");
+        buf.writeBoolean(false);
+        ClientPlayNetworking.send(new Identifier(ae2wtlib.MOD_NAME, "general"), buf);
+    }
+
+    private MagnetSettings magnetSettings = null;
+
+    public void resetMagnetSettings() {
+        magnetSettings = getScreenHandler().getMagnetSettings();
+        setMagnetModeText();
+    }
+
+    private void setMagnetMode() {
+        switch(magnetSettings.magnetMode) {
+            case INVALID:
+            case NO_CARD:
+                return;
+            case OFF:
+                magnetSettings.magnetMode = MagnetMode.PICKUP_INVENTORY;
+                break;
+            case PICKUP_INVENTORY:
+                magnetSettings.magnetMode = MagnetMode.PICKUP_ME;
+                break;
+            case PICKUP_ME:
+                magnetSettings.magnetMode = MagnetMode.OFF;
+                break;
+        }
+        setMagnetModeText();
+        PacketByteBuf buf = PacketByteBufs.create();
+        buf.writeString("CraftingTerminal.SetMagnetMode");
+        buf.writeByte(magnetSettings.magnetMode.getId());
+        ClientPlayNetworking.send(new Identifier(ae2wtlib.MOD_NAME, "general"), buf);
+    }
+
+    private void setMagnetModeText() {
+        switch(magnetSettings.magnetMode) {
+            case INVALID, NO_CARD -> magnetCardToggleButton.setVisibility(false);
+            case OFF -> {
+                magnetCardToggleButton.setVisibility(true);
+                magnetCardToggleButton.setMessage(new TranslatableText("gui.ae2wtlib.magnetcard").append("\n").append(new TranslatableText("gui.ae2wtlib.magnetcard.desc.off")));
+            }
+            case PICKUP_INVENTORY -> {
+                magnetCardToggleButton.setVisibility(true);
+                magnetCardToggleButton.setMessage(new TranslatableText("gui.ae2wtlib.magnetcard").append("\n").append(new TranslatableText("gui.ae2wtlib.magnetcard.desc.inv")));
+            }
+            case PICKUP_ME -> {
+                magnetCardToggleButton.setVisibility(true);
+                magnetCardToggleButton.setMessage(new TranslatableText("gui.ae2wtlib.magnetcard").append("\n").append(new TranslatableText("gui.ae2wtlib.magnetcard.desc.me")));
+            }
+        }
+    }
+
+    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+        this.mouseX = (float) mouseX;
+        this.mouseY = (float) mouseY;
+        super.render(matrices, mouseX, mouseY, delta);
+    }
+
     @Override
     public void init() {
         super.init();
@@ -167,66 +227,6 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
                 renderSlot(matrices, ts, s, mouseX, mouseY);
         }
         RenderSystem.enableDepthTest();
-    }
-
-    private void delete() {
-        PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeString("CraftingTerminal.Delete");
-        buf.writeBoolean(false);
-        ClientPlayNetworking.send(new Identifier(ae2wtlib.MOD_NAME, "general"), buf);
-    }
-
-    private MagnetSettings magnetSettings = null;
-
-    public void resetMagnetSettings() {
-        magnetSettings = getScreenHandler().getMagnetSettings();
-        setMagnetModeText();
-    }
-
-    private void setMagnetMode() {
-        switch(magnetSettings.magnetMode) {
-            case INVALID:
-            case NO_CARD:
-                return;
-            case OFF:
-                magnetSettings.magnetMode = MagnetMode.PICKUP_INVENTORY;
-                break;
-            case PICKUP_INVENTORY:
-                magnetSettings.magnetMode = MagnetMode.PICKUP_ME;
-                break;
-            case PICKUP_ME:
-                magnetSettings.magnetMode = MagnetMode.OFF;
-                break;
-        }
-        setMagnetModeText();
-        PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeString("CraftingTerminal.SetMagnetMode");
-        buf.writeByte(magnetSettings.magnetMode.getId());
-        ClientPlayNetworking.send(new Identifier(ae2wtlib.MOD_NAME, "general"), buf);
-    }
-
-    private void setMagnetModeText() {
-        switch(magnetSettings.magnetMode) {
-            case INVALID, NO_CARD -> magnetCardToggleButton.setVisibility(false);
-            case OFF -> {
-                magnetCardToggleButton.setVisibility(true);
-                magnetCardToggleButton.setMessage(new TranslatableText("gui.ae2wtlib.magnetcard").append("\n").append(new TranslatableText("gui.ae2wtlib.magnetcard.desc.off")));
-            }
-            case PICKUP_INVENTORY -> {
-                magnetCardToggleButton.setVisibility(true);
-                magnetCardToggleButton.setMessage(new TranslatableText("gui.ae2wtlib.magnetcard").append("\n").append(new TranslatableText("gui.ae2wtlib.magnetcard.desc.inv")));
-            }
-            case PICKUP_ME -> {
-                magnetCardToggleButton.setVisibility(true);
-                magnetCardToggleButton.setMessage(new TranslatableText("gui.ae2wtlib.magnetcard").append("\n").append(new TranslatableText("gui.ae2wtlib.magnetcard.desc.me")));
-            }
-        }
-    }
-
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        this.mouseX = (float) mouseX;
-        this.mouseY = (float) mouseY;
-        super.render(matrices, mouseX, mouseY, delta);
     }
 
     @Override
