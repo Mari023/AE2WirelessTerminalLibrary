@@ -20,10 +20,9 @@ import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetMode;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetSettings;
 import de.mari_023.fabric.ae2wtlib.wut.CycleTerminalButton;
 import de.mari_023.fabric.ae2wtlib.wut.IUniversalTerminalCapable;
-import dev.emi.trinkets.TrinketInventoryRenderer;
+import dev.emi.trinkets.TrinketSlot;
 import dev.emi.trinkets.TrinketsClient;
-import dev.emi.trinkets.api.SlotGroups;
-import dev.emi.trinkets.api.TrinketSlots;
+import dev.emi.trinkets.api.SlotGroup;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
@@ -41,6 +40,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniversalTerminalCapable {
+
+    private static final Identifier TRINKETS_MORE_SLOTS = new Identifier("trinkets", "textures/gui/more_slots.png");
 
     ItemButton magnetCardToggleButton;
     private List<AppEngTrinketSlot> trinketSlots;
@@ -94,7 +95,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
         for(Slot slot : getScreenHandler().slots) {
             if(!(slot instanceof AppEngTrinketSlot ts)) continue;
             trinketSlots.add(ts);
-            if(!ts.keepVisible) ((SlotMixin) slot).setXPosition(Integer.MIN_VALUE);
+            if(!ts.keepVisible) ((SlotMixin) slot).setX(Integer.MIN_VALUE);
             else {
                 ((SlotMixin) ts).setX(getGroupX(TrinketSlots.getSlotFromName(ts.group, ts.slot).getSlotGroup()) + 1);
                 ((SlotMixin) ts).setY(getGroupY(TrinketSlots.getSlotFromName(ts.group, ts.slot).getSlotGroup()) + 1);
@@ -107,7 +108,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
         super.drawBG(matrices, offsetX, offsetY, mouseX, mouseY, partialTicks);
         if(!Config.allowTrinket()) return;//Trinkets only starting here
         RenderSystem.disableDepthTest();
-        List<TrinketSlots.Slot> trinketSlots = TrinketSlots.getAllSlots();
+        List<TrinketSlot> trinketSlots = TrinketSlots.getAllSlots();
         setZOffset(100);
         itemRenderer.zOffset = 100.0F;
         int trinketOffset = -1;
@@ -115,21 +116,21 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
             if(!(handler.slots.get(i) instanceof AppEngTrinketSlot)) continue;
             if(trinketOffset == -1) trinketOffset = i;
             Slot ts = handler.getSlot(i);
-            TrinketSlots.Slot s = trinketSlots.get(i - trinketOffset);
-            if(!s.getSlotGroup().onReal && s.getSlotGroup().slots.get(0) == s)
+            TrinketSlot s = trinketSlots.get(i - trinketOffset);
+            if(!s.getType().getGroup().onReal && s.getSlotGroup().slots.get(0) == s)
                 renderSlotBack(matrices, ts, s, x, y);
         }
         setZOffset(0);
         itemRenderer.zOffset = 0.0F;
         RenderSystem.enableDepthTest();
-        TrinketSlots.SlotGroup lastGroup = TrinketSlots.slotGroups.get(TrinketSlots.slotGroups.size() - 1);
+        SlotGroup lastGroup = TrinketSlots.slotGroups.get(TrinketSlots.slotGroups.size() - 1);
         int lastX = getGroupX(lastGroup);
         int lastY = getGroupY(lastGroup);
         if(lastX < 0)
             TrinketInvRenderer.renderExcessSlotGroups(matrices, this, client.getTextureManager(), x, y + backgroundHeight - 167, lastX, lastY);
-        for(TrinketSlots.SlotGroup group : TrinketSlots.slotGroups) {
-            if(group.onReal && group.slots.size() > 0) continue;
-            client.getTextureManager().bindTexture(TrinketInventoryRenderer.MORE_SLOTS_TEX);
+        for(SlotGroup group : TrinketSlots.slotGroups) {
+            if(group.onReal && group.getSlots().size() > 0) continue;
+            client.getTextureManager().bindTexture(TRINKETS_MORE_SLOTS);
             drawTexture(matrices, x + getGroupX(group), y + getGroupY(group), 4, 4, 18, 18);
         }
     }
@@ -145,13 +146,13 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
             TrinketInvRenderer.renderGroupFront(matrices, this, client.getTextureManager(), 0, 0, TrinketsClient.lastEquipped, getGroupX(TrinketsClient.lastEquipped), getGroupY(TrinketsClient.lastEquipped));
 
         RenderSystem.disableDepthTest();
-        List<TrinketSlots.Slot> trinketSlots = TrinketSlots.getAllSlots();
+        List<TrinketSlot> trinketSlots = TrinketSlots.getAllSlots();
         int trinketOffset = -1;
         for(int i = 0; i < handler.slots.size(); i++) {
             if(!(handler.slots.get(i) instanceof AppEngTrinketSlot)) continue;
             if(trinketOffset == -1) trinketOffset = i;
             Slot ts = handler.getSlot(i);
-            TrinketSlots.Slot s = trinketSlots.get(i - trinketOffset);
+            TrinketSlot s = trinketSlots.get(i - trinketOffset);
             if(!(s.getSlotGroup() == TrinketsClient.slotGroup || !(s.getSlotGroup() == TrinketsClient.lastEquipped && TrinketsClient.displayEquipped > 0)))
                 renderSlot(matrices, ts, s, mouseX, mouseY);
         }
@@ -161,7 +162,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
             if(!(handler.slots.get(i) instanceof AppEngTrinketSlot)) continue;
             if(trinketOffset == -1) trinketOffset = i;
             Slot ts = handler.getSlot(i);
-            TrinketSlots.Slot s = trinketSlots.get(i - trinketOffset);
+            TrinketSlot s = trinketSlots.get(i - trinketOffset);
             if(s.getSlotGroup() == TrinketsClient.slotGroup || (s.getSlotGroup() == TrinketsClient.lastEquipped && TrinketsClient.displayEquipped > 0))
                 renderSlot(matrices, ts, s, mouseX, mouseY);
         }
@@ -237,7 +238,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
         if(TrinketsClient.slotGroup == null || !inBounds(TrinketsClient.slotGroup, relX, relY, true)) {
             if(TrinketsClient.slotGroup != null) for(AppEngTrinketSlot ts : trinketSlots)
                 if(ts.group.equals(TrinketsClient.slotGroup.getName()) && !ts.keepVisible)
-                    ((SlotMixin) ts).setXPosition(Integer.MIN_VALUE);
+                    ((SlotMixin) ts).setX(Integer.MIN_VALUE);
             TrinketsClient.slotGroup = null;
             for(TrinketSlots.SlotGroup group : TrinketSlots.slotGroups)
                 if(inBounds(group, relX, relY, false) && group.slots.size() > 0) {
@@ -253,19 +254,19 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
                         count++;
                         offset = 0;
                     } else {
-                        ((SlotMixin) tSlots.get(0)).setXPosition(groupX + 1);
-                        ((SlotMixin) tSlots.get(0)).setYPosition(groupY + 1);
+                        ((SlotMixin) tSlots.get(0)).setX(groupX + 1);
+                        ((SlotMixin) tSlots.get(0)).setY(groupY + 1);
                     }
                     int l = count / 2;
                     int r = count - l - 1;
                     if(tSlots.size() == 0) break;
                     for(int i = 0; i < l; i++) {
-                        ((SlotMixin) tSlots.get(i + offset)).setXPosition(groupX - (i + 1) * 18 + 1);
-                        ((SlotMixin) tSlots.get(i + offset)).setYPosition(groupY + 1);
+                        ((SlotMixin) tSlots.get(i + offset)).setX(groupX - (i + 1) * 18 + 1);
+                        ((SlotMixin) tSlots.get(i + offset)).setY(groupY + 1);
                     }
                     for(int i = 0; i < r; i++) {
-                        ((SlotMixin) tSlots.get(i + l + offset)).setXPosition(groupX + (i + 1) * 18 + 1);
-                        ((SlotMixin) tSlots.get(i + l + offset)).setYPosition(groupY + 1);
+                        ((SlotMixin) tSlots.get(i + l + offset)).setX(groupX + (i + 1) * 18 + 1);
+                        ((SlotMixin) tSlots.get(i + l + offset)).setY(groupY + 1);
                     }
                     TrinketsClient.activeSlots = new ArrayList<>();
                     if(group.vanillaSlot != -1) {
@@ -279,7 +280,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
         if(TrinketsClient.displayEquipped > 0) {
             TrinketsClient.displayEquipped--;
             if(TrinketsClient.slotGroup == null) {
-                TrinketSlots.SlotGroup group = TrinketsClient.lastEquipped;
+                SlotGroup group = TrinketsClient.lastEquipped;
                 if(group != null) {
                     List<AppEngTrinketSlot> tSlots = new ArrayList<>();
                     for(AppEngTrinketSlot ts : trinketSlots) if(ts.group.equals(group.getName())) tSlots.add(ts);
@@ -291,18 +292,18 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
                         count++;
                         offset = 0;
                     } else {
-                        ((SlotMixin) tSlots.get(0)).setXPosition(groupX + 1);
-                        ((SlotMixin) tSlots.get(0)).setYPosition(groupY + 1);
+                        ((SlotMixin) tSlots.get(0)).setX(groupX + 1);
+                        ((SlotMixin) tSlots.get(0)).setY(groupY + 1);
                     }
                     int l = count / 2;
                     int r = count - l - 1;
                     for(int i = 0; i < l; i++) {
-                        ((SlotMixin) tSlots.get(i + offset)).setXPosition(groupX - (i + 1) * 18 + 1);
-                        ((SlotMixin) tSlots.get(i + offset)).setYPosition(groupY + 1);
+                        ((SlotMixin) tSlots.get(i + offset)).setX(groupX - (i + 1) * 18 + 1);
+                        ((SlotMixin) tSlots.get(i + offset)).setY(groupY + 1);
                     }
                     for(int i = 0; i < r; i++) {
-                        ((SlotMixin) tSlots.get(i + l + offset)).setXPosition(groupX + (i + 1) * 18 + 1);
-                        ((SlotMixin) tSlots.get(i + l + offset)).setYPosition(groupY + 1);
+                        ((SlotMixin) tSlots.get(i + l + offset)).setX(groupX + (i + 1) * 18 + 1);
+                        ((SlotMixin) tSlots.get(i + l + offset)).setY(groupY + 1);
                     }
                     TrinketsClient.activeSlots = new ArrayList<>();
                     if(group.vanillaSlot != -1)
@@ -314,11 +315,11 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
         for(AppEngTrinketSlot ts : trinketSlots) {
             if(((TrinketsClient.lastEquipped == null || TrinketsClient.displayEquipped <= 0 || !ts.group.equals(TrinketsClient.lastEquipped.getName()))
                     && (TrinketsClient.slotGroup == null || !ts.group.equals(TrinketsClient.slotGroup.getName()))) && !ts.keepVisible)
-                ((SlotMixin) ts).setXPosition(Integer.MIN_VALUE);
+                ((SlotMixin) ts).setX(Integer.MIN_VALUE);
         }
         for(AppEngTrinketSlot ts : trinketSlots) {
             int groupX = getGroupX(TrinketSlots.getSlotFromName(ts.group, ts.slot).getSlotGroup());
-            if(ts.keepVisible && groupX < 0) ((SlotMixin) ts).setXPosition(groupX + 1);
+            if(ts.keepVisible && groupX < 0) ((SlotMixin) ts).setX(groupX + 1);
         }
     }
 
@@ -341,7 +342,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
         } else return x > groupX && y > groupY && x < groupX + 18 && y < groupY + 18;
     }
 
-    public int getGroupX(TrinketSlots.SlotGroup group) {
+    public int getGroupX(SlotGroup group) {
         if(group.vanillaSlot == 5) return 7;
         if(group.vanillaSlot == 6) return 7;
         if(group.vanillaSlot == 7) return 7;
@@ -388,7 +389,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
         GlStateManager.enableLighting();
     }
 
-    public void renderSlot(MatrixStack matrices, Slot ts, TrinketSlots.Slot s, int x, int y) {
+    public void renderSlot(MatrixStack matrices, Slot ts, TrinketSlot s, int x, int y) {
         assert client != null;
         matrices.push();
         GlStateManager.disableLighting();

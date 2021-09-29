@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
-public class TrinketInventoryWrapper implements InternalInventory {
+public class TrinketInventoryWrapper implements InternalInventory {//TODO use TrinketsApi.getPlayerSlots()
 
     private final Map<String, Map<String, TrinketInventory>> inventory;
 
