@@ -19,7 +19,7 @@
     "MineMenuMixin",
     "MineMenuTerminalHandler",
     "RestockRender",
-    "ScreenMixin"
+    "HandledScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1

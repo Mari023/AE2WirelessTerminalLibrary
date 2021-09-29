@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(HandledScreen.class)
-public interface ScreenMixin {
+public interface HandledScreenMixin {
     @Invoker("drawSlot")
     void invokeDrawSlot(MatrixStack matrices, Slot slot);
 
