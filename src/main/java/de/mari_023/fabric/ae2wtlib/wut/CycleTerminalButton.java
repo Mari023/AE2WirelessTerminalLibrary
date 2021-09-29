@@ -1,7 +1,7 @@
 package de.mari_023.fabric.ae2wtlib.wut;
 
 import appeng.client.gui.widgets.ITooltip;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -62,8 +62,8 @@ public class CycleTerminalButton extends ButtonWidget implements ITooltip {
         if(!visible) return;
         TextureManager textureManager = MinecraftClient.getInstance().getTextureManager();
         textureManager.bindTexture(TEXTURE_STATES);
-        GlStateManager.disableDepthTest();
-        GlStateManager.enableBlend();
+        RenderSystem.disableDepthTest();
+        RenderSystem.enableBlend();
 
         drawTexture(matrices, x, y, 256 - 16, 256 - 16, 16, 16);
 
@@ -79,9 +79,9 @@ public class CycleTerminalButton extends ButtonWidget implements ITooltip {
 
         GL11.glPopMatrix();
 
-        GlStateManager.enableDepthTest();
+        RenderSystem.enableDepthTest();
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 
-        if(isHovered()) renderToolTip(matrices, mouseX, mouseY);
+        if(isHovered()) renderTooltip(matrices, mouseX, mouseY);
     }
 }

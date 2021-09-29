@@ -4,8 +4,8 @@ import appeng.api.features.IWirelessTerminalHandler;
 import appeng.menu.MenuLocator;
 import appeng.menu.implementations.MenuTypeBuilder;
 import de.mari_023.fabric.ae2wtlib.Config;
+import de.mari_023.fabric.ae2wtlib.trinket.TrinketsHelper;
 import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
-import dev.emi.trinkets.api.TrinketsApi;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Final;
@@ -28,7 +28,7 @@ public class ContainerTypeBuilderMixin<I> {
         ItemStack it;
 
         if(slot >= 100 && slot < 200 && Config.allowTrinket())
-            it = TrinketsApi.getTrinketsInventory(player).getStack(slot - 100);
+            it = TrinketsHelper.getTrinketsInventory(player).getStackInSlot(slot - 100);
         else it = player.getInventory().getStack(slot);
 
         if(it.isEmpty()) return;

@@ -15,10 +15,10 @@ import appeng.util.item.AEItemStack;
 import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.terminal.IInfinityBoosterCardHolder;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
+import de.mari_023.fabric.ae2wtlib.trinket.TrinketInventoryWrapper;
+import de.mari_023.fabric.ae2wtlib.trinket.TrinketsHelper;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
 import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
-import dev.emi.trinkets.api.TrinketInventory;
-import dev.emi.trinkets.api.TrinketsApi;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
@@ -77,9 +77,9 @@ public class CraftingTerminalHandler {
         PlayerInventory inv = player.getInventory();
         if((!craftingTerminal.isEmpty()) && inv.contains(craftingTerminal)) return craftingTerminal;
         if(Config.allowTrinket()) {
-            TrinketInventory trinketInv = (TrinketInventory) TrinketsApi.getTrinketsInventory(player);
+            TrinketInventoryWrapper trinketInv = TrinketsHelper.getTrinketsInventory(player);
             for(int i = 0; i < trinketInv.size(); i++) {
-                ItemStack terminal = trinketInv.getStack(i);
+                ItemStack terminal = trinketInv.getStackInSlot(i);
                 if(terminal.getItem() instanceof ItemWCT || (terminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(terminal, "crafting"))) {
                     securityStation = null;
                     targetGrid = null;

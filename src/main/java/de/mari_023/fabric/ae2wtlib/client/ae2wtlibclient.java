@@ -3,6 +3,7 @@ package de.mari_023.fabric.ae2wtlib.client;
 import appeng.util.item.AEItemStack;
 import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.ae2wtlib;
+import de.mari_023.fabric.ae2wtlib.trinket.TrinketsHelper;
 import de.mari_023.fabric.ae2wtlib.wct.CraftingTerminalHandler;
 import de.mari_023.fabric.ae2wtlib.wct.WCTContainer;
 import de.mari_023.fabric.ae2wtlib.wct.WCTScreen;
@@ -10,7 +11,6 @@ import de.mari_023.fabric.ae2wtlib.wit.WITContainer;
 import de.mari_023.fabric.ae2wtlib.wit.WITScreen;
 import de.mari_023.fabric.ae2wtlib.wpt.WPTContainer;
 import de.mari_023.fabric.ae2wtlib.wpt.WPTScreen;
-import dev.emi.trinkets.api.TrinketsApi;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -70,7 +70,7 @@ public class ae2wtlibclient implements ClientModInitializer {
                 ItemStack is;
                 NbtCompound tag = buf.readNbt();
                 if(slot >= 100 && slot < 200 && Config.allowTrinket())
-                    is = TrinketsApi.getTrinketsInventory(client.player).getStack(slot - 100);
+                    is = TrinketsHelper.getTrinketsInventory(client.player).getStackInSlot(slot - 100);
                 else is = client.player.getInventory().getStack(slot);
                 is.setNbt(tag);
                 buf.release();

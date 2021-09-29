@@ -6,10 +6,10 @@ import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.terminal.WTGuiObject;
+import de.mari_023.fabric.ae2wtlib.trinket.TrinketsHelper;
 import de.mari_023.fabric.ae2wtlib.wct.ItemWCT;
 import de.mari_023.fabric.ae2wtlib.wit.ItemWIT;
 import de.mari_023.fabric.ae2wtlib.wpt.ItemWPT;
-import dev.emi.trinkets.api.TrinketsApi;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.player.PlayerEntity;
@@ -83,7 +83,7 @@ public class WUTHandler {
         int slot = locator.getItemIndex();
         ItemStack is;
         if(slot >= 100 && slot < 200 && Config.allowTrinket())
-            is = TrinketsApi.getTrinketsInventory(player).getStack(slot - 100);
+            is = TrinketsHelper.getTrinketsInventory(player).getStackInSlot(slot - 100);
         else is = player.getInventory().getStack(slot);
 
         if(is.getNbt() == null) return;
