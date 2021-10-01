@@ -7,7 +7,10 @@ import appeng.api.implementations.blockentities.IViewCellStorage;
 import appeng.api.implementations.guiobjects.IPortableCell;
 import appeng.api.inventories.ISegmentedInventory;
 import appeng.api.inventories.InternalInventory;
-import appeng.api.storage.data.IAEItemStack;
+import appeng.api.storage.StorageChannels;
+import appeng.api.storage.data.IAEStack;
+import appeng.crafting.pattern.IAEPatternDetails;
+import appeng.items.misc.FluidDummyItem;
 import appeng.parts.reporting.PatternTerminalPart;
 import appeng.util.inv.AppEngInternalInventory;
 import appeng.util.inv.InternalInventoryHost;
@@ -19,6 +22,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.Nullable;
 
 public class WPTGuiObject extends WTGuiObject implements IPortableCell, ISegmentedInventory, IViewCellStorage, InternalInventoryHost {
 
@@ -63,26 +67,37 @@ public class WPTGuiObject extends WTGuiObject implements IPortableCell, ISegment
     public void saveChanges() {}
 
     @Override
-    public void onChangeInventory(InternalInventory inv, int slot, ItemStack removedStack, ItemStack newStack) {
+    public void onChangeInventory(final InternalInventory inv, final int slot, final ItemStack removedStack, final ItemStack newStack) {
         if(inv == pattern && slot == 1) {
             final ItemStack is = pattern.getStackInSlot(1);
-            final IPatternDetails details = AEApi.patterns().decodePattern(is, getPlayer().world, false);
-            if(details != null) {
-                setCraftingRecipe(details.isCraftable());
-                setSubstitution(details.canSubstitute());
+            final IPatternDetails details = AEApi.patterns().decodePattern(is, getPlayer().world);
+            if(details instanceof IAEPatternDetails aeDetails) {
+                setCraftingRecipe(aeDetails.isCraftable());
+                setSubstitution(aeDetails.canSubstitute());
 
-                for(int x = 0; x < crafting.size() && x < details.getSparseInputs().length; x++) {
-                    final IAEItemStack item = details.getSparseInputs()[x];
-                    crafting.setItemDirect(x, item == null ? ItemStack.EMPTY : item.createItemStack());
+                for(int x = 0; x < crafting.size() && x < aeDetails.getSparseInputs().length; x++) {
+                    crafting.setItemDirect(x, getDisplayStack(aeDetails.getSparseInputs()[x]));
                 }
 
-                for(int x = 0; x < output.size() && x < details.getSparseOutputs().length; x++) {
-                    final IAEItemStack item = details.getSparseOutputs()[x];
-                    output.setItemDirect(x, item == null ? ItemStack.EMPTY : item.createItemStack());
+                for(int x = 0; x < output.size() && x < aeDetails.getSparseOutputs().length; x++) {
+                    output.setItemDirect(x, getDisplayStack(aeDetails.getSparseOutputs()[x]));
                 }
             }
         } else if(inv == crafting) fixCraftingRecipes();
     }
+
+    private ItemStack getDisplayStack(@Nullable IAEStack aeStack) {
+        if(aeStack == null) {
+            return ItemStack.EMPTY;
+        } else if(aeStack.getChannel() == StorageChannels.items()) {
+            return aeStack.cast(StorageChannels.items()).createItemStack();
+        } else if(aeStack.getChannel() == StorageChannels.fluids()) {
+            return FluidDummyItem.fromFluidStack(aeStack.cast(StorageChannels.fluids()).getFluidStack(), true);
+        } else {
+            throw new IllegalArgumentException("Only item and fluid stacks are supported");
+        }
+    }
+
 
     @Override
     public boolean isRemote() {
