@@ -52,8 +52,12 @@ public class MagnetHandler {
             }
 
             PacketByteBuf buf = PacketByteBufs.create();
-            for(Map.Entry<Item, Long> entry : items.entrySet())
-                AEItemStack.fromItemStack(new ItemStack(entry.getKey())).setStackSize(entry.getValue()).writeToPacket(buf);
+            for(Map.Entry<Item, Long> entry : items.entrySet()) {
+                AEItemStack stack = AEItemStack.fromItemStack(new ItemStack(entry.getKey()));
+                if(stack == null) continue;
+                stack.setStackSize(entry.getValue());
+                stack.writeToPacket(buf);
+            }
             ServerPlayNetworking.send(player, new Identifier(ae2wtlib.MOD_NAME, "restock_amounts"), buf);
         } catch(NullPointerException ignored) {}
     }

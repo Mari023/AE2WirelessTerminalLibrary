@@ -157,7 +157,7 @@ public abstract class WTGuiObject implements IGuiItemObject, IEnergySource, IAct
     }
 
 
-    public <T extends IAEStack<T>> IMEMonitor<T> getInventory(IStorageChannel<T> channel) {
+    public <T extends IAEStack> IMEMonitor<T> getInventory(IStorageChannel<T> channel) {
         return sg.getInventory(channel);
     }
 

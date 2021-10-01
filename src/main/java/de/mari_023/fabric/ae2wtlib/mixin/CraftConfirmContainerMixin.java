@@ -2,8 +2,8 @@ package de.mari_023.fabric.ae2wtlib.mixin;
 
 import appeng.api.networking.IGrid;
 import appeng.api.networking.crafting.ICraftingCPU;
-import appeng.api.networking.crafting.ICraftingJob;
 import appeng.api.networking.crafting.ICraftingLink;
+import appeng.api.networking.crafting.ICraftingPlan;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.security.IActionSource;
 import appeng.menu.AEBaseMenu;
@@ -24,7 +24,7 @@ public abstract class CraftConfirmContainerMixin {
     @Shadow
     private ICraftingCPU selectedCpu;
     @Shadow
-    private ICraftingJob result;
+    private ICraftingPlan result;
 
     @Shadow
     protected abstract IGrid getGrid();
@@ -41,7 +41,7 @@ public abstract class CraftConfirmContainerMixin {
         IActionHost ah = ((AEBaseContainerMixin) this).invokeGetActionHost();
         if(ah instanceof WCTGuiObject) originalGui = WCTContainer.TYPE;
 
-        if(result == null || result.isSimulation()) return;
+        if(result == null || result.simulation()) return;
 
         ICraftingLink g = getGrid().getCraftingService().submitJob(result, null, selectedCpu, true, getActionSrc());
         setAutoStart(false);
