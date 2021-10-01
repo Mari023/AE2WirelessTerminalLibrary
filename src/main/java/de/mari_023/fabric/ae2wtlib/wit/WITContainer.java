@@ -5,22 +5,21 @@ import appeng.api.inventories.InternalInventory;
 import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.security.IActionHost;
-import appeng.blockentity.misc.ItemInterfaceBlockEntity;
+import appeng.blockentity.crafting.PatternProviderBlockEntity;
 import appeng.core.AELog;
 import appeng.core.localization.PlayerMessages;
 import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.InterfaceTerminalPacket;
-import appeng.helpers.DualityItemInterface;
-import appeng.helpers.IInterfaceHost;
-import appeng.helpers.IItemInterfaceHost;
 import appeng.helpers.InventoryAction;
+import appeng.helpers.iface.DualityPatternProvider;
+import appeng.helpers.iface.IPatternProviderHost;
 import appeng.items.misc.EncodedPatternItem;
 import appeng.menu.AEBaseMenu;
 import appeng.menu.SlotSemantic;
 import appeng.menu.implementations.MenuTypeBuilder;
 import appeng.menu.interfaces.IInventorySlotAware;
 import appeng.menu.slot.AppEngSlot;
-import appeng.parts.misc.ItemInterfacePart;
+import appeng.parts.crafting.PatternProviderPart;
 import appeng.util.inv.AppEngInternalInventory;
 import appeng.util.inv.FilteredInternalInventory;
 import appeng.util.inv.filter.IAEItemFilter;
@@ -38,6 +37,7 @@ import net.minecraft.util.Util;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.Map;
 
 public class WITContainer extends AEBaseMenu implements IWTInvHolder {
@@ -46,7 +46,7 @@ public class WITContainer extends AEBaseMenu implements IWTInvHolder {
     private static long inventorySerial = Long.MIN_VALUE;
 
     private final WITGuiObject witGUIObject;
-    private final Map<IInterfaceHost, WITContainer.InvTracker> diList = new HashMap<>();
+    private final Map<IPatternProviderHost, InvTracker> diList = new IdentityHashMap<>();
     private final Map<Long, WITContainer.InvTracker> byId = new HashMap<>();
 
     public WITContainer(int id, final PlayerInventory ip, final WITGuiObject anchor) {
@@ -96,8 +96,8 @@ public class WITContainer extends AEBaseMenu implements IWTInvHolder {
         IGrid grid = getGrid();
         VisitorState state = new VisitorState();
         if(grid != null) {
-            visitInterfaceHosts(grid, ItemInterfaceBlockEntity.class, state);
-            visitInterfaceHosts(grid, ItemInterfacePart.class, state);
+            visitInterfaceHosts(grid, PatternProviderBlockEntity.class, state);
+            visitInterfaceHosts(grid, PatternProviderPart.class, state);
         }
 
         InterfaceTerminalPacket packet;
@@ -117,9 +117,9 @@ public class WITContainer extends AEBaseMenu implements IWTInvHolder {
         return null;
     }
 
-    private <T extends IItemInterfaceHost> void visitInterfaceHosts(IGrid grid, Class<T> machineClass, VisitorState state) {
+    private <T extends IPatternProviderHost> void visitInterfaceHosts(IGrid grid, Class<T> machineClass, VisitorState state) {
         for(var ih : grid.getActiveMachines(machineClass)) {
-            final DualityItemInterface dual = ih.getInterfaceDuality();
+            var dual = ih.getDuality();
             if(dual.getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.NO) continue;
 
             final InvTracker t = diList.get(ih);
@@ -128,7 +128,6 @@ public class WITContainer extends AEBaseMenu implements IWTInvHolder {
             state.total++;
         }
     }
-
 
     public void doAction(ServerPlayerEntity player, InventoryAction action, int slot, long id) {
         InvTracker inv = byId.get(id);
@@ -214,23 +213,20 @@ public class WITContainer extends AEBaseMenu implements IWTInvHolder {
 
         if(grid == null) return new InterfaceTerminalPacket(true, new NbtCompound());
 
-        for(var ih : grid.getActiveMachines(ItemInterfaceBlockEntity.class)) {
-            final DualityItemInterface dual = ih.getInterfaceDuality();
-            if(dual.getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.YES) {
-                diList.put(ih, new InvTracker(dual, dual.getPatterns(), dual.getTermName()));
-            }
+        for(var ih : grid.getActiveMachines(PatternProviderBlockEntity.class)) {
+            var dual = ih.getDuality();
+            if(dual.getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.YES)
+                diList.put(ih, new InvTracker(dual, dual.getPatternInv(), dual.getTermName()));
         }
 
-        for(var ih : grid.getActiveMachines(ItemInterfacePart.class)) {
-            final DualityItemInterface dual = ih.getInterfaceDuality();
-            if(dual.getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.YES) {
-                diList.put(ih, new InvTracker(dual, dual.getPatterns(), dual.getTermName()));
-            }
+        for(var ih : grid.getActiveMachines(PatternProviderPart.class)) {
+            var dual = ih.getDuality();
+            if(dual.getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.YES)
+                diList.put(ih, new InvTracker(dual, dual.getPatternInv(), dual.getTermName()));
         }
 
         NbtCompound data = new NbtCompound();
-        for(var en : diList.entrySet()) {
-            final InvTracker inv = en.getValue();
+        for(var inv : diList.values()) {
             byId.put(inv.serverId, inv);
             addItems(data, inv, 0, inv.server.size());
         }
@@ -285,13 +281,14 @@ public class WITContainer extends AEBaseMenu implements IWTInvHolder {
 
     private static class InvTracker {
         private final long sortBy;
-        private final long serverId;
+        private final long serverId = inventorySerial++;
         private final Text name;
+        // This is used to track the inventory contents we sent to the client for change detection
         private final InternalInventory client;
+        // This is a reference to the real inventory used by this machine
         private final InternalInventory server;
 
-        public InvTracker(DualityItemInterface dual, InternalInventory patterns, Text name) {
-            serverId = inventorySerial++;
+        public InvTracker(final DualityPatternProvider dual, final InternalInventory patterns, final Text name) {
             server = patterns;
             client = new AppEngInternalInventory(server.size());
             this.name = name;
