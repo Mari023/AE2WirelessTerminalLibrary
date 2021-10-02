@@ -72,11 +72,6 @@ public class TrinketInventoryWrapper implements InternalInventory {//TODO use Tr
     }
 
     /*@Override
-    public void markDirty() {
-        inventory.markDirty();
-    }
-
-    @Override
     public ItemStack extractStack(int slot, ItemFilter filter, ItemStack mergeWith, int maxCount, Simulation simulation) {
         if(mergeWith.isEmpty()) {
             if(simulation.isAction()) return inventory.removeStack(slot);
