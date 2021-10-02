@@ -68,7 +68,7 @@ public class CycleTerminalButton extends ButtonWidget implements ITooltip {
         drawTexture(matrices, x, y, 256 - 16, 256 - 16, 16, 16);
 
         textureManager.bindTexture(nextTerminal);
-        GL11.glPushMatrix();
+        matrices.push();
         GL11.glTranslatef(x, y, 0.0F);
         GL11.glScalef(1f / 20f, 1f / 20f, 1f / 20f);
 
@@ -77,7 +77,7 @@ public class CycleTerminalButton extends ButtonWidget implements ITooltip {
 
         drawTexture(matrices, 32, 32, 0, 0, 256, 256);
 
-        GL11.glPopMatrix();
+        matrices.pop();
 
         RenderSystem.enableDepthTest();
         GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);

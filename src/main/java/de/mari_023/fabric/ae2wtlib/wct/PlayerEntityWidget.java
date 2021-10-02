@@ -25,7 +25,7 @@ public class PlayerEntityWidget extends ClickableWidget {
     public void renderBackground(MatrixStack matrices, MinecraftClient client, int mouseX, int mouseY) {
         float f = (float) Math.atan((x - mouseX) / 40.0F);
         float g = (float) Math.atan((y - 36 - mouseY) / 40.0F);
-        GL11.glPushMatrix();
+        matrices.push();
         GL11.glTranslatef((float) x, (float) y, 1050.0F);
         GL11.glScalef(1.0F, 1.0F, -1.0F);
         MatrixStack matrixStack = new MatrixStack();
@@ -58,7 +58,7 @@ public class PlayerEntityWidget extends ClickableWidget {
         entity.setPitch(j);
         entity.prevHeadYaw = k;
         entity.headYaw = l;
-        GL11.glPopMatrix();
+        matrices.pop();
     }
 
     @Override
