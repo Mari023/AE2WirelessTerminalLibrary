@@ -11,7 +11,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.math.Quaternion;
 import net.minecraft.util.math.Vec3f;
-import org.lwjgl.opengl.GL11;
 
 public class PlayerEntityWidget extends ClickableWidget {
     private final LivingEntity entity;
@@ -26,15 +25,12 @@ public class PlayerEntityWidget extends ClickableWidget {
         float f = (float) Math.atan((x - mouseX) / 40.0F);
         float g = (float) Math.atan((y - 36 - mouseY) / 40.0F);
         matrices.push();
-        GL11.glTranslatef((float) x, (float) y, 1050.0F);
-        GL11.glScalef(1.0F, 1.0F, -1.0F);
-        MatrixStack matrixStack = new MatrixStack();
-        matrixStack.translate(0.0D, 0.0D, 1000.0D);
-        matrixStack.scale(30F, 30F, 30F);
+        matrices.translate(x, y, 1050.0);
+        matrices.scale(30F, 30F, -30F);
         Quaternion quaternion = Vec3f.POSITIVE_Z.getDegreesQuaternion(180.0F);
         Quaternion quaternion2 = Vec3f.POSITIVE_X.getDegreesQuaternion(g * 20.0F);
         quaternion.hamiltonProduct(quaternion2);
-        matrixStack.multiply(quaternion);
+        matrices.multiply(quaternion);
         float h = entity.bodyYaw;
         float i = entity.getYaw();
         float j = entity.getPitch();
@@ -50,7 +46,7 @@ public class PlayerEntityWidget extends ClickableWidget {
         entityRenderDispatcher.setRotation(quaternion2);
         entityRenderDispatcher.setRenderShadows(false);
         VertexConsumerProvider.Immediate immediate = MinecraftClient.getInstance().getBufferBuilders().getEntityVertexConsumers();
-        RenderSystem.runAsFancy(() -> entityRenderDispatcher.render(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, matrixStack, immediate, 15728880));
+        RenderSystem.runAsFancy(() -> entityRenderDispatcher.render(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F, matrices, immediate, 15728880));
         immediate.draw();
         entityRenderDispatcher.setRenderShadows(true);
         entity.bodyYaw = h;

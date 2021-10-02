@@ -11,7 +11,6 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
-import org.lwjgl.opengl.GL11;
 
 import java.util.Collections;
 import java.util.List;
@@ -69,18 +68,18 @@ public class CycleTerminalButton extends ButtonWidget implements ITooltip {
 
         textureManager.bindTexture(nextTerminal);
         matrices.push();
-        GL11.glTranslatef(x, y, 0.0F);
-        GL11.glScalef(1f / 20f, 1f / 20f, 1f / 20f);
+        matrices.translate(x, y, 0.0);
+        matrices.scale(1f / 20f, 1f / 20f, 1f / 20f);
 
-        if(active) GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-        else GL11.glColor4f(0.5f, 0.5f, 0.5f, 1.0f);
+        if(active) RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+        else RenderSystem.setShaderColor(0.5f, 0.5f, 0.5f, 1.0f);
 
         drawTexture(matrices, 32, 32, 0, 0, 256, 256);
 
         matrices.pop();
 
         RenderSystem.enableDepthTest();
-        GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
 
         if(isHovered()) renderTooltip(matrices, mouseX, mouseY);
     }
