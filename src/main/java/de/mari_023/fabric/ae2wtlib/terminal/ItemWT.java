@@ -32,12 +32,11 @@ import net.minecraft.world.World;
 
 import java.util.List;
 import java.util.OptionalLong;
-import java.util.function.DoubleSupplier;
 
 public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTerminalHandler, ICustomReequipAnimation {
 
-    public ItemWT(DoubleSupplier powerCapacity, Item.Settings props) {
-        super(powerCapacity, props);
+    public ItemWT(Item.Settings props) {
+        super(/*AEConfig.instance().getWirelessTerminalBattery()*/ () -> 1000000, props);
     }
 
     @Override
