@@ -44,23 +44,23 @@ public class ae2wtlib implements ModInitializer {
 
     public static final ItemGroup ITEM_GROUP = FabricItemGroupBuilder.build(new Identifier(MOD_NAME, "general"), () -> new ItemStack(ae2wtlib.CRAFTING_TERMINAL));
 
-    public static ItemWCT CRAFTING_TERMINAL;
-    public static ItemWPT PATTERN_TERMINAL;
-    public static ItemWIT INTERFACE_TERMINAL;
+    public static final ItemWCT CRAFTING_TERMINAL = new ItemWCT();
+    public static final ItemWPT PATTERN_TERMINAL = new ItemWPT();
+    public static final ItemWIT INTERFACE_TERMINAL = new ItemWIT();
 
-    public static ItemWUT UNIVERSAL_TERMINAL;
+    public static final ItemWUT UNIVERSAL_TERMINAL = new ItemWUT();
 
-    public static ItemInfinityBooster INFINITY_BOOSTER;
-    public static ItemMagnetCard MAGNET_CARD;
+    public static final ItemInfinityBooster INFINITY_BOOSTER = new ItemInfinityBooster();
+    public static final ItemMagnetCard MAGNET_CARD = new ItemMagnetCard();
 
     @Override
     public void onInitialize() {
-        Registry.register(Registry.ITEM, new Identifier(MOD_NAME, "infinity_booster_card"), INFINITY_BOOSTER = new ItemInfinityBooster());
-        Registry.register(Registry.ITEM, new Identifier(MOD_NAME, "magnet_card"), MAGNET_CARD = new ItemMagnetCard());
-        Registry.register(Registry.ITEM, new Identifier(MOD_NAME, "wireless_crafting_terminal"), CRAFTING_TERMINAL = new ItemWCT());
-        Registry.register(Registry.ITEM, new Identifier(MOD_NAME, "wireless_pattern_terminal"), PATTERN_TERMINAL = new ItemWPT());
-        Registry.register(Registry.ITEM, new Identifier(MOD_NAME, "wireless_interface_terminal"), INTERFACE_TERMINAL = new ItemWIT());
-        Registry.register(Registry.ITEM, new Identifier(MOD_NAME, "wireless_universal_terminal"), UNIVERSAL_TERMINAL = new ItemWUT());
+        Registry.register(Registry.ITEM, new Identifier(MOD_NAME, "infinity_booster_card"), INFINITY_BOOSTER);
+        Registry.register(Registry.ITEM, new Identifier(MOD_NAME, "magnet_card"), MAGNET_CARD);
+        Registry.register(Registry.ITEM, new Identifier(MOD_NAME, "wireless_crafting_terminal"), CRAFTING_TERMINAL);
+        Registry.register(Registry.ITEM, new Identifier(MOD_NAME, "wireless_pattern_terminal"), PATTERN_TERMINAL);
+        Registry.register(Registry.ITEM, new Identifier(MOD_NAME, "wireless_interface_terminal"), INTERFACE_TERMINAL);
+        Registry.register(Registry.ITEM, new Identifier(MOD_NAME, "wireless_universal_terminal"), UNIVERSAL_TERMINAL);
 
         WUTHandler.addTerminal("crafting", CRAFTING_TERMINAL::tryOpen, WCTGuiObject::new);
         WUTHandler.addTerminal("pattern", PATTERN_TERMINAL::tryOpen, WPTGuiObject::new);
