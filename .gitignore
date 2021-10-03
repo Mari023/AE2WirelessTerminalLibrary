@@ -116,3 +116,6 @@ run/
 
 # Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
 !gradle-wrapper.jar
+
+#Temporarily allow ae2 to fix unfixable conflicts
+!lib/appliedenergistics2-fabric-9.0.0-alpha.1-no-conflict.jar

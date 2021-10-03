@@ -90,7 +90,7 @@ repositories {
         url = "https://ladysnake.jfrog.io/artifactory/mods"
     }
     flatDir {
-        dirs '/home/mari/Schreibtisch/ae2'
+        dirs './lib'
     }
 }
 
