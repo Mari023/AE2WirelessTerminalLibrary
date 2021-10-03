@@ -114,6 +114,7 @@ dependencies {
     modImplementation "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
     modImplementation "dev.emi:trinkets:${project.trinkets_version}"
     modImplementation "appeng:appliedenergistics2:0.0.0"
+    //modImplementation "appeng:appliedenergistics2-fabric:9.0.0-alpha.1"
 }
 
 processResources {
