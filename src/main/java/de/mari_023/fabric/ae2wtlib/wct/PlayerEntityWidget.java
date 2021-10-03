@@ -23,8 +23,8 @@ public class PlayerEntityWidget extends ClickableWidget {
 
     @Override
     public void renderBackground(MatrixStack matrices, MinecraftClient client, int mouseX, int mouseY) {
-        float f = (float) Math.atan((x - mouseX) / 40.0F);
-        float g = (float) Math.atan((y - 36 - mouseY) / 40.0F);
+        float f = (float) Math.atan((mouseX - x) / 40.0F);
+        float g = (float) Math.atan((mouseY - y + 44) / 40.0F);
         MatrixStack matrixStack = RenderSystem.getModelViewStack();
         matrixStack.push();
         matrixStack.translate(x, y, 1050.0D);
@@ -42,9 +42,9 @@ public class PlayerEntityWidget extends ClickableWidget {
         float j = entity.getPitch();
         float k = entity.prevHeadYaw;
         float l = entity.headYaw;
-        entity.bodyYaw = 180.0F + f * 20.0F;
-        entity.setYaw(180.0F + f * 40.0F);
-        entity.setPitch(-g * 20.0F);
+        entity.bodyYaw = f * 20.0F;
+        entity.setYaw(f * 40.0F);
+        entity.setPitch(g * 20.0F);
         entity.headYaw = entity.getYaw();
         entity.prevHeadYaw = entity.getYaw();
         DiffuseLighting.method_34742();
