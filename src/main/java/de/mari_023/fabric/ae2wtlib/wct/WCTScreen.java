@@ -144,7 +144,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
         super.render(matrices, mouseX, mouseY, delta);
     }
 
-    @Override
+    /*@Override
     public void init() {
         super.init();
         if(!Config.allowTrinket()) return;//Trinkets only
@@ -417,5 +417,5 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
             if(s == slot) return isPointWithinBounds(slot.x, slot.y, 16, 16, a, b);
         }
         return false;
-    }
+    }*/
 }

@@ -4,6 +4,7 @@ import appeng.api.config.Actionable;
 import appeng.api.config.SortDir;
 import appeng.api.config.SortOrder;
 import appeng.api.config.ViewItems;
+import appeng.api.features.IGridLinkableHandler;
 import appeng.api.features.IWirelessTerminalHandler;
 import appeng.api.features.Locatables;
 import appeng.api.networking.security.IActionHost;
@@ -11,6 +12,7 @@ import appeng.api.util.IConfigManager;
 import appeng.core.localization.GuiText;
 import appeng.core.localization.PlayerMessages;
 import appeng.hooks.ICustomReequipAnimation;
+import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.items.tools.powered.powersink.AEBasePoweredItem;
 import appeng.menu.MenuLocator;
 import appeng.util.ConfigManager;
@@ -34,6 +36,8 @@ import java.util.List;
 import java.util.OptionalLong;
 
 public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTerminalHandler, ICustomReequipAnimation {
+
+    public static final IGridLinkableHandler LINKABLE_HANDLER = new LinkableHandler();
 
     public ItemWT(Item.Settings props) {
         super(/*AEConfig.instance().getWirelessTerminalBattery()*/ () -> 1000000, props);
@@ -120,6 +124,22 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermi
     @Override
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
         return slotChanged;
+    }
+
+    private static class LinkableHandler implements IGridLinkableHandler {
+        private LinkableHandler() {}
+
+        public boolean canLink(ItemStack stack) {
+            return stack.getItem() instanceof ItemWT;
+        }
+
+        public void link(ItemStack itemStack, long securityKey) {
+            itemStack.getOrCreateNbt().putLong("gridKey", securityKey);
+        }
+
+        public void unlink(ItemStack itemStack) {
+            itemStack.removeSubNbt("gridKey");
+        }
     }
 
     /**

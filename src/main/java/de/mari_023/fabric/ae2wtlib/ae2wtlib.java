@@ -1,6 +1,7 @@
 package de.mari_023.fabric.ae2wtlib;
 
 import appeng.api.features.ChargerRegistry;
+import appeng.api.features.GridLinkables;
 import appeng.core.sync.packets.PatternSlotPacket;
 import appeng.menu.AEBaseMenu;
 import appeng.menu.MenuLocator;
@@ -66,6 +67,10 @@ public class ae2wtlib implements ModInitializer {
         WUTHandler.addTerminal("pattern", PATTERN_TERMINAL::tryOpen, WPTGuiObject::new);
         WUTHandler.addTerminal("interface", INTERFACE_TERMINAL::tryOpen, WITGuiObject::new);
 
+        GridLinkables.register(CRAFTING_TERMINAL, ItemWT.LINKABLE_HANDLER);
+        GridLinkables.register(PATTERN_TERMINAL, ItemWT.LINKABLE_HANDLER);
+        GridLinkables.register(INTERFACE_TERMINAL, ItemWT.LINKABLE_HANDLER);
+        GridLinkables.register(UNIVERSAL_TERMINAL, ItemWT.LINKABLE_HANDLER);
         ChargerRegistry.setChargeRate(CRAFTING_TERMINAL, Config.getChargeRate());
         ChargerRegistry.setChargeRate(PATTERN_TERMINAL, Config.getChargeRate());
         ChargerRegistry.setChargeRate(INTERFACE_TERMINAL, Config.getChargeRate());
