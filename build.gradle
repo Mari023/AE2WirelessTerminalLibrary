@@ -9,7 +9,7 @@ sourceCompatibility = JavaVersion.VERSION_16
 targetCompatibility = JavaVersion.VERSION_16
 
 version = project.mod_version + "-SNAPSHOT"
-versionType = project.versionType
+verType = project.verType
 boolean shouldPublish = false
 
 ext.pr = System.getenv('PR_NUMBER') ?: ""
@@ -21,15 +21,15 @@ ext.tag = System.getenv('TAG') ?: ""
 if (ext.tag) {
     version = ext.tag
     if (project.version.contains("alpha")) {
-        versionType = "alpha"
+        verType = "alpha"
         shouldPublish = true
     }
     if (project.version.contains("beta")) {
-        versionType = "beta"
+        verType = "beta"
         shouldPublish = true
     }
     if (project.version.contains("release")) {
-        versionType = "release"
+        verType = "release"
         shouldPublish = true
     }
 }
@@ -145,7 +145,7 @@ task publishModrinth(type: TaskModrinthUpload) {
         addGameVersion('1.16.5')
         addLoader('fabric')
         versionNumber = project.version
-        releaseType = versionType
+        versionType = verType
         changelog = System.getenv("CHANGELOG") ?: "Please visit our [releases](https://github.com/Mari023/AE2WirelessTerminalLibrary/releases) for a changelog"
     }
 }
@@ -157,7 +157,7 @@ curseforge {
             id = '459929'
             changelogType = "markdown"
             changelog = System.getenv("CHANGELOG") ?: "Please visit our [releases](https://github.com/Mari023/AE2WirelessTerminalLibrary/releases) for a changelog"
-            releaseType = versionType
+            releaseType = verType
             addGameVersion '1.16.5'
             addGameVersion 'Fabric'
             addGameVersion "Java 8"
