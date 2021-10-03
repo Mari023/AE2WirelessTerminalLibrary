@@ -45,15 +45,19 @@ public class MagnetHandler {
             if(handler.getItemStorageChannel() == null) return;
             IItemList<IAEItemStack> storageList = handler.getItemStorageChannel().getStorageList();
 
-            for(int i = 0; i < player.inventory.size(); i++) {
-                ItemStack stack = player.inventory.getStack(i);
+            for(int i = 0; i < player.getInventory().size(); i++) {
+                ItemStack stack = player.getInventory().getStack(i);
                 if(stack.isEmpty()) continue;
                 if(!items.containsKey(stack.getItem())) items.put(stack.getItem(), getCount(storageList, stack));
             }
 
             PacketByteBuf buf = PacketByteBufs.create();
-            for(Map.Entry<Item, Long> entry : items.entrySet())
-                AEItemStack.fromItemStack(new ItemStack(entry.getKey())).setStackSize(entry.getValue()).writeToPacket(buf);
+            for(Map.Entry<Item, Long> entry : items.entrySet()) {
+                AEItemStack stack = AEItemStack.fromItemStack(new ItemStack(entry.getKey()));
+                if(stack == null) continue;
+                stack.setStackSize(entry.getValue());
+                stack.writeToPacket(buf);
+            }
             ServerPlayNetworking.send(player, new Identifier(ae2wtlib.MOD_NAME, "restock_amounts"), buf);
         } catch(NullPointerException ignored) {}
     }

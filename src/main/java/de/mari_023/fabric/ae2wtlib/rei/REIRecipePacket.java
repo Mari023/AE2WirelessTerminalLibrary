@@ -1,64 +1,22 @@
 package de.mari_023.fabric.ae2wtlib.rei;
 
-import alexiil.mc.lib.attributes.item.FixedItemInv;
-import appeng.api.config.Actionable;
-import appeng.api.config.SecurityPermissions;
-import appeng.api.networking.IGrid;
-import appeng.api.networking.IGridNode;
-import appeng.api.networking.crafting.ICraftingGrid;
-import appeng.api.networking.energy.IEnergyGrid;
-import appeng.api.networking.security.ISecurityGrid;
-import appeng.api.networking.storage.IStorageGrid;
-import appeng.api.storage.IMEMonitor;
-import appeng.api.storage.channels.IItemStorageChannel;
-import appeng.api.storage.data.IAEItemStack;
-import appeng.core.Api;
-import appeng.helpers.IContainerCraftingPacket;
-import appeng.items.storage.ViewCellItem;
-import appeng.mixins.IngredientAccessor;
-import appeng.util.Platform;
-import appeng.util.helpers.ItemHandlerUtil;
-import appeng.util.inv.AdaptorFixedInv;
-import appeng.util.inv.WrapperInvItemHandler;
-import appeng.util.item.AEItemStack;
-import appeng.util.prioritylist.IPartitionList;
-import com.google.common.base.Preconditions;
-import com.mojang.datafixers.util.Pair;
-import de.mari_023.fabric.ae2wtlib.ae2wtlib;
-import de.mari_023.fabric.ae2wtlib.wpt.WPTContainer;
-import io.netty.buffer.Unpooled;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.Recipe;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.ShapedRecipe;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.collection.DefaultedList;
-
-import java.util.Arrays;
-import java.util.stream.Stream;
-
 public class REIRecipePacket {
 
     /**
      * Transmit only a recipe ID.
-     */
+     *//*
     private static final int INLINE_RECIPE_NONE = 1;
 
-    /**
+    *//**
      * Transmit the information about the recipe we actually need. This is explicitly limited since this is untrusted
      * client->server info.
-     */
+     *//*
     private static final int INLINE_RECIPE_SHAPED = 2;
 
     private Identifier recipeId;
-    /**
+    *//**
      * This is optional, in case the client already knows it could not resolve the recipe id.
-     */
+     *//*
     private Recipe<?> recipe;
     private final boolean crafting;
 
@@ -90,12 +48,12 @@ public class REIRecipePacket {
         ClientPlayNetworking.send(new Identifier(ae2wtlib.MOD_NAME, "rei_recipe"), data);
     }
 
-    /**
+    *//**
      * Incoming Packets
      *
      * @param buf    the packets buffer, needs to be retained and released
      * @param player the player who sent the package
-     */
+     *//*
     public REIRecipePacket(PacketByteBuf buf, ServerPlayerEntity player) {
         data = buf;
         crafting = data.readBoolean();
@@ -112,7 +70,7 @@ public class REIRecipePacket {
                 throw new IllegalArgumentException("Invalid inline recipe type.");
         }
         final ScreenHandler con = player.currentScreenHandler;
-        Preconditions.checkArgument(con instanceof IContainerCraftingPacket);
+        Preconditions.checkArgument(con instanceof IMenuCraftingPacket);
 
         Recipe<?> recipe = player.getEntityWorld().getRecipeManager().get(recipeId).orElse(null);
         if(recipe == null && this.recipe != null) {
@@ -121,18 +79,18 @@ public class REIRecipePacket {
         }
         Preconditions.checkArgument(recipe != null);
 
-        final IContainerCraftingPacket cct = (IContainerCraftingPacket) con;
+        final IMenuCraftingPacket cct = (IMenuCraftingPacket) con;
         final IGridNode node = cct.getNetworkNode();
 
         Preconditions.checkArgument(node != null);
 
         final IGrid grid = node.getGrid();
 
-        final ISecurityGrid security = grid.getCache(ISecurityGrid.class);
-        final IEnergyGrid energy = grid.getCache(IEnergyGrid.class);
-        final FixedItemInv craftMatrix = cct.getInventoryByName("crafting");
+        final ISecurityService security = grid.getSecurityService();
+        final IEnergyService energy = grid.getEnergyService();
+        final FixedItemInv craftMatrix = cct.getSubInventory("crafting");
 
-        final IMEMonitor<IAEItemStack> storage = ((IStorageGrid) grid.getCache(IStorageGrid.class)).getInventory(Api.instance().storage().getStorageChannel(IItemStorageChannel.class));
+        final IMEMonitor<IAEItemStack> storage = grid.getStorageService().getInventory(StorageChannels.items());
         final IPartitionList<IAEItemStack> filter = ViewCellItem.createFilter(cct.getViewCells());
 
         // Handle each slot
@@ -217,14 +175,14 @@ public class REIRecipePacket {
         return stacks;
     }
 
-    /**
+    *//**
      * Expand any recipe to a 3x3 matrix.
      * <p>
      * Will throw an {@link IllegalArgumentException} in case it has more than 9 or a shaped recipe is either wider or
      * higher than 3. ingredients.
-     */
+     *//*
     private DefaultedList<Ingredient> ensure3by3CraftingMatrix(Recipe<?> recipe) {
-        DefaultedList<Ingredient> ingredients = recipe.getPreviewInputs();
+        DefaultedList<Ingredient> ingredients = recipe.getIngredients();
         DefaultedList<Ingredient> expandedIngredients = DefaultedList.ofSize(9, Ingredient.EMPTY);
 
         Preconditions.checkArgument(ingredients.size() <= 9);
@@ -255,48 +213,48 @@ public class REIRecipePacket {
         return expandedIngredients;
     }
 
-    /**
+    *//**
      * @param is itemstack
      * @return is if it can be used, else EMPTY
-     */
+     *//*
     private ItemStack canUseInSlot(Ingredient ingredient, ItemStack is) {
         return Arrays.stream(getMatchingStacks(ingredient)).filter(p -> p.isItemEqual(is)).findFirst().orElse(ItemStack.EMPTY);
     }
 
-    /**
+    *//**
      * Finds the first matching itemstack with the highest stored amount.
-     */
-    private IAEItemStack findBestMatchingItemStack(Ingredient ingredients, IPartitionList<IAEItemStack> filter, IMEMonitor<IAEItemStack> storage, IContainerCraftingPacket cct) {
+     *//*
+    private IAEItemStack findBestMatchingItemStack(Ingredient ingredients, IPartitionList<IAEItemStack> filter, IMEMonitor<IAEItemStack> storage, IMenuCraftingPacket cct) {
         return getMostStored(Arrays.stream(getMatchingStacks(ingredients)).map(AEItemStack::fromItemStack).filter(r -> r != null && (filter == null || filter.isListed(r))), storage, cct);
     }
 
-    /**
+    *//**
      * This tries to find the first pattern matching the list of ingredients.
      * <p>
      * As additional condition, it sorts by the stored amount to return the one with the highest stored amount.
-     */
-    private IAEItemStack findBestMatchingPattern(Ingredient ingredients, IPartitionList<IAEItemStack> filter, ICraftingGrid crafting, IMEMonitor<IAEItemStack> storage, IContainerCraftingPacket cct) {
+     *//*
+    private IAEItemStack findBestMatchingPattern(Ingredient ingredients, IPartitionList<IAEItemStack> filter, ICraftingGrid crafting, IMEMonitor<IAEItemStack> storage, IMenuCraftingPacket cct) {
         return getMostStored(Arrays.stream(getMatchingStacks(ingredients)).map(AEItemStack::fromItemStack).filter(r -> r != null && (filter == null || filter.isListed(r))).map(s -> s.setCraftable(!crafting.getCraftingFor(s, null, 0, null).isEmpty())).filter(IAEItemStack::isCraftable), storage, cct);
     }
 
-    /**
+    *//**
      * From a stream of AE item stacks, pick the one with the highest available amount in the network. Returns null if the stream is empty.
-     */
-    private static IAEItemStack getMostStored(Stream<? extends IAEItemStack> stacks, IMEMonitor<IAEItemStack> storage, IContainerCraftingPacket cct) {
+     *//*
+    private static IAEItemStack getMostStored(Stream<? extends IAEItemStack> stacks, IMEMonitor<IAEItemStack> storage, IMenuCraftingPacket cct) {
         return stacks.map(s -> {
             // Determine the stored count
             IAEItemStack stored = storage.extractItems(s.copy().setStackSize(Long.MAX_VALUE),
                     Actionable.SIMULATE, cct.getActionSource());
             return Pair.of(s, stored != null ? stored.getStackSize() : 0);
         }).min((left, right) -> Long.compare(right.getSecond(), left.getSecond())).map(Pair::getFirst).orElse(null);
-    }
+    }*/
 
-    private void handleProcessing(ScreenHandler con, IContainerCraftingPacket cct, Recipe<?> recipe) {
+    /*private void handleProcessing(ScreenHandler con, IMenuCraftingPacket cct, Recipe<?> recipe) {//TODO this might need porting
         if(con instanceof WPTContainer && !((WPTContainer) con).craftingMode) {
-            final FixedItemInv output = cct.getInventoryByName("output");
+            final FixedItemInv output = cct.getSubInventory("output");
             ItemHandlerUtil.setStackInSlot(output, 0, recipe.getOutput());
             ItemHandlerUtil.setStackInSlot(output, 1, ItemStack.EMPTY);
             ItemHandlerUtil.setStackInSlot(output, 2, ItemStack.EMPTY);
         }
-    }
+    }*/
 }

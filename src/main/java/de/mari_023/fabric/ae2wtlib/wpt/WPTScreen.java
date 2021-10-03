@@ -7,8 +7,8 @@ import appeng.client.gui.style.ScreenStyle;
 import appeng.client.gui.style.StyleManager;
 import appeng.client.gui.widgets.ActionButton;
 import appeng.client.gui.widgets.TabButton;
-import appeng.container.SlotSemantic;
 import appeng.core.localization.GuiText;
+import appeng.menu.SlotSemantic;
 import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import de.mari_023.fabric.ae2wtlib.wut.CycleTerminalButton;
 import de.mari_023.fabric.ae2wtlib.wut.IUniversalTerminalCapable;
@@ -66,7 +66,7 @@ public class WPTScreen extends ItemTerminalScreen<WPTContainer> implements IUniv
         substitutionsDisabledBtn.setHalfSize(true);
         widgets.add("substitutionsDisabled", substitutionsDisabledBtn);
 
-        ActionButton clearBtn = addButton(new ActionButton(ActionItems.CLOSE, btn -> clear()));
+        ActionButton clearBtn = addDrawable(new ActionButton(ActionItems.CLOSE, btn -> clear()));
         clearBtn.setHalfSize(true);
         widgets.add("clearPattern", clearBtn);
         widgets.add("encodePattern", new ActionButton(ActionItems.ENCODE, act -> encode()));

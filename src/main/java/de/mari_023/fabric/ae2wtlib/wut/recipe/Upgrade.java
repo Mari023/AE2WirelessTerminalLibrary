@@ -3,11 +3,10 @@ package de.mari_023.fabric.ae2wtlib.wut.recipe;
 import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
 public class Upgrade extends Common {
@@ -18,8 +17,7 @@ public class Upgrade extends Common {
         super(id);
         this.Terminal = Terminal;
         this.TerminalName = TerminalName;
-        if(!outputStack.hasTag()) outputStack.setTag(new CompoundTag());
-        outputStack.getTag().putBoolean(TerminalName, true);
+        outputStack.getOrCreateNbt().putBoolean(TerminalName, true);
     }
 
     public Ingredient getTerminal() {
@@ -40,10 +38,10 @@ public class Upgrade extends Common {
     @Override
     public ItemStack craft(CraftingInventory inv) {
         ItemStack wut = InputHelper.getInputStack(inv, InputHelper.wut).copy();
-        CompoundTag terminal = InputHelper.getInputStack(inv, Terminal).getTag().copy();
-        wut.getTag().putBoolean(TerminalName, true);
-        terminal.copyFrom(wut.getTag());
-        wut.setTag(terminal);
+        NbtCompound terminal = InputHelper.getInputStack(inv, Terminal).getOrCreateNbt().copy();
+        wut.getOrCreateNbt().putBoolean(TerminalName, true);
+        terminal.copyFrom(wut.getNbt());
+        wut.setNbt(terminal);
 
         return wut;
     }
@@ -51,12 +49,5 @@ public class Upgrade extends Common {
     @Override
     public RecipeSerializer<?> getSerializer() {
         return UpgradeSerializer.INSTANCE;
-    }
-
-    public DefaultedList<Ingredient> getPreviewInputs() {
-        DefaultedList<Ingredient> inputs = DefaultedList.of();
-        inputs.add(Terminal);
-        inputs.add(InputHelper.wut);
-        return inputs;
     }
 }

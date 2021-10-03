@@ -10,8 +10,8 @@ import net.minecraft.util.Identifier;
 
 public class CombineSerializer extends Serializer<Combine> {
     public static final CombineSerializer INSTANCE = new CombineSerializer();
-
-    public static final Identifier ID = new Identifier(ae2wtlib.MOD_NAME, "combine");
+    public static final String Name = "combine";
+    public static final Identifier ID = new Identifier(ae2wtlib.MOD_NAME, Name);
 
     @Override
     public Combine read(Identifier id, JsonObject json) {

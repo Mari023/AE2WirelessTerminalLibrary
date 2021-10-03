@@ -10,8 +10,8 @@ import net.minecraft.util.Identifier;
 
 public class UpgradeSerializer extends Serializer<Upgrade> {
     public static final UpgradeSerializer INSTANCE = new UpgradeSerializer();
-
-    public static final Identifier ID = new Identifier(ae2wtlib.MOD_NAME, "upgrade");
+    public static final String Name = "upgrade";
+    public static final Identifier ID = new Identifier(ae2wtlib.MOD_NAME, Name);
 
     @Override
     public Upgrade read(Identifier id, JsonObject json) {

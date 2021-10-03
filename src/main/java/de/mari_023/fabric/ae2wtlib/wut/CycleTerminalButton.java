@@ -1,17 +1,14 @@
 package de.mari_023.fabric.ae2wtlib.wut;
 
 import appeng.client.gui.widgets.ITooltip;
-import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
 import de.mari_023.fabric.ae2wtlib.ae2wtlib;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.texture.TextureManager;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
-import org.lwjgl.opengl.GL11;
 
 import java.util.Collections;
 import java.util.List;
@@ -25,7 +22,8 @@ public class CycleTerminalButton extends ButtonWidget implements ITooltip {
     }
 
     @Override
-    public @NotNull List<Text> getTooltipMessage() {
+    public @NotNull
+    List<Text> getTooltipMessage() {
         return Collections.singletonList(new TranslatableText("gui.ae2wtlib.cycle_terminal.desc"));
     }
 
@@ -60,28 +58,22 @@ public class CycleTerminalButton extends ButtonWidget implements ITooltip {
     @Override
     public void renderButton(MatrixStack matrices, final int mouseX, final int mouseY, float partial) {
         if(!visible) return;
-        TextureManager textureManager = MinecraftClient.getInstance().getTextureManager();
-        textureManager.bindTexture(TEXTURE_STATES);
-        GlStateManager.disableDepthTest();
-        GlStateManager.enableBlend();
+        matrices.push();
+        RenderSystem.setShaderTexture(0, TEXTURE_STATES);
+        RenderSystem.disableDepthTest();
+        RenderSystem.enableBlend();
 
         drawTexture(matrices, x, y, 256 - 16, 256 - 16, 16, 16);
 
-        textureManager.bindTexture(nextTerminal);
-        GL11.glPushMatrix();
-        GL11.glTranslatef(x, y, 0.0F);
-        GL11.glScalef(1f / 20f, 1f / 20f, 1f / 20f);
+        RenderSystem.setShaderTexture(0, nextTerminal);
+        matrices.scale(1f / 20f, 1f / 20f, 1f / 20f);
 
-        if(active) GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-        else GL11.glColor4f(0.5f, 0.5f, 0.5f, 1.0f);
+        if(active) RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+        else RenderSystem.setShaderColor(0.5f, 0.5f, 0.5f, 1.0f);
 
-        drawTexture(matrices, 32, 32, 0, 0, 256, 256);
+        drawTexture(matrices, x * 20 + 32, y * 20 + 32, 0, 0, 256, 256);
 
-        GL11.glPopMatrix();
-
-        GlStateManager.enableDepthTest();
-        GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-
-        if(isHovered()) renderToolTip(matrices, mouseX, mouseY);
+        matrices.pop();
+        if(isHovered()) renderTooltip(matrices, mouseX, mouseY);
     }
 }

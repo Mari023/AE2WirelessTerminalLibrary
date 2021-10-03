@@ -1,6 +1,6 @@
 package de.mari_023.fabric.ae2wtlib.trinket;
 
-import appeng.container.slot.AppEngSlot;
+import appeng.menu.slot.AppEngSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -12,7 +12,7 @@ public class AppEngTrinketSlot extends AppEngSlot {
     public final String slot;
     public final boolean locked;
 
-    public AppEngTrinketSlot(FixedTrinketInv inv, int invSlot, String group, String slot, boolean locked) {
+    public AppEngTrinketSlot(TrinketInventoryWrapper inv, int invSlot, String group, String slot, boolean locked) {
         super(inv, invSlot);
         this.group = group;
         this.slot = slot;

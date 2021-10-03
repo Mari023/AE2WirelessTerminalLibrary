@@ -5,10 +5,4 @@ import dev.emi.trinkets.api.Trinket;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(ItemWT.class)
-public abstract class TrinketWT implements Trinket {
-
-    @Override
-    public boolean canWearInSlot(String group, String slot) {
-        return true;
-    }
-}
+public abstract class TrinketWT implements Trinket {}

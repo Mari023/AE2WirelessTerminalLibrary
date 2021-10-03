@@ -3,6 +3,7 @@ package de.mari_023.fabric.ae2wtlib.client;
 import appeng.util.item.AEItemStack;
 import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.ae2wtlib;
+import de.mari_023.fabric.ae2wtlib.trinket.TrinketsHelper;
 import de.mari_023.fabric.ae2wtlib.wct.CraftingTerminalHandler;
 import de.mari_023.fabric.ae2wtlib.wct.WCTContainer;
 import de.mari_023.fabric.ae2wtlib.wct.WCTScreen;
@@ -10,7 +11,6 @@ import de.mari_023.fabric.ae2wtlib.wit.WITContainer;
 import de.mari_023.fabric.ae2wtlib.wit.WITScreen;
 import de.mari_023.fabric.ae2wtlib.wpt.WPTContainer;
 import de.mari_023.fabric.ae2wtlib.wpt.WPTScreen;
-import dev.emi.trinkets.api.TrinketsApi;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -21,10 +21,10 @@ import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.options.KeyBinding;
+import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
@@ -47,7 +47,7 @@ public class ae2wtlibclient implements ClientModInitializer {
 
                 final Screen screen = MinecraftClient.getInstance().currentScreen;
                 if(screen instanceof WITScreen) {
-                    CompoundTag tag = buf.readCompoundTag();
+                    NbtCompound tag = buf.readNbt();
                     if(tag != null)
                         ((WITScreen) screen).postUpdate(false, tag);
                 }
@@ -58,7 +58,7 @@ public class ae2wtlibclient implements ClientModInitializer {
             buf.retain();
             client.execute(() -> {
                 if(client.player == null) return;
-                client.player.inventory.getStack(buf.readInt()).setCount(buf.readInt());
+                client.player.getInventory().getStack(buf.readInt()).setCount(buf.readInt());
                 buf.release();
             });
         });
@@ -68,11 +68,11 @@ public class ae2wtlibclient implements ClientModInitializer {
                 if(client.player == null) return;
                 int slot = buf.readInt();
                 ItemStack is;
-                CompoundTag tag = buf.readCompoundTag();
+                NbtCompound tag = buf.readNbt();
                 if(slot >= 100 && slot < 200 && Config.allowTrinket())
-                    is = TrinketsApi.getTrinketsInventory(client.player).getStack(slot - 100);
-                else is = client.player.inventory.getStack(slot);
-                is.setTag(tag);
+                    is = TrinketsHelper.getTrinketsInventory(client.player).getStackInSlot(slot - 100);
+                else is = client.player.getInventory().getStack(slot);
+                is.setNbt(tag);
                 buf.release();
                 CraftingTerminalHandler.getCraftingTerminalHandler(client.player).invalidateCache();
             });

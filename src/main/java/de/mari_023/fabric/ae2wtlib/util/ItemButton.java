@@ -19,7 +19,6 @@ public class ItemButton extends ButtonWidget implements ITooltip {
 
     private final Identifier texture;
     public static final Identifier TEXTURE_STATES = new Identifier("appliedenergistics2", "textures/guis/states.png");
-    private boolean halfSize = false;
 
     public ItemButton(PressAction onPress, Identifier texture) {
         super(0, 0, 16, 16, LiteralText.EMPTY, onPress);
@@ -42,33 +41,21 @@ public class ItemButton extends ButtonWidget implements ITooltip {
         MinecraftClient minecraft = MinecraftClient.getInstance();
 
         if(!visible) return;
+        matrices.push();
         TextureManager textureManager = minecraft.getTextureManager();
         textureManager.bindTexture(TEXTURE_STATES);
         RenderSystem.disableDepthTest();
         RenderSystem.enableBlend();
-        if(halfSize) {
-            width = 8;
-            height = 8;
-
-            RenderSystem.pushMatrix();
-            RenderSystem.translatef(x, y, 0.0F);
-
-            RenderSystem.scalef(0.5f, 0.5f, 0.5f);
-        } else {
-            RenderSystem.pushMatrix();
-            RenderSystem.translatef(x, y, 0.0F);
-        }
-        drawTexture(matrices, 0, 0, 256 - 16, 256 - 16, 16, 16);
-        RenderSystem.scalef(1f / 16f, 1f / 16f, 1f / 16f);
-        if(active) RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
-        else RenderSystem.color4f(0.5f, 0.5f, 0.5f, 1.0f);
+        drawTexture(matrices, x, y, 256 - 16, 256 - 16, 16, 16);
+        if(active) RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+        else RenderSystem.setShaderColor(0.5f, 0.5f, 0.5f, 1.0f);
         textureManager.bindTexture(texture);
-        drawTexture(matrices, 0, 0, 0, 0, 256, 256);
-        RenderSystem.popMatrix();
+        drawTexture(matrices, x, y, 0, 0, 256, 256, 256, height, width, 256);
+        matrices.pop();
         RenderSystem.enableDepthTest();
-        RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
+        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
 
-        if(isHovered()) renderToolTip(matrices, mouseX, mouseY);
+        if(isHovered()) renderTooltip(matrices, mouseX, mouseY);
     }
 
     @Override
@@ -88,12 +75,12 @@ public class ItemButton extends ButtonWidget implements ITooltip {
 
     @Override
     public int getTooltipAreaWidth() {
-        return halfSize ? 8 : 16;
+        return width;
     }
 
     @Override
     public int getTooltipAreaHeight() {
-        return halfSize ? 8 : 16;
+        return height;
     }
 
     @Override
@@ -102,6 +89,12 @@ public class ItemButton extends ButtonWidget implements ITooltip {
     }
 
     public void setHalfSize(final boolean halfSize) {
-        this.halfSize = halfSize;
+        if(halfSize) {
+            width = 16;
+            height = 16;
+        } else {
+            width = 8;
+            height = 8;
+        }
     }
 }
