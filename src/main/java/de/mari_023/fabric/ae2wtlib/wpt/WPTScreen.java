@@ -36,6 +36,7 @@ public class WPTScreen extends ItemTerminalScreen<WPTContainer> implements IUniv
     private final TabButton tabProcessButton;
     private final ActionButton substitutionsEnabledBtn;
     private final ActionButton substitutionsDisabledBtn;
+    private final ActionButton convertItemsToFluidsBtn;
 
     private static final ScreenStyle STYLE;
 
@@ -65,6 +66,10 @@ public class WPTScreen extends ItemTerminalScreen<WPTContainer> implements IUniv
         substitutionsDisabledBtn = new ActionButton(ActionItems.DISABLE_SUBSTITUTION, act -> toggleSubstitutions(SUBSITUTION_ENABLE));
         substitutionsDisabledBtn.setHalfSize(true);
         widgets.add("substitutionsDisabled", substitutionsDisabledBtn);
+
+        convertItemsToFluidsBtn = new ActionButton(ActionItems.FIND_CONTAINED_FLUID, act -> container.convertItemsToFluids());
+        convertItemsToFluidsBtn.setHalfSize(true);
+        widgets.add("convertItemsToFluids", convertItemsToFluidsBtn);
 
         ActionButton clearBtn = addDrawable(new ActionButton(ActionItems.CLOSE, btn -> clear()));
         clearBtn.setHalfSize(true);
@@ -123,6 +128,7 @@ public class WPTScreen extends ItemTerminalScreen<WPTContainer> implements IUniv
 
         setSlotsHidden(SlotSemantic.CRAFTING_RESULT, !(handler).isCraftingMode());
         setSlotsHidden(SlotSemantic.PROCESSING_RESULT, (handler).isCraftingMode());
+        convertItemsToFluidsBtn.visible = getScreenHandler().canConvertItemsToFluids();
     }
 
     public void drawBG(MatrixStack matrixStack, int offsetX, int offsetY, int mouseX, int mouseY, float partialTicks) {

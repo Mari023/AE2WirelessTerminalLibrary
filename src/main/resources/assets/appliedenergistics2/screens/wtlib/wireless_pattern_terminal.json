@@ -107,6 +107,10 @@
       "left": 147,
       "bottom": 142
     },
+    "convertItemsToFluids": {
+      "left": 84,
+      "bottom": 163
+    },
     "cycleTerminal": {
       "left": -20,
       "top": 108

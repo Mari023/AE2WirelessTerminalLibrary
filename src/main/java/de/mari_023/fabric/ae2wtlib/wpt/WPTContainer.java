@@ -35,7 +35,6 @@ import appeng.util.inv.PlayerInternalInventory;
 import appeng.util.item.AEItemStack;
 import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.ae2wtlib;
-import de.mari_023.fabric.ae2wtlib.mixin.SlotMixin;
 import de.mari_023.fabric.ae2wtlib.terminal.FixedWTInv;
 import de.mari_023.fabric.ae2wtlib.terminal.IWTInvHolder;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
@@ -476,7 +475,7 @@ public class WPTContainer extends ItemTerminalMenu implements IOptionalSlotHost,
 
     @Nullable
     private static ResourceAmount<FluidVariant> getFluidContained(ItemStack stack) {
-        return StorageUtil.findExtractableContent(ContainerItemContext.withInitial(stack).find(FluidStorage.ITEM), null);
+        return stack.isEmpty() ? null : StorageUtil.findExtractableContent(ContainerItemContext.withInitial(stack).find(FluidStorage.ITEM), null);
     }
 
     public FakeCraftingMatrixSlot[] getCraftingGridSlots() {
