@@ -142,7 +142,7 @@ task publishModrinth(type: TaskModrinthUpload) {
         token = System.getenv("MODRINTH_TOKEN")
         projectId = 'pNabrMMw'
         uploadFile = remapJar
-        addGameVersion('1.16.5')
+        addGameVersion('1.17.1')
         addLoader('fabric')
         versionNumber = project.version
         versionType = verType
@@ -158,9 +158,9 @@ curseforge {
             changelogType = "markdown"
             changelog = System.getenv("CHANGELOG") ?: "Please visit our [releases](https://github.com/Mari023/AE2WirelessTerminalLibrary/releases) for a changelog"
             releaseType = verType
-            addGameVersion '1.16.5'
+            addGameVersion '1.17.1'
             addGameVersion 'Fabric'
-            addGameVersion "Java 8"
+            addGameVersion "Java 16"
             mainArtifact(remapJar) {
                 displayName = project.version
             }
