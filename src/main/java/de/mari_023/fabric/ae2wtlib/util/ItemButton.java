@@ -2,10 +2,8 @@ package de.mari_023.fabric.ae2wtlib.util;
 
 import appeng.client.gui.widgets.ITooltip;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.sound.SoundManager;
-import net.minecraft.client.texture.TextureManager;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
@@ -37,23 +35,19 @@ public class ItemButton extends ButtonWidget implements ITooltip {
 
     @Override
     public void renderButton(MatrixStack matrices, final int mouseX, final int mouseY, float partial) {
-
-        MinecraftClient minecraft = MinecraftClient.getInstance();
-
         if(!visible) return;
         matrices.push();
-        TextureManager textureManager = minecraft.getTextureManager();
-        textureManager.bindTexture(TEXTURE_STATES);
+        RenderSystem.setShaderTexture(0, TEXTURE_STATES);
         RenderSystem.disableDepthTest();
         RenderSystem.enableBlend();
-        drawTexture(matrices, x, y, 256 - 16, 256 - 16, 16, 16);
+        drawTexture(matrices, x, y, 256 - 16, 256 - 16, width, height, 16, 16);
         if(active) RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         else RenderSystem.setShaderColor(0.5f, 0.5f, 0.5f, 1.0f);
-        textureManager.bindTexture(texture);
-        drawTexture(matrices, x, y, 0, 0, 256, 256, 256, height, width, 256);
-        matrices.pop();
+        RenderSystem.setShaderTexture(0, texture);
+        drawTexture(matrices, x, y, 256, 256, width, height, 16, 16);
         RenderSystem.enableDepthTest();
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+        matrices.pop();
 
         if(isHovered()) renderTooltip(matrices, mouseX, mouseY);
     }
@@ -90,11 +84,11 @@ public class ItemButton extends ButtonWidget implements ITooltip {
 
     public void setHalfSize(final boolean halfSize) {
         if(halfSize) {
-            width = 16;
-            height = 16;
-        } else {
             width = 8;
             height = 8;
+        } else {
+            width = 16;
+            height = 16;
         }
     }
 }
