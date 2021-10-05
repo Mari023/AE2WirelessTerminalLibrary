@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
-public class TrinketInventoryWrapper implements InternalInventory {//TODO use TrinketsApi.getPlayerSlots()
+public class TrinketInventoryWrapper implements InternalInventory {
 
     private final Map<String, Map<String, TrinketInventory>> inventory;
 
@@ -31,7 +31,7 @@ public class TrinketInventoryWrapper implements InternalInventory {//TODO use Tr
         int currentIndex = 0;
         for(Map.Entry<String, Map<String, TrinketInventory>> group : inventory.entrySet()) {
             for(Map.Entry<String, TrinketInventory> slot : group.getValue().entrySet()) {
-                if(index < currentIndex + slot.getValue().size()) {
+                if(index >= currentIndex + slot.getValue().size()) {
                     currentIndex += slot.getValue().size();
                 } else {
                     return slot.getValue().getStack(index - currentIndex);
@@ -46,7 +46,7 @@ public class TrinketInventoryWrapper implements InternalInventory {//TODO use Tr
         int currentIndex = 0;
         for(Map.Entry<String, Map<String, TrinketInventory>> group : inventory.entrySet()) {
             for(Map.Entry<String, TrinketInventory> slot : group.getValue().entrySet()) {
-                if(index < currentIndex + slot.getValue().size()) {
+                if(index >= currentIndex + slot.getValue().size()) {
                     currentIndex += slot.getValue().size();
                 } else {
                     return slot.getValue().isValid(index - currentIndex, stack);
@@ -61,7 +61,7 @@ public class TrinketInventoryWrapper implements InternalInventory {//TODO use Tr
         int currentIndex = 0;
         for(Map.Entry<String, Map<String, TrinketInventory>> group : inventory.entrySet()) {
             for(Map.Entry<String, TrinketInventory> slot : group.getValue().entrySet()) {
-                if(index < currentIndex + slot.getValue().size()) {
+                if(index >= currentIndex + slot.getValue().size()) {
                     currentIndex += slot.getValue().size();
                 } else {
                     slot.getValue().setStack(index - currentIndex, stack);

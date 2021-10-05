@@ -5,7 +5,7 @@ import net.fabricmc.loader.api.FabricLoader;
 
 public class Config {
 
-    private static boolean mineMenuChecked, mineMenuPresent/*, trinketPresent, trinketChecked*/;
+    private static boolean mineMenuChecked, mineMenuPresent, trinketPresent, trinketChecked;
 
     public static double getPowerMultiplier(double range, boolean isOutOfRange) {
         if(isOutOfRange)
@@ -31,16 +31,14 @@ public class Config {
         return mineMenuPresent;
     }
 
-    public static boolean allowTrinket() {
-        return false; //FIXME Trinkets
-        /*if(!trinketChecked) trinketPresent = isTrinketEnabled() && FabricLoader.getInstance().isModLoaded("trinkets");
+    public static boolean allowTrinket() {if(!trinketChecked) trinketPresent = isTrinketEnabled() && FabricLoader.getInstance().isModLoaded("trinkets");
         trinketChecked = true;
-        return trinketPresent;*/
+        return trinketPresent;
     }
 
-    /*private static boolean isTrinketEnabled() {
+    private static boolean isTrinketEnabled() {
         return true;
-    }*/
+    }
 
     public static double magnetCardRange() {
         return 16D;
