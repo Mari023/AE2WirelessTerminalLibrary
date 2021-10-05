@@ -24,8 +24,7 @@ public class Plugin implements REIClientPlugin {
 
     @Override
     public void registerCategories(CategoryRegistry registry) {
-        ItemStack grindstone = new ItemStack(ae2wtlib.CRAFTING_TERMINAL);
-        registry.addWorkstations(DefaultPlugin.CRAFTING, EntryStacks.of(grindstone));
+        registry.addWorkstations(DefaultPlugin.CRAFTING, EntryStacks.of(new ItemStack(ae2wtlib.CRAFTING_TERMINAL)));
     }
 
     @Override
