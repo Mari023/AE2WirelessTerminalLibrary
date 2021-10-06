@@ -40,11 +40,11 @@ public class ItemButton extends ButtonWidget implements ITooltip {
         RenderSystem.setShaderTexture(0, TEXTURE_STATES);
         RenderSystem.disableDepthTest();
         RenderSystem.enableBlend();
-        drawTexture(matrices, x, y, 256 - 16, 256 - 16, width, height, 16, 16);
+        drawTexture(matrices, x, y, width, height, 240, 240, 16, 16, 256, 256);
         if(active) RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         else RenderSystem.setShaderColor(0.5f, 0.5f, 0.5f, 1.0f);
         RenderSystem.setShaderTexture(0, texture);
-        drawTexture(matrices, x, y, 256, 256, width, height, 16, 16);
+        drawTexture(matrices, x, y, width, height, 0, 0,512,512,512,512);
         RenderSystem.enableDepthTest();
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         matrices.pop();

@@ -63,15 +63,14 @@ public class CycleTerminalButton extends ButtonWidget implements ITooltip {
         RenderSystem.disableDepthTest();
         RenderSystem.enableBlend();
 
-        drawTexture(matrices, x, y, 256 - 16, 256 - 16, 16, 16);
+        drawTexture(matrices, x, y, 240, 240, 16, 16);
 
         RenderSystem.setShaderTexture(0, nextTerminal);
-        matrices.scale(1f / 20f, 1f / 20f, 1f / 20f);
 
         if(active) RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         else RenderSystem.setShaderColor(0.5f, 0.5f, 0.5f, 1.0f);
 
-        drawTexture(matrices, x * 20 + 32, y * 20 + 32, 0, 0, 256, 256);
+        drawTexture(matrices, x + 1, y + 1, 14, 14, 0, 0, 512, 512, 512, 512);
 
         matrices.pop();
         if(isHovered()) renderTooltip(matrices, mouseX, mouseY);
