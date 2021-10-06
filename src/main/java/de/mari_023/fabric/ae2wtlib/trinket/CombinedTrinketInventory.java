@@ -7,11 +7,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
-public class TrinketInventoryWrapper implements InternalInventory {
+public class CombinedTrinketInventory implements InternalInventory {
 
     private final Map<String, Map<String, TrinketInventory>> inventory;
 
-    public TrinketInventoryWrapper(Map<String, Map<String, TrinketInventory>> trinketInventory) {
+    public CombinedTrinketInventory(Map<String, Map<String, TrinketInventory>> trinketInventory) {
         inventory = trinketInventory;
     }
 

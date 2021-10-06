@@ -15,7 +15,7 @@ import appeng.util.item.AEItemStack;
 import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.terminal.IInfinityBoosterCardHolder;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
-import de.mari_023.fabric.ae2wtlib.trinket.TrinketInventoryWrapper;
+import de.mari_023.fabric.ae2wtlib.trinket.CombinedTrinketInventory;
 import de.mari_023.fabric.ae2wtlib.trinket.TrinketsHelper;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
 import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
@@ -77,7 +77,7 @@ public class CraftingTerminalHandler {
         PlayerInventory inv = player.getInventory();
         if((!craftingTerminal.isEmpty()) && inv.contains(craftingTerminal)) return craftingTerminal;
         if(Config.allowTrinket()) {
-            TrinketInventoryWrapper trinketInv = TrinketsHelper.getTrinketsInventory(player);
+            CombinedTrinketInventory trinketInv = TrinketsHelper.getTrinketsInventory(player);
             for(int i = 0; i < trinketInv.size(); i++) {
                 ItemStack terminal = trinketInv.getStackInSlot(i);
                 if(terminal.getItem() instanceof ItemWCT || (terminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(terminal, "crafting"))) {

@@ -8,10 +8,10 @@ import java.util.HashMap;
 import java.util.Optional;
 
 public class TrinketsHelper {
-    public static TrinketInventoryWrapper getTrinketsInventory(PlayerEntity player) {
+    public static CombinedTrinketInventory getTrinketsInventory(PlayerEntity player) {
         Optional<TrinketComponent> optionalComponent = TrinketsApi.getTrinketComponent(player);
-        if(optionalComponent.isEmpty()) return new TrinketInventoryWrapper(new HashMap<>());
+        if(optionalComponent.isEmpty()) return new CombinedTrinketInventory(new HashMap<>());
         TrinketComponent component = optionalComponent.get();
-        return new TrinketInventoryWrapper(component.getInventory());
+        return new CombinedTrinketInventory(component.getInventory());
     }
 }

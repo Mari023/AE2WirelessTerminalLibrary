@@ -12,10 +12,10 @@ public class AppEngTrinketSlot extends AppEngSlot {
     private final SlotType type;
     private final boolean alwaysVisible;
     private final int slotOffset;
-    public final TrinketInventoryWrapper trinketInventory;
+    public final CombinedTrinketInventory trinketInventory;
     public final boolean locked;
 
-    public AppEngTrinketSlot(TrinketInventoryWrapper inventory, int invSlot, SlotGroup group, SlotType type, int slotOffset, boolean alwaysVisible, boolean locked) {
+    public AppEngTrinketSlot(CombinedTrinketInventory inventory, int invSlot, SlotGroup group, SlotType type, int slotOffset, boolean alwaysVisible, boolean locked) {
         super(inventory, invSlot);
         this.group = group;
         this.type = type;

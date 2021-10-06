@@ -7,7 +7,7 @@ import appeng.menu.AEBaseMenu;
 import appeng.menu.MenuLocator;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemInfinityBooster;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
-import de.mari_023.fabric.ae2wtlib.trinket.TrinketInventoryWrapper;
+import de.mari_023.fabric.ae2wtlib.trinket.CombinedTrinketInventory;
 import de.mari_023.fabric.ae2wtlib.trinket.TrinketsHelper;
 import de.mari_023.fabric.ae2wtlib.wct.CraftingTerminalHandler;
 import de.mari_023.fabric.ae2wtlib.wct.ItemWCT;
@@ -150,7 +150,7 @@ public class ae2wtlib implements ModInitializer {
                         }
                     }
                     if(Config.allowTrinket()) {
-                        TrinketInventoryWrapper trinketInv = TrinketsHelper.getTrinketsInventory(player);
+                        CombinedTrinketInventory trinketInv = TrinketsHelper.getTrinketsInventory(player);
                         for(int i = 0; i < trinketInv.size(); i++) {
                             ItemStack trinketTerminal = trinketInv.getStackInSlot(i);
                             if(trinketTerminal.getItem() instanceof ItemWCT || (trinketTerminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(trinketTerminal, "crafting"))) {
@@ -181,7 +181,7 @@ public class ae2wtlib implements ModInitializer {
                         }
                     }
                     if(Config.allowTrinket()) {
-                        TrinketInventoryWrapper trinketInv = TrinketsHelper.getTrinketsInventory(player);
+                        CombinedTrinketInventory trinketInv = TrinketsHelper.getTrinketsInventory(player);
                         for(int i = 0; i < trinketInv.size(); i++) {
                             ItemStack trinketTerminal = trinketInv.getStackInSlot(i);
                             if(trinketTerminal.getItem() instanceof ItemWPT || (trinketTerminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(trinketTerminal, "pattern"))) {
@@ -213,7 +213,7 @@ public class ae2wtlib implements ModInitializer {
                         }
                     }
                     if(Config.allowTrinket()) {
-                        TrinketInventoryWrapper trinketInv = TrinketsHelper.getTrinketsInventory(player);
+                        CombinedTrinketInventory trinketInv = TrinketsHelper.getTrinketsInventory(player);
                         for(int i = 0; i < trinketInv.size(); i++) {
                             ItemStack trinketTerminal = trinketInv.getStackInSlot(i);
                             if(trinketTerminal.getItem() instanceof ItemWIT || (trinketTerminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(trinketTerminal, "interface"))) {
