@@ -25,16 +25,19 @@ import appeng.util.inv.InternalInventoryHost;
 import com.google.common.base.Preconditions;
 import com.mojang.datafixers.util.Pair;
 import de.mari_023.fabric.ae2wtlib.Config;
+import de.mari_023.fabric.ae2wtlib.mixin.SlotMixin;
 import de.mari_023.fabric.ae2wtlib.terminal.FixedWTInv;
 import de.mari_023.fabric.ae2wtlib.terminal.IWTInvHolder;
 import de.mari_023.fabric.ae2wtlib.terminal.ae2wtlibInternalInventory;
 import de.mari_023.fabric.ae2wtlib.trinket.AppEngTrinketSlot;
-import de.mari_023.fabric.ae2wtlib.trinket.TrinketInventoryWrapper;
 import de.mari_023.fabric.ae2wtlib.trinket.TrinketsHelper;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.ItemMagnetCard;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetSettings;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
+import dev.emi.trinkets.TrinketPlayerScreenHandler;
+import dev.emi.trinkets.TrinketsClient;
 import dev.emi.trinkets.api.*;
+import dev.emi.trinkets.mixin.accessor.ScreenHandlerAccessor;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.player.PlayerEntity;
@@ -52,11 +55,9 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.world.World;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
-public class WCTContainer extends ItemTerminalMenu implements IMenuCraftingPacket, IWTInvHolder, InternalInventoryHost {
+public class WCTContainer extends ItemTerminalMenu implements IMenuCraftingPacket, IWTInvHolder, InternalInventoryHost, TrinketPlayerScreenHandler {
 
     public static final ScreenHandlerType<WCTContainer> TYPE = MenuTypeBuilder.create(WCTContainer::new, WCTGuiObject.class).requirePermission(SecurityPermissions.CRAFT).build("wireless_crafting_terminal");
 
@@ -82,7 +83,7 @@ public class WCTContainer extends ItemTerminalMenu implements IMenuCraftingPacke
         for(int i = 0; i < 9; i++)
             addSlot(craftingSlots[i] = new CraftingMatrixSlot(this, crafting, i), SlotSemantic.CRAFTING_GRID);
 
-        addSlot(outputSlot = new CraftingTermSlot(getPlayerInventory().player, getActionSource(), powerSource, wctGUIObject, crafting, crafting, this), SlotSemantic.CRAFTING_RESULT);
+        addSlot(outputSlot = new CraftingTermSlot(getPlayer(), getActionSource(), powerSource, wctGUIObject, crafting, crafting, this), SlotSemantic.CRAFTING_RESULT);
 
         createPlayerInventorySlots(ip);
 
@@ -113,12 +114,13 @@ public class WCTContainer extends ItemTerminalMenu implements IMenuCraftingPacke
             }
         }, SlotSemantic.MACHINE_CRAFTING_GRID);
 
-        if(slotIndex == 40) SlotsWithTrinket[45] = addSlot(new DisabledSlot(fixedWTInv.toContainer(), FixedWTInv.OFFHAND) {
-            @Environment(EnvType.CLIENT)
-            public Pair<Identifier, Identifier> getBackgroundSprite() {
-                return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, PlayerScreenHandler.EMPTY_OFFHAND_ARMOR_SLOT);
-            }
-        }, SlotSemantic.PROCESSING_RESULT);
+        if(slotIndex == 40)
+            SlotsWithTrinket[45] = addSlot(new DisabledSlot(fixedWTInv.toContainer(), FixedWTInv.OFFHAND) {
+                @Environment(EnvType.CLIENT)
+                public Pair<Identifier, Identifier> getBackgroundSprite() {
+                    return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, PlayerScreenHandler.EMPTY_OFFHAND_ARMOR_SLOT);
+                }
+            }, SlotSemantic.PROCESSING_RESULT);
         else SlotsWithTrinket[45] = addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.OFFHAND) {
             @Environment(EnvType.CLIENT)
             public Pair<Identifier, Identifier> getBackgroundSprite() {
@@ -130,23 +132,7 @@ public class WCTContainer extends ItemTerminalMenu implements IMenuCraftingPacke
         addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.MAGNET_CARD), SlotSemantic.INSCRIBER_PLATE_TOP);//TODO fetch texture for card background
 
         if(!Config.allowTrinket()) return;//Trinkets only starting here
-        Optional<TrinketComponent> optionalComponent = TrinketsApi.getTrinketComponent(getPlayerInventory().player);
-        if(optionalComponent.isEmpty()) return;
-        TrinketComponent component = optionalComponent.get();
-        TrinketInventoryWrapper inv = TrinketsHelper.getTrinketsInventory(getPlayerInventory().player);
-        int i = 0;
-        for(Map.Entry<String, SlotGroup> group : component.getGroups().entrySet()) {
-            int j = 0;
-            for(Map.Entry<String, SlotType> slot : group.getValue().getSlots().entrySet()) {
-                boolean locked = slotIndex - 100 == i;
-                AppEngTrinketSlot ts;
-                ts = new AppEngTrinketSlot(inv, i, group.getValue().getName(), slot.getValue().getName(), locked);
-                if(j == 0) ts.keepVisible = true;
-                addSlot(ts);
-                i++;
-                j++;
-            }
-        }
+        updateTrinketSlots(true);
     }
 
     private int ticks = 0;
@@ -158,8 +144,8 @@ public class WCTContainer extends ItemTerminalMenu implements IMenuCraftingPacke
 
         if(wctGUIObject.notInRange()) {
             if(isValidMenu()) {
-                getPlayerInventory().player.sendSystemMessage(PlayerMessages.OutOfRange.get(), Util.NIL_UUID);
-                ((ServerPlayerEntity) getPlayerInventory().player).closeHandledScreen();
+                getPlayer().sendSystemMessage(PlayerMessages.OutOfRange.get(), Util.NIL_UUID);
+                ((ServerPlayerEntity) getPlayer()).closeHandledScreen();
             }
         } else {
             double powerMultiplier = Config.getPowerMultiplier(wctGUIObject.getRange(), wctGUIObject.isOutOfRange());
@@ -171,8 +157,8 @@ public class WCTContainer extends ItemTerminalMenu implements IMenuCraftingPacke
 
             if(wctGUIObject.extractAEPower(1, Actionable.SIMULATE, PowerMultiplier.ONE) != 0) return;
             if(isValidMenu()) {
-                getPlayerInventory().player.sendSystemMessage(PlayerMessages.DeviceNotPowered.get(), Util.NIL_UUID);
-                ((ServerPlayerEntity) getPlayerInventory().player).closeHandledScreen();
+                getPlayer().sendSystemMessage(PlayerMessages.DeviceNotPowered.get(), Util.NIL_UUID);
+                ((ServerPlayerEntity) getPlayer()).closeHandledScreen();
             }
         }
         setValidMenu(false);
@@ -189,8 +175,8 @@ public class WCTContainer extends ItemTerminalMenu implements IMenuCraftingPacke
 
         for(int x = 0; x < 9; x++) ic.setStack(x, craftingSlots[x].getStack());
 
-        if(currentRecipe == null || !currentRecipe.matches(ic, getPlayerInventory().player.world)) {
-            World world = getPlayerInventory().player.world;
+        if(currentRecipe == null || !currentRecipe.matches(ic, getPlayer().world)) {
+            World world = getPlayer().world;
             currentRecipe = world.getRecipeManager().getFirstMatch(RecipeType.CRAFTING, ic, world).orElse(null);
         }
 
@@ -273,4 +259,166 @@ public class WCTContainer extends ItemTerminalMenu implements IMenuCraftingPacke
 
     @Override
     public void onChangeInventory(InternalInventory internalInventory, int i, ItemStack itemStack, ItemStack itemStack1) {}
+
+    //Trinkets starting here
+    private final Map<SlotGroup, net.minecraft.util.Pair<Integer, Integer>> groupPos = new HashMap<>();
+    private final Map<SlotGroup, List<net.minecraft.util.Pair<Integer, Integer>>> slotHeights = new HashMap<>();
+    private final Map<SlotGroup, List<SlotType>> slotTypes = new HashMap<>();
+    private final Map<SlotGroup, Integer> slotWidths = new HashMap<>();
+    private int trinketSlotStart = 0;
+    private int trinketSlotEnd = 0;
+    private int groupCount = 0;
+
+    @Override
+    public void updateTrinketSlots(boolean slotsChanged) {
+        TrinketsApi.getTrinketComponent(getPlayer()).ifPresent(trinkets -> {
+            if(slotsChanged) trinkets.update();
+            Map<String, SlotGroup> groups = trinkets.getGroups();
+            groupPos.clear();
+            while(trinketSlotStart < trinketSlotEnd) {
+                slots.remove(trinketSlotStart);
+                ((ScreenHandlerAccessor) (this)).getTrackedStacks().remove(trinketSlotStart);
+                ((ScreenHandlerAccessor) (this)).getPreviousTrackedStacks().remove(trinketSlotStart);
+                trinketSlotEnd--;
+            }
+
+            int groupNum = 1; // Start at 1 because offhand exists
+
+            for(SlotGroup group : groups.values().stream().sorted(Comparator.comparing(SlotGroup::getOrder)).toList()) {
+                if(!hasSlots(trinkets, group)) continue;
+                int id = group.getSlotId();
+                if(id != -1) {
+                    if(slots.size() > id) {
+                        Slot slot = slots.get(id);
+                        if(!(slot instanceof AppEngTrinketSlot)) {
+                            groupPos.put(group, new net.minecraft.util.Pair<>(slot.x, slot.y));
+                        }
+                    }
+                } else {
+                    int x = 77;
+                    int y;
+                    if(groupNum >= 4) {
+                        x = 4 - (groupNum / 4) * 18;
+                        y = 8 + (groupNum % 4) * 18;
+                    } else y = 62 - groupNum * 18;
+                    groupPos.put(group, new net.minecraft.util.Pair<>(x, y));
+                    groupNum++;
+                }
+            }
+            if(groupNum > 4) groupCount = groupNum - 4;
+
+            trinketSlotStart = slots.size();
+            slotWidths.clear();
+            slotHeights.clear();
+            slotTypes.clear();
+            for(Map.Entry<String, Map<String, TrinketInventory>> entry : trinkets.getInventory().entrySet()) {
+                String groupId = entry.getKey();
+                SlotGroup group = groups.get(groupId);
+                int groupOffset = 1;
+
+                if(group.getSlotId() != -1) groupOffset++;
+                int width = 0;
+                net.minecraft.util.Pair<Integer, Integer> pos = getGroupPos(group);
+                if(pos == null) continue;
+                for(Map.Entry<String, TrinketInventory> slot : entry.getValue().entrySet().stream().sorted(Comparator.comparingInt(a -> a.getValue().getSlotType().getOrder())).toList()) {
+                    TrinketInventory stacks = slot.getValue();
+                    if(stacks.size() == 0) continue;
+                    int slotOffset = 1;
+                    int x = (int) (pos.getLeft() + (groupOffset / 2) * 18 * Math.pow(-1, groupOffset));
+                    slotHeights.computeIfAbsent(group, (k) -> new ArrayList<>()).add(new net.minecraft.util.Pair<>(x, stacks.size()));
+                    slotTypes.computeIfAbsent(group, (k) -> new ArrayList<>()).add(stacks.getSlotType());
+                    for(int i = 0; i < stacks.size(); i++) {
+                        int y = (int) (pos.getRight() + (slotOffset / 2) * 18 * Math.pow(-1, slotOffset));
+                        AppEngTrinketSlot ts = new AppEngTrinketSlot(/*stacks*/TrinketsHelper.getTrinketsInventory(getPlayer()), i, group, stacks.getSlotType(), i, groupOffset == 1 && i == 0, false);
+                        ((SlotMixin) ts).setX(x);
+                        ((SlotMixin) ts).setY(y);
+                        addSlot(ts);
+                        slotOffset++;
+                    }
+                    groupOffset++;
+                    width++;
+                }
+                slotWidths.put(group, width);
+            }
+
+            trinketSlotEnd = slots.size();
+        });
+    }
+
+    private boolean hasSlots(TrinketComponent comp, SlotGroup group) {
+        for(TrinketInventory inv : comp.getInventory().get(group.getName()).values()) {
+            if(inv.size() > 0) return true;
+        }
+        return false;
+    }
+
+
+    @Override
+    public net.minecraft.util.Pair<Integer, Integer> getGroupPos(SlotGroup group) {
+        return groupPos.get(group);
+    }
+
+    @Override
+    public List<net.minecraft.util.Pair<Integer, Integer>> getSlotHeights(SlotGroup group) {
+        return slotHeights.get(group);
+    }
+
+    @Override
+    public List<SlotType> getSlotTypes(SlotGroup group) {
+        return slotTypes.get(group);
+    }
+
+    @Override
+    public int getSlotWidth(SlotGroup group) {
+        return slotWidths.get(group);
+    }
+
+    @Override
+    public int getGroupCount() {
+        return groupCount;
+    }
+
+    @Override
+    public void close(PlayerEntity player) {
+        if(player.world.isClient) {
+            TrinketsClient.activeGroup = null;
+            TrinketsClient.activeType = null;
+            TrinketsClient.quickMoveGroup = null;
+        }
+        super.close(player);
+    }
+
+    @Override
+    public ItemStack transferSlot(PlayerEntity player, int index) {
+        Slot slot = slots.get(index);
+
+        if(slot.hasStack()) {
+            ItemStack stack = slot.getStack();
+            if(index >= trinketSlotStart && index < trinketSlotEnd) {
+                if(!insertItem(stack, 9, 45, false)) return ItemStack.EMPTY;
+                else return stack;
+            } else if(index >= 9 && index < 45) {
+                TrinketsApi.getTrinketComponent(player).ifPresent(trinkets -> {
+                            for(int i = trinketSlotStart; i < trinketSlotEnd; i++) {
+                                Slot s = slots.get(i);
+                                if(!(s instanceof AppEngTrinketSlot ts) || !s.canInsert(stack)) continue;
+
+                                SlotType type = ts.getType();
+                                SlotReference ref = new SlotReference(ts.trinketInventory, ts.getIndex());
+
+                                boolean res = TrinketsApi.evaluatePredicateSet(type.getQuickMovePredicates(), stack, ref, player);
+
+                                if(res && insertItem(stack, i, i + 1, false) && player.world.isClient) {
+                                    TrinketsClient.quickMoveTimer = 20;
+                                    TrinketsClient.quickMoveGroup = TrinketsApi.getPlayerSlots().get(type.getGroup());
+                                    if(ref.index() > 0) TrinketsClient.quickMoveType = type;
+                                    else TrinketsClient.quickMoveType = null;
+                                }
+                            }
+                        }
+                );
+            }
+        }
+        return super.transferSlot(player, index);
+    }
 }
