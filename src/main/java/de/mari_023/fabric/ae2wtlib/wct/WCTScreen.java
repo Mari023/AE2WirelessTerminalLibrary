@@ -215,7 +215,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
     public void drawFG(MatrixStack matrices, final int offsetX, final int offsetY, final int mouseX, final int mouseY) {
         super.drawFG(matrices, offsetX, offsetY, mouseX, mouseY);
 
-        if(!Config.allowTrinket() || client == null) return;//Trinkets client-only starting here
+        if(!Config.allowTrinket()) return;//Trinkets client-only starting here
         if(TrinketsClient.activeGroup != null) {
             drawGroup(matrices, TrinketsClient.activeGroup, TrinketsClient.activeType);
         } else if(TrinketsClient.quickMoveGroup != null) {

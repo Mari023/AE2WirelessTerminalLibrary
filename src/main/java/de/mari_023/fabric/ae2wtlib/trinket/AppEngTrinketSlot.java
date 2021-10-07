@@ -6,6 +6,7 @@ import dev.emi.trinkets.api.SlotGroup;
 import dev.emi.trinkets.api.SlotType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
 public class AppEngTrinketSlot extends AppEngSlot {
@@ -55,5 +56,9 @@ public class AppEngTrinketSlot extends AppEngSlot {
 
     public SlotType getType() {
         return type;
+    }
+
+    public Identifier getBackgroundIdentifier() {
+        return type.getIcon();
     }
 }
