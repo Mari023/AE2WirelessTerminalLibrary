@@ -1,20 +1,8 @@
 package de.mari_023.fabric.ae2wtlib.mixin;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import de.mari_023.fabric.ae2wtlib.trinket.AppEngTrinketSlot;
-import dev.emi.trinkets.TrinketsClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.screen.slot.Slot;
-import net.minecraft.util.Identifier;
-import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(HandledScreen.class)
 public abstract class HandledScreenMixin extends Screen {
@@ -23,7 +11,8 @@ public abstract class HandledScreenMixin extends Screen {
         super(null);
     }
 
-    @Unique
+    //FIXME currently disabled, need to fix when enabling trinkets displaying. breaks trinkets in vanilla inventories
+    /*@Unique
     private static final Identifier MORE_SLOTS = new Identifier("trinkets", "textures/gui/more_slots.png");
     @Unique
     private static final Identifier BLANK_BACK = new Identifier("trinkets", "textures/gui/blank_back.png");
@@ -71,5 +60,5 @@ public abstract class HandledScreenMixin extends Screen {
                 }
             }
         }
-    }
+    }*/
 }
