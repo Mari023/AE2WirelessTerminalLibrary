@@ -31,7 +31,7 @@ public abstract class HandledScreenMixin extends Screen {
     @Inject(at = @At(value = "FIELD", target = "Lnet/minecraft/client/render/item/ItemRenderer;zOffset:F", opcode = Opcodes.PUTFIELD, ordinal = 0, shift = At.Shift.AFTER), method = "drawSlot")
     private void changeZ(MatrixStack matrices, Slot slot, CallbackInfo info) {
         // Items are drawn at z + 150 (normal items are drawn at 250)
-        // Item tooltips (count, item bar) are drawn at z + 200 (normal itmes are drawn at 300)
+        // Item tooltips (count, item bar) are drawn at z + 200 (normal items are drawn at 300)
         // Inventory tooltip is drawn at 400
         if(slot instanceof AppEngTrinketSlot ts) {
             assert client != null;
@@ -56,10 +56,6 @@ public abstract class HandledScreenMixin extends Screen {
                 drawTexture(matrices, slot.x - 1, slot.y - 1, 0, 4, 4, 18, 18, 256, 256);
             }
         }
-        if(TrinketsClient.activeGroup != null && TrinketsClient.activeGroup.getSlotId() == slot.id) {
-            itemRenderer.zOffset = 170F;
-        }
-
     }
 
     @Inject(at = @At("HEAD"), method = "isPointOverSlot", cancellable = true)
