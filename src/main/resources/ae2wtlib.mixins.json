@@ -2,7 +2,7 @@
   "required": true,
   "minVersion": "0.8",
   "package": "de.mari_023.fabric.ae2wtlib.mixin",
-  "compatibilityLevel": "JAVA_8",
+  "compatibilityLevel": "JAVA_16",
   "plugin": "de.mari_023.fabric.ae2wtlib.MixinPlugin",
   "mixins": [
     "AEBaseContainerMixin",
@@ -11,7 +11,6 @@
     "CraftConfirmContainerMixin",
     "PlayerInventoryInsertStack",
     "Restock",
-    "ScreenHandlerMixin",
     "SlotMixin",
     "TrinketWT"
   ],

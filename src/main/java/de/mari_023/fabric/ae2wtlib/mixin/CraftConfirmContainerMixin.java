@@ -35,7 +35,7 @@ public abstract class CraftConfirmContainerMixin {
     @Shadow
     public abstract void setAutoStart(boolean autoStart);
 
-    @Inject(method = "startJob", at = @At(value = "HEAD"), cancellable = true)
+    @Inject(method = "startJob", at = @At(value = "HEAD"))
     public void serverPacketData(CallbackInfo ci) {
         ScreenHandlerType<?> originalGui = null;
         IActionHost ah = ((AEBaseContainerMixin) this).invokeGetActionHost();
