@@ -1,6 +1,7 @@
 package de.mari_023.fabric.ae2wtlib.trinket;
 
 import appeng.menu.slot.AppEngSlot;
+import dev.emi.trinkets.TrinketsClient;
 import dev.emi.trinkets.api.SlotGroup;
 import dev.emi.trinkets.api.SlotType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -12,10 +13,10 @@ public class AppEngTrinketSlot extends AppEngSlot {
     private final SlotType type;
     private final boolean alwaysVisible;
     private final int slotOffset;
-    public final CombinedTrinketInventory trinketInventory;
+    public final TrinketInventoryWrapper trinketInventory;
     public final boolean locked;
 
-    public AppEngTrinketSlot(CombinedTrinketInventory inventory, int invSlot, SlotGroup group, SlotType type, int slotOffset, boolean alwaysVisible, boolean locked) {
+    public AppEngTrinketSlot(TrinketInventoryWrapper inventory, int invSlot, SlotGroup group, SlotType type, int slotOffset, boolean alwaysVisible, boolean locked) {
         super(inventory, invSlot);
         this.group = group;
         this.type = type;
@@ -36,6 +37,20 @@ public class AppEngTrinketSlot extends AppEngSlot {
 
     public @NotNull ItemStack takeStack(int amount) {
         return locked ? ItemStack.EMPTY : super.takeStack(amount);
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return alwaysVisible || isTrinketFocused();
+    }
+
+    public boolean isTrinketFocused() {
+        if(TrinketsClient.activeGroup == group) {
+            return slotOffset == 0 || TrinketsClient.activeType == type;
+        } else if(TrinketsClient.quickMoveGroup == group) {
+            return slotOffset == 0 || TrinketsClient.quickMoveType == type && TrinketsClient.quickMoveTimer > 0;
+        }
+        return false;
     }
 
     public SlotType getType() {

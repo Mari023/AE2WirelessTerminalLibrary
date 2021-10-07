@@ -151,6 +151,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
     public void init() {
         super.init();
         if(!Config.allowTrinket()) return;//Trinkets only
+        handler.updateTrinketSlots(true);
         group = null;
         currentBounds = new Rect2i(0, 0, 0, 0);
     }
@@ -295,7 +296,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
 
     @Override
     public void handledScreenTick() {
-        super.tick();
+        super.handledScreenTick();
         if(!Config.allowTrinket()) return;
         if(group != null) {
             if(TrinketsClient.activeType != null) {
