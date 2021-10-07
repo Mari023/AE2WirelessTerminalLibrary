@@ -369,7 +369,7 @@ public class WCTContainer extends ItemTerminalMenu implements IMenuCraftingPacke
 
     @Override
     public void close(PlayerEntity player) {
-        if(player.world.isClient) {
+        if(Config.allowTrinket() && player.world.isClient) {
             TrinketsClient.activeGroup = null;
             TrinketsClient.activeType = null;
             TrinketsClient.quickMoveGroup = null;
@@ -379,8 +379,9 @@ public class WCTContainer extends ItemTerminalMenu implements IMenuCraftingPacke
 
     @Override
     public ItemStack transferSlot(PlayerEntity player, int index) {
-        Slot slot = slots.get(index);
+        if(!Config.allowTrinket()) return super.transferSlot(player, index);
 
+        Slot slot = slots.get(index);
         if(slot.hasStack()) {
             ItemStack stack = slot.getStack();
             if(index >= trinketSlotStart && index < trinketSlotEnd) {
