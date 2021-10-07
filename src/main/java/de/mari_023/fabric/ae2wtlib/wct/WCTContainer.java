@@ -34,7 +34,6 @@ import de.mari_023.fabric.ae2wtlib.trinket.TrinketInventoryWrapper;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.ItemMagnetCard;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetSettings;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
-import dev.emi.trinkets.TrinketPlayerScreenHandler;
 import dev.emi.trinkets.TrinketsClient;
 import dev.emi.trinkets.api.*;
 import net.fabricmc.api.EnvType;
@@ -56,7 +55,7 @@ import net.minecraft.world.World;
 
 import java.util.*;
 
-public class WCTContainer extends ItemTerminalMenu implements IMenuCraftingPacket, IWTInvHolder, InternalInventoryHost, TrinketPlayerScreenHandler {
+public class WCTContainer extends ItemTerminalMenu implements IMenuCraftingPacket, IWTInvHolder, InternalInventoryHost {
 
     public static final ScreenHandlerType<WCTContainer> TYPE = MenuTypeBuilder.create(WCTContainer::new, WCTGuiObject.class).requirePermission(SecurityPermissions.CRAFT).build("wireless_crafting_terminal");
 
@@ -268,7 +267,6 @@ public class WCTContainer extends ItemTerminalMenu implements IMenuCraftingPacke
     private int trinketSlotEnd = 0;
     private int groupCount = 0;
 
-    @Override
     public void updateTrinketSlots(boolean slotsChanged) {
         TrinketsApi.getTrinketComponent(getPlayer()).ifPresent(trinkets -> {
             if(slotsChanged) trinkets.update();
@@ -349,27 +347,22 @@ public class WCTContainer extends ItemTerminalMenu implements IMenuCraftingPacke
     }
 
 
-    @Override
     public net.minecraft.util.Pair<Integer, Integer> getGroupPos(SlotGroup group) {
         return groupPos.get(group);
     }
 
-    @Override
     public List<net.minecraft.util.Pair<Integer, Integer>> getSlotHeights(SlotGroup group) {
         return slotHeights.get(group);
     }
 
-    @Override
     public List<SlotType> getSlotTypes(SlotGroup group) {
         return slotTypes.get(group);
     }
 
-    @Override
     public int getSlotWidth(SlotGroup group) {
         return slotWidths.get(group);
     }
 
-    @Override
     public int getGroupCount() {
         return groupCount;
     }

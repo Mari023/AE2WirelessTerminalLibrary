@@ -22,6 +22,9 @@ public class MixinPlugin implements IMixinConfigPlugin {
         if(targetClassName.equals("de.mari_023.fabric.ae2wtlib.terminal.ItemWT") && mixinClassName.equals("de.mari_023.fabric.ae2wtlib.mixin.TrinketWT")) {
             return Config.allowTrinket();
         }
+        if(targetClassName.equals("de.mari_023.fabric.ae2wtlib.wct.WCTContainer") && mixinClassName.equals("de.mari_023.fabric.ae2wtlib.mixin.TrinketWCTContainer")) {
+            return Config.allowTrinket();
+        }
         if(mixinClassName.equals("de.mari_023.fabric.ae2wtlib.mixin.HandledScreenMixin")) {
             return Config.allowTrinket();
         }

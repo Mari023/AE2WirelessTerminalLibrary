@@ -12,14 +12,15 @@
     "PlayerInventoryInsertStack",
     "Restock",
     "SlotMixin",
+    "TrinketWCTContainer",
     "TrinketWT"
   ],
   "client": [
     "HandledScreenMixin",
-    "ScreenMixin",
     "MineMenuMixin",
     "MineMenuTerminalHandler",
-    "RestockRender"
+    "RestockRender",
+    "ScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1
