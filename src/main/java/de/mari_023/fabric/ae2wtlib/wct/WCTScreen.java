@@ -7,33 +7,24 @@ import appeng.client.gui.style.ScreenStyle;
 import appeng.client.gui.style.StyleManager;
 import appeng.client.gui.widgets.ActionButton;
 import appeng.client.gui.widgets.IconButton;
-import com.mojang.blaze3d.systems.RenderSystem;
-import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.ae2wtlib;
-import de.mari_023.fabric.ae2wtlib.trinket.AppEngTrinketSlot;
 import de.mari_023.fabric.ae2wtlib.util.ItemButton;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetMode;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetSettings;
 import de.mari_023.fabric.ae2wtlib.wut.CycleTerminalButton;
 import de.mari_023.fabric.ae2wtlib.wut.IUniversalTerminalCapable;
-import dev.emi.trinkets.TrinketsClient;
 import dev.emi.trinkets.api.SlotGroup;
-import dev.emi.trinkets.api.SlotType;
-import dev.emi.trinkets.api.TrinketsApi;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.util.math.Rect2i;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Pair;
 
 import java.io.IOException;
-import java.util.List;
 
 public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniversalTerminalCapable {
 
@@ -141,7 +132,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
         }
     }
 
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+    /*public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         this.mouseX = (float) mouseX;
         this.mouseY = (float) mouseY;
         super.render(matrices, mouseX, mouseY, delta);
@@ -437,5 +428,5 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
         int height = groupCount % 4;
         if(width > 0 && new Rect2i(-4 - 18 * width, 0, 7 + 18 * width, 86).contains(mx, my)) return true;
         return height > 0 && new Rect2i(-22 - 18 * width, 0, 25, 14 + 18 * height).contains(mx, my);
-    }
+    }*/
 }

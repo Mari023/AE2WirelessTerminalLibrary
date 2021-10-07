@@ -25,17 +25,12 @@ import appeng.util.inv.InternalInventoryHost;
 import com.google.common.base.Preconditions;
 import com.mojang.datafixers.util.Pair;
 import de.mari_023.fabric.ae2wtlib.Config;
-import de.mari_023.fabric.ae2wtlib.mixin.SlotMixin;
 import de.mari_023.fabric.ae2wtlib.terminal.FixedWTInv;
 import de.mari_023.fabric.ae2wtlib.terminal.IWTInvHolder;
 import de.mari_023.fabric.ae2wtlib.terminal.ae2wtlibInternalInventory;
-import de.mari_023.fabric.ae2wtlib.trinket.AppEngTrinketSlot;
-import de.mari_023.fabric.ae2wtlib.trinket.TrinketInventoryWrapper;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.ItemMagnetCard;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetSettings;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
-import dev.emi.trinkets.TrinketsClient;
-import dev.emi.trinkets.api.*;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.player.PlayerEntity;
@@ -53,7 +48,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.world.World;
 
-import java.util.*;
+import java.util.List;
 
 public class WCTContainer extends ItemTerminalMenu implements IMenuCraftingPacket, IWTInvHolder, InternalInventoryHost {
 
@@ -129,8 +124,8 @@ public class WCTContainer extends ItemTerminalMenu implements IMenuCraftingPacke
         addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.INFINITY_BOOSTER_CARD), SlotSemantic.BIOMETRIC_CARD);
         addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.MAGNET_CARD), SlotSemantic.INSCRIBER_PLATE_TOP);//TODO fetch texture for card background
 
-        if(!Config.allowTrinket()) return;//Trinkets only starting here
-        updateTrinketSlots(true);
+        /*if(!Config.allowTrinket()) return;//Trinkets only starting here
+        updateTrinketSlots(true);*/
     }
 
     private int ticks = 0;
@@ -259,7 +254,7 @@ public class WCTContainer extends ItemTerminalMenu implements IMenuCraftingPacke
     public void onChangeInventory(InternalInventory internalInventory, int i, ItemStack itemStack, ItemStack itemStack1) {}
 
     //Trinkets starting here
-    private final Map<SlotGroup, net.minecraft.util.Pair<Integer, Integer>> groupPos = new HashMap<>();
+    /*private final Map<SlotGroup, net.minecraft.util.Pair<Integer, Integer>> groupPos = new HashMap<>();
     private final Map<SlotGroup, List<net.minecraft.util.Pair<Integer, Integer>>> slotHeights = new HashMap<>();
     private final Map<SlotGroup, List<SlotType>> slotTypes = new HashMap<>();
     private final Map<SlotGroup, Integer> slotWidths = new HashMap<>();
@@ -291,7 +286,7 @@ public class WCTContainer extends ItemTerminalMenu implements IMenuCraftingPacke
                         int x = slot.x - 18;
                         int y;
                         if(groupNum >= 2) {
-                            x = 4 - (groupNum / 4) * 18;//FIXME these are probably on the wrong location, but I don't really care
+                            x = 4 - (groupNum / 4) * 18;//FIXME these are probably on the wrong location, but I don't really care right now
                             y = 8 + (groupNum % 4) * 18;
                         } else y = slot.y;
                         groupPos.put(group, new net.minecraft.util.Pair<>(x, y));
@@ -410,5 +405,5 @@ public class WCTContainer extends ItemTerminalMenu implements IMenuCraftingPacke
             }
         }
         return super.transferSlot(player, index);
-    }
+    }*/
 }
