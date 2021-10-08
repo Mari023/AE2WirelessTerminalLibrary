@@ -119,3 +119,4 @@ run/
 
 #Temporarily allow ae2 to fix unfixable conflicts
 !lib/appliedenergistics2-fabric-9.0.0-alpha.1-no-conflict.jar
+!lib/appliedenergistics2-fabric-9.0.0-alpha.02-pre.01.jar

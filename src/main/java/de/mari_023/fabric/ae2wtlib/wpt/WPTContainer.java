@@ -13,7 +13,7 @@ import appeng.api.storage.StorageChannels;
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IAEStack;
-import appeng.api.storage.data.IItemList;
+import appeng.api.storage.data.IAEStackList;
 import appeng.core.definitions.AEItems;
 import appeng.core.localization.PlayerMessages;
 import appeng.core.sync.packets.PatternSlotPacket;
@@ -295,7 +295,7 @@ public class WPTContainer extends ItemTerminalMenu implements IOptionalSlotHost,
         if(r == null) return;
 
         final IMEMonitor<IAEItemStack> storage = getPatternTerminal().getInventory(StorageChannels.items());
-        final IItemList<IAEItemStack> all = storage.getStorageList();
+        final IAEStackList<IAEItemStack> all = storage.getStorageList();
 
         final ItemStack is = r.craft(ic);
 

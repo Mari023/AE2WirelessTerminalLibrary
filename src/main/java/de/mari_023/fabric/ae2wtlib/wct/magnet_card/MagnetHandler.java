@@ -1,7 +1,7 @@
 package de.mari_023.fabric.ae2wtlib.wct.magnet_card;
 
 import appeng.api.storage.data.IAEItemStack;
-import appeng.api.storage.data.IItemList;
+import appeng.api.storage.data.IAEStackList;
 import appeng.util.item.AEItemStack;
 import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.ae2wtlib;
@@ -43,7 +43,7 @@ public class MagnetHandler {
             HashMap<Item, Long> items = new HashMap<>();
 
             if(handler.getItemStorageChannel() == null) return;
-            IItemList<IAEItemStack> storageList = handler.getItemStorageChannel().getStorageList();
+            IAEStackList<IAEItemStack> storageList = handler.getItemStorageChannel().getStorageList();
 
             for(int i = 0; i < player.getInventory().size(); i++) {
                 ItemStack stack = player.getInventory().getStack(i);
@@ -62,7 +62,7 @@ public class MagnetHandler {
         } catch(NullPointerException ignored) {}
     }
 
-    private long getCount(IItemList<IAEItemStack> storageList, ItemStack stack) {
+    private long getCount(IAEStackList<IAEItemStack> storageList, ItemStack stack) {
         IAEItemStack aeStack = storageList.findPrecise(AEItemStack.fromItemStack(stack));
         return aeStack == null ? 0 : aeStack.getStackSize();
     }
