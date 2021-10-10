@@ -126,14 +126,16 @@ public class WPTScreen extends ItemTerminalScreen<WPTContainer> implements IUniv
             substitutionsDisabledBtn.visible = false;
         }
 
-        setSlotsHidden(SlotSemantic.CRAFTING_RESULT, !(handler).isCraftingMode());
-        setSlotsHidden(SlotSemantic.PROCESSING_RESULT, (handler).isCraftingMode());
+        setSlotsHidden(SlotSemantic.CRAFTING_RESULT, !handler.isCraftingMode());
+        setSlotsHidden(SlotSemantic.PROCESSING_PRIMARY_RESULT, handler.isCraftingMode());
+        setSlotsHidden(SlotSemantic.PROCESSING_FIRST_OPTIONAL_RESULT, handler.isCraftingMode());
+        setSlotsHidden(SlotSemantic.PROCESSING_SECOND_OPTIONAL_RESULT, handler.isCraftingMode());
         convertItemsToFluidsBtn.visible = getScreenHandler().canConvertItemsToFluids();
     }
 
     public void drawBG(MatrixStack matrixStack, int offsetX, int offsetY, int mouseX, int mouseY, float partialTicks) {
         super.drawBG(matrixStack, offsetX, offsetY, mouseX, mouseY, partialTicks);
         if(handler.isCraftingMode()) return;
-        Blitter.texture("guis/pattern_modes.png").src(100, 77, 18, 54).dest(x + 109, y + backgroundHeight - 159).blit(matrixStack, getZOffset());
+        Blitter.texture("guis/pattern_modes.png").src(97, 72, 24, 64).dest(x + 106, y + backgroundHeight - 164).blit(matrixStack, getZOffset());
     }
 }

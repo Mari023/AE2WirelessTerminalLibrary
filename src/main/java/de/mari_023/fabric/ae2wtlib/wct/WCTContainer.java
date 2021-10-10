@@ -113,13 +113,13 @@ public class WCTContainer extends ItemTerminalMenu implements IMenuCraftingPacke
                 public Pair<Identifier, Identifier> getBackgroundSprite() {
                     return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, PlayerScreenHandler.EMPTY_OFFHAND_ARMOR_SLOT);
                 }
-            }, SlotSemantic.PROCESSING_RESULT);
+            }, SlotSemantic.PROCESSING_PRIMARY_RESULT);
         else SlotsWithTrinket[45] = addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.OFFHAND) {
             @Environment(EnvType.CLIENT)
             public Pair<Identifier, Identifier> getBackgroundSprite() {
                 return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, PlayerScreenHandler.EMPTY_OFFHAND_ARMOR_SLOT);
             }
-        }, SlotSemantic.PROCESSING_RESULT);
+        }, SlotSemantic.PROCESSING_PRIMARY_RESULT);
         addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.TRASH), SlotSemantic.INSCRIBER_PLATE_BOTTOM);
         addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.INFINITY_BOOSTER_CARD), SlotSemantic.BIOMETRIC_CARD);
         addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.MAGNET_CARD), SlotSemantic.INSCRIBER_PLATE_TOP);//TODO fetch texture for card background

@@ -111,8 +111,12 @@ public class WPTContainer extends ItemTerminalMenu implements IOptionalSlotHost,
         craftOutputSlot.setIcon(null);
 
         // Create slots for the outputs of processing-mode patterns
-        for(int i = 0; i < 3; i++) {
-            addSlot(processingOutputSlots[i] = new PatternOutputsSlot(output, this, i, 1), SlotSemantic.PROCESSING_RESULT);
+
+        addSlot(processingOutputSlots[0] = new PatternOutputsSlot(output, this, 0, 1), SlotSemantic.PROCESSING_PRIMARY_RESULT);
+        addSlot(processingOutputSlots[1] = new PatternOutputsSlot(output, this, 1, 1), SlotSemantic.PROCESSING_FIRST_OPTIONAL_RESULT);
+        addSlot(processingOutputSlots[2] = new PatternOutputsSlot(output, this, 2, 1), SlotSemantic.PROCESSING_SECOND_OPTIONAL_RESULT);
+
+        for(int i = 0; i < 3; ++i) {
             processingOutputSlots[i].setRenderDisabled(false);
             processingOutputSlots[i].setIcon(null);
         }
@@ -163,11 +167,12 @@ public class WPTContainer extends ItemTerminalMenu implements IOptionalSlotHost,
 
         for(int x = 0; x < ic.size(); x++) ic.setStack(x, craftingGridInv.getStackInSlot(x));
 
-        if(currentRecipe == null || !currentRecipe.matches(ic, world))
+        if(currentRecipe == null || !currentRecipe.matches(ic, world)) {
             currentRecipe = world.getRecipeManager().getFirstMatch(RecipeType.CRAFTING, ic, world).orElse(null);
+            currentRecipeCraftingMode = craftingMode;
+        }
 
         final ItemStack is;
-
         if(currentRecipe == null) is = ItemStack.EMPTY;
         else is = currentRecipe.craft(ic);
 
@@ -181,32 +186,31 @@ public class WPTContainer extends ItemTerminalMenu implements IOptionalSlotHost,
             return;
         }
         ItemStack output = encodedPatternSlot.getStack();
+        ItemStack[] in = getInputs();
+        ItemStack[] out = getOutputs();
+        if(in != null && out != null && (!isCraftingMode() || currentRecipe != null)) {
+            if(output.isEmpty() || craftingHelper.isEncodedPattern(output)) {
+                if(output.isEmpty()) {
+                    output = blankPatternSlot.getStack();
+                    if(output.isEmpty() || !isPattern(output)) {
+                        return;
+                    }
 
-        final ItemStack[] in = getInputs();
-        final ItemStack[] out = getOutputs();
+                    output.setCount(output.getCount() - 1);
+                    if(output.getCount() == 0) {
+                        blankPatternSlot.setStack(ItemStack.EMPTY);
+                    }
+                }
 
-        // if there is no input, this would be silly.
-        if(in == null || out == null || isCraftingMode() && currentRecipe == null) return;
+                if(isCraftingMode()) {
+                    output = craftingHelper.encodeCraftingPattern(currentRecipe, in, out[0], isSubstitute());
+                } else {
+                    output = craftingHelper.encodeProcessingPattern(toAeStacks(in), toAeStacks(out));
+                }
 
-        // first check the output slots, should either be null, or a pattern
-        if(!output.isEmpty() && !craftingHelper.isEncodedPattern(output))
-            return; //if nothing is there we should snag a new pattern.
-        else if(output.isEmpty()) {
-            output = blankPatternSlot.getStack();
-            if(output.isEmpty() || !isPattern(output)) return; // no blanks.
-
-            // remove one, and clear the input slot.
-            output.setCount(output.getCount() - 1);
-            if(output.getCount() == 0) blankPatternSlot.insertStack(ItemStack.EMPTY);
-
-            // let the crafting helper create a new encoded pattern
-            output = null;
+                encodedPatternSlot.setStack(output);
+            }
         }
-
-        if(isCraftingMode())
-            output = craftingHelper.encodeCraftingPattern(output, currentRecipe, in, out[0], isSubstitute());
-        else output = craftingHelper.encodeProcessingPattern(output, toAeStacks(in), toAeStacks(out));
-        encodedPatternSlot.insertStack(output);
     }
 
     private static IAEStack[] toAeStacks(ItemStack... stacks) {
