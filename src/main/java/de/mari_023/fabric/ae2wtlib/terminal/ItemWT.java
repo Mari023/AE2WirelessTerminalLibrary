@@ -9,6 +9,7 @@ import appeng.api.features.IWirelessTerminalHandler;
 import appeng.api.features.Locatables;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.util.IConfigManager;
+import appeng.core.AEConfig;
 import appeng.core.localization.GuiText;
 import appeng.core.localization.PlayerMessages;
 import appeng.hooks.ICustomReequipAnimation;
@@ -39,7 +40,7 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermi
     public static final IGridLinkableHandler LINKABLE_HANDLER = new LinkableHandler();
 
     public ItemWT(Item.Settings props) {
-        super(/*AEConfig.instance().getWirelessTerminalBattery()*/ () -> 1600000, props);
+        super(AEConfig.instance().getWirelessTerminalBattery(), props);
     }
 
     @Override
