@@ -9,13 +9,13 @@ import net.fabricmc.loader.api.FabricLoader;
 public class ae2wtlibConfig implements ConfigData {
 
     //@ConfigEntry.Gui.Tooltip
-    private double chargeRate = 8000;
+    private double chargeRate = 8000.0;
     //@ConfigEntry.Gui.Tooltip
-    private double wutChargeRateMultiplier = 1;
+    private double wutChargeRateMultiplier = 1.0;
     @ConfigEntry.Gui.Tooltip
-    private double outOfRangePowerMultiplier = 2;
+    private double outOfRangePowerMultiplier = 2.0;
     //@ConfigEntry.Gui.Tooltip
-    private double magnetCardRange = 16;
+    private double magnetCardRange = 16.0;
 
     @ConfigEntry.Gui.Tooltip(count = 2)
     private boolean enableTrinket = true;
