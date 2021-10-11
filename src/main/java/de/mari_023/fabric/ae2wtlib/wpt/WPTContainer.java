@@ -482,18 +482,6 @@ public class WPTContainer extends ItemTerminalMenu implements IOptionalSlotHost,
         return stack.isEmpty() ? null : StorageUtil.findExtractableContent(ContainerItemContext.withInitial(stack).find(FluidStorage.ITEM), null);
     }
 
-    public FakeCraftingMatrixSlot[] getCraftingGridSlots() {
-        return craftingGridSlots;
-    }
-
-    public OptionalFakeSlot[] getProcessingOutputSlots() {
-        return processingOutputSlots;
-    }
-
-    public PatternTermSlot getCraftOutputSlot() {
-        return craftOutputSlot;
-    }
-
     @Override
     public boolean canUse(PlayerEntity player) {
         return true;
