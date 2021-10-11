@@ -8,8 +8,8 @@ import appeng.client.gui.style.StyleManager;
 import appeng.client.gui.widgets.ActionButton;
 import appeng.client.gui.widgets.IconButton;
 import com.mojang.blaze3d.platform.GlStateManager;
-import de.mari_023.fabric.ae2wtlib.Config;
 import de.mari_023.fabric.ae2wtlib.ae2wtlib;
+import de.mari_023.fabric.ae2wtlib.ae2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.mixin.ScreenMixin;
 import de.mari_023.fabric.ae2wtlib.trinket.AppEngTrinketSlot;
 import de.mari_023.fabric.ae2wtlib.trinket.TrinketInvRenderer;
@@ -87,7 +87,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
     @Override
     public void init() {
         super.init();
-        if(!Config.allowTrinket()) return;//Trinkets only
+        if(!ae2wtlibConfig.INSTANCE.allowTrinket()) return;//Trinkets only
         TrinketsClient.displayEquipped = 0;
         trinketSlots = new ArrayList<>();
         for(Slot slot : getScreenHandler().slots) {
@@ -105,7 +105,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
     @Override
     public void drawBG(MatrixStack matrices, final int offsetX, final int offsetY, final int mouseX, final int mouseY, float partialTicks) {
         super.drawBG(matrices, offsetX, offsetY, mouseX, mouseY, partialTicks);
-        if(!Config.allowTrinket()) return;//Trinkets only starting here
+        if(!ae2wtlibConfig.INSTANCE.allowTrinket()) return;//Trinkets only starting here
         GlStateManager.disableDepthTest();
         List<TrinketSlots.Slot> trinketSlots = TrinketSlots.getAllSlots();
         setZOffset(100);
@@ -138,7 +138,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
     public void drawFG(MatrixStack matrices, final int offsetX, final int offsetY, final int mouseX, final int mouseY) {
         super.drawFG(matrices, offsetX, offsetY, mouseX, mouseY);
 
-        if(!Config.allowTrinket() || client == null) return;//Trinkets client-only starting here
+        if(!ae2wtlibConfig.INSTANCE.allowTrinket() || client == null) return;//Trinkets client-only starting here
         if(TrinketsClient.slotGroup != null)
             TrinketInvRenderer.renderGroupFront(matrices, this, client.getTextureManager(), 0, 0, TrinketsClient.slotGroup, getGroupX(TrinketsClient.slotGroup), getGroupY(TrinketsClient.slotGroup));
         else if(TrinketsClient.displayEquipped > 0 && TrinketsClient.lastEquipped != null)
@@ -234,7 +234,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
     @Override
     public void tick() {
         super.tick();
-        if(!Config.allowTrinket()) return;
+        if(!ae2wtlibConfig.INSTANCE.allowTrinket()) return;
         float relX = mouseX - x;
         float relY = mouseY - y;
         if(TrinketsClient.slotGroup == null || !inBounds(TrinketsClient.slotGroup, relX, relY, true)) {
@@ -327,7 +327,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
 
     @Override
     protected boolean isClickOutsideBounds(double x, double y, int i, int j, int k) {
-        if(Config.allowTrinket() && TrinketsClient.slotGroup != null && inBounds(TrinketsClient.slotGroup, (float) x - this.x, (float) y - this.y, true))
+        if(ae2wtlibConfig.INSTANCE.allowTrinket() && TrinketsClient.slotGroup != null && inBounds(TrinketsClient.slotGroup, (float) x - this.x, (float) y - this.y, true))
             return false;
         return super.isClickOutsideBounds(x, y, i, j, k);
     }

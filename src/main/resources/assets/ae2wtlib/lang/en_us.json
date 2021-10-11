@@ -30,5 +30,23 @@
   "key.ae2wtlib.wpt": "Open Wireless Pattern Terminal",
   "key.ae2wtlib.wit": "Open Wireless Interface Terminal",
   "key.ae2wtlib.toggleRestock": "Toggle Restock",
-  "key.ae2wtlib.toggleMagnet": "Toggle Magnet Card"
+  "key.ae2wtlib.toggleMagnet": "Toggle Magnet Card",
+
+
+  "text.autoconfig.ae2wtlib.title": "AE2 Wireless Terminals",
+
+  "text.autoconfig.ae2wtlib.option.chargeRate": "Charge Rate",
+  "text.autoconfig.ae2wtlib.option.wutChargeRateMultiplier": "Wireless Universal Terminal Charge Rate Multiplier",
+  "text.autoconfig.ae2wtlib.option.outOfRangePowerMultiplier": "Out of Range Power Multiplier",
+  "text.autoconfig.ae2wtlib.option.magnetCardRange": "Magnet Card Range",
+  "text.autoconfig.ae2wtlib.option.enableTrinket": "Enable Trinkets Integration",
+
+  "text.autoconfig.ae2wtlib.option.chargeRate.@Tooltip": "",
+  "text.autoconfig.ae2wtlib.option.wutChargeRateMultiplier.@Tooltip": "",
+  "text.autoconfig.ae2wtlib.option.outOfRangePowerMultiplier.@Tooltip": "If this is lower than 1, being in range of a Wireless Access Point would use more power in some cases.",
+  "text.autoconfig.ae2wtlib.option.magnetCardRange.@Tooltip": "",
+
+  "text.autoconfig.ae2wtlib.option.enableTrinket.@Tooltip[0]": "This will break things if it is different than a server you might connect to.",
+  "text.autoconfig.ae2wtlib.option.enableTrinket.@Tooltip[1]": "It is only effective if Trinkets is installed."
+
 }

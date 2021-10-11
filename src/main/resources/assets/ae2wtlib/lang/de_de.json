@@ -30,5 +30,22 @@
   "key.ae2wtlib.wpt": "Drahtlose Schablonenkonsole Öffnen",
   "key.ae2wtlib.wit": "Drahtlose Schnittstellenkonsole Öffnen",
   "key.ae2wtlib.toggleRestock": "Nachfüllen umschalten",
-  "key.ae2wtlib.toggleMagnet": "Magnet Karte umschalten"
+  "key.ae2wtlib.toggleMagnet": "Magnet Karte umschalten",
+
+
+  "text.autoconfig.ae2wtlib.title": "AE2 Wireless Terminals",
+
+  "text.autoconfig.ae2wtlib.option.chargeRate": "Laderate",
+  "text.autoconfig.ae2wtlib.option.wutChargeRateMultiplier": "Laderatenmultiplikator der Drahtlose Universalkonsole",
+  "text.autoconfig.ae2wtlib.option.outOfRangePowerMultiplier": "Leistungsmultiplikator außer Reichweite",
+  "text.autoconfig.ae2wtlib.option.magnetCardRange": "Reichweite der Magnet Karte",
+  "text.autoconfig.ae2wtlib.option.enableTrinket": "Trinkets Integration aktivieren",
+
+  "text.autoconfig.ae2wtlib.option.chargeRate.@Tooltip": "",
+  "text.autoconfig.ae2wtlib.option.wutChargeRateMultiplier.@Tooltip": "",
+  "text.autoconfig.ae2wtlib.option.outOfRangePowerMultiplier.@Tooltip": "Wenn dieser Wer kleiner als 1 ist, könnten Drahtlose Konsolen innerhalb der Reichweite eines Drahtlosen Zugangspunktes mehr Strom verbrauchen als außerhalb.",
+  "text.autoconfig.ae2wtlib.option.magnetCardRange.@Tooltip": "",
+
+  "text.autoconfig.ae2wtlib.option.enableTrinket.@Tooltip[0]": "Diese Einstellung kann zu Problemen führen wenn die anders ist als auf einem Server mit welchem man sich verbindet.",
+  "text.autoconfig.ae2wtlib.option.enableTrinket.@Tooltip[1]": "Sie wird nur beachtet wenn Trinkets Installiert ist."
 }
