@@ -39,7 +39,7 @@
     "fabric": "*",
     "minecraft": "1.16.5",
     "appliedenergistics2": "8.4.0-alpha.3",
-    "4.11.26": "*"
+    "cloth-config2": "*"
   },
   "suggests": {
     "minemenufabric": "*",
