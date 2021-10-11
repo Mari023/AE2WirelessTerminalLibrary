@@ -4,7 +4,7 @@
 name: build master
 on:
   push:
-    branches: [ master ]
+    branches: [ '1.16' ]
 
 jobs:
   build:
