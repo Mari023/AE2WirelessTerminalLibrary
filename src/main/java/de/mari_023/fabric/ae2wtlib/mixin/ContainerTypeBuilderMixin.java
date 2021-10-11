@@ -3,9 +3,8 @@ package de.mari_023.fabric.ae2wtlib.mixin;
 import appeng.api.features.IWirelessTermHandler;
 import appeng.container.ContainerLocator;
 import appeng.container.implementations.ContainerTypeBuilder;
-import de.mari_023.fabric.ae2wtlib.ae2wtlibConfig;
+import de.mari_023.fabric.ae2wtlib.util.InventoryTerminalHelper;
 import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
-import dev.emi.trinkets.api.TrinketsApi;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Final;
@@ -24,12 +23,7 @@ public class ContainerTypeBuilderMixin<I> {
 
     @Inject(method = "getHostFromPlayerInventory", at = @At(value = "HEAD"), cancellable = true)
     public void serverPacketData(PlayerEntity player, ContainerLocator locator, CallbackInfoReturnable<I> cir) {
-        int slot = locator.getItemIndex();
-        ItemStack it;
-
-        if(slot >= 100 && slot < 200 && ae2wtlibConfig.INSTANCE.allowTrinket())
-            it = TrinketsApi.getTrinketsInventory(player).getStack(slot - 100);
-        else it = player.inventory.getStack(slot);
+        ItemStack it = InventoryTerminalHelper.getTerminal(player, locator.getItemIndex());
 
         if(it.isEmpty()) return;
 

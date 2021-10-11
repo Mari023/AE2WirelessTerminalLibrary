@@ -8,6 +8,7 @@ import de.mari_023.fabric.ae2wtlib.rei.REIRecipePacket;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemInfinityBooster;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.util.ContainerHelper;
+import de.mari_023.fabric.ae2wtlib.util.InventoryTerminalHelper;
 import de.mari_023.fabric.ae2wtlib.wct.CraftingTerminalHandler;
 import de.mari_023.fabric.ae2wtlib.wct.ItemWCT;
 import de.mari_023.fabric.ae2wtlib.wct.WCTContainer;
@@ -133,10 +134,7 @@ public class ae2wtlib implements ModInitializer {
 
             final ContainerLocator locator = ((AEBaseContainer) screenHandler).getLocator();
             int slot = locator.getItemIndex();
-            ItemStack item;
-            if(slot >= 100 && slot < 200 && ae2wtlibConfig.INSTANCE.allowTrinket())
-                item = TrinketsApi.getTrinketsInventory(player).getStack(slot - 100);
-            else item = player.inventory.getStack(slot);
+            ItemStack item = InventoryTerminalHelper.getTerminal(player, slot);
 
             if(!(item.getItem() instanceof ItemWUT)) return;
             WUTHandler.cycle(player, slot, item);

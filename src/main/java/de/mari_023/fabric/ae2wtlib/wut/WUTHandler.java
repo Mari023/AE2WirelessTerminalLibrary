@@ -3,13 +3,12 @@ package de.mari_023.fabric.ae2wtlib.wut;
 import appeng.api.features.IWirelessTermHandler;
 import appeng.container.ContainerLocator;
 import de.mari_023.fabric.ae2wtlib.ae2wtlib;
-import de.mari_023.fabric.ae2wtlib.ae2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.terminal.WTGuiObject;
+import de.mari_023.fabric.ae2wtlib.util.InventoryTerminalHelper;
 import de.mari_023.fabric.ae2wtlib.wct.ItemWCT;
 import de.mari_023.fabric.ae2wtlib.wit.ItemWIT;
 import de.mari_023.fabric.ae2wtlib.wpt.ItemWPT;
-import dev.emi.trinkets.api.TrinketsApi;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.player.PlayerEntity;
@@ -80,11 +79,7 @@ public class WUTHandler {
     }
 
     public static void open(final PlayerEntity player, final ContainerLocator locator) {
-        int slot = locator.getItemIndex();
-        ItemStack is;
-        if(slot >= 100 && slot < 200 && ae2wtlibConfig.INSTANCE.allowTrinket())
-            is = TrinketsApi.getTrinketsInventory(player).getStack(slot - 100);
-        else is = player.inventory.getStack(slot);
+        ItemStack is = InventoryTerminalHelper.getTerminal(player, locator.getItemIndex());
 
         if(is.getTag() == null) return;
         String currentTerminal = getCurrentTerminal(is);
