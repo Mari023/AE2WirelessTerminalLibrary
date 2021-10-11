@@ -116,7 +116,3 @@ run/
 
 # Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
 !gradle-wrapper.jar
-
-#Temporarily allow ae2
-!lib/appliedenergistics2-fabric-9.0.0-alpha.02-pre.01.jar
-!lib/appliedenergistics2-fabric-9.0.0-alpha.02.jar

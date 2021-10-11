@@ -89,9 +89,6 @@ repositories {
         name = "Ladysnake Libs"
         url = "https://ladysnake.jfrog.io/artifactory/mods"
     }
-    flatDir {
-        dirs './lib'
-    }
 }
 
 dependencies {
