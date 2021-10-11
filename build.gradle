@@ -100,7 +100,7 @@ dependencies {
     modImplementation "me.shedaniel:RoughlyEnoughItems:${project.rei_version}"
     modImplementation "curse.maven:minemenufabric-478687:${project.minemenufabric_version}"
     modImplementation "com.terraformersmc:modmenu:1.16.7"//dependency for minemenu
-    modApi("me.shedaniel.cloth:cloth-config-fabric:4.11.14")//dependency for minemenu
+    modApi("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config}")
     modImplementation "dev.emi:trinkets:${project.trinkets_version}"
     modRuntime "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:2.8.3"
     modApi("dev.technici4n:FastTransferLib:${project.ftl_version}", {
