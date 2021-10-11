@@ -19,7 +19,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
@@ -77,7 +77,7 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
         super.appendTooltip(stack, world, lines, advancedTooltips);
 
         if(stack.hasTag()) {
-            final CompoundTag tag = stack.getOrCreateTag();
+            final NbtCompound tag = stack.getOrCreateTag();
             if(tag != null) {
                 final String encKey = tag.getString("encryptionKey");
 
@@ -105,7 +105,7 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
     @Override
     public IConfigManager getConfigManager(ItemStack is) {
         final ConfigManager out = new ConfigManager((manager, settingName, newValue) -> {
-            final CompoundTag data = is.getOrCreateTag();
+            final NbtCompound data = is.getOrCreateTag();
             manager.writeToNBT(data);
         });
 
@@ -119,13 +119,13 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
 
     @Override
     public String getEncryptionKey(ItemStack item) {
-        final CompoundTag tag = item.getOrCreateTag();
+        final NbtCompound tag = item.getOrCreateTag();
         return tag.getString("encryptionKey");
     }
 
     @Override
     public void setEncryptionKey(ItemStack item, String encKey, String name) {
-        final CompoundTag tag = item.getOrCreateTag();
+        final NbtCompound tag = item.getOrCreateTag();
         tag.putString("encryptionKey", encKey);
         tag.putString("name", name);
     }
@@ -139,7 +139,7 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
      */
     public static ItemStack getSavedSlot(ItemStack hostItem, String slot) {
         if(!(hostItem.getItem() instanceof ItemWT)) return ItemStack.EMPTY;
-        return ItemStack.fromTag(hostItem.getOrCreateTag().getCompound(slot));
+        return ItemStack.fromNbt(hostItem.getOrCreateTag().getCompound(slot));
     }
 
     /**
@@ -152,9 +152,9 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
      */
     public static void setSavedSlot(ItemStack hostItem, ItemStack savedItem, String slot) {
         if(!(hostItem.getItem() instanceof ItemWT)) return;
-        CompoundTag wctTag = hostItem.getOrCreateTag();
+        NbtCompound wctTag = hostItem.getOrCreateTag();
         if(savedItem.isEmpty()) wctTag.remove(slot);
-        else wctTag.put(slot, savedItem.toTag(new CompoundTag()));
+        else wctTag.put(slot, savedItem.writeNbt(new NbtCompound()));
     }
 
     /**
@@ -178,7 +178,7 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
      */
     public static void setBoolean(ItemStack hostItem, boolean b, String key) {
         if(!(hostItem.getItem() instanceof ItemWT)) return;
-        CompoundTag wctTag = hostItem.getOrCreateTag();
+        NbtCompound wctTag = hostItem.getOrCreateTag();
         wctTag.putBoolean(key, b);
     }
 

@@ -22,7 +22,7 @@ public class WUTDisplay implements DefaultCraftingDisplay {
 
     public WUTDisplay(Common recipe) {
         this.display = recipe;
-        this.input = EntryStack.ofIngredients(recipe.getPreviewInputs());
+        this.input = EntryStack.ofIngredients(recipe.getIngredients());
         this.output = Collections.singletonList(EntryStack.create(recipe.getOutput()));
     }
 

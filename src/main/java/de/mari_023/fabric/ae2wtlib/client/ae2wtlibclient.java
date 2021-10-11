@@ -21,10 +21,10 @@ import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.options.KeyBinding;
+import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
@@ -47,7 +47,7 @@ public class ae2wtlibclient implements ClientModInitializer {
 
                 final Screen screen = MinecraftClient.getInstance().currentScreen;
                 if(screen instanceof WITScreen) {
-                    CompoundTag tag = buf.readCompoundTag();
+                    NbtCompound tag = buf.readNbt();
                     if(tag != null)
                         ((WITScreen) screen).postUpdate(false, tag);
                 }
@@ -68,7 +68,7 @@ public class ae2wtlibclient implements ClientModInitializer {
                 if(client.player == null) return;
                 int slot = buf.readInt();
                 ItemStack is;
-                CompoundTag tag = buf.readCompoundTag();
+                NbtCompound tag = buf.readNbt();
                 if(slot >= 100 && slot < 200 && Config.allowTrinket())
                     is = TrinketsApi.getTrinketsInventory(client.player).getStack(slot - 100);
                 else is = client.player.inventory.getStack(slot);

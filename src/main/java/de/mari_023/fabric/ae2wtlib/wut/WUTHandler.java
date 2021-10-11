@@ -14,7 +14,7 @@ import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.LiteralText;
@@ -72,10 +72,10 @@ public class WUTHandler {
         updateClientTerminal((ServerPlayerEntity) playerEntity, slot, itemStack.getTag());
     }
 
-    public static void updateClientTerminal(ServerPlayerEntity playerEntity, int slot, CompoundTag tag) {
+    public static void updateClientTerminal(ServerPlayerEntity playerEntity, int slot, NbtCompound tag) {
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeInt(slot);
-        buf.writeCompoundTag(tag);
+        buf.writeNbt(tag);
         ServerPlayNetworking.send(playerEntity, new Identifier(ae2wtlib.MOD_NAME, "update_wut"), buf);
     }
 

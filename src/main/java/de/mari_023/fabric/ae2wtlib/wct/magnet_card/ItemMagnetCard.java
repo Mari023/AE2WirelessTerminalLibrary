@@ -8,7 +8,7 @@ import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.world.World;
@@ -30,14 +30,14 @@ public class ItemMagnetCard extends Item {
 
     public static void saveMagnetSettings(ItemStack magnetCardHolder, MagnetSettings magnetSettings) {
         ItemStack magnetCard = ItemWT.getSavedSlot(magnetCardHolder, "magnetCard");
-        magnetCard.getOrCreateTag().put("magnet_settings", magnetSettings.toTag());
+        magnetCard.getOrCreateTag().put("magnet_settings", magnetSettings.toNbt());
         ItemWT.setSavedSlot(magnetCardHolder, magnetCard, "magnetCard");
     }
 
     public static MagnetSettings loadMagnetSettings(ItemStack magnetCardHolder) {
         ItemStack magnetCard = ItemWT.getSavedSlot(magnetCardHolder, "magnetCard");
         if(magnetCard.isEmpty()) return new MagnetSettings();
-        return new MagnetSettings((CompoundTag) magnetCard.getOrCreateTag().get("magnet_settings"));
+        return new MagnetSettings((NbtCompound) magnetCard.getOrCreateTag().get("magnet_settings"));
     }
 
     public static boolean isActiveMagnet(ItemStack magnetCardHolder) {

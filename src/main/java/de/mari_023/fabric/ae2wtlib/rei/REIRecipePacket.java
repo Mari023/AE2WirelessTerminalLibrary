@@ -224,7 +224,7 @@ public class REIRecipePacket {
      * higher than 3. ingredients.
      */
     private DefaultedList<Ingredient> ensure3by3CraftingMatrix(Recipe<?> recipe) {
-        DefaultedList<Ingredient> ingredients = recipe.getPreviewInputs();
+        DefaultedList<Ingredient> ingredients = recipe.getIngredients();
         DefaultedList<Ingredient> expandedIngredients = DefaultedList.ofSize(9, Ingredient.EMPTY);
 
         Preconditions.checkArgument(ingredients.size() <= 9);

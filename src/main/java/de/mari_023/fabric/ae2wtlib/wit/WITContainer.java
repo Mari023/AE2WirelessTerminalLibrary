@@ -33,7 +33,7 @@ import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -53,7 +53,7 @@ public class WITContainer extends AEBaseContainer implements IWTInvHolder {
     private final Map<IInterfaceHost, WITContainer.InvTracker> diList = new HashMap<>();
     private final Map<Long, WITContainer.InvTracker> byId = new HashMap<>();
     private IGrid grid;
-    private CompoundTag data = new CompoundTag();
+    private NbtCompound data = new NbtCompound();
 
     public WITContainer(int id, final PlayerInventory ip, final WITGuiObject anchor) {
         super(TYPE, id, ip, anchor);
@@ -160,9 +160,9 @@ public class WITContainer extends AEBaseContainer implements IWTInvHolder {
 
         if(data.isEmpty()) return;
         PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeCompoundTag(data);
+        buf.writeNbt(data);
         ServerPlayNetworking.send((ServerPlayerEntity) getPlayerInventory().player, new Identifier(ae2wtlib.MOD_NAME, "interface_terminal"), buf);
-        data = new CompoundTag();
+        data = new NbtCompound();
     }
 
     @Override
@@ -242,7 +242,7 @@ public class WITContainer extends AEBaseContainer implements IWTInvHolder {
         return !stack.isEmpty() && stack.getItem() instanceof EncodedPatternItem;
     }
 
-    private void regenList(final CompoundTag data) {
+    private void regenList(final NbtCompound data) {
         byId.clear();
         diList.clear();
 
@@ -281,9 +281,9 @@ public class WITContainer extends AEBaseContainer implements IWTInvHolder {
         return !ItemStack.areEqual(a, b);
     }
 
-    private void addItems(final CompoundTag data, final WITContainer.InvTracker inv, final int offset, final int length) {
+    private void addItems(final NbtCompound data, final WITContainer.InvTracker inv, final int offset, final int length) {
         final String name = '=' + Long.toString(inv.which, Character.MAX_RADIX);
-        final CompoundTag tag = data.getCompound(name);
+        final NbtCompound tag = data.getCompound(name);
 
         if(tag.isEmpty()) {
             tag.putLong("sortBy", inv.sortBy);
@@ -291,14 +291,14 @@ public class WITContainer extends AEBaseContainer implements IWTInvHolder {
         }
 
         for(int x = 0; x < length; x++) {
-            final CompoundTag itemNBT = new CompoundTag();
+            final NbtCompound itemNBT = new NbtCompound();
 
             final ItemStack is = inv.server.getInvStack(x + offset);
 
             // "update" client side.
             ItemHandlerUtil.setStackInSlot(inv.client, x + offset, is.isEmpty() ? ItemStack.EMPTY : is.copy());
 
-            if(!is.isEmpty()) is.toTag(itemNBT);
+            if(!is.isEmpty()) is.writeNbt(itemNBT);
 
             tag.put(Integer.toString(x + offset), itemNBT);
         }
