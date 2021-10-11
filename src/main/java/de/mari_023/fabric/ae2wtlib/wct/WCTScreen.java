@@ -141,7 +141,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
     @Override
     public void init() {
         super.init();
-        if(!Config.allowTrinket()) return;//Trinkets only
+        if(!ae2wtlibConfig.INSTANCE.allowTrinket()) return;//Trinkets only
         handler.updateTrinketSlots(true);
         group = null;
         currentBounds = new Rect2i(0, 0, 0, 0);
@@ -414,7 +414,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
 
     @Override
     protected boolean isClickOutsideBounds(double x, double y, int i, int j, int k) {
-        if(Config.allowTrinket() && isClickTrinketsBounds(x, y)) return false;
+        if(ae2wtlibConfig.INSTANCE.allowTrinket() && isClickTrinketsBounds(x, y)) return false;
         return super.isClickOutsideBounds(x, y, i, j, k);
     }
 

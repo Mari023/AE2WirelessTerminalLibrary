@@ -24,7 +24,7 @@ import appeng.util.inv.AppEngInternalInventory;
 import appeng.util.inv.InternalInventoryHost;
 import com.google.common.base.Preconditions;
 import com.mojang.datafixers.util.Pair;
-import de.mari_023.fabric.ae2wtlib.Config;
+import de.mari_023.fabric.ae2wtlib.ae2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.terminal.FixedWTInv;
 import de.mari_023.fabric.ae2wtlib.terminal.IWTInvHolder;
 import de.mari_023.fabric.ae2wtlib.terminal.ae2wtlibInternalInventory;
@@ -124,7 +124,7 @@ public class WCTContainer extends ItemTerminalMenu implements IMenuCraftingPacke
         addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.INFINITY_BOOSTER_CARD), SlotSemantic.BIOMETRIC_CARD);
         addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.MAGNET_CARD), SlotSemantic.INSCRIBER_PLATE_TOP);//TODO fetch texture for card background
 
-        /*if(!Config.allowTrinket()) return;//Trinkets only starting here
+        /*if(!ae2wtlibConfig.INSTANCE.allowTrinket()) return;//Trinkets only starting here
         updateTrinketSlots(true);*/
     }
 
@@ -141,7 +141,7 @@ public class WCTContainer extends ItemTerminalMenu implements IMenuCraftingPacke
                 ((ServerPlayerEntity) getPlayer()).closeHandledScreen();
             }
         } else {
-            double powerMultiplier = Config.getPowerMultiplier(wctGUIObject.getRange(), wctGUIObject.isOutOfRange());
+            double powerMultiplier = ae2wtlibConfig.INSTANCE.getPowerMultiplier(wctGUIObject.getRange(), wctGUIObject.isOutOfRange());
             ticks++;
             if(ticks > 10) {
                 wctGUIObject.extractAEPower((powerMultiplier) * ticks, Actionable.MODULATE, PowerMultiplier.CONFIG);

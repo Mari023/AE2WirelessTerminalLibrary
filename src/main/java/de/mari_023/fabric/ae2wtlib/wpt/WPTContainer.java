@@ -33,7 +33,7 @@ import appeng.util.Platform;
 import appeng.util.inv.CarriedItemInventory;
 import appeng.util.inv.PlayerInternalInventory;
 import appeng.util.item.AEItemStack;
-import de.mari_023.fabric.ae2wtlib.Config;
+import de.mari_023.fabric.ae2wtlib.ae2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import de.mari_023.fabric.ae2wtlib.terminal.FixedWTInv;
 import de.mari_023.fabric.ae2wtlib.terminal.IWTInvHolder;
@@ -350,7 +350,7 @@ public class WPTContainer extends ItemTerminalMenu implements IOptionalSlotHost,
             }
             setValidMenu(false);
         } else {
-            double powerMultiplier = Config.getPowerMultiplier(wptGUIObject.getRange(), wptGUIObject.isOutOfRange());
+            double powerMultiplier = ae2wtlibConfig.INSTANCE.getPowerMultiplier(wptGUIObject.getRange(), wptGUIObject.isOutOfRange());
             ticks++;
             if(ticks > 10) {
                 wptGUIObject.extractAEPower((powerMultiplier) * ticks, Actionable.MODULATE, PowerMultiplier.CONFIG);

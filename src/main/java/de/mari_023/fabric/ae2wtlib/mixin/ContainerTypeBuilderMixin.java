@@ -3,7 +3,7 @@ package de.mari_023.fabric.ae2wtlib.mixin;
 import appeng.api.features.IWirelessTerminalHandler;
 import appeng.menu.MenuLocator;
 import appeng.menu.implementations.MenuTypeBuilder;
-import de.mari_023.fabric.ae2wtlib.Config;
+import de.mari_023.fabric.ae2wtlib.ae2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.trinket.TrinketsHelper;
 import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
 import net.minecraft.entity.player.PlayerEntity;
@@ -27,7 +27,7 @@ public class ContainerTypeBuilderMixin<I> {
         int slot = locator.getItemIndex();
         ItemStack it;
 
-        if(slot >= 100 && slot < 200 && Config.allowTrinket())
+        if(slot >= 100 && slot < 200 && ae2wtlibConfig.INSTANCE.allowTrinket())
             it = TrinketsHelper.getTrinketsInventory(player).getStackInSlot(slot - 100);
         else it = player.getInventory().getStack(slot);
 

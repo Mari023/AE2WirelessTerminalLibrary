@@ -1,5 +1,7 @@
 package de.mari_023.fabric.ae2wtlib;
 
+import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -10,7 +12,10 @@ import java.util.Set;
 public class MixinPlugin implements IMixinConfigPlugin {
 
     @Override
-    public void onLoad(String mixinPackage) {}
+    public void onLoad(String mixinPackage) {
+        AutoConfig.register(ae2wtlibConfig.class, JanksonConfigSerializer::new);
+        ae2wtlibConfig.INSTANCE = AutoConfig.getConfigHolder(ae2wtlibConfig.class).getConfig();
+    }
 
     @Override
     public String getRefMapperConfig() {
@@ -20,13 +25,13 @@ public class MixinPlugin implements IMixinConfigPlugin {
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
         if(targetClassName.equals("de.mari_023.fabric.ae2wtlib.terminal.ItemWT") && mixinClassName.equals("de.mari_023.fabric.ae2wtlib.mixin.TrinketWT")) {
-            return Config.allowTrinket();
+            return ae2wtlibConfig.INSTANCE.allowTrinket();
         }
         if(targetClassName.equals("de.mari_023.fabric.ae2wtlib.wct.WCTContainer") && mixinClassName.equals("de.mari_023.fabric.ae2wtlib.mixin.TrinketWCTContainer")) {
-            return Config.allowTrinket();
+            return ae2wtlibConfig.INSTANCE.allowTrinket();
         }
         if(mixinClassName.equals("de.mari_023.fabric.ae2wtlib.mixin.HandledScreenMixin")) {
-            return Config.allowTrinket();
+            return ae2wtlibConfig.INSTANCE.allowTrinket();
         }
         return true;
     }

@@ -23,7 +23,7 @@ import appeng.parts.crafting.PatternProviderPart;
 import appeng.util.inv.AppEngInternalInventory;
 import appeng.util.inv.FilteredInternalInventory;
 import appeng.util.inv.filter.IAEItemFilter;
-import de.mari_023.fabric.ae2wtlib.Config;
+import de.mari_023.fabric.ae2wtlib.ae2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.terminal.FixedWTInv;
 import de.mari_023.fabric.ae2wtlib.terminal.IWTInvHolder;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
@@ -76,7 +76,7 @@ public class WITContainer extends AEBaseMenu implements IWTInvHolder {
             }
             setValidMenu(false);
         } else {
-            powerMultiplier = Config.getPowerMultiplier(witGUIObject.getRange(), witGUIObject.isOutOfRange());
+            powerMultiplier = ae2wtlibConfig.INSTANCE.getPowerMultiplier(witGUIObject.getRange(), witGUIObject.isOutOfRange());
 
             if(witGUIObject.extractAEPower(1, Actionable.SIMULATE, PowerMultiplier.ONE) == 0) {
                 if(isValidMenu()) {
