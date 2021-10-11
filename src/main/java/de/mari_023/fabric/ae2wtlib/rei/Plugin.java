@@ -1,6 +1,7 @@
 package de.mari_023.fabric.ae2wtlib.rei;
 
 import de.mari_023.fabric.ae2wtlib.ae2wtlib;
+import de.mari_023.fabric.ae2wtlib.ae2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.wut.recipe.Combine;
 import de.mari_023.fabric.ae2wtlib.wut.recipe.CombineSerializer;
 import de.mari_023.fabric.ae2wtlib.wut.recipe.Upgrade;
@@ -8,6 +9,7 @@ import de.mari_023.fabric.ae2wtlib.wut.recipe.UpgradeSerializer;
 import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
 import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
 import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
+import me.shedaniel.rei.api.client.registry.entry.EntryRegistry;
 import me.shedaniel.rei.api.client.registry.transfer.TransferHandlerRegistry;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import me.shedaniel.rei.plugin.common.DefaultPlugin;
@@ -38,5 +40,11 @@ public class Plugin implements REIClientPlugin {
         // Allow recipe transfer from JEI to crafting and pattern terminal
         registry.register(new CraftingRecipeTransferHandler());
         registry.register(new PatternRecipeTransferHandler());
+    }
+
+    @Override
+    public void registerEntries(EntryRegistry entryRegistry) {
+        if(!ae2wtlibConfig.INSTANCE.allowTrinket()) return;
+        entryRegistry.removeEntry(EntryStacks.of(ae2wtlib.CHECK_TRINKETS));
     }
 }

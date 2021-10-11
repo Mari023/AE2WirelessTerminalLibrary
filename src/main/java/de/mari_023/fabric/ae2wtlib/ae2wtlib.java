@@ -19,6 +19,8 @@ import de.mari_023.fabric.ae2wtlib.wut.recipe.CombineSerializer;
 import de.mari_023.fabric.ae2wtlib.wut.recipe.UpgradeSerializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
@@ -36,9 +38,11 @@ public class ae2wtlib implements IAEAddonEntrypoint {
 
     public static ItemInfinityBooster INFINITY_BOOSTER;
     public static ItemMagnetCard MAGNET_CARD;
+    public static final Item CHECK_TRINKETS =new Item(new FabricItemSettings());
 
     @Override
     public void onAe2Initialized() {
+        if(ae2wtlibConfig.INSTANCE.allowTrinket()) Registry.register(Registry.ITEM, new Identifier(MOD_NAME, "you_need_to_enable_trinkets_to_join_this_server"), CHECK_TRINKETS);
         registerItems();
 
         WUTHandler.addTerminal("crafting", CRAFTING_TERMINAL::tryOpen, WCTGuiObject::new);
@@ -76,6 +80,5 @@ public class ae2wtlib implements IAEAddonEntrypoint {
         ChargerRegistry.setChargeRate(PATTERN_TERMINAL, ae2wtlibConfig.INSTANCE.getChargeRate());
         ChargerRegistry.setChargeRate(INTERFACE_TERMINAL, ae2wtlibConfig.INSTANCE.getChargeRate());
         ChargerRegistry.setChargeRate(UNIVERSAL_TERMINAL, ae2wtlibConfig.INSTANCE.getChargeRate() * ae2wtlibConfig.INSTANCE.WUTChargeRateMultiplier());
-
     }
 }
