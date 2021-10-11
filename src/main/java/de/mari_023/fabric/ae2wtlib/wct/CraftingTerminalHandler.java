@@ -1,44 +1,40 @@
 package de.mari_023.fabric.ae2wtlib.wct;
 
-import appeng.api.features.ILocatable;
-import appeng.api.implementations.tiles.IWirelessAccessPoint;
+import appeng.api.features.Locatables;
+import appeng.api.implementations.blockentities.IWirelessAccessPoint;
 import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridNode;
-import appeng.api.networking.IMachineSet;
 import appeng.api.networking.security.IActionHost;
-import appeng.api.networking.storage.IStorageGrid;
+import appeng.api.networking.storage.IStorageService;
 import appeng.api.storage.IMEMonitor;
-import appeng.api.storage.channels.IItemStorageChannel;
+import appeng.api.storage.StorageChannels;
 import appeng.api.storage.data.IAEItemStack;
-import appeng.api.util.DimensionalCoord;
-import appeng.core.Api;
-import appeng.tile.networking.WirelessTileEntity;
+import appeng.api.util.DimensionalBlockPos;
+import appeng.blockentity.networking.WirelessBlockEntity;
 import appeng.util.item.AEItemStack;
 import de.mari_023.fabric.ae2wtlib.ae2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.terminal.IInfinityBoosterCardHolder;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
+import de.mari_023.fabric.ae2wtlib.trinket.CombinedTrinketInventory;
+import de.mari_023.fabric.ae2wtlib.trinket.TrinketsHelper;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
 import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
-import dev.emi.trinkets.api.TrinketInventory;
-import dev.emi.trinkets.api.TrinketsApi;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class CraftingTerminalHandler {
 
     private static final HashMap<UUID, CraftingTerminalHandler> players = new HashMap<>();//TODO clear on leave (client)
     private final PlayerEntity player;
     private ItemStack craftingTerminal = ItemStack.EMPTY;
-    private ILocatable securityStation;
+    private IActionHost securityStation;
     private IGrid targetGrid;
-    private IStorageGrid storageGrid;
+    private IStorageService storageGrid;
     private IMEMonitor<IAEItemStack> itemStorageChannel;
     private int slot = -1;
     private IWirelessAccessPoint myWap;
@@ -78,12 +74,12 @@ public class CraftingTerminalHandler {
     }
 
     public ItemStack getCraftingTerminal() {
-        PlayerInventory inv = player.inventory;
+        PlayerInventory inv = player.getInventory();
         if((!craftingTerminal.isEmpty()) && inv.contains(craftingTerminal)) return craftingTerminal;
         if(ae2wtlibConfig.INSTANCE.allowTrinket()) {
-            TrinketInventory trinketInv = (TrinketInventory) TrinketsApi.getTrinketsInventory(player);
+            CombinedTrinketInventory trinketInv = TrinketsHelper.getTrinketsInventory(player);
             for(int i = 0; i < trinketInv.size(); i++) {
-                ItemStack terminal = trinketInv.getStack(i);
+                ItemStack terminal = trinketInv.getStackInSlot(i);
                 if(terminal.getItem() instanceof ItemWCT || (terminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(terminal, "crafting"))) {
                     securityStation = null;
                     targetGrid = null;
@@ -111,33 +107,33 @@ public class CraftingTerminalHandler {
         return slot;
     }
 
-    public ILocatable getSecurityStation() {
+    public IActionHost getSecurityStation() {
         if(getCraftingTerminal().isEmpty()) return securityStation = null;
         if(securityStation != null) return securityStation;
-        final String unParsedKey = ((ItemWT) craftingTerminal.getItem()).getEncryptionKey(craftingTerminal);
+        final OptionalLong unParsedKey = ((ItemWT) craftingTerminal.getItem()).getGridKey(craftingTerminal);
         if(unParsedKey.isEmpty()) return securityStation = null;
-        final long parsedKey = Long.parseLong(unParsedKey);
-        return securityStation = Api.instance().registries().locatable().getLocatableBy(parsedKey);
+        final long parsedKey = unParsedKey.getAsLong();
+        return securityStation = Locatables.securityStations().get(player.world, parsedKey);
     }
 
     public IGrid getTargetGrid() {
         if(getSecurityStation() == null) return targetGrid = null;
-        final IGridNode n = ((IActionHost) securityStation).getActionableNode();
+        final IGridNode n = securityStation.getActionableNode();
 
         if(n == null) return targetGrid = null;
         return targetGrid = n.getGrid();
     }
 
-    public IStorageGrid getStorageGrid() {
+    public IStorageService getStorageGrid() {
         if(getTargetGrid() == null) return storageGrid = null;
-        if(storageGrid == null) return storageGrid = targetGrid.getCache(IStorageGrid.class);
+        if(storageGrid == null) return storageGrid = targetGrid.getStorageService();
         return storageGrid;
     }
 
     public IMEMonitor<IAEItemStack> getItemStorageChannel() {
         if(getStorageGrid() == null) return itemStorageChannel = null;
         if(itemStorageChannel == null)
-            return itemStorageChannel = storageGrid.getInventory(Api.instance().storage().getStorageChannel(IItemStorageChannel.class));
+            return itemStorageChannel = storageGrid.getInventory(StorageChannels.items());
         return itemStorageChannel;
     }
 
@@ -150,13 +146,12 @@ public class CraftingTerminalHandler {
         if(targetGrid == null) return false;
         if(myWap != null && myWap.getGrid() == targetGrid && testWap(myWap)) return true;
 
-        final IMachineSet tw = targetGrid.getMachines(WirelessTileEntity.class);
+        final Set<WirelessBlockEntity> tw = targetGrid.getMachines(WirelessBlockEntity.class);
 
         myWap = null;
 
-        for(final IGridNode n : tw) {
-            final IWirelessAccessPoint wap = (IWirelessAccessPoint) n.getMachine();
-            if(testWap(wap)) myWap = wap;
+        for(final WirelessBlockEntity n : tw) {
+            if(testWap(n)) myWap = n;
         }
 
         return myWap != null;
@@ -166,13 +161,13 @@ public class CraftingTerminalHandler {
         double rangeLimit = wap.getRange();
         rangeLimit *= rangeLimit;
 
-        final DimensionalCoord dc = wap.getLocation();
+        final DimensionalBlockPos dc = wap.getLocation();
 
-        if(dc.getWorld() != player.world) return false;
+        if(dc.getLevel() != player.world) return false;
 
-        final double offX = dc.x - player.getX();
-        final double offY = dc.y - player.getY();
-        final double offZ = dc.z - player.getZ();
+        final double offX = dc.getPos().getX() - player.getX();
+        final double offY = dc.getPos().getY() - player.getY();
+        final double offZ = dc.getPos().getZ() - player.getZ();
 
         final double r = offX * offX + offY * offY + offZ * offZ;
         if(r < rangeLimit && sqRange > r && wap.isActive()) {

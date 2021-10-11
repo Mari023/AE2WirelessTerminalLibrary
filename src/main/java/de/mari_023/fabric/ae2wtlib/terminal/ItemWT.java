@@ -4,22 +4,25 @@ import appeng.api.config.Actionable;
 import appeng.api.config.SortDir;
 import appeng.api.config.SortOrder;
 import appeng.api.config.ViewItems;
-import appeng.api.features.ILocatable;
-import appeng.api.features.IWirelessTermHandler;
+import appeng.api.features.IGridLinkableHandler;
+import appeng.api.features.IWirelessTerminalHandler;
+import appeng.api.features.Locatables;
+import appeng.api.networking.security.IActionHost;
 import appeng.api.util.IConfigManager;
-import appeng.container.ContainerLocator;
-import appeng.core.Api;
 import appeng.core.localization.GuiText;
 import appeng.core.localization.PlayerMessages;
+import appeng.hooks.ICustomReequipAnimation;
 import appeng.items.tools.powered.powersink.AEBasePoweredItem;
+import appeng.menu.MenuLocator;
 import appeng.util.ConfigManager;
 import appeng.util.Platform;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
@@ -29,31 +32,33 @@ import net.minecraft.util.Util;
 import net.minecraft.world.World;
 
 import java.util.List;
-import java.util.function.DoubleSupplier;
+import java.util.OptionalLong;
 
-public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermHandler {
+public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTerminalHandler, ICustomReequipAnimation {
 
-    public ItemWT(DoubleSupplier powerCapacity, Settings props) {
-        super(powerCapacity, props);
+    public static final IGridLinkableHandler LINKABLE_HANDLER = new LinkableHandler();
+
+    public ItemWT(Item.Settings props) {
+        super(/*AEConfig.instance().getWirelessTerminalBattery()*/ () -> 1600000, props);
     }
 
     @Override
     public TypedActionResult<ItemStack> use(final World w, final PlayerEntity player, final Hand hand) {
-        if(canOpen(player.getStackInHand(hand), player)) open(player, ContainerLocator.forHand(player, hand));
+        if(canOpen(player.getStackInHand(hand), player)) open(player, MenuLocator.forHand(player, hand));
         return new TypedActionResult<>(ActionResult.SUCCESS, player.getStackInHand(hand));
     }
 
     public boolean canOpen(ItemStack item, PlayerEntity player) {
         if(Platform.isClient()) return false;
 
-        final String unparsedKey = getEncryptionKey(item);
+        final OptionalLong unparsedKey = getGridKey(item);
         if(unparsedKey.isEmpty()) {
             player.sendSystemMessage(PlayerMessages.DeviceNotLinked.get(), Util.NIL_UUID);
             return false;
         }
 
-        final long parsedKey = Long.parseLong(unparsedKey);
-        final ILocatable securityStation = Api.instance().registries().locatable().getLocatableBy(parsedKey);
+        final long parsedKey = unparsedKey.getAsLong();
+        final IActionHost securityStation = Locatables.securityStations().get(player.world, parsedKey);
         if(securityStation == null) {
             player.sendSystemMessage(PlayerMessages.StationCanNotBeLocated.get(), Util.NIL_UUID);
             return false;
@@ -65,19 +70,19 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
         }
     }
 
-    public void tryOpen(PlayerEntity player, ContainerLocator locator, ItemStack stack) {
+    public void tryOpen(PlayerEntity player, MenuLocator locator, ItemStack stack) {
         if(canOpen(stack, player)) open(player, locator);
     }
 
-    public abstract void open(final PlayerEntity player, final ContainerLocator locator);
+    public abstract void open(final PlayerEntity player, final MenuLocator locator);
 
     @Override
     @Environment(EnvType.CLIENT)
     public void appendTooltip(final ItemStack stack, final World world, final List<Text> lines, final TooltipContext advancedTooltips) {
         super.appendTooltip(stack, world, lines, advancedTooltips);
 
-        if(stack.hasTag()) {
-            final CompoundTag tag = stack.getOrCreateTag();
+        if(stack.hasNbt()) {
+            final NbtCompound tag = stack.getOrCreateNbt();
             if(tag != null) {
                 final String encKey = tag.getString("encryptionKey");
 
@@ -85,11 +90,6 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
                 else lines.add(GuiText.Linked.text());
             }
         } else lines.add(new TranslatableText("AppEng.GuiITooltip.Unlinked"));
-    }
-
-    @Override
-    public boolean canHandle(ItemStack is) {
-        return is.getItem() instanceof ItemWT;
     }
 
     @Override
@@ -104,30 +104,41 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
 
     @Override
     public IConfigManager getConfigManager(ItemStack is) {
-        final ConfigManager out = new ConfigManager((manager, settingName, newValue) -> {
-            final CompoundTag data = is.getOrCreateTag();
-            manager.writeToNBT(data);
-        });
+        ConfigManager out = new ConfigManager((manager, settingName) -> manager.writeToNBT(is.getOrCreateNbt()));
 
         out.registerSetting(appeng.api.config.Settings.SORT_BY, SortOrder.NAME);
         out.registerSetting(appeng.api.config.Settings.VIEW_MODE, ViewItems.ALL);
         out.registerSetting(appeng.api.config.Settings.SORT_DIRECTION, SortDir.ASCENDING);
 
-        out.readFromNBT(is.getOrCreateTag().copy());
+        out.readFromNBT(is.getOrCreateNbt().copy());
         return out;
     }
 
     @Override
-    public String getEncryptionKey(ItemStack item) {
-        final CompoundTag tag = item.getOrCreateTag();
-        return tag.getString("encryptionKey");
+    public OptionalLong getGridKey(ItemStack item) {
+        NbtCompound tag = item.getNbt();
+        return tag != null && tag.contains("gridKey", 4) ? OptionalLong.of(tag.getLong("gridKey")) : OptionalLong.empty();
     }
 
     @Override
-    public void setEncryptionKey(ItemStack item, String encKey, String name) {
-        final CompoundTag tag = item.getOrCreateTag();
-        tag.putString("encryptionKey", encKey);
-        tag.putString("name", name);
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+        return slotChanged;
+    }
+
+    private static class LinkableHandler implements IGridLinkableHandler {
+        private LinkableHandler() {}
+
+        public boolean canLink(ItemStack stack) {
+            return stack.getItem() instanceof ItemWT;
+        }
+
+        public void link(ItemStack itemStack, long securityKey) {
+            itemStack.getOrCreateNbt().putLong("gridKey", securityKey);
+        }
+
+        public void unlink(ItemStack itemStack) {
+            itemStack.removeSubNbt("gridKey");
+        }
     }
 
     /**
@@ -139,7 +150,7 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
      */
     public static ItemStack getSavedSlot(ItemStack hostItem, String slot) {
         if(!(hostItem.getItem() instanceof ItemWT)) return ItemStack.EMPTY;
-        return ItemStack.fromTag(hostItem.getOrCreateTag().getCompound(slot));
+        return ItemStack.fromNbt(hostItem.getOrCreateNbt().getCompound(slot));
     }
 
     /**
@@ -152,9 +163,9 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
      */
     public static void setSavedSlot(ItemStack hostItem, ItemStack savedItem, String slot) {
         if(!(hostItem.getItem() instanceof ItemWT)) return;
-        CompoundTag wctTag = hostItem.getOrCreateTag();
+        NbtCompound wctTag = hostItem.getOrCreateNbt();
         if(savedItem.isEmpty()) wctTag.remove(slot);
-        else wctTag.put(slot, savedItem.toTag(new CompoundTag()));
+        else wctTag.put(slot, savedItem.writeNbt(new NbtCompound()));
     }
 
     /**
@@ -165,7 +176,7 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
      */
     public static boolean getBoolean(ItemStack hostItem, String key) {
         if(!(hostItem.getItem() instanceof ItemWT)) return false;
-        return hostItem.getOrCreateTag().getBoolean(key);
+        return hostItem.getOrCreateNbt().getBoolean(key);
     }
 
     /**
@@ -178,7 +189,7 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermH
      */
     public static void setBoolean(ItemStack hostItem, boolean b, String key) {
         if(!(hostItem.getItem() instanceof ItemWT)) return;
-        CompoundTag wctTag = hostItem.getOrCreateTag();
+        NbtCompound wctTag = hostItem.getOrCreateNbt();
         wctTag.putBoolean(key, b);
     }
 

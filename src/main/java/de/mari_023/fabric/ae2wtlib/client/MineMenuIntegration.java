@@ -39,9 +39,9 @@ public class MineMenuIntegration {
         try {
             MineMenuSelectScreen screen = new MineMenuSelectScreen(menu, new TranslatableText("item.ae2wtlib.wireless_universal_terminal").getString(), null);
             ((MineMenuMixin) screen).setCircleEntries(i);
-            client.openScreen(screen);
+            client.setScreen(screen);
         } catch(NullPointerException e) {
-            client.openScreen(null);
+            client.setScreen(null);
             client.player.sendMessage(new TranslatableText("minemenu.error.config"), false);
         }
     }

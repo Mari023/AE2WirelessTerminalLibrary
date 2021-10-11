@@ -1,15 +1,14 @@
 package de.mari_023.fabric.ae2wtlib.terminal;
 
-import alexiil.mc.lib.attributes.Simulation;
-import alexiil.mc.lib.attributes.item.FixedItemInv;
-import alexiil.mc.lib.attributes.item.filter.ItemFilter;
+import appeng.api.inventories.InternalInventory;
 import appeng.items.storage.ViewCellItem;
 import net.minecraft.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FixedViewCellInventory implements FixedItemInv {
+public class FixedViewCellInventory implements InternalInventory {
 
     private static final int viewCellCount = 5;
     private final ItemStack hostStack;
@@ -19,39 +18,36 @@ public class FixedViewCellInventory implements FixedItemInv {
     }
 
     @Override
-    public int getSlotCount() {
-        return 5;
+    public int size() {
+        return viewCellCount;
     }
 
     @Override
-    public ItemStack getInvStack(int i) {
-        if(i < viewCellCount) return ItemWT.getSavedSlot(hostStack, "viewCell" + i);
-        return ItemStack.EMPTY;
+    public ItemStack getStackInSlot(int i) {
+        return ItemWT.getSavedSlot(hostStack, "viewCell" + i);
     }
 
     @Override
-    public boolean isItemValidForSlot(int i, ItemStack itemStack) {
-        return i < viewCellCount && (itemStack.getItem() instanceof ViewCellItem || itemStack.isEmpty());
+    public void setItemDirect(int i, @NotNull ItemStack itemStack) {
+        ItemWT.setSavedSlot(hostStack, itemStack, "viewCell" + i);
     }
 
     @Override
-    public boolean setInvStack(int i, ItemStack itemStack, Simulation simulation) {
-        if(isItemValidForSlot(i, itemStack) && simulation.isAction())
-            ItemWT.setSavedSlot(hostStack, itemStack, "viewCell" + i);
-        return true;
+    public boolean isItemValid(int slot, ItemStack itemStack) {
+        return slot < viewCellCount && (itemStack.getItem() instanceof ViewCellItem || itemStack.isEmpty());
     }
 
     public List<ItemStack> getViewCells() {
         List<ItemStack> viewCells = new ArrayList<>();
-        for(int i = 0; i < viewCellCount; i++) viewCells.add(getInvStack(i));
+        for(int i = 0; i < viewCellCount; i++) viewCells.add(getStackInSlot(i));
         return viewCells;
     }
 
-    @Override
+    /*@Override
     public ItemStack extractStack(int slot, ItemFilter filter, ItemStack mergeWith, int maxCount, Simulation simulation) {
         if(slot > viewCellCount || !mergeWith.isEmpty()) return ItemStack.EMPTY;
         ItemStack is = getInvStack(slot);
         if(simulation.isAction()) setInvStack(slot, ItemStack.EMPTY, Simulation.ACTION);
         return is;
-    }
+    }*/
 }

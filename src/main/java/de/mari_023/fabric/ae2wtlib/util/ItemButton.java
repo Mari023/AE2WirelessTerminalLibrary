@@ -2,14 +2,13 @@ package de.mari_023.fabric.ae2wtlib.util;
 
 import appeng.client.gui.widgets.ITooltip;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.sound.SoundManager;
-import net.minecraft.client.texture.TextureManager;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
@@ -18,7 +17,6 @@ public class ItemButton extends ButtonWidget implements ITooltip {
 
     private final Identifier texture;
     public static final Identifier TEXTURE_STATES = new Identifier("appliedenergistics2", "textures/guis/states.png");
-    private boolean halfSize = false;
 
     public ItemButton(PressAction onPress, Identifier texture) {
         super(0, 0, 16, 16, LiteralText.EMPTY, onPress);
@@ -37,41 +35,25 @@ public class ItemButton extends ButtonWidget implements ITooltip {
 
     @Override
     public void renderButton(MatrixStack matrices, final int mouseX, final int mouseY, float partial) {
-
-        MinecraftClient minecraft = MinecraftClient.getInstance();
-
         if(!visible) return;
-        TextureManager textureManager = minecraft.getTextureManager();
-        textureManager.bindTexture(TEXTURE_STATES);
+        matrices.push();
+        RenderSystem.setShaderTexture(0, TEXTURE_STATES);
         RenderSystem.disableDepthTest();
         RenderSystem.enableBlend();
-        if(halfSize) {
-            width = 8;
-            height = 8;
-
-            RenderSystem.pushMatrix();
-            RenderSystem.translatef(x, y, 0.0F);
-
-            RenderSystem.scalef(0.5f, 0.5f, 0.5f);
-        } else {
-            RenderSystem.pushMatrix();
-            RenderSystem.translatef(x, y, 0.0F);
-        }
-        drawTexture(matrices, 0, 0, 256 - 16, 256 - 16, 16, 16);
-        RenderSystem.scalef(1f / 16f, 1f / 16f, 1f / 16f);
-        if(active) RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
-        else RenderSystem.color4f(0.5f, 0.5f, 0.5f, 1.0f);
-        textureManager.bindTexture(texture);
-        drawTexture(matrices, 0, 0, 0, 0, 256, 256);
-        RenderSystem.popMatrix();
+        drawTexture(matrices, x, y, width, height, 240, 240, 16, 16, 256, 256);
+        if(active) RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+        else RenderSystem.setShaderColor(0.5f, 0.5f, 0.5f, 1.0f);
+        RenderSystem.setShaderTexture(0, texture);
+        drawTexture(matrices, x, y, width, height, 0, 0,512,512,512,512);
         RenderSystem.enableDepthTest();
-        RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
+        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+        matrices.pop();
 
-        if(isHovered()) renderToolTip(matrices, mouseX, mouseY);
+        if(isHovered()) renderTooltip(matrices, mouseX, mouseY);
     }
 
     @Override
-    public List<Text> getTooltipMessage() {
+    public @NotNull List<Text> getTooltipMessage() {
         return Collections.singletonList(getMessage());
     }
 
@@ -87,12 +69,12 @@ public class ItemButton extends ButtonWidget implements ITooltip {
 
     @Override
     public int getTooltipAreaWidth() {
-        return halfSize ? 8 : 16;
+        return width;
     }
 
     @Override
     public int getTooltipAreaHeight() {
-        return halfSize ? 8 : 16;
+        return height;
     }
 
     @Override
@@ -101,6 +83,12 @@ public class ItemButton extends ButtonWidget implements ITooltip {
     }
 
     public void setHalfSize(final boolean halfSize) {
-        this.halfSize = halfSize;
+        if(halfSize) {
+            width = 8;
+            height = 8;
+        } else {
+            width = 16;
+            height = 16;
+        }
     }
 }

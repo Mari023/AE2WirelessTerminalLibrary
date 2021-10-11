@@ -7,8 +7,9 @@ import appeng.client.gui.style.ScreenStyle;
 import appeng.client.gui.style.StyleManager;
 import appeng.client.gui.widgets.ActionButton;
 import appeng.client.gui.widgets.TabButton;
-import appeng.container.SlotSemantic;
 import appeng.core.localization.GuiText;
+import appeng.menu.SlotSemantic;
+import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import de.mari_023.fabric.ae2wtlib.wut.CycleTerminalButton;
 import de.mari_023.fabric.ae2wtlib.wut.IUniversalTerminalCapable;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -35,6 +36,7 @@ public class WPTScreen extends ItemTerminalScreen<WPTContainer> implements IUniv
     private final TabButton tabProcessButton;
     private final ActionButton substitutionsEnabledBtn;
     private final ActionButton substitutionsDisabledBtn;
+    private final ActionButton convertItemsToFluidsBtn;
 
     private static final ScreenStyle STYLE;
 
@@ -65,7 +67,11 @@ public class WPTScreen extends ItemTerminalScreen<WPTContainer> implements IUniv
         substitutionsDisabledBtn.setHalfSize(true);
         widgets.add("substitutionsDisabled", substitutionsDisabledBtn);
 
-        ActionButton clearBtn = addButton(new ActionButton(ActionItems.CLOSE, btn -> clear()));
+        convertItemsToFluidsBtn = new ActionButton(ActionItems.FIND_CONTAINED_FLUID, act -> container.convertItemsToFluids());
+        convertItemsToFluidsBtn.setHalfSize(true);
+        widgets.add("convertItemsToFluids", convertItemsToFluidsBtn);
+
+        ActionButton clearBtn = addDrawable(new ActionButton(ActionItems.CLOSE, btn -> clear()));
         clearBtn.setHalfSize(true);
         widgets.add("clearPattern", clearBtn);
         widgets.add("encodePattern", new ActionButton(ActionItems.ENCODE, act -> encode()));
@@ -77,28 +83,28 @@ public class WPTScreen extends ItemTerminalScreen<WPTContainer> implements IUniv
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeString("PatternTerminal.CraftMode");
         buf.writeByte(mode);
-        ClientPlayNetworking.send(new Identifier("ae2wtlib", "general"), buf);
+        ClientPlayNetworking.send(new Identifier(ae2wtlib.MOD_NAME, "general"), buf);
     }
 
     private void toggleSubstitutions(byte mode) {
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeString("PatternTerminal.Substitute");
         buf.writeByte(mode);
-        ClientPlayNetworking.send(new Identifier("ae2wtlib", "general"), buf);
+        ClientPlayNetworking.send(new Identifier(ae2wtlib.MOD_NAME, "general"), buf);
     }
 
     private void encode() {
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeString("PatternTerminal.Encode");
         buf.writeByte(0);
-        ClientPlayNetworking.send(new Identifier("ae2wtlib", "general"), buf);
+        ClientPlayNetworking.send(new Identifier(ae2wtlib.MOD_NAME, "general"), buf);
     }
 
     private void clear() {
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeString("PatternTerminal.Clear");
         buf.writeByte(0);
-        ClientPlayNetworking.send(new Identifier("ae2wtlib", "general"), buf);
+        ClientPlayNetworking.send(new Identifier(ae2wtlib.MOD_NAME, "general"), buf);
     }
 
     protected void updateBeforeRender() {
@@ -120,13 +126,16 @@ public class WPTScreen extends ItemTerminalScreen<WPTContainer> implements IUniv
             substitutionsDisabledBtn.visible = false;
         }
 
-        setSlotsHidden(SlotSemantic.CRAFTING_RESULT, !(handler).isCraftingMode());
-        setSlotsHidden(SlotSemantic.PROCESSING_RESULT, (handler).isCraftingMode());
+        setSlotsHidden(SlotSemantic.CRAFTING_RESULT, !handler.isCraftingMode());
+        setSlotsHidden(SlotSemantic.PROCESSING_PRIMARY_RESULT, handler.isCraftingMode());
+        setSlotsHidden(SlotSemantic.PROCESSING_FIRST_OPTIONAL_RESULT, handler.isCraftingMode());
+        setSlotsHidden(SlotSemantic.PROCESSING_SECOND_OPTIONAL_RESULT, handler.isCraftingMode());
+        convertItemsToFluidsBtn.visible = getScreenHandler().canConvertItemsToFluids();
     }
 
     public void drawBG(MatrixStack matrixStack, int offsetX, int offsetY, int mouseX, int mouseY, float partialTicks) {
         super.drawBG(matrixStack, offsetX, offsetY, mouseX, mouseY, partialTicks);
         if(handler.isCraftingMode()) return;
-        Blitter.texture("guis/pattern_modes.png").src(100, 77, 18, 54).dest(x + 109, y + backgroundHeight - 159).blit(matrixStack, getZOffset());
+        Blitter.texture("guis/pattern_modes.png").src(97, 72, 24, 64).dest(x + 106, y + backgroundHeight - 164).blit(matrixStack, getZOffset());
     }
 }

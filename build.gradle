@@ -1,15 +1,15 @@
 plugins {
-    id 'fabric-loom' version '0.6-SNAPSHOT'
+    id 'fabric-loom' version '0.9-SNAPSHOT'
     id 'maven-publish'
-    id "com.modrinth.minotaur" version '1.1.0'
+    id "com.modrinth.minotaur" version '1.2.1'
     id 'com.matthewprenger.cursegradle' version '1.4.0'
 }
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_16
+targetCompatibility = JavaVersion.VERSION_16
 
 version = project.mod_version + "-SNAPSHOT"
-versionType = project.versionType
+verType = project.verType
 boolean shouldPublish = false
 
 ext.pr = System.getenv('PR_NUMBER') ?: ""
@@ -21,15 +21,15 @@ ext.tag = System.getenv('TAG') ?: ""
 if (ext.tag) {
     version = ext.tag
     if (project.version.contains("alpha")) {
-        versionType = "alpha"
+        verType = "alpha"
         shouldPublish = true
     }
     if (project.version.contains("beta")) {
-        versionType = "beta"
+        verType = "beta"
         shouldPublish = true
     }
     if (project.version.contains("release")) {
-        versionType = "release"
+        verType = "release"
         shouldPublish = true
     }
 }
@@ -81,6 +81,14 @@ repositories {
         name = "NerdHubMC"
         url = "https://maven.abusedmaster.xyz/"
     }
+    maven {
+        name = "TerraformersMC"
+        url = "https://maven.terraformersmc.com/"
+    }
+    maven {
+        name = "Ladysnake Libs"
+        url = "https://ladysnake.jfrog.io/artifactory/mods"
+    }
 }
 
 dependencies {
@@ -94,31 +102,16 @@ dependencies {
 
     // PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
     // You may need to force-disable transitiveness on them.
-    modImplementation "appeng:appliedenergistics2-fabric:${project.ae2_version}", {
-        exclude group: "FastTransferLib"
-    }
-    modImplementation "me.shedaniel:RoughlyEnoughItems:${project.rei_version}"
     modImplementation "curse.maven:minemenufabric-478687:${project.minemenufabric_version}"
-    modImplementation "com.terraformersmc:modmenu:1.16.7"//dependency for minemenu
-    modApi("me.shedaniel.cloth:cloth-config-fabric:4.11.14")//dependency for minemenu
+    modApi("me.shedaniel.cloth:cloth-config-fabric:${project.cloth}")//dependency for minemenu
+    modApi("com.terraformersmc:modmenu:${project.mod_menu_version}")//dependency for minemenu
+    modImplementation "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
     modImplementation "dev.emi:trinkets:${project.trinkets_version}"
-    modRuntime "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:2.8.3"
-    modApi include("dev.technici4n:FastTransferLib:${project.ftl_version}", {
-        exclude group: "dev.technici4n"
-    })
+    modImplementation "appeng:appliedenergistics2-fabric:${project.ae2_version}"
 }
 
 processResources {
     inputs.property "version", project.version
-
-    from(sourceSets.main.resources.srcDirs) {
-        include "fabric.mod.json"
-        expand "version": project.version
-    }
-
-    from(sourceSets.main.resources.srcDirs) {
-        exclude "fabric.mod.json"
-    }
 }
 
 // ensure that the encoding is set to UTF-8, no matter what the system default is
@@ -143,10 +136,10 @@ task publishModrinth(type: TaskModrinthUpload) {
         token = System.getenv("MODRINTH_TOKEN")
         projectId = 'pNabrMMw'
         uploadFile = remapJar
-        addGameVersion('1.16.5')
+        addGameVersion('1.17.1')
         addLoader('fabric')
         versionNumber = project.version
-        releaseType = versionType
+        versionType = verType
         changelog = System.getenv("CHANGELOG") ?: "Please visit our [releases](https://github.com/Mari023/AE2WirelessTerminalLibrary/releases) for a changelog"
     }
 }
@@ -158,10 +151,10 @@ curseforge {
             id = '459929'
             changelogType = "markdown"
             changelog = System.getenv("CHANGELOG") ?: "Please visit our [releases](https://github.com/Mari023/AE2WirelessTerminalLibrary/releases) for a changelog"
-            releaseType = versionType
-            addGameVersion '1.16.5'
+            releaseType = verType
+            addGameVersion '1.17.1'
             addGameVersion 'Fabric'
-            addGameVersion "Java 8"
+            addGameVersion "Java 16"
             mainArtifact(remapJar) {
                 displayName = project.version
             }

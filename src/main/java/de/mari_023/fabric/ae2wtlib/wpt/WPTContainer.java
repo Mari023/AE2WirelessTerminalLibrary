@@ -1,48 +1,51 @@
 package de.mari_023.fabric.ae2wtlib.wpt;
 
-import alexiil.mc.lib.attributes.item.FixedItemInv;
-import alexiil.mc.lib.attributes.item.compat.FixedInventoryVanillaWrapper;
+import appeng.api.AEApi;
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
-import appeng.api.crafting.ICraftingHelper;
-import appeng.api.definitions.IDefinitions;
+import appeng.api.config.SecurityPermissions;
+import appeng.api.crafting.IPatternDetailsHelper;
+import appeng.api.inventories.ISegmentedInventory;
+import appeng.api.inventories.InternalInventory;
 import appeng.api.networking.IGridNode;
 import appeng.api.storage.IMEMonitor;
-import appeng.api.storage.channels.IItemStorageChannel;
+import appeng.api.storage.StorageChannels;
+import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IAEItemStack;
-import appeng.api.storage.data.IItemList;
-import appeng.container.ContainerLocator;
-import appeng.container.ContainerNull;
-import appeng.container.SlotSemantic;
-import appeng.container.guisync.GuiSync;
-import appeng.container.interfaces.IInventorySlotAware;
-import appeng.container.me.items.ItemTerminalContainer;
-import appeng.container.slot.*;
-import appeng.core.Api;
+import appeng.api.storage.data.IAEStack;
+import appeng.api.storage.data.IAEStackList;
+import appeng.core.definitions.AEItems;
 import appeng.core.localization.PlayerMessages;
 import appeng.core.sync.packets.PatternSlotPacket;
-import appeng.helpers.IContainerCraftingPacket;
-import appeng.helpers.InventoryAction;
+import appeng.helpers.IMenuCraftingPacket;
+import appeng.items.misc.FluidDummyItem;
 import appeng.items.storage.ViewCellItem;
 import appeng.me.helpers.MachineSource;
-import appeng.util.InventoryAdaptor;
+import appeng.menu.NullMenu;
+import appeng.menu.SlotSemantic;
+import appeng.menu.guisync.GuiSync;
+import appeng.menu.implementations.MenuTypeBuilder;
+import appeng.menu.interfaces.IInventorySlotAware;
+import appeng.menu.me.items.ItemTerminalMenu;
+import appeng.menu.slot.*;
+import appeng.parts.reporting.PatternTerminalPart;
 import appeng.util.Platform;
-import appeng.util.inv.AdaptorFixedInv;
-import appeng.util.inv.IAEAppEngInventory;
-import appeng.util.inv.InvOperation;
-import appeng.util.inv.WrapperCursorItemHandler;
+import appeng.util.inv.CarriedItemInventory;
+import appeng.util.inv.PlayerInternalInventory;
 import appeng.util.item.AEItemStack;
 import de.mari_023.fabric.ae2wtlib.ae2wtlibConfig;
-import de.mari_023.fabric.ae2wtlib.mixin.ScreenHandlerMixin;
-import de.mari_023.fabric.ae2wtlib.mixin.SlotMixin;
+import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import de.mari_023.fabric.ae2wtlib.terminal.FixedWTInv;
 import de.mari_023.fabric.ae2wtlib.terminal.IWTInvHolder;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
-import de.mari_023.fabric.ae2wtlib.util.ContainerHelper;
-import de.mari_023.fabric.ae2wtlib.util.WirelessCraftAmountContainer;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
+import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.ResourceAmount;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.CraftingInventory;
@@ -52,7 +55,6 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeType;
-import net.minecraft.screen.ScreenHandlerListener;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.CraftingResultSlot;
 import net.minecraft.screen.slot.Slot;
@@ -60,31 +62,29 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class WPTContainer extends ItemTerminalContainer implements IAEAppEngInventory, IOptionalSlotHost, IContainerCraftingPacket, IWTInvHolder {
+public class WPTContainer extends ItemTerminalMenu implements IOptionalSlotHost, IMenuCraftingPacket, IWTInvHolder {
 
-    public static ScreenHandlerType<WPTContainer> TYPE;
+    public static final ScreenHandlerType<WPTContainer> TYPE = MenuTypeBuilder.create(WPTContainer::new, WPTGuiObject.class).requirePermission(SecurityPermissions.CRAFT).build("wireless_pattern_terminal");
 
-    public static final ContainerHelper<WPTContainer, WPTGuiObject> helper = new ContainerHelper<>(WPTContainer::new, WPTGuiObject.class);
+    private static final String ACTION_SET_CRAFT_MODE = "setCraftMode";
+    private static final String ACTION_ENCODE = "encode";
+    private static final String ACTION_CLEAR = "clear";
+    private static final String ACTION_SET_SUBSTITUTION = "setSubstitution";
+    private static final String ACTION_CONVERT_ITEMS_TO_FLUIDS = "convertItemsToFluids";
 
-    public static WPTContainer fromNetwork(int windowId, PlayerInventory inv, PacketByteBuf buf) {
-        return helper.fromNetwork(windowId, inv, buf);
-    }
-
-    private final FixedItemInv craftingGridInv;
+    private final InternalInventory craftingGridInv;
     private final FakeCraftingMatrixSlot[] craftingGridSlots = new FakeCraftingMatrixSlot[9];
     private final OptionalFakeSlot[] processingOutputSlots = new OptionalFakeSlot[3];
     private final PatternTermSlot craftOutputSlot;
     private final RestrictedInputSlot blankPatternSlot;
     private final RestrictedInputSlot encodedPatternSlot;
     private CraftingRecipe currentRecipe;
-    private final ICraftingHelper craftingHelper = Api.INSTANCE.crafting();
-
-    public static boolean open(PlayerEntity player, ContainerLocator locator) {
-        return helper.open(player, locator);
-    }
+    private boolean currentRecipeCraftingMode;
+    private final IPatternDetailsHelper craftingHelper = AEApi.patterns();
 
     private final WPTGuiObject wptGUIObject;
 
@@ -97,11 +97,11 @@ public class WPTContainer extends ItemTerminalContainer implements IAEAppEngInve
         super(TYPE, id, ip, gui, true);
         wptGUIObject = gui;
 
-        final FixedItemInv patternInv = getPatternTerminal().getInventoryByName("pattern");
-        final FixedItemInv output = getPatternTerminal().getInventoryByName("output");
+        final InternalInventory patternInv = getPatternTerminal().getSubInventory(ISegmentedInventory.PATTERNS);
+        final InternalInventory output = getPatternTerminal().getSubInventory(PatternTerminalPart.INV_OUTPUT);
 
         // Create the 3x3 crafting input grid, which is used for both processing and crafting mode
-        craftingGridInv = getPatternTerminal().getInventoryByName("crafting");
+        craftingGridInv = getPatternTerminal().getSubInventory(PatternTerminalPart.INV_CRAFTING);
         for(int i = 0; i < 9; i++)
             addSlot(craftingGridSlots[i] = new FakeCraftingMatrixSlot(craftingGridInv, i), SlotSemantic.CRAFTING_GRID);
 
@@ -111,8 +111,12 @@ public class WPTContainer extends ItemTerminalContainer implements IAEAppEngInve
         craftOutputSlot.setIcon(null);
 
         // Create slots for the outputs of processing-mode patterns
-        for(int i = 0; i < 3; i++) {
-            addSlot(processingOutputSlots[i] = new PatternOutputsSlot(output, this, i, 1), SlotSemantic.PROCESSING_RESULT);
+
+        addSlot(processingOutputSlots[0] = new PatternOutputsSlot(output, this, 0, 1), SlotSemantic.PROCESSING_PRIMARY_RESULT);
+        addSlot(processingOutputSlots[1] = new PatternOutputsSlot(output, this, 1, 1), SlotSemantic.PROCESSING_FIRST_OPTIONAL_RESULT);
+        addSlot(processingOutputSlots[2] = new PatternOutputsSlot(output, this, 2, 1), SlotSemantic.PROCESSING_SECOND_OPTIONAL_RESULT);
+
+        for(int i = 0; i < 3; ++i) {
             processingOutputSlots[i].setRenderDisabled(false);
             processingOutputSlots[i].setIcon(null);
         }
@@ -123,7 +127,7 @@ public class WPTContainer extends ItemTerminalContainer implements IAEAppEngInve
         encodedPatternSlot.setStackLimit(1);
 
         final int slotIndex = ((IInventorySlotAware) wptGUIObject).getInventorySlot();
-        if(slotIndex < 100) lockPlayerInventorySlot(slotIndex);
+        if(slotIndex < 100 && slotIndex != 40) lockPlayerInventorySlot(slotIndex);
         addSlot(new AppEngSlot(new FixedWTInv(getPlayerInventory(), wptGUIObject.getItemStack(), this), FixedWTInv.INFINITY_BOOSTER_CARD), SlotSemantic.BIOMETRIC_CARD);
 
         if(isClient()) {//FIXME set craftingMode and substitute serverside
@@ -136,147 +140,90 @@ public class WPTContainer extends ItemTerminalContainer implements IAEAppEngInve
             if(craftingMode) i = 1;
             else i = 0;
             buf.writeByte(i);
-            ClientPlayNetworking.send(new Identifier("ae2wtlib", "general"), buf);
+            ClientPlayNetworking.send(new Identifier(ae2wtlib.MOD_NAME, "general"), buf);
             buf = PacketByteBufs.create();
             buf.writeString("PatternTerminal.Substitute");
             if(substitute) i = 1;
             else i = 0;
             buf.writeByte(i);
-            ClientPlayNetworking.send(new Identifier("ae2wtlib", "general"), buf);
+            ClientPlayNetworking.send(new Identifier(ae2wtlib.MOD_NAME, "general"), buf);
         }
-    }
-
-    private int ticks = 0;
-
-    @Override
-    public void sendContentUpdates() {
-        if(isClient()) return;
-        super.sendContentUpdates();
-
-        if(!wptGUIObject.rangeCheck()) {
-            if(isValidContainer()) {
-                getPlayerInventory().player.sendSystemMessage(PlayerMessages.OutOfRange.get(), Util.NIL_UUID);
-                ((ServerPlayerEntity) getPlayerInventory().player).closeHandledScreen();
-            }
-            setValidContainer(false);
-        } else {
-            double powerMultiplier = ae2wtlibConfig.INSTANCE.getPowerMultiplier(wptGUIObject.getRange(), wptGUIObject.isOutOfRange());
-            ticks++;
-            if(ticks > 10) {
-                wptGUIObject.extractAEPower((powerMultiplier) * ticks, Actionable.MODULATE, PowerMultiplier.CONFIG);
-                ticks = 0;
-            }
-
-            if(wptGUIObject.extractAEPower(1, Actionable.SIMULATE, PowerMultiplier.ONE) == 0) {
-                if(isValidContainer()) {
-                    getPlayerInventory().player.sendSystemMessage(PlayerMessages.DeviceNotPowered.get(), Util.NIL_UUID);
-                    ((ServerPlayerEntity) getPlayerInventory().player).closeHandledScreen();
-                }
-                setValidContainer(false);
-            }
-        }
-
-        if(isCraftingMode() != getPatternTerminal().isCraftingRecipe()) {
-            setCraftingMode(getPatternTerminal().isCraftingRecipe());
-            updateOrderOfOutputSlots();
-        }
-
-        if(substitute != getPatternTerminal().isSubstitution()) {
-            substitute = getPatternTerminal().isSubstitution();
-            ItemWT.setBoolean(wptGUIObject.getItemStack(), substitute, "substitute");
-        }
+        registerClientAction(ACTION_ENCODE, this::encode);
+        registerClientAction(ACTION_CLEAR, this::clear);
+        registerClientAction(ACTION_SET_CRAFT_MODE, Boolean.class, getPatternTerminal()::setCraftingRecipe);
+        registerClientAction(ACTION_SET_SUBSTITUTION, Boolean.class, getPatternTerminal()::setSubstitution);
+        registerClientAction(ACTION_CONVERT_ITEMS_TO_FLUIDS, this::convertItemsToFluids);
     }
 
     @Override
-    public void onSlotChange(final Slot s) {
-        if(s == encodedPatternSlot && isServer()) {
-            for(final ScreenHandlerListener listener : ((ScreenHandlerMixin) this).getListeners()) {
-                for(int i = 0; i < slots.size(); i++) {
-                    Slot slot = slots.get(i);
-                    if(slot instanceof OptionalFakeSlot || slot instanceof FakeCraftingMatrixSlot)
-                        listener.onSlotUpdate(this, i, slot.getStack());
-                }
-                if(listener instanceof ServerPlayerEntity)
-                    ((ServerPlayerEntity) listener).skipPacketSlotUpdates = false;
-            }
-            sendContentUpdates();
+    public void setStackInSlot(int slotID, int stateId, ItemStack stack) {
+        super.setStackInSlot(slotID, stateId, stack);
+        getAndUpdateOutput();
+    }
+
+    private ItemStack getAndUpdateOutput() {
+        final World world = getPlayerInventory().player.world;
+        final CraftingInventory ic = new CraftingInventory(this, 3, 3);
+
+        for(int x = 0; x < ic.size(); x++) ic.setStack(x, craftingGridInv.getStackInSlot(x));
+
+        if(currentRecipe == null || !currentRecipe.matches(ic, world)) {
+            currentRecipe = world.getRecipeManager().getFirstMatch(RecipeType.CRAFTING, ic, world).orElse(null);
+            currentRecipeCraftingMode = craftingMode;
         }
 
-        if(s == craftOutputSlot && isClient()) getAndUpdateOutput();
+        final ItemStack is;
+        if(currentRecipe == null) is = ItemStack.EMPTY;
+        else is = currentRecipe.craft(ic);
 
-        if(isClient() && isCraftingMode()) {
-            for(Slot slot : craftingGridSlots) if(s == slot) getAndUpdateOutput();
-            for(Slot slot : processingOutputSlots) if(s == slot) getAndUpdateOutput();
-        }
+        craftOutputSlot.setDisplayedCraftingOutput(is);
+        return is;
     }
-
-    protected void handleNetworkInteraction(ServerPlayerEntity player, IAEItemStack stack, InventoryAction action) {
-        if(action != InventoryAction.AUTO_CRAFT) {
-            super.handleNetworkInteraction(player, stack, action);
-            return;
-        }
-        WirelessCraftAmountContainer.open(player, getLocator(), stack, 1);
-    }
-
-    private void setSlotX(Slot s, int x) {
-        ((SlotMixin) s).setX(x);
-    }
-
-    private void updateOrderOfOutputSlots() {
-        if(!isCraftingMode()) {
-            setSlotX(craftOutputSlot, -9000);
-
-            for(int y = 0; y < 3; y++) setSlotX(processingOutputSlots[y], processingOutputSlots[y].x);
-        } else {
-            setSlotX(craftOutputSlot, craftOutputSlot.x);
-
-            for(int y = 0; y < 3; y++) setSlotX(processingOutputSlots[y], -9000);
-        }
-    }
-
-    /**
-     * Callback for when the crafting matrix is changed.
-     */
-
-    @Override
-    public boolean canUse(PlayerEntity player) {
-        return true;
-    }
-
-    @Override
-    public void saveChanges() {}
-
-    @Override
-    public void onChangeInventory(FixedItemInv inv, int slot, InvOperation mc, ItemStack removedStack, ItemStack newStack) {}
 
     public void encode() {
-        ItemStack output = encodedPatternSlot.getStack();
-
-        final ItemStack[] in = getInputs();
-        final ItemStack[] out = getOutputs();
-
-        // if there is no input, this would be silly.
-        if(in == null || out == null || isCraftingMode() && currentRecipe == null) return;
-
-        // first check the output slots, should either be null, or a pattern
-        if(!output.isEmpty() && !craftingHelper.isEncodedPattern(output))
-            return; //if nothing is there we should snag a new pattern.
-        else if(output.isEmpty()) {
-            output = blankPatternSlot.getStack();
-            if(output.isEmpty() || !isPattern(output)) return; // no blanks.
-
-            // remove one, and clear the input slot.
-            output.setCount(output.getCount() - 1);
-            if(output.getCount() == 0) blankPatternSlot.setStack(ItemStack.EMPTY);
-
-            // let the crafting helper create a new encoded pattern
-            output = null;
+        if(isClient()) {
+            sendClientAction(ACTION_ENCODE);
+            return;
         }
+        ItemStack output = encodedPatternSlot.getStack();
+        ItemStack[] in = getInputs();
+        ItemStack[] out = getOutputs();
+        if(in != null && out != null && (!isCraftingMode() || currentRecipe != null)) {
+            if(output.isEmpty() || craftingHelper.isEncodedPattern(output)) {
+                if(output.isEmpty()) {
+                    output = blankPatternSlot.getStack();
+                    if(output.isEmpty() || !isPattern(output)) {
+                        return;
+                    }
 
-        if(isCraftingMode())
-            output = craftingHelper.encodeCraftingPattern(output, currentRecipe, in, out[0], isSubstitute());
-        else output = craftingHelper.encodeProcessingPattern(output, in, out);
-        encodedPatternSlot.setStack(output);
+                    output.setCount(output.getCount() - 1);
+                    if(output.getCount() == 0) {
+                        blankPatternSlot.setStack(ItemStack.EMPTY);
+                    }
+                }
+
+                if(isCraftingMode()) {
+                    output = craftingHelper.encodeCraftingPattern(currentRecipe, in, out[0], isSubstitute());
+                } else {
+                    output = craftingHelper.encodeProcessingPattern(toAeStacks(in), toAeStacks(out));
+                }
+
+                encodedPatternSlot.setStack(output);
+            }
+        }
+    }
+
+    private static IAEStack[] toAeStacks(ItemStack... stacks) {
+        IAEStack[] out = new IAEStack[stacks.length];
+        var fluidDummy = AEItems.DUMMY_FLUID_ITEM.asItem();
+        for(int i = 0; i < stacks.length; ++i) {
+            if(stacks[i].getItem() == fluidDummy) {
+                out[i] = IAEFluidStack.of(fluidDummy.getFluid(stacks[i]), fluidDummy.getAmount(stacks[i]));
+            } else {
+                out[i] = AEItemStack.fromItemStack(stacks[i]);
+            }
+        }
+        return out;
     }
 
     private ItemStack[] getInputs() {
@@ -311,17 +258,8 @@ public class WPTContainer extends ItemTerminalContainer implements IAEAppEngInve
         return null;
     }
 
-    @Override
-    public FixedItemInv getInventoryByName(final String name) {
-        if(name.equals("player")) return new FixedInventoryVanillaWrapper(getPlayerInventory());
-        return getPatternTerminal().getInventoryByName(name);
-    }
-
     private boolean isPattern(final ItemStack output) {
-        if(output.isEmpty()) return false;
-
-        final IDefinitions definitions = Api.instance().definitions();
-        return definitions.materials().blankPattern().isSameAs(output);
+        return !output.isEmpty() && AEItems.BLANK_PATTERN.isSameAs(output);
     }
 
     @Override
@@ -331,91 +269,161 @@ public class WPTContainer extends ItemTerminalContainer implements IAEAppEngInve
         else return false;
     }
 
-    public void craftOrGetItem(PatternSlotPacket packetPatternSlot) {
+    public void craftOrGetItem(final PatternSlotPacket packetPatternSlot) {
         if(packetPatternSlot.slotItem == null || monitor == null) return;
-        IAEItemStack out = packetPatternSlot.slotItem.copy();
-        InventoryAdaptor inv = new AdaptorFixedInv(new WrapperCursorItemHandler(getPlayerInventory().player.inventory));
-        InventoryAdaptor playerInv = InventoryAdaptor.getAdaptor(getPlayerInventory().player);
+        final IAEItemStack out = packetPatternSlot.slotItem.copy();
+        InternalInventory inv = new CarriedItemInventory(this);
+        PlayerInternalInventory playerInv = new PlayerInternalInventory(getPlayerInventory());
         if(packetPatternSlot.shift) inv = playerInv;
 
         if(!inv.simulateAdd(out.createItemStack()).isEmpty()) return;
 
-        IAEItemStack extracted = Platform.poweredExtraction(powerSource, monitor, out, getActionSource());
-        PlayerEntity p = getPlayerInventory().player;
+        final IAEItemStack extracted = Platform.poweredExtraction(powerSource, monitor, out, getActionSource());
+        final PlayerEntity p = getPlayerInventory().player;
+
         if(extracted != null) {
             inv.addItems(extracted.createItemStack());
-            if(p instanceof ServerPlayerEntity) updateHeld((ServerPlayerEntity) p);
-
             sendContentUpdates();
             return;
         }
 
-        CraftingInventory ic = new CraftingInventory(new ContainerNull(), 3, 3);
-        CraftingInventory real = new CraftingInventory(new ContainerNull(), 3, 3);
+        final CraftingInventory ic = new CraftingInventory(new NullMenu(), 3, 3);
+        final CraftingInventory real = new CraftingInventory(new NullMenu(), 3, 3);
 
-        for(int x = 0; x < 9; ++x)
+        for(int x = 0; x < 9; x++) {
             ic.setStack(x, packetPatternSlot.pattern[x] == null ? ItemStack.EMPTY : packetPatternSlot.pattern[x].createItemStack());
+        }
 
-        Recipe<CraftingInventory> r = p.world.getRecipeManager().getFirstMatch(RecipeType.CRAFTING, ic, p.world).orElse(null);
+        final Recipe<CraftingInventory> r = p.world.getRecipeManager().getFirstMatch(RecipeType.CRAFTING, ic, p.world).orElse(null);
+
         if(r == null) return;
 
-        IMEMonitor<IAEItemStack> storage = getPatternTerminal().getInventory(Api.instance().storage().getStorageChannel(IItemStorageChannel.class));
-        IItemList<IAEItemStack> all = storage.getStorageList();
-        ItemStack is = r.craft(ic);
+        final IMEMonitor<IAEItemStack> storage = getPatternTerminal().getInventory(StorageChannels.items());
+        final IAEStackList<IAEItemStack> all = storage.getStorageList();
 
-        for(int x = 0; x < ic.size(); ++x) {
+        final ItemStack is = r.craft(ic);
+
+        for(int x = 0; x < ic.size(); x++) {
             if(!ic.getStack(x).isEmpty()) {
-                ItemStack pulled = Platform.extractItemsByRecipe(powerSource, getActionSource(), storage, p.world, r, is, ic, ic.getStack(x), x, all, Actionable.MODULATE, ViewCellItem.createFilter(getViewCells()));
+                final ItemStack pulled = Platform.extractItemsByRecipe(powerSource, getActionSource(), storage, p.world, r, is, ic, ic.getStack(x), x, all, Actionable.MODULATE, ViewCellItem.createFilter(getViewCells()));
                 real.setStack(x, pulled);
             }
         }
 
-        Recipe<CraftingInventory> rr = p.world.getRecipeManager().getFirstMatch(RecipeType.CRAFTING, real, p.world).orElse(null);
-        if(rr == r && Platform.itemComparisons().isSameItem(rr.craft(real), is)) {
-            CraftingResultInventory craftingResult = new CraftingResultInventory();
+        final Recipe<CraftingInventory> rr = p.world.getRecipeManager().getFirstMatch(RecipeType.CRAFTING, real, p.world).orElse(null);
+
+        if(rr == r && ItemStack.canCombine(rr.craft(real), is)) {
+            final CraftingResultInventory craftingResult = new CraftingResultInventory();
             craftingResult.setLastRecipe(rr);
-            CraftingResultSlot sc = new CraftingResultSlot(p, real, craftingResult, 0, 0, 0);
+
+            final CraftingResultSlot sc = new CraftingResultSlot(p, real, craftingResult, 0, 0, 0);
             sc.onTakeItem(p, is);
 
-            for(int x = 0; x < real.size(); ++x) {
-                ItemStack failed = playerInv.addItems(real.getStack(x));
+            for(int x = 0; x < real.size(); x++) {
+                final ItemStack failed = playerInv.addItems(real.getStack(x));
+
                 if(!failed.isEmpty()) p.dropItem(failed, false);
             }
 
             inv.addItems(is);
-            if(p instanceof ServerPlayerEntity) updateHeld((ServerPlayerEntity) p);
-
             sendContentUpdates();
         } else {
             for(int x = 0; x < real.size(); ++x) {
-                ItemStack failed = real.getStack(x);
-                if(!failed.isEmpty())
-                    monitor.injectItems(AEItemStack.fromItemStack(failed), Actionable.MODULATE, new MachineSource(getPatternTerminal()));
+                final ItemStack failed = real.getStack(x);
+                if(failed.isEmpty()) continue;
+                monitor.injectItems(AEItemStack.fromItemStack(failed), Actionable.MODULATE, new MachineSource(getPatternTerminal()));
             }
         }
     }
 
-    private ItemStack getAndUpdateOutput() {
-        final World world = getPlayerInventory().player.world;
-        final CraftingInventory ic = new CraftingInventory(this, 3, 3);
+    private int ticks = 0;
 
-        for(int x = 0; x < ic.size(); x++) ic.setStack(x, craftingGridInv.getInvStack(x));
+    @Override
+    public void sendContentUpdates() {
+        if(isClient()) return;
+        super.sendContentUpdates();
 
-        if(currentRecipe == null || !currentRecipe.matches(ic, world))
-            currentRecipe = world.getRecipeManager().getFirstMatch(RecipeType.CRAFTING, ic, world).orElse(null);
+        if(wptGUIObject.notInRange()) {
+            if(isValidMenu()) {
+                getPlayerInventory().player.sendSystemMessage(PlayerMessages.OutOfRange.get(), Util.NIL_UUID);
+                ((ServerPlayerEntity) getPlayerInventory().player).closeHandledScreen();
+            }
+            setValidMenu(false);
+        } else {
+            double powerMultiplier = ae2wtlibConfig.INSTANCE.getPowerMultiplier(wptGUIObject.getRange(), wptGUIObject.isOutOfRange());
+            ticks++;
+            if(ticks > 10) {
+                wptGUIObject.extractAEPower((powerMultiplier) * ticks, Actionable.MODULATE, PowerMultiplier.CONFIG);
+                ticks = 0;
+            }
 
-        final ItemStack is;
+            if(wptGUIObject.extractAEPower(1, Actionable.SIMULATE, PowerMultiplier.ONE) == 0) {
+                if(isValidMenu()) {
+                    getPlayerInventory().player.sendSystemMessage(PlayerMessages.DeviceNotPowered.get(), Util.NIL_UUID);
+                    ((ServerPlayerEntity) getPlayerInventory().player).closeHandledScreen();
+                }
+                setValidMenu(false);
+            }
+        }
 
-        if(currentRecipe == null) is = ItemStack.EMPTY;
-        else is = currentRecipe.craft(ic);
+        if(isCraftingMode() != getPatternTerminal().isCraftingRecipe()) {
+            setCraftingMode(getPatternTerminal().isCraftingRecipe());
+        }
 
-        craftOutputSlot.setDisplayedCraftingOutput(is);
-        return is;
+        if(substitute != getPatternTerminal().isSubstitution()) {
+            substitute = getPatternTerminal().isSubstitution();
+            ItemWT.setBoolean(wptGUIObject.getItemStack(), substitute, "substitute");
+        }
+    }
+
+    @Override
+    public void onServerDataSync() {
+        super.onServerDataSync();
+
+        if(currentRecipeCraftingMode != craftingMode) getAndUpdateOutput();
+    }
+
+    @Override
+    public void onSlotChange(final Slot s) {
+        if(s == encodedPatternSlot && isServer()) sendContentUpdates();
+
+        if(s == craftOutputSlot && isClient()) getAndUpdateOutput();
+    }
+
+    public void clear() {
+        if(isClient()) {
+            sendClientAction(ACTION_CLEAR);
+            return;
+        }
+        for(final Slot s : craftingGridSlots) s.setStack(ItemStack.EMPTY);
+        for(final Slot s : processingOutputSlots) s.setStack(ItemStack.EMPTY);
+
+        sendContentUpdates();
+        getAndUpdateOutput();
+    }
+
+    @Override
+    public InternalInventory getSubInventory(Identifier id) {
+        return getPatternTerminal().getSubInventory(id);
     }
 
     @Override
     public boolean useRealItems() {
         return false;
+    }
+
+    public boolean isCraftingMode() {
+        return craftingMode;
+    }
+
+    private void setCraftingMode(final boolean craftingMode) {
+        if(isClient()) {
+            sendClientAction(ACTION_SET_CRAFT_MODE, craftingMode);
+            return;
+        }
+        if(craftingMode == this.craftingMode) return;
+        this.craftingMode = craftingMode;
+        ItemWT.setBoolean(wptGUIObject.getItemStack(), craftingMode, "craftingMode");
     }
 
     public WPTGuiObject getPatternTerminal() {
@@ -426,22 +434,57 @@ public class WPTContainer extends ItemTerminalContainer implements IAEAppEngInve
         return substitute;
     }
 
-    public boolean isCraftingMode() {
-        return craftingMode;
+    public void setSubstitute(final boolean substitute) {
+        if(isClient()) sendClientAction(ACTION_SET_SUBSTITUTION, substitute);
+        else this.substitute = substitute;
     }
 
-    private void setCraftingMode(final boolean craftingMode) {
-        if(craftingMode == this.craftingMode) return;
-        this.craftingMode = craftingMode;
-        ItemWT.setBoolean(wptGUIObject.getItemStack(), craftingMode, "craftingMode");
+    public void convertItemsToFluids() {
+        if(isClient()) {
+            sendClientAction(ACTION_CONVERT_ITEMS_TO_FLUIDS);
+            return;
+        }
+        if(getPatternTerminal().isCraftingRecipe()) return;
+        for(var slot : craftingGridSlots) {
+            convertItemToFluid(slot);
+        }
+        for(var slot : processingOutputSlots) {
+            convertItemToFluid(slot);
+        }
     }
 
-    public void clear() {
-        for(final Slot s : craftingGridSlots) s.setStack(ItemStack.EMPTY);
-        for(final Slot s : processingOutputSlots) s.setStack(ItemStack.EMPTY);
+    /**
+     * @return True, if any slot can be converted from item->fluid.
+     */
+    public boolean canConvertItemsToFluids() {
+        if(isCraftingMode()) return false;
 
-        sendContentUpdates();
-        getAndUpdateOutput();
+        for(var slot : craftingGridSlots) {
+            if(canConvertItemToFluid(slot)) return true;
+        }
+        for(var slot : processingOutputSlots) {
+            if(canConvertItemToFluid(slot)) return true;
+        }
+        return false;
+    }
+
+    private static void convertItemToFluid(Slot slot) {
+        var fluidStack = getFluidContained(slot.getStack());
+        if(fluidStack != null) slot.setStack(FluidDummyItem.fromFluidStack(fluidStack, true));
+    }
+
+    private static boolean canConvertItemToFluid(Slot slot) {
+        return getFluidContained(slot.getStack()) != null;
+    }
+
+    @Nullable
+    private static ResourceAmount<FluidVariant> getFluidContained(ItemStack stack) {
+        return stack.isEmpty() ? null : StorageUtil.findExtractableContent(ContainerItemContext.withInitial(stack).find(FluidStorage.ITEM), null);
+    }
+
+    @Override
+    public boolean canUse(PlayerEntity player) {
+        return true;
     }
 
     @Override

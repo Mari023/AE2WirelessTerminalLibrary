@@ -19,5 +19,5 @@ public class InputHelper {
         return count;
     }
 
-    public static Ingredient wut = Ingredient.ofItems(ae2wtlib.UNIVERSAL_TERMINAL);
+    public static final Ingredient wut = Ingredient.ofItems(ae2wtlib.UNIVERSAL_TERMINAL);
 }

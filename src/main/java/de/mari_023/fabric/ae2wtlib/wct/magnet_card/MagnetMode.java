@@ -16,17 +16,12 @@ public enum MagnetMode {
     }
 
     public static MagnetMode fromByte(byte b) {
-        switch(b) {
-            case -1:
-                return NO_CARD;
-            case 0:
-                return OFF;
-            case 1:
-                return PICKUP_INVENTORY;
-            case 2:
-                return PICKUP_ME;
-            default:
-                return INVALID;
-        }
+        return switch(b) {
+            case -1 -> NO_CARD;
+            case 0 -> OFF;
+            case 1 -> PICKUP_INVENTORY;
+            case 2 -> PICKUP_ME;
+            default -> INVALID;
+        };
     }
 }

@@ -1,45 +1,36 @@
 package de.mari_023.fabric.ae2wtlib.wct;
 
-import alexiil.mc.lib.attributes.Simulation;
-import alexiil.mc.lib.attributes.item.FixedItemInv;
-import alexiil.mc.lib.attributes.item.compat.FixedInventoryVanillaWrapper;
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
+import appeng.api.config.SecurityPermissions;
+import appeng.api.inventories.InternalInventory;
 import appeng.api.networking.IGridNode;
-import appeng.api.storage.data.IAEItemStack;
-import appeng.container.ContainerLocator;
-import appeng.container.ContainerNull;
-import appeng.container.SlotSemantic;
-import appeng.container.interfaces.IInventorySlotAware;
-import appeng.container.me.items.ItemTerminalContainer;
-import appeng.container.slot.AppEngSlot;
-import appeng.container.slot.CraftingMatrixSlot;
-import appeng.container.slot.CraftingTermSlot;
 import appeng.core.localization.PlayerMessages;
 import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.InventoryActionPacket;
-import appeng.helpers.IContainerCraftingPacket;
+import appeng.helpers.IMenuCraftingPacket;
 import appeng.helpers.InventoryAction;
-import appeng.tile.inventory.AppEngInternalInventory;
-import appeng.util.inv.IAEAppEngInventory;
-import appeng.util.inv.InvOperation;
-import appeng.util.inv.WrapperInvItemHandler;
+import appeng.menu.NullMenu;
+import appeng.menu.SlotSemantic;
+import appeng.menu.implementations.MenuTypeBuilder;
+import appeng.menu.interfaces.IInventorySlotAware;
+import appeng.menu.me.items.ItemTerminalMenu;
+import appeng.menu.slot.AppEngSlot;
+import appeng.menu.slot.CraftingMatrixSlot;
+import appeng.menu.slot.CraftingTermSlot;
+import appeng.menu.slot.DisabledSlot;
+import appeng.parts.reporting.CraftingTerminalPart;
+import appeng.util.inv.AppEngInternalInventory;
+import appeng.util.inv.InternalInventoryHost;
 import com.google.common.base.Preconditions;
 import com.mojang.datafixers.util.Pair;
 import de.mari_023.fabric.ae2wtlib.ae2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.terminal.FixedWTInv;
 import de.mari_023.fabric.ae2wtlib.terminal.IWTInvHolder;
 import de.mari_023.fabric.ae2wtlib.terminal.ae2wtlibInternalInventory;
-import de.mari_023.fabric.ae2wtlib.trinket.AppEngTrinketSlot;
-import de.mari_023.fabric.ae2wtlib.trinket.FixedTrinketInv;
-import de.mari_023.fabric.ae2wtlib.util.ContainerHelper;
-import de.mari_023.fabric.ae2wtlib.util.WirelessCraftAmountContainer;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.ItemMagnetCard;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetSettings;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
-import dev.emi.trinkets.api.TrinketInventory;
-import dev.emi.trinkets.api.TrinketSlots;
-import dev.emi.trinkets.api.TrinketsApi;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.entity.player.PlayerEntity;
@@ -47,7 +38,6 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.screen.PlayerScreenHandler;
@@ -60,25 +50,15 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class WCTContainer extends ItemTerminalContainer implements IAEAppEngInventory, IContainerCraftingPacket, IWTInvHolder {
+public class WCTContainer extends ItemTerminalMenu implements IMenuCraftingPacket, IWTInvHolder, InternalInventoryHost {
 
-    public static ScreenHandlerType<WCTContainer> TYPE;
-
-    public static final ContainerHelper<WCTContainer, WCTGuiObject> helper = new ContainerHelper<>(WCTContainer::new, WCTGuiObject.class);
-
-    public static WCTContainer fromNetwork(int windowId, PlayerInventory inv, PacketByteBuf buf) {
-        return helper.fromNetwork(windowId, inv, buf);
-    }
+    public static final ScreenHandlerType<WCTContainer> TYPE = MenuTypeBuilder.create(WCTContainer::new, WCTGuiObject.class).requirePermission(SecurityPermissions.CRAFT).build("wireless_crafting_terminal");
 
     private final AppEngInternalInventory crafting;
     private final CraftingMatrixSlot[] craftingSlots = new CraftingMatrixSlot[9];
     private final CraftingTermSlot outputSlot;
     private Recipe<CraftingInventory> currentRecipe;
     final FixedWTInv fixedWTInv;
-
-    public static boolean open(PlayerEntity player, ContainerLocator locator) {
-        return helper.open(player, locator);
-    }
 
     private final WCTGuiObject wctGUIObject;
 
@@ -89,18 +69,18 @@ public class WCTContainer extends ItemTerminalContainer implements IAEAppEngInve
         fixedWTInv = new FixedWTInv(getPlayerInventory(), wctGUIObject.getItemStack(), this);
 
         final int slotIndex = ((IInventorySlotAware) wctGUIObject).getInventorySlot();
-        if(slotIndex < 100) lockPlayerInventorySlot(slotIndex);
+        if(slotIndex < 100 && slotIndex != 40) lockPlayerInventorySlot(slotIndex);
 
         crafting = new ae2wtlibInternalInventory(this, 9, "crafting", wctGUIObject.getItemStack());
 
         for(int i = 0; i < 9; i++)
             addSlot(craftingSlots[i] = new CraftingMatrixSlot(this, crafting, i), SlotSemantic.CRAFTING_GRID);
 
-        addSlot(outputSlot = new CraftingTermSlot(getPlayerInventory().player, getActionSource(), powerSource, wctGUIObject, crafting, crafting, this), SlotSemantic.CRAFTING_RESULT);
+        addSlot(outputSlot = new CraftingTermSlot(getPlayer(), getActionSource(), powerSource, wctGUIObject, crafting, crafting, this), SlotSemantic.CRAFTING_RESULT);
 
         createPlayerInventorySlots(ip);
 
-        onContentChanged(new WrapperInvItemHandler(crafting));
+        onContentChanged(crafting.toContainer());
 
         SlotsWithTrinket[5] = addSlot(new AppEngSlot(fixedWTInv, 3) {
             @Environment(EnvType.CLIENT)
@@ -127,31 +107,25 @@ public class WCTContainer extends ItemTerminalContainer implements IAEAppEngInve
             }
         }, SlotSemantic.MACHINE_CRAFTING_GRID);
 
-        SlotsWithTrinket[45] = addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.OFFHAND) {
+        if(slotIndex == 40)
+            SlotsWithTrinket[45] = addSlot(new DisabledSlot(fixedWTInv.toContainer(), FixedWTInv.OFFHAND) {
+                @Environment(EnvType.CLIENT)
+                public Pair<Identifier, Identifier> getBackgroundSprite() {
+                    return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, PlayerScreenHandler.EMPTY_OFFHAND_ARMOR_SLOT);
+                }
+            }, SlotSemantic.PROCESSING_PRIMARY_RESULT);
+        else SlotsWithTrinket[45] = addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.OFFHAND) {
             @Environment(EnvType.CLIENT)
             public Pair<Identifier, Identifier> getBackgroundSprite() {
                 return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, PlayerScreenHandler.EMPTY_OFFHAND_ARMOR_SLOT);
             }
-        }, SlotSemantic.PROCESSING_RESULT);
+        }, SlotSemantic.PROCESSING_PRIMARY_RESULT);
         addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.TRASH), SlotSemantic.INSCRIBER_PLATE_BOTTOM);
         addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.INFINITY_BOOSTER_CARD), SlotSemantic.BIOMETRIC_CARD);
         addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.MAGNET_CARD), SlotSemantic.INSCRIBER_PLATE_TOP);//TODO fetch texture for card background
 
-        if(!ae2wtlibConfig.INSTANCE.allowTrinket()) return;//Trinkets only starting here
-        FixedTrinketInv inv = new FixedTrinketInv((TrinketInventory) TrinketsApi.getTrinketsInventory(getPlayerInventory().player));
-        int i = 0;
-        for(TrinketSlots.SlotGroup group : TrinketSlots.slotGroups) {
-            int j = 0;
-            for(TrinketSlots.Slot slot : group.slots) {
-                boolean locked = slotIndex - 100 == i;
-                AppEngTrinketSlot ts;
-                ts = new AppEngTrinketSlot(inv, i, Integer.MIN_VALUE, 8, group.getName(), slot.getName(), locked);
-                if(j == 0 && !group.onReal) ts.keepVisible = true;
-                addSlot(ts);
-                i++;
-                j++;
-            }
-        }
+        /*if(!ae2wtlibConfig.INSTANCE.allowTrinket()) return;//Trinkets only starting here
+        updateTrinketSlots(true);*/
     }
 
     private int ticks = 0;
@@ -161,10 +135,10 @@ public class WCTContainer extends ItemTerminalContainer implements IAEAppEngInve
         if(isClient()) return;
         super.sendContentUpdates();
 
-        if(!wctGUIObject.rangeCheck()) {
-            if(isValidContainer()) {
-                getPlayerInventory().player.sendSystemMessage(PlayerMessages.OutOfRange.get(), Util.NIL_UUID);
-                ((ServerPlayerEntity) getPlayerInventory().player).closeHandledScreen();
+        if(wctGUIObject.notInRange()) {
+            if(isValidMenu()) {
+                getPlayer().sendSystemMessage(PlayerMessages.OutOfRange.get(), Util.NIL_UUID);
+                ((ServerPlayerEntity) getPlayer()).closeHandledScreen();
             }
         } else {
             double powerMultiplier = ae2wtlibConfig.INSTANCE.getPowerMultiplier(wctGUIObject.getRange(), wctGUIObject.isOutOfRange());
@@ -175,12 +149,12 @@ public class WCTContainer extends ItemTerminalContainer implements IAEAppEngInve
             }
 
             if(wctGUIObject.extractAEPower(1, Actionable.SIMULATE, PowerMultiplier.ONE) != 0) return;
-            if(isValidContainer()) {
-                getPlayerInventory().player.sendSystemMessage(PlayerMessages.DeviceNotPowered.get(), Util.NIL_UUID);
-                ((ServerPlayerEntity) getPlayerInventory().player).closeHandledScreen();
+            if(isValidMenu()) {
+                getPlayer().sendSystemMessage(PlayerMessages.DeviceNotPowered.get(), Util.NIL_UUID);
+                ((ServerPlayerEntity) getPlayer()).closeHandledScreen();
             }
         }
-        setValidContainer(false);
+        setValidMenu(false);
     }
 
     /**
@@ -189,13 +163,13 @@ public class WCTContainer extends ItemTerminalContainer implements IAEAppEngInve
 
     @Override
     public void onContentChanged(Inventory inventory) {
-        final ContainerNull cn = new ContainerNull();
+        final NullMenu cn = new NullMenu();
         final CraftingInventory ic = new CraftingInventory(cn, 3, 3);
 
         for(int x = 0; x < 9; x++) ic.setStack(x, craftingSlots[x].getStack());
 
-        if(currentRecipe == null || !currentRecipe.matches(ic, getPlayerInventory().player.world)) {
-            World world = getPlayerInventory().player.world;
+        if(currentRecipe == null || !currentRecipe.matches(ic, getPlayer().world)) {
+            World world = getPlayer().world;
             currentRecipe = world.getRecipeManager().getFirstMatch(RecipeType.CRAFTING, ic, world).orElse(null);
         }
 
@@ -213,30 +187,14 @@ public class WCTContainer extends ItemTerminalContainer implements IAEAppEngInve
         NetworkHandler.instance().sendToServer(p);
     }
 
-    protected void handleNetworkInteraction(ServerPlayerEntity player, IAEItemStack stack, InventoryAction action) {
-        if(action != InventoryAction.AUTO_CRAFT) {
-            super.handleNetworkInteraction(player, stack, action);
-            return;
-        }
-        WirelessCraftAmountContainer.open(player, getLocator(), stack, 1);
-    }
-
     @Override
     public boolean canUse(PlayerEntity player) {
         return true;
     }
 
     @Override
-    public void saveChanges() {}
-
-    @Override
-    public void onChangeInventory(FixedItemInv inv, int slot, InvOperation mc, ItemStack removedStack, ItemStack newStack) {}
-
-    @Override
-    public FixedItemInv getInventoryByName(String name) {
-        if(name.equals("player")) return new FixedInventoryVanillaWrapper(getPlayerInventory());
-        else if(name.equals("crafting")) return crafting;
-        return null;
+    public InternalInventory getSubInventory(Identifier id) {
+        return id.equals(CraftingTerminalPart.INV_CRAFTING) ? crafting : null;
     }
 
     @Override
@@ -250,7 +208,7 @@ public class WCTContainer extends ItemTerminalContainer implements IAEAppEngInve
     }
 
     public void deleteTrashSlot() {
-        fixedWTInv.setInvStack(FixedWTInv.TRASH, ItemStack.EMPTY, Simulation.ACTION);
+        fixedWTInv.setItemDirect(FixedWTInv.TRASH, ItemStack.EMPTY);
     }
 
     private MagnetSettings magnetSettings;
@@ -288,4 +246,164 @@ public class WCTContainer extends ItemTerminalContainer implements IAEAppEngInve
     }
 
     public final Slot[] SlotsWithTrinket = new Slot[46];
+
+    @Override
+    public void saveChanges() {}
+
+    @Override
+    public void onChangeInventory(InternalInventory internalInventory, int i, ItemStack itemStack, ItemStack itemStack1) {}
+
+    //Trinkets starting here
+    /*private final Map<SlotGroup, net.minecraft.util.Pair<Integer, Integer>> groupPos = new HashMap<>();
+    private final Map<SlotGroup, List<net.minecraft.util.Pair<Integer, Integer>>> slotHeights = new HashMap<>();
+    private final Map<SlotGroup, List<SlotType>> slotTypes = new HashMap<>();
+    private final Map<SlotGroup, Integer> slotWidths = new HashMap<>();
+    private int trinketSlotStart = 0;
+    private int trinketSlotEnd = 0;
+    private int groupCount = 0;
+
+    public void updateTrinketSlots(boolean slotsChanged) {
+        TrinketsApi.getTrinketComponent(getPlayer()).ifPresent(trinkets -> {
+            if(slotsChanged) trinkets.update();
+            Map<String, SlotGroup> groups = trinkets.getGroups();
+            groupPos.clear();
+            slots.removeIf(slot -> slot instanceof AppEngTrinketSlot);
+            trinketSlotStart = 0;
+            trinketSlotEnd = 0;
+
+            int groupNum = 1; // Start at 1 because offhand exists
+
+            for(SlotGroup group : groups.values().stream().sorted(Comparator.comparing(SlotGroup::getOrder)).toList()) {
+                if(!hasSlots(trinkets, group)) continue;
+                int id = group.getSlotId();
+                switch(id) {
+                    case 5, 6, 7, 8, 45 -> {
+                        Slot slot = SlotsWithTrinket[id];
+                        groupPos.put(group, new net.minecraft.util.Pair<>(slot.x, slot.y));
+                    }
+                    case -1 -> {
+                        Slot slot = SlotsWithTrinket[45];
+                        int x = slot.x - 18;
+                        int y;
+                        if(groupNum >= 2) {
+                            x = 4 - (groupNum / 4) * 18;//FIXME these are probably on the wrong location, but I don't really care right now
+                            y = 8 + (groupNum % 4) * 18;
+                        } else y = slot.y;
+                        groupPos.put(group, new net.minecraft.util.Pair<>(x, y));
+                        groupNum++;
+                    }
+                }
+            }
+            if(groupNum > 4) groupCount = groupNum - 4;
+
+            trinketSlotStart = slots.size();
+            slotWidths.clear();
+            slotHeights.clear();
+            slotTypes.clear();
+            for(Map.Entry<String, Map<String, TrinketInventory>> entry : trinkets.getInventory().entrySet()) {
+                String groupId = entry.getKey();
+                SlotGroup group = groups.get(groupId);
+                int groupOffset = 1;
+
+                if(group.getSlotId() != -1) groupOffset++;
+                int width = 0;
+                net.minecraft.util.Pair<Integer, Integer> pos = getGroupPos(group);
+                if(pos == null) continue;
+                for(Map.Entry<String, TrinketInventory> slot : entry.getValue().entrySet().stream().sorted(Comparator.comparingInt(a -> a.getValue().getSlotType().getOrder())).toList()) {
+                    TrinketInventory stacks = slot.getValue();
+                    if(stacks.size() == 0) continue;
+                    int slotOffset = 1;
+                    int x = (int) (pos.getLeft() + (groupOffset / 2) * 18 * Math.pow(-1, groupOffset));
+                    slotHeights.computeIfAbsent(group, (k) -> new ArrayList<>()).add(new net.minecraft.util.Pair<>(x, stacks.size()));
+                    slotTypes.computeIfAbsent(group, (k) -> new ArrayList<>()).add(stacks.getSlotType());
+                    for(int i = 0; i < stacks.size(); i++) {
+                        int y = (int) (pos.getRight() + (slotOffset / 2) * 18 * Math.pow(-1, slotOffset));
+                        AppEngTrinketSlot ts = new AppEngTrinketSlot(new TrinketInventoryWrapper(stacks), i, group, stacks.getSlotType(), i, groupOffset == 1 && i == 0, false);
+                        ((SlotMixin) ts).setX(x);
+                        ((SlotMixin) ts).setY(y);
+                        addSlot(ts);
+                        slotOffset++;
+                    }
+                    groupOffset++;
+                    width++;
+                }
+                slotWidths.put(group, width);
+            }
+
+            trinketSlotEnd = slots.size();
+        });
+    }
+
+    private boolean hasSlots(TrinketComponent comp, SlotGroup group) {
+        for(TrinketInventory inv : comp.getInventory().get(group.getName()).values()) {
+            if(inv.size() > 0) return true;
+        }
+        return false;
+    }
+
+
+    public net.minecraft.util.Pair<Integer, Integer> getGroupPos(SlotGroup group) {
+        return groupPos.get(group);
+    }
+
+    public List<net.minecraft.util.Pair<Integer, Integer>> getSlotHeights(SlotGroup group) {
+        return slotHeights.get(group);
+    }
+
+    public List<SlotType> getSlotTypes(SlotGroup group) {
+        return slotTypes.get(group);
+    }
+
+    public int getSlotWidth(SlotGroup group) {
+        return slotWidths.get(group);
+    }
+
+    public int getGroupCount() {
+        return groupCount;
+    }
+
+    @Override
+    public void close(PlayerEntity player) {
+        if(Config.allowTrinket() && player.world.isClient) {
+            TrinketsClient.activeGroup = null;
+            TrinketsClient.activeType = null;
+            TrinketsClient.quickMoveGroup = null;
+        }
+        super.close(player);
+    }
+
+    @Override
+    public ItemStack transferSlot(PlayerEntity player, int index) {
+        if(!Config.allowTrinket()) return super.transferSlot(player, index);
+
+        Slot slot = slots.get(index);
+        if(slot.hasStack()) {
+            ItemStack stack = slot.getStack();
+            if(index >= trinketSlotStart && index < trinketSlotEnd) {
+                if(!insertItem(stack, 9, 45, false)) return ItemStack.EMPTY;
+                else return stack;
+            } else if(index >= 9 && index < 45) {
+                TrinketsApi.getTrinketComponent(player).ifPresent(trinkets -> {
+                            for(int i = trinketSlotStart; i < trinketSlotEnd; i++) {
+                                Slot s = slots.get(i);
+                                if(!(s instanceof AppEngTrinketSlot ts) || !s.canInsert(stack)) continue;
+
+                                SlotType type = ts.getType();
+                                SlotReference ref = new SlotReference(ts.trinketInventory.trinketInventory, ts.getIndex());
+
+                                boolean res = TrinketsApi.evaluatePredicateSet(type.getQuickMovePredicates(), stack, ref, player);
+
+                                if(res && insertItem(stack, i, i + 1, false) && player.world.isClient) {
+                                    TrinketsClient.quickMoveTimer = 20;
+                                    TrinketsClient.quickMoveGroup = TrinketsApi.getPlayerSlots().get(type.getGroup());
+                                    if(ref.index() > 0) TrinketsClient.quickMoveType = type;
+                                    else TrinketsClient.quickMoveType = null;
+                                }
+                            }
+                        }
+                );
+            }
+        }
+        return super.transferSlot(player, index);
+    }*/
 }

@@ -34,10 +34,17 @@
       "left": 110,
       "bottom": 140
     },
-    "PROCESSING_RESULT": {
+    "PROCESSING_PRIMARY_RESULT": {
       "left": 110,
-      "bottom": 158,
-      "grid": "VERTICAL"
+      "bottom": 140
+    },
+    "PROCESSING_FIRST_OPTIONAL_RESULT": {
+      "left": 110,
+      "bottom": 163
+    },
+    "PROCESSING_SECOND_OPTIONAL_RESULT": {
+      "left": 110,
+      "bottom": 117
     }
   },
   "text": {
@@ -106,6 +113,10 @@
     "encodePattern": {
       "left": 147,
       "bottom": 142
+    },
+    "convertItemsToFluids": {
+      "left": 84,
+      "bottom": 163
     },
     "cycleTerminal": {
       "left": -20,

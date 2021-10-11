@@ -1,17 +1,17 @@
 package de.mari_023.fabric.ae2wtlib.rei;
 
 import de.mari_023.fabric.ae2wtlib.wct.WCTContainer;
-import me.shedaniel.rei.api.AutoTransferHandler;
-import me.shedaniel.rei.api.RecipeDisplay;
+import me.shedaniel.rei.api.common.display.Display;
 
 public class CraftingRecipeTransferHandler extends RecipeTransferHandler<WCTContainer> {
 
-    public CraftingRecipeTransferHandler(Class<WCTContainer> containerClass) {
-        super(containerClass);
+    public CraftingRecipeTransferHandler() {
+        super(WCTContainer.class);
     }
 
+
     @Override
-    protected AutoTransferHandler.Result doTransferRecipe(WCTContainer container, RecipeDisplay recipe, AutoTransferHandler.Context context) {
+    protected Result doTransferRecipe(WCTContainer container, Display recipe, Context context) {
         return null;
     }
 

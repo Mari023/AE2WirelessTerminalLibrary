@@ -1,9 +1,8 @@
 package de.mari_023.fabric.ae2wtlib.wit;
 
-import alexiil.mc.lib.attributes.Simulation;
 import appeng.api.config.Settings;
 import appeng.api.config.TerminalStyle;
-import appeng.api.storage.channels.IItemStorageChannel;
+import appeng.api.storage.StorageChannels;
 import appeng.client.ActionKey;
 import appeng.client.gui.AEBaseScreen;
 import appeng.client.gui.me.interfaceterminal.InterfaceRecord;
@@ -15,23 +14,22 @@ import appeng.client.gui.widgets.AETextField;
 import appeng.client.gui.widgets.Scrollbar;
 import appeng.client.gui.widgets.SettingToggleButton;
 import appeng.core.AEConfig;
-import appeng.core.Api;
-import appeng.core.AppEng;
+import appeng.core.AppEngClient;
 import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.InventoryActionPacket;
-import appeng.helpers.DualityInterface;
 import appeng.helpers.InventoryAction;
 import appeng.util.Platform;
 import com.google.common.collect.HashMultimap;
+import de.mari_023.fabric.ae2wtlib.mixin.ScreenMixin;
 import de.mari_023.fabric.ae2wtlib.wut.CycleTerminalButton;
 import de.mari_023.fabric.ae2wtlib.wut.IUniversalTerminalCapable;
 import net.minecraft.client.util.InputUtil;
-import net.minecraft.client.util.Rect2i;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.util.math.Rect2i;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.text.Text;
@@ -101,7 +99,7 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
     private static final Rect2i ROW_TEXT_TOP_BBOX = new Rect2i(0, 17, GUI_WIDTH, ROW_HEIGHT);
     private static final Rect2i ROW_TEXT_MIDDLE_BBOX = new Rect2i(0, 53, GUI_WIDTH, ROW_HEIGHT);
     private static final Rect2i ROW_TEXT_BOTTOM_BBOX = new Rect2i(0, 89, GUI_WIDTH, ROW_HEIGHT);
-    // Background for a inventory row in the scroll-box.
+    // Background for an inventory row in the scroll-box.
     // Spans across the whole texture including the right and left borders including the scrollbar.
     // Covers separate textures for the top, middle and bottoms rows for more customization.
     private static final Rect2i ROW_INVENTORY_TOP_BBOX = new Rect2i(0, 35, GUI_WIDTH, ROW_HEIGHT);
@@ -153,7 +151,7 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
         searchField.setEditableColor(0xFFFFFF);
         searchField.setVisible(true);
         searchField.setChangedListener(str -> refreshList());
-        addChild(searchField);
+        addSelectableChild(searchField);
         focusOn(searchField);
         changeFocus(true);
 
@@ -173,14 +171,12 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
         for(; i < numLines; ++i) {
             if(scrollLevel + i < lines.size()) {
                 final Object lineObj = lines.get(scrollLevel + i);
-                if(lineObj instanceof InterfaceRecord) {
+                if(lineObj instanceof final InterfaceRecord inv) {
                     // Note: We have to shift everything after the header up by 1 to avoid black line duplication.
-                    final InterfaceRecord inv = (InterfaceRecord) lineObj;
-                    for(int z = 0; z < inv.getInventory().getSlotCount(); z++) {
+                    for(int z = 0; z < inv.getInventory().size(); z++) {
                         handler.slots.add(new InterfaceSlot(inv, z, z * SLOT_SIZE + GUI_PADDING_X, (i + 1) * SLOT_SIZE));
                     }
-                } else if(lineObj instanceof String) {
-                    String name = (String) lineObj;
+                } else if(lineObj instanceof String name) {
                     final int rows = byName.get(name).size();
                     if(rows > 1) name = name + " (" + rows + ')';
 
@@ -207,7 +203,7 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
 
     @Override
     protected void onMouseClick(Slot slot, int slotIdx, int mouseButton, SlotActionType clickType) {
-        if(!(slot instanceof InterfaceSlot)) {
+        if(!(slot instanceof InterfaceSlot machineSlot)) {
             super.onMouseClick(slot, slotIdx, mouseButton, clickType);
             return;
         }
@@ -223,7 +219,7 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
                 break;
 
             case CLONE: // creative dupe:
-                if(getPlayer().abilities.creativeMode) action = InventoryAction.CREATIVE_DUPLICATE;
+                if(getPlayer().getAbilities().creativeMode) action = InventoryAction.CREATIVE_DUPLICATE;
 
                 break;
 
@@ -233,14 +229,12 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
 
         if(action == null) return;
 
-        InterfaceSlot machineSlot = (InterfaceSlot) slot;
-        final InventoryActionPacket p = new InventoryActionPacket(action, getSlotIndex(machineSlot), machineSlot.getMachineInv().getServerId());
+        final InventoryActionPacket p = new InventoryActionPacket(action, slotIdx/*getSlotIndex(machineSlot)*/, machineSlot.getMachineInv().getServerId());
         NetworkHandler.instance().sendToServer(p);
     }
 
     @Override
-    public void drawBG(MatrixStack matrixStack, final int offsetX, final int offsetY, final int mouseX,
-                       final int mouseY, float partialTicks) {
+    public void drawBG(MatrixStack matrixStack, final int offsetX, final int offsetY, final int mouseX, final int mouseY, float partialTicks) {
         bindTexture("wtlib/guis/interface.png");
 
         // Draw the top of the dialog
@@ -300,7 +294,7 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
         InputUtil.Key input = InputUtil.fromKeyCode(keyCode, scanCode);
 
         if(keyCode != GLFW.GLFW_KEY_ESCAPE) {
-            if(AppEng.instance().isActionKey(ActionKey.TOGGLE_FOCUS, input)) {
+            if(AppEngClient.instance().isActionKey(ActionKey.TOGGLE_FOCUS, input)) {
                 searchField.setFocusUnlocked(!searchField.isFocused());
                 return true;
             }
@@ -323,7 +317,7 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
         return super.keyPressed(keyCode, scanCode, p_keyPressed_3_);
     }
 
-    public void postUpdate(boolean fullUpdate, final CompoundTag in) {
+    public void postUpdate(boolean fullUpdate, final NbtCompound in) {
         if(fullUpdate) {
             byId.clear();
             refreshList = true;
@@ -333,14 +327,14 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
             if(key.startsWith("=")) {
                 try {
                     final long id = Long.parseLong(key.substring(1), Character.MAX_RADIX);
-                    final CompoundTag invData = in.getCompound(key);
+                    final NbtCompound invData = in.getCompound(key);
                     Text un = Text.Serializer.fromJson(invData.getString("un"));
                     final InterfaceRecord current = getById(id, invData.getLong("sortBy"), un);
 
-                    for(int x = 0; x < current.getInventory().getSlotCount(); x++) {
+                    for(int x = 0; x < current.getInventory().size(); x++) {
                         final String which = Integer.toString(x);
                         if(invData.contains(which)) {
-                            current.getInventory().setInvStack(x, ItemStack.fromTag(invData.getCompound(which)), Simulation.ACTION);
+                            current.getInventory().setItemDirect(x, ItemStack.fromNbt(invData.getCompound(which)));
                         }
                     }
                 } catch(final NumberFormatException ignored) {}
@@ -421,19 +415,19 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
     private boolean itemStackMatchesSearchTerm(final ItemStack itemStack, final String searchTerm) {
         if(itemStack.isEmpty()) return false;
 
-        final CompoundTag encodedValue = itemStack.getTag();
+        final NbtCompound encodedValue = itemStack.getNbt();
 
         if(encodedValue == null) return false;
 
-        // Potential later use to filter by input
+        // Potential later used to filter by input
         // ListNBT inTag = encodedValue.getTagList( "in", 10 );
-        final ListTag outTag = encodedValue.getList("out", 10);
+        final NbtList outTag = encodedValue.getList("out", 10);
 
         for(int i = 0; i < outTag.size(); i++) {
 
-            final ItemStack parsedItemStack = ItemStack.fromTag(outTag.getCompound(i));
+            final ItemStack parsedItemStack = ItemStack.fromNbt(outTag.getCompound(i));
             if(!parsedItemStack.isEmpty()) {
-                final String displayName = Platform.getItemDisplayName(Api.instance().storage().getStorageChannel(IItemStorageChannel.class).createStack(parsedItemStack)).getString().toLowerCase();
+                final String displayName = Platform.getItemDisplayName(StorageChannels.items().createStack(parsedItemStack)).getString().toLowerCase();
                 if(displayName.contains(searchTerm)) return true;
             }
         }
@@ -454,14 +448,15 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
 
         final Set<Object> cache = cachedSearches.get(searchTerm);
 
-        if(cache.isEmpty() && searchTerm.length() > 1) cache.addAll(getCacheForSearchTerm(searchTerm.substring(0, searchTerm.length() - 1)));
+        if(cache.isEmpty() && searchTerm.length() > 1)
+            cache.addAll(getCacheForSearchTerm(searchTerm.substring(0, searchTerm.length() - 1)));
 
         return cache;
     }
 
     private void reinitialize() {
-        children.removeAll(buttons);
-        buttons.clear();
+        children().removeAll(((ScreenMixin) this).getDrawables());
+        ((ScreenMixin) this).getDrawables().clear();
         init();
     }
 
@@ -485,7 +480,7 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
         InterfaceRecord o = byId.get(id);
 
         if(o == null) {
-            byId.put(id, o = new InterfaceRecord(id, DualityInterface.NUMBER_OF_PATTERN_SLOTS, sortBy, name));
+            byId.put(id, o = new InterfaceRecord(id, 9, sortBy, name));
             refreshList = true;
         }
 

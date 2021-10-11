@@ -1,9 +1,10 @@
 package de.mari_023.fabric.ae2wtlib.wct.magnet_card;
 
 import appeng.api.storage.data.IAEItemStack;
-import appeng.api.storage.data.IItemList;
+import appeng.api.storage.data.IAEStackList;
 import appeng.util.item.AEItemStack;
 import de.mari_023.fabric.ae2wtlib.ae2wtlibConfig;
+import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.wct.CraftingTerminalHandler;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -42,22 +43,26 @@ public class MagnetHandler {
             HashMap<Item, Long> items = new HashMap<>();
 
             if(handler.getItemStorageChannel() == null) return;
-            IItemList<IAEItemStack> storageList = handler.getItemStorageChannel().getStorageList();
+            IAEStackList<IAEItemStack> storageList = handler.getItemStorageChannel().getStorageList();
 
-            for(int i = 0; i < player.inventory.size(); i++) {
-                ItemStack stack = player.inventory.getStack(i);
+            for(int i = 0; i < player.getInventory().size(); i++) {
+                ItemStack stack = player.getInventory().getStack(i);
                 if(stack.isEmpty()) continue;
                 if(!items.containsKey(stack.getItem())) items.put(stack.getItem(), getCount(storageList, stack));
             }
 
             PacketByteBuf buf = PacketByteBufs.create();
-            for(Map.Entry<Item, Long> entry : items.entrySet())
-                AEItemStack.fromItemStack(new ItemStack(entry.getKey())).setStackSize(entry.getValue()).writeToPacket(buf);
-            ServerPlayNetworking.send(player, new Identifier("ae2wtlib", "restock_amounts"), buf);
+            for(Map.Entry<Item, Long> entry : items.entrySet()) {
+                AEItemStack stack = AEItemStack.fromItemStack(new ItemStack(entry.getKey()));
+                if(stack == null) continue;
+                stack.setStackSize(entry.getValue());
+                stack.writeToPacket(buf);
+            }
+            ServerPlayNetworking.send(player, new Identifier(ae2wtlib.MOD_NAME, "restock_amounts"), buf);
         } catch(NullPointerException ignored) {}
     }
 
-    private long getCount(IItemList<IAEItemStack> storageList, ItemStack stack) {
+    private long getCount(IAEStackList<IAEItemStack> storageList, ItemStack stack) {
         IAEItemStack aeStack = storageList.findPrecise(AEItemStack.fromItemStack(stack));
         return aeStack == null ? 0 : aeStack.getStackSize();
     }
