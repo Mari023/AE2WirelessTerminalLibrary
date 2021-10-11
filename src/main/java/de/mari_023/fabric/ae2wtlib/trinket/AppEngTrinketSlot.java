@@ -3,22 +3,24 @@ package de.mari_023.fabric.ae2wtlib.trinket;
 import appeng.container.slot.AppEngSlot;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 public class AppEngTrinketSlot extends AppEngSlot {
 
     public boolean keepVisible = false;
-    public String group, slot;
+    public final String group;
+    public final String slot;
     public final boolean locked;
 
-    public AppEngTrinketSlot(FixedTrinketInv inv, int invSlot, int x, int y, String group, String slot, boolean locked) {
-        super(inv, invSlot/*, x, y*/);
+    public AppEngTrinketSlot(FixedTrinketInv inv, int invSlot, String group, String slot, boolean locked) {
+        super(inv, invSlot);
         this.group = group;
         this.slot = slot;
         this.locked = locked;
     }
 
     @Override
-    public boolean canInsert(ItemStack stack) {
+    public boolean canInsert(@NotNull ItemStack stack) {
         return !locked && super.canInsert(stack);
     }
 
@@ -26,7 +28,7 @@ public class AppEngTrinketSlot extends AppEngSlot {
         return !locked && super.canTakeItems(player);
     }
 
-    public ItemStack takeStack(int amount) {
+    public @NotNull ItemStack takeStack(int amount) {
         return locked ? ItemStack.EMPTY : super.takeStack(amount);
     }
 }

@@ -5,6 +5,7 @@ import appeng.api.networking.security.IActionHost;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.me.helpers.PlayerSource;
 import appeng.util.item.AEItemStack;
+import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.wct.CraftingTerminalHandler;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -58,21 +59,19 @@ public abstract class Restock {
         CraftingTerminalHandler CTHandler = CraftingTerminalHandler.getCraftingTerminalHandler(playerEntity);
         if(!CTHandler.inRange() || !ItemWT.getBoolean(CTHandler.getCraftingTerminal(), "restock") || CTHandler.getItemStorageChannel() == null)
             return;
-        try {
-            int toAdd = getMaxCount() - getCount();
-            if(toAdd == 0) return;
-            ItemStack request = copy();
-            request.setCount(toAdd);
-            IAEItemStack stack = CTHandler.getItemStorageChannel().extractItems(AEItemStack.fromItemStack(request), Actionable.MODULATE, new PlayerSource(playerEntity, (IActionHost) CTHandler.getSecurityStation()));
-            if(stack == null) return;
-            ItemStack extraction = stack.createItemStack();
-            int extractedItems = 0;
-            if(extraction != null && !extraction.isEmpty()) extractedItems = extraction.getCount();
-            setCount(getCount() + extractedItems);
-            PacketByteBuf buf = PacketByteBufs.create();
-            buf.writeInt(playerEntity.inventory.method_7371((ItemStack) (Object) this));
-            buf.writeInt(getCount());
-            ServerPlayNetworking.send((ServerPlayerEntity) playerEntity, new Identifier("ae2wtlib", "update_restock"), buf);
-        } catch(NullPointerException ignored) {}
+        int toAdd = getMaxCount() - getCount();
+        if(toAdd == 0) return;
+        ItemStack request = copy();
+        request.setCount(toAdd);
+        IAEItemStack stack = CTHandler.getItemStorageChannel().extractItems(AEItemStack.fromItemStack(request), Actionable.MODULATE, new PlayerSource(playerEntity, (IActionHost) CTHandler.getSecurityStation()));
+        if(stack == null) return;
+        ItemStack extraction = stack.createItemStack();
+        int extractedItems = 0;
+        if(extraction != null && !extraction.isEmpty()) extractedItems = extraction.getCount();
+        setCount(getCount() + extractedItems);
+        PacketByteBuf buf = PacketByteBufs.create();
+        buf.writeInt(playerEntity.inventory.method_7371((ItemStack) (Object) this));
+        buf.writeInt(getCount());
+        ServerPlayNetworking.send((ServerPlayerEntity) playerEntity, new Identifier(ae2wtlib.MOD_NAME, "update_restock"), buf);
     }
 }

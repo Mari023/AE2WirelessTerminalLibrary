@@ -9,6 +9,7 @@ import appeng.client.gui.widgets.ActionButton;
 import appeng.client.gui.widgets.TabButton;
 import appeng.container.SlotSemantic;
 import appeng.core.localization.GuiText;
+import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import de.mari_023.fabric.ae2wtlib.wut.CycleTerminalButton;
 import de.mari_023.fabric.ae2wtlib.wut.IUniversalTerminalCapable;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -77,28 +78,28 @@ public class WPTScreen extends ItemTerminalScreen<WPTContainer> implements IUniv
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeString("PatternTerminal.CraftMode");
         buf.writeByte(mode);
-        ClientPlayNetworking.send(new Identifier("ae2wtlib", "general"), buf);
+        ClientPlayNetworking.send(new Identifier(ae2wtlib.MOD_NAME, "general"), buf);
     }
 
     private void toggleSubstitutions(byte mode) {
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeString("PatternTerminal.Substitute");
         buf.writeByte(mode);
-        ClientPlayNetworking.send(new Identifier("ae2wtlib", "general"), buf);
+        ClientPlayNetworking.send(new Identifier(ae2wtlib.MOD_NAME, "general"), buf);
     }
 
     private void encode() {
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeString("PatternTerminal.Encode");
         buf.writeByte(0);
-        ClientPlayNetworking.send(new Identifier("ae2wtlib", "general"), buf);
+        ClientPlayNetworking.send(new Identifier(ae2wtlib.MOD_NAME, "general"), buf);
     }
 
     private void clear() {
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeString("PatternTerminal.Clear");
         buf.writeByte(0);
-        ClientPlayNetworking.send(new Identifier("ae2wtlib", "general"), buf);
+        ClientPlayNetworking.send(new Identifier(ae2wtlib.MOD_NAME, "general"), buf);
     }
 
     protected void updateBeforeRender() {

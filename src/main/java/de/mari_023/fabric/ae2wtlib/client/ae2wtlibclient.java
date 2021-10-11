@@ -1,13 +1,8 @@
 package de.mari_023.fabric.ae2wtlib.client;
 
-import appeng.container.me.crafting.WirelessCraftConfirmContainer;
-import appeng.container.me.crafting.WirelessCraftingStatusContainer;
 import appeng.util.item.AEItemStack;
+import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import de.mari_023.fabric.ae2wtlib.ae2wtlibConfig;
-import de.mari_023.fabric.ae2wtlib.util.WirelessCraftAmountContainer;
-import de.mari_023.fabric.ae2wtlib.util.WirelessCraftAmountScreen;
-import de.mari_023.fabric.ae2wtlib.util.WirelessCraftConfirmScreen;
-import de.mari_023.fabric.ae2wtlib.util.WirelessCraftingStatusScreen;
 import de.mari_023.fabric.ae2wtlib.wct.CraftingTerminalHandler;
 import de.mari_023.fabric.ae2wtlib.wct.WCTContainer;
 import de.mari_023.fabric.ae2wtlib.wct.WCTScreen;
@@ -26,10 +21,10 @@ import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.options.KeyBinding;
+import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
@@ -44,41 +39,36 @@ public class ae2wtlibclient implements ClientModInitializer {
         ScreenRegistry.register(WCTContainer.TYPE, WCTScreen::new);
         ScreenRegistry.register(WPTContainer.TYPE, WPTScreen::new);
         ScreenRegistry.register(WITContainer.TYPE, WITScreen::new);
-        ScreenRegistry.register(WirelessCraftingStatusContainer.TYPE, WirelessCraftingStatusScreen::new);
-        ScreenRegistry.register(WirelessCraftAmountContainer.TYPE, WirelessCraftAmountScreen::new);
-        ScreenRegistry.register(WirelessCraftConfirmContainer.TYPE, WirelessCraftConfirmScreen::new);
 
-        ClientPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "interface_terminal"), (client, handler, buf, responseSender) -> {
+        ClientPlayNetworking.registerGlobalReceiver(new Identifier(ae2wtlib.MOD_NAME, "interface_terminal"), (client, handler, buf, responseSender) -> {
             buf.retain();
             client.execute(() -> {
                 if(client.player == null) return;
 
                 final Screen screen = MinecraftClient.getInstance().currentScreen;
                 if(screen instanceof WITScreen) {
-                    CompoundTag tag = buf.readCompoundTag();
+                    NbtCompound tag = buf.readNbt();
                     if(tag != null)
                         ((WITScreen) screen).postUpdate(false, tag);
                 }
                 buf.release();
             });
         });
-        ClientPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "update_restock"), (client, handler, buf, responseSender) -> {
+        ClientPlayNetworking.registerGlobalReceiver(new Identifier(ae2wtlib.MOD_NAME, "update_restock"), (client, handler, buf, responseSender) -> {
             buf.retain();
             client.execute(() -> {
                 if(client.player == null) return;
-                int slot = buf.readInt();
-                int count = buf.readInt();
-                client.player.inventory.getStack(slot).setCount(count);
+                client.player.inventory.getStack(buf.readInt()).setCount(buf.readInt());
                 buf.release();
             });
         });
-        ClientPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "update_wut"), (client, handler, buf, responseSender) -> {
+        ClientPlayNetworking.registerGlobalReceiver(new Identifier(ae2wtlib.MOD_NAME, "update_wut"), (client, handler, buf, responseSender) -> {
             buf.retain();
             client.execute(() -> {
                 if(client.player == null) return;
                 int slot = buf.readInt();
                 ItemStack is;
-                CompoundTag tag = buf.readCompoundTag();
+                NbtCompound tag = buf.readNbt();
                 if(slot >= 100 && slot < 200 && ae2wtlibConfig.INSTANCE.allowTrinket())
                     is = TrinketsApi.getTrinketsInventory(client.player).getStack(slot - 100);
                 else is = client.player.inventory.getStack(slot);
@@ -87,7 +77,7 @@ public class ae2wtlibclient implements ClientModInitializer {
                 CraftingTerminalHandler.getCraftingTerminalHandler(client.player).invalidateCache();
             });
         });
-        ClientPlayNetworking.registerGlobalReceiver(new Identifier("ae2wtlib", "restock_amounts"), (client, handler, buf, responseSender) -> {
+        ClientPlayNetworking.registerGlobalReceiver(new Identifier(ae2wtlib.MOD_NAME, "restock_amounts"), (client, handler, buf, responseSender) -> {
             buf.retain();
             client.execute(() -> {
                 if(client.player == null) return;
@@ -121,7 +111,7 @@ public class ae2wtlibclient implements ClientModInitializer {
         while(binding.wasPressed()) {
             PacketByteBuf buf = PacketByteBufs.create();
             buf.writeString(type);
-            ClientPlayNetworking.send(new Identifier("ae2wtlib", "hotkey"), buf);
+            ClientPlayNetworking.send(new Identifier(ae2wtlib.MOD_NAME, "hotkey"), buf);
         }
     }
 }

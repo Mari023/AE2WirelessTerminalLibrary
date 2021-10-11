@@ -8,6 +8,7 @@ import appeng.client.gui.style.StyleManager;
 import appeng.client.gui.widgets.ActionButton;
 import appeng.client.gui.widgets.IconButton;
 import com.mojang.blaze3d.platform.GlStateManager;
+import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import de.mari_023.fabric.ae2wtlib.ae2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.mixin.ScreenMixin;
 import de.mari_023.fabric.ae2wtlib.trinket.AppEngTrinketSlot;
@@ -72,7 +73,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
         deleteButton.setMessage(new TranslatableText("gui.ae2wtlib.emptytrash").append("\n").append(new TranslatableText("gui.ae2wtlib.emptytrash.desc")));
         widgets.add("emptyTrash", deleteButton);
 
-        magnetCardToggleButton = new ItemButton(btn -> setMagnetMode(), new Identifier("ae2wtlib", "textures/magnet_card.png"));
+        magnetCardToggleButton = new ItemButton(btn -> setMagnetMode(), new Identifier(ae2wtlib.MOD_NAME, "textures/magnet_card.png"));
         magnetCardToggleButton.setHalfSize(true);
         widgets.add("magnetCardToggleButton", magnetCardToggleButton);
         resetMagnetSettings();
@@ -154,7 +155,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
             if(!(s.getSlotGroup() == TrinketsClient.slotGroup || !(s.getSlotGroup() == TrinketsClient.lastEquipped && TrinketsClient.displayEquipped > 0)))
                 renderSlot(matrices, ts, s, mouseX, mouseY);
         }
-        //Redraw only the active group slots so they're always on top
+        //Redraw only the active group slots, so they're always on top
         trinketOffset = -1;
         for(int i = 0; i < handler.slots.size(); i++) {
             if(!(handler.slots.get(i) instanceof AppEngTrinketSlot)) continue;
@@ -171,7 +172,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeString("CraftingTerminal.Delete");
         buf.writeBoolean(false);
-        ClientPlayNetworking.send(new Identifier("ae2wtlib", "general"), buf);
+        ClientPlayNetworking.send(new Identifier(ae2wtlib.MOD_NAME, "general"), buf);
     }
 
     private MagnetSettings magnetSettings = null;
@@ -200,7 +201,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeString("CraftingTerminal.SetMagnetMode");
         buf.writeByte(magnetSettings.magnetMode.getId());
-        ClientPlayNetworking.send(new Identifier("ae2wtlib", "general"), buf);
+        ClientPlayNetworking.send(new Identifier(ae2wtlib.MOD_NAME, "general"), buf);
     }
 
     private void setMagnetModeText() {

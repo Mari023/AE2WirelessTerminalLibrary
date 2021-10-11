@@ -24,6 +24,7 @@ import appeng.util.item.AEItemStack;
 import appeng.util.prioritylist.IPartitionList;
 import com.google.common.base.Preconditions;
 import com.mojang.datafixers.util.Pair;
+import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import de.mari_023.fabric.ae2wtlib.wpt.WPTContainer;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -86,11 +87,11 @@ public class REIRecipePacket {
     }
 
     public void send() {
-        ClientPlayNetworking.send(new Identifier("ae2wtlib", "rei_recipe"), data);
+        ClientPlayNetworking.send(new Identifier(ae2wtlib.MOD_NAME, "rei_recipe"), data);
     }
 
     /**
-     * Incomming Packets
+     * Incoming Packets
      *
      * @param buf    the packets buffer, needs to be retained and released
      * @param player the player who sent the package
@@ -223,7 +224,7 @@ public class REIRecipePacket {
      * higher than 3. ingredients.
      */
     private DefaultedList<Ingredient> ensure3by3CraftingMatrix(Recipe<?> recipe) {
-        DefaultedList<Ingredient> ingredients = recipe.getPreviewInputs();
+        DefaultedList<Ingredient> ingredients = recipe.getIngredients();
         DefaultedList<Ingredient> expandedIngredients = DefaultedList.ofSize(9, Ingredient.EMPTY);
 
         Preconditions.checkArgument(ingredients.size() <= 9);
@@ -266,8 +267,7 @@ public class REIRecipePacket {
      * Finds the first matching itemstack with the highest stored amount.
      */
     private IAEItemStack findBestMatchingItemStack(Ingredient ingredients, IPartitionList<IAEItemStack> filter, IMEMonitor<IAEItemStack> storage, IContainerCraftingPacket cct) {
-        Stream<AEItemStack> stacks = Arrays.stream(getMatchingStacks(ingredients)).map(AEItemStack::fromItemStack).filter(r -> r != null && (filter == null || filter.isListed(r)));
-        return getMostStored(stacks, storage, cct);
+        return getMostStored(Arrays.stream(getMatchingStacks(ingredients)).map(AEItemStack::fromItemStack).filter(r -> r != null && (filter == null || filter.isListed(r))), storage, cct);
     }
 
     /**
@@ -276,8 +276,7 @@ public class REIRecipePacket {
      * As additional condition, it sorts by the stored amount to return the one with the highest stored amount.
      */
     private IAEItemStack findBestMatchingPattern(Ingredient ingredients, IPartitionList<IAEItemStack> filter, ICraftingGrid crafting, IMEMonitor<IAEItemStack> storage, IContainerCraftingPacket cct) {
-        Stream<IAEItemStack> stacks = Arrays.stream(getMatchingStacks(ingredients)).map(AEItemStack::fromItemStack).filter(r -> r != null && (filter == null || filter.isListed(r))).map(s -> s.setCraftable(!crafting.getCraftingFor(s, null, 0, null).isEmpty())).filter(IAEItemStack::isCraftable);
-        return getMostStored(stacks, storage, cct);
+        return getMostStored(Arrays.stream(getMatchingStacks(ingredients)).map(AEItemStack::fromItemStack).filter(r -> r != null && (filter == null || filter.isListed(r))).map(s -> s.setCraftable(!crafting.getCraftingFor(s, null, 0, null).isEmpty())).filter(IAEItemStack::isCraftable), storage, cct);
     }
 
     /**
@@ -293,14 +292,11 @@ public class REIRecipePacket {
     }
 
     private void handleProcessing(ScreenHandler con, IContainerCraftingPacket cct, Recipe<?> recipe) {
-        if(con instanceof WPTContainer) {
-            WPTContainer patternTerm = (WPTContainer) con;
-            if(!patternTerm.craftingMode) {
-                final FixedItemInv output = cct.getInventoryByName("output");
-                ItemHandlerUtil.setStackInSlot(output, 0, recipe.getOutput());
-                ItemHandlerUtil.setStackInSlot(output, 1, ItemStack.EMPTY);
-                ItemHandlerUtil.setStackInSlot(output, 2, ItemStack.EMPTY);
-            }
+        if(con instanceof WPTContainer && !((WPTContainer) con).craftingMode) {
+            final FixedItemInv output = cct.getInventoryByName("output");
+            ItemHandlerUtil.setStackInSlot(output, 0, recipe.getOutput());
+            ItemHandlerUtil.setStackInSlot(output, 1, ItemStack.EMPTY);
+            ItemHandlerUtil.setStackInSlot(output, 2, ItemStack.EMPTY);
         }
     }
 }

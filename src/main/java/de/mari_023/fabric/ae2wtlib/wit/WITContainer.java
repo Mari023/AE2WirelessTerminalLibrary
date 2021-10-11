@@ -3,16 +3,13 @@ package de.mari_023.fabric.ae2wtlib.wit;
 import alexiil.mc.lib.attributes.item.FixedItemInv;
 import alexiil.mc.lib.attributes.item.LimitedFixedItemInv;
 import alexiil.mc.lib.attributes.item.SingleItemSlot;
-import appeng.api.config.Actionable;
-import appeng.api.config.PowerMultiplier;
-import appeng.api.config.Settings;
-import appeng.api.config.YesNo;
+import appeng.api.config.*;
 import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.security.IActionHost;
 import appeng.container.AEBaseContainer;
-import appeng.container.ContainerLocator;
 import appeng.container.SlotSemantic;
+import appeng.container.implementations.ContainerTypeBuilder;
 import appeng.container.interfaces.IInventorySlotAware;
 import appeng.container.slot.AppEngSlot;
 import appeng.core.localization.PlayerMessages;
@@ -27,17 +24,16 @@ import appeng.util.InventoryAdaptor;
 import appeng.util.helpers.ItemHandlerUtil;
 import appeng.util.inv.AdaptorFixedInv;
 import appeng.util.inv.WrapperCursorItemHandler;
+import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import de.mari_023.fabric.ae2wtlib.ae2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.terminal.FixedWTInv;
 import de.mari_023.fabric.ae2wtlib.terminal.IWTInvHolder;
-import de.mari_023.fabric.ae2wtlib.util.ContainerHelper;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -50,24 +46,14 @@ import java.util.Map;
 
 public class WITContainer extends AEBaseContainer implements IWTInvHolder {
 
-    public static ScreenHandlerType<WITContainer> TYPE;
-
-    public static final ContainerHelper<WITContainer, WITGuiObject> helper = new ContainerHelper<>(WITContainer::new, WITGuiObject.class);
-
-    public static WITContainer fromNetwork(int windowId, PlayerInventory inv, PacketByteBuf buf) {
-        return helper.fromNetwork(windowId, inv, buf);
-    }
-
-    public static boolean open(PlayerEntity player, ContainerLocator locator) {
-        return helper.open(player, locator);
-    }
+    public static final ScreenHandlerType<WITContainer> TYPE = ContainerTypeBuilder.create(WITContainer::new, WITGuiObject.class).requirePermission(SecurityPermissions.BUILD).build("wireless_interface_terminal");
 
     private final WITGuiObject witGUIObject;
     private static long autoBase = Long.MIN_VALUE;
     private final Map<IInterfaceHost, WITContainer.InvTracker> diList = new HashMap<>();
     private final Map<Long, WITContainer.InvTracker> byId = new HashMap<>();
     private IGrid grid;
-    private CompoundTag data = new CompoundTag();
+    private NbtCompound data = new NbtCompound();
 
     public WITContainer(int id, final PlayerInventory ip, final WITGuiObject anchor) {
         super(TYPE, id, ip, anchor);
@@ -76,7 +62,7 @@ public class WITContainer extends AEBaseContainer implements IWTInvHolder {
         if(isServer() && witGUIObject.getActionableNode() != null) grid = witGUIObject.getActionableNode().getGrid();
 
         final int slotIndex = ((IInventorySlotAware) witGUIObject).getInventorySlot();
-        if(slotIndex < 100) lockPlayerInventorySlot(slotIndex);
+        if(slotIndex < 100 && slotIndex != 40) lockPlayerInventorySlot(slotIndex);
         createPlayerInventorySlots(ip);
 
         final FixedWTInv fixedWITInv = new FixedWTInv(getPlayerInventory(), witGUIObject.getItemStack(), this);
@@ -91,7 +77,7 @@ public class WITContainer extends AEBaseContainer implements IWTInvHolder {
         if(isClient()) return;
         super.sendContentUpdates();
 
-        if(!witGUIObject.rangeCheck()) {
+        if(witGUIObject.notInRange()) {
             if(isValidContainer()) {
                 getPlayerInventory().player.sendSystemMessage(PlayerMessages.OutOfRange.get(), Util.NIL_UUID);
                 ((ServerPlayerEntity) getPlayerInventory().player).closeHandledScreen();
@@ -174,9 +160,9 @@ public class WITContainer extends AEBaseContainer implements IWTInvHolder {
 
         if(data.isEmpty()) return;
         PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeCompoundTag(data);
-        ServerPlayNetworking.send((ServerPlayerEntity) getPlayerInventory().player, new Identifier("ae2wtlib", "interface_terminal"), buf);
-        data = new CompoundTag();
+        buf.writeNbt(data);
+        ServerPlayNetworking.send((ServerPlayerEntity) getPlayerInventory().player, new Identifier(ae2wtlib.MOD_NAME, "interface_terminal"), buf);
+        data = new NbtCompound();
     }
 
     @Override
@@ -256,7 +242,7 @@ public class WITContainer extends AEBaseContainer implements IWTInvHolder {
         return !stack.isEmpty() && stack.getItem() instanceof EncodedPatternItem;
     }
 
-    private void regenList(final CompoundTag data) {
+    private void regenList(final NbtCompound data) {
         byId.clear();
         diList.clear();
 
@@ -295,9 +281,9 @@ public class WITContainer extends AEBaseContainer implements IWTInvHolder {
         return !ItemStack.areEqual(a, b);
     }
 
-    private void addItems(final CompoundTag data, final WITContainer.InvTracker inv, final int offset, final int length) {
+    private void addItems(final NbtCompound data, final WITContainer.InvTracker inv, final int offset, final int length) {
         final String name = '=' + Long.toString(inv.which, Character.MAX_RADIX);
-        final CompoundTag tag = data.getCompound(name);
+        final NbtCompound tag = data.getCompound(name);
 
         if(tag.isEmpty()) {
             tag.putLong("sortBy", inv.sortBy);
@@ -305,14 +291,14 @@ public class WITContainer extends AEBaseContainer implements IWTInvHolder {
         }
 
         for(int x = 0; x < length; x++) {
-            final CompoundTag itemNBT = new CompoundTag();
+            final NbtCompound itemNBT = new NbtCompound();
 
             final ItemStack is = inv.server.getInvStack(x + offset);
 
             // "update" client side.
             ItemHandlerUtil.setStackInSlot(inv.client, x + offset, is.isEmpty() ? ItemStack.EMPTY : is.copy());
 
-            if(!is.isEmpty()) is.toTag(itemNBT);
+            if(!is.isEmpty()) is.writeNbt(itemNBT);
 
             tag.put(Integer.toString(x + offset), itemNBT);
         }

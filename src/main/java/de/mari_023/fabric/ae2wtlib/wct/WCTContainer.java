@@ -5,16 +5,17 @@ import alexiil.mc.lib.attributes.item.FixedItemInv;
 import alexiil.mc.lib.attributes.item.compat.FixedInventoryVanillaWrapper;
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
+import appeng.api.config.SecurityPermissions;
 import appeng.api.networking.IGridNode;
-import appeng.api.storage.data.IAEItemStack;
-import appeng.container.ContainerLocator;
 import appeng.container.ContainerNull;
 import appeng.container.SlotSemantic;
+import appeng.container.implementations.ContainerTypeBuilder;
 import appeng.container.interfaces.IInventorySlotAware;
 import appeng.container.me.items.ItemTerminalContainer;
 import appeng.container.slot.AppEngSlot;
 import appeng.container.slot.CraftingMatrixSlot;
 import appeng.container.slot.CraftingTermSlot;
+import appeng.container.slot.DisabledSlot;
 import appeng.core.localization.PlayerMessages;
 import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.InventoryActionPacket;
@@ -32,8 +33,6 @@ import de.mari_023.fabric.ae2wtlib.terminal.IWTInvHolder;
 import de.mari_023.fabric.ae2wtlib.terminal.ae2wtlibInternalInventory;
 import de.mari_023.fabric.ae2wtlib.trinket.AppEngTrinketSlot;
 import de.mari_023.fabric.ae2wtlib.trinket.FixedTrinketInv;
-import de.mari_023.fabric.ae2wtlib.util.ContainerHelper;
-import de.mari_023.fabric.ae2wtlib.util.WirelessCraftAmountContainer;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.ItemMagnetCard;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetSettings;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
@@ -47,7 +46,6 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.screen.PlayerScreenHandler;
@@ -62,23 +60,13 @@ import java.util.List;
 
 public class WCTContainer extends ItemTerminalContainer implements IAEAppEngInventory, IContainerCraftingPacket, IWTInvHolder {
 
-    public static ScreenHandlerType<WCTContainer> TYPE;
-
-    public static final ContainerHelper<WCTContainer, WCTGuiObject> helper = new ContainerHelper<>(WCTContainer::new, WCTGuiObject.class);
-
-    public static WCTContainer fromNetwork(int windowId, PlayerInventory inv, PacketByteBuf buf) {
-        return helper.fromNetwork(windowId, inv, buf);
-    }
+    public static final ScreenHandlerType<WCTContainer> TYPE = ContainerTypeBuilder.create(WCTContainer::new, WCTGuiObject.class).requirePermission(SecurityPermissions.CRAFT).build("wireless_crafting_terminal");
 
     private final AppEngInternalInventory crafting;
     private final CraftingMatrixSlot[] craftingSlots = new CraftingMatrixSlot[9];
     private final CraftingTermSlot outputSlot;
     private Recipe<CraftingInventory> currentRecipe;
     final FixedWTInv fixedWTInv;
-
-    public static boolean open(PlayerEntity player, ContainerLocator locator) {
-        return helper.open(player, locator);
-    }
 
     private final WCTGuiObject wctGUIObject;
 
@@ -89,7 +77,7 @@ public class WCTContainer extends ItemTerminalContainer implements IAEAppEngInve
         fixedWTInv = new FixedWTInv(getPlayerInventory(), wctGUIObject.getItemStack(), this);
 
         final int slotIndex = ((IInventorySlotAware) wctGUIObject).getInventorySlot();
-        if(slotIndex < 100) lockPlayerInventorySlot(slotIndex);
+        if(slotIndex < 100 && slotIndex != 40) lockPlayerInventorySlot(slotIndex);
 
         crafting = new ae2wtlibInternalInventory(this, 9, "crafting", wctGUIObject.getItemStack());
 
@@ -127,7 +115,13 @@ public class WCTContainer extends ItemTerminalContainer implements IAEAppEngInve
             }
         }, SlotSemantic.MACHINE_CRAFTING_GRID);
 
-        SlotsWithTrinket[45] = addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.OFFHAND) {
+        if(slotIndex == 40) SlotsWithTrinket[45] = addSlot(new DisabledSlot(fixedWTInv, FixedWTInv.OFFHAND) {
+            @Environment(EnvType.CLIENT)
+            public Pair<Identifier, Identifier> getBackgroundSprite() {
+                return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, PlayerScreenHandler.EMPTY_OFFHAND_ARMOR_SLOT);
+            }
+        }, SlotSemantic.PROCESSING_RESULT);
+        else SlotsWithTrinket[45] = addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.OFFHAND) {
             @Environment(EnvType.CLIENT)
             public Pair<Identifier, Identifier> getBackgroundSprite() {
                 return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, PlayerScreenHandler.EMPTY_OFFHAND_ARMOR_SLOT);
@@ -145,7 +139,7 @@ public class WCTContainer extends ItemTerminalContainer implements IAEAppEngInve
             for(TrinketSlots.Slot slot : group.slots) {
                 boolean locked = slotIndex - 100 == i;
                 AppEngTrinketSlot ts;
-                ts = new AppEngTrinketSlot(inv, i, Integer.MIN_VALUE, 8, group.getName(), slot.getName(), locked);
+                ts = new AppEngTrinketSlot(inv, i, group.getName(), slot.getName(), locked);
                 if(j == 0 && !group.onReal) ts.keepVisible = true;
                 addSlot(ts);
                 i++;
@@ -161,7 +155,7 @@ public class WCTContainer extends ItemTerminalContainer implements IAEAppEngInve
         if(isClient()) return;
         super.sendContentUpdates();
 
-        if(!wctGUIObject.rangeCheck()) {
+        if(wctGUIObject.notInRange()) {
             if(isValidContainer()) {
                 getPlayerInventory().player.sendSystemMessage(PlayerMessages.OutOfRange.get(), Util.NIL_UUID);
                 ((ServerPlayerEntity) getPlayerInventory().player).closeHandledScreen();
@@ -211,14 +205,6 @@ public class WCTContainer extends ItemTerminalContainer implements IAEAppEngInve
         CraftingMatrixSlot slot = craftingSlots[0];
         InventoryActionPacket p = new InventoryActionPacket(InventoryAction.MOVE_REGION, slot.id, 0L);
         NetworkHandler.instance().sendToServer(p);
-    }
-
-    protected void handleNetworkInteraction(ServerPlayerEntity player, IAEItemStack stack, InventoryAction action) {
-        if(action != InventoryAction.AUTO_CRAFT) {
-            super.handleNetworkInteraction(player, stack, action);
-            return;
-        }
-        WirelessCraftAmountContainer.open(player, getLocator(), stack, 1);
     }
 
     @Override

@@ -38,7 +38,7 @@
     "fabricloader": ">=0.11.3",
     "fabric": "*",
     "minecraft": "1.16.5",
-    "appliedenergistics2": "8.4.0-alpha.2"
+    "appliedenergistics2": "8.4.0-alpha.3"
   },
   "suggests": {
     "minemenufabric": "*",

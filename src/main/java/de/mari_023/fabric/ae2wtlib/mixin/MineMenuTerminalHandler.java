@@ -1,6 +1,7 @@
 package de.mari_023.fabric.ae2wtlib.mixin;
 
 import com.google.gson.JsonObject;
+import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import me.ultrablacklinux.minemenufabric.client.screen.MineMenuSelectScreen;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -20,11 +21,11 @@ public class MineMenuTerminalHandler {
 
     @Inject(method = "handleTypes(Lcom/google/gson/JsonObject;)V", at = @At(value = "INVOKE"))
     void handleTypes(JsonObject value, CallbackInfo ci) {
-        String type = value.get("type").getAsString();
-        if(!type.equals("ae2wtlib.open")) return;
-        PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeString(value.get("data").getAsString());
-        ClientPlayNetworking.send(new Identifier("ae2wtlib", "hotkey"), buf);
-        MinecraftClient.getInstance().openScreen(null);
+        if(value.get("type").getAsString().equals("ae2wtlib.open")) {
+            PacketByteBuf buf = PacketByteBufs.create();
+            buf.writeString(value.get("data").getAsString());
+            ClientPlayNetworking.send(new Identifier(ae2wtlib.MOD_NAME, "hotkey"), buf);
+            MinecraftClient.getInstance().openScreen(null);
+        }
     }
 }

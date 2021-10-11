@@ -26,12 +26,12 @@ import com.google.common.collect.HashMultimap;
 import de.mari_023.fabric.ae2wtlib.wut.CycleTerminalButton;
 import de.mari_023.fabric.ae2wtlib.wut.IUniversalTerminalCapable;
 import net.minecraft.client.util.InputUtil;
-import net.minecraft.client.util.Rect2i;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.util.math.Rect2i;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.text.Text;
@@ -101,7 +101,7 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
     private static final Rect2i ROW_TEXT_TOP_BBOX = new Rect2i(0, 17, GUI_WIDTH, ROW_HEIGHT);
     private static final Rect2i ROW_TEXT_MIDDLE_BBOX = new Rect2i(0, 53, GUI_WIDTH, ROW_HEIGHT);
     private static final Rect2i ROW_TEXT_BOTTOM_BBOX = new Rect2i(0, 89, GUI_WIDTH, ROW_HEIGHT);
-    // Background for a inventory row in the scroll-box.
+    // Background for an inventory row in the scroll-box.
     // Spans across the whole texture including the right and left borders including the scrollbar.
     // Covers separate textures for the top, middle and bottoms rows for more customization.
     private static final Rect2i ROW_INVENTORY_TOP_BBOX = new Rect2i(0, 35, GUI_WIDTH, ROW_HEIGHT);
@@ -323,7 +323,7 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
         return super.keyPressed(keyCode, scanCode, p_keyPressed_3_);
     }
 
-    public void postUpdate(boolean fullUpdate, final CompoundTag in) {
+    public void postUpdate(boolean fullUpdate, final NbtCompound in) {
         if(fullUpdate) {
             byId.clear();
             refreshList = true;
@@ -333,14 +333,14 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
             if(key.startsWith("=")) {
                 try {
                     final long id = Long.parseLong(key.substring(1), Character.MAX_RADIX);
-                    final CompoundTag invData = in.getCompound(key);
+                    final NbtCompound invData = in.getCompound(key);
                     Text un = Text.Serializer.fromJson(invData.getString("un"));
                     final InterfaceRecord current = getById(id, invData.getLong("sortBy"), un);
 
                     for(int x = 0; x < current.getInventory().getSlotCount(); x++) {
                         final String which = Integer.toString(x);
                         if(invData.contains(which)) {
-                            current.getInventory().setInvStack(x, ItemStack.fromTag(invData.getCompound(which)), Simulation.ACTION);
+                            current.getInventory().setInvStack(x, ItemStack.fromNbt(invData.getCompound(which)), Simulation.ACTION);
                         }
                     }
                 } catch(final NumberFormatException ignored) {}
@@ -421,17 +421,17 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
     private boolean itemStackMatchesSearchTerm(final ItemStack itemStack, final String searchTerm) {
         if(itemStack.isEmpty()) return false;
 
-        final CompoundTag encodedValue = itemStack.getTag();
+        final NbtCompound encodedValue = itemStack.getTag();
 
         if(encodedValue == null) return false;
 
-        // Potential later use to filter by input
+        // Potential later used to filter by input
         // ListNBT inTag = encodedValue.getTagList( "in", 10 );
-        final ListTag outTag = encodedValue.getList("out", 10);
+        final NbtList outTag = encodedValue.getList("out", 10);
 
         for(int i = 0; i < outTag.size(); i++) {
 
-            final ItemStack parsedItemStack = ItemStack.fromTag(outTag.getCompound(i));
+            final ItemStack parsedItemStack = ItemStack.fromNbt(outTag.getCompound(i));
             if(!parsedItemStack.isEmpty()) {
                 final String displayName = Platform.getItemDisplayName(Api.instance().storage().getStorageChannel(IItemStorageChannel.class).createStack(parsedItemStack)).getString().toLowerCase();
                 if(displayName.contains(searchTerm)) return true;
@@ -454,7 +454,8 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
 
         final Set<Object> cache = cachedSearches.get(searchTerm);
 
-        if(cache.isEmpty() && searchTerm.length() > 1) cache.addAll(getCacheForSearchTerm(searchTerm.substring(0, searchTerm.length() - 1)));
+        if(cache.isEmpty() && searchTerm.length() > 1)
+            cache.addAll(getCacheForSearchTerm(searchTerm.substring(0, searchTerm.length() - 1)));
 
         return cache;
     }

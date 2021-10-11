@@ -3,6 +3,7 @@ package de.mari_023.fabric.ae2wtlib.wut.recipe;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
+import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.Identifier;
@@ -10,7 +11,7 @@ import net.minecraft.util.Identifier;
 public class CombineSerializer extends Serializer<Combine> {
     public static final CombineSerializer INSTANCE = new CombineSerializer();
 
-    public static final Identifier ID = new Identifier("ae2wtlib", "combine");
+    public static final Identifier ID = new Identifier(ae2wtlib.MOD_NAME, "combine");
 
     @Override
     public Combine read(Identifier id, JsonObject json) {

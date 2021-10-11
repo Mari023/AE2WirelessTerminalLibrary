@@ -10,6 +10,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
@@ -71,7 +72,7 @@ public class ItemButton extends ButtonWidget implements ITooltip {
     }
 
     @Override
-    public List<Text> getTooltipMessage() {
+    public @NotNull List<Text> getTooltipMessage() {
         return Collections.singletonList(getMessage());
     }
 

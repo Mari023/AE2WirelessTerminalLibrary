@@ -103,22 +103,9 @@ dependencies {
     modApi("me.shedaniel.cloth:cloth-config-fabric:4.11.14")//dependency for minemenu
     modImplementation "dev.emi:trinkets:${project.trinkets_version}"
     modRuntime "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:2.8.3"
-    modApi include("dev.technici4n:FastTransferLib:${project.ftl_version}", {
+    modApi("dev.technici4n:FastTransferLib:${project.ftl_version}", {
         exclude group: "dev.technici4n"
     })
-}
-
-processResources {
-    inputs.property "version", project.version
-
-    from(sourceSets.main.resources.srcDirs) {
-        include "fabric.mod.json"
-        expand "version": project.version
-    }
-
-    from(sourceSets.main.resources.srcDirs) {
-        exclude "fabric.mod.json"
-    }
 }
 
 // ensure that the encoding is set to UTF-8, no matter what the system default is

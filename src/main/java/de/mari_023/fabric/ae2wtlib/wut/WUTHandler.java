@@ -1,8 +1,11 @@
 package de.mari_023.fabric.ae2wtlib.wut;
 
+import appeng.api.features.IWirelessTermHandler;
 import appeng.container.ContainerLocator;
+import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import de.mari_023.fabric.ae2wtlib.ae2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
+import de.mari_023.fabric.ae2wtlib.terminal.WTGuiObject;
 import de.mari_023.fabric.ae2wtlib.wct.ItemWCT;
 import de.mari_023.fabric.ae2wtlib.wit.ItemWIT;
 import de.mari_023.fabric.ae2wtlib.wpt.ItemWPT;
@@ -11,7 +14,7 @@ import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.LiteralText;
@@ -69,11 +72,11 @@ public class WUTHandler {
         updateClientTerminal((ServerPlayerEntity) playerEntity, slot, itemStack.getTag());
     }
 
-    public static void updateClientTerminal(ServerPlayerEntity playerEntity, int slot, CompoundTag tag) {
+    public static void updateClientTerminal(ServerPlayerEntity playerEntity, int slot, NbtCompound tag) {
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeInt(slot);
-        buf.writeCompoundTag(tag);
-        ServerPlayNetworking.send(playerEntity, new Identifier("ae2wtlib", "update_wut"), buf);
+        buf.writeNbt(tag);
+        ServerPlayNetworking.send(playerEntity, new Identifier(ae2wtlib.MOD_NAME, "update_wut"), buf);
     }
 
     public static void open(final PlayerEntity player, final ContainerLocator locator) {
@@ -89,21 +92,26 @@ public class WUTHandler {
             player.sendMessage(new LiteralText("This terminal does not contain any other Terminals"), false);
             return;
         }
-        containerOpener terminal = wirelessTerminals.get(currentTerminal);
+        containerOpener terminal = wirelessTerminals.get(currentTerminal).containerOpener;
         terminal.tryOpen(player, locator, is);
     }
 
-    private static final HashMap<String, containerOpener> wirelessTerminals = new HashMap<>();
+    public static final HashMap<String, WTDefinition> wirelessTerminals = new HashMap<>();
     public static final List<String> terminalNames = new ArrayList<>();
 
-    public static void addTerminal(String Name, containerOpener open) {
+    public static void addTerminal(String Name, containerOpener open, WTGUIObjectFactory wtguiObjectFactory) {
         if(terminalNames.contains(Name)) return;
-        wirelessTerminals.put(Name, open);
+        wirelessTerminals.put(Name, new WTDefinition(open, wtguiObjectFactory));
         terminalNames.add(Name);
     }
 
     @FunctionalInterface
     public interface containerOpener {
         void tryOpen(PlayerEntity player, ContainerLocator locator, ItemStack stack);
+    }
+
+    @FunctionalInterface
+    public interface WTGUIObjectFactory {
+        WTGuiObject create(final IWirelessTermHandler wh, final ItemStack is, final PlayerEntity ep, int inventorySlot);
     }
 }
