@@ -56,7 +56,7 @@ abstract class RecipeTransferHandler<T extends ScreenHandler & IMenuCraftingPack
 
         if(context.isActuallyCrafting()) {
             if(canSendReference) {
-                NetworkHandler.instance().sendToServer(new JEIRecipePacket(recipeId, isCrafting()));
+                NetworkHandler.instance().sendToServer(new JEIRecipePacket(recipeId));
             } else {
                 // To avoid earlier problems of too large packets being sent that crashed the
                 // client,
@@ -90,7 +90,7 @@ abstract class RecipeTransferHandler<T extends ScreenHandler & IMenuCraftingPack
                 }
 
                 ShapedRecipe fallbackRecipe = new ShapedRecipe(recipeId, "", 3, 3, flatIngredients, output);
-                NetworkHandler.instance().sendToServer(new JEIRecipePacket(fallbackRecipe, isCrafting()));
+                NetworkHandler.instance().sendToServer(new JEIRecipePacket(fallbackRecipe));
             }
         }
 
@@ -98,6 +98,4 @@ abstract class RecipeTransferHandler<T extends ScreenHandler & IMenuCraftingPack
     }
 
     protected abstract Result doTransferRecipe(T container, Display recipe, TransferHandler.Context context);
-
-    protected abstract boolean isCrafting();
 }

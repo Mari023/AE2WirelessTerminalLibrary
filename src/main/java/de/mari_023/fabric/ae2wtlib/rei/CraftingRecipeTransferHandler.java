@@ -14,9 +14,4 @@ public class CraftingRecipeTransferHandler extends RecipeTransferHandler<WCTCont
     protected Result doTransferRecipe(WCTContainer container, Display recipe, Context context) {
         return null;
     }
-
-    @Override
-    protected boolean isCrafting() {
-        return true;
-    }
 }

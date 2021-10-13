@@ -22,9 +22,4 @@ public class PatternRecipeTransferHandler extends RecipeTransferHandler<WPTConta
         }
         return null;
     }
-
-    @Override
-    protected boolean isCrafting() {
-        return false;
-    }
 }

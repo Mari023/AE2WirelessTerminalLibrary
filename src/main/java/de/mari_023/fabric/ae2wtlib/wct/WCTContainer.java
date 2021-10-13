@@ -19,7 +19,6 @@ import appeng.menu.slot.AppEngSlot;
 import appeng.menu.slot.CraftingMatrixSlot;
 import appeng.menu.slot.CraftingTermSlot;
 import appeng.menu.slot.DisabledSlot;
-import appeng.parts.reporting.CraftingTerminalPart;
 import appeng.util.inv.AppEngInternalInventory;
 import appeng.util.inv.InternalInventoryHost;
 import com.google.common.base.Preconditions;
@@ -193,13 +192,13 @@ public class WCTContainer extends ItemTerminalMenu implements IMenuCraftingPacke
     }
 
     @Override
-    public InternalInventory getSubInventory(Identifier id) {
-        return id.equals(CraftingTerminalPart.INV_CRAFTING) ? crafting : null;
+    public IGridNode getNetworkNode() {
+        return wctGUIObject.getActionableNode();
     }
 
     @Override
-    public IGridNode getNetworkNode() {
-        return wctGUIObject.getActionableNode();
+    public InternalInventory getCraftingMatrix() {
+        return crafting;
     }
 
     @Override

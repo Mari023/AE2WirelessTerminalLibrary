@@ -33,8 +33,8 @@ import appeng.util.Platform;
 import appeng.util.inv.CarriedItemInventory;
 import appeng.util.inv.PlayerInternalInventory;
 import appeng.util.item.AEItemStack;
-import de.mari_023.fabric.ae2wtlib.ae2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.ae2wtlib;
+import de.mari_023.fabric.ae2wtlib.ae2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.terminal.FixedWTInv;
 import de.mari_023.fabric.ae2wtlib.terminal.IWTInvHolder;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
@@ -403,8 +403,8 @@ public class WPTContainer extends ItemTerminalMenu implements IOptionalSlotHost,
     }
 
     @Override
-    public InternalInventory getSubInventory(Identifier id) {
-        return getPatternTerminal().getSubInventory(id);
+    public InternalInventory getCraftingMatrix() {
+        return getPatternTerminal().getSubInventory(PatternTerminalPart.INV_CRAFTING);
     }
 
     @Override
