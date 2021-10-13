@@ -18,6 +18,7 @@ import appeng.core.AppEngClient;
 import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.InventoryActionPacket;
 import appeng.helpers.InventoryAction;
+import appeng.helpers.iface.DualityPatternProvider;
 import appeng.util.Platform;
 import com.google.common.collect.HashMultimap;
 import de.mari_023.fabric.ae2wtlib.mixin.ScreenMixin;
@@ -128,10 +129,8 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
 
         // Add a terminalstyle button
         TerminalStyle terminalStyle = AEConfig.instance().getTerminalStyle();
-        addToLeftToolbar(
-                new SettingToggleButton<>(Settings.TERMINAL_STYLE, terminalStyle, this::toggleTerminalStyle));
-        if(getScreenHandler().isWUT())
-            widgets.add("cycleTerminal", new CycleTerminalButton(btn -> cycleTerminal()));
+        addToLeftToolbar(new SettingToggleButton<>(Settings.TERMINAL_STYLE, terminalStyle, this::toggleTerminalStyle));
+        if(getScreenHandler().isWUT()) widgets.add("cycleTerminal", new CycleTerminalButton(btn -> cycleTerminal()));
     }
 
     @Override
@@ -178,7 +177,9 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
                     }
                 } else if(lineObj instanceof String name) {
                     final int rows = byName.get(name).size();
-                    if(rows > 1) name = name + " (" + rows + ')';
+                    if(rows > 1) {
+                        name = name + " (" + rows + ')';
+                    }
 
                     name = textRenderer.trimToWidth(name, TEXT_MAX_WIDTH, true);
 
@@ -191,7 +192,9 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
 
     @Override
     public boolean mouseClicked(final double xCoord, final double yCoord, final int btn) {
-        if(searchField.mouseClicked(xCoord, yCoord, btn)) return true;
+        if(searchField.mouseClicked(xCoord, yCoord, btn)) {
+            return true;
+        }
 
         if(btn == 1 && searchField.isMouseOver(xCoord, yCoord)) {
             searchField.setText("");
@@ -203,34 +206,40 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
 
     @Override
     protected void onMouseClick(Slot slot, int slotIdx, int mouseButton, SlotActionType clickType) {
-        if(!(slot instanceof InterfaceSlot machineSlot)) {
-            super.onMouseClick(slot, slotIdx, mouseButton, clickType);
+        if(slot instanceof InterfaceSlot) {
+            InventoryAction action = null;
+
+            switch(clickType) {
+                case PICKUP: // pickup / set-down.
+                    action = mouseButton == 1 ? InventoryAction.SPLIT_OR_PLACE_SINGLE
+                            : InventoryAction.PICKUP_OR_SET_DOWN;
+                    break;
+                case QUICK_MOVE:
+                    action = mouseButton == 1 ? InventoryAction.PICKUP_SINGLE : InventoryAction.SHIFT_CLICK;
+                    break;
+
+                case CLONE: // creative dupe:
+                    if(getPlayer().getAbilities().creativeMode) {
+                        action = InventoryAction.CREATIVE_DUPLICATE;
+                    }
+
+                    break;
+
+                default:
+                case THROW: // drop item:
+            }
+
+            if(action != null) {
+                InterfaceSlot machineSlot = (InterfaceSlot) slot;
+                final InventoryActionPacket p = new InventoryActionPacket(action, machineSlot.getIndex(),
+                        machineSlot.getMachineInv().getServerId());
+                NetworkHandler.instance().sendToServer(p);
+            }
+
             return;
         }
 
-        InventoryAction action = null;
-
-        switch(clickType) {
-            case PICKUP: // pickup / set-down.
-                action = mouseButton == 1 ? InventoryAction.SPLIT_OR_PLACE_SINGLE : InventoryAction.PICKUP_OR_SET_DOWN;
-                break;
-            case QUICK_MOVE:
-                action = mouseButton == 1 ? InventoryAction.PICKUP_SINGLE : InventoryAction.SHIFT_CLICK;
-                break;
-
-            case CLONE: // creative dupe:
-                if(getPlayer().getAbilities().creativeMode) action = InventoryAction.CREATIVE_DUPLICATE;
-
-                break;
-
-            default:
-            case THROW: // drop item:
-        }
-
-        if(action == null) return;
-
-        final InventoryActionPacket p = new InventoryActionPacket(action, slotIdx/*getSlotIndex(machineSlot)*/, machineSlot.getMachineInv().getServerId());
-        NetworkHandler.instance().sendToServer(p);
+        super.onMouseClick(slot, slotIdx, mouseButton, clickType);
     }
 
     @Override
@@ -269,22 +278,34 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
         }
 
         // Draw search field.
-        if(searchField != null) searchField.render(matrixStack, mouseX, mouseY, partialTicks);
+        if(searchField != null) {
+            searchField.render(matrixStack, mouseX, mouseY, partialTicks);
+        }
     }
 
     private Rect2i selectRowBackgroundBox(boolean isInvLine, boolean firstLine, boolean lastLine) {
         if(isInvLine) {
-            if(firstLine) return ROW_INVENTORY_TOP_BBOX;
-            else if(lastLine) return ROW_INVENTORY_BOTTOM_BBOX;
-            else return ROW_INVENTORY_MIDDLE_BBOX;
-        } else if(firstLine) return ROW_TEXT_TOP_BBOX;
-        else if(lastLine) return ROW_TEXT_BOTTOM_BBOX;
-        else return ROW_TEXT_MIDDLE_BBOX;
+            if(firstLine) {
+                return ROW_INVENTORY_TOP_BBOX;
+            } else if(lastLine) {
+                return ROW_INVENTORY_BOTTOM_BBOX;
+            } else {
+                return ROW_INVENTORY_MIDDLE_BBOX;
+            }
+        } else if(firstLine) {
+            return ROW_TEXT_TOP_BBOX;
+        } else if(lastLine) {
+            return ROW_TEXT_BOTTOM_BBOX;
+        } else {
+            return ROW_TEXT_MIDDLE_BBOX;
+        }
     }
 
     @Override
     public boolean charTyped(char character, int key) {
-        if(character == ' ' && searchField.getText().isEmpty()) return true;
+        if(character == ' ' && searchField.getText().isEmpty()) {
+            return true;
+        }
         return super.charTyped(character, key);
     }
 
@@ -295,14 +316,14 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
 
         if(keyCode != GLFW.GLFW_KEY_ESCAPE) {
             if(AppEngClient.instance().isActionKey(ActionKey.TOGGLE_FOCUS, input)) {
-                searchField.setFocusUnlocked(!searchField.isFocused());
+                searchField.setTextFieldFocused(!searchField.isFocused());
                 return true;
             }
 
             // Forward keypresses to the search field
             if(searchField.isFocused()) {
                 if(keyCode == GLFW.GLFW_KEY_ENTER) {
-                    searchField.setFocusUnlocked(false);
+                    searchField.setTextFieldFocused(false);
                     return true;
                 }
 
@@ -337,7 +358,8 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
                             current.getInventory().setItemDirect(x, ItemStack.fromNbt(invData.getCompound(which)));
                         }
                     }
-                } catch(final NumberFormatException ignored) {}
+                } catch(final NumberFormatException ignored) {
+                }
             }
         }
 
@@ -364,22 +386,30 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
 
         for(final InterfaceRecord entry : byId.values()) {
             // ignore inventory if not doing a full rebuild or cache already marks it as miss.
-            if(!rebuild && !cachedSearch.contains(entry)) continue;
+            if(!rebuild && !cachedSearch.contains(entry)) {
+                continue;
+            }
 
             // Shortcut to skip any filter if search term is ""/empty
             boolean found = searchFilterLowerCase.isEmpty();
 
             // Search if the current inventory holds a pattern containing the search term.
-            if(!found) for(final ItemStack itemStack : entry.getInventory()) {
-                found = itemStackMatchesSearchTerm(itemStack, searchFilterLowerCase);
-                if(found) break;
+            if(!found) {
+                for(final ItemStack itemStack : entry.getInventory()) {
+                    found = itemStackMatchesSearchTerm(itemStack, searchFilterLowerCase);
+                    if(found) {
+                        break;
+                    }
+                }
             }
 
             // if found, filter skipped or machine name matching the search term, add it
             if(found || entry.getSearchName().contains(searchFilterLowerCase)) {
                 byName.put(entry.getDisplayName(), entry);
                 cachedSearch.add(entry);
-            } else cachedSearch.remove(entry);
+            } else {
+                cachedSearch.remove(entry);
+            }
         }
 
         names.clear();
@@ -413,13 +443,17 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
     }
 
     private boolean itemStackMatchesSearchTerm(final ItemStack itemStack, final String searchTerm) {
-        if(itemStack.isEmpty()) return false;
+        if(itemStack.isEmpty()) {
+            return false;
+        }
 
         final NbtCompound encodedValue = itemStack.getNbt();
 
-        if(encodedValue == null) return false;
+        if(encodedValue == null) {
+            return false;
+        }
 
-        // Potential later used to filter by input
+        // Potential later use to filter by input
         // ListNBT inTag = encodedValue.getTagList( "in", 10 );
         final NbtList outTag = encodedValue.getList("out", 10);
 
@@ -427,8 +461,12 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
 
             final ItemStack parsedItemStack = ItemStack.fromNbt(outTag.getCompound(i));
             if(!parsedItemStack.isEmpty()) {
-                final String displayName = Platform.getItemDisplayName(StorageChannels.items().createStack(parsedItemStack)).getString().toLowerCase();
-                if(displayName.contains(searchTerm)) return true;
+                final String displayName = Platform
+                        .getItemDisplayName(StorageChannels.items().createStack(parsedItemStack)).getString()
+                        .toLowerCase();
+                if(displayName.contains(searchTerm)) {
+                    return true;
+                }
             }
         }
         return false;
@@ -444,12 +482,15 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
      * @return a Set matching a superset of the search term
      */
     private Set<Object> getCacheForSearchTerm(final String searchTerm) {
-        if(!cachedSearches.containsKey(searchTerm)) cachedSearches.put(searchTerm, new HashSet<>());
+        if(!cachedSearches.containsKey(searchTerm)) {
+            cachedSearches.put(searchTerm, new HashSet<>());
+        }
 
         final Set<Object> cache = cachedSearches.get(searchTerm);
 
-        if(cache.isEmpty() && searchTerm.length() > 1)
+        if(cache.isEmpty() && searchTerm.length() > 1) {
             cache.addAll(getCacheForSearchTerm(searchTerm.substring(0, searchTerm.length() - 1)));
+        }
 
         return cache;
     }
@@ -480,7 +521,8 @@ public class WITScreen extends AEBaseScreen<WITContainer> implements IUniversalT
         InterfaceRecord o = byId.get(id);
 
         if(o == null) {
-            byId.put(id, o = new InterfaceRecord(id, 9, sortBy, name));
+            byId.put(id,
+                    o = new InterfaceRecord(id, DualityPatternProvider.NUMBER_OF_PATTERN_SLOTS, sortBy, name));
             refreshList = true;
         }
 

@@ -27,6 +27,7 @@ import de.mari_023.fabric.ae2wtlib.ae2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.terminal.FixedWTInv;
 import de.mari_023.fabric.ae2wtlib.terminal.IWTInvHolder;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
+import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -36,18 +37,17 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Util;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.Map;
 
 public class WITContainer extends AEBaseMenu implements IWTInvHolder {
 
     public static final ScreenHandlerType<WITContainer> TYPE = MenuTypeBuilder.create(WITContainer::new, WITGuiObject.class).requirePermission(SecurityPermissions.BUILD).build("wireless_interface_terminal");
-    private static long inventorySerial = Long.MIN_VALUE;
 
     private final WITGuiObject witGUIObject;
+    private static long inventorySerial = Long.MIN_VALUE;
     private final Map<IPatternProviderHost, InvTracker> diList = new IdentityHashMap<>();
-    private final Map<Long, WITContainer.InvTracker> byId = new HashMap<>();
+    private final Long2ObjectOpenHashMap<InvTracker> byId = new Long2ObjectOpenHashMap<>();
 
     public WITContainer(int id, final PlayerInventory ip, final WITGuiObject anchor) {
         super(TYPE, id, ip, anchor);
@@ -101,8 +101,8 @@ public class WITContainer extends AEBaseMenu implements IWTInvHolder {
         }
 
         InterfaceTerminalPacket packet;
-        if(state.total == diList.size() && !state.forceFullUpdate) packet = createIncrementalUpdate();
-        else packet = createFullUpdate(grid);
+        if(state.total != diList.size() || state.forceFullUpdate) packet = createFullUpdate(grid);
+        else packet = createIncrementalUpdate();
 
         if(packet != null) NetworkHandler.instance().sendTo(packet, (ServerPlayerEntity) getPlayerInventory().player);
     }
@@ -111,10 +111,17 @@ public class WITContainer extends AEBaseMenu implements IWTInvHolder {
     private IGrid getGrid() {
         IActionHost host = getActionHost();
         if(host != null) {
-            IGridNode agn = host.getActionableNode();
+            final IGridNode agn = host.getActionableNode();
             if(agn != null && agn.isActive()) return agn.getGrid();
         }
         return null;
+    }
+
+    private static class VisitorState {
+        // Total number of interface hosts founds
+        int total;
+        // Set to true if any visited machines were missing from diList, or had a different name
+        boolean forceFullUpdate;
     }
 
     private <T extends IPatternProviderHost> void visitInterfaceHosts(IGrid grid, Class<T> machineClass, VisitorState state) {
@@ -130,80 +137,91 @@ public class WITContainer extends AEBaseMenu implements IWTInvHolder {
     }
 
     public void doAction(ServerPlayerEntity player, InventoryAction action, int slot, long id) {
-        InvTracker inv = byId.get(id);
-        if(inv != null) {
-            if(slot >= 0 && slot < inv.server.size()) {
-                ItemStack is = inv.server.getStackInSlot(slot);
-                FilteredInternalInventory interfaceSlot = new FilteredInternalInventory(inv.server.getSlotInv(slot), new PatternSlotFilter());
-                ItemStack carried = getCursorStack();
-                ItemStack inHand;
-                ItemStack extra;
-                switch(action) {
-                    case PICKUP_OR_SET_DOWN:
-                        if(!carried.isEmpty()) {
-                            extra = interfaceSlot.getStackInSlot(0);
-                            if(extra.isEmpty()) {
-                                setCursorStack(interfaceSlot.addItems(carried));
-                            } else {
-                                extra = extra.copy();
-                                inHand = carried.copy();
-                                interfaceSlot.setItemDirect(0, ItemStack.EMPTY);
-                                setCursorStack(ItemStack.EMPTY);
-                                setCursorStack(interfaceSlot.addItems(inHand.copy()));
-                                if(carried.isEmpty()) {
-                                    setCursorStack(extra);
-                                } else {
-                                    setCursorStack(inHand);
-                                    interfaceSlot.setItemDirect(0, extra);
-                                }
-                            }
-                        } else {
-                            setCursorStack(interfaceSlot.getStackInSlot(0));
-                            interfaceSlot.setItemDirect(0, ItemStack.EMPTY);
-                        }
-                        break;
-                    case SPLIT_OR_PLACE_SINGLE:
-                        if(!carried.isEmpty()) {
-                            extra = carried.split(1);
-                            if(!extra.isEmpty()) {
-                                extra = interfaceSlot.addItems(extra);
-                            }
+        final InvTracker inv = byId.get(id);
+        if(inv == null) {
+            // Can occur if the client sent an interaction packet right before an inventory got removed
+            return;
+        }
+        if(slot < 0 || slot >= inv.server.size()) {
+            // Client refers to an invalid slot. This should NOT happen
+            AELog.warn("Client refers to invalid slot %d of inventory %s", slot, inv.name.getString());
+            return;
+        }
 
-                            if(!extra.isEmpty()) {
-                                carried.increment(extra.getCount());
-                            }
-                        } else if(!is.isEmpty()) {
-                            setCursorStack(interfaceSlot.extractItem(0, (is.getCount() + 1) / 2, false));
-                        }
-                        break;
-                    case SHIFT_CLICK:
-                        extra = interfaceSlot.getStackInSlot(0).copy();
-                        if(!player.getInventory().insertStack(extra)) {
-                            interfaceSlot.setItemDirect(0, extra);
-                        } else {
-                            interfaceSlot.setItemDirect(0, ItemStack.EMPTY);
-                        }
-                        break;
-                    case MOVE_REGION:
-                        for(int x = 0; x < inv.server.size(); ++x) {
-                            inHand = inv.server.getStackInSlot(x);
-                            if(!player.getInventory().insertStack(inHand)) {
-                                interfaceSlot.setItemDirect(0, inHand);
-                            } else {
-                                interfaceSlot.setItemDirect(0, ItemStack.EMPTY);
-                            }
-                        }
+        final ItemStack is = inv.server.getStackInSlot(slot);
 
-                        return;
-                    case CREATIVE_DUPLICATE:
-                        if(player.getAbilities().creativeMode && carried.isEmpty()) {
-                            setCursorStack(is.isEmpty() ? ItemStack.EMPTY : is.copy());
+        var interfaceSlot = new FilteredInternalInventory(inv.server.getSlotInv(slot), new PatternSlotFilter());
+
+        var carried = getCursorStack();
+        switch(action) {
+            case PICKUP_OR_SET_DOWN:
+
+                if(!carried.isEmpty()) {
+                    ItemStack inSlot = interfaceSlot.getStackInSlot(0);
+                    if(inSlot.isEmpty()) {
+                        setCursorStack(interfaceSlot.addItems(carried));
+                    } else {
+                        inSlot = inSlot.copy();
+                        final ItemStack inHand = carried.copy();
+
+                        interfaceSlot.setItemDirect(0, ItemStack.EMPTY);
+                        setCursorStack(ItemStack.EMPTY);
+
+                        setCursorStack(interfaceSlot.addItems(inHand.copy()));
+
+                        if(carried.isEmpty()) {
+                            setCursorStack(inSlot);
+                        } else {
+                            setCursorStack(inHand);
+                            interfaceSlot.setItemDirect(0, inSlot);
                         }
+                    }
+                } else {
+                    setCursorStack(interfaceSlot.getStackInSlot(0));
+                    interfaceSlot.setItemDirect(0, ItemStack.EMPTY);
                 }
 
-            } else {
-                AELog.warn("Client refers to invalid slot %d of inventory %s", slot, inv.name.getString());
+                break;
+            case SPLIT_OR_PLACE_SINGLE:
+
+                if(!carried.isEmpty()) {
+                    ItemStack extra = carried.split(1);
+                    if(!extra.isEmpty()) {
+                        extra = interfaceSlot.addItems(extra);
+                    }
+                    if(!extra.isEmpty()) {
+                        carried.increment(extra.getCount());
+                    }
+                } else if(!is.isEmpty()) {
+                    setCursorStack(interfaceSlot.extractItem(0, (is.getCount() + 1) / 2, false));
+                }
+
+                break;
+            case SHIFT_CLICK: {
+                var stack = interfaceSlot.getStackInSlot(0).copy();
+                if(!player.getInventory().insertStack(stack)) {
+                    interfaceSlot.setItemDirect(0, stack);
+                } else {
+                    interfaceSlot.setItemDirect(0, ItemStack.EMPTY);
+                }
             }
+            break;
+            case MOVE_REGION:
+                for(int x = 0; x < inv.server.size(); x++) {
+                    var stack = inv.server.getStackInSlot(x);
+                    if(!player.getInventory().insertStack(stack)) {
+                        interfaceSlot.setItemDirect(0, stack);
+                    } else {
+                        interfaceSlot.setItemDirect(0, ItemStack.EMPTY);
+                    }
+                }
+
+                break;
+            case CREATIVE_DUPLICATE:
+                if(player.getAbilities().creativeMode && carried.isEmpty()) {
+                    setCursorStack(is.isEmpty() ? ItemStack.EMPTY : is.copy());
+                }
+                break;
         }
     }
 
@@ -211,18 +229,22 @@ public class WITContainer extends AEBaseMenu implements IWTInvHolder {
         byId.clear();
         diList.clear();
 
-        if(grid == null) return new InterfaceTerminalPacket(true, new NbtCompound());
+        if(grid == null) {
+            return new InterfaceTerminalPacket(true, new NbtCompound());
+        }
 
         for(var ih : grid.getActiveMachines(PatternProviderBlockEntity.class)) {
             var dual = ih.getDuality();
-            if(dual.getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.YES)
+            if(dual.getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.YES) {
                 diList.put(ih, new InvTracker(dual, dual.getPatternInv(), dual.getTermName()));
+            }
         }
 
         for(var ih : grid.getActiveMachines(PatternProviderPart.class)) {
             var dual = ih.getDuality();
-            if(dual.getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.YES)
+            if(dual.getConfigManager().getSetting(Settings.INTERFACE_TERMINAL) == YesNo.YES) {
                 diList.put(ih, new InvTracker(dual, dual.getPatternInv(), dual.getTermName()));
+            }
         }
 
         NbtCompound data = new NbtCompound();
@@ -235,48 +257,58 @@ public class WITContainer extends AEBaseMenu implements IWTInvHolder {
 
     private InterfaceTerminalPacket createIncrementalUpdate() {
         NbtCompound data = null;
-        for(final var en : diList.entrySet()) {
-            final InvTracker inv = en.getValue();
+        for(var inv : diList.values()) {
             for(int x = 0; x < inv.server.size(); x++) {
                 if(isDifferent(inv.server.getStackInSlot(x), inv.client.getStackInSlot(x))) {
-                    if(data == null) data = new NbtCompound();
+                    if(data == null) {
+                        data = new NbtCompound();
+                    }
                     addItems(data, inv, x, 1);
                 }
             }
         }
-        return data == null ? null : new InterfaceTerminalPacket(false, data);
+        if(data != null) {
+            return new InterfaceTerminalPacket(false, data);
+        }
+        return null;
     }
 
     private boolean isDifferent(final ItemStack a, final ItemStack b) {
-        if(a.isEmpty() && b.isEmpty()) return false;
-        if(a.isEmpty() || b.isEmpty()) return true;
+        if(a.isEmpty() && b.isEmpty()) {
+            return false;
+        }
+
+        if(a.isEmpty() || b.isEmpty()) {
+            return true;
+        }
+
         return !ItemStack.areEqual(a, b);
     }
 
-    private void addItems(NbtCompound data, InvTracker inv, int offset, int length) {
-        String name = "=" + Long.toString(inv.serverId, 36);
-        NbtCompound tag = data.getCompound(name);
+    private void addItems(final NbtCompound data, final InvTracker inv, final int offset, final int length) {
+        final String name = '=' + Long.toString(inv.serverId, Character.MAX_RADIX);
+        final NbtCompound tag = data.getCompound(name);
+
         if(tag.isEmpty()) {
             tag.putLong("sortBy", inv.sortBy);
             tag.putString("un", Text.Serializer.toJson(inv.name));
         }
 
-        for(int x = 0; x < length; ++x) {
-            NbtCompound itemNBT = new NbtCompound();
-            ItemStack is = inv.server.getStackInSlot(x + offset);
+        for(int x = 0; x < length; x++) {
+            final NbtCompound itemNBT = new NbtCompound();
+
+            final ItemStack is = inv.server.getStackInSlot(x + offset);
+
+            // "update" client side.
             inv.client.setItemDirect(x + offset, is.isEmpty() ? ItemStack.EMPTY : is.copy());
-            if(!is.isEmpty()) is.writeNbt(itemNBT);
+
+            if(!is.isEmpty()) {
+                is.writeNbt(itemNBT);
+            }
 
             tag.put(Integer.toString(x + offset), itemNBT);
         }
         data.put(name, tag);
-    }
-
-    private static class VisitorState {
-        int total;
-        boolean forceFullUpdate;
-
-        private VisitorState() {}
     }
 
     private static class InvTracker {
@@ -295,14 +327,13 @@ public class WITContainer extends AEBaseMenu implements IWTInvHolder {
             sortBy = dual.getSortValue();
         }
     }
-
     private static class PatternSlotFilter implements IAEItemFilter {
-        private PatternSlotFilter() {}
-
+        @Override
         public boolean allowExtract(InternalInventory inv, int slot, int amount) {
             return true;
         }
 
+        @Override
         public boolean allowInsert(InternalInventory inv, int slot, ItemStack stack) {
             return !stack.isEmpty() && stack.getItem() instanceof EncodedPatternItem;
         }
