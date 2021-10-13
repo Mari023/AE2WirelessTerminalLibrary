@@ -9,6 +9,7 @@
     "AESubScreenMixin",
     "ContainerTypeBuilderMixin",
     "CraftConfirmContainerMixin",
+    "JEIRecipePacketMixin",
     "PlayerInventoryInsertStack",
     "Restock",
     "SlotMixin",

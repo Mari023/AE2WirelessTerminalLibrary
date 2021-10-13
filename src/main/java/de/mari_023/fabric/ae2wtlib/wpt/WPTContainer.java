@@ -482,6 +482,13 @@ public class WPTContainer extends ItemTerminalMenu implements IOptionalSlotHost,
         return stack.isEmpty() ? null : StorageUtil.findExtractableContent(ContainerItemContext.withInitial(stack).find(FluidStorage.ITEM), null);
     }
 
+    public void setProcessingResult(ItemStack resultItem) {
+        for(int i = 0; i < processingOutputSlots.length; i++) {
+            if(i == 0) processingOutputSlots[i].setStack(resultItem);
+            else processingOutputSlots[i].setStack(ItemStack.EMPTY);
+        }
+    }
+
     @Override
     public boolean canUse(PlayerEntity player) {
         return true;
