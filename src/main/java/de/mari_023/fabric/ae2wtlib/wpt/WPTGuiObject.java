@@ -36,7 +36,7 @@ public class WPTGuiObject extends WTGuiObject implements IPortableCell, ISegment
 
     public WPTGuiObject(final IWirelessTerminalHandler wh, final ItemStack is, final PlayerEntity ep, int inventorySlot) {
         super(wh, is, ep, inventorySlot);
-        isRemote = ep instanceof ServerPlayerEntity;
+        isRemote = !(ep instanceof ServerPlayerEntity);
         crafting = new ae2wtlibInternalInventory(this, 9, "pattern_crafting", is);
         output = new ae2wtlibInternalInventory(this, 3, "output", is);
         pattern = new ae2wtlibInternalInventory(this, 2, "pattern", is);
