@@ -9,28 +9,17 @@ import appeng.client.gui.widgets.ActionButton;
 import appeng.client.gui.widgets.TabButton;
 import appeng.core.localization.GuiText;
 import appeng.menu.SlotSemantic;
-import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import de.mari_023.fabric.ae2wtlib.wut.CycleTerminalButton;
 import de.mari_023.fabric.ae2wtlib.wut.IUniversalTerminalCapable;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
 
 import java.io.IOException;
 
 public class WPTScreen extends ItemTerminalScreen<WPTContainer> implements IUniversalTerminalCapable {
-
-    private static final byte SUBSITUTION_DISABLE = 0;
-    private static final byte SUBSITUTION_ENABLE = 1;
-
-    private static final byte CRAFTMODE_CRAFTING = 1;
-    private static final byte CRAFTMODE_PROCESSING = 0;
 
     private final TabButton tabCraftButton;
     private final TabButton tabProcessButton;
@@ -53,58 +42,30 @@ public class WPTScreen extends ItemTerminalScreen<WPTContainer> implements IUniv
     public WPTScreen(WPTContainer container, PlayerInventory playerInventory, Text title) {
         super(container, playerInventory, title, STYLE);
 
-        tabCraftButton = new TabButton(new ItemStack(Blocks.CRAFTING_TABLE), GuiText.CraftingPattern.text(), itemRenderer, btn -> toggleCraftMode(CRAFTMODE_PROCESSING));
+        tabCraftButton = new TabButton(new ItemStack(Blocks.CRAFTING_TABLE), GuiText.CraftingPattern.text(), itemRenderer, btn -> getScreenHandler().setCraftingMode(false));
         widgets.add("craftingPatternMode", tabCraftButton);
 
-        tabProcessButton = new TabButton(new ItemStack(Blocks.FURNACE), GuiText.ProcessingPattern.text(), itemRenderer, btn -> toggleCraftMode(CRAFTMODE_CRAFTING));
+        tabProcessButton = new TabButton(new ItemStack(Blocks.FURNACE), GuiText.ProcessingPattern.text(), itemRenderer, btn -> getScreenHandler().setCraftingMode(true));
         widgets.add("processingPatternMode", tabProcessButton);
 
-        substitutionsEnabledBtn = new ActionButton(ActionItems.ENABLE_SUBSTITUTION, act -> toggleSubstitutions(SUBSITUTION_DISABLE));
+        substitutionsEnabledBtn = new ActionButton(ActionItems.ENABLE_SUBSTITUTION, act -> getScreenHandler().setSubstitute(false));
         substitutionsEnabledBtn.setHalfSize(true);
         widgets.add("substitutionsEnabled", substitutionsEnabledBtn);
 
-        substitutionsDisabledBtn = new ActionButton(ActionItems.DISABLE_SUBSTITUTION, act -> toggleSubstitutions(SUBSITUTION_ENABLE));
+        substitutionsDisabledBtn = new ActionButton(ActionItems.DISABLE_SUBSTITUTION, act -> getScreenHandler().setSubstitute(true));
         substitutionsDisabledBtn.setHalfSize(true);
         widgets.add("substitutionsDisabled", substitutionsDisabledBtn);
 
-        convertItemsToFluidsBtn = new ActionButton(ActionItems.FIND_CONTAINED_FLUID, act -> container.convertItemsToFluids());
+        convertItemsToFluidsBtn = new ActionButton(ActionItems.FIND_CONTAINED_FLUID, act -> getScreenHandler().convertItemsToFluids());
         convertItemsToFluidsBtn.setHalfSize(true);
         widgets.add("convertItemsToFluids", convertItemsToFluidsBtn);
 
-        ActionButton clearBtn = addDrawable(new ActionButton(ActionItems.CLOSE, btn -> clear()));
+        ActionButton clearBtn = addDrawable(new ActionButton(ActionItems.CLOSE, btn -> getScreenHandler().clear()));
         clearBtn.setHalfSize(true);
         widgets.add("clearPattern", clearBtn);
-        widgets.add("encodePattern", new ActionButton(ActionItems.ENCODE, act -> encode()));
+        widgets.add("encodePattern", new ActionButton(ActionItems.ENCODE, act -> getScreenHandler().encode()));
 
         if(getScreenHandler().isWUT()) widgets.add("cycleTerminal", new CycleTerminalButton(btn -> cycleTerminal()));
-    }
-
-    private void toggleCraftMode(byte mode) {
-        PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeString("PatternTerminal.CraftMode");
-        buf.writeByte(mode);
-        ClientPlayNetworking.send(new Identifier(ae2wtlib.MOD_NAME, "general"), buf);
-    }
-
-    private void toggleSubstitutions(byte mode) {
-        PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeString("PatternTerminal.Substitute");
-        buf.writeByte(mode);
-        ClientPlayNetworking.send(new Identifier(ae2wtlib.MOD_NAME, "general"), buf);
-    }
-
-    private void encode() {
-        PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeString("PatternTerminal.Encode");
-        buf.writeByte(0);
-        ClientPlayNetworking.send(new Identifier(ae2wtlib.MOD_NAME, "general"), buf);
-    }
-
-    private void clear() {
-        PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeString("PatternTerminal.Clear");
-        buf.writeByte(0);
-        ClientPlayNetworking.send(new Identifier(ae2wtlib.MOD_NAME, "general"), buf);
     }
 
     protected void updateBeforeRender() {
@@ -112,7 +73,7 @@ public class WPTScreen extends ItemTerminalScreen<WPTContainer> implements IUniv
         if(handler.isCraftingMode()) {
             tabCraftButton.visible = true;
             tabProcessButton.visible = false;
-            if(handler.substitute) {
+            if(handler.isSubstitution()) {
                 substitutionsEnabledBtn.visible = true;
                 substitutionsDisabledBtn.visible = false;
             } else {

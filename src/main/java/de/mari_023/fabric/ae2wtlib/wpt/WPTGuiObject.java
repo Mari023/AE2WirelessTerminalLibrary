@@ -15,6 +15,7 @@ import appeng.parts.reporting.PatternTerminalPart;
 import appeng.util.inv.AppEngInternalInventory;
 import appeng.util.inv.InternalInventoryHost;
 import de.mari_023.fabric.ae2wtlib.ae2wtlib;
+import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.terminal.WTGuiObject;
 import de.mari_023.fabric.ae2wtlib.terminal.ae2wtlibInternalInventory;
 import net.minecraft.entity.player.PlayerEntity;
@@ -106,7 +107,8 @@ public class WPTGuiObject extends WTGuiObject implements IPortableCell, ISegment
 
     public void setCraftingRecipe(final boolean craftingMode) {
         this.craftingMode = craftingMode;
-        fixCraftingRecipes();
+        ItemWT.setBoolean(getItemStack(), craftingMode, "craftingMode");
+        if(!isRemote()) fixCraftingRecipes();
     }
 
     public boolean isSubstitution() {
@@ -115,6 +117,7 @@ public class WPTGuiObject extends WTGuiObject implements IPortableCell, ISegment
 
     public void setSubstitution(final boolean canSubstitute) {
         this.substitute = canSubstitute;
+        ItemWT.setBoolean(getItemStack(), substitute, "substitute");
     }
 
     private void fixCraftingRecipes() {

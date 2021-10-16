@@ -34,14 +34,7 @@ public class NetworkingServer {
                 String Name = buf.readString(32767);
                 byte value = buf.readByte();
                 final ScreenHandler c = player.currentScreenHandler;
-                if(Name.startsWith("PatternTerminal.") && c instanceof WPTContainer) {
-                    switch(Name) {
-                        case "PatternTerminal.CraftMode" -> ((WPTContainer) c).getPatternTerminal().setCraftingRecipe(value != 0);
-                        case "PatternTerminal.Encode" -> ((WPTContainer) c).encode();
-                        case "PatternTerminal.Clear" -> ((WPTContainer) c).clear();
-                        case "PatternTerminal.Substitute" -> ((WPTContainer) c).getPatternTerminal().setSubstitution(value != 0);
-                    }
-                } else if(Name.startsWith("CraftingTerminal.") && c instanceof WCTContainer) {
+                if(Name.startsWith("CraftingTerminal.") && c instanceof WCTContainer) {
                     if(Name.equals("CraftingTerminal.Delete")) ((WCTContainer) c).deleteTrashSlot();
                     else if(Name.equals("CraftingTerminal.SetMagnetMode")) {
                         ((WCTContainer) c).getMagnetSettings().magnetMode = MagnetMode.fromByte(value);

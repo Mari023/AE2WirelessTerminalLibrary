@@ -15,7 +15,7 @@ public class JEIRecipePacketMixin {
     @Inject(method = "handleProcessing", at = @At(value = "HEAD"))
     public void handleProcessing(ScreenHandler con, Recipe<?> recipe, CallbackInfo ci) {
         if (con instanceof WPTContainer wptContainer) {
-            if (!wptContainer.craftingMode) {
+            if (!wptContainer.isCraftingMode()) {
                 wptContainer.setProcessingResult(recipe.getOutput());
             }
         }

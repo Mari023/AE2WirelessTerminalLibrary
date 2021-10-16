@@ -23,7 +23,6 @@ import appeng.items.storage.ViewCellItem;
 import appeng.me.helpers.MachineSource;
 import appeng.menu.NullMenu;
 import appeng.menu.SlotSemantic;
-import appeng.menu.guisync.GuiSync;
 import appeng.menu.implementations.MenuTypeBuilder;
 import appeng.menu.interfaces.IInventorySlotAware;
 import appeng.menu.me.items.ItemTerminalMenu;
@@ -33,14 +32,11 @@ import appeng.util.Platform;
 import appeng.util.inv.CarriedItemInventory;
 import appeng.util.inv.PlayerInternalInventory;
 import appeng.util.item.AEItemStack;
-import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import de.mari_023.fabric.ae2wtlib.ae2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.terminal.FixedWTInv;
 import de.mari_023.fabric.ae2wtlib.terminal.IWTInvHolder;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
@@ -51,7 +47,6 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.inventory.CraftingResultInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeType;
@@ -59,7 +54,6 @@ import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.CraftingResultSlot;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -87,11 +81,6 @@ public class WPTContainer extends ItemTerminalMenu implements IOptionalSlotHost,
     private final IPatternDetailsHelper craftingHelper = AEApi.patterns();
 
     private final WPTGuiObject wptGUIObject;
-
-    @GuiSync(97)
-    public boolean craftingMode;
-    @GuiSync(96)
-    public boolean substitute;
 
     public WPTContainer(int id, final PlayerInventory ip, final WPTGuiObject gui) {
         super(TYPE, id, ip, gui, true);
@@ -130,29 +119,16 @@ public class WPTContainer extends ItemTerminalMenu implements IOptionalSlotHost,
         if(slotIndex < 100 && slotIndex != 40) lockPlayerInventorySlot(slotIndex);
         addSlot(new AppEngSlot(new FixedWTInv(getPlayerInventory(), wptGUIObject.getItemStack(), this), FixedWTInv.INFINITY_BOOSTER_CARD), SlotSemantic.BIOMETRIC_CARD);
 
-        if(isClient()) {//FIXME set craftingMode and substitute serverside
-            craftingMode = ItemWT.getBoolean(wptGUIObject.getItemStack(), "craftingMode");
-            substitute = ItemWT.getBoolean(wptGUIObject.getItemStack(), "substitute");
-
-            PacketByteBuf buf = PacketByteBufs.create();
-            buf.writeString("PatternTerminal.CraftMode");
-            int i;
-            if(craftingMode) i = 1;
-            else i = 0;
-            buf.writeByte(i);
-            ClientPlayNetworking.send(new Identifier(ae2wtlib.MOD_NAME, "general"), buf);
-            buf = PacketByteBufs.create();
-            buf.writeString("PatternTerminal.Substitute");
-            if(substitute) i = 1;
-            else i = 0;
-            buf.writeByte(i);
-            ClientPlayNetworking.send(new Identifier(ae2wtlib.MOD_NAME, "general"), buf);
-        }
         registerClientAction(ACTION_ENCODE, this::encode);
         registerClientAction(ACTION_CLEAR, this::clear);
-        registerClientAction(ACTION_SET_CRAFT_MODE, Boolean.class, getPatternTerminal()::setCraftingRecipe);
-        registerClientAction(ACTION_SET_SUBSTITUTION, Boolean.class, getPatternTerminal()::setSubstitution);
+        registerClientAction(ACTION_SET_CRAFT_MODE, Boolean.class, this::setCraftingMode);
+        registerClientAction(ACTION_SET_SUBSTITUTION, Boolean.class, this::setSubstitute);
         registerClientAction(ACTION_CONVERT_ITEMS_TO_FLUIDS, this::convertItemsToFluids);
+
+        if(isClient()) {//FIXME set craftingMode and substitute serverside
+            setCraftingMode(ItemWT.getBoolean(wptGUIObject.getItemStack(), "craftingMode"));
+            setSubstitute(ItemWT.getBoolean(wptGUIObject.getItemStack(), "substitute"));
+        }
     }
 
     @Override
@@ -169,7 +145,7 @@ public class WPTContainer extends ItemTerminalMenu implements IOptionalSlotHost,
 
         if(currentRecipe == null || !currentRecipe.matches(ic, world)) {
             currentRecipe = world.getRecipeManager().getFirstMatch(RecipeType.CRAFTING, ic, world).orElse(null);
-            currentRecipeCraftingMode = craftingMode;
+            currentRecipeCraftingMode = isCraftingMode();
         }
 
         final ItemStack is;
@@ -203,7 +179,7 @@ public class WPTContainer extends ItemTerminalMenu implements IOptionalSlotHost,
                 }
 
                 if(isCraftingMode()) {
-                    output = craftingHelper.encodeCraftingPattern(currentRecipe, in, out[0], isSubstitute());
+                    output = craftingHelper.encodeCraftingPattern(currentRecipe, in, out[0], isSubstitution());
                 } else {
                     output = craftingHelper.encodeProcessingPattern(toAeStacks(in), toAeStacks(out));
                 }
@@ -365,22 +341,13 @@ public class WPTContainer extends ItemTerminalMenu implements IOptionalSlotHost,
                 setValidMenu(false);
             }
         }
-
-        if(isCraftingMode() != getPatternTerminal().isCraftingRecipe()) {
-            setCraftingMode(getPatternTerminal().isCraftingRecipe());
-        }
-
-        if(substitute != getPatternTerminal().isSubstitution()) {
-            substitute = getPatternTerminal().isSubstitution();
-            ItemWT.setBoolean(wptGUIObject.getItemStack(), substitute, "substitute");
-        }
     }
 
     @Override
     public void onServerDataSync() {
         super.onServerDataSync();
 
-        if(currentRecipeCraftingMode != craftingMode) getAndUpdateOutput();
+        if(currentRecipeCraftingMode != isCraftingMode()) getAndUpdateOutput();
     }
 
     @Override
@@ -413,30 +380,25 @@ public class WPTContainer extends ItemTerminalMenu implements IOptionalSlotHost,
     }
 
     public boolean isCraftingMode() {
-        return craftingMode;
+        return wptGUIObject.isCraftingRecipe();
     }
 
-    private void setCraftingMode(final boolean craftingMode) {
-        if(isClient()) {
-            sendClientAction(ACTION_SET_CRAFT_MODE, craftingMode);
-            return;
-        }
-        if(craftingMode == this.craftingMode) return;
-        this.craftingMode = craftingMode;
-        ItemWT.setBoolean(wptGUIObject.getItemStack(), craftingMode, "craftingMode");
+    public void setCraftingMode(boolean craftingMode) {
+        if(isClient()) sendClientAction(ACTION_SET_CRAFT_MODE, craftingMode);
+        wptGUIObject.setCraftingRecipe(craftingMode);
+    }
+
+    public boolean isSubstitution() {
+        return wptGUIObject.isSubstitution();
+    }
+
+    public void setSubstitute(boolean substitute) {
+        if(isClient()) sendClientAction(ACTION_SET_SUBSTITUTION, substitute);
+        wptGUIObject.setSubstitution(substitute);
     }
 
     public WPTGuiObject getPatternTerminal() {
         return wptGUIObject;
-    }
-
-    private boolean isSubstitute() {
-        return substitute;
-    }
-
-    public void setSubstitute(final boolean substitute) {
-        if(isClient()) sendClientAction(ACTION_SET_SUBSTITUTION, substitute);
-        else this.substitute = substitute;
     }
 
     public void convertItemsToFluids() {
