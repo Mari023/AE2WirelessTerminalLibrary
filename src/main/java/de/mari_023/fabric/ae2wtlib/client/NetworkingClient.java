@@ -18,20 +18,6 @@ import java.util.List;
 
 public class NetworkingClient {
     public static void registerClient() {
-        ClientPlayNetworking.registerGlobalReceiver(new Identifier(ae2wtlib.MOD_NAME, "interface_terminal"), (client, handler, buf, responseSender) -> {
-            buf.retain();
-            client.execute(() -> {
-                if(client.player == null) return;
-
-                final Screen screen = MinecraftClient.getInstance().currentScreen;
-                if(screen instanceof WITScreen) {
-                    NbtCompound tag = buf.readNbt();
-                    if(tag != null)
-                        ((WITScreen) screen).postUpdate(false, tag);
-                }
-                buf.release();
-            });
-        });
         ClientPlayNetworking.registerGlobalReceiver(new Identifier(ae2wtlib.MOD_NAME, "update_restock"), (client, handler, buf, responseSender) -> {
             buf.retain();
             client.execute(() -> {
