@@ -1,6 +1,5 @@
 package de.mari_023.fabric.ae2wtlib;
 
-import appeng.core.sync.packets.PatternSlotPacket;
 import appeng.menu.AEBaseMenu;
 import appeng.menu.MenuLocator;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
@@ -8,13 +7,11 @@ import de.mari_023.fabric.ae2wtlib.trinket.CombinedTrinketInventory;
 import de.mari_023.fabric.ae2wtlib.trinket.TrinketsHelper;
 import de.mari_023.fabric.ae2wtlib.wct.CraftingTerminalHandler;
 import de.mari_023.fabric.ae2wtlib.wct.ItemWCT;
-import de.mari_023.fabric.ae2wtlib.wct.WCTContainer;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.ItemMagnetCard;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetMode;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetSettings;
 import de.mari_023.fabric.ae2wtlib.wit.ItemWIT;
 import de.mari_023.fabric.ae2wtlib.wpt.ItemWPT;
-import de.mari_023.fabric.ae2wtlib.wpt.WPTContainer;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
 import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -28,30 +25,6 @@ import net.minecraft.util.Identifier;
 
 public class NetworkingServer {
     public static void registerServer() {
-        ServerPlayNetworking.registerGlobalReceiver(new Identifier(ae2wtlib.MOD_NAME, "general"), (server, player, handler, buf, sender) -> {
-            buf.retain();
-            server.execute(() -> {
-                String Name = buf.readString(32767);
-                byte value = buf.readByte();
-                final ScreenHandler c = player.currentScreenHandler;
-                if(Name.startsWith("CraftingTerminal.") && c instanceof WCTContainer) {
-                    if(Name.equals("CraftingTerminal.Delete")) ((WCTContainer) c).deleteTrashSlot();
-                    else if(Name.equals("CraftingTerminal.SetMagnetMode")) {
-                        ((WCTContainer) c).getMagnetSettings().magnetMode = MagnetMode.fromByte(value);
-                        ((WCTContainer) c).saveMagnetSettings();
-                    }
-                }
-                buf.release();
-            });
-        });
-        ServerPlayNetworking.registerGlobalReceiver(new Identifier(ae2wtlib.MOD_NAME, "patternslotpacket"), (server, player, handler, buf, sender) -> {
-            buf.retain();
-            server.execute(() -> {
-                if(player.currentScreenHandler instanceof WPTContainer)
-                    ((WPTContainer) player.currentScreenHandler).craftOrGetItem(new PatternSlotPacket(buf));
-                buf.release();
-            });
-        });
         ServerPlayNetworking.registerGlobalReceiver(new Identifier(ae2wtlib.MOD_NAME, "cycle_terminal"), (server, player, handler, buf, sender) -> server.execute(() -> {
             final ScreenHandler screenHandler = player.currentScreenHandler;
 

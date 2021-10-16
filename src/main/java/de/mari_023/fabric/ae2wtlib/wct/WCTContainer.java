@@ -28,6 +28,7 @@ import de.mari_023.fabric.ae2wtlib.terminal.FixedWTInv;
 import de.mari_023.fabric.ae2wtlib.terminal.IWTInvHolder;
 import de.mari_023.fabric.ae2wtlib.terminal.ae2wtlibInternalInventory;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.ItemMagnetCard;
+import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetMode;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetSettings;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
 import net.fabricmc.api.EnvType;
@@ -52,6 +53,9 @@ import java.util.List;
 public class WCTContainer extends ItemTerminalMenu implements IMenuCraftingPacket, IWTInvHolder, InternalInventoryHost {
 
     public static final ScreenHandlerType<WCTContainer> TYPE = MenuTypeBuilder.create(WCTContainer::new, WCTGuiObject.class).requirePermission(SecurityPermissions.CRAFT).build("wireless_crafting_terminal");
+
+    public static final String ACTION_DELETE = "delete";
+    public static final String MAGNET_MODE = "magnetMode";
 
     private final AppEngInternalInventory crafting;
     private final CraftingMatrixSlot[] craftingSlots = new CraftingMatrixSlot[9];
@@ -122,6 +126,9 @@ public class WCTContainer extends ItemTerminalMenu implements IMenuCraftingPacke
         addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.TRASH), SlotSemantic.INSCRIBER_PLATE_BOTTOM);
         addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.INFINITY_BOOSTER_CARD), SlotSemantic.BIOMETRIC_CARD);
         addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.MAGNET_CARD), SlotSemantic.INSCRIBER_PLATE_TOP);//TODO fetch texture for card background
+
+        registerClientAction(ACTION_DELETE, this::deleteTrashSlot);
+        registerClientAction(MAGNET_MODE, MagnetMode.class, this::setMagnetMode);
 
         /*if(!ae2wtlibConfig.INSTANCE.allowTrinket()) return;//Trinkets only starting here
         updateTrinketSlots(true);*/
@@ -207,6 +214,7 @@ public class WCTContainer extends ItemTerminalMenu implements IMenuCraftingPacke
     }
 
     public void deleteTrashSlot() {
+        if(isClient()) sendClientAction(ACTION_DELETE);
         fixedWTInv.setItemDirect(FixedWTInv.TRASH, ItemStack.EMPTY);
     }
 
@@ -225,6 +233,12 @@ public class WCTContainer extends ItemTerminalMenu implements IMenuCraftingPacke
         magnetSettings = ItemMagnetCard.loadMagnetSettings(wctGUIObject.getItemStack());
         if(isClient() && screen != null) screen.resetMagnetSettings();
         return magnetSettings;
+    }
+
+    public void setMagnetMode(MagnetMode mode) {
+        if(isClient()) sendClientAction(MAGNET_MODE, mode);
+        getMagnetSettings().magnetMode = mode;
+        saveMagnetSettings();
     }
 
     @Environment(EnvType.CLIENT)

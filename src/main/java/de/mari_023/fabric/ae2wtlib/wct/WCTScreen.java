@@ -14,12 +14,9 @@ import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetSettings;
 import de.mari_023.fabric.ae2wtlib.wut.CycleTerminalButton;
 import de.mari_023.fabric.ae2wtlib.wut.IUniversalTerminalCapable;
 import dev.emi.trinkets.api.SlotGroup;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.math.Rect2i;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
@@ -57,7 +54,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
         ActionButton clearBtn = new ActionButton(ActionItems.STASH, (btn) -> container.clearCraftingGrid());
         clearBtn.setHalfSize(true);
         widgets.add("clearCraftingGrid", clearBtn);
-        IconButton deleteButton = new IconButton(btn -> delete()) {
+        IconButton deleteButton = new IconButton(btn -> getScreenHandler().deleteTrashSlot()) {
             @Override
             protected Icon getIcon() {
                 return Icon.CONDENSER_OUTPUT_TRASH;
@@ -76,13 +73,6 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
         if(getScreenHandler().isWUT()) widgets.add("cycleTerminal", new CycleTerminalButton(btn -> cycleTerminal()));
 
         widgets.add("player", new PlayerEntityWidget(MinecraftClient.getInstance().player));
-    }
-
-    private void delete() {
-        PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeString("CraftingTerminal.Delete");
-        buf.writeBoolean(false);
-        ClientPlayNetworking.send(new Identifier(ae2wtlib.MOD_NAME, "general"), buf);
     }
 
     private MagnetSettings magnetSettings = null;
@@ -108,10 +98,7 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
                 break;
         }
         setMagnetModeText();
-        PacketByteBuf buf = PacketByteBufs.create();
-        buf.writeString("CraftingTerminal.SetMagnetMode");
-        buf.writeByte(magnetSettings.magnetMode.getId());
-        ClientPlayNetworking.send(new Identifier(ae2wtlib.MOD_NAME, "general"), buf);
+        getScreenHandler().setMagnetMode(magnetSettings.magnetMode);
     }
 
     private void setMagnetModeText() {
