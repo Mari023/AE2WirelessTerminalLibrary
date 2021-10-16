@@ -21,7 +21,8 @@
     "MineMenuMixin",
     "MineMenuTerminalHandler",
     "RestockRender",
-    "ScreenMixin"
+    "ScreenMixin",
+    "InterfaceTerminalPacketMixin"
   ],
   "injectors": {
     "defaultRequire": 1
