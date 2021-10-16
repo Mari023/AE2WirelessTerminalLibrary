@@ -10,6 +10,7 @@
     "ContainerTypeBuilderMixin",
     "CraftConfirmContainerMixin",
     "JEIRecipePacketMixin",
+    "PatternSlotPacketMixin",
     "PlayerInventoryInsertStack",
     "Restock",
     "SlotMixin",
@@ -18,11 +19,11 @@
   ],
   "client": [
     "HandledScreenMixin",
+    "InterfaceTerminalPacketMixin",
     "MineMenuMixin",
     "MineMenuTerminalHandler",
     "RestockRender",
-    "ScreenMixin",
-    "InterfaceTerminalPacketMixin"
+    "ScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1
