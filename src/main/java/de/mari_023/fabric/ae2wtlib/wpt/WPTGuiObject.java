@@ -14,16 +14,23 @@ import appeng.items.misc.FluidDummyItem;
 import appeng.parts.reporting.PatternTerminalPart;
 import appeng.util.inv.AppEngInternalInventory;
 import appeng.util.inv.InternalInventoryHost;
+import appeng.util.item.AEItemStack;
 import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.terminal.WTGuiObject;
 import de.mari_023.fabric.ae2wtlib.terminal.ae2wtlibInternalInventory;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Map;
 
 public class WPTGuiObject extends WTGuiObject implements IPortableCell, ISegmentedInventory, IViewCellStorage, InternalInventoryHost {
 
@@ -83,6 +90,12 @@ public class WPTGuiObject extends WTGuiObject implements IPortableCell, ISegment
                 for(int x = 0; x < output.size() && x < aeDetails.getSparseOutputs().length; x++) {
                     output.setItemDirect(x, getDisplayStack(aeDetails.getSparseOutputs()[x]));
                 }
+
+                if(isRemote) return;
+                PacketByteBuf buf = PacketByteBufs.create();
+                buf.writeBoolean(craftingMode);
+                buf.writeBoolean(substitute);
+                ServerPlayNetworking.send((ServerPlayerEntity) getPlayer(), new Identifier(ae2wtlib.MOD_NAME, "restock_amounts"), buf);
             }
         } else if(inv == crafting) fixCraftingRecipes();
     }
