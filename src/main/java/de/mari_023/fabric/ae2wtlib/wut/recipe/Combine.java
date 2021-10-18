@@ -7,6 +7,7 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
 public class Combine extends Common {
@@ -68,5 +69,12 @@ public class Combine extends Common {
 
     public RecipeType<Combine> getType() {
         return CombineSerializer.TYPE;
+    }
+
+    public DefaultedList<Ingredient> getIngredients() {
+        DefaultedList<Ingredient> inputs = DefaultedList.of();
+        inputs.add(TerminalA);
+        inputs.add(TerminalB);
+        return inputs;
     }
 }

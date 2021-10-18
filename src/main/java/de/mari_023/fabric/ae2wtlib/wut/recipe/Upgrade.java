@@ -8,6 +8,7 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
 public class Upgrade extends Common {
@@ -54,5 +55,12 @@ public class Upgrade extends Common {
 
     public RecipeType<Upgrade> getType() {
         return UpgradeSerializer.TYPE;
+    }
+
+    public DefaultedList<Ingredient> getIngredients() {
+        DefaultedList<Ingredient> inputs = DefaultedList.of();
+        inputs.add(Terminal);
+        inputs.add(InputHelper.wut);
+        return inputs;
     }
 }
