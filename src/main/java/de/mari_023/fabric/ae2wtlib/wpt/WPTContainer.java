@@ -452,6 +452,23 @@ public class WPTContainer extends ItemTerminalMenu implements IOptionalSlotHost,
     }
 
     @Override
+    protected ItemStack transferStackToMenu(ItemStack input) {
+        // try refilling the blank pattern slot
+        if(blankPatternSlot.canInsert(input)) {
+            input = blankPatternSlot.insertStack(input);
+            if(input.isEmpty()) return ItemStack.EMPTY;
+        }
+
+        // try refilling the encoded pattern slot
+        if(encodedPatternSlot.canInsert(input)) {
+            input = encodedPatternSlot.insertStack(input);
+            if(input.isEmpty()) return ItemStack.EMPTY;
+        }
+
+        return super.transferStackToMenu(input);
+    }
+
+    @Override
     public boolean canUse(PlayerEntity player) {
         return true;
     }
