@@ -5,6 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
+import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
@@ -63,5 +64,9 @@ public class Combine extends Common {
     @Override
     public RecipeSerializer<?> getSerializer() {
         return CombineSerializer.INSTANCE;
+    }
+
+    public RecipeType<Combine> getType() {
+        return CombineSerializer.TYPE;
     }
 }

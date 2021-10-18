@@ -14,7 +14,6 @@ import me.shedaniel.rei.api.client.registry.transfer.TransferHandlerRegistry;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import me.shedaniel.rei.plugin.common.DefaultPlugin;
 import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.RecipeType;
 
 public class Plugin implements REIClientPlugin {
 
@@ -31,8 +30,8 @@ public class Plugin implements REIClientPlugin {
 
     @Override
     public void registerDisplays(DisplayRegistry registry) {
-        registry.registerRecipeFiller(Combine.class, RecipeType.register(CombineSerializer.Name), WUTDisplay::new);
-        registry.registerRecipeFiller(Upgrade.class, RecipeType.register(UpgradeSerializer.Name), WUTDisplay::new);
+        registry.registerRecipeFiller(Combine.class, CombineSerializer.TYPE, WUTDisplay::new);
+        registry.registerRecipeFiller(Upgrade.class, UpgradeSerializer.TYPE, WUTDisplay::new);
     }
 
     @Override
