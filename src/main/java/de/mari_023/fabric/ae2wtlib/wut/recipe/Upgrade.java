@@ -6,7 +6,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
@@ -51,10 +50,6 @@ public class Upgrade extends Common {
     @Override
     public RecipeSerializer<?> getSerializer() {
         return UpgradeSerializer.INSTANCE;
-    }
-
-    public RecipeType<Upgrade> getType() {
-        return UpgradeSerializer.TYPE;
     }
 
     public DefaultedList<Ingredient> getIngredients() {

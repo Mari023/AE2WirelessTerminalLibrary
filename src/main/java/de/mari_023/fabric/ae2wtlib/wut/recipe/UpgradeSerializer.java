@@ -6,14 +6,12 @@ import com.google.gson.JsonSyntaxException;
 import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.Identifier;
 
 public class UpgradeSerializer extends Serializer<Upgrade> {
     public static final UpgradeSerializer INSTANCE = new UpgradeSerializer();
     public static final String Name = "upgrade";
     public static final Identifier ID = new Identifier(ae2wtlib.MOD_NAME, Name);
-    public static final RecipeType<Upgrade> TYPE = RecipeType.register(Name);
 
     @Override
     public Upgrade read(Identifier id, JsonObject json) {
