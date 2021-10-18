@@ -91,7 +91,7 @@ public class WPTGuiObject extends WTGuiObject implements IPortableCell, ISegment
                 PacketByteBuf buf = PacketByteBufs.create();
                 buf.writeBoolean(craftingMode);
                 buf.writeBoolean(substitute);
-                ServerPlayNetworking.send((ServerPlayerEntity) getPlayer(), new Identifier(ae2wtlib.MOD_NAME, "restock_amounts"), buf);
+                ServerPlayNetworking.send((ServerPlayerEntity) getPlayer(), new Identifier(ae2wtlib.MOD_NAME, "wpt_states"), buf);
             }
         } else if(inv == crafting) fixCraftingRecipes();
     }
