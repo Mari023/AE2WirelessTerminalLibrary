@@ -5,6 +5,7 @@ import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import net.fabricmc.loader.api.FabricLoader;
 
+@SuppressWarnings("FieldCanBeLocal")
 @me.shedaniel.autoconfig.annotation.Config(name = "ae2wtlib")
 public class ae2wtlibConfig implements ConfigData {
 

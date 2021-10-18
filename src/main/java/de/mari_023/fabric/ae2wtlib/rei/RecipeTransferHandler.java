@@ -38,7 +38,7 @@ abstract class RecipeTransferHandler<T extends ScreenHandler & IMenuCraftingPack
         // Check that the recipe can actually be looked up via the manager, i.e. our
         // facade recipes
         // have an ID, but are never registered with the recipe manager.
-        boolean canSendReference = recipeId != null && context.getMinecraft().world.getRecipeManager().get(recipeId).isPresent();
+        boolean canSendReference = recipeId != null && context.getMinecraft().world != null && context.getMinecraft().world.getRecipeManager().get(recipeId).isPresent();
 
         if(recipe instanceof SimpleGridMenuDisplay gridDisplay) {
             if(gridDisplay.getWidth() > 3 || gridDisplay.getHeight() > 3) {
@@ -48,7 +48,7 @@ abstract class RecipeTransferHandler<T extends ScreenHandler & IMenuCraftingPack
             return Result.createFailed(new TranslatableText("jei.appliedenergistics2.recipe_too_large"));
         }
 
-        final Result error = doTransferRecipe(menu, recipe, context);
+        final Result error = doTransferRecipe(menu, recipe);
 
         if(error != null) {
             return error;
@@ -97,5 +97,5 @@ abstract class RecipeTransferHandler<T extends ScreenHandler & IMenuCraftingPack
         return Result.createSuccessful().blocksFurtherHandling();
     }
 
-    protected abstract Result doTransferRecipe(T container, Display recipe, TransferHandler.Context context);
+    protected abstract Result doTransferRecipe(T container, Display recipe);
 }

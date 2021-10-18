@@ -13,7 +13,7 @@ public class PatternRecipeTransferHandler extends RecipeTransferHandler<WPTConta
 
 
     @Override
-    protected Result doTransferRecipe(WPTContainer container, Display recipe, Context context) {
+    protected Result doTransferRecipe(WPTContainer container, Display recipe) {
         if(container.isCraftingMode() && recipe.getCategoryIdentifier() != DefaultPlugin.CRAFTING) {
             return Result.createFailed(new TranslatableText("jei.appliedenergistics2.requires_processing_mode"));
         }

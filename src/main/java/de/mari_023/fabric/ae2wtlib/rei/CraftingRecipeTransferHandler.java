@@ -11,7 +11,7 @@ public class CraftingRecipeTransferHandler extends RecipeTransferHandler<WCTCont
 
 
     @Override
-    protected Result doTransferRecipe(WCTContainer container, Display recipe, Context context) {
+    protected Result doTransferRecipe(WCTContainer container, Display recipe) {
         return null;
     }
 }
