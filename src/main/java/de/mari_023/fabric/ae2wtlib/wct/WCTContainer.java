@@ -230,23 +230,13 @@ public class WCTContainer extends ItemTerminalMenu implements IMenuCraftingPacke
     }
 
     public MagnetSettings reloadMagnetSettings() {
-        magnetSettings = ItemMagnetCard.loadMagnetSettings(wctGUIObject.getItemStack());
-        if(isClient() && screen != null) screen.resetMagnetSettings();
-        return magnetSettings;
+        return magnetSettings = ItemMagnetCard.loadMagnetSettings(wctGUIObject.getItemStack());
     }
 
     public void setMagnetMode(MagnetMode mode) {
         if(isClient()) sendClientAction(MAGNET_MODE, mode);
         getMagnetSettings().magnetMode = mode;
         saveMagnetSettings();
-    }
-
-    @Environment(EnvType.CLIENT)
-    private WCTScreen screen;
-
-    @Environment(EnvType.CLIENT)
-    public void setScreen(WCTScreen screen) {
-        this.screen = screen;
     }
 
     public boolean isWUT() {

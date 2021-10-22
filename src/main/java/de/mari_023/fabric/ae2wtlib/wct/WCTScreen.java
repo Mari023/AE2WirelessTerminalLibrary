@@ -10,7 +10,6 @@ import appeng.client.gui.widgets.IconButton;
 import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import de.mari_023.fabric.ae2wtlib.util.ItemButton;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetMode;
-import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetSettings;
 import de.mari_023.fabric.ae2wtlib.wut.CycleTerminalButton;
 import de.mari_023.fabric.ae2wtlib.wut.IUniversalTerminalCapable;
 import dev.emi.trinkets.api.SlotGroup;
@@ -67,42 +66,31 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
         magnetCardToggleButton = new ItemButton(btn -> setMagnetMode(), new Identifier(ae2wtlib.MOD_NAME, "textures/magnet_card.png"));
         magnetCardToggleButton.setHalfSize(true);
         widgets.add("magnetCardToggleButton", magnetCardToggleButton);
-        resetMagnetSettings();
-        getScreenHandler().setScreen(this);
 
         if(getScreenHandler().isWUT()) widgets.add("cycleTerminal", new CycleTerminalButton(btn -> cycleTerminal()));
 
         widgets.add("player", new PlayerEntityWidget(MinecraftClient.getInstance().player));
     }
 
-    private MagnetSettings magnetSettings = null;
-
-    public void resetMagnetSettings() {
-        magnetSettings = getScreenHandler().getMagnetSettings();
-        setMagnetModeText();
-    }
-
     private void setMagnetMode() {
-        switch(magnetSettings.magnetMode) {
+        switch(getScreenHandler().getMagnetSettings().magnetMode) {
             case INVALID:
             case NO_CARD:
                 return;
             case OFF:
-                magnetSettings.magnetMode = MagnetMode.PICKUP_INVENTORY;
+                getScreenHandler().setMagnetMode(MagnetMode.PICKUP_INVENTORY);
                 break;
             case PICKUP_INVENTORY:
-                magnetSettings.magnetMode = MagnetMode.PICKUP_ME;
+                getScreenHandler().setMagnetMode(MagnetMode.PICKUP_ME);
                 break;
             case PICKUP_ME:
-                magnetSettings.magnetMode = MagnetMode.OFF;
+                getScreenHandler().setMagnetMode(MagnetMode.OFF);
                 break;
         }
-        setMagnetModeText();
-        getScreenHandler().setMagnetMode(magnetSettings.magnetMode);
     }
 
     private void setMagnetModeText() {
-        switch(magnetSettings.magnetMode) {
+        switch(getScreenHandler().getMagnetSettings().magnetMode) {//TODO make constants for TranslatableText and LiteralText. I create way too many instances of them
             case INVALID, NO_CARD -> magnetCardToggleButton.setVisibility(false);
             case OFF -> {
                 magnetCardToggleButton.setVisibility(true);
@@ -117,6 +105,11 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
                 magnetCardToggleButton.setMessage(new TranslatableText("gui.ae2wtlib.magnetcard").append("\n").append(new TranslatableText("gui.ae2wtlib.magnetcard.desc.me")));
             }
         }
+    }
+
+    protected void updateBeforeRender() {
+        super.updateBeforeRender();
+        setMagnetModeText();
     }
 
     /*public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
