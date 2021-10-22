@@ -25,7 +25,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
@@ -81,16 +80,8 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermi
     @Environment(EnvType.CLIENT)
     public void appendTooltip(final ItemStack stack, final World world, final List<Text> lines, final TooltipContext advancedTooltips) {
         super.appendTooltip(stack, world, lines, advancedTooltips);
-
-        if(stack.hasNbt()) {
-            final NbtCompound tag = stack.getOrCreateNbt();
-            if(tag != null) {
-                final String encKey = tag.getString("encryptionKey");
-
-                if(encKey == null || encKey.isEmpty()) lines.add(GuiText.Unlinked.text());
-                else lines.add(GuiText.Linked.text());
-            }
-        } else lines.add(new TranslatableText("AppEng.GuiITooltip.Unlinked"));
+        if(getGridKey(stack).isEmpty()) lines.add(GuiText.Unlinked.text());
+        else lines.add(GuiText.Linked.text());
     }
 
     @Override
