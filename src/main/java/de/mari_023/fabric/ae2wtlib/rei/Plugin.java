@@ -10,7 +10,7 @@ import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
 import me.shedaniel.rei.api.client.registry.entry.EntryRegistry;
 import me.shedaniel.rei.api.client.registry.transfer.TransferHandlerRegistry;
 import me.shedaniel.rei.api.common.util.EntryStacks;
-import me.shedaniel.rei.plugin.common.DefaultPlugin;
+import me.shedaniel.rei.plugin.common.BuiltinPlugin;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.RecipeType;
 
@@ -24,7 +24,7 @@ public class Plugin implements REIClientPlugin {
 
     @Override
     public void registerCategories(CategoryRegistry registry) {
-        registry.addWorkstations(DefaultPlugin.CRAFTING, EntryStacks.of(new ItemStack(ae2wtlib.CRAFTING_TERMINAL)));
+        registry.addWorkstations(BuiltinPlugin.CRAFTING, EntryStacks.of(new ItemStack(ae2wtlib.CRAFTING_TERMINAL)));
     }
 
     @Override
