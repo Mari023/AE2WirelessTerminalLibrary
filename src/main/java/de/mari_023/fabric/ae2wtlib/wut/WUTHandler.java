@@ -23,6 +23,7 @@ import net.minecraft.util.Identifier;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class WUTHandler {
 
@@ -92,21 +93,21 @@ public class WUTHandler {
             player.sendMessage(new LiteralText("This terminal does not contain any other Terminals"), false);
             return;
         }
-        containerOpener terminal = wirelessTerminals.get(currentTerminal).containerOpener;
+        ContainerOpener terminal = wirelessTerminals.get(currentTerminal).containerOpener;
         terminal.tryOpen(player, locator, is);
     }
 
-    public static final HashMap<String, WTDefinition> wirelessTerminals = new HashMap<>();
+    public static final Map<String, WTDefinition> wirelessTerminals = new HashMap<>();
     public static final List<String> terminalNames = new ArrayList<>();
 
-    public static void addTerminal(String Name, containerOpener open, WTGUIObjectFactory wtguiObjectFactory) {
-        if(terminalNames.contains(Name)) return;
-        wirelessTerminals.put(Name, new WTDefinition(open, wtguiObjectFactory));
-        terminalNames.add(Name);
+    public static void addTerminal(String name, ContainerOpener open, WTGUIObjectFactory wtguiObjectFactory) {
+        if(terminalNames.contains(name)) return;
+        wirelessTerminals.put(name, new WTDefinition(open, wtguiObjectFactory));
+        terminalNames.add(name);
     }
 
     @FunctionalInterface
-    public interface containerOpener {
+    public interface ContainerOpener {
         void tryOpen(PlayerEntity player, MenuLocator locator, ItemStack stack);
     }
 

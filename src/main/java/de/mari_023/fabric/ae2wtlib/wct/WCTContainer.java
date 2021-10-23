@@ -111,13 +111,13 @@ public class WCTContainer extends ItemTerminalMenu implements IMenuCraftingPacke
         }, SlotSemantic.MACHINE_CRAFTING_GRID);
 
         if(slotIndex == 40)
-            SlotsWithTrinket[45] = addSlot(new DisabledSlot(fixedWTInv.toContainer(), FixedWTInv.OFFHAND) {
+            SlotsWithTrinket[45] = addSlot(new DisabledSlot(fixedWTInv.toContainer(), FixedWTInv.OFF_HAND) {
                 @Environment(EnvType.CLIENT)
                 public Pair<Identifier, Identifier> getBackgroundSprite() {
                     return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, PlayerScreenHandler.EMPTY_OFFHAND_ARMOR_SLOT);
                 }
             }, SlotSemantic.PROCESSING_PRIMARY_RESULT);
-        else SlotsWithTrinket[45] = addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.OFFHAND) {
+        else SlotsWithTrinket[45] = addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.OFF_HAND) {
             @Environment(EnvType.CLIENT)
             public Pair<Identifier, Identifier> getBackgroundSprite() {
                 return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, PlayerScreenHandler.EMPTY_OFFHAND_ARMOR_SLOT);

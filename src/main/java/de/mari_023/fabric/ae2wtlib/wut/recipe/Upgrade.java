@@ -11,36 +11,36 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
 public class Upgrade extends Common {
-    private final Ingredient Terminal;
-    private final String TerminalName;
+    private final Ingredient terminal;
+    private final String terminalName;
 
-    public Upgrade(Ingredient Terminal, String TerminalName, Identifier id) {
+    public Upgrade(Ingredient terminal, String terminalName, Identifier id) {
         super(id);
-        this.Terminal = Terminal;
-        this.TerminalName = TerminalName;
-        outputStack.getOrCreateNbt().putBoolean(TerminalName, true);
+        this.terminal = terminal;
+        this.terminalName = terminalName;
+        outputStack.getOrCreateNbt().putBoolean(terminalName, true);
     }
 
     public Ingredient getTerminal() {
-        return Terminal;
+        return terminal;
     }
 
     public String getTerminalName() {
-        return TerminalName;
+        return terminalName;
     }
 
     @Override
     public boolean matches(CraftingInventory inv, World world) {
-        ItemStack wut = InputHelper.getInputStack(inv, InputHelper.wut);
-        return !InputHelper.getInputStack(inv, Terminal).isEmpty() && !wut.isEmpty()
-                && InputHelper.getInputCount(inv) == 2 && !WUTHandler.hasTerminal(wut, TerminalName);
+        ItemStack wut = InputHelper.getInputStack(inv, InputHelper.WUT);
+        return !InputHelper.getInputStack(inv, terminal).isEmpty() && !wut.isEmpty()
+                && InputHelper.getInputCount(inv) == 2 && !WUTHandler.hasTerminal(wut, terminalName);
     }
 
     @Override
     public ItemStack craft(CraftingInventory inv) {
-        ItemStack wut = InputHelper.getInputStack(inv, InputHelper.wut).copy();
-        NbtCompound terminal = InputHelper.getInputStack(inv, Terminal).getOrCreateNbt().copy();
-        wut.getOrCreateNbt().putBoolean(TerminalName, true);
+        ItemStack wut = InputHelper.getInputStack(inv, InputHelper.WUT).copy();
+        NbtCompound terminal = InputHelper.getInputStack(inv, this.terminal).getOrCreateNbt().copy();
+        wut.getOrCreateNbt().putBoolean(terminalName, true);
         terminal.copyFrom(wut.getNbt());
         wut.setNbt(terminal);
 
@@ -54,8 +54,8 @@ public class Upgrade extends Common {
 
     public DefaultedList<Ingredient> getIngredients() {
         DefaultedList<Ingredient> inputs = DefaultedList.of();
-        inputs.add(Terminal);
-        inputs.add(InputHelper.wut);
+        inputs.add(terminal);
+        inputs.add(InputHelper.WUT);
         return inputs;
     }
 }

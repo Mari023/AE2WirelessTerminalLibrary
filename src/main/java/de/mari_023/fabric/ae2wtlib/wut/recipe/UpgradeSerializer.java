@@ -10,18 +10,16 @@ import net.minecraft.util.Identifier;
 
 public class UpgradeSerializer extends Serializer<Upgrade> {
     public static final UpgradeSerializer INSTANCE = new UpgradeSerializer();
-    public static final String Name = "upgrade";
-    public static final Identifier ID = new Identifier(ae2wtlib.MOD_NAME, Name);
+    public static final String NAME = "upgrade";
+    public static final Identifier ID = new Identifier(ae2wtlib.MOD_NAME, NAME);
 
     @Override
     public Upgrade read(Identifier id, JsonObject json) {
         UpgradeJsonFormat recipeJson = new Gson().fromJson(json, UpgradeJsonFormat.class);
-        if(recipeJson.Terminal == null || validateOutput(recipeJson.TerminalName))
+        if(recipeJson.terminal == null || validateOutput(recipeJson.terminalName))
             throw new JsonSyntaxException("A required attribute is missing or invalid!");
 
-        Ingredient Terminal = Ingredient.fromJson(recipeJson.Terminal);
-
-        return new Upgrade(Terminal, recipeJson.TerminalName, id);
+        return new Upgrade(Ingredient.fromJson(recipeJson.terminal), recipeJson.terminalName, id);
     }
 
     @Override
@@ -32,8 +30,6 @@ public class UpgradeSerializer extends Serializer<Upgrade> {
 
     @Override
     public Upgrade read(Identifier id, PacketByteBuf packetData) {
-        Ingredient TerminalA = Ingredient.fromPacket(packetData);
-        String TerminalAName = packetData.readString(32767);
-        return new Upgrade(TerminalA, TerminalAName, id);
+        return new Upgrade(Ingredient.fromPacket(packetData), packetData.readString(32767), id);
     }
 }
