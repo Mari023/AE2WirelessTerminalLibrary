@@ -13,17 +13,16 @@ import org.jetbrains.annotations.NotNull;
 
 public class FixedWTInv implements InternalInventory {
 
-    public static final int OFFHAND = 4;
+    public static final int OFF_HAND = 4;
     public static final int TRASH = 5;
     public static final int INFINITY_BOOSTER_CARD = 6;
     public static final int MAGNET_CARD = 7;
+    private static final int SLOT_OFFSET = 36;
+    private static final int OFF_HAND_SLOT = 40;
 
     private final PlayerInventory playerInventory;
     private final ItemStack wt;
     private final IWTInvHolder host;
-
-    private static final int SLOT_OFFSET = 36;
-    private static final int OFF_HAND_SLOT = 40;
 
     public FixedWTInv(PlayerInventory playerInventory, ItemStack wt, IWTInvHolder host) {
         this.playerInventory = playerInventory;
@@ -39,7 +38,7 @@ public class FixedWTInv implements InternalInventory {
     @Override
     public ItemStack getStackInSlot(int i) {
         if(i < 4 && i >= 0) return playerInventory.getStack(i + SLOT_OFFSET);
-        else if(i == OFFHAND) return playerInventory.getStack(OFF_HAND_SLOT);
+        else if(i == OFF_HAND) return playerInventory.getStack(OFF_HAND_SLOT);
         else if(i == TRASH && wt.getItem() instanceof ItemWT) return ItemWT.getSavedSlot(wt, "trash");
         else if(i == INFINITY_BOOSTER_CARD && wt.getItem() instanceof IInfinityBoosterCardHolder)
             return ((IInfinityBoosterCardHolder) wt.getItem()).getBoosterCard(wt);
@@ -58,7 +57,7 @@ public class FixedWTInv implements InternalInventory {
         else if(i == 3)
             return playerInventory.isValid(SLOT_OFFSET + 3, itemStack) && ((itemStack.getItem() instanceof ArmorItem && ((ArmorItem) itemStack.getItem()).getSlotType().equals(EquipmentSlot.HEAD))
                     || (itemStack.getItem() instanceof BlockItem && ((BlockItem) itemStack.getItem()).getBlock() instanceof Wearable));
-        else if(i == OFFHAND) return playerInventory.isValid(OFF_HAND_SLOT, itemStack);
+        else if(i == OFF_HAND) return playerInventory.isValid(OFF_HAND_SLOT, itemStack);
         else if(i == TRASH) return true;
         else if(i == INFINITY_BOOSTER_CARD)
             return itemStack.getItem() instanceof ItemInfinityBooster || itemStack.isEmpty();
@@ -71,7 +70,7 @@ public class FixedWTInv implements InternalInventory {
     public void setItemDirect(int i, @NotNull ItemStack itemStack) {
         if(i < 4 && i >= 0) {
             playerInventory.setStack(i + SLOT_OFFSET, itemStack);
-        } else if(i == OFFHAND) {
+        } else if(i == OFF_HAND) {
             playerInventory.setStack(OFF_HAND_SLOT, itemStack);
         } else if(i == TRASH) {
             ItemWT.setSavedSlot(wt, itemStack, "trash");
