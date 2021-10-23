@@ -10,19 +10,16 @@ import net.minecraft.util.Identifier;
 
 public class CombineSerializer extends Serializer<Combine> {
     public static final CombineSerializer INSTANCE = new CombineSerializer();
-    public static final String Name = "combine";
-    public static final Identifier ID = new Identifier(ae2wtlib.MOD_NAME, Name);
+    public static final String NAME = "combine";
+    public static final Identifier ID = new Identifier(ae2wtlib.MOD_NAME, NAME);
 
     @Override
     public Combine read(Identifier id, JsonObject json) {
         CombineJsonFormat recipeJson = new Gson().fromJson(json, CombineJsonFormat.class);
-        if(recipeJson.TerminalA == null || recipeJson.TerminalB == null || validateOutput(recipeJson.TerminalAName) || validateOutput(recipeJson.TerminalBName))
+        if(recipeJson.terminalA == null || recipeJson.terminalB == null || validateOutput(recipeJson.terminalAName) || validateOutput(recipeJson.terminalBName))
             throw new JsonSyntaxException("A required attribute is missing or invalid!");
 
-        Ingredient TerminalA = Ingredient.fromJson(recipeJson.TerminalA);
-        Ingredient TerminalB = Ingredient.fromJson(recipeJson.TerminalB);
-
-        return new Combine(TerminalA, TerminalB, recipeJson.TerminalAName, recipeJson.TerminalBName, id);
+        return new Combine(Ingredient.fromJson(recipeJson.terminalA), Ingredient.fromJson(recipeJson.terminalB), recipeJson.terminalAName, recipeJson.terminalBName, id);
     }
 
     @Override
@@ -35,10 +32,6 @@ public class CombineSerializer extends Serializer<Combine> {
 
     @Override
     public Combine read(Identifier id, PacketByteBuf packetData) {
-        Ingredient TerminalA = Ingredient.fromPacket(packetData);
-        Ingredient TerminalB = Ingredient.fromPacket(packetData);
-        String TerminalAName = packetData.readString(32767);
-        String TerminalBName = packetData.readString(32767);
-        return new Combine(TerminalA, TerminalB, TerminalAName, TerminalBName, id);
+        return new Combine(Ingredient.fromPacket(packetData), Ingredient.fromPacket(packetData), packetData.readString(32767), packetData.readString(32767), id);
     }
 }

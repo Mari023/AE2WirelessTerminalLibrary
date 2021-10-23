@@ -10,49 +10,49 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
 public class Combine extends Common {
-    private final Ingredient TerminalA;
-    private final Ingredient TerminalB;
-    private final String TerminalAName;
-    private final String TerminalBName;
+    private final Ingredient terminalA;
+    private final Ingredient terminalB;
+    private final String terminalAName;
+    private final String terminalBName;
 
-    public Combine(Ingredient TerminalA, Ingredient TerminalB, String TerminalAName, String TerminalBName, Identifier id) {
+    public Combine(Ingredient terminalA, Ingredient terminalB, String terminalAName, String TerminalBName, Identifier id) {
         super(id);
-        this.TerminalA = TerminalA;
-        this.TerminalB = TerminalB;
-        this.TerminalAName = TerminalAName;
-        this.TerminalBName = TerminalBName;
-        outputStack.getOrCreateNbt().putBoolean(TerminalAName, true);
+        this.terminalA = terminalA;
+        this.terminalB = terminalB;
+        this.terminalAName = terminalAName;
+        this.terminalBName = TerminalBName;
+        outputStack.getOrCreateNbt().putBoolean(terminalAName, true);
         outputStack.getOrCreateNbt().putBoolean(TerminalBName, true);
     }
 
     public Ingredient getTerminalA() {
-        return TerminalA;
+        return terminalA;
     }
 
     public Ingredient getTerminalB() {
-        return TerminalB;
+        return terminalB;
     }
 
     public String getTerminalAName() {
-        return TerminalAName;
+        return terminalAName;
     }
 
     public String getTerminalBName() {
-        return TerminalBName;
+        return terminalBName;
     }
 
     @Override
     public boolean matches(CraftingInventory inv, World world) {
-        return !InputHelper.getInputStack(inv, TerminalA).isEmpty() && !InputHelper.getInputStack(inv, TerminalB).isEmpty() && InputHelper.getInputCount(inv) == 2;
+        return !InputHelper.getInputStack(inv, terminalA).isEmpty() && !InputHelper.getInputStack(inv, terminalB).isEmpty() && InputHelper.getInputCount(inv) == 2;
     }
 
     @Override
     public ItemStack craft(CraftingInventory inv) {
-        NbtCompound terminalA = InputHelper.getInputStack(inv, TerminalA).getNbt();
+        NbtCompound terminalA = InputHelper.getInputStack(inv, this.terminalA).getNbt();
         if(terminalA == null) terminalA = new NbtCompound();
         else terminalA = terminalA.copy();
 
-        NbtCompound terminalB = InputHelper.getInputStack(inv, TerminalB).getNbt();
+        NbtCompound terminalB = InputHelper.getInputStack(inv, this.terminalB).getNbt();
         if(terminalB == null) terminalB = new NbtCompound();
         else terminalB = terminalB.copy();
 
@@ -68,8 +68,8 @@ public class Combine extends Common {
 
     public DefaultedList<Ingredient> getIngredients() {
         DefaultedList<Ingredient> inputs = DefaultedList.of();
-        inputs.add(TerminalA);
-        inputs.add(TerminalB);
+        inputs.add(terminalA);
+        inputs.add(terminalB);
         return inputs;
     }
 }

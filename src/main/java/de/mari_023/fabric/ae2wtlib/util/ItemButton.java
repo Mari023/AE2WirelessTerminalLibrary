@@ -3,7 +3,6 @@ package de.mari_023.fabric.ae2wtlib.util;
 import appeng.client.gui.widgets.ITooltip;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.sound.SoundManager;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
@@ -26,11 +25,6 @@ public class ItemButton extends ButtonWidget implements ITooltip {
     public void setVisibility(final boolean vis) {
         visible = vis;
         active = vis;
-    }
-
-    @Override
-    public void playDownSound(SoundManager soundManager) {
-        super.playDownSound(soundManager);
     }
 
     @Override

@@ -68,6 +68,7 @@ public class WPTScreen extends ItemTerminalScreen<WPTContainer> implements IUniv
         if(getScreenHandler().isWUT()) widgets.add("cycleTerminal", new CycleTerminalButton(btn -> cycleTerminal()));
     }
 
+    @Override
     protected void updateBeforeRender() {
         super.updateBeforeRender();
         if(handler.isCraftingMode()) {

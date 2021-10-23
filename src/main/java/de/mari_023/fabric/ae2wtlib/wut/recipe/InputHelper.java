@@ -5,19 +5,21 @@ import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
 
-public class InputHelper {
+public final class InputHelper {
+    private InputHelper() {
+    }
 
     public static ItemStack getInputStack(CraftingInventory inventory, Ingredient ingredient) {
-        for(int i = 0; i < inventory.size(); i++)
-            if(ingredient.test(inventory.getStack(i))) return inventory.getStack(i);
+        for (int i = 0; i < inventory.size(); i++)
+            if (ingredient.test(inventory.getStack(i))) return inventory.getStack(i);
         return ItemStack.EMPTY;
     }
 
     public static int getInputCount(CraftingInventory inventory) {
         int count = 0;
-        for(int i = 0; i < inventory.size(); i++) if(!inventory.getStack(i).isEmpty()) count++;
+        for (int i = 0; i < inventory.size(); i++) if (!inventory.getStack(i).isEmpty()) count++;
         return count;
     }
 
-    public static final Ingredient wut = Ingredient.ofItems(ae2wtlib.UNIVERSAL_TERMINAL);
+    public static final Ingredient WUT = Ingredient.ofItems(ae2wtlib.UNIVERSAL_TERMINAL);
 }

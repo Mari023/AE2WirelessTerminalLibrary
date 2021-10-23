@@ -32,10 +32,12 @@ public class AppEngTrinketSlot extends AppEngSlot {
         return !locked && super.canInsert(stack);
     }
 
+    @Override
     public boolean canTakeItems(PlayerEntity player) {
         return !locked && super.canTakeItems(player);
     }
 
+    @Override
     public @NotNull ItemStack takeStack(int amount) {
         return locked ? ItemStack.EMPTY : super.takeStack(amount);
     }
