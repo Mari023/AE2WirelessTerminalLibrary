@@ -1,7 +1,7 @@
 package de.mari_023.fabric.ae2wtlib.wpt;
 
-import appeng.api.AEApi;
 import appeng.api.crafting.IPatternDetails;
+import appeng.api.crafting.PatternDetailsHelper;
 import appeng.api.features.IWirelessTerminalHandler;
 import appeng.api.implementations.blockentities.IViewCellStorage;
 import appeng.api.implementations.guiobjects.IPortableCell;
@@ -74,7 +74,7 @@ public class WPTGuiObject extends WTGuiObject implements IPortableCell, ISegment
     public void onChangeInventory(final InternalInventory inv, final int slot, final ItemStack removedStack, final ItemStack newStack) {
         if(inv == pattern && slot == 1) {
             final ItemStack is = pattern.getStackInSlot(1);
-            final IPatternDetails details = AEApi.patterns().decodePattern(is, getPlayer().world);
+            final IPatternDetails details = PatternDetailsHelper.decodePattern(is, getPlayer().world);
             if(details instanceof IAEPatternDetails aeDetails) {
                 setCraftingRecipe(aeDetails.isCraftable());
                 setSubstitution(aeDetails.canSubstitute());

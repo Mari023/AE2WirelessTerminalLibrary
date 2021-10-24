@@ -1,15 +1,15 @@
 package de.mari_023.fabric.ae2wtlib.wpt;
 
-import appeng.api.AEApi;
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
 import appeng.api.config.SecurityPermissions;
-import appeng.api.crafting.IPatternDetailsHelper;
+import appeng.api.crafting.PatternDetailsHelper;
 import appeng.api.inventories.ISegmentedInventory;
 import appeng.api.inventories.InternalInventory;
 import appeng.api.networking.IGridNode;
 import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.StorageChannels;
+import appeng.api.storage.StorageHelper;
 import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IAEStack;
@@ -78,7 +78,6 @@ public class WPTContainer extends ItemTerminalMenu implements IOptionalSlotHost,
     private final RestrictedInputSlot encodedPatternSlot;
     private CraftingRecipe currentRecipe;
     private boolean currentRecipeCraftingMode;
-    private final IPatternDetailsHelper craftingHelper = AEApi.patterns();
 
     private final WPTGuiObject wptGUIObject;
 
@@ -165,7 +164,7 @@ public class WPTContainer extends ItemTerminalMenu implements IOptionalSlotHost,
         ItemStack[] in = getInputs();
         ItemStack[] out = getOutputs();
         if(in != null && out != null && (!isCraftingMode() || currentRecipe != null)) {
-            if(output.isEmpty() || craftingHelper.isEncodedPattern(output)) {
+            if(output.isEmpty() || PatternDetailsHelper.isEncodedPattern(output)) {
                 if(output.isEmpty()) {
                     output = blankPatternSlot.getStack();
                     if(output.isEmpty() || !isPattern(output)) {
@@ -179,9 +178,9 @@ public class WPTContainer extends ItemTerminalMenu implements IOptionalSlotHost,
                 }
 
                 if(isCraftingMode()) {
-                    output = craftingHelper.encodeCraftingPattern(currentRecipe, in, out[0], isSubstitution());
+                    output = PatternDetailsHelper.encodeCraftingPattern(currentRecipe, in, out[0], isSubstitution());
                 } else {
-                    output = craftingHelper.encodeProcessingPattern(toAeStacks(in), toAeStacks(out));
+                    output = PatternDetailsHelper.encodeProcessingPattern(toAeStacks(in), toAeStacks(out));
                 }
 
                 encodedPatternSlot.setStack(output);
@@ -254,7 +253,7 @@ public class WPTContainer extends ItemTerminalMenu implements IOptionalSlotHost,
 
         if(!inv.simulateAdd(out.createItemStack()).isEmpty()) return;
 
-        final IAEItemStack extracted = Platform.poweredExtraction(powerSource, monitor, out, getActionSource());
+        final IAEItemStack extracted = StorageHelper.poweredExtraction(powerSource, monitor, out, getActionSource());
         final PlayerEntity p = getPlayerInventory().player;
 
         if(extracted != null) {
