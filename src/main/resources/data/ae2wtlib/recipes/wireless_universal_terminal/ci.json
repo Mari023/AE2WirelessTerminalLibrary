@@ -1,11 +1,11 @@
 {
   "type": "ae2wtlib:combine",
-  "TerminalA": {
+  "terminalA": {
     "item": "ae2wtlib:wireless_crafting_terminal"
   },
-  "TerminalB": {
+  "terminalB": {
     "item": "ae2wtlib:wireless_interface_terminal"
   },
-  "TerminalAName": "crafting",
-  "TerminalBName": "interface"
+  "terminalAName": "crafting",
+  "terminalBName": "interface"
 }

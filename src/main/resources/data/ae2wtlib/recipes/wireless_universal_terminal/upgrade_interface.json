@@ -1,7 +1,7 @@
 {
   "type": "ae2wtlib:upgrade",
-  "Terminal": {
+  "terminal": {
     "item": "ae2wtlib:wireless_interface_terminal"
   },
-  "TerminalName": "interface"
+  "terminalName": "interface"
 }
