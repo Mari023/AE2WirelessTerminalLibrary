@@ -10,7 +10,6 @@ import appeng.api.inventories.InternalInventory;
 import appeng.api.storage.StorageChannels;
 import appeng.api.storage.data.IAEStack;
 import appeng.crafting.pattern.IAEPatternDetails;
-import appeng.items.misc.FluidDummyItem;
 import appeng.parts.reporting.PatternTerminalPart;
 import appeng.util.inv.AppEngInternalInventory;
 import appeng.util.inv.InternalInventoryHost;
@@ -32,6 +31,7 @@ public class WPTGuiObject extends WTGuiObject implements IPortableCell, ISegment
 
     private boolean craftingMode = true;
     private boolean substitute = false;
+    private boolean substituteFluids = true;
     private final AppEngInternalInventory crafting;
     private final AppEngInternalInventory output;
     private final AppEngInternalInventory pattern;
@@ -102,7 +102,7 @@ public class WPTGuiObject extends WTGuiObject implements IPortableCell, ISegment
         } else if(aeStack.getChannel() == StorageChannels.items()) {
             return aeStack.cast(StorageChannels.items()).createItemStack();
         } else if(aeStack.getChannel() == StorageChannels.fluids()) {
-            return FluidDummyItem.fromFluidStack(aeStack.cast(StorageChannels.fluids()).getFluidStack(), true);
+            return aeStack.cast(StorageChannels.fluids()).wrap();
         } else {
             throw new IllegalArgumentException("Only item and fluid stacks are supported");
         }
@@ -121,12 +121,21 @@ public class WPTGuiObject extends WTGuiObject implements IPortableCell, ISegment
     }
 
     public boolean isSubstitution() {
-        return this.substitute;
+        return substitute;
     }
 
     public void setSubstitution(final boolean canSubstitute) {
-        this.substitute = canSubstitute;
+        substitute = canSubstitute;
         ItemWT.setBoolean(getItemStack(), substitute, "substitute");
+    }
+
+    public boolean isFluidSubstitution() {
+        return substituteFluids;
+    }
+
+    public void setFluidSubstitution(final boolean canSubstitute) {
+        substituteFluids = canSubstitute;
+        ItemWT.setBoolean(getItemStack(), substituteFluids, "substitute_fluids");
     }
 
     private void fixCraftingRecipes() {

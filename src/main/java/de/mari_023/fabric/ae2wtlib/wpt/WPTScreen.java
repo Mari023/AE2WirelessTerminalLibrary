@@ -25,6 +25,8 @@ public class WPTScreen extends ItemTerminalScreen<WPTContainer> implements IUniv
     private final TabButton tabProcessButton;
     private final ActionButton substitutionsEnabledBtn;
     private final ActionButton substitutionsDisabledBtn;
+    private final ActionButton fluidSubstitutionsEnabledBtn;
+    private final ActionButton fluidSubstitutionsDisabledBtn;
     private final ActionButton convertItemsToFluidsBtn;
 
     private static final ScreenStyle STYLE;
@@ -56,6 +58,14 @@ public class WPTScreen extends ItemTerminalScreen<WPTContainer> implements IUniv
         substitutionsDisabledBtn.setHalfSize(true);
         widgets.add("substitutionsDisabled", substitutionsDisabledBtn);
 
+        fluidSubstitutionsEnabledBtn = new ActionButton(ActionItems.ENABLE_FLUID_SUBSTITUTION, act -> getScreenHandler().setSubstituteFluids(false));
+        fluidSubstitutionsEnabledBtn.setHalfSize(true);
+        widgets.add("fluidSubstitutionsEnabled", fluidSubstitutionsEnabledBtn);
+
+        fluidSubstitutionsDisabledBtn = new ActionButton(ActionItems.DISABLE_FLUID_SUBSTITUTION, act -> getScreenHandler().setSubstituteFluids(true));
+        fluidSubstitutionsDisabledBtn.setHalfSize(true);
+        widgets.add("fluidSubstitutionsDisabled", fluidSubstitutionsDisabledBtn);
+
         convertItemsToFluidsBtn = new ActionButton(ActionItems.FIND_CONTAINED_FLUID, act -> getScreenHandler().convertItemsToFluids());
         convertItemsToFluidsBtn.setHalfSize(true);
         widgets.add("convertItemsToFluids", convertItemsToFluidsBtn);
@@ -81,11 +91,21 @@ public class WPTScreen extends ItemTerminalScreen<WPTContainer> implements IUniv
                 substitutionsEnabledBtn.visible = false;
                 substitutionsDisabledBtn.visible = true;
             }
+
+            if(handler.isSubstituteFluids()) {
+                fluidSubstitutionsEnabledBtn.visible = true;
+                fluidSubstitutionsDisabledBtn.visible = false;
+            } else {
+                fluidSubstitutionsEnabledBtn.visible = false;
+                fluidSubstitutionsDisabledBtn.visible = true;
+            }
         } else {
             tabCraftButton.visible = false;
             tabProcessButton.visible = true;
             substitutionsEnabledBtn.visible = false;
             substitutionsDisabledBtn.visible = false;
+            fluidSubstitutionsEnabledBtn.visible = false;
+            fluidSubstitutionsDisabledBtn.visible = false;
         }
 
         setSlotsHidden(SlotSemantic.CRAFTING_RESULT, !handler.isCraftingMode());
@@ -99,5 +119,15 @@ public class WPTScreen extends ItemTerminalScreen<WPTContainer> implements IUniv
         super.drawBG(matrixStack, offsetX, offsetY, mouseX, mouseY, partialTicks);
         if(handler.isCraftingMode()) return;
         Blitter.texture("guis/pattern_modes.png").src(97, 72, 24, 64).dest(x + 106, y + backgroundHeight - 164).blit(matrixStack, getZOffset());
+
+        if(handler.isCraftingMode() && handler.isSubstituteFluids()
+                && fluidSubstitutionsEnabledBtn.isMouseOver(mouseX, mouseY)) {
+            for(var slotIndex : handler.slotsSupportingFluidSubstitution) {
+                var slot = handler.getCraftingGridSlots()[slotIndex];
+                int x = getGuiLeft() + slot.x;
+                int y = getGuiTop() + slot.y;
+                fill(matrixStack, x, y, x + 16, y + 16, 0x7f00FF00);
+            }
+        }
     }
 }

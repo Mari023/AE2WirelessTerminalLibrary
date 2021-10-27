@@ -10,15 +10,16 @@ import appeng.api.networking.IGridNode;
 import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.StorageChannels;
 import appeng.api.storage.StorageHelper;
-import appeng.api.storage.data.IAEFluidStack;
 import appeng.api.storage.data.IAEItemStack;
 import appeng.api.storage.data.IAEStack;
 import appeng.api.storage.data.IAEStackList;
 import appeng.core.definitions.AEItems;
 import appeng.core.localization.PlayerMessages;
 import appeng.core.sync.packets.PatternSlotPacket;
+import appeng.crafting.pattern.AECraftingPattern;
+import appeng.helpers.FluidContainerHelper;
 import appeng.helpers.IMenuCraftingPacket;
-import appeng.items.misc.FluidDummyItem;
+import appeng.items.misc.WrappedFluidStack;
 import appeng.items.storage.ViewCellItem;
 import appeng.me.helpers.MachineSource;
 import appeng.menu.NullMenu;
@@ -37,6 +38,8 @@ import de.mari_023.fabric.ae2wtlib.terminal.FixedWTInv;
 import de.mari_023.fabric.ae2wtlib.terminal.IWTInvHolder;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
+import it.unimi.dsi.fastutil.ints.IntArraySet;
+import it.unimi.dsi.fastutil.ints.IntSet;
 import net.fabricmc.fabric.api.transfer.v1.context.ContainerItemContext;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidStorage;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
@@ -68,6 +71,7 @@ public class WPTContainer extends ItemTerminalMenu implements IOptionalSlotHost,
     private static final String ACTION_ENCODE = "encode";
     private static final String ACTION_CLEAR = "clear";
     private static final String ACTION_SET_SUBSTITUTION = "setSubstitution";
+    private static final String ACTION_SET_FLUID_SUBSTITUTION = "setFluidSubstitution";
     private static final String ACTION_CONVERT_ITEMS_TO_FLUIDS = "convertItemsToFluids";
 
     private final InternalInventory craftingGridInv;
@@ -80,6 +84,12 @@ public class WPTContainer extends ItemTerminalMenu implements IOptionalSlotHost,
     private boolean currentRecipeCraftingMode;
 
     private final WPTGuiObject wptGUIObject;
+
+    /**
+     * Whether fluids can be substituted or not depends on the recipe. This set contains the slots of the crafting
+     * matrix that support such substitution.
+     */
+    public IntSet slotsSupportingFluidSubstitution = new IntArraySet();
 
     public WPTContainer(int id, final PlayerInventory ip, final WPTGuiObject gui) {
         super(TYPE, id, ip, gui, true);
@@ -122,11 +132,13 @@ public class WPTContainer extends ItemTerminalMenu implements IOptionalSlotHost,
         registerClientAction(ACTION_CLEAR, this::clear);
         registerClientAction(ACTION_SET_CRAFT_MODE, Boolean.class, this::setCraftingMode);
         registerClientAction(ACTION_SET_SUBSTITUTION, Boolean.class, this::setSubstitute);
+        registerClientAction(ACTION_SET_FLUID_SUBSTITUTION, Boolean.class, this::setSubstituteFluids);
         registerClientAction(ACTION_CONVERT_ITEMS_TO_FLUIDS, this::convertItemsToFluids);
 
         if(isClient()) {//FIXME set craftingMode and substitute serverside
             setCraftingMode(ItemWT.getBoolean(wptGUIObject.getItemStack(), "craftingMode"));
             setSubstitute(ItemWT.getBoolean(wptGUIObject.getItemStack(), "substitute"));
+            setSubstituteFluids(ItemWT.getBoolean(wptGUIObject.getItemStack(), "substitute_fluids"));
         }
     }
 
@@ -145,6 +157,7 @@ public class WPTContainer extends ItemTerminalMenu implements IOptionalSlotHost,
         if(currentRecipe == null || !currentRecipe.matches(ic, world)) {
             currentRecipe = world.getRecipeManager().getFirstMatch(RecipeType.CRAFTING, ic, world).orElse(null);
             currentRecipeCraftingMode = isCraftingMode();
+            checkFluidSubstitutionSupport();
         }
 
         final ItemStack is;
@@ -155,45 +168,81 @@ public class WPTContainer extends ItemTerminalMenu implements IOptionalSlotHost,
         return is;
     }
 
+    private void checkFluidSubstitutionSupport() {
+        slotsSupportingFluidSubstitution.clear();
+
+        if(currentRecipe == null) {
+            return; // No recipe -> no substitution
+        }
+
+        var encodedPattern = encodePattern();
+        if(encodedPattern != null) {
+            var decodedPattern = PatternDetailsHelper.decodePattern(encodedPattern,
+                    getPlayerInventory().player.world);
+            if(decodedPattern instanceof AECraftingPattern craftingPattern) {
+                for(int i = 0; i < craftingPattern.getSparseInputs().length; i++) {
+                    if(craftingPattern.getValidFluid(i) != null) {
+                        slotsSupportingFluidSubstitution.add(i);
+                    }
+                }
+            }
+        }
+    }
+
     public void encode() {
         if(isClient()) {
             sendClientAction(ACTION_ENCODE);
             return;
         }
-        ItemStack output = encodedPatternSlot.getStack();
-        ItemStack[] in = getInputs();
-        ItemStack[] out = getOutputs();
-        if(in != null && out != null && (!isCraftingMode() || currentRecipe != null)) {
-            if(output.isEmpty() || PatternDetailsHelper.isEncodedPattern(output)) {
-                if(output.isEmpty()) {
-                    output = blankPatternSlot.getStack();
-                    if(output.isEmpty() || !isPattern(output)) {
-                        return;
-                    }
 
-                    output.setCount(output.getCount() - 1);
-                    if(output.getCount() == 0) {
-                        blankPatternSlot.setStack(ItemStack.EMPTY);
-                    }
-                }
+        var encodeOutput = encodedPatternSlot.getStack();
 
-                if(isCraftingMode()) {
-                    output = PatternDetailsHelper.encodeCraftingPattern(currentRecipe, in, out[0], isSubstitution());
-                } else {
-                    output = PatternDetailsHelper.encodeProcessingPattern(toAeStacks(in), toAeStacks(out));
-                }
-
-                encodedPatternSlot.setStack(output);
+        // first check the output slots, should either be null, or a pattern
+        if(!encodeOutput.isEmpty() && !PatternDetailsHelper.isEncodedPattern(encodeOutput)) {
+            return;
+        } // if nothing is there we should snag a new pattern.
+        else if(encodeOutput.isEmpty()) {
+            var blankPattern = blankPatternSlot.getStack();
+            if(!isPattern(blankPattern)) {
+                return; // no blanks.
             }
+
+            // remove one, and clear the input slot.
+            blankPattern.decrement(1);
+            if(blankPattern.getCount() <= 0) {
+                blankPatternSlot.setStack(ItemStack.EMPTY);
+            }
+        }
+
+        ItemStack encodedPattern = encodePattern();
+        if(encodedPattern != null) {
+            encodedPatternSlot.setStack(encodedPattern);
+        }
+    }
+
+    @Nullable
+    private ItemStack encodePattern() {
+        var in = getValidatedInputs();
+        var out = getValidatedOutputs();
+
+        // if there is no input, this would be silly.
+        if(in == null || out == null || isCraftingMode() && currentRecipe == null) {
+            return null;
+        }
+
+        if(isCraftingMode()) {
+            return PatternDetailsHelper.encodeCraftingPattern(currentRecipe, in, out[0], isSubstitution(),
+                    isSubstituteFluids());
+        } else {
+            return PatternDetailsHelper.encodeProcessingPattern(toAeStacks(in), toAeStacks(out));
         }
     }
 
     private static IAEStack[] toAeStacks(ItemStack... stacks) {
         IAEStack[] out = new IAEStack[stacks.length];
-        var fluidDummy = AEItems.DUMMY_FLUID_ITEM.asItem();
         for(int i = 0; i < stacks.length; ++i) {
-            if(stacks[i].getItem() == fluidDummy) {
-                out[i] = IAEFluidStack.of(fluidDummy.getFluid(stacks[i]), fluidDummy.getAmount(stacks[i]));
+            if(WrappedFluidStack.isWrapped(stacks[i])) {
+                out[i] = WrappedFluidStack.unwrap(stacks[i]);
             } else {
                 out[i] = AEItemStack.fromItemStack(stacks[i]);
             }
@@ -201,33 +250,41 @@ public class WPTContainer extends ItemTerminalMenu implements IOptionalSlotHost,
         return out;
     }
 
-    private ItemStack[] getInputs() {
-        final ItemStack[] input = new ItemStack[9];
-        boolean hasValue = false;
+    private ItemStack[] getValidatedInputs() {
+        var input = new ItemStack[9];
+        var valid = false;
 
         for(int x = 0; x < craftingGridSlots.length; x++) {
             input[x] = craftingGridSlots[x].getStack();
-            if(!input[x].isEmpty()) hasValue = true;
+            if(!input[x].isEmpty()) {
+                // At least one input must be set, but it doesn't matter which one
+                valid = true;
+            }
         }
 
-        if(hasValue) return input;
-        return null;
+        return valid ? input : null;
     }
 
-    private ItemStack[] getOutputs() {
+    private ItemStack[] getValidatedOutputs() {
         if(isCraftingMode()) {
-            final ItemStack out = getAndUpdateOutput();
-            if(!out.isEmpty() && out.getCount() > 0) return new ItemStack[]{out};
+            var out = getAndUpdateOutput();
+
+            if(!out.isEmpty() && out.getCount() > 0) {
+                return new ItemStack[]{out};
+            }
         } else {
-            boolean hasValue = false;
-            final ItemStack[] list = new ItemStack[3];
+            var list = new ItemStack[3];
 
             for(int i = 0; i < processingOutputSlots.length; i++) {
-                final ItemStack out = processingOutputSlots[i].getStack();
-                list[i] = out;
-                if(!out.isEmpty()) hasValue = true;
+                list[i] = processingOutputSlots[i].getStack();
+
             }
-            if(hasValue) return list;
+            if(list[0].isEmpty()) {
+                // The first output slot is required
+                return null;
+            } else {
+                return list;
+            }
         }
 
         return null;
@@ -396,6 +453,15 @@ public class WPTContainer extends ItemTerminalMenu implements IOptionalSlotHost,
         wptGUIObject.setSubstitution(substitute);
     }
 
+    public boolean isSubstituteFluids() {
+        return wptGUIObject.isFluidSubstitution();
+    }
+
+    public void setSubstituteFluids(boolean substituteFluids) {
+        if(isClient()) sendClientAction(ACTION_SET_FLUID_SUBSTITUTION, substituteFluids);
+        wptGUIObject.setFluidSubstitution(substituteFluids);
+    }
+
     public WPTGuiObject getPatternTerminal() {
         return wptGUIObject;
     }
@@ -430,8 +496,8 @@ public class WPTContainer extends ItemTerminalMenu implements IOptionalSlotHost,
     }
 
     private static void convertItemToFluid(Slot slot) {
-        var fluidStack = getFluidContained(slot.getStack());
-        if(fluidStack != null) slot.setStack(FluidDummyItem.fromFluidStack(fluidStack, true));
+        var fluidStack = FluidContainerHelper.getContainedFluid(slot.getStack());
+        if(fluidStack != null) slot.setStack(fluidStack.wrap());
     }
 
     private static boolean canConvertItemToFluid(Slot slot) {
@@ -465,6 +531,10 @@ public class WPTContainer extends ItemTerminalMenu implements IOptionalSlotHost,
         }
 
         return super.transferStackToMenu(input);
+    }
+
+    public FakeCraftingMatrixSlot[] getCraftingGridSlots() {
+        return craftingGridSlots;
     }
 
     @Override
