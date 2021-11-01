@@ -104,10 +104,6 @@ public class ae2wtlib implements ModInitializer {
                     }
                 } else if(Name.startsWith("CraftingTerminal.") && c instanceof WCTContainer) {
                     if(Name.equals("CraftingTerminal.Delete")) ((WCTContainer) c).deleteTrashSlot();
-                    else if(Name.equals("CraftingTerminal.SetMagnetMode")) {
-                        ((WCTContainer) c).getMagnetSettings().magnetMode = MagnetMode.fromByte(value);
-                        ((WCTContainer) c).saveMagnetSettings();
-                    }
                 }
                 buf.release();
             });

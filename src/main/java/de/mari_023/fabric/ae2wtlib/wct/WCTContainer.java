@@ -34,6 +34,7 @@ import de.mari_023.fabric.ae2wtlib.terminal.ae2wtlibInternalInventory;
 import de.mari_023.fabric.ae2wtlib.trinket.AppEngTrinketSlot;
 import de.mari_023.fabric.ae2wtlib.trinket.FixedTrinketInv;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.ItemMagnetCard;
+import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetMode;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetSettings;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
 import dev.emi.trinkets.api.TrinketInventory;
@@ -61,6 +62,8 @@ import java.util.List;
 public class WCTContainer extends ItemTerminalContainer implements IAEAppEngInventory, IContainerCraftingPacket, IWTInvHolder {
 
     public static final ScreenHandlerType<WCTContainer> TYPE = ContainerTypeBuilder.create(WCTContainer::new, WCTGuiObject.class).requirePermission(SecurityPermissions.CRAFT).build("wireless_crafting_terminal");
+
+    public static final String MAGNET_MODE = "magnetMode";
 
     private final AppEngInternalInventory crafting;
     private final CraftingMatrixSlot[] craftingSlots = new CraftingMatrixSlot[9];
@@ -130,6 +133,8 @@ public class WCTContainer extends ItemTerminalContainer implements IAEAppEngInve
         addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.TRASH), SlotSemantic.INSCRIBER_PLATE_BOTTOM);
         addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.INFINITY_BOOSTER_CARD), SlotSemantic.BIOMETRIC_CARD);
         addSlot(new AppEngSlot(fixedWTInv, FixedWTInv.MAGNET_CARD), SlotSemantic.INSCRIBER_PLATE_TOP);//TODO fetch texture for card background
+
+        registerClientAction(MAGNET_MODE, MagnetMode.class, this::setMagnetMode);
 
         if(!ae2wtlibConfig.INSTANCE.allowTrinket()) return;//Trinkets only starting here
         FixedTrinketInv inv = new FixedTrinketInv((TrinketInventory) TrinketsApi.getTrinketsInventory(getPlayerInventory().player));
@@ -246,22 +251,18 @@ public class WCTContainer extends ItemTerminalContainer implements IAEAppEngInve
         return magnetSettings;
     }
 
+    public void setMagnetMode(MagnetMode mode) {
+        if(isClient()) sendClientAction(MAGNET_MODE, mode);
+        getMagnetSettings().magnetMode = mode;
+        saveMagnetSettings();
+    }
+
     public void saveMagnetSettings() {
         ItemMagnetCard.saveMagnetSettings(wctGUIObject.getItemStack(), magnetSettings);
     }
 
     public MagnetSettings reloadMagnetSettings() {
-        magnetSettings = ItemMagnetCard.loadMagnetSettings(wctGUIObject.getItemStack());
-        if(isClient() && screen != null) screen.resetMagnetSettings();
-        return magnetSettings;
-    }
-
-    @Environment(EnvType.CLIENT)
-    private WCTScreen screen;
-
-    @Environment(EnvType.CLIENT)
-    public void setScreen(WCTScreen screen) {
-        this.screen = screen;
+        return magnetSettings = ItemMagnetCard.loadMagnetSettings(wctGUIObject.getItemStack());
     }
 
     public boolean isWUT() {
