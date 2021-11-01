@@ -133,7 +133,7 @@ task publishModrinth(type: TaskModrinthUpload) {
         addGameVersion('1.16.5')
         addLoader('fabric')
         versionNumber = project.version
-        versionType = verType
+        releaseType = verType
         changelog = System.getenv("CHANGELOG") ?: "Please visit our [releases](https://github.com/Mari023/AE2WirelessTerminalLibrary/releases) for a changelog"
     }
 }
