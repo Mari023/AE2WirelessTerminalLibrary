@@ -9,8 +9,6 @@
     "AESubScreenMixin",
     "ContainerTypeBuilderMixin",
     "CraftConfirmContainerMixin",
-    "JEIRecipePacketMixin",
-    "PatternSlotPacketMixin",
     "PlayerInventoryInsertStack",
     "Restock",
     "SlotMixin",
@@ -19,11 +17,9 @@
   ],
   "client": [
     "HandledScreenMixin",
-    "InterfaceTerminalPacketMixin",
     "MineMenuMixin",
     "MineMenuTerminalHandler",
-    "RestockRender",
-    "ScreenMixin"
+    "RestockRender"
   ],
   "injectors": {
     "defaultRequire": 1

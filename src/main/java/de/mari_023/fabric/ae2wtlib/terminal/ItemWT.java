@@ -1,42 +1,25 @@
 package de.mari_023.fabric.ae2wtlib.terminal;
 
-import appeng.api.config.Actionable;
-import appeng.api.config.SortDir;
-import appeng.api.config.SortOrder;
-import appeng.api.config.ViewItems;
-import appeng.api.features.IGridLinkableHandler;
-import appeng.api.features.IWirelessTerminalHandler;
 import appeng.api.features.Locatables;
 import appeng.api.networking.security.IActionHost;
-import appeng.api.util.IConfigManager;
 import appeng.core.AEConfig;
-import appeng.core.localization.GuiText;
 import appeng.core.localization.PlayerMessages;
-import appeng.hooks.ICustomReequipAnimation;
-import appeng.items.tools.powered.powersink.AEBasePoweredItem;
+import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.menu.MenuLocator;
-import appeng.util.ConfigManager;
 import appeng.util.Platform;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.Util;
 import net.minecraft.world.World;
 
-import java.util.List;
 import java.util.OptionalLong;
 
-public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTerminalHandler, ICustomReequipAnimation {
-
-    public static final IGridLinkableHandler LINKABLE_HANDLER = new LinkableHandler();
+public abstract class ItemWT extends WirelessTerminalItem {
 
     public ItemWT(Item.Settings props) {
         super(AEConfig.instance().getWirelessTerminalBattery(), props);
@@ -48,7 +31,7 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermi
         return new TypedActionResult<>(ActionResult.SUCCESS, player.getStackInHand(hand));
     }
 
-    public boolean canOpen(ItemStack item, PlayerEntity player) {
+    public boolean canOpen(ItemStack item, PlayerEntity player) {//TODO use WirelessTerminalsInternal#checkPreconditions()
         if(Platform.isClient()) return false;
 
         final OptionalLong unparsedKey = getGridKey(item);
@@ -63,7 +46,7 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermi
             player.sendSystemMessage(PlayerMessages.StationCanNotBeLocated.get(), Util.NIL_UUID);
             return false;
         }
-        if(hasPower(player, 0.5, item)) return true;
+        if(TERMINAL_HANDLER.hasPower(player, 0.5, item)) return true;
         else {
             player.sendSystemMessage(PlayerMessages.DeviceNotPowered.get(), Util.NIL_UUID);
             return false;
@@ -75,63 +58,6 @@ public abstract class ItemWT extends AEBasePoweredItem implements IWirelessTermi
     }
 
     public abstract void open(final PlayerEntity player, final MenuLocator locator);
-
-    @Override
-    @Environment(EnvType.CLIENT)
-    public void appendTooltip(final ItemStack stack, final World world, final List<Text> lines, final TooltipContext advancedTooltips) {
-        super.appendTooltip(stack, world, lines, advancedTooltips);
-        if(getGridKey(stack).isEmpty()) lines.add(GuiText.Unlinked.text());
-        else lines.add(GuiText.Linked.text());
-    }
-
-    @Override
-    public boolean usePower(PlayerEntity player, double amount, ItemStack is) {
-        return extractAEPower(is, amount, Actionable.MODULATE) >= amount - 0.5;
-    }
-
-    @Override
-    public boolean hasPower(PlayerEntity player, double amount, ItemStack is) {
-        return getAECurrentPower(is) >= amount;
-    }
-
-    @Override
-    public IConfigManager getConfigManager(ItemStack is) {
-        ConfigManager out = new ConfigManager((manager, settingName) -> manager.writeToNBT(is.getOrCreateNbt()));
-
-        out.registerSetting(appeng.api.config.Settings.SORT_BY, SortOrder.NAME);
-        out.registerSetting(appeng.api.config.Settings.VIEW_MODE, ViewItems.ALL);
-        out.registerSetting(appeng.api.config.Settings.SORT_DIRECTION, SortDir.ASCENDING);
-
-        out.readFromNBT(is.getOrCreateNbt().copy());
-        return out;
-    }
-
-    @Override
-    public OptionalLong getGridKey(ItemStack item) {
-        NbtCompound tag = item.getNbt();
-        return tag != null && tag.contains("gridKey", 4) ? OptionalLong.of(tag.getLong("gridKey")) : OptionalLong.empty();
-    }
-
-    @Override
-    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-        return slotChanged;
-    }
-
-    private static class LinkableHandler implements IGridLinkableHandler {
-        private LinkableHandler() {}
-
-        public boolean canLink(ItemStack stack) {
-            return stack.getItem() instanceof ItemWT;
-        }
-
-        public void link(ItemStack itemStack, long securityKey) {
-            itemStack.getOrCreateNbt().putLong("gridKey", securityKey);
-        }
-
-        public void unlink(ItemStack itemStack) {
-            itemStack.removeSubNbt("gridKey");
-        }
-    }
 
     /**
      * get a previously stored {@link ItemStack} from a WirelessTerminal

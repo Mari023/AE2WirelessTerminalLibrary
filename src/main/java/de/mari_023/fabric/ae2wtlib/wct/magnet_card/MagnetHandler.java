@@ -43,7 +43,7 @@ public class MagnetHandler {
             HashMap<Item, Long> items = new HashMap<>();
 
             if(handler.getItemStorageChannel() == null) return;
-            IAEStackList<IAEItemStack> storageList = handler.getItemStorageChannel().getStorageList();
+            IAEStackList<IAEItemStack> storageList = handler.getItemStorageChannel().getCachedAvailableStacks();
 
             for(int i = 0; i < player.getInventory().size(); i++) {
                 ItemStack stack = player.getInventory().getStack(i);

@@ -10,6 +10,7 @@ import appeng.api.inventories.InternalInventory;
 import appeng.api.storage.StorageChannels;
 import appeng.api.storage.data.IAEStack;
 import appeng.crafting.pattern.IAEPatternDetails;
+import appeng.helpers.IPatternTerminalHost;
 import appeng.parts.reporting.PatternTerminalPart;
 import appeng.util.inv.AppEngInternalInventory;
 import appeng.util.inv.InternalInventoryHost;
@@ -27,7 +28,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
-public class WPTGuiObject extends WTGuiObject implements IPortableCell, ISegmentedInventory, IViewCellStorage, InternalInventoryHost {
+public class WPTGuiObject extends WTGuiObject implements IPortableCell, ISegmentedInventory, IViewCellStorage, InternalInventoryHost, IPatternTerminalHost {
 
     private boolean craftingMode = true;
     private boolean substitute = false;

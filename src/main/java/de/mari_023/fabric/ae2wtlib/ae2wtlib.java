@@ -3,8 +3,8 @@ package de.mari_023.fabric.ae2wtlib;
 import appeng.api.IAEAddonEntrypoint;
 import appeng.api.features.ChargerRegistry;
 import appeng.api.features.GridLinkables;
+import appeng.items.tools.powered.WirelessTerminalItem;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemInfinityBooster;
-import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.wct.ItemWCT;
 import de.mari_023.fabric.ae2wtlib.wct.WCTGuiObject;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.ItemMagnetCard;
@@ -71,10 +71,10 @@ public class ae2wtlib implements IAEAddonEntrypoint {
         Registry.register(Registry.ITEM, new Identifier(MOD_NAME, "wireless_interface_terminal"), INTERFACE_TERMINAL);
         Registry.register(Registry.ITEM, new Identifier(MOD_NAME, "wireless_universal_terminal"), UNIVERSAL_TERMINAL);
 
-        GridLinkables.register(CRAFTING_TERMINAL, ItemWT.LINKABLE_HANDLER);
-        GridLinkables.register(PATTERN_TERMINAL, ItemWT.LINKABLE_HANDLER);
-        GridLinkables.register(INTERFACE_TERMINAL, ItemWT.LINKABLE_HANDLER);
-        GridLinkables.register(UNIVERSAL_TERMINAL, ItemWT.LINKABLE_HANDLER);
+        GridLinkables.register(CRAFTING_TERMINAL, WirelessTerminalItem.LINKABLE_HANDLER);
+        GridLinkables.register(PATTERN_TERMINAL, WirelessTerminalItem.LINKABLE_HANDLER);
+        GridLinkables.register(INTERFACE_TERMINAL, WirelessTerminalItem.LINKABLE_HANDLER);
+        GridLinkables.register(UNIVERSAL_TERMINAL, WirelessTerminalItem.LINKABLE_HANDLER);
 
         ChargerRegistry.setChargeRate(CRAFTING_TERMINAL, ae2wtlibConfig.INSTANCE.getChargeRate());
         ChargerRegistry.setChargeRate(PATTERN_TERMINAL, ae2wtlibConfig.INSTANCE.getChargeRate());

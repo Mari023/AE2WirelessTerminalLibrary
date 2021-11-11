@@ -8,9 +8,8 @@ import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
 import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
 import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
 import me.shedaniel.rei.api.client.registry.entry.EntryRegistry;
-import me.shedaniel.rei.api.client.registry.transfer.TransferHandlerRegistry;
 import me.shedaniel.rei.api.common.util.EntryStacks;
-import me.shedaniel.rei.plugin.common.DefaultPlugin;
+import me.shedaniel.rei.plugin.common.BuiltinPlugin;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.RecipeType;
 
@@ -24,20 +23,13 @@ public class Plugin implements REIClientPlugin {
 
     @Override
     public void registerCategories(CategoryRegistry registry) {
-        registry.addWorkstations(DefaultPlugin.CRAFTING, EntryStacks.of(new ItemStack(ae2wtlib.CRAFTING_TERMINAL)));
+        registry.addWorkstations(BuiltinPlugin.CRAFTING, EntryStacks.of(new ItemStack(ae2wtlib.CRAFTING_TERMINAL)));
     }
 
     @Override
     public void registerDisplays(DisplayRegistry registry) {
         registry.registerRecipeFiller(Combine.class, RecipeType.CRAFTING, WUTDisplay::new);
         registry.registerRecipeFiller(Upgrade.class, RecipeType.CRAFTING, WUTDisplay::new);
-    }
-
-    @Override
-    public void registerTransferHandlers(TransferHandlerRegistry registry) {
-        // Allow recipe transfer from JEI to crafting and pattern terminal
-        registry.register(new CraftingRecipeTransferHandler());
-        registry.register(new PatternRecipeTransferHandler());
     }
 
     @Override
