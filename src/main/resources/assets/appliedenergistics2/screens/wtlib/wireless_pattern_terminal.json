@@ -27,24 +27,24 @@
     },
     "CRAFTING_GRID": {
       "left": 18,
-      "bottom": 158,
+      "bottom": 156,
       "grid": "BREAK_AFTER_3COLS"
     },
     "CRAFTING_RESULT": {
       "left": 110,
-      "bottom": 140
+      "bottom": 138
     },
     "PROCESSING_PRIMARY_RESULT": {
       "left": 110,
-      "bottom": 140
+      "bottom": 138
     },
     "PROCESSING_FIRST_OPTIONAL_RESULT": {
       "left": 110,
-      "bottom": 163
+      "bottom": 161
     },
     "PROCESSING_SECOND_OPTIONAL_RESULT": {
       "left": 110,
-      "bottom": 117
+      "bottom": 115
     }
   },
   "text": {
@@ -70,7 +70,7 @@
   "tooltips": {
     "processing-primary-output": {
       "left": 106,
-      "bottom": 142,
+      "bottom": 140,
       "width": 24,
       "height": 24,
       "tooltip": [
@@ -85,7 +85,7 @@
     },
     "processing-optional-output1": {
       "left": 109,
-      "bottom": 162,
+      "bottom": 160,
       "width": 18,
       "height": 18,
       "tooltip": [
@@ -100,7 +100,7 @@
     },
     "processing-optional-output2": {
       "left": 109,
-      "bottom": 116,
+      "bottom": 114,
       "width": 18,
       "height": 18,
       "tooltip": [

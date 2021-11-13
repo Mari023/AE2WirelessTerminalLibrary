@@ -1,6 +1,7 @@
 package de.mari_023.fabric.ae2wtlib.wpt;
 
 import appeng.client.gui.me.items.PatternTermScreen;
+import appeng.client.gui.style.Blitter;
 import appeng.client.gui.style.ScreenStyle;
 import appeng.client.gui.style.StyleManager;
 import de.mari_023.fabric.ae2wtlib.wut.CycleTerminalButton;
@@ -31,8 +32,8 @@ public class WPTScreen extends PatternTermScreen<WPTContainer> implements IUnive
         if(getScreenHandler().isWUT()) widgets.add("cycleTerminal", new CycleTerminalButton(btn -> cycleTerminal()));
     }
 
-    public void drawBG(MatrixStack matrixStack, int offsetX, int offsetY, int mouseX, int mouseY, float partialTicks) {//FIXME slot offsets, gui spacing
+    public void drawBG(MatrixStack matrixStack, int offsetX, int offsetY, int mouseX, int mouseY, float partialTicks) {
         super.drawBG(matrixStack, offsetX, offsetY, mouseX, mouseY, partialTicks);
-        //FIXME infinity booster card background
+        Blitter.texture("wtlib/guis/pattern.png").src(76, 143, 24, 10).dest(x + 76, y + backgroundHeight - 106).blit(matrixStack, getZOffset());
     }
 }
