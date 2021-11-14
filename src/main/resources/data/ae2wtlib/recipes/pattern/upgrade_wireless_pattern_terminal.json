@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "appliedenergistics2:wireless_crafting_terminal"
+    },
+    {
+      "item": "appliedenergistics2:engineering_processor"
+    }
+  ],
+  "result": {
+    "item": "ae2wtlib:wireless_pattern_terminal"
+  }
+}
