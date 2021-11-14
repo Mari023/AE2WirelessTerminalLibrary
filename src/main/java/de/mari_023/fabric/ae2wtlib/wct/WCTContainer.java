@@ -1,11 +1,8 @@
 package de.mari_023.fabric.ae2wtlib.wct;
 
-import appeng.api.config.Actionable;
-import appeng.api.config.PowerMultiplier;
 import appeng.api.config.SecurityPermissions;
 import appeng.api.inventories.InternalInventory;
 import appeng.api.networking.IGridNode;
-import appeng.core.localization.PlayerMessages;
 import appeng.core.sync.network.NetworkHandler;
 import appeng.core.sync.packets.InventoryActionPacket;
 import appeng.helpers.IMenuCraftingPacket;
@@ -23,7 +20,6 @@ import appeng.util.inv.AppEngInternalInventory;
 import appeng.util.inv.InternalInventoryHost;
 import com.google.common.base.Preconditions;
 import com.mojang.datafixers.util.Pair;
-import de.mari_023.fabric.ae2wtlib.ae2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.terminal.FixedWTInv;
 import de.mari_023.fabric.ae2wtlib.terminal.IWTInvHolder;
 import de.mari_023.fabric.ae2wtlib.terminal.ae2wtlibInternalInventory;
@@ -43,14 +39,12 @@ import net.minecraft.recipe.RecipeType;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Util;
 import net.minecraft.world.World;
 
 import java.util.List;
 
-public class WCTContainer extends ItemTerminalMenu implements IMenuCraftingPacket, IWTInvHolder, InternalInventoryHost {
+public class WCTContainer extends ItemTerminalMenu implements IMenuCraftingPacket, IWTInvHolder, InternalInventoryHost {//TODO use CraftingTerminal
 
     public static final ScreenHandlerType<WCTContainer> TYPE = MenuTypeBuilder.create(WCTContainer::new, WCTGuiObject.class).requirePermission(SecurityPermissions.CRAFT).build("wireless_crafting_terminal");
 
@@ -134,33 +128,12 @@ public class WCTContainer extends ItemTerminalMenu implements IMenuCraftingPacke
         updateTrinketSlots(true);*/
     }
 
-    private int ticks = 0;
-
     @Override
     public void sendContentUpdates() {
-        if(isClient()) return;
+        if(checkGuiItemNotInSlot()) return;
+        checkWirelessRange();
+        updateItemPowerStatus();
         super.sendContentUpdates();
-
-        if(wctGUIObject.notInRange()) {
-            if(isValidMenu()) {
-                getPlayer().sendSystemMessage(PlayerMessages.OutOfRange.get(), Util.NIL_UUID);
-                ((ServerPlayerEntity) getPlayer()).closeHandledScreen();
-            }
-        } else {
-            double powerMultiplier = ae2wtlibConfig.INSTANCE.getPowerMultiplier(wctGUIObject.getRange(), wctGUIObject.isOutOfRange());
-            ticks++;
-            if(ticks > 10) {
-                wctGUIObject.extractAEPower((powerMultiplier) * ticks, Actionable.MODULATE, PowerMultiplier.CONFIG);
-                ticks = 0;
-            }
-
-            if(wctGUIObject.extractAEPower(1, Actionable.SIMULATE, PowerMultiplier.ONE) != 0) return;
-            if(isValidMenu()) {
-                getPlayer().sendSystemMessage(PlayerMessages.DeviceNotPowered.get(), Util.NIL_UUID);
-                ((ServerPlayerEntity) getPlayer()).closeHandledScreen();
-            }
-        }
-        setValidMenu(false);
     }
 
     /**

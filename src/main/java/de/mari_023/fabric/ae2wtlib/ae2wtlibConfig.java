@@ -1,6 +1,5 @@
 package de.mari_023.fabric.ae2wtlib;
 
-import appeng.core.AEConfig;
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import net.fabricmc.loader.api.FabricLoader;
@@ -27,12 +26,6 @@ public class ae2wtlibConfig implements ConfigData {
     @ConfigEntry.Gui.Excluded
     private static boolean mineMenuChecked, mineMenuPresent, trinketPresent, trinketChecked;
 
-    public double getPowerMultiplier(double range, boolean isOutOfRange) {
-        if(isOutOfRange)
-            return AEConfig.instance().wireless_getDrainRate(528 * getOutOfRangePowerMultiplier());
-        return AEConfig.instance().wireless_getDrainRate(range);
-    }
-
     public double getChargeRate() {
         return chargeRate;
     }
@@ -41,7 +34,7 @@ public class ae2wtlibConfig implements ConfigData {
         return wutChargeRateMultiplier;
     }
 
-    private double getOutOfRangePowerMultiplier() {
+    public double getOutOfRangePowerMultiplier() {
         return outOfRangePowerMultiplier;
     }
 
