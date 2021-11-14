@@ -6,8 +6,6 @@ import appeng.api.features.IWirelessTerminalHandler;
 import appeng.api.implementations.blockentities.IViewCellStorage;
 import appeng.api.inventories.ISegmentedInventory;
 import appeng.api.inventories.InternalInventory;
-import appeng.api.storage.StorageChannels;
-import appeng.api.storage.data.IAEStack;
 import appeng.crafting.pattern.IAEPatternDetails;
 import appeng.helpers.IPatternTerminalHost;
 import appeng.parts.reporting.PatternTerminalPart;
@@ -21,7 +19,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
-import org.jetbrains.annotations.Nullable;
 
 public class WPTGuiObject extends WTGuiObject implements ISegmentedInventory, IViewCellStorage, IPatternTerminalHost {
 
@@ -86,19 +83,6 @@ public class WPTGuiObject extends WTGuiObject implements ISegmentedInventory, IV
         } else if(inv == crafting) fixCraftingRecipes();
     }
 
-    private ItemStack getDisplayStack(@Nullable IAEStack aeStack) {
-        if(aeStack == null) {
-            return ItemStack.EMPTY;
-        } else if(aeStack.getChannel() == StorageChannels.items()) {
-            return aeStack.cast(StorageChannels.items()).createItemStack();
-        } else if(aeStack.getChannel() == StorageChannels.fluids()) {
-            return aeStack.cast(StorageChannels.fluids()).wrap();
-        } else {
-            throw new IllegalArgumentException("Only item and fluid stacks are supported");
-        }
-    }
-
-
     @Override
     public boolean isRemote() {
         return isRemote;
@@ -126,12 +110,5 @@ public class WPTGuiObject extends WTGuiObject implements ISegmentedInventory, IV
     public void setFluidSubstitution(final boolean canSubstitute) {
         substituteFluids = canSubstitute;
         ItemWT.setBoolean(getItemStack(), substituteFluids, "substitute_fluids");
-    }
-
-    private void fixCraftingRecipes() {
-        if(craftingMode) for(int x = 0; x < crafting.size(); x++) {
-            final ItemStack is = crafting.getStackInSlot(x);
-            if(!is.isEmpty()) is.setCount(1);
-        }
     }
 }
