@@ -5,7 +5,6 @@ import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import de.mari_023.fabric.ae2wtlib.ae2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.trinket.TrinketsHelper;
 import de.mari_023.fabric.ae2wtlib.wct.CraftingTerminalHandler;
-import de.mari_023.fabric.ae2wtlib.wpt.WPTContainer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -47,16 +46,6 @@ public class NetworkingClient {
                 List<AEItemStack> items = new ArrayList<>();
                 while(buf.isReadable()) items.add(AEItemStack.fromPacket(buf));
                 ctHandler.setRestockAbleItems(items);
-                buf.release();
-            });
-        });
-        ClientPlayNetworking.registerGlobalReceiver(new Identifier(ae2wtlib.MOD_NAME, "wpt_states"), (client, handler, buf, responseSender) -> {
-            buf.retain();
-            client.execute(() -> {
-                if(client.player == null) return;
-                if(!(client.player.currentScreenHandler instanceof WPTContainer wpt)) return;
-                wpt.getPatternTerminal().setCraftingRecipe(buf.readBoolean());
-                wpt.getPatternTerminal().setSubstitution(buf.readBoolean());
                 buf.release();
             });
         });

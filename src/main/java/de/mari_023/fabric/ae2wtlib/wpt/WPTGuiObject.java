@@ -4,7 +4,6 @@ import appeng.api.crafting.IPatternDetails;
 import appeng.api.crafting.PatternDetailsHelper;
 import appeng.api.features.IWirelessTerminalHandler;
 import appeng.api.implementations.blockentities.IViewCellStorage;
-import appeng.api.implementations.guiobjects.IPortableCell;
 import appeng.api.inventories.ISegmentedInventory;
 import appeng.api.inventories.InternalInventory;
 import appeng.api.storage.StorageChannels;
@@ -13,22 +12,18 @@ import appeng.crafting.pattern.IAEPatternDetails;
 import appeng.helpers.IPatternTerminalHost;
 import appeng.parts.reporting.PatternTerminalPart;
 import appeng.util.inv.AppEngInternalInventory;
-import appeng.util.inv.InternalInventoryHost;
 import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.terminal.WTGuiObject;
 import de.mari_023.fabric.ae2wtlib.terminal.ae2wtlibInternalInventory;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
-public class WPTGuiObject extends WTGuiObject implements IPortableCell, ISegmentedInventory, IViewCellStorage, InternalInventoryHost, IPatternTerminalHost {
+public class WPTGuiObject extends WTGuiObject implements ISegmentedInventory, IViewCellStorage, IPatternTerminalHost {
 
     private boolean craftingMode = true;
     private boolean substitute = false;
@@ -87,12 +82,6 @@ public class WPTGuiObject extends WTGuiObject implements IPortableCell, ISegment
                 for(int x = 0; x < output.size() && x < aeDetails.getSparseOutputs().length; x++) {
                     output.setItemDirect(x, getDisplayStack(aeDetails.getSparseOutputs()[x]));
                 }
-
-                if(isRemote) return;
-                PacketByteBuf buf = PacketByteBufs.create();
-                buf.writeBoolean(craftingMode);
-                buf.writeBoolean(substitute);
-                ServerPlayNetworking.send((ServerPlayerEntity) getPlayer(), new Identifier(ae2wtlib.MOD_NAME, "wpt_states"), buf);
             }
         } else if(inv == crafting) fixCraftingRecipes();
     }
