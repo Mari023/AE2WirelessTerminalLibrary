@@ -2,12 +2,12 @@ package de.mari_023.fabric.ae2wtlib.client;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import de.mari_023.fabric.ae2wtlib.TextConstants;
 import de.mari_023.fabric.ae2wtlib.mixin.MineMenuMixin;
 import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
 import me.ultrablacklinux.minemenufabric.client.screen.MineMenuSelectScreen;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.ItemStack;
-import net.minecraft.text.TranslatableText;
 
 public class MineMenuIntegration {
     private static JsonObject wct;
@@ -37,12 +37,12 @@ public class MineMenuIntegration {
         if(i < 2) return;
 
         try {
-            MineMenuSelectScreen screen = new MineMenuSelectScreen(menu, new TranslatableText("item.ae2wtlib.wireless_universal_terminal").getString(), null);
+            MineMenuSelectScreen screen = new MineMenuSelectScreen(menu, TextConstants.WIRELESS_UNIVERSAL_TERMINAL.getString(), null);
             ((MineMenuMixin) screen).setCircleEntries(i);
             client.setScreen(screen);
         } catch(NullPointerException e) {
             client.setScreen(null);
-            client.player.sendMessage(new TranslatableText("minemenu.error.config"), false);
+            client.player.sendMessage(TextConstants.MINEMENU_ERROR, false);
         }
     }
 

@@ -18,9 +18,6 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.text.Style;
-import net.minecraft.text.TextColor;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 
 public class NetworkingServer {
@@ -151,9 +148,9 @@ public class NetworkingServer {
                     WUTHandler.updateClientTerminal(player, craftingTerminalHandler.getSlot(), terminal.getNbt());
 
                     if(ItemWT.getBoolean(terminal, "restock"))
-                        player.sendMessage(new TranslatableText("gui.ae2wtlib.restock").append(new TranslatableText("gui.ae2wtlib.on").setStyle(Style.EMPTY.withColor(TextColor.parse("green")))), true);
+                        player.sendMessage(TextConstants.RESTOCK_ON, true);
                     else
-                        player.sendMessage(new TranslatableText("gui.ae2wtlib.restock").append(new TranslatableText("gui.ae2wtlib.off").setStyle(Style.EMPTY.withColor(TextColor.parse("red")))), true);
+                        player.sendMessage(TextConstants.RESTOCK_OFF, true);
                 } else if(terminalName.equalsIgnoreCase("toggleMagnet")) {
                     ItemStack terminal = CraftingTerminalHandler.getCraftingTerminalHandler(player).getCraftingTerminal();
                     if(terminal.isEmpty()) {
@@ -163,15 +160,15 @@ public class NetworkingServer {
                     MagnetSettings settings = ItemMagnetCard.loadMagnetSettings(terminal);
                     switch(settings.magnetMode) {
                         case OFF -> {
-                            player.sendMessage(new TranslatableText("gui.ae2wtlib.magnetcard.hotkey").append(new TranslatableText("Pickup to Inventory").setStyle(Style.EMPTY.withColor(TextColor.parse("green")))), true);
+                            player.sendMessage(TextConstants.HOTKEY_MAGNETCARD_INVENTORY, true);
                             settings.magnetMode = MagnetMode.PICKUP_INVENTORY;
                         }
                         case PICKUP_INVENTORY -> {
-                            player.sendMessage(new TranslatableText("gui.ae2wtlib.magnetcard.hotkey").append(new TranslatableText("Pickup to ME").setStyle(Style.EMPTY.withColor(TextColor.parse("green")))), true);
+                            player.sendMessage(TextConstants.HOTKEY_MAGNETCARD_ME, true);
                             settings.magnetMode = MagnetMode.PICKUP_ME;
                         }
                         case PICKUP_ME -> {
-                            player.sendMessage(new TranslatableText("gui.ae2wtlib.magnetcard.hotkey").append(new TranslatableText("gui.ae2wtlib.magnetcard.desc.off").setStyle(Style.EMPTY.withColor(TextColor.parse("red")))), true);
+                            player.sendMessage(TextConstants.HOTKEY_MAGNETCARD_OFF, true);
                             settings.magnetMode = MagnetMode.OFF;
                         }
                     }

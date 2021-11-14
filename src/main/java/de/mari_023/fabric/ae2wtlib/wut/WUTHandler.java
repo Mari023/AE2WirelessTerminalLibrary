@@ -2,6 +2,7 @@ package de.mari_023.fabric.ae2wtlib.wut;
 
 import appeng.api.features.IWirelessTerminalHandler;
 import appeng.menu.MenuLocator;
+import de.mari_023.fabric.ae2wtlib.TextConstants;
 import de.mari_023.fabric.ae2wtlib.ae2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
@@ -17,7 +18,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
@@ -90,7 +90,7 @@ public class WUTHandler {
         if(is.getNbt() == null) return;
         String currentTerminal = getCurrentTerminal(is);
         if(!wirelessTerminals.containsKey(currentTerminal)) {
-            player.sendMessage(new LiteralText("This terminal does not contain any other Terminals"), false);
+            player.sendMessage(TextConstants.TERMINAL_EMPTY, false);
             return;
         }
         ContainerOpener terminal = wirelessTerminals.get(currentTerminal).containerOpener;

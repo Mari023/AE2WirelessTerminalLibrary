@@ -1,5 +1,6 @@
 package de.mari_023.fabric.ae2wtlib.terminal;
 
+import de.mari_023.fabric.ae2wtlib.TextConstants;
 import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -8,7 +9,6 @@ import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -22,6 +22,6 @@ public class ItemInfinityBooster extends Item {
     @Environment(EnvType.CLIENT)
     public void appendTooltip(final ItemStack stack, final World world, final List<Text> lines, final TooltipContext advancedTooltips) {
         super.appendTooltip(stack, world, lines, advancedTooltips);
-        lines.add(new TranslatableText("item.ae2wtlib.infinity_booster_card.desc"));
+        lines.add(TextConstants.BOOSTER);
     }
 }
