@@ -34,6 +34,6 @@ public class WITScreen extends InterfaceTerminalScreen<WITContainer> implements 
     @Override
     public void drawBG(MatrixStack matrixStack, final int offsetX, final int offsetY, final int mouseX, final int mouseY, float partialTicks) {
         super.drawBG(matrixStack, offsetX, offsetY, mouseX, mouseY, partialTicks);
-        Blitter.texture("wtlib/guis/interface.png").src(172, 128, 23, 24).dest(x + 172, y + backgroundHeight - 90).blit(matrixStack, getZOffset());
+        Blitter.texture("wtlib/guis/interface.png").src(172, 128, 23, 24).dest(x + 172, y + backgroundHeight - 94).blit(matrixStack, getZOffset());
     }
 }
