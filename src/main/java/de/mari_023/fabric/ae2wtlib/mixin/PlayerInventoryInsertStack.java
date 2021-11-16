@@ -1,9 +1,8 @@
 package de.mari_023.fabric.ae2wtlib.mixin;
 
 import appeng.api.config.Actionable;
-import appeng.api.storage.data.IAEItemStack;
+import appeng.api.storage.data.AEItemKey;
 import appeng.me.helpers.PlayerSource;
-import appeng.util.item.AEItemStack;
 import de.mari_023.fabric.ae2wtlib.wct.CraftingTerminalHandler;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.ItemMagnetCard;
 import net.minecraft.entity.player.PlayerEntity;
@@ -23,18 +22,18 @@ public class PlayerInventoryInsertStack {
     @Final
     public PlayerEntity player;
 
-    @Inject(method = "insertStack(Lnet/minecraft/item/ItemStack;)Z", at = @At(value = "INVOKE"), cancellable = true)
+    @Inject(method = "insertStack(Lnet/minecraft/item/ItemStack;)Z", at = @At(value = "HEAD"), cancellable = true)
     public void insertStackInME(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
         if(stack.isEmpty()) return;
         CraftingTerminalHandler CTHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
         ItemStack terminal = CTHandler.getCraftingTerminal();
         if(ItemMagnetCard.isPickupME(terminal) && CTHandler.inRange()) {
             if(CTHandler.getItemStorageChannel() == null) return;
-            IAEItemStack leftover = CTHandler.getItemStorageChannel().injectItems(AEItemStack.fromItemStack(stack), Actionable.MODULATE, new PlayerSource(player, CTHandler.getSecurityStation()));
-            if(leftover == null || leftover.createItemStack().isEmpty()) {
+            long leftover = CTHandler.getItemStorageChannel().insert(AEItemKey.of(stack), stack.getCount(), Actionable.MODULATE, new PlayerSource(player, CTHandler.getSecurityStation()));
+            if(leftover == 0) {
                 stack.setCount(0);
                 cir.setReturnValue(true);
-            } else stack.setCount(leftover.createItemStack().getCount());
+            } else stack.setCount((int) leftover);
         }
     }
 }

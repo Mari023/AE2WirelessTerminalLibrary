@@ -8,10 +8,9 @@ import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.storage.IStorageService;
 import appeng.api.storage.IMEMonitor;
 import appeng.api.storage.StorageChannels;
-import appeng.api.storage.data.IAEItemStack;
+import appeng.api.storage.data.AEItemKey;
 import appeng.api.util.DimensionalBlockPos;
 import appeng.blockentity.networking.WirelessBlockEntity;
-import appeng.util.item.AEItemStack;
 import de.mari_023.fabric.ae2wtlib.ae2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.terminal.IInfinityBoosterCardHolder;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
@@ -25,7 +24,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.OptionalLong;
+import java.util.Set;
+import java.util.UUID;
 
 public class CraftingTerminalHandler {
 
@@ -35,11 +37,11 @@ public class CraftingTerminalHandler {
     private IActionHost securityStation;
     private IGrid targetGrid;
     private IStorageService storageGrid;
-    private IMEMonitor<IAEItemStack> itemStorageChannel;
+    private IMEMonitor<AEItemKey> itemStorageChannel;
     private int slot = -1;
     private IWirelessAccessPoint myWap;
     private double sqRange = Double.MAX_VALUE;
-    private final HashMap<Item, Long> restockAbleItems = new HashMap<>();
+    private HashMap<Item, Long> restockAbleItems = new HashMap<>();
 
     private CraftingTerminalHandler(PlayerEntity player) {
         this.player = player;
@@ -130,7 +132,7 @@ public class CraftingTerminalHandler {
         return storageGrid;
     }
 
-    public IMEMonitor<IAEItemStack> getItemStorageChannel() {
+    public IMEMonitor<AEItemKey> getItemStorageChannel() {
         if(getStorageGrid() == null) return itemStorageChannel = null;
         if(itemStorageChannel == null)
             return itemStorageChannel = storageGrid.getInventory(StorageChannels.items());
@@ -181,8 +183,7 @@ public class CraftingTerminalHandler {
         return stack.getCount() + (restockAbleItems.get(stack.getItem()) == null ? 0 : restockAbleItems.get(stack.getItem()));
     }
 
-    public void setRestockAbleItems(List<AEItemStack> items) {
-        restockAbleItems.clear();
-        for(AEItemStack stack : items) restockAbleItems.put(stack.getItem(), stack.getStackSize());
+    public void setRestockAbleItems(HashMap<Item, Long> items) {
+        restockAbleItems = items;
     }
 }

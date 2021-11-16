@@ -1,8 +1,7 @@
 package de.mari_023.fabric.ae2wtlib.wct.magnet_card;
 
-import appeng.api.storage.data.IAEItemStack;
-import appeng.api.storage.data.IAEStackList;
-import appeng.util.item.AEItemStack;
+import appeng.api.storage.data.AEItemKey;
+import appeng.api.storage.data.KeyCounter;
 import de.mari_023.fabric.ae2wtlib.ae2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
@@ -43,7 +42,7 @@ public class MagnetHandler {
             HashMap<Item, Long> items = new HashMap<>();
 
             if(handler.getItemStorageChannel() == null) return;
-            IAEStackList<IAEItemStack> storageList = handler.getItemStorageChannel().getCachedAvailableStacks();
+            KeyCounter<AEItemKey> storageList = handler.getItemStorageChannel().getCachedAvailableStacks();
 
             for(int i = 0; i < player.getInventory().size(); i++) {
                 ItemStack stack = player.getInventory().getStack(i);
@@ -53,17 +52,14 @@ public class MagnetHandler {
 
             PacketByteBuf buf = PacketByteBufs.create();
             for(Map.Entry<Item, Long> entry : items.entrySet()) {
-                AEItemStack stack = AEItemStack.fromItemStack(new ItemStack(entry.getKey()));
-                if(stack == null) continue;
-                stack.setStackSize(entry.getValue());
-                stack.writeToPacket(buf);
+                buf.writeItemStack(new ItemStack(entry.getKey()));
+                buf.writeLong(entry.getValue());
             }
             ServerPlayNetworking.send(player, new Identifier(ae2wtlib.MOD_NAME, "restock_amounts"), buf);
         } catch(NullPointerException ignored) {}
     }
 
-    private long getCount(IAEStackList<IAEItemStack> storageList, ItemStack stack) {
-        IAEItemStack aeStack = storageList.findPrecise(AEItemStack.fromItemStack(stack));
-        return aeStack == null ? 0 : aeStack.getStackSize();
+    private long getCount(KeyCounter<AEItemKey> storageList, ItemStack stack) {
+        return storageList.get(AEItemKey.of(stack));
     }
 }

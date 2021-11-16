@@ -1,17 +1,16 @@
 package de.mari_023.fabric.ae2wtlib.client;
 
-import appeng.util.item.AEItemStack;
 import de.mari_023.fabric.ae2wtlib.ae2wtlib;
 import de.mari_023.fabric.ae2wtlib.ae2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.trinket.TrinketsHelper;
 import de.mari_023.fabric.ae2wtlib.wct.CraftingTerminalHandler;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 public class NetworkingClient {
     public static void registerClient() {
@@ -43,8 +42,8 @@ public class NetworkingClient {
             client.execute(() -> {
                 if(client.player == null) return;
                 CraftingTerminalHandler ctHandler = CraftingTerminalHandler.getCraftingTerminalHandler(client.player);
-                List<AEItemStack> items = new ArrayList<>();
-                while(buf.isReadable()) items.add(AEItemStack.fromPacket(buf));
+                HashMap<Item, Long> items = new HashMap<>();
+                while(buf.isReadable()) items.put(buf.readItemStack().getItem(), buf.readLong());
                 ctHandler.setRestockAbleItems(items);
                 buf.release();
             });

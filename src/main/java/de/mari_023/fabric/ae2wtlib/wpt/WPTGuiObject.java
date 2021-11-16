@@ -6,6 +6,7 @@ import appeng.api.features.IWirelessTerminalHandler;
 import appeng.api.implementations.blockentities.IViewCellStorage;
 import appeng.api.inventories.ISegmentedInventory;
 import appeng.api.inventories.InternalInventory;
+import appeng.api.storage.GenericStack;
 import appeng.crafting.pattern.IAEPatternDetails;
 import appeng.helpers.IPatternTerminalHost;
 import appeng.parts.reporting.PatternTerminalPart;
@@ -73,11 +74,11 @@ public class WPTGuiObject extends WTGuiObject implements ISegmentedInventory, IV
                 setSubstitution(aeDetails.canSubstitute());
 
                 for(int x = 0; x < crafting.size() && x < aeDetails.getSparseInputs().length; x++) {
-                    crafting.setItemDirect(x, getDisplayStack(aeDetails.getSparseInputs()[x]));
+                    crafting.setItemDirect(x, GenericStack.wrapInItemStack(aeDetails.getSparseInputs()[x]));
                 }
 
                 for(int x = 0; x < output.size() && x < aeDetails.getSparseOutputs().length; x++) {
-                    output.setItemDirect(x, getDisplayStack(aeDetails.getSparseOutputs()[x]));
+                    output.setItemDirect(x, GenericStack.wrapInItemStack(aeDetails.getSparseOutputs()[x]));
                 }
             }
         } else if(inv == crafting) fixCraftingRecipes();
