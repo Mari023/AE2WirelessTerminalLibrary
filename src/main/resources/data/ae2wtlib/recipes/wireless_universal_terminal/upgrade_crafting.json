@@ -1,7 +1,7 @@
 {
   "type": "ae2wtlib:upgrade",
   "terminal": {
-    "item": "ae2wtlib:wireless_crafting_terminal"
+    "item": "appliedenergistics2:wireless_crafting_terminal"
   },
   "terminalName": "crafting"
 }
