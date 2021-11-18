@@ -1,12 +1,8 @@
 package de.mari_023.fabric.ae2wtlib.terminal;
 
-import appeng.api.features.Locatables;
-import appeng.api.networking.security.IActionHost;
 import appeng.core.AEConfig;
-import appeng.core.localization.PlayerMessages;
 import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.menu.MenuLocator;
-import appeng.util.Platform;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -14,10 +10,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.Util;
 import net.minecraft.world.World;
-
-import java.util.OptionalLong;
 
 public abstract class ItemWT extends WirelessTerminalItem {
 
@@ -27,30 +20,16 @@ public abstract class ItemWT extends WirelessTerminalItem {
 
     @Override
     public TypedActionResult<ItemStack> use(final World w, final PlayerEntity player, final Hand hand) {
-        if(canOpen(player.getStackInHand(hand), player)) open(player, MenuLocator.forHand(player, hand));
-        return new TypedActionResult<>(ActionResult.SUCCESS, player.getStackInHand(hand));
+        var is = player.getStackInHand(hand);
+        if(canOpen(is, player)) {
+            open(player, MenuLocator.forHand(player, hand));
+            return new TypedActionResult<>(ActionResult.SUCCESS, is);
+        }
+        return new TypedActionResult<>(ActionResult.FAIL, is);
     }
 
-    public boolean canOpen(ItemStack item, PlayerEntity player) {//TODO use WirelessTerminalsInternal#checkPreconditions()
-        if(Platform.isClient()) return false;
-
-        final OptionalLong unparsedKey = getGridKey(item);
-        if(unparsedKey.isEmpty()) {
-            player.sendSystemMessage(PlayerMessages.DeviceNotLinked.get(), Util.NIL_UUID);
-            return false;
-        }
-
-        final long parsedKey = unparsedKey.getAsLong();
-        final IActionHost securityStation = Locatables.securityStations().get(player.world, parsedKey);
-        if(securityStation == null) {
-            player.sendSystemMessage(PlayerMessages.StationCanNotBeLocated.get(), Util.NIL_UUID);
-            return false;
-        }
-        if(TERMINAL_HANDLER.hasPower(player, 0.5, item)) return true;
-        else {
-            player.sendSystemMessage(PlayerMessages.DeviceNotPowered.get(), Util.NIL_UUID);
-            return false;
-        }
+    public boolean canOpen(ItemStack item, PlayerEntity player) {
+        return !item.isEmpty() && checkPreconditions(item, player);
     }
 
     public void tryOpen(PlayerEntity player, MenuLocator locator, ItemStack stack) {

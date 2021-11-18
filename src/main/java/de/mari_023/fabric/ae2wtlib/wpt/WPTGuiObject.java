@@ -2,7 +2,6 @@ package de.mari_023.fabric.ae2wtlib.wpt;
 
 import appeng.api.crafting.IPatternDetails;
 import appeng.api.crafting.PatternDetailsHelper;
-import appeng.api.features.IWirelessTerminalHandler;
 import appeng.api.implementations.blockentities.IViewCellStorage;
 import appeng.api.inventories.ISegmentedInventory;
 import appeng.api.inventories.InternalInventory;
@@ -18,7 +17,6 @@ import de.mari_023.fabric.ae2wtlib.terminal.ae2wtlibInternalInventory;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 
 public class WPTGuiObject extends WTGuiObject implements ISegmentedInventory, IViewCellStorage, IPatternTerminalHost {
@@ -29,11 +27,9 @@ public class WPTGuiObject extends WTGuiObject implements ISegmentedInventory, IV
     private final AppEngInternalInventory crafting;
     private final AppEngInternalInventory output;
     private final AppEngInternalInventory pattern;
-    private final boolean isRemote;
 
-    public WPTGuiObject(final IWirelessTerminalHandler wh, final ItemStack is, final PlayerEntity ep, int inventorySlot) {
-        super(wh, is, ep, inventorySlot);
-        isRemote = !(ep instanceof ServerPlayerEntity);
+    public WPTGuiObject(final PlayerEntity ep, int inventorySlot, final ItemStack is) {
+        super(ep, inventorySlot, is);
         crafting = new ae2wtlibInternalInventory(this, 9, "pattern_crafting", is);
         output = new ae2wtlibInternalInventory(this, 3, "output", is);
         pattern = new ae2wtlibInternalInventory(this, 2, "pattern", is);
@@ -84,15 +80,10 @@ public class WPTGuiObject extends WTGuiObject implements ISegmentedInventory, IV
         } else if(inv == crafting) fixCraftingRecipes();
     }
 
-    @Override
-    public boolean isRemote() {
-        return isRemote;
-    }
-
     public void setCraftingRecipe(final boolean craftingMode) {
         this.craftingMode = craftingMode;
         ItemWT.setBoolean(getItemStack(), craftingMode, "craftingMode");
-        if(!isRemote()) fixCraftingRecipes();
+        if(!isClientSide()) fixCraftingRecipes();
     }
 
     public boolean isSubstitution() {

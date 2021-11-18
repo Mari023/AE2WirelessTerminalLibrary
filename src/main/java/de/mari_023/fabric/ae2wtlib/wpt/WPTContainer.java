@@ -4,7 +4,6 @@ import appeng.api.config.SecurityPermissions;
 import appeng.api.networking.IGridNode;
 import appeng.menu.SlotSemantic;
 import appeng.menu.implementations.MenuTypeBuilder;
-import appeng.menu.interfaces.IInventorySlotAware;
 import appeng.menu.me.items.PatternTermMenu;
 import appeng.menu.slot.AppEngSlot;
 import de.mari_023.fabric.ae2wtlib.terminal.FixedWTInv;
@@ -27,7 +26,7 @@ public class WPTContainer extends PatternTermMenu implements IWTInvHolder {
         super(TYPE, id, ip, gui, false);
         wptGUIObject = gui;
 
-        final int slotIndex = ((IInventorySlotAware) wptGUIObject).getInventorySlot();
+        final int slotIndex =  wptGUIObject.getSlot();
         if(slotIndex < 100 && slotIndex != 40) lockPlayerInventorySlot(slotIndex);
         createPlayerInventorySlots(ip);
         addSlot(new AppEngSlot(new FixedWTInv(getPlayerInventory(), wptGUIObject.getItemStack(), this), FixedWTInv.INFINITY_BOOSTER_CARD), SlotSemantic.BIOMETRIC_CARD);
@@ -39,14 +38,6 @@ public class WPTContainer extends PatternTermMenu implements IWTInvHolder {
         }
     }
 
-    @Override
-    public void sendContentUpdates() {
-        if(checkGuiItemNotInSlot()) return;
-        checkWirelessRange();
-        updateItemPowerStatus();
-        super.sendContentUpdates();
-    }
-
     public boolean isCraftingMode() {
         return wptGUIObject.isCraftingRecipe();
     }
@@ -56,7 +47,7 @@ public class WPTContainer extends PatternTermMenu implements IWTInvHolder {
         wptGUIObject.setCraftingRecipe(craftingMode);
     }
 
-    public boolean isSubstitution() {
+    public boolean isSubstitute() {
         return wptGUIObject.isSubstitution();
     }
 

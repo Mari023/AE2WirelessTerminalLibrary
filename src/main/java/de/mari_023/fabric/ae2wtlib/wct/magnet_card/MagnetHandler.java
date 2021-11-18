@@ -26,7 +26,7 @@ public class MagnetHandler {
         List<ServerPlayerEntity> playerList = server.getPlayerManager().getPlayerList();
         for(ServerPlayerEntity player : playerList) {
             if(ItemMagnetCard.isActiveMagnet(CraftingTerminalHandler.getCraftingTerminalHandler(player).getCraftingTerminal())) {
-                List<ItemEntity> entityItems = player.getServerWorld().getEntitiesByClass(ItemEntity.class, player.getBoundingBox().expand(ae2wtlibConfig.INSTANCE.magnetCardRange()), EntityPredicates.VALID_ENTITY);
+                List<ItemEntity> entityItems = player.getWorld().getEntitiesByClass(ItemEntity.class, player.getBoundingBox().expand(ae2wtlibConfig.INSTANCE.magnetCardRange()), EntityPredicates.VALID_ENTITY);
                 boolean sneaking = !player.isSneaking();
                 for(ItemEntity entityItemNearby : entityItems) if(sneaking) entityItemNearby.onPlayerCollision(player);
             }

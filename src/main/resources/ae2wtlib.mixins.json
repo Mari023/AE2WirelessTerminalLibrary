@@ -17,8 +17,6 @@
   ],
   "client": [
     "HandledScreenMixin",
-    "MineMenuMixin",
-    "MineMenuTerminalHandler",
     "RestockRender"
   ],
   "injectors": {

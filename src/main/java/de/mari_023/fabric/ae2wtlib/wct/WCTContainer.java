@@ -10,7 +10,6 @@ import appeng.helpers.InventoryAction;
 import appeng.menu.NullMenu;
 import appeng.menu.SlotSemantic;
 import appeng.menu.implementations.MenuTypeBuilder;
-import appeng.menu.interfaces.IInventorySlotAware;
 import appeng.menu.me.items.ItemTerminalMenu;
 import appeng.menu.slot.AppEngSlot;
 import appeng.menu.slot.CraftingMatrixSlot;
@@ -65,7 +64,7 @@ public class WCTContainer extends ItemTerminalMenu implements IMenuCraftingPacke
 
         fixedWTInv = new FixedWTInv(getPlayerInventory(), wctGUIObject.getItemStack(), this);
 
-        final int slotIndex = ((IInventorySlotAware) wctGUIObject).getInventorySlot();
+        final int slotIndex = wctGUIObject.getSlot();
         if(slotIndex < 100 && slotIndex != 40) lockPlayerInventorySlot(slotIndex);
 
         crafting = new ae2wtlibInternalInventory(this, 9, "crafting", wctGUIObject.getItemStack());
@@ -126,14 +125,6 @@ public class WCTContainer extends ItemTerminalMenu implements IMenuCraftingPacke
 
         /*if(!ae2wtlibConfig.INSTANCE.allowTrinket()) return;//Trinkets only starting here
         updateTrinketSlots(true);*/
-    }
-
-    @Override
-    public void sendContentUpdates() {
-        if(checkGuiItemNotInSlot()) return;
-        checkWirelessRange();
-        updateItemPowerStatus();
-        super.sendContentUpdates();
     }
 
     /**

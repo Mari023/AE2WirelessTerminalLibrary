@@ -33,12 +33,6 @@ public class MixinPlugin implements IMixinConfigPlugin {
         if(mixinClassName.equals("de.mari_023.fabric.ae2wtlib.mixin.HandledScreenMixin")) {
             return ae2wtlibConfig.INSTANCE.allowTrinket();
         }
-        if(mixinClassName.equals("de.mari_023.fabric.ae2wtlib.mixin.MineMenuTerminalHandler")) {
-            return ae2wtlibConfig.allowMineMenu();
-        }
-        if(mixinClassName.equals("de.mari_023.fabric.ae2wtlib.mixin.MineMenuMixin")) {
-            return ae2wtlibConfig.allowMineMenu();
-        }
         return true;
     }
 

@@ -24,7 +24,7 @@ public class ae2wtlibConfig implements ConfigData {
     public static ae2wtlibConfig INSTANCE;
 
     @ConfigEntry.Gui.Excluded
-    private static boolean mineMenuChecked, mineMenuPresent, trinketPresent, trinketChecked;
+    private static boolean trinketPresent, trinketChecked;
 
     public double getChargeRate() {
         return chargeRate;
@@ -36,12 +36,6 @@ public class ae2wtlibConfig implements ConfigData {
 
     public double getOutOfRangePowerMultiplier() {
         return outOfRangePowerMultiplier;
-    }
-
-    public static boolean allowMineMenu() {
-        if(!mineMenuChecked) mineMenuPresent = FabricLoader.getInstance().isModLoaded("minemenufabric");
-        mineMenuChecked = true;
-        return mineMenuPresent;
     }
 
     public boolean allowTrinket() {
