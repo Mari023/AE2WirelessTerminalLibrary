@@ -1,12 +1,13 @@
 package de.mari_023.fabric.ae2wtlib;
 
+import appeng.core.definitions.AEItems;
+import appeng.items.tools.powered.WirelessCraftingTerminalItem;
 import appeng.menu.AEBaseMenu;
 import appeng.menu.MenuLocator;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.trinket.CombinedTrinketInventory;
 import de.mari_023.fabric.ae2wtlib.trinket.TrinketsHelper;
 import de.mari_023.fabric.ae2wtlib.wct.CraftingTerminalHandler;
-import de.mari_023.fabric.ae2wtlib.wct.ItemWCT;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.ItemMagnetCard;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetMode;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetSettings;
@@ -48,7 +49,7 @@ public class NetworkingServer {
                     ItemStack terminal = null;
                     for(int i = 0; i < player.getInventory().size(); i++) {
                         terminal = player.getInventory().getStack(i);
-                        if(terminal.getItem() instanceof ItemWCT || (terminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(terminal, "crafting"))) {
+                        if(terminal.getItem() instanceof WirelessCraftingTerminalItem || (terminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(terminal, "crafting"))) {
                             slot = i;
                             WUTHandler.setCurrentTerminal(player, slot, terminal, "crafting");
                             break;
@@ -58,7 +59,7 @@ public class NetworkingServer {
                         CombinedTrinketInventory trinketInv = TrinketsHelper.getTrinketsInventory(player);
                         for(int i = 0; i < trinketInv.size(); i++) {
                             ItemStack trinketTerminal = trinketInv.getStackInSlot(i);
-                            if(trinketTerminal.getItem() instanceof ItemWCT || (trinketTerminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(trinketTerminal, "crafting"))) {
+                            if(trinketTerminal.getItem() instanceof WirelessCraftingTerminalItem || (trinketTerminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(trinketTerminal, "crafting"))) {
                                 slot = i + 100;
                                 WUTHandler.setCurrentTerminal(player, slot, trinketTerminal, "crafting");
                                 terminal = trinketTerminal;
@@ -71,8 +72,8 @@ public class NetworkingServer {
                         return;
                     }
 
-                    if(ae2wtlib.CRAFTING_TERMINAL.canOpen(terminal, player))
-                        ae2wtlib.CRAFTING_TERMINAL.open(player, MenuLocator.forInventorySlot(slot));
+                    if(((WirelessCraftingTerminalItem)AEItems.WIRELESS_CRAFTING_TERMINAL).canOpen(terminal, player))
+                        ((WirelessCraftingTerminalItem)AEItems.WIRELESS_CRAFTING_TERMINAL).open(player, MenuLocator.forInventorySlot(slot));
                 } else if(terminalName.equalsIgnoreCase("pattern")) {
                     PlayerInventory inv = player.getInventory();
                     int slot = -1;

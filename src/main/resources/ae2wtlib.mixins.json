@@ -13,7 +13,8 @@
     "Restock",
     "SlotMixin",
     "TrinketWCTContainer",
-    "TrinketWT"
+    "TrinketWT",
+    "CraftingTerminalItemMixin"
   ],
   "client": [
     "HandledScreenMixin",

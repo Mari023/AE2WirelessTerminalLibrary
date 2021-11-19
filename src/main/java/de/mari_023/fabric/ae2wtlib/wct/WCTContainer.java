@@ -10,6 +10,7 @@ import appeng.helpers.InventoryAction;
 import appeng.menu.NullMenu;
 import appeng.menu.SlotSemantic;
 import appeng.menu.implementations.MenuTypeBuilder;
+import appeng.menu.me.items.CraftingTermMenu;
 import appeng.menu.me.items.ItemTerminalMenu;
 import appeng.menu.slot.AppEngSlot;
 import appeng.menu.slot.CraftingMatrixSlot;
@@ -43,17 +44,13 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class WCTContainer extends ItemTerminalMenu implements IMenuCraftingPacket, IWTInvHolder, InternalInventoryHost {//TODO use CraftingTerminal
+public class WCTContainer extends CraftingTermMenu implements IWTInvHolder {
 
     public static final ScreenHandlerType<WCTContainer> TYPE = MenuTypeBuilder.create(WCTContainer::new, WCTGuiObject.class).requirePermission(SecurityPermissions.CRAFT).build("wireless_crafting_terminal");
 
     public static final String ACTION_DELETE = "delete";
     public static final String MAGNET_MODE = "magnetMode";
 
-    private final AppEngInternalInventory crafting;
-    private final CraftingMatrixSlot[] craftingSlots = new CraftingMatrixSlot[9];
-    private final CraftingTermSlot outputSlot;
-    private Recipe<CraftingInventory> currentRecipe;
     final FixedWTInv fixedWTInv;
 
     private final WCTGuiObject wctGUIObject;
@@ -67,16 +64,7 @@ public class WCTContainer extends ItemTerminalMenu implements IMenuCraftingPacke
         final int slotIndex = wctGUIObject.getSlot();
         if(slotIndex < 100 && slotIndex != 40) lockPlayerInventorySlot(slotIndex);
 
-        crafting = new ae2wtlibInternalInventory(this, 9, "crafting", wctGUIObject.getItemStack());
-
-        for(int i = 0; i < 9; i++)
-            addSlot(craftingSlots[i] = new CraftingMatrixSlot(this, crafting, i), SlotSemantic.CRAFTING_GRID);
-
-        addSlot(outputSlot = new CraftingTermSlot(getPlayer(), getActionSource(), powerSource, wctGUIObject, crafting, crafting, this), SlotSemantic.CRAFTING_RESULT);
-
         createPlayerInventorySlots(ip);
-
-        onContentChanged(crafting.toContainer());
 
         SlotsWithTrinket[5] = addSlot(new AppEngSlot(fixedWTInv, 3) {
             @Environment(EnvType.CLIENT)
@@ -127,49 +115,9 @@ public class WCTContainer extends ItemTerminalMenu implements IMenuCraftingPacke
         updateTrinketSlots(true);*/
     }
 
-    /**
-     * Callback for when the crafting matrix is changed.
-     */
-
-    @Override
-    public void onContentChanged(Inventory inventory) {
-        final NullMenu cn = new NullMenu();
-        final CraftingInventory ic = new CraftingInventory(cn, 3, 3);
-
-        for(int x = 0; x < 9; x++) ic.setStack(x, craftingSlots[x].getStack());
-
-        if(currentRecipe == null || !currentRecipe.matches(ic, getPlayer().world)) {
-            World world = getPlayer().world;
-            currentRecipe = world.getRecipeManager().getFirstMatch(RecipeType.CRAFTING, ic, world).orElse(null);
-        }
-
-        if(currentRecipe == null) outputSlot.setStack(ItemStack.EMPTY);
-        else {
-            final ItemStack craftingResult = currentRecipe.craft(ic);
-            outputSlot.setStack(craftingResult);
-        }
-    }
-
-    public void clearCraftingGrid() {
-        Preconditions.checkState(isClient());
-        CraftingMatrixSlot slot = craftingSlots[0];
-        InventoryActionPacket p = new InventoryActionPacket(InventoryAction.MOVE_REGION, slot.id, 0L);
-        NetworkHandler.instance().sendToServer(p);
-    }
-
-    @Override
-    public boolean canUse(PlayerEntity player) {
-        return true;
-    }
-
     @Override
     public IGridNode getNetworkNode() {
         return wctGUIObject.getActionableNode();
-    }
-
-    @Override
-    public InternalInventory getCraftingMatrix() {
-        return crafting;
     }
 
     @Override
@@ -213,12 +161,6 @@ public class WCTContainer extends ItemTerminalMenu implements IMenuCraftingPacke
     }
 
     public final Slot[] SlotsWithTrinket = new Slot[46];
-
-    @Override
-    public void saveChanges() {}
-
-    @Override
-    public void onChangeInventory(InternalInventory internalInventory, int i, ItemStack itemStack, ItemStack itemStack1) {}
 
     //Trinkets starting here
     /*private final Map<SlotGroup, net.minecraft.util.Pair<Integer, Integer>> groupPos = new HashMap<>();

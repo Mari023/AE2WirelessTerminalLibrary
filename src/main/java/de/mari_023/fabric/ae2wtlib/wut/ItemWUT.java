@@ -3,7 +3,6 @@ package de.mari_023.fabric.ae2wtlib.wut;
 import appeng.menu.MenuLocator;
 import de.mari_023.fabric.ae2wtlib.TextConstants;
 import de.mari_023.fabric.ae2wtlib.ae2wtlib;
-import de.mari_023.fabric.ae2wtlib.terminal.IInfinityBoosterCardHolder;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.wpt.WPTContainer;
 import net.fabricmc.api.EnvType;
@@ -20,7 +19,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class ItemWUT extends ItemWT implements IInfinityBoosterCardHolder {
+public class ItemWUT extends ItemWT {
 
     public ItemWUT() {
         super(new FabricItemSettings().group(ae2wtlib.ITEM_GROUP).maxCount(1));

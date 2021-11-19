@@ -1,5 +1,6 @@
 package de.mari_023.fabric.ae2wtlib.wut;
 
+import appeng.items.tools.powered.WirelessCraftingTerminalItem;
 import appeng.menu.MenuLocator;
 import de.mari_023.fabric.ae2wtlib.TextConstants;
 import de.mari_023.fabric.ae2wtlib.ae2wtlib;
@@ -31,6 +32,7 @@ public class WUTHandler {
             return "noTerminal";
         if(!(wirelessUniversalTerminal.getItem() instanceof ItemWUT)) {
             if(wirelessUniversalTerminal.getItem() instanceof ItemWCT) return "crafting";
+            if(wirelessUniversalTerminal.getItem() instanceof WirelessCraftingTerminalItem) return "crafting";
             else if(wirelessUniversalTerminal.getItem() instanceof ItemWPT) return "pattern";
             else if(wirelessUniversalTerminal.getItem() instanceof ItemWIT) return "interface";
             else return "noTerminal";

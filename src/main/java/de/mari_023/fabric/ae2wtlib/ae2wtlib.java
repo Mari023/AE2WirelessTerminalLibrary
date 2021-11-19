@@ -31,6 +31,7 @@ public class ae2wtlib implements IAEAddonEntrypoint {
 
     public static final ItemGroup ITEM_GROUP = FabricItemGroupBuilder.build(new Identifier(MOD_NAME, "general"), () -> new ItemStack(ae2wtlib.CRAFTING_TERMINAL));
 
+    @Deprecated
     public static ItemWCT CRAFTING_TERMINAL;
     public static ItemWPT PATTERN_TERMINAL;
     public static ItemWIT INTERFACE_TERMINAL;

@@ -12,7 +12,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
-public abstract class ItemWT extends WirelessTerminalItem {
+public abstract class ItemWT extends WirelessTerminalItem implements IUniversalWirelessTerminalItem {
 
     public ItemWT(Item.Settings props) {
         super(AEConfig.instance().getWirelessTerminalBattery(), props);
@@ -28,15 +28,10 @@ public abstract class ItemWT extends WirelessTerminalItem {
         return new TypedActionResult<>(ActionResult.FAIL, is);
     }
 
-    public boolean canOpen(ItemStack item, PlayerEntity player) {
-        return !item.isEmpty() && checkPreconditions(item, player);
+    @Override
+    public boolean checkPreconditions(ItemStack item, PlayerEntity player) {
+        return super.checkPreconditions(item, player);
     }
-
-    public void tryOpen(PlayerEntity player, MenuLocator locator, ItemStack stack) {
-        if(canOpen(stack, player)) open(player, locator);
-    }
-
-    public abstract void open(final PlayerEntity player, final MenuLocator locator);
 
     /**
      * get a previously stored {@link ItemStack} from a WirelessTerminal
@@ -46,7 +41,7 @@ public abstract class ItemWT extends WirelessTerminalItem {
      * @return the stored Item or {@link ItemStack}.EMPTY if it wasn't found
      */
     public static ItemStack getSavedSlot(ItemStack hostItem, String slot) {
-        if(!(hostItem.getItem() instanceof ItemWT)) return ItemStack.EMPTY;
+        if(!(hostItem.getItem() instanceof IUniversalWirelessTerminalItem)) return ItemStack.EMPTY;
         return ItemStack.fromNbt(hostItem.getOrCreateNbt().getCompound(slot));
     }
 
@@ -59,7 +54,7 @@ public abstract class ItemWT extends WirelessTerminalItem {
      * @param slot      the location where the stored item will be
      */
     public static void setSavedSlot(ItemStack hostItem, ItemStack savedItem, String slot) {
-        if(!(hostItem.getItem() instanceof ItemWT)) return;
+        if(!(hostItem.getItem() instanceof IUniversalWirelessTerminalItem)) return;
         NbtCompound wctTag = hostItem.getOrCreateNbt();
         if(savedItem.isEmpty()) wctTag.remove(slot);
         else wctTag.put(slot, savedItem.writeNbt(new NbtCompound()));
@@ -72,7 +67,7 @@ public abstract class ItemWT extends WirelessTerminalItem {
      * @return the boolean or false if it wasn't found
      */
     public static boolean getBoolean(ItemStack hostItem, String key) {
-        if(!(hostItem.getItem() instanceof ItemWT)) return false;
+        if(!(hostItem.getItem() instanceof IUniversalWirelessTerminalItem)) return false;
         return hostItem.getOrCreateNbt().getBoolean(key);
     }
 
@@ -85,21 +80,8 @@ public abstract class ItemWT extends WirelessTerminalItem {
      * @param key      the location where the stored item will be
      */
     public static void setBoolean(ItemStack hostItem, boolean b, String key) {
-        if(!(hostItem.getItem() instanceof ItemWT)) return;
+        if(!(hostItem.getItem() instanceof IUniversalWirelessTerminalItem)) return;
         NbtCompound wctTag = hostItem.getOrCreateNbt();
         wctTag.putBoolean(key, b);
-    }
-
-    public boolean hasBoosterCard(ItemStack hostItem) {
-        return getBoosterCard(hostItem).getItem() instanceof ItemInfinityBooster;
-    }
-
-    public void setBoosterCard(ItemStack hostItem, ItemStack boosterCard) {
-        if(hostItem.getItem() instanceof IInfinityBoosterCardHolder) setSavedSlot(hostItem, boosterCard, "boosterCard");
-    }
-
-    public ItemStack getBoosterCard(ItemStack hostItem) {
-        if(hostItem.getItem() instanceof IInfinityBoosterCardHolder) return getSavedSlot(hostItem, "boosterCard");
-        return ItemStack.EMPTY;
     }
 }

@@ -2,6 +2,7 @@ package de.mari_023.fabric.ae2wtlib.wct;
 
 import appeng.api.config.ActionItems;
 import appeng.client.gui.Icon;
+import appeng.client.gui.me.items.CraftingTermScreen;
 import appeng.client.gui.me.items.ItemTerminalScreen;
 import appeng.client.gui.style.ScreenStyle;
 import appeng.client.gui.style.StyleManager;
@@ -15,6 +16,7 @@ import de.mari_023.fabric.ae2wtlib.wut.CycleTerminalButton;
 import de.mari_023.fabric.ae2wtlib.wut.IUniversalTerminalCapable;
 import dev.emi.trinkets.api.SlotGroup;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.util.math.Rect2i;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
@@ -22,7 +24,7 @@ import net.minecraft.util.Identifier;
 
 import java.io.IOException;
 
-public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniversalTerminalCapable {
+public class WCTScreen extends CraftingTermScreen<WCTContainer> implements IUniversalTerminalCapable {
 
     ItemButton magnetCardToggleButton;
     private float mouseX;
@@ -50,9 +52,6 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
 
     public WCTScreen(WCTContainer container, PlayerInventory playerInventory, Text title) {
         super(container, playerInventory, title, STYLE);
-        ActionButton clearBtn = new ActionButton(ActionItems.STASH, (btn) -> container.clearCraftingGrid());
-        clearBtn.setHalfSize(true);
-        widgets.add("clearCraftingGrid", clearBtn);
         IconButton deleteButton = new IconButton(btn -> getScreenHandler().deleteTrashSlot()) {
             @Override
             protected Icon getIcon() {
@@ -110,6 +109,12 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
     protected void updateBeforeRender() {
         super.updateBeforeRender();
         setMagnetModeText();
+    }
+
+    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+        try {
+            super.render(matrices, mouseX, mouseY, delta);
+        } catch(Exception ignored) {}
     }
 
     /*public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
