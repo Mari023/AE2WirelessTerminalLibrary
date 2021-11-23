@@ -49,6 +49,6 @@ public class CraftingTerminalItemMixin extends WirelessTerminalItem implements I
     @Nullable
     @Overwrite
     public ItemMenuHost getMenuHost(PlayerEntity player, int inventorySlot, ItemStack stack, @Nullable BlockPos pos) {
-        return new WCTGuiObject(player, inventorySlot, stack);
+        return new WCTGuiObject(player, inventorySlot, stack, (p, subMenu) -> openFromInventory(p, inventorySlot));
     }
 }

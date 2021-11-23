@@ -8,6 +8,7 @@ import appeng.api.inventories.InternalInventory;
 import appeng.api.storage.GenericStack;
 import appeng.crafting.pattern.IAEPatternDetails;
 import appeng.helpers.IPatternTerminalHost;
+import appeng.menu.ISubMenu;
 import appeng.parts.reporting.PatternTerminalPart;
 import appeng.util.inv.AppEngInternalInventory;
 import de.mari_023.fabric.ae2wtlib.ae2wtlib;
@@ -19,6 +20,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
 
+import java.util.function.BiConsumer;
+
 public class WPTGuiObject extends WTGuiObject implements ISegmentedInventory, IViewCellStorage, IPatternTerminalHost {
 
     private boolean craftingMode = true;
@@ -28,8 +31,8 @@ public class WPTGuiObject extends WTGuiObject implements ISegmentedInventory, IV
     private final AppEngInternalInventory output;
     private final AppEngInternalInventory pattern;
 
-    public WPTGuiObject(final PlayerEntity ep, int inventorySlot, final ItemStack is) {
-        super(ep, inventorySlot, is);
+    public WPTGuiObject(final PlayerEntity ep, int inventorySlot, final ItemStack is, BiConsumer<PlayerEntity, ISubMenu> returnToMainMenu) {
+        super(ep, inventorySlot, is, returnToMainMenu);
         crafting = new ae2wtlibInternalInventory(this, 9, "pattern_crafting", is);
         output = new ae2wtlibInternalInventory(this, 3, "output", is);
         pattern = new ae2wtlibInternalInventory(this, 2, "pattern", is);

@@ -1,5 +1,6 @@
 package de.mari_023.fabric.ae2wtlib.mixin;
 
+import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.menu.MenuLocator;
 import appeng.menu.implementations.MenuTypeBuilder;
 import de.mari_023.fabric.ae2wtlib.ae2wtlibConfig;
@@ -34,6 +35,6 @@ public class ContainerTypeBuilderMixin<I> {
 
         String currentTerminal = WUTHandler.getCurrentTerminal(it);
         if(WUTHandler.terminalNames.contains(currentTerminal))
-            cir.setReturnValue(hostInterface.cast(WUTHandler.wirelessTerminals.get(currentTerminal).wtguiObjectFactory.create(player, locator.getItemIndex(), it)));
+            cir.setReturnValue(hostInterface.cast(WUTHandler.wirelessTerminals.get(currentTerminal).wtguiObjectFactory.create(player, locator.getItemIndex(), it, (p, subMenu) -> ((WirelessTerminalItem) it.getItem()).openFromInventory(p, locator.getItemIndex()))));
     }
 }
