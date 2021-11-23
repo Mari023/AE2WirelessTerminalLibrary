@@ -7,12 +7,13 @@
   "mixins": [
     "ContainerTypeBuilderMixin",
     "CraftConfirmContainerMixin",
+    "CraftingTerminalItemMixin",
     "PlayerInventoryInsertStack",
     "Restock",
     "SlotMixin",
     "TrinketWCTContainer",
     "TrinketWT",
-    "CraftingTerminalItemMixin"
+    "WirelessTerminalItemMixin"
   ],
   "client": [
     "HandledScreenMixin",
