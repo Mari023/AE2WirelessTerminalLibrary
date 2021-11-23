@@ -1,7 +1,7 @@
 {
   "type": "ae2wtlib:combine",
   "terminalA": {
-    "item": "appliedenergistics2:wireless_crafting_terminal"
+    "item": "ae2:wireless_crafting_terminal"
   },
   "terminalB": {
     "item": "ae2wtlib:wireless_interface_terminal"

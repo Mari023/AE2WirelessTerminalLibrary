@@ -4,7 +4,7 @@ import appeng.api.IAEAddonEntrypoint;
 import appeng.api.features.GridLinkables;
 import appeng.core.definitions.AEItems;
 import appeng.items.tools.powered.WirelessTerminalItem;
-import de.mari_023.fabric.ae2wtlib.mixin.CraftingTerminalItemMixin;
+import de.mari_023.fabric.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemInfinityBooster;
 import de.mari_023.fabric.ae2wtlib.wct.WCTGuiObject;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.ItemMagnetCard;
@@ -45,7 +45,7 @@ public class ae2wtlib implements IAEAddonEntrypoint {
             Registry.register(Registry.ITEM, new Identifier(MOD_NAME, "you_need_to_enable_trinkets_to_join_this_server"), CHECK_TRINKETS);
         registerItems();
 
-        WUTHandler.addTerminal("crafting", ((CraftingTerminalItemMixin) AEItems.WIRELESS_CRAFTING_TERMINAL.asItem())::tryOpen, WCTGuiObject::new);
+        WUTHandler.addTerminal("crafting", ((IUniversalWirelessTerminalItem) AEItems.WIRELESS_CRAFTING_TERMINAL.asItem())::tryOpen, WCTGuiObject::new);
         WUTHandler.addTerminal("pattern", PATTERN_TERMINAL::tryOpen, WPTGuiObject::new);
         WUTHandler.addTerminal("interface", INTERFACE_TERMINAL::tryOpen, WITGuiObject::new);
 
