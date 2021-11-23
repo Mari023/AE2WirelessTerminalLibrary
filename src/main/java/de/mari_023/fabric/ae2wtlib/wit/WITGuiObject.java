@@ -21,7 +21,7 @@ public class WITGuiObject extends WTGuiObject {
     }
 
     @Override
-    public ItemStack getIcon() {
+    public ItemStack getMainMenuIcon() {
         return new ItemStack(ae2wtlib.INTERFACE_TERMINAL);
     }
 }

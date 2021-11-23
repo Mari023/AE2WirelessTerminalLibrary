@@ -31,7 +31,7 @@ public class WCTGuiObject extends WTGuiObject implements IViewCellStorage, ISegm
     }
 
     @Override
-    public ItemStack getIcon() {
+    public ItemStack getMainMenuIcon() {
         return new ItemStack(AEItems.WIRELESS_CRAFTING_TERMINAL);
     }
 

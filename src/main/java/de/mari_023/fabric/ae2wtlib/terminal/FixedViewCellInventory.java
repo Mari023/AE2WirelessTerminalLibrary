@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FixedViewCellInventory implements InternalInventory {
+public class FixedViewCellInventory implements InternalInventory {//TODO maybe remove this? there is disable viewcell somewhere
 
     private static final int viewCellCount = 5;
     private final ItemStack hostStack;

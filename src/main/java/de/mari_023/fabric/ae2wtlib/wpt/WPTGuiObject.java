@@ -44,7 +44,7 @@ public class WPTGuiObject extends WTGuiObject implements ISegmentedInventory, IV
     }
 
     @Override
-    public ItemStack getIcon() {
+    public ItemStack getMainMenuIcon() {
         return new ItemStack(ae2wtlib.PATTERN_TERMINAL);
     }
 

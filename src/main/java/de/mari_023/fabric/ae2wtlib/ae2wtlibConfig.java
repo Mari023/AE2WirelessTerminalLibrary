@@ -1,5 +1,6 @@
 package de.mari_023.fabric.ae2wtlib;
 
+import appeng.core.AEConfig;
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import net.fabricmc.loader.api.FabricLoader;
@@ -34,8 +35,8 @@ public class ae2wtlibConfig implements ConfigData {
         return wutChargeRateMultiplier;
     }
 
-    public double getOutOfRangePowerMultiplier() {
-        return outOfRangePowerMultiplier;
+    public double getOutOfRangePower() {
+        return AEConfig.instance().wireless_getDrainRate(AEConfig.instance().wireless_getMaxRange(64)) * outOfRangePowerMultiplier;
     }
 
     public boolean allowTrinket() {

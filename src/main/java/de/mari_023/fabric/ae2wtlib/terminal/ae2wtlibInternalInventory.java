@@ -5,7 +5,7 @@ import appeng.util.inv.InternalInventoryHost;
 import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-public class ae2wtlibInternalInventory extends AppEngInternalInventory {
+public class ae2wtlibInternalInventory extends AppEngInternalInventory {//TODO replace this and save in TerminalHost like anything else reasonable
 
     private final ItemStack terminal;
     private final String identifier;

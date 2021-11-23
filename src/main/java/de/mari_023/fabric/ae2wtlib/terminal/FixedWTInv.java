@@ -83,21 +83,4 @@ public class FixedWTInv implements InternalInventory {
             if(host instanceof WCTContainer) ((WCTContainer) host).reloadMagnetSettings();
         }
     }
-
-    /*@Override
-    public ItemStack extractStack(int slot, ItemFilter filter, ItemStack mergeWith, int maxCount, Simulation simulation) {
-        if(slot == INFINITY_BOOSTER_CARD) {
-            ItemStack boosterCard = ((IInfinityBoosterCardHolder) wt.getItem()).getBoosterCard(wt);
-            if(simulation.isAction()) ((IInfinityBoosterCardHolder) wt.getItem()).setBoosterCard(wt, ItemStack.EMPTY);
-            return boosterCard;
-        } else if(slot == MAGNET_CARD) {
-            ItemStack magnetCard = ItemWT.getSavedSlot(wt, "magnetCard");
-            if(simulation.isAction()) {
-                ItemWT.setSavedSlot(wt, ItemStack.EMPTY, "magnetCard");
-                if(host instanceof WCTContainer) ((WCTContainer) host).reloadMagnetSettings();
-            }
-            return magnetCard;
-        }
-        return FixedItemInv.super.extractStack(slot, filter, mergeWith, maxCount, simulation);
-    }*/
 }
