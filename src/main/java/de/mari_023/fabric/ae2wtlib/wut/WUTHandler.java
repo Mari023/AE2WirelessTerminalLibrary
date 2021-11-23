@@ -9,7 +9,6 @@ import de.mari_023.fabric.ae2wtlib.ae2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.terminal.WTGuiObject;
 import de.mari_023.fabric.ae2wtlib.trinket.TrinketsHelper;
-import de.mari_023.fabric.ae2wtlib.wct.ItemWCT;
 import de.mari_023.fabric.ae2wtlib.wit.ItemWIT;
 import de.mari_023.fabric.ae2wtlib.wpt.ItemWPT;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -34,7 +33,6 @@ public class WUTHandler {
         if(!(wirelessUniversalTerminal.getItem() instanceof ItemWT) || wirelessUniversalTerminal.getNbt() == null)
             return "noTerminal";
         if(!(wirelessUniversalTerminal.getItem() instanceof ItemWUT)) {
-            if(wirelessUniversalTerminal.getItem() instanceof ItemWCT) return "crafting";
             if(wirelessUniversalTerminal.getItem() instanceof ItemWPT) return "pattern";
             else if(wirelessUniversalTerminal.getItem() instanceof ItemWIT) return "interface";
             else return "noTerminal";
