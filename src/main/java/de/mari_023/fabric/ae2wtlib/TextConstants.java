@@ -39,8 +39,4 @@ public final class TextConstants {
     public static final TranslatableText CYCLE_TOOLTIP = new TranslatableText("gui.ae2wtlib.cycle_terminal.desc");
 
     public static final MutableText DELETE = new TranslatableText("gui.ae2wtlib.emptytrash").append("\n").append(new TranslatableText("gui.ae2wtlib.emptytrash.desc"));
-
-
-    public static final TranslatableText WIRELESS_UNIVERSAL_TERMINAL = new TranslatableText("item.ae2wtlib.wireless_universal_terminal");
-    public static final TranslatableText MINEMENU_ERROR = new TranslatableText("minemenu.error.config");
 }
