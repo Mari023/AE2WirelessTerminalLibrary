@@ -11,6 +11,8 @@ import appeng.menu.MenuOpener;
 import appeng.menu.me.crafting.CraftConfirmMenu;
 import de.mari_023.fabric.ae2wtlib.wct.WCTContainer;
 import de.mari_023.fabric.ae2wtlib.wct.WCTGuiObject;
+import de.mari_023.fabric.ae2wtlib.wpt.WPTContainer;
+import de.mari_023.fabric.ae2wtlib.wpt.WPTGuiObject;
 import net.minecraft.screen.ScreenHandlerType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -19,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = CraftConfirmMenu.class, remap = false)
-public abstract class CraftConfirmContainerMixin extends AEBaseMenu{
+public abstract class CraftConfirmContainerMixin extends AEBaseMenu {
 
     @Shadow
     private ICraftingCPU selectedCpu;
@@ -44,6 +46,7 @@ public abstract class CraftConfirmContainerMixin extends AEBaseMenu{
         ScreenHandlerType<?> originalGui = null;
         IActionHost ah = getActionHost();
         if(ah instanceof WCTGuiObject) originalGui = WCTContainer.TYPE;
+        else if(ah instanceof WPTGuiObject) originalGui = WPTContainer.TYPE;
 
         if(result == null || result.simulation()) return;
 
