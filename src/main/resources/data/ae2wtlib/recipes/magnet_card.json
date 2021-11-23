@@ -10,7 +10,7 @@
       "item": "minecraft:redstone_block"
     },
     "b": {
-      "item": "appliedenergistics2:item_annihilation_plane"
+      "item": "ae2:item_annihilation_plane"
     },
     "c": {
       "item": "minecraft:lapis_block"
@@ -19,7 +19,7 @@
       "item": "minecraft:iron_block"
     },
     "e": {
-      "item": "appliedenergistics2:advanced_card"
+      "item": "ae2:advanced_card"
     }
   },
   "result": {

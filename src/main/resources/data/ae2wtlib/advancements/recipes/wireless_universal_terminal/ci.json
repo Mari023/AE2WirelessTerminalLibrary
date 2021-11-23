@@ -11,7 +11,7 @@
       "conditions": {
         "items": [
           {
-            "item": "appliedenergistics2:wireless_crafting_terminal"
+            "item": "ae2:wireless_crafting_terminal"
           }
         ]
       }

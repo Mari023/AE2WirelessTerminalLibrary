@@ -7,13 +7,13 @@
   ],
   "key": {
     "a": {
-      "item": "appliedenergistics2:wireless_receiver"
+      "item": "ae2:wireless_receiver"
     },
     "b": {
-      "item": "appliedenergistics2:pattern_terminal"
+      "item": "ae2:pattern_terminal"
     },
     "c": {
-      "item": "appliedenergistics2:dense_energy_cell"
+      "item": "ae2:dense_energy_cell"
     }
   },
   "result": {
