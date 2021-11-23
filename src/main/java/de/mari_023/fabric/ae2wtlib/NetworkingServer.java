@@ -4,7 +4,6 @@ import appeng.core.definitions.AEItems;
 import appeng.items.tools.powered.WirelessCraftingTerminalItem;
 import appeng.menu.AEBaseMenu;
 import appeng.menu.MenuLocator;
-import de.mari_023.fabric.ae2wtlib.mixin.CraftingTerminalItemMixin;
 import de.mari_023.fabric.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.trinket.CombinedTrinketInventory;

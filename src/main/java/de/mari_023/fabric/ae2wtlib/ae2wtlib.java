@@ -72,10 +72,5 @@ public class ae2wtlib implements IAEAddonEntrypoint {
         GridLinkables.register(PATTERN_TERMINAL, WirelessTerminalItem.LINKABLE_HANDLER);
         GridLinkables.register(INTERFACE_TERMINAL, WirelessTerminalItem.LINKABLE_HANDLER);
         GridLinkables.register(UNIVERSAL_TERMINAL, WirelessTerminalItem.LINKABLE_HANDLER);
-
-//        ChargerRegistry.setChargeRate(CRAFTING_TERMINAL, ae2wtlibConfig.INSTANCE.getChargeRate());//FIXME charge rate
-//        ChargerRegistry.setChargeRate(PATTERN_TERMINAL, ae2wtlibConfig.INSTANCE.getChargeRate());
-//        ChargerRegistry.setChargeRate(INTERFACE_TERMINAL, ae2wtlibConfig.INSTANCE.getChargeRate());
-//        ChargerRegistry.setChargeRate(UNIVERSAL_TERMINAL, ae2wtlibConfig.INSTANCE.getChargeRate() * ae2wtlibConfig.INSTANCE.WUTChargeRateMultiplier());
     }
 }

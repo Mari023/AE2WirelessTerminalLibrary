@@ -3,15 +3,14 @@ package de.mari_023.fabric.ae2wtlib.wut;
 import appeng.menu.MenuLocator;
 import de.mari_023.fabric.ae2wtlib.TextConstants;
 import de.mari_023.fabric.ae2wtlib.ae2wtlib;
+import de.mari_023.fabric.ae2wtlib.ae2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
-import de.mari_023.fabric.ae2wtlib.wpt.WPTContainer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
@@ -31,6 +30,11 @@ public class ItemWUT extends ItemWT {
             //TODO open menu to select terminal
         return new TypedActionResult<>(ActionResult.SUCCESS, player.getStackInHand(hand));
         } else*/ return super.use(w, player, hand);
+    }
+
+    @Override
+    public double getChargeRate() {
+        return super.getChargeRate() * ae2wtlibConfig.INSTANCE.WUTChargeRateMultiplier();
     }
 
     @Override
