@@ -19,8 +19,6 @@
   "gui.ae2wtlib.restock": "Nachfüllen: ",
   "gui.ae2wtlib.off": "Aus",
   "gui.ae2wtlib.on": "An",
-
-  "item.ae2wtlib.wireless_crafting_terminal": "Drahtlose Fertigungskonsole",
   "item.ae2wtlib.wireless_pattern_terminal": "Drahtlose Schablonenkonsole",
   "item.ae2wtlib.wireless_interface_terminal": "Drahtlose Schnittstellenkonsole",
   "item.ae2wtlib.wireless_universal_terminal": "Drahtlose Universalkonsole",
@@ -40,8 +38,6 @@
   "text.autoconfig.ae2wtlib.option.outOfRangePowerMultiplier": "Leistungsmultiplikator außer Reichweite",
   "text.autoconfig.ae2wtlib.option.magnetCardRange": "Reichweite der Magnet Karte",
   "text.autoconfig.ae2wtlib.option.enableTrinket": "Trinkets Integration aktivieren",
-
-  "text.autoconfig.ae2wtlib.option.chargeRate.@Tooltip": "",
   "text.autoconfig.ae2wtlib.option.wutChargeRateMultiplier.@Tooltip": "",
   "text.autoconfig.ae2wtlib.option.outOfRangePowerMultiplier.@Tooltip": "Wenn dieser Wer kleiner als 1 ist, könnten Drahtlose Konsolen innerhalb der Reichweite eines Drahtlosen Zugangspunktes mehr Strom verbrauchen als außerhalb.",
   "text.autoconfig.ae2wtlib.option.magnetCardRange.@Tooltip": "",

@@ -10,8 +10,6 @@ import net.fabricmc.loader.api.FabricLoader;
 public class ae2wtlibConfig implements ConfigData {
 
     //@ConfigEntry.Gui.Tooltip
-    private double chargeRate = 8000.0;
-    //@ConfigEntry.Gui.Tooltip
     private double wutChargeRateMultiplier = 1.0;
     @ConfigEntry.Gui.Tooltip
     private double outOfRangePowerMultiplier = 2.0;
@@ -26,10 +24,6 @@ public class ae2wtlibConfig implements ConfigData {
 
     @ConfigEntry.Gui.Excluded
     private static boolean trinketPresent, trinketChecked;
-
-    public double getChargeRate() {
-        return chargeRate;
-    }
 
     public double WUTChargeRateMultiplier() {
         return wutChargeRateMultiplier;
