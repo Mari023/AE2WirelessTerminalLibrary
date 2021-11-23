@@ -28,12 +28,13 @@ public class PlayerInventoryInsertStack {
         CraftingTerminalHandler CTHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
         ItemStack terminal = CTHandler.getCraftingTerminal();
         if(ItemMagnetCard.isPickupME(terminal) && CTHandler.inRange()) {
-            if(CTHandler.getItemStorageChannel() == null) return;
-            long leftover = CTHandler.getItemStorageChannel().insert(AEItemKey.of(stack), stack.getCount(), Actionable.MODULATE, new PlayerSource(player, CTHandler.getSecurityStation()));
+            if(CTHandler.getStorageGrid() == null) return;
+            long inserted = CTHandler.getStorageGrid().insert(AEItemKey.of(stack), stack.getCount(), Actionable.MODULATE, new PlayerSource(player, CTHandler.getSecurityStation()));
+            int leftover = (int) (stack.getCount() - inserted);
             if(leftover == 0) {
                 stack.setCount(0);
                 cir.setReturnValue(true);
-            } else stack.setCount((int) leftover);
+            } else stack.setCount(leftover);
         }
     }
 }

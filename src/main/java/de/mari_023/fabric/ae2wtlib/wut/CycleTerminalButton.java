@@ -52,7 +52,7 @@ public class CycleTerminalButton extends ButtonWidget implements ITooltip {
         return true;
     }
 
-    public static final Identifier TEXTURE_STATES = new Identifier("appliedenergistics2", "textures/guis/states.png");
+    public static final Identifier TEXTURE_STATES = new Identifier("ae2", "textures/guis/states.png");
     public static final Identifier nextTerminal = new Identifier(ae2wtlib.MOD_NAME, "textures/wireless_universal_terminal.png");
 
     @Override
