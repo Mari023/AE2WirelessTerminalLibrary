@@ -47,7 +47,7 @@ public class Combine extends Common {
     }
 
     @Override
-    public ItemStack craft(CraftingInventory inv) {
+    public ItemStack craft(CraftingInventory inv) {//TODO combine stored energy
         NbtCompound terminalA = InputHelper.getInputStack(inv, this.terminalA).getNbt();
         if(terminalA == null) terminalA = new NbtCompound();
         else terminalA = terminalA.copy();

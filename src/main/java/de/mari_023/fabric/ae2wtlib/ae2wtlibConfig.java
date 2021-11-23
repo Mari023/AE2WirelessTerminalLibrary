@@ -10,7 +10,9 @@ import net.fabricmc.loader.api.FabricLoader;
 public class ae2wtlibConfig implements ConfigData {
 
     //@ConfigEntry.Gui.Tooltip
-    private double wutChargeRateMultiplier = 1.0;
+    private double wutChargeRateMultiplier = 30.0;
+    //@ConfigEntry.Gui.Tooltip
+    private double wutBatterySizeMultiplier = 3.0;
     @ConfigEntry.Gui.Tooltip
     private double outOfRangePowerMultiplier = 2.0;
     //@ConfigEntry.Gui.Tooltip
@@ -27,6 +29,10 @@ public class ae2wtlibConfig implements ConfigData {
 
     public double WUTChargeRateMultiplier() {
         return wutChargeRateMultiplier;
+    }
+
+    public double WUTBatterySizeMultiplier() {
+        return wutBatterySizeMultiplier;
     }
 
     public double getOutOfRangePower() {

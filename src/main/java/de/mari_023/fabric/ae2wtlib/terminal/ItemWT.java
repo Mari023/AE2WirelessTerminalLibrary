@@ -1,6 +1,5 @@
 package de.mari_023.fabric.ae2wtlib.terminal;
 
-import appeng.core.AEConfig;
 import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.menu.MenuLocator;
 import net.minecraft.entity.player.PlayerEntity;
@@ -12,10 +11,12 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
+import java.util.function.DoubleSupplier;
+
 public abstract class ItemWT extends WirelessTerminalItem implements IUniversalWirelessTerminalItem {
 
-    public ItemWT(Item.Settings props) {
-        super(AEConfig.instance().getWirelessTerminalBattery(), props);
+    public ItemWT(final DoubleSupplier powerCapacity, Item.Settings props) {
+        super(powerCapacity, props);
     }
 
     @Override
