@@ -37,7 +37,7 @@
   "depends": {
     "fabricloader": ">=0.12.5",
     "fabric": "*",
-    "minecraft": "1.18-beta.2",
+    "minecraft": "*",
     "appliedenergistics2": "*",
     "cloth-config2": "*"
   },

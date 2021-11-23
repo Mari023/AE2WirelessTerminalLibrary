@@ -4,6 +4,8 @@ import appeng.core.definitions.AEItems;
 import appeng.items.tools.powered.WirelessCraftingTerminalItem;
 import appeng.menu.AEBaseMenu;
 import appeng.menu.MenuLocator;
+import de.mari_023.fabric.ae2wtlib.mixin.CraftingTerminalItemMixin;
+import de.mari_023.fabric.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.trinket.CombinedTrinketInventory;
 import de.mari_023.fabric.ae2wtlib.trinket.TrinketsHelper;
@@ -72,8 +74,8 @@ public class NetworkingServer {
                         return;
                     }
 
-                    if(((WirelessCraftingTerminalItem)AEItems.WIRELESS_CRAFTING_TERMINAL).canOpen(terminal, player))
-                        ((WirelessCraftingTerminalItem)AEItems.WIRELESS_CRAFTING_TERMINAL).open(player, MenuLocator.forInventorySlot(slot));
+                    if(((IUniversalWirelessTerminalItem) AEItems.WIRELESS_CRAFTING_TERMINAL.asItem()).canOpen(terminal, player))
+                        ((IUniversalWirelessTerminalItem) AEItems.WIRELESS_CRAFTING_TERMINAL.asItem()).open(player, MenuLocator.forInventorySlot(slot));
                 } else if(terminalName.equalsIgnoreCase("pattern")) {
                     PlayerInventory inv = player.getInventory();
                     int slot = -1;

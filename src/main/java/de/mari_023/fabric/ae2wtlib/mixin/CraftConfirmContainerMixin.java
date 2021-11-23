@@ -19,12 +19,16 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = CraftConfirmMenu.class, remap = false)
-public abstract class CraftConfirmContainerMixin {
+public abstract class CraftConfirmContainerMixin extends AEBaseMenu{
 
     @Shadow
     private ICraftingCPU selectedCpu;
     @Shadow
     private ICraftingPlan result;
+
+    public CraftConfirmContainerMixin() {
+        super(null, 0, null, null);
+    }
 
     @Shadow
     protected abstract IGrid getGrid();
@@ -38,14 +42,14 @@ public abstract class CraftConfirmContainerMixin {
     @Inject(method = "startJob", at = @At(value = "HEAD"))
     public void serverPacketData(CallbackInfo ci) {
         ScreenHandlerType<?> originalGui = null;
-        IActionHost ah = ((AEBaseContainerMixin) this).invokeGetActionHost();
+        IActionHost ah = getActionHost();
         if(ah instanceof WCTGuiObject) originalGui = WCTContainer.TYPE;
 
         if(result == null || result.simulation()) return;
 
         ICraftingLink g = getGrid().getCraftingService().submitJob(result, null, selectedCpu, true, getActionSrc());
         setAutoStart(false);
-        if(g != null && originalGui != null && ((AEBaseMenu) (Object) this).getLocator() != null)
-            MenuOpener.open(originalGui, ((AEBaseMenu) (Object) this).getPlayerInventory().player, ((AEBaseMenu) (Object) this).getLocator());
+        if(g != null && originalGui != null && getLocator() != null)
+            MenuOpener.open(originalGui, getPlayerInventory().player, getLocator());
     }
 }
