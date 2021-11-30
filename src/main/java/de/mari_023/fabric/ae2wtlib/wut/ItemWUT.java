@@ -3,8 +3,8 @@ package de.mari_023.fabric.ae2wtlib.wut;
 import appeng.core.AEConfig;
 import appeng.menu.MenuLocator;
 import de.mari_023.fabric.ae2wtlib.TextConstants;
-import de.mari_023.fabric.ae2wtlib.ae2wtlib;
-import de.mari_023.fabric.ae2wtlib.ae2wtlibConfig;
+import de.mari_023.fabric.ae2wtlib.AE2wtlib;
+import de.mari_023.fabric.ae2wtlib.AE2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -22,7 +22,7 @@ import java.util.List;
 public class ItemWUT extends ItemWT {
 
     public ItemWUT() {
-        super(() -> AEConfig.instance().getWirelessTerminalBattery().getAsDouble() * ae2wtlibConfig.INSTANCE.WUTBatterySizeMultiplier(), new FabricItemSettings().group(ae2wtlib.ITEM_GROUP).maxCount(1));
+        super(() -> AEConfig.instance().getWirelessTerminalBattery().getAsDouble() * AE2wtlibConfig.INSTANCE.WUTBatterySizeMultiplier(), new FabricItemSettings().group(AE2wtlib.ITEM_GROUP).maxCount(1));
     }
 
     @Override
@@ -36,7 +36,7 @@ public class ItemWUT extends ItemWT {
 
     @Override
     public double getChargeRate() {
-        return super.getChargeRate() * ae2wtlibConfig.INSTANCE.WUTChargeRateMultiplier();
+        return super.getChargeRate() * AE2wtlibConfig.INSTANCE.WUTChargeRateMultiplier();
     }
 
     @Override
@@ -50,9 +50,9 @@ public class ItemWUT extends ItemWT {
         lines.add(TextConstants.UNIVERSAL);
         if(WUTHandler.hasTerminal(stack, "crafting"))
             lines.add(TextConstants.CRAFTING);
-        if(WUTHandler.hasTerminal(stack, "interface"))
+        if(WUTHandler.hasTerminal(stack, "pattern_access"))
             lines.add(TextConstants.INTERFACE);
-        if(WUTHandler.hasTerminal(stack, "pattern"))
+        if(WUTHandler.hasTerminal(stack, "pattern_encoding"))
             lines.add(TextConstants.PATTERN);
         super.appendTooltip(stack, world, lines, advancedTooltips);
     }

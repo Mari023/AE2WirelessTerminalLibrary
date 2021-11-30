@@ -19,8 +19,6 @@
   "gui.ae2wtlib.restock": "快捷栏补货: ",
   "gui.ae2wtlib.off": "关闭",
   "gui.ae2wtlib.on": "开启",
-  "item.ae2wtlib.wireless_pattern_terminal": "无线样板终端",
-  "item.ae2wtlib.wireless_interface_terminal": "无线接口终端",
   "item.ae2wtlib.wireless_universal_terminal": "无线通用终端",
   "item.ae2wtlib.wireless_universal_terminal.desc": "已安装的终端:",
 

@@ -11,7 +11,7 @@ import appeng.api.util.DimensionalBlockPos;
 import appeng.blockentity.networking.WirelessBlockEntity;
 import appeng.items.tools.powered.WirelessCraftingTerminalItem;
 import appeng.items.tools.powered.WirelessTerminalItem;
-import de.mari_023.fabric.ae2wtlib.ae2wtlibConfig;
+import de.mari_023.fabric.ae2wtlib.AE2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.terminal.IInfinityBoosterCardHolder;
 import de.mari_023.fabric.ae2wtlib.trinket.CombinedTrinketInventory;
 import de.mari_023.fabric.ae2wtlib.trinket.TrinketsHelper;
@@ -77,7 +77,7 @@ public class CraftingTerminalHandler {
     public ItemStack getCraftingTerminal() {
         PlayerInventory inv = player.getInventory();
         if((!craftingTerminal.isEmpty()) && inv.contains(craftingTerminal)) return craftingTerminal;
-        if(ae2wtlibConfig.INSTANCE.allowTrinket()) {
+        if(AE2wtlibConfig.INSTANCE.allowTrinket()) {
             CombinedTrinketInventory trinketInv = TrinketsHelper.getTrinketsInventory(player);
             for(int i = 0; i < trinketInv.size(); i++) {
                 ItemStack terminal = trinketInv.getStackInSlot(i);

@@ -20,8 +20,8 @@
   "gui.ae2wtlib.off": "Off",
   "gui.ae2wtlib.on": "On",
 
-  "item.ae2wtlib.wireless_pattern_terminal": "Wireless Pattern Terminal",
-  "item.ae2wtlib.wireless_interface_terminal": "Wireless Interface Terminal",
+  "item.ae2wtlib.wireless_pattern_encoding_terminal": "Wireless Pattern Encoding Terminal",
+  "item.ae2wtlib.wireless_pattern_access_terminal": "Wireless Pattern Access Terminal",
   "item.ae2wtlib.wireless_universal_terminal": "Wireless Universal Terminal",
   "item.ae2wtlib.wireless_universal_terminal.desc": "Installed Terminals:",
 

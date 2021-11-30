@@ -9,10 +9,10 @@ import appeng.api.networking.security.IActionSource;
 import appeng.menu.AEBaseMenu;
 import appeng.menu.MenuOpener;
 import appeng.menu.me.crafting.CraftConfirmMenu;
-import de.mari_023.fabric.ae2wtlib.wct.WCTContainer;
-import de.mari_023.fabric.ae2wtlib.wct.WCTGuiObject;
-import de.mari_023.fabric.ae2wtlib.wpt.WPTContainer;
-import de.mari_023.fabric.ae2wtlib.wpt.WPTGuiObject;
+import de.mari_023.fabric.ae2wtlib.wct.WCTMenu;
+import de.mari_023.fabric.ae2wtlib.wct.WCTMenuHost;
+import de.mari_023.fabric.ae2wtlib.wet.WETMenu;
+import de.mari_023.fabric.ae2wtlib.wet.WETMenuHost;
 import net.minecraft.screen.ScreenHandlerType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -45,8 +45,8 @@ public abstract class CraftConfirmContainerMixin extends AEBaseMenu {
     public void serverPacketData(CallbackInfo ci) {
         ScreenHandlerType<?> originalGui = null;
         IActionHost ah = getActionHost();
-        if(ah instanceof WCTGuiObject) originalGui = WCTContainer.TYPE;
-        else if(ah instanceof WPTGuiObject) originalGui = WPTContainer.TYPE;
+        if(ah instanceof WCTMenuHost) originalGui = WCTMenu.TYPE;
+        else if(ah instanceof WETMenuHost) originalGui = WETMenu.TYPE;
 
         if(result == null || result.simulation()) return;
 

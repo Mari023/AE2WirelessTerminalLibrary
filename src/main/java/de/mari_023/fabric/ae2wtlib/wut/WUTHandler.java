@@ -4,13 +4,13 @@ import appeng.items.tools.powered.WirelessCraftingTerminalItem;
 import appeng.menu.ISubMenu;
 import appeng.menu.MenuLocator;
 import de.mari_023.fabric.ae2wtlib.TextConstants;
-import de.mari_023.fabric.ae2wtlib.ae2wtlib;
-import de.mari_023.fabric.ae2wtlib.ae2wtlibConfig;
+import de.mari_023.fabric.ae2wtlib.AE2wtlib;
+import de.mari_023.fabric.ae2wtlib.AE2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
-import de.mari_023.fabric.ae2wtlib.terminal.WTGuiObject;
+import de.mari_023.fabric.ae2wtlib.terminal.WTMenuHost;
 import de.mari_023.fabric.ae2wtlib.trinket.TrinketsHelper;
-import de.mari_023.fabric.ae2wtlib.wit.ItemWIT;
-import de.mari_023.fabric.ae2wtlib.wpt.ItemWPT;
+import de.mari_023.fabric.ae2wtlib.wat.ItemWAT;
+import de.mari_023.fabric.ae2wtlib.wet.ItemWET;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.player.PlayerEntity;
@@ -33,8 +33,8 @@ public class WUTHandler {
         if(!(wirelessUniversalTerminal.getItem() instanceof ItemWT) || wirelessUniversalTerminal.getNbt() == null)
             return "noTerminal";
         if(!(wirelessUniversalTerminal.getItem() instanceof ItemWUT)) {
-            if(wirelessUniversalTerminal.getItem() instanceof ItemWPT) return "pattern";
-            else if(wirelessUniversalTerminal.getItem() instanceof ItemWIT) return "interface";
+            if(wirelessUniversalTerminal.getItem() instanceof ItemWET) return "pattern_encoding";
+            else if(wirelessUniversalTerminal.getItem() instanceof ItemWAT) return "pattern_access";
             else return "noTerminal";
         }
         String currentTerminal = wirelessUniversalTerminal.getNbt().getString("currentTerminal");
@@ -78,13 +78,13 @@ public class WUTHandler {
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeInt(slot);
         buf.writeNbt(tag);
-        ServerPlayNetworking.send(playerEntity, new Identifier(ae2wtlib.MOD_NAME, "update_wut"), buf);
+        ServerPlayNetworking.send(playerEntity, new Identifier(AE2wtlib.MOD_NAME, "update_wut"), buf);
     }
 
     public static void open(final PlayerEntity player, final MenuLocator locator) {
         int slot = locator.getItemIndex();
         ItemStack is;
-        if(slot >= 100 && slot < 200 && ae2wtlibConfig.INSTANCE.allowTrinket())
+        if(slot >= 100 && slot < 200 && AE2wtlibConfig.INSTANCE.allowTrinket())
             is = TrinketsHelper.getTrinketsInventory(player).getStackInSlot(slot - 100);
         else is = player.getInventory().getStack(slot);
 
@@ -94,16 +94,16 @@ public class WUTHandler {
             player.sendMessage(TextConstants.TERMINAL_EMPTY, false);
             return;
         }
-        ContainerOpener terminal = wirelessTerminals.get(currentTerminal).containerOpener;
+        ContainerOpener terminal = wirelessTerminals.get(currentTerminal).containerOpener();
         terminal.tryOpen(player, locator, is);
     }
 
     public static final Map<String, WTDefinition> wirelessTerminals = new HashMap<>();
     public static final List<String> terminalNames = new ArrayList<>();
 
-    public static void addTerminal(String name, ContainerOpener open, WTGUIObjectFactory wtguiObjectFactory) {
+    public static void addTerminal(String name, ContainerOpener open, WTMenuHostFactory WTMenuHostFactory) {
         if(terminalNames.contains(name)) return;
-        wirelessTerminals.put(name, new WTDefinition(open, wtguiObjectFactory));
+        wirelessTerminals.put(name, new WTDefinition(open, WTMenuHostFactory));
         terminalNames.add(name);
     }
 
@@ -113,7 +113,7 @@ public class WUTHandler {
     }
 
     @FunctionalInterface
-    public interface WTGUIObjectFactory {
-        WTGuiObject create(final PlayerEntity ep, int inventorySlot, final ItemStack is, BiConsumer<PlayerEntity, ISubMenu> returnToMainMenu);
+    public interface WTMenuHostFactory {
+        WTMenuHost create(final PlayerEntity ep, int inventorySlot, final ItemStack is, BiConsumer<PlayerEntity, ISubMenu> returnToMainMenu);
     }
 }

@@ -4,7 +4,7 @@ import appeng.api.features.Locatables;
 import appeng.core.localization.PlayerMessages;
 import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.items.tools.powered.powersink.AEBasePoweredItem;
-import de.mari_023.fabric.ae2wtlib.ae2wtlib;
+import de.mari_023.fabric.ae2wtlib.AE2wtlib;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Util;
@@ -33,7 +33,7 @@ public abstract class WirelessTerminalItemMixin extends AEBasePoweredItem {
      */
     @Overwrite
     protected boolean checkPreconditions(ItemStack item, PlayerEntity player) {
-        if (item.isEmpty() || (item.getItem() != this && item.getItem() != ae2wtlib.UNIVERSAL_TERMINAL) ) {
+        if (item.isEmpty() || (item.getItem() != this && item.getItem() != AE2wtlib.UNIVERSAL_TERMINAL) ) {
             return false;
         }
 

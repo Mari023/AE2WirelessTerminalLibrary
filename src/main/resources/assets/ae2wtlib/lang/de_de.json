@@ -19,8 +19,6 @@
   "gui.ae2wtlib.restock": "Nachfüllen: ",
   "gui.ae2wtlib.off": "Aus",
   "gui.ae2wtlib.on": "An",
-  "item.ae2wtlib.wireless_pattern_terminal": "Drahtlose Schablonenkonsole",
-  "item.ae2wtlib.wireless_interface_terminal": "Drahtlose Schnittstellenkonsole",
   "item.ae2wtlib.wireless_universal_terminal": "Drahtlose Universalkonsole",
   "item.ae2wtlib.wireless_universal_terminal.desc": "Installierte Konsolen:",
 

@@ -1,6 +1,6 @@
 package de.mari_023.fabric.ae2wtlib.wut.recipe;
 
-import de.mari_023.fabric.ae2wtlib.ae2wtlib;
+import de.mari_023.fabric.ae2wtlib.AE2wtlib;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.item.ItemStack;
@@ -9,7 +9,7 @@ import net.minecraft.util.Identifier;
 
 public abstract class Common implements CraftingRecipe {
 
-    protected final ItemStack outputStack = new ItemStack(ae2wtlib.UNIVERSAL_TERMINAL);
+    protected final ItemStack outputStack = new ItemStack(AE2wtlib.UNIVERSAL_TERMINAL);
     protected final Identifier id;
 
     protected Common(Identifier id) {

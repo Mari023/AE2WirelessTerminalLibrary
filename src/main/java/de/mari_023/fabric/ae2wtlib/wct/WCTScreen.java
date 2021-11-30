@@ -6,7 +6,7 @@ import appeng.client.gui.style.ScreenStyle;
 import appeng.client.gui.style.StyleManager;
 import appeng.client.gui.widgets.IconButton;
 import de.mari_023.fabric.ae2wtlib.TextConstants;
-import de.mari_023.fabric.ae2wtlib.ae2wtlib;
+import de.mari_023.fabric.ae2wtlib.AE2wtlib;
 import de.mari_023.fabric.ae2wtlib.util.ItemButton;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetMode;
 import de.mari_023.fabric.ae2wtlib.wut.CycleTerminalButton;
@@ -21,7 +21,7 @@ import net.minecraft.util.Identifier;
 
 import java.io.IOException;
 
-public class WCTScreen extends CraftingTermScreen<WCTContainer> implements IUniversalTerminalCapable {
+public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversalTerminalCapable {
 
     ItemButton magnetCardToggleButton;
     private float mouseX;
@@ -47,7 +47,7 @@ public class WCTScreen extends CraftingTermScreen<WCTContainer> implements IUniv
     private SlotGroup group = null;
     private SlotGroup quickMoveGroup = null;
 
-    public WCTScreen(WCTContainer container, PlayerInventory playerInventory, Text title) {
+    public WCTScreen(WCTMenu container, PlayerInventory playerInventory, Text title) {
         super(container, playerInventory, title, STYLE);
         IconButton deleteButton = new IconButton(btn -> getScreenHandler().deleteTrashSlot()) {
             @Override
@@ -59,7 +59,7 @@ public class WCTScreen extends CraftingTermScreen<WCTContainer> implements IUniv
         deleteButton.setMessage(TextConstants.DELETE);
         widgets.add("emptyTrash", deleteButton);
 
-        magnetCardToggleButton = new ItemButton(btn -> setMagnetMode(), new Identifier(ae2wtlib.MOD_NAME, "textures/magnet_card.png"));
+        magnetCardToggleButton = new ItemButton(btn -> setMagnetMode(), new Identifier(AE2wtlib.MOD_NAME, "textures/magnet_card.png"));
         magnetCardToggleButton.setHalfSize(true);
         widgets.add("magnetCardToggleButton", magnetCardToggleButton);
 

@@ -3,7 +3,7 @@ package de.mari_023.fabric.ae2wtlib.mixin;
 import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.menu.MenuLocator;
 import appeng.menu.implementations.MenuTypeBuilder;
-import de.mari_023.fabric.ae2wtlib.ae2wtlibConfig;
+import de.mari_023.fabric.ae2wtlib.AE2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.trinket.TrinketsHelper;
 import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
 import net.minecraft.entity.player.PlayerEntity;
@@ -27,7 +27,7 @@ public class ContainerTypeBuilderMixin<I> {
         int slot = locator.getItemIndex();
         ItemStack it;
 
-        if(slot >= 100 && slot < 200 && ae2wtlibConfig.INSTANCE.allowTrinket())
+        if(slot >= 100 && slot < 200 && AE2wtlibConfig.INSTANCE.allowTrinket())
             it = TrinketsHelper.getTrinketsInventory(player).getStackInSlot(slot - 100);
         else it = player.getInventory().getStack(slot);
 
@@ -35,6 +35,6 @@ public class ContainerTypeBuilderMixin<I> {
 
         String currentTerminal = WUTHandler.getCurrentTerminal(it);
         if(WUTHandler.terminalNames.contains(currentTerminal))
-            cir.setReturnValue(hostInterface.cast(WUTHandler.wirelessTerminals.get(currentTerminal).wtguiObjectFactory.create(player, locator.getItemIndex(), it, (p, subMenu) -> ((WirelessTerminalItem) it.getItem()).openFromInventory(p, locator.getItemIndex()))));
+            cir.setReturnValue(hostInterface.cast(WUTHandler.wirelessTerminals.get(currentTerminal).wTMenuHostFactory().create(player, locator.getItemIndex(), it, (p, subMenu) -> ((WirelessTerminalItem) it.getItem()).openFromInventory(p, locator.getItemIndex()))));
     }
 }

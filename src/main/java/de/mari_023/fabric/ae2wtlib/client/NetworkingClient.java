@@ -1,7 +1,7 @@
 package de.mari_023.fabric.ae2wtlib.client;
 
-import de.mari_023.fabric.ae2wtlib.ae2wtlib;
-import de.mari_023.fabric.ae2wtlib.ae2wtlibConfig;
+import de.mari_023.fabric.ae2wtlib.AE2wtlib;
+import de.mari_023.fabric.ae2wtlib.AE2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.trinket.TrinketsHelper;
 import de.mari_023.fabric.ae2wtlib.wct.CraftingTerminalHandler;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -14,7 +14,7 @@ import java.util.HashMap;
 
 public class NetworkingClient {
     public static void registerClient() {
-        ClientPlayNetworking.registerGlobalReceiver(new Identifier(ae2wtlib.MOD_NAME, "update_restock"), (client, handler, buf, responseSender) -> {
+        ClientPlayNetworking.registerGlobalReceiver(new Identifier(AE2wtlib.MOD_NAME, "update_restock"), (client, handler, buf, responseSender) -> {
             buf.retain();
             client.execute(() -> {
                 if(client.player == null) return;
@@ -22,14 +22,14 @@ public class NetworkingClient {
                 buf.release();
             });
         });
-        ClientPlayNetworking.registerGlobalReceiver(new Identifier(ae2wtlib.MOD_NAME, "update_wut"), (client, handler, buf, responseSender) -> {
+        ClientPlayNetworking.registerGlobalReceiver(new Identifier(AE2wtlib.MOD_NAME, "update_wut"), (client, handler, buf, responseSender) -> {
             buf.retain();
             client.execute(() -> {
                 if(client.player == null) return;
                 int slot = buf.readInt();
                 ItemStack is;
                 NbtCompound tag = buf.readNbt();
-                if(slot >= 100 && slot < 200 && ae2wtlibConfig.INSTANCE.allowTrinket())
+                if(slot >= 100 && slot < 200 && AE2wtlibConfig.INSTANCE.allowTrinket())
                     is = TrinketsHelper.getTrinketsInventory(client.player).getStackInSlot(slot - 100);
                 else is = client.player.getInventory().getStack(slot);
                 is.setNbt(tag);
@@ -37,7 +37,7 @@ public class NetworkingClient {
                 CraftingTerminalHandler.getCraftingTerminalHandler(client.player).invalidateCache();
             });
         });
-        ClientPlayNetworking.registerGlobalReceiver(new Identifier(ae2wtlib.MOD_NAME, "restock_amounts"), (client, handler, buf, responseSender) -> {
+        ClientPlayNetworking.registerGlobalReceiver(new Identifier(AE2wtlib.MOD_NAME, "restock_amounts"), (client, handler, buf, responseSender) -> {
             buf.retain();
             client.execute(() -> {
                 if(client.player == null) return;

@@ -3,7 +3,7 @@
   "id": "ae2wtlib",
   "version": "${version}",
   "name": "AE2WTLib",
-  "description": "Adds Wireless versions of different ae2 Terminals with infinite range capabilities.",
+  "description": "Adds Wireless versions of ae2 Terminals with infinite range capabilities.",
   "authors": [
     "mari_023",
     "Ridanisaurus",
@@ -19,10 +19,10 @@
   "environment": "*",
   "entrypoints": {
     "ae2:client": [
-      "de.mari_023.fabric.ae2wtlib.client.ae2wtlibclient"
+      "de.mari_023.fabric.ae2wtlib.client.AE2wtlibclient"
     ],
     "ae2": [
-      "de.mari_023.fabric.ae2wtlib.ae2wtlib"
+      "de.mari_023.fabric.ae2wtlib.AE2wtlib"
     ],
     "rei_plugins": [
       "de.mari_023.fabric.ae2wtlib.rei.Plugin"
@@ -35,7 +35,7 @@
     "ae2wtlib.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.12.5",
+    "fabricloader": ">=0.12.7",
     "fabric": "*",
     "minecraft": "*",
     "ae2": "*",

@@ -3,7 +3,7 @@ package de.mari_023.fabric.ae2wtlib.mixin;
 import appeng.api.config.Actionable;
 import appeng.api.storage.data.AEItemKey;
 import appeng.me.helpers.PlayerSource;
-import de.mari_023.fabric.ae2wtlib.ae2wtlib;
+import de.mari_023.fabric.ae2wtlib.AE2wtlib;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.wct.CraftingTerminalHandler;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -67,6 +67,6 @@ public abstract class Restock {
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeInt(playerEntity.getInventory().indexOf((ItemStack) (Object) this));
         buf.writeInt(getCount());
-        ServerPlayNetworking.send((ServerPlayerEntity) playerEntity, new Identifier(ae2wtlib.MOD_NAME, "update_restock"), buf);
+        ServerPlayNetworking.send((ServerPlayerEntity) playerEntity, new Identifier(AE2wtlib.MOD_NAME, "update_restock"), buf);
     }
 }

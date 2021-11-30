@@ -21,7 +21,7 @@
       "conditions": {
         "items": [
           {
-            "item": "ae2wtlib:wireless_pattern_terminal"
+            "item": "ae2wtlib:wireless_pattern_encoding_terminal"
           }
         ]
       }
@@ -31,7 +31,7 @@
       "conditions": {
         "items": [
           {
-            "item": "ae2wtlib:wireless_interface_terminal"
+            "item": "ae2wtlib:wireless_pattern_access_terminal"
           }
         ]
       }

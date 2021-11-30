@@ -6,8 +6,8 @@ import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.menu.MenuLocator;
 import appeng.menu.MenuOpener;
 import de.mari_023.fabric.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
-import de.mari_023.fabric.ae2wtlib.wct.WCTContainer;
-import de.mari_023.fabric.ae2wtlib.wct.WCTGuiObject;
+import de.mari_023.fabric.ae2wtlib.wct.WCTMenu;
+import de.mari_023.fabric.ae2wtlib.wct.WCTMenuHost;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ScreenHandlerType;
@@ -29,12 +29,12 @@ public class CraftingTerminalItemMixin extends WirelessTerminalItem implements I
      */
     @Overwrite
     public ScreenHandlerType<?> getMenuType() {
-        return WCTContainer.TYPE;
+        return WCTMenu.TYPE;
     }
 
     @Override
     public void open(PlayerEntity player, MenuLocator locator) {
-        MenuOpener.open(WCTContainer.TYPE, player, locator);
+        MenuOpener.open(WCTMenu.TYPE, player, locator);
     }
 
     @Override
@@ -49,6 +49,6 @@ public class CraftingTerminalItemMixin extends WirelessTerminalItem implements I
     @Nullable
     @Overwrite
     public ItemMenuHost getMenuHost(PlayerEntity player, int inventorySlot, ItemStack stack, @Nullable BlockPos pos) {
-        return new WCTGuiObject(player, inventorySlot, stack, (p, subMenu) -> openFromInventory(p, inventorySlot));
+        return new WCTMenuHost(player, inventorySlot, stack, (p, subMenu) -> openFromInventory(p, inventorySlot));
     }
 }
