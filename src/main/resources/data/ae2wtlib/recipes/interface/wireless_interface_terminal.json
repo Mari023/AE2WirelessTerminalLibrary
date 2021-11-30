@@ -10,7 +10,7 @@
       "item": "ae2:wireless_receiver"
     },
     "b": {
-      "item": "ae2:interface_terminal"
+      "item": "ae2:pattern_provider_terminal"
     },
     "c": {
       "item": "ae2:dense_energy_cell"

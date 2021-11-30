@@ -42,7 +42,7 @@ public class MagnetHandler {
             HashMap<Item, Long> items = new HashMap<>();
 
             if(handler.getItemStorageChannel() == null) return;
-            KeyCounter<AEItemKey> storageList = handler.getItemStorageChannel().getCachedAvailableStacks();
+            KeyCounter storageList = handler.getItemStorageChannel().getCachedAvailableStacks();
 
             for(int i = 0; i < player.getInventory().size(); i++) {
                 ItemStack stack = player.getInventory().getStack(i);
@@ -59,7 +59,7 @@ public class MagnetHandler {
         } catch(NullPointerException ignored) {}
     }
 
-    private long getCount(KeyCounter<AEItemKey> storageList, ItemStack stack) {
+    private long getCount(KeyCounter storageList, ItemStack stack) {
         return storageList.get(AEItemKey.of(stack));
     }
 }

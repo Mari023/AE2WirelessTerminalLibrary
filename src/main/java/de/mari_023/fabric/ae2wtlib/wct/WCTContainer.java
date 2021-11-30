@@ -1,46 +1,27 @@
 package de.mari_023.fabric.ae2wtlib.wct;
 
 import appeng.api.config.SecurityPermissions;
-import appeng.api.inventories.InternalInventory;
 import appeng.api.networking.IGridNode;
-import appeng.core.sync.network.NetworkHandler;
-import appeng.core.sync.packets.InventoryActionPacket;
-import appeng.helpers.IMenuCraftingPacket;
-import appeng.helpers.InventoryAction;
-import appeng.menu.NullMenu;
 import appeng.menu.SlotSemantic;
 import appeng.menu.implementations.MenuTypeBuilder;
 import appeng.menu.me.items.CraftingTermMenu;
-import appeng.menu.me.items.ItemTerminalMenu;
 import appeng.menu.slot.AppEngSlot;
-import appeng.menu.slot.CraftingMatrixSlot;
-import appeng.menu.slot.CraftingTermSlot;
 import appeng.menu.slot.DisabledSlot;
-import appeng.util.inv.AppEngInternalInventory;
-import appeng.util.inv.InternalInventoryHost;
-import com.google.common.base.Preconditions;
 import com.mojang.datafixers.util.Pair;
 import de.mari_023.fabric.ae2wtlib.terminal.FixedWTInv;
 import de.mari_023.fabric.ae2wtlib.terminal.IWTInvHolder;
-import de.mari_023.fabric.ae2wtlib.terminal.ae2wtlibInternalInventory;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.ItemMagnetCard;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetMode;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetSettings;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.Recipe;
-import net.minecraft.recipe.RecipeType;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.Identifier;
-import net.minecraft.world.World;
 
 import java.util.List;
 

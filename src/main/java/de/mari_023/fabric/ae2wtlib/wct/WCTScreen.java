@@ -1,12 +1,9 @@
 package de.mari_023.fabric.ae2wtlib.wct;
 
-import appeng.api.config.ActionItems;
 import appeng.client.gui.Icon;
 import appeng.client.gui.me.items.CraftingTermScreen;
-import appeng.client.gui.me.items.ItemTerminalScreen;
 import appeng.client.gui.style.ScreenStyle;
 import appeng.client.gui.style.StyleManager;
-import appeng.client.gui.widgets.ActionButton;
 import appeng.client.gui.widgets.IconButton;
 import de.mari_023.fabric.ae2wtlib.TextConstants;
 import de.mari_023.fabric.ae2wtlib.ae2wtlib;

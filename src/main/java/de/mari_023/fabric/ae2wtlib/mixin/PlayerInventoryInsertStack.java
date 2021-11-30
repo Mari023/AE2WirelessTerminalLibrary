@@ -29,7 +29,7 @@ public class PlayerInventoryInsertStack {
         ItemStack terminal = CTHandler.getCraftingTerminal();
         if(ItemMagnetCard.isPickupME(terminal) && CTHandler.inRange()) {
             if(CTHandler.getStorageGrid() == null) return;
-            long inserted = CTHandler.getStorageGrid().insert(AEItemKey.of(stack), stack.getCount(), Actionable.MODULATE, new PlayerSource(player, CTHandler.getSecurityStation()));
+            long inserted = CTHandler.getStorageGrid().getInventory().insert(AEItemKey.of(stack), stack.getCount(), Actionable.MODULATE, new PlayerSource(player, CTHandler.getSecurityStation()));
             int leftover = (int) (stack.getCount() - inserted);
             if(leftover == 0) {
                 stack.setCount(0);

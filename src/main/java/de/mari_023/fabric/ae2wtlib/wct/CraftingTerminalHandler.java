@@ -6,9 +6,7 @@ import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.storage.IStorageService;
-import appeng.api.storage.IMEMonitor;
-import appeng.api.storage.StorageChannels;
-import appeng.api.storage.data.AEItemKey;
+import appeng.api.storage.MEMonitorStorage;
 import appeng.api.util.DimensionalBlockPos;
 import appeng.blockentity.networking.WirelessBlockEntity;
 import appeng.items.tools.powered.WirelessCraftingTerminalItem;
@@ -38,7 +36,7 @@ public class CraftingTerminalHandler {
     private IActionHost securityStation;
     private IGrid targetGrid;
     private IStorageService storageGrid;
-    private IMEMonitor<AEItemKey> itemStorageChannel;
+    private MEMonitorStorage itemStorageChannel;
     private int slot = -1;
     private IWirelessAccessPoint myWap;
     private double sqRange = Double.MAX_VALUE;
@@ -133,10 +131,10 @@ public class CraftingTerminalHandler {
         return storageGrid;
     }
 
-    public IMEMonitor<AEItemKey> getItemStorageChannel() {
+    public MEMonitorStorage getItemStorageChannel() {
         if(getStorageGrid() == null) return itemStorageChannel = null;
         if(itemStorageChannel == null)
-            return itemStorageChannel = storageGrid.getInventory(StorageChannels.items());
+            return itemStorageChannel = storageGrid.getInventory();
         return itemStorageChannel;
     }
 
