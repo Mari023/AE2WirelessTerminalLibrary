@@ -33,7 +33,8 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
         ScreenStyle STYLE1;
         try {
             STYLE1 = StyleManager.loadStyleDoc("/screens/wtlib/wireless_crafting_terminal.json");
-        } catch(IOException ignored) {
+        } catch(IOException e) {
+            e.printStackTrace();
             STYLE1 = null;
         }
         STYLE = STYLE1;

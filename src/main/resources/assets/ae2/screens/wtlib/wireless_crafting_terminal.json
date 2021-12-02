@@ -1,6 +1,6 @@
 {
   "$schema": "schema.json",
-  "includes": ["../terminals/item_terminal.json"],
+  "includes": ["../terminals/terminal.json"],
   "slots": {
     "CRAFTING_GRID": {
       "left": 80,
