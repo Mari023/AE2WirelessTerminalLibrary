@@ -82,7 +82,7 @@ dependencies {
     modApi("com.terraformersmc:modmenu:${project.mod_menu_version}")
     modImplementation "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
     modImplementation "dev.emi:trinkets:${project.trinkets_version}"
-    modImplementation "appeng:appliedenergistics2-fabric:0.1.18.2"
+    modImplementation "appeng:appliedenergistics2-fabric:0.1.18.3"
     modApi("dev.architectury:architectury-fabric:3.0.39")//fix stupid bug where REI version doesn't work
 }
 
