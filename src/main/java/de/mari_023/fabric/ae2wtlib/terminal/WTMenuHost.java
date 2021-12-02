@@ -1,7 +1,5 @@
 package de.mari_023.fabric.ae2wtlib.terminal;
 
-import appeng.api.networking.energy.IEnergySource;
-import appeng.api.networking.security.IActionHost;
 import appeng.helpers.WirelessTerminalMenuHost;
 import appeng.menu.ISubMenu;
 import de.mari_023.fabric.ae2wtlib.AE2wtlibConfig;
@@ -11,7 +9,7 @@ import net.minecraft.screen.ScreenHandlerType;
 
 import java.util.function.BiConsumer;
 
-public abstract class WTMenuHost extends WirelessTerminalMenuHost implements IEnergySource, IActionHost {
+public abstract class WTMenuHost extends WirelessTerminalMenuHost {
 
     private final ViewCellInventory viewCellInventory;
     private final PlayerEntity myPlayer;
