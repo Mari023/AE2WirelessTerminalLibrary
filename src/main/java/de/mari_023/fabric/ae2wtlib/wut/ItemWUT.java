@@ -51,9 +51,9 @@ public class ItemWUT extends ItemWT {
         if(WUTHandler.hasTerminal(stack, "crafting"))
             lines.add(TextConstants.CRAFTING);
         if(WUTHandler.hasTerminal(stack, "pattern_access"))
-            lines.add(TextConstants.INTERFACE);
+            lines.add(TextConstants.PATTERN_ACCESS);
         if(WUTHandler.hasTerminal(stack, "pattern_encoding"))
-            lines.add(TextConstants.PATTERN);
+            lines.add(TextConstants.PATTERN_ENCODING);
         super.appendTooltip(stack, world, lines, advancedTooltips);
     }
 }

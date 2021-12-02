@@ -27,9 +27,9 @@ public final class TextConstants {
     public static final TranslatableText MAGNETCARD_TOOLTIP = new TranslatableText("item.ae2wtlib.magnet_card.desc");
 
     public static final MutableText UNIVERSAL = new TranslatableText("item.ae2wtlib.wireless_universal_terminal.desc").fillStyle(STYLE_GRAY);
-    public static final MutableText CRAFTING = new TranslatableText("item.ae2wtlib.wireless_crafting_terminal").fillStyle(STYLE_GRAY);
-    public static final MutableText PATTERN = new TranslatableText("item.ae2wtlib.wireless_pattern_terminal").fillStyle(STYLE_GRAY);
-    public static final MutableText INTERFACE = new TranslatableText("item.ae2wtlib.wireless_interface_terminal").fillStyle(STYLE_GRAY);
+    public static final MutableText CRAFTING = new TranslatableText("item.ae2.wireless_crafting_terminal").fillStyle(STYLE_GRAY);
+    public static final MutableText PATTERN_ENCODING = new TranslatableText("item.ae2wtlib.wireless_pattern_encoding_terminal").fillStyle(STYLE_GRAY);
+    public static final MutableText PATTERN_ACCESS = new TranslatableText("item.ae2wtlib.wireless_pattern_access_terminal").fillStyle(STYLE_GRAY);
 
     public static final LiteralText TERMINAL_EMPTY = new LiteralText("This terminal does not contain any other Terminals");
 
