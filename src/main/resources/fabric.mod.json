@@ -35,14 +35,12 @@
     "ae2wtlib.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.12.7",
     "fabric": "*",
     "minecraft": "*",
-    "ae2": "*",
+    "ae2": "10.0.0-alpha.1",
     "cloth-config2": "*"
   },
   "suggests": {
-    "minemenufabric": "*",
     "trinkets": "*"
   }
 }
