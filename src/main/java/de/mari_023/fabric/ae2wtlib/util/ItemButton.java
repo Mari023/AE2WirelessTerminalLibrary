@@ -15,7 +15,7 @@ import java.util.List;
 public class ItemButton extends ButtonWidget implements ITooltip {
 
     private final Identifier texture;
-    public static final Identifier TEXTURE_STATES = new Identifier("appliedenergistics2", "textures/guis/states.png");
+    public static final Identifier TEXTURE_STATES = new Identifier("ae2", "textures/guis/states.png");
 
     public ItemButton(PressAction onPress, Identifier texture) {
         super(0, 0, 16, 16, LiteralText.EMPTY, onPress);

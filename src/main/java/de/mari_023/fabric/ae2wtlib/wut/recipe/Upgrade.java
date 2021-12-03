@@ -37,7 +37,7 @@ public class Upgrade extends Common {
     }
 
     @Override
-    public ItemStack craft(CraftingInventory inv) {
+    public ItemStack craft(CraftingInventory inv) {//TODO combine stored energy
         ItemStack wut = InputHelper.getInputStack(inv, InputHelper.WUT).copy();
         NbtCompound terminal = InputHelper.getInputStack(inv, this.terminal).getOrCreateNbt().copy();
         wut.getOrCreateNbt().putBoolean(terminalName, true);

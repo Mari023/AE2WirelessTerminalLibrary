@@ -19,10 +19,6 @@
   "gui.ae2wtlib.restock": "Автопополнение: ",
   "gui.ae2wtlib.off": "Вкл",
   "gui.ae2wtlib.on": "Выкл",
-
-  "item.ae2wtlib.wireless_crafting_terminal": "Беспроводной терминал крафта",
-  "item.ae2wtlib.wireless_pattern_terminal": "Беспроводной терминал шаблонов",
-  "item.ae2wtlib.wireless_interface_terminal": "Беспроводной терминал интерфейсов",
   "item.ae2wtlib.wireless_universal_terminal": "Универсальный беспроводной терминал",
   "item.ae2wtlib.wireless_universal_terminal.desc": "Установленные терминалы:",
 

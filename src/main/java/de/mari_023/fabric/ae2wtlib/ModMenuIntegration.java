@@ -11,6 +11,6 @@ public class ModMenuIntegration implements ModMenuApi {
 
     @Override
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
-        return parent -> AutoConfig.getConfigScreen(ae2wtlibConfig.class, parent).get();
+        return parent -> AutoConfig.getConfigScreen(AE2wtlibConfig.class, parent).get();
     }
 }

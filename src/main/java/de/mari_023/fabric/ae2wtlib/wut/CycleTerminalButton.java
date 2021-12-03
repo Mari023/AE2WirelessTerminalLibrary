@@ -2,11 +2,11 @@ package de.mari_023.fabric.ae2wtlib.wut;
 
 import appeng.client.gui.widgets.ITooltip;
 import com.mojang.blaze3d.systems.RenderSystem;
-import de.mari_023.fabric.ae2wtlib.ae2wtlib;
+import de.mari_023.fabric.ae2wtlib.TextConstants;
+import de.mari_023.fabric.ae2wtlib.AE2wtlib;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,7 +16,7 @@ import java.util.List;
 public class CycleTerminalButton extends ButtonWidget implements ITooltip {
 
     public CycleTerminalButton(PressAction onPress) {
-        super(0, 0, 16, 16, new TranslatableText("gui.ae2wtlib.cycle_terminal"), onPress);
+        super(0, 0, 16, 16, TextConstants.CYCLE, onPress);
         visible = true;
         active = true;
     }
@@ -24,7 +24,7 @@ public class CycleTerminalButton extends ButtonWidget implements ITooltip {
     @Override
     public @NotNull
     List<Text> getTooltipMessage() {
-        return Collections.singletonList(new TranslatableText("gui.ae2wtlib.cycle_terminal.desc"));
+        return Collections.singletonList(TextConstants.CYCLE_TOOLTIP);
     }
 
     @Override
@@ -52,8 +52,8 @@ public class CycleTerminalButton extends ButtonWidget implements ITooltip {
         return true;
     }
 
-    public static final Identifier TEXTURE_STATES = new Identifier("appliedenergistics2", "textures/guis/states.png");
-    public static final Identifier nextTerminal = new Identifier(ae2wtlib.MOD_NAME, "textures/wireless_universal_terminal.png");
+    public static final Identifier TEXTURE_STATES = new Identifier("ae2", "textures/guis/states.png");
+    public static final Identifier nextTerminal = new Identifier(AE2wtlib.MOD_NAME, "textures/wireless_universal_terminal.png");
 
     @Override
     public void renderButton(MatrixStack matrices, final int mouseX, final int mouseY, float partial) {

@@ -1,28 +1,27 @@
 package de.mari_023.fabric.ae2wtlib.wct;
 
-import appeng.api.config.ActionItems;
 import appeng.client.gui.Icon;
-import appeng.client.gui.me.items.ItemTerminalScreen;
+import appeng.client.gui.me.items.CraftingTermScreen;
 import appeng.client.gui.style.ScreenStyle;
 import appeng.client.gui.style.StyleManager;
-import appeng.client.gui.widgets.ActionButton;
 import appeng.client.gui.widgets.IconButton;
-import de.mari_023.fabric.ae2wtlib.ae2wtlib;
+import de.mari_023.fabric.ae2wtlib.TextConstants;
+import de.mari_023.fabric.ae2wtlib.AE2wtlib;
 import de.mari_023.fabric.ae2wtlib.util.ItemButton;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetMode;
 import de.mari_023.fabric.ae2wtlib.wut.CycleTerminalButton;
 import de.mari_023.fabric.ae2wtlib.wut.IUniversalTerminalCapable;
 import dev.emi.trinkets.api.SlotGroup;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.util.math.Rect2i;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 
 import java.io.IOException;
 
-public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniversalTerminalCapable {
+public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversalTerminalCapable {
 
     ItemButton magnetCardToggleButton;
     private float mouseX;
@@ -34,7 +33,8 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
         ScreenStyle STYLE1;
         try {
             STYLE1 = StyleManager.loadStyleDoc("/screens/wtlib/wireless_crafting_terminal.json");
-        } catch(IOException ignored) {
+        } catch(IOException e) {
+            e.printStackTrace();
             STYLE1 = null;
         }
         STYLE = STYLE1;
@@ -48,11 +48,8 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
     private SlotGroup group = null;
     private SlotGroup quickMoveGroup = null;
 
-    public WCTScreen(WCTContainer container, PlayerInventory playerInventory, Text title) {
+    public WCTScreen(WCTMenu container, PlayerInventory playerInventory, Text title) {
         super(container, playerInventory, title, STYLE);
-        ActionButton clearBtn = new ActionButton(ActionItems.STASH, (btn) -> container.clearCraftingGrid());
-        clearBtn.setHalfSize(true);
-        widgets.add("clearCraftingGrid", clearBtn);
         IconButton deleteButton = new IconButton(btn -> getScreenHandler().deleteTrashSlot()) {
             @Override
             protected Icon getIcon() {
@@ -60,10 +57,10 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
             }
         };
         deleteButton.setHalfSize(true);
-        deleteButton.setMessage(new TranslatableText("gui.ae2wtlib.emptytrash").append("\n").append(new TranslatableText("gui.ae2wtlib.emptytrash.desc")));
+        deleteButton.setMessage(TextConstants.DELETE);
         widgets.add("emptyTrash", deleteButton);
 
-        magnetCardToggleButton = new ItemButton(btn -> setMagnetMode(), new Identifier(ae2wtlib.MOD_NAME, "textures/magnet_card.png"));
+        magnetCardToggleButton = new ItemButton(btn -> setMagnetMode(), new Identifier(AE2wtlib.MOD_NAME, "textures/magnet_card.png"));
         magnetCardToggleButton.setHalfSize(true);
         widgets.add("magnetCardToggleButton", magnetCardToggleButton);
 
@@ -90,19 +87,19 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
     }
 
     private void setMagnetModeText() {
-        switch(getScreenHandler().getMagnetSettings().magnetMode) {//TODO make constants for TranslatableText and LiteralText. I create way too many instances of them
+        switch(getScreenHandler().getMagnetSettings().magnetMode) {
             case INVALID, NO_CARD -> magnetCardToggleButton.setVisibility(false);
             case OFF -> {
                 magnetCardToggleButton.setVisibility(true);
-                magnetCardToggleButton.setMessage(new TranslatableText("gui.ae2wtlib.magnetcard").append("\n").append(new TranslatableText("gui.ae2wtlib.magnetcard.desc.off")));
+                magnetCardToggleButton.setMessage(TextConstants.MAGNETCARD_OFF);
             }
             case PICKUP_INVENTORY -> {
                 magnetCardToggleButton.setVisibility(true);
-                magnetCardToggleButton.setMessage(new TranslatableText("gui.ae2wtlib.magnetcard").append("\n").append(new TranslatableText("gui.ae2wtlib.magnetcard.desc.inv")));
+                magnetCardToggleButton.setMessage(TextConstants.MAGNETCARD_INVENTORY);
             }
             case PICKUP_ME -> {
                 magnetCardToggleButton.setVisibility(true);
-                magnetCardToggleButton.setMessage(new TranslatableText("gui.ae2wtlib.magnetcard").append("\n").append(new TranslatableText("gui.ae2wtlib.magnetcard.desc.me")));
+                magnetCardToggleButton.setMessage(TextConstants.MAGNETCARD_ME);
             }
         }
     }
@@ -110,6 +107,12 @@ public class WCTScreen extends ItemTerminalScreen<WCTContainer> implements IUniv
     protected void updateBeforeRender() {
         super.updateBeforeRender();
         setMagnetModeText();
+    }
+
+    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+        try {
+            super.render(matrices, mouseX, mouseY, delta);
+        } catch(Exception ignored) {}
     }
 
     /*public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {

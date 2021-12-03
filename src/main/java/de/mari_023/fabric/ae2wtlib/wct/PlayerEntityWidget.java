@@ -12,7 +12,7 @@ public class PlayerEntityWidget extends ClickableWidget {
     private final LivingEntity entity;
 
     public PlayerEntityWidget(LivingEntity entity) {
-        super(0, 0, 0, 0, new LiteralText(""));
+        super(0, 0, 0, 0, LiteralText.EMPTY);
         this.entity = entity;
     }
 

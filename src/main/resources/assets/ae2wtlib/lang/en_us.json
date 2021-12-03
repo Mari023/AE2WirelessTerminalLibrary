@@ -20,9 +20,8 @@
   "gui.ae2wtlib.off": "Off",
   "gui.ae2wtlib.on": "On",
 
-  "item.ae2wtlib.wireless_crafting_terminal": "Wireless Crafting Terminal",
-  "item.ae2wtlib.wireless_pattern_terminal": "Wireless Pattern Terminal",
-  "item.ae2wtlib.wireless_interface_terminal": "Wireless Interface Terminal",
+  "item.ae2wtlib.wireless_pattern_encoding_terminal": "Wireless Pattern Encoding Terminal",
+  "item.ae2wtlib.wireless_pattern_access_terminal": "Wireless Pattern Access Terminal",
   "item.ae2wtlib.wireless_universal_terminal": "Wireless Universal Terminal",
   "item.ae2wtlib.wireless_universal_terminal.desc": "Installed Terminals:",
 
@@ -41,7 +40,6 @@
   "text.autoconfig.ae2wtlib.option.magnetCardRange": "Magnet Card Range",
   "text.autoconfig.ae2wtlib.option.enableTrinket": "Enable Trinkets Integration",
 
-  "text.autoconfig.ae2wtlib.option.chargeRate.@Tooltip": "",
   "text.autoconfig.ae2wtlib.option.wutChargeRateMultiplier.@Tooltip": "",
   "text.autoconfig.ae2wtlib.option.outOfRangePowerMultiplier.@Tooltip": "If this is lower than 1, being in range of a Wireless Access Point would use more power in some cases.",
   "text.autoconfig.ae2wtlib.option.magnetCardRange.@Tooltip": "",

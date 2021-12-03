@@ -1,0 +1,11 @@
+{
+  "type": "ae2wtlib:combine",
+  "terminalA": {
+    "item": "ae2wtlib:wireless_pattern_access_terminal"
+  },
+  "terminalB": {
+    "item": "ae2wtlib:wireless_pattern_encoding_terminal"
+  },
+  "terminalAName": "pattern_access",
+  "terminalBName": "pattern_encoding"
+}

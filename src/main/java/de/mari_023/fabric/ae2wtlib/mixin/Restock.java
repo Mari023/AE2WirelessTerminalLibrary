@@ -1,10 +1,9 @@
 package de.mari_023.fabric.ae2wtlib.mixin;
 
 import appeng.api.config.Actionable;
-import appeng.api.storage.data.IAEItemStack;
+import appeng.api.storage.data.AEItemKey;
 import appeng.me.helpers.PlayerSource;
-import appeng.util.item.AEItemStack;
-import de.mari_023.fabric.ae2wtlib.ae2wtlib;
+import de.mari_023.fabric.ae2wtlib.AE2wtlib;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.wct.CraftingTerminalHandler;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -61,16 +60,13 @@ public abstract class Restock {
         int toAdd = getMaxCount() - getCount();
         if(toAdd == 0) return;
         ItemStack request = copy();
-        request.setCount(toAdd);
-        IAEItemStack stack = CTHandler.getItemStorageChannel().extractItems(AEItemStack.fromItemStack(request), Actionable.MODULATE, new PlayerSource(playerEntity, CTHandler.getSecurityStation()));
-        if(stack == null) return;
-        ItemStack extraction = stack.createItemStack();
-        int extractedItems = 0;
-        if(extraction != null && !extraction.isEmpty()) extractedItems = extraction.getCount();
-        setCount(getCount() + extractedItems);
+        long extractedItems = CTHandler.getItemStorageChannel().extract(AEItemKey.of(request), toAdd, Actionable.MODULATE, new PlayerSource(playerEntity, CTHandler.getSecurityStation()));
+        if(extractedItems > Integer.MAX_VALUE)
+            throw new IllegalStateException("Extracted amount cannot be larger than requested amount");
+        setCount(getCount() + (int) extractedItems);
         PacketByteBuf buf = PacketByteBufs.create();
         buf.writeInt(playerEntity.getInventory().indexOf((ItemStack) (Object) this));
         buf.writeInt(getCount());
-        ServerPlayNetworking.send((ServerPlayerEntity) playerEntity, new Identifier(ae2wtlib.MOD_NAME, "update_restock"), buf);
+        ServerPlayNetworking.send((ServerPlayerEntity) playerEntity, new Identifier(AE2wtlib.MOD_NAME, "update_restock"), buf);
     }
 }
