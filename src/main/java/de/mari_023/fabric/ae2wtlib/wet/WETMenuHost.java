@@ -9,7 +9,6 @@ import appeng.api.storage.GenericStack;
 import appeng.crafting.pattern.IAEPatternDetails;
 import appeng.helpers.IPatternTerminalHost;
 import appeng.menu.ISubMenu;
-import appeng.parts.reporting.PatternTerminalPart;
 import appeng.util.inv.AppEngInternalInventory;
 import de.mari_023.fabric.ae2wtlib.AE2wtlib;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
@@ -54,8 +53,8 @@ public class WETMenuHost extends WTMenuHost implements ISegmentedInventory, IVie
 
     @Override
     public InternalInventory getSubInventory(Identifier id) {
-        if(id.equals(PatternTerminalPart.INV_CRAFTING)) return crafting;
-        else if(id.equals(PatternTerminalPart.INV_OUTPUT)) return output;
+        if(id.equals(IPatternTerminalHost.INV_CRAFTING)) return crafting;
+        else if(id.equals(IPatternTerminalHost.INV_OUTPUT)) return output;
         else if(id.equals(PATTERNS)) return pattern;
         else return null;
     }
