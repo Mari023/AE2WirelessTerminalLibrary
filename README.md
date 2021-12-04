@@ -1,7 +1,7 @@
 [![build master](https://github.com/Mari023/AE2WirelessTerminalLibrary/actions/workflows/build_master.yml/badge.svg)](https://github.com/Mari023/AE2WirelessTerminalLibrary/actions/workflows/build_master.yml)
 [![Curseforge downloads](http://cf.way2muchnoise.eu/full_459929_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/applied-energistics-2-wireless-terminals)
-[![Modrinth downloads](https://modrinth-utils.vercel.app/api/badge/downloads?id=pNabrMMw)](https://modrinth.com/mod/applied-energistics-2-wireless-terminals)
-[![Modrinth Versions](https://modrinth-utils.vercel.app/api/badge/versions?id=pNabrMMw)](https://modrinth.com/mod/applied-energistics-2-wireless-terminals/versions)
+[![Modrinth downloads](https://modrinth-utils.vercel.app/api/badge/downloads?id=pNabrMMw&logo=true)](https://modrinth.com/mod/applied-energistics-2-wireless-terminals)
+[![Modrinth Versions](https://modrinth-utils.vercel.app/api/badge/versions?id=pNabrMMw&logo=true)](https://modrinth.com/mod/applied-energistics-2-wireless-terminals/versions)
 
 Applied Energistics 2 Wireless Terminals
 ========================================
