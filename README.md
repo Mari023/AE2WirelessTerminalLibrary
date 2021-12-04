@@ -8,8 +8,8 @@ Applied Energistics 2 Wireless Terminals
 This is a Fabric port
 of [Wireless Crafting Terminal](https://www.curseforge.com/minecraft/mc-mods/wireless-crafting-terminal)
 , [Wireless Pattern Terminal](https://www.curseforge.com/minecraft/mc-mods/wireless-pattern-terminal)
-, [Wireless Interface Terminal](https://www.curseforge.com/minecraft/mc-mods/wireless-interface-terminal), [~~Wireless
-Fluid Terminal~~](https://www.curseforge.com/minecraft/mc-mods/wireless-fluid-terminal) (not yet implemented)
+, [Wireless Interface Terminal](https://www.curseforge.com/minecraft/mc-mods/wireless-interface-terminal), [Wireless
+Fluid Terminal](https://www.curseforge.com/minecraft/mc-mods/wireless-fluid-terminal)
 and [Wireless Terminal Library](https://www.curseforge.com/minecraft/mc-mods/ae2wtlib)
 
 It features several wireless versions of Applied Energistics 2 terminals with support for an Infinity Booster Card,
@@ -19,9 +19,8 @@ It also adds a wireless universal terminal which has all wireless terminals in o
 
 ## Missing Features / Known Issues
 
-- Wireless Fluid Terminal
 - Magnet Card can't filter items
-- Trinket support
+- Displaying Trinkets in wireless crafting terminal
 - Viewcells don't work
 
 ## FAQ
