@@ -5,7 +5,7 @@ import appeng.api.crafting.PatternDetailsHelper;
 import appeng.api.implementations.blockentities.IViewCellStorage;
 import appeng.api.inventories.ISegmentedInventory;
 import appeng.api.inventories.InternalInventory;
-import appeng.api.storage.GenericStack;
+import appeng.api.stacks.GenericStack;
 import appeng.crafting.pattern.IAEPatternDetails;
 import appeng.helpers.IPatternTerminalHost;
 import appeng.menu.ISubMenu;

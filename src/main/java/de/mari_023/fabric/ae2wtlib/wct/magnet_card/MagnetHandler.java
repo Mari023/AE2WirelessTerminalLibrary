@@ -1,9 +1,9 @@
 package de.mari_023.fabric.ae2wtlib.wct.magnet_card;
 
-import appeng.api.storage.data.AEItemKey;
-import appeng.api.storage.data.KeyCounter;
-import de.mari_023.fabric.ae2wtlib.AE2wtlibConfig;
+import appeng.api.stacks.AEItemKey;
+import appeng.api.stacks.KeyCounter;
 import de.mari_023.fabric.ae2wtlib.AE2wtlib;
+import de.mari_023.fabric.ae2wtlib.AE2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.wct.CraftingTerminalHandler;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;

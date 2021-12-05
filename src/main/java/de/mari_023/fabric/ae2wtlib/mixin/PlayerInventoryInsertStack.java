@@ -1,7 +1,7 @@
 package de.mari_023.fabric.ae2wtlib.mixin;
 
 import appeng.api.config.Actionable;
-import appeng.api.storage.data.AEItemKey;
+import appeng.api.stacks.AEItemKey;
 import appeng.me.helpers.PlayerSource;
 import de.mari_023.fabric.ae2wtlib.wct.CraftingTerminalHandler;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.ItemMagnetCard;
