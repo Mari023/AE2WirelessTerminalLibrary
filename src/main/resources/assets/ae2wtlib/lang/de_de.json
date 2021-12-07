@@ -33,6 +33,7 @@
 
   "text.autoconfig.ae2wtlib.option.chargeRate": "Laderate",
   "text.autoconfig.ae2wtlib.option.wutChargeRateMultiplier": "Laderatenmultiplikator der Drahtlose Universalkonsole",
+  "text.autoconfig.ae2wtlib.option.wutBatterySizeMultiplier": "Batteriemultiplikator der Drahtlose Universalkonsole",
   "text.autoconfig.ae2wtlib.option.outOfRangePowerMultiplier": "Leistungsmultiplikator außer Reichweite",
   "text.autoconfig.ae2wtlib.option.magnetCardRange": "Reichweite der Magnet Karte",
   "text.autoconfig.ae2wtlib.option.enableTrinket": "Trinkets Integration aktivieren",

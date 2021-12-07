@@ -36,6 +36,7 @@
 
   "text.autoconfig.ae2wtlib.option.chargeRate": "Charge Rate",
   "text.autoconfig.ae2wtlib.option.wutChargeRateMultiplier": "Wireless Universal Terminal Charge Rate Multiplier",
+  "text.autoconfig.ae2wtlib.option.wutBatterySizeMultiplier": "Wireless Universal Terminal Battery Size Multiplier",
   "text.autoconfig.ae2wtlib.option.outOfRangePowerMultiplier": "Out of Range Power Multiplier",
   "text.autoconfig.ae2wtlib.option.magnetCardRange": "Magnet Card Range",
   "text.autoconfig.ae2wtlib.option.enableTrinket": "Enable Trinkets Integration",
