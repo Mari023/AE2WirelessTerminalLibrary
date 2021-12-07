@@ -5,14 +5,15 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 
 public interface IUniversalWirelessTerminalItem extends IInfinityBoosterCardHolder {
-    void open(final PlayerEntity player, final MenuLocator locator);
+    boolean open(final PlayerEntity player, final MenuLocator locator);
 
     default boolean canOpen(ItemStack item, PlayerEntity player) {
         return !item.isEmpty() && checkPreconditions(item, player);
     }
 
-    default void tryOpen(PlayerEntity player, MenuLocator locator, ItemStack stack) {
-        if(canOpen(stack, player)) open(player, locator);
+    default boolean tryOpen(PlayerEntity player, MenuLocator locator, ItemStack stack) {
+        if(canOpen(stack, player)) return open(player, locator);
+        return false;
     }
 
     boolean checkPreconditions(ItemStack item, PlayerEntity player);

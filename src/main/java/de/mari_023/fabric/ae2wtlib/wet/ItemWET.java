@@ -15,7 +15,7 @@ public class ItemWET extends ItemWT {
     }
 
     @Override
-    public void open(final PlayerEntity player, final MenuLocator locator) {
-        MenuOpener.open(WETMenu.TYPE, player, locator);
+    public boolean open(final PlayerEntity player, final MenuLocator locator) {
+        return MenuOpener.open(WETMenu.TYPE, player, locator);
     }
 }

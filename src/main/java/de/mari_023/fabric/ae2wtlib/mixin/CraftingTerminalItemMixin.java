@@ -33,8 +33,8 @@ public class CraftingTerminalItemMixin extends WirelessTerminalItem implements I
     }
 
     @Override
-    public void open(PlayerEntity player, MenuLocator locator) {
-        MenuOpener.open(WCTMenu.TYPE, player, locator);
+    public boolean open(PlayerEntity player, MenuLocator locator) {
+        return MenuOpener.open(WCTMenu.TYPE, player, locator);
     }
 
     @Override

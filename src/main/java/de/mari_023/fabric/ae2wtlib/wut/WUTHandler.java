@@ -81,21 +81,20 @@ public class WUTHandler {
         ServerPlayNetworking.send(playerEntity, new Identifier(AE2wtlib.MOD_NAME, "update_wut"), buf);
     }
 
-    public static void open(final PlayerEntity player, final MenuLocator locator) {
+    public static boolean open(final PlayerEntity player, final MenuLocator locator) {
         int slot = locator.getItemIndex();
         ItemStack is;
         if(slot >= 100 && slot < 200 && AE2wtlibConfig.INSTANCE.allowTrinket())
             is = TrinketsHelper.getTrinketsInventory(player).getStackInSlot(slot - 100);
         else is = player.getInventory().getStack(slot);
 
-        if(is.getNbt() == null) return;
+        if(is.getNbt() == null) return false;
         String currentTerminal = getCurrentTerminal(is);
         if(!wirelessTerminals.containsKey(currentTerminal)) {
             player.sendMessage(TextConstants.TERMINAL_EMPTY, false);
-            return;
+            return false;
         }
-        ContainerOpener terminal = wirelessTerminals.get(currentTerminal).containerOpener();
-        terminal.tryOpen(player, locator, is);
+        return wirelessTerminals.get(currentTerminal).containerOpener().tryOpen(player, locator, is);
     }
 
     public static final Map<String, WTDefinition> wirelessTerminals = new HashMap<>();
@@ -109,7 +108,7 @@ public class WUTHandler {
 
     @FunctionalInterface
     public interface ContainerOpener {
-        void tryOpen(PlayerEntity player, MenuLocator locator, ItemStack stack);
+        boolean tryOpen(PlayerEntity player, MenuLocator locator, ItemStack stack);
     }
 
     @FunctionalInterface

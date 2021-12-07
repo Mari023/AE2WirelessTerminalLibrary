@@ -40,8 +40,8 @@ public class ItemWUT extends ItemWT {
     }
 
     @Override
-    public void open(final PlayerEntity player, final MenuLocator locator) {
-        WUTHandler.open(player, locator);
+    public boolean open(final PlayerEntity player, final MenuLocator locator) {
+        return WUTHandler.open(player, locator);
     }
 
     @Override

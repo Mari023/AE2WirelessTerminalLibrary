@@ -2,6 +2,8 @@ package de.mari_023.fabric.ae2wtlib.terminal;
 
 import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.menu.MenuLocator;
+import de.mari_023.fabric.ae2wtlib.AE2wtlibConfig;
+import de.mari_023.fabric.ae2wtlib.trinket.TrinketsHelper;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -32,6 +34,21 @@ public abstract class ItemWT extends WirelessTerminalItem implements IUniversalW
     @Override
     public boolean checkPreconditions(ItemStack item, PlayerEntity player) {
         return super.checkPreconditions(item, player);
+    }
+
+    /**
+     * Open a wireless terminal from a slot in the player inventory, i.e. activated via hotkey.
+     *
+     * @return True if the menu was opened.
+     */
+    @Override
+    public boolean openFromInventory(PlayerEntity player, int inventorySlot) {
+        ItemStack it;
+        if(inventorySlot >= 100 && inventorySlot < 200 && AE2wtlibConfig.INSTANCE.allowTrinket())
+            it = TrinketsHelper.getTrinketsInventory(player).getStackInSlot(inventorySlot - 100);
+        else it = player.getInventory().getStack(inventorySlot);
+
+        return tryOpen(player, MenuLocator.forInventorySlot(inventorySlot), it);
     }
 
     /**
