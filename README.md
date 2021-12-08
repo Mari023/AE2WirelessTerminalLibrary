@@ -21,7 +21,6 @@ It also adds a wireless universal terminal which has all wireless terminals in o
 
 - Magnet Card can't filter items
 - Displaying Trinkets in wireless crafting terminal
-- Viewcells don't work
 
 ## FAQ
 
