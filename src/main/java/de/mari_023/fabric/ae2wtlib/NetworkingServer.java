@@ -43,7 +43,7 @@ public class NetworkingServer {
         }));
         ServerPlayNetworking.registerGlobalReceiver(new Identifier(AE2wtlib.MOD_NAME, "hotkey"), (server, player, handler, buf, sender) -> {
             buf.retain();
-            server.execute(() -> {
+            server.execute(() -> {//TODO unify this for all terminals
                 String terminalName = buf.readString(32767);
                 if(terminalName.equalsIgnoreCase("crafting")) {
                     int slot = -1;

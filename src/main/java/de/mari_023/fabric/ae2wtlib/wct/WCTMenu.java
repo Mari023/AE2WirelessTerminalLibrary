@@ -37,15 +37,12 @@ public class WCTMenu extends CraftingTermMenu implements IWTInvHolder {
     private final WCTMenuHost wctGUIObject;
 
     public WCTMenu(int id, final PlayerInventory ip, final WCTMenuHost gui) {
-        super(TYPE, id, ip, gui, false);
+        super(TYPE, id, ip, gui, true);
         wctGUIObject = gui;
 
         wtInventory = new WTInventory(getPlayerInventory(), wctGUIObject.getItemStack(), this);
 
         final int slotIndex = wctGUIObject.getSlot();
-        if(slotIndex < 100 && slotIndex != 40) lockPlayerInventorySlot(slotIndex);
-
-        createPlayerInventorySlots(ip);
 
         SlotsWithTrinket[5] = addSlot(new AppEngSlot(wtInventory, 3) {
             @Environment(EnvType.CLIENT)
@@ -94,6 +91,11 @@ public class WCTMenu extends CraftingTermMenu implements IWTInvHolder {
 
         /*if(!ae2wtlibConfig.INSTANCE.allowTrinket()) return;//Trinkets only starting here
         updateTrinketSlots(true);*/
+    }
+
+    @Override
+    public void lockPlayerInventorySlot(final int invSlot) {
+        if(invSlot < 100) super.lockPlayerInventorySlot(invSlot);
     }
 
     @Override

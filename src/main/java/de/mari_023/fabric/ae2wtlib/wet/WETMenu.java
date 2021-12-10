@@ -23,12 +23,9 @@ public class WETMenu extends PatternTermMenu implements IWTInvHolder {
     private final WETMenuHost WETGUIObject;
 
     public WETMenu(int id, final PlayerInventory ip, final WETMenuHost gui) {
-        super(TYPE, id, ip, gui, false);
+        super(TYPE, id, ip, gui, true);
         WETGUIObject = gui;
 
-        final int slotIndex =  WETGUIObject.getSlot();
-        if(slotIndex < 100 && slotIndex != 40) lockPlayerInventorySlot(slotIndex);
-        createPlayerInventorySlots(ip);
         addSlot(new AppEngSlot(new WTInventory(getPlayerInventory(), WETGUIObject.getItemStack(), this), WTInventory.INFINITY_BOOSTER_CARD), SlotSemantic.BIOMETRIC_CARD);
 
         if(isClient()) {//FIXME set craftingMode and substitute serverside
@@ -36,6 +33,11 @@ public class WETMenu extends PatternTermMenu implements IWTInvHolder {
             setSubstitute(ItemWT.getBoolean(WETGUIObject.getItemStack(), "substitute"));
             setSubstituteFluids(ItemWT.getBoolean(WETGUIObject.getItemStack(), "substitute_fluids"));
         }
+    }
+
+    @Override
+    public void lockPlayerInventorySlot(final int invSlot) {
+        if(invSlot < 100) super.lockPlayerInventorySlot(invSlot);
     }
 
     public boolean isCraftingMode() {
