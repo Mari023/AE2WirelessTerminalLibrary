@@ -6,6 +6,7 @@ import de.mari_023.fabric.ae2wtlib.TextConstants;
 import de.mari_023.fabric.ae2wtlib.AE2wtlib;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.util.math.Rect2i;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
@@ -27,24 +28,10 @@ public class CycleTerminalButton extends ButtonWidget implements ITooltip {
         return Collections.singletonList(TextConstants.CYCLE_TOOLTIP);
     }
 
-    @Override
-    public int getTooltipAreaX() {
-        return x;
-    }
 
     @Override
-    public int getTooltipAreaY() {
-        return y;
-    }
-
-    @Override
-    public int getTooltipAreaWidth() {
-        return 16;
-    }
-
-    @Override
-    public int getTooltipAreaHeight() {
-        return 16;
+    public Rect2i getTooltipArea() {
+        return new Rect2i(x, y, 16, 16);
     }
 
     @Override

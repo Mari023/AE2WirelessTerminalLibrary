@@ -4,6 +4,7 @@ import appeng.client.gui.widgets.ITooltip;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.util.math.Rect2i;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -38,7 +39,7 @@ public class ItemButton extends ButtonWidget implements ITooltip {
         if(active) RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         else RenderSystem.setShaderColor(0.5f, 0.5f, 0.5f, 1.0f);
         RenderSystem.setShaderTexture(0, texture);
-        drawTexture(matrices, x, y, width, height, 0, 0,512,512,512,512);
+        drawTexture(matrices, x, y, width, height, 0, 0, 512, 512, 512, 512);
         RenderSystem.enableDepthTest();
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         matrices.pop();
@@ -52,23 +53,8 @@ public class ItemButton extends ButtonWidget implements ITooltip {
     }
 
     @Override
-    public int getTooltipAreaX() {
-        return x;
-    }
-
-    @Override
-    public int getTooltipAreaY() {
-        return y;
-    }
-
-    @Override
-    public int getTooltipAreaWidth() {
-        return width;
-    }
-
-    @Override
-    public int getTooltipAreaHeight() {
-        return height;
+    public Rect2i getTooltipArea() {
+        return new Rect2i(x, y, width, height);
     }
 
     @Override
