@@ -25,11 +25,6 @@ public class WATMenu extends InterfaceTerminalMenu implements IWTInvHolder {
         addSlot(new AppEngSlot(fixedWITInv, WTInventory.INFINITY_BOOSTER_CARD), SlotSemantic.BIOMETRIC_CARD);
     }
 
-    @Override
-    public void lockPlayerInventorySlot(final int invSlot) {
-        if(invSlot < 100) super.lockPlayerInventorySlot(invSlot);
-    }
-
     public boolean isWUT() {
         return witGUIObject.getItemStack().getItem() instanceof ItemWUT;
     }

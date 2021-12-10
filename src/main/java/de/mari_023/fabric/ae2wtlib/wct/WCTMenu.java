@@ -94,11 +94,6 @@ public class WCTMenu extends CraftingTermMenu implements IWTInvHolder {
     }
 
     @Override
-    public void lockPlayerInventorySlot(final int invSlot) {
-        if(invSlot < 100) super.lockPlayerInventorySlot(invSlot);
-    }
-
-    @Override
     public IGridNode getNetworkNode() {
         return wctGUIObject.getActionableNode();
     }

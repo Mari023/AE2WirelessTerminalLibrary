@@ -35,11 +35,6 @@ public class WETMenu extends PatternTermMenu implements IWTInvHolder {
         }
     }
 
-    @Override
-    public void lockPlayerInventorySlot(final int invSlot) {
-        if(invSlot < 100) super.lockPlayerInventorySlot(invSlot);
-    }
-
     public boolean isCraftingMode() {
         return WETGUIObject.isCraftingRecipe();
     }
