@@ -24,6 +24,12 @@
       "left": 175,
       "top": 18
     },
+    "search": {
+      "left": 104,
+      "top": 4,
+      "width": 65,
+      "height": 12
+    },
     "cycleTerminal": {
       "left": -20,
       "top": 28
