@@ -70,13 +70,4 @@ public class CombinedTrinketInventory implements InternalInventory {
             }
         }
     }
-
-    /*@Override
-    public ItemStack extractStack(int slot, ItemFilter filter, ItemStack mergeWith, int maxCount, Simulation simulation) {
-        if(mergeWith.isEmpty()) {
-            if(simulation.isAction()) return inventory.removeStack(slot);
-            return inventory.getStack(slot);
-        }
-        return ItemStack.EMPTY;
-    }*/
 }

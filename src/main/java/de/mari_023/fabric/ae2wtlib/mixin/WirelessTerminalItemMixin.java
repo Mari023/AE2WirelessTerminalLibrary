@@ -1,20 +1,18 @@
 package de.mari_023.fabric.ae2wtlib.mixin;
 
 import appeng.api.features.Locatables;
-import appeng.api.networking.security.IActionHost;
 import appeng.core.localization.PlayerMessages;
 import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.items.tools.powered.powersink.AEBasePoweredItem;
 import de.mari_023.fabric.ae2wtlib.AE2wtlib;
+import net.minecraft.Util;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 
 import java.util.OptionalLong;
-import net.minecraft.Util;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 
 @Mixin(value = WirelessTerminalItem.class, remap = false)
 public abstract class WirelessTerminalItemMixin extends AEBasePoweredItem {

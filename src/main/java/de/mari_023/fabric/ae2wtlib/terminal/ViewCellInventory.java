@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.world.item.ItemStack;
 
-public class ViewCellInventory implements InternalInventory {//TODO maybe remove this? there is disable viewcell somewhere
+public class ViewCellInventory implements InternalInventory {
 
     private static final int viewCellCount = 5;
     private final ItemStack hostStack;
@@ -42,12 +42,4 @@ public class ViewCellInventory implements InternalInventory {//TODO maybe remove
         for(int i = 0; i < viewCellCount; i++) viewCells.add(getStackInSlot(i));
         return viewCells;
     }
-
-    /*@Override
-    public ItemStack extractStack(int slot, ItemFilter filter, ItemStack mergeWith, int maxCount, Simulation simulation) {
-        if(slot > viewCellCount || !mergeWith.isEmpty()) return ItemStack.EMPTY;
-        ItemStack is = getInvStack(slot);
-        if(simulation.isAction()) setInvStack(slot, ItemStack.EMPTY, Simulation.ACTION);
-        return is;
-    }*/
 }

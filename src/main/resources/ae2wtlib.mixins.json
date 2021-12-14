@@ -10,13 +10,11 @@
     "CraftingTerminalItemMixin",
     "PlayerInventoryInsertStack",
     "Restock",
-    "SlotMixin",
     "TrinketWCTContainer",
     "TrinketWT",
     "WirelessTerminalItemMixin"
   ],
   "client": [
-    "HandledScreenMixin",
     "RestockRender"
   ],
   "injectors": {
