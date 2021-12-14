@@ -42,12 +42,16 @@ public class MagnetHandler {
             HashMap<Item, Long> items = new HashMap<>();
 
             if(handler.getItemStorageChannel() == null) return;
-            KeyCounter storageList = handler.getItemStorageChannel().getCachedAvailableStacks();
+            KeyCounter storageList = handler.getItemStorageChannel().getAvailableStacks();
 
             for(int i = 0; i < player.getInventory().size(); i++) {
                 ItemStack stack = player.getInventory().getStack(i);
                 if(stack.isEmpty()) continue;
-                if(!items.containsKey(stack.getItem())) items.put(stack.getItem(), getCount(storageList, stack));
+                if(!items.containsKey(stack.getItem())) {
+                    AEItemKey key = AEItemKey.of(stack);
+                    if(key == null) items.put(stack.getItem(), 0L);
+                    else items.put(stack.getItem(), storageList.get(key));
+                }
             }
 
             PacketByteBuf buf = PacketByteBufs.create();
@@ -57,9 +61,5 @@ public class MagnetHandler {
             }
             ServerPlayNetworking.send(player, new Identifier(AE2wtlib.MOD_NAME, "restock_amounts"), buf);
         } catch(NullPointerException ignored) {}
-    }
-
-    private long getCount(KeyCounter storageList, ItemStack stack) {
-        return storageList.get(AEItemKey.of(stack));
     }
 }
