@@ -49,6 +49,9 @@ public class CycleTerminalButton extends Button implements ITooltip {
         RenderSystem.setShaderTexture(0, TEXTURE_STATES);
         RenderSystem.disableDepthTest();
         RenderSystem.enableBlend();
+        if(isFocused()) {
+            fill(matrices, x - 1, y - 1, x + width + 1, y + height + 1, 0xFFFFFFFF);
+        }
 
         blit(matrices, x, y, 240, 240, 16, 16);
 
