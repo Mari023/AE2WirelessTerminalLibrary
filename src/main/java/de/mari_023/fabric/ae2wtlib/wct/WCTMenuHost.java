@@ -9,24 +9,24 @@ import appeng.parts.reporting.CraftingTerminalPart;
 import appeng.util.inv.AppEngInternalInventory;
 import appeng.util.inv.InternalInventoryHost;
 import de.mari_023.fabric.ae2wtlib.terminal.WTMenuHost;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.BiConsumer;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.ItemStack;
 
 public class WCTMenuHost extends WTMenuHost implements IViewCellStorage, ISegmentedInventory, InternalInventoryHost {
     private final AppEngInternalInventory craftingGrid = new AppEngInternalInventory(this, 9);
 
-    public WCTMenuHost(final PlayerEntity ep, int inventorySlot, final ItemStack is, BiConsumer<PlayerEntity, ISubMenu> returnToMainMenu) {
+    public WCTMenuHost(final Player ep, int inventorySlot, final ItemStack is, BiConsumer<Player, ISubMenu> returnToMainMenu) {
         super(ep, inventorySlot, is, returnToMainMenu);
-        craftingGrid.readFromNBT(getItemStack().getOrCreateNbt(), "craftingGrid");
+        craftingGrid.readFromNBT(getItemStack().getOrCreateTag(), "craftingGrid");
     }
 
     @Override
-    public ScreenHandlerType<?> getType() {
+    public MenuType<?> getType() {
         return WCTMenu.TYPE;
     }
 
@@ -37,14 +37,14 @@ public class WCTMenuHost extends WTMenuHost implements IViewCellStorage, ISegmen
 
     @Nullable
     @Override
-    public InternalInventory getSubInventory(Identifier id) {
+    public InternalInventory getSubInventory(ResourceLocation id) {
         if(id.equals(CraftingTerminalPart.INV_CRAFTING)) return craftingGrid;
         else return null;
     }
 
     @Override
     public void saveChanges() {
-        craftingGrid.writeToNBT(getItemStack().getOrCreateNbt(), "craftingGrid");
+        craftingGrid.writeToNBT(getItemStack().getOrCreateTag(), "craftingGrid");
     }
 
     @Override

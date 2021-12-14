@@ -6,38 +6,37 @@ import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
-import net.minecraft.client.item.TooltipContext;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.text.Text;
-import net.minecraft.world.World;
-
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 import java.util.List;
 
 public class ItemMagnetCard extends Item {
 
     public ItemMagnetCard() {
-        super(new FabricItemSettings().group(AE2wtlib.ITEM_GROUP).maxCount(1));
+        super(new FabricItemSettings().tab(AE2wtlib.ITEM_GROUP).stacksTo(1));
     }
 
     @Override
     @Environment(EnvType.CLIENT)
-    public void appendTooltip(final ItemStack stack, final World world, final List<Text> lines, final TooltipContext advancedTooltips) {
-        super.appendTooltip(stack, world, lines, advancedTooltips);
+    public void appendHoverText(final ItemStack stack, final Level world, final List<Component> lines, final TooltipFlag advancedTooltips) {
+        super.appendHoverText(stack, world, lines, advancedTooltips);
         lines.add(TextConstants.MAGNETCARD_TOOLTIP);
     }
 
     public static void saveMagnetSettings(ItemStack magnetCardHolder, MagnetSettings magnetSettings) {
         ItemStack magnetCard = ItemWT.getSavedSlot(magnetCardHolder, "magnetCard");
-        magnetCard.getOrCreateNbt().put("magnet_settings", magnetSettings.toTag());
+        magnetCard.getOrCreateTag().put("magnet_settings", magnetSettings.toTag());
         ItemWT.setSavedSlot(magnetCardHolder, magnetCard, "magnetCard");
     }
 
     public static MagnetSettings loadMagnetSettings(ItemStack magnetCardHolder) {
         ItemStack magnetCard = ItemWT.getSavedSlot(magnetCardHolder, "magnetCard");
         if(magnetCard.isEmpty()) return new MagnetSettings();
-        return new MagnetSettings((NbtCompound) magnetCard.getOrCreateNbt().get("magnet_settings"));
+        return new MagnetSettings((CompoundTag) magnetCard.getOrCreateTag().get("magnet_settings"));
     }
 
     public static boolean isActiveMagnet(ItemStack magnetCardHolder) {

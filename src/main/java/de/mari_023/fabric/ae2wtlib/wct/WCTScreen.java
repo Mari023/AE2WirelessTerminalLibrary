@@ -5,6 +5,7 @@ import appeng.client.gui.me.items.CraftingTermScreen;
 import appeng.client.gui.style.ScreenStyle;
 import appeng.client.gui.style.StyleManager;
 import appeng.client.gui.widgets.IconButton;
+import com.mojang.blaze3d.vertex.PoseStack;
 import de.mari_023.fabric.ae2wtlib.TextConstants;
 import de.mari_023.fabric.ae2wtlib.AE2wtlib;
 import de.mari_023.fabric.ae2wtlib.util.ItemButton;
@@ -12,14 +13,12 @@ import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetMode;
 import de.mari_023.fabric.ae2wtlib.wut.CycleTerminalButton;
 import de.mari_023.fabric.ae2wtlib.wut.IUniversalTerminalCapable;
 import dev.emi.trinkets.api.SlotGroup;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.util.math.Rect2i;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-
 import java.io.IOException;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.Rect2i;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
 
 public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversalTerminalCapable {
 
@@ -40,7 +39,7 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
         STYLE = STYLE1;
     }
 
-    private static final Identifier MORE_SLOTS = new Identifier("trinkets", "textures/gui/more_slots.png");
+    private static final ResourceLocation MORE_SLOTS = new ResourceLocation("trinkets", "textures/gui/more_slots.png");
     private Rect2i currentBounds = new Rect2i(0, 0, 0, 0);
     private Rect2i typeBounds = new Rect2i(0, 0, 0, 0);
     private Rect2i quickMoveBounds = new Rect2i(0, 0, 0, 0);
@@ -48,9 +47,9 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
     private SlotGroup group = null;
     private SlotGroup quickMoveGroup = null;
 
-    public WCTScreen(WCTMenu container, PlayerInventory playerInventory, Text title) {
+    public WCTScreen(WCTMenu container, Inventory playerInventory, Component title) {
         super(container, playerInventory, title, STYLE);
-        IconButton deleteButton = new IconButton(btn -> getScreenHandler().deleteTrashSlot()) {
+        IconButton deleteButton = new IconButton(btn -> getMenu().deleteTrashSlot()) {
             @Override
             protected Icon getIcon() {
                 return Icon.CONDENSER_OUTPUT_TRASH;
@@ -60,34 +59,34 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
         deleteButton.setMessage(TextConstants.DELETE);
         widgets.add("emptyTrash", deleteButton);
 
-        magnetCardToggleButton = new ItemButton(btn -> setMagnetMode(), new Identifier(AE2wtlib.MOD_NAME, "textures/magnet_card.png"));
+        magnetCardToggleButton = new ItemButton(btn -> setMagnetMode(), new ResourceLocation(AE2wtlib.MOD_NAME, "textures/magnet_card.png"));
         magnetCardToggleButton.setHalfSize(true);
         widgets.add("magnetCardToggleButton", magnetCardToggleButton);
 
-        if(getScreenHandler().isWUT()) widgets.add("cycleTerminal", new CycleTerminalButton(btn -> cycleTerminal()));
+        if(getMenu().isWUT()) widgets.add("cycleTerminal", new CycleTerminalButton(btn -> cycleTerminal()));
 
-        widgets.add("player", new PlayerEntityWidget(MinecraftClient.getInstance().player));
+        widgets.add("player", new PlayerEntityWidget(Minecraft.getInstance().player));
     }
 
     private void setMagnetMode() {
-        switch(getScreenHandler().getMagnetSettings().magnetMode) {
+        switch(getMenu().getMagnetSettings().magnetMode) {
             case INVALID:
             case NO_CARD:
                 return;
             case OFF:
-                getScreenHandler().setMagnetMode(MagnetMode.PICKUP_INVENTORY);
+                getMenu().setMagnetMode(MagnetMode.PICKUP_INVENTORY);
                 break;
             case PICKUP_INVENTORY:
-                getScreenHandler().setMagnetMode(MagnetMode.PICKUP_ME);
+                getMenu().setMagnetMode(MagnetMode.PICKUP_ME);
                 break;
             case PICKUP_ME:
-                getScreenHandler().setMagnetMode(MagnetMode.OFF);
+                getMenu().setMagnetMode(MagnetMode.OFF);
                 break;
         }
     }
 
     private void setMagnetModeText() {
-        switch(getScreenHandler().getMagnetSettings().magnetMode) {
+        switch(getMenu().getMagnetSettings().magnetMode) {
             case INVALID, NO_CARD -> magnetCardToggleButton.setVisibility(false);
             case OFF -> {
                 magnetCardToggleButton.setVisibility(true);
@@ -109,7 +108,7 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
         setMagnetModeText();
     }
 
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+    public void render(PoseStack matrices, int mouseX, int mouseY, float delta) {
         try {
             super.render(matrices, mouseX, mouseY, delta);
         } catch(Exception ignored) {}

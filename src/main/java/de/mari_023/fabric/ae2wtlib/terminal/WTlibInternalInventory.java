@@ -2,7 +2,7 @@ package de.mari_023.fabric.ae2wtlib.terminal;
 
 import appeng.util.inv.AppEngInternalInventory;
 import appeng.util.inv.InternalInventoryHost;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 public class WTlibInternalInventory extends AppEngInternalInventory {//TODO replace this and save in TerminalHost like anything else reasonable

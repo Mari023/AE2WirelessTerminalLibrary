@@ -4,9 +4,9 @@ import appeng.menu.slot.AppEngSlot;
 import dev.emi.trinkets.TrinketsClient;
 import dev.emi.trinkets.api.SlotGroup;
 import dev.emi.trinkets.api.SlotType;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 public class AppEngTrinketSlot extends AppEngSlot {
@@ -28,22 +28,22 @@ public class AppEngTrinketSlot extends AppEngSlot {
     }
 
     @Override
-    public boolean canInsert(@NotNull ItemStack stack) {
-        return !locked && super.canInsert(stack);
+    public boolean mayPlace(@NotNull ItemStack stack) {
+        return !locked && super.mayPlace(stack);
     }
 
     @Override
-    public boolean canTakeItems(PlayerEntity player) {
-        return !locked && super.canTakeItems(player);
+    public boolean mayPickup(Player player) {
+        return !locked && super.mayPickup(player);
     }
 
     @Override
-    public @NotNull ItemStack takeStack(int amount) {
-        return locked ? ItemStack.EMPTY : super.takeStack(amount);
+    public @NotNull ItemStack remove(int amount) {
+        return locked ? ItemStack.EMPTY : super.remove(amount);
     }
 
     @Override
-    public boolean isEnabled() {
+    public boolean isActive() {
         return alwaysVisible || isTrinketFocused();
     }
 
@@ -60,7 +60,7 @@ public class AppEngTrinketSlot extends AppEngSlot {
         return type;
     }
 
-    public Identifier getBackgroundIdentifier() {
+    public ResourceLocation getBackgroundIdentifier() {
         return type.getIcon();
     }
 }

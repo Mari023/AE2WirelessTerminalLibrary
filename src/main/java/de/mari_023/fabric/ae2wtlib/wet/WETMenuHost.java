@@ -14,12 +14,11 @@ import de.mari_023.fabric.ae2wtlib.AE2wtlib;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.terminal.WTMenuHost;
 import de.mari_023.fabric.ae2wtlib.terminal.WTlibInternalInventory;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.util.Identifier;
-
 import java.util.function.BiConsumer;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.ItemStack;
 
 public class WETMenuHost extends WTMenuHost implements ISegmentedInventory, IViewCellStorage, IPatternTerminalHost {
 
@@ -30,7 +29,7 @@ public class WETMenuHost extends WTMenuHost implements ISegmentedInventory, IVie
     private final AppEngInternalInventory output;
     private final AppEngInternalInventory pattern;
 
-    public WETMenuHost(final PlayerEntity ep, int inventorySlot, final ItemStack is, BiConsumer<PlayerEntity, ISubMenu> returnToMainMenu) {
+    public WETMenuHost(final Player ep, int inventorySlot, final ItemStack is, BiConsumer<Player, ISubMenu> returnToMainMenu) {
         super(ep, inventorySlot, is, returnToMainMenu);
         crafting = new WTlibInternalInventory(this, 9, "pattern_crafting", is);
         output = new WTlibInternalInventory(this, 3, "output", is);
@@ -38,7 +37,7 @@ public class WETMenuHost extends WTMenuHost implements ISegmentedInventory, IVie
     }
 
     @Override
-    public ScreenHandlerType<?> getType() {
+    public MenuType<?> getType() {
         return WETMenu.TYPE;
     }
 
@@ -52,7 +51,7 @@ public class WETMenuHost extends WTMenuHost implements ISegmentedInventory, IVie
     }
 
     @Override
-    public InternalInventory getSubInventory(Identifier id) {
+    public InternalInventory getSubInventory(ResourceLocation id) {
         if(id.equals(IPatternTerminalHost.INV_CRAFTING)) return crafting;
         else if(id.equals(IPatternTerminalHost.INV_OUTPUT)) return output;
         else if(id.equals(PATTERNS)) return pattern;
@@ -66,7 +65,7 @@ public class WETMenuHost extends WTMenuHost implements ISegmentedInventory, IVie
     public void onChangeInventory(final InternalInventory inv, final int slot, final ItemStack removedStack, final ItemStack newStack) {
         if(inv == pattern && slot == 1) {
             final ItemStack is = pattern.getStackInSlot(1);
-            final IPatternDetails details = PatternDetailsHelper.decodePattern(is, getPlayer().world);
+            final IPatternDetails details = PatternDetailsHelper.decodePattern(is, getPlayer().level);
             if(details instanceof IAEPatternDetails aeDetails) {
                 setCraftingRecipe(aeDetails.isCraftable());
                 setSubstitution(aeDetails.canSubstitute());

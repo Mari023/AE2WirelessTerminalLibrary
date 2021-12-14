@@ -3,20 +3,19 @@ package de.mari_023.fabric.ae2wtlib.wat;
 import appeng.menu.ISubMenu;
 import de.mari_023.fabric.ae2wtlib.AE2wtlib;
 import de.mari_023.fabric.ae2wtlib.terminal.WTMenuHost;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.screen.ScreenHandlerType;
-
 import java.util.function.BiConsumer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.ItemStack;
 
 public class WATMenuHost extends WTMenuHost {
 
-    public WATMenuHost(final PlayerEntity ep, int inventorySlot, final ItemStack is, BiConsumer<PlayerEntity, ISubMenu> returnToMainMenu) {
+    public WATMenuHost(final Player ep, int inventorySlot, final ItemStack is, BiConsumer<Player, ISubMenu> returnToMainMenu) {
         super(ep, inventorySlot, is, returnToMainMenu);
     }
 
     @Override
-    public ScreenHandlerType<?> getType() {
+    public MenuType<?> getType() {
         return WATMenu.TYPE;
     }
 

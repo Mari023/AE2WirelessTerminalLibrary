@@ -2,7 +2,7 @@ package de.mari_023.fabric.ae2wtlib.trinket;
 
 import appeng.api.inventories.InternalInventory;
 import dev.emi.trinkets.api.TrinketInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 public class TrinketInventoryWrapper implements InternalInventory {
@@ -15,16 +15,16 @@ public class TrinketInventoryWrapper implements InternalInventory {
 
     @Override
     public int size() {
-        return trinketInventory.size();
+        return trinketInventory.getContainerSize();
     }
 
     @Override
     public ItemStack getStackInSlot(int i) {
-        return trinketInventory.getStack(i);
+        return trinketInventory.getItem(i);
     }
 
     @Override
     public void setItemDirect(int i, @NotNull ItemStack itemStack) {
-        trinketInventory.setStack(i, itemStack);
+        trinketInventory.setItem(i, itemStack);
     }
 }

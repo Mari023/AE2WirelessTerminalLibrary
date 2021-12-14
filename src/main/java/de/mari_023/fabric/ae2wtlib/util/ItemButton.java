@@ -2,24 +2,24 @@ package de.mari_023.fabric.ae2wtlib.util;
 
 import appeng.client.gui.widgets.ITooltip;
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.util.math.Rect2i;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import com.mojang.blaze3d.vertex.PoseStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.renderer.Rect2i;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.resources.ResourceLocation;
 
-public class ItemButton extends ButtonWidget implements ITooltip {
+public class ItemButton extends Button implements ITooltip {
 
-    private final Identifier texture;
-    public static final Identifier TEXTURE_STATES = new Identifier("ae2", "textures/guis/states.png");
+    private final ResourceLocation texture;
+    public static final ResourceLocation TEXTURE_STATES = new ResourceLocation("ae2", "textures/guis/states.png");
 
-    public ItemButton(PressAction onPress, Identifier texture) {
-        super(0, 0, 16, 16, LiteralText.EMPTY, onPress);
+    public ItemButton(OnPress onPress, ResourceLocation texture) {
+        super(0, 0, 16, 16, TextComponent.EMPTY, onPress);
         this.texture = texture;
     }
 
@@ -29,26 +29,26 @@ public class ItemButton extends ButtonWidget implements ITooltip {
     }
 
     @Override
-    public void renderButton(MatrixStack matrices, final int mouseX, final int mouseY, float partial) {
+    public void renderButton(PoseStack matrices, final int mouseX, final int mouseY, float partial) {
         if(!visible) return;
-        matrices.push();
+        matrices.pushPose();
         RenderSystem.setShaderTexture(0, TEXTURE_STATES);
         RenderSystem.disableDepthTest();
         RenderSystem.enableBlend();
-        drawTexture(matrices, x, y, width, height, 240, 240, 16, 16, 256, 256);
+        blit(matrices, x, y, width, height, 240, 240, 16, 16, 256, 256);
         if(active) RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         else RenderSystem.setShaderColor(0.5f, 0.5f, 0.5f, 1.0f);
         RenderSystem.setShaderTexture(0, texture);
-        drawTexture(matrices, x, y, width, height, 0, 0, 512, 512, 512, 512);
+        blit(matrices, x, y, width, height, 0, 0, 512, 512, 512, 512);
         RenderSystem.enableDepthTest();
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-        matrices.pop();
+        matrices.popPose();
 
-        if(isHovered()) renderTooltip(matrices, mouseX, mouseY);
+        if(isHoveredOrFocused()) renderToolTip(matrices, mouseX, mouseY);
     }
 
     @Override
-    public @NotNull List<Text> getTooltipMessage() {
+    public @NotNull List<Component> getTooltipMessage() {
         return Collections.singletonList(getMessage());
     }
 

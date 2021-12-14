@@ -2,11 +2,11 @@ package de.mari_023.fabric.ae2wtlib.terminal;
 
 import appeng.api.inventories.InternalInventory;
 import appeng.items.storage.ViewCellItem;
-import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import net.minecraft.world.item.ItemStack;
 
 public class ViewCellInventory implements InternalInventory {//TODO maybe remove this? there is disable viewcell somewhere
 

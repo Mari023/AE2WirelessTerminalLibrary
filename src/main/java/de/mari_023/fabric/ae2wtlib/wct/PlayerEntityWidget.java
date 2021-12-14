@@ -1,26 +1,26 @@
 package de.mari_023.fabric.ae2wtlib.wct;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.ingame.InventoryScreen;
-import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
-import net.minecraft.client.gui.widget.ClickableWidget;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.text.LiteralText;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.world.entity.LivingEntity;
 
-public class PlayerEntityWidget extends ClickableWidget {
+public class PlayerEntityWidget extends AbstractWidget {
     private final LivingEntity entity;
 
     public PlayerEntityWidget(LivingEntity entity) {
-        super(0, 0, 0, 0, LiteralText.EMPTY);
+        super(0, 0, 0, 0, TextComponent.EMPTY);
         this.entity = entity;
     }
 
     @Override
-    public void renderBackground(MatrixStack matrices, MinecraftClient client, int mouseX, int mouseY) {
-        InventoryScreen.drawEntity(x, y, 30, x - mouseX, y - 44 - mouseY, entity);
+    public void renderBg(PoseStack matrices, Minecraft client, int mouseX, int mouseY) {
+        InventoryScreen.renderEntityInInventory(x, y, 30, x - mouseX, y - 44 - mouseY, entity);
     }
 
     @Override
-    public void appendNarrations(NarrationMessageBuilder builder) {}
+    public void updateNarration(NarrationElementOutput builder) {}
 }

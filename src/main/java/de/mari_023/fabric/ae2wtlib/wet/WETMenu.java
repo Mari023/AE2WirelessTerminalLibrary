@@ -10,19 +10,18 @@ import de.mari_023.fabric.ae2wtlib.terminal.WTInventory;
 import de.mari_023.fabric.ae2wtlib.terminal.IWTInvHolder;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.screen.ScreenHandlerType;
-
 import java.util.List;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.ItemStack;
 
 public class WETMenu extends PatternTermMenu implements IWTInvHolder {
 
-    public static final ScreenHandlerType<WETMenu> TYPE = MenuTypeBuilder.create(WETMenu::new, WETMenuHost.class).requirePermission(SecurityPermissions.CRAFT).build("wireless_pattern_encoding_terminal");
+    public static final MenuType<WETMenu> TYPE = MenuTypeBuilder.create(WETMenu::new, WETMenuHost.class).requirePermission(SecurityPermissions.CRAFT).build("wireless_pattern_encoding_terminal");
 
     private final WETMenuHost WETGUIObject;
 
-    public WETMenu(int id, final PlayerInventory ip, final WETMenuHost gui) {
+    public WETMenu(int id, final Inventory ip, final WETMenuHost gui) {
         super(TYPE, id, ip, gui, true);
         WETGUIObject = gui;
 

@@ -8,7 +8,7 @@ import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
 import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
 import me.shedaniel.rei.api.client.registry.entry.EntryRegistry;
 import me.shedaniel.rei.api.common.util.EntryStacks;
-import net.minecraft.recipe.RecipeType;
+import net.minecraft.world.item.crafting.RecipeType;
 
 public class Plugin implements REIClientPlugin {
 

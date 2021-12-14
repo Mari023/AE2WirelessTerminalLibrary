@@ -1,6 +1,6 @@
 package de.mari_023.fabric.ae2wtlib.terminal;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.item.ItemStack;
 
 public interface IInfinityBoosterCardHolder {
 

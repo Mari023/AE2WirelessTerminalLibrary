@@ -1,24 +1,24 @@
 package de.mari_023.fabric.ae2wtlib.wut.recipe;
 
 import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
-import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.world.World;
+import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.level.Level;
 
 public class Upgrade extends Common {
     private final Ingredient terminal;
     private final String terminalName;
 
-    public Upgrade(Ingredient terminal, String terminalName, Identifier id) {
+    public Upgrade(Ingredient terminal, String terminalName, ResourceLocation id) {
         super(id);
         this.terminal = terminal;
         this.terminalName = terminalName;
-        outputStack.getOrCreateNbt().putBoolean(terminalName, true);
+        outputStack.getOrCreateTag().putBoolean(terminalName, true);
     }
 
     public Ingredient getTerminal() {
@@ -30,19 +30,19 @@ public class Upgrade extends Common {
     }
 
     @Override
-    public boolean matches(CraftingInventory inv, World world) {
+    public boolean matches(CraftingContainer inv, Level world) {
         ItemStack wut = InputHelper.getInputStack(inv, InputHelper.WUT);
         return !InputHelper.getInputStack(inv, terminal).isEmpty() && !wut.isEmpty()
                 && InputHelper.getInputCount(inv) == 2 && !WUTHandler.hasTerminal(wut, terminalName);
     }
 
     @Override
-    public ItemStack craft(CraftingInventory inv) {//TODO combine stored energy
+    public ItemStack assemble(CraftingContainer inv) {//TODO combine stored energy
         ItemStack wut = InputHelper.getInputStack(inv, InputHelper.WUT).copy();
-        NbtCompound terminal = InputHelper.getInputStack(inv, this.terminal).getOrCreateNbt().copy();
-        wut.getOrCreateNbt().putBoolean(terminalName, true);
-        terminal.copyFrom(wut.getNbt());
-        wut.setNbt(terminal);
+        CompoundTag terminal = InputHelper.getInputStack(inv, this.terminal).getOrCreateTag().copy();
+        wut.getOrCreateTag().putBoolean(terminalName, true);
+        terminal.merge(wut.getOrCreateTag());
+        wut.setTag(terminal);
 
         return wut;
     }
@@ -52,8 +52,8 @@ public class Upgrade extends Common {
         return UpgradeSerializer.INSTANCE;
     }
 
-    public DefaultedList<Ingredient> getIngredients() {
-        DefaultedList<Ingredient> inputs = DefaultedList.of();
+    public NonNullList<Ingredient> getIngredients() {
+        NonNullList<Ingredient> inputs = NonNullList.create();
         inputs.add(terminal);
         inputs.add(InputHelper.WUT);
         return inputs;

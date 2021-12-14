@@ -2,10 +2,10 @@ package de.mari_023.fabric.ae2wtlib.trinket;
 
 import appeng.api.inventories.InternalInventory;
 import dev.emi.trinkets.api.TrinketInventory;
-import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
+import net.minecraft.world.item.ItemStack;
 
 public class CombinedTrinketInventory implements InternalInventory {
 
@@ -20,7 +20,7 @@ public class CombinedTrinketInventory implements InternalInventory {
         int currentIndex = 0;
         for(Map.Entry<String, Map<String, TrinketInventory>> group : inventory.entrySet()) {
             for(Map.Entry<String, TrinketInventory> slot : group.getValue().entrySet()) {
-                currentIndex += slot.getValue().size();
+                currentIndex += slot.getValue().getContainerSize();
             }
         }
         return currentIndex;
@@ -31,10 +31,10 @@ public class CombinedTrinketInventory implements InternalInventory {
         int currentIndex = 0;
         for(Map.Entry<String, Map<String, TrinketInventory>> group : inventory.entrySet()) {
             for(Map.Entry<String, TrinketInventory> slot : group.getValue().entrySet()) {
-                if(index >= currentIndex + slot.getValue().size()) {
-                    currentIndex += slot.getValue().size();
+                if(index >= currentIndex + slot.getValue().getContainerSize()) {
+                    currentIndex += slot.getValue().getContainerSize();
                 } else {
-                    return slot.getValue().getStack(index - currentIndex);
+                    return slot.getValue().getItem(index - currentIndex);
                 }
             }
         }
@@ -46,10 +46,10 @@ public class CombinedTrinketInventory implements InternalInventory {
         int currentIndex = 0;
         for(Map.Entry<String, Map<String, TrinketInventory>> group : inventory.entrySet()) {
             for(Map.Entry<String, TrinketInventory> slot : group.getValue().entrySet()) {
-                if(index >= currentIndex + slot.getValue().size()) {
-                    currentIndex += slot.getValue().size();
+                if(index >= currentIndex + slot.getValue().getContainerSize()) {
+                    currentIndex += slot.getValue().getContainerSize();
                 } else {
-                    return slot.getValue().isValid(index - currentIndex, stack);
+                    return slot.getValue().canPlaceItem(index - currentIndex, stack);
                 }
             }
         }
@@ -61,10 +61,10 @@ public class CombinedTrinketInventory implements InternalInventory {
         int currentIndex = 0;
         for(Map.Entry<String, Map<String, TrinketInventory>> group : inventory.entrySet()) {
             for(Map.Entry<String, TrinketInventory> slot : group.getValue().entrySet()) {
-                if(index >= currentIndex + slot.getValue().size()) {
-                    currentIndex += slot.getValue().size();
+                if(index >= currentIndex + slot.getValue().getContainerSize()) {
+                    currentIndex += slot.getValue().getContainerSize();
                 } else {
-                    slot.getValue().setStack(index - currentIndex, stack);
+                    slot.getValue().setItem(index - currentIndex, stack);
                     return;
                 }
             }

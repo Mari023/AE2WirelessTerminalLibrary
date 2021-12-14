@@ -9,24 +9,23 @@ import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
-import net.minecraft.client.item.TooltipContext;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.text.Text;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.world.World;
-
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 import java.util.List;
 
 public class ItemWUT extends ItemWT {
 
     public ItemWUT() {
-        super(() -> AEConfig.instance().getWirelessTerminalBattery().getAsDouble() * AE2wtlibConfig.INSTANCE.WUTBatterySizeMultiplier(), new FabricItemSettings().group(AE2wtlib.ITEM_GROUP).maxCount(1));
+        super(() -> AEConfig.instance().getWirelessTerminalBattery().getAsDouble() * AE2wtlibConfig.INSTANCE.WUTBatterySizeMultiplier(), new FabricItemSettings().tab(AE2wtlib.ITEM_GROUP).stacksTo(1));
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(final World w, final PlayerEntity player, final Hand hand) {
+    public InteractionResultHolder<ItemStack> use(final Level w, final Player player, final InteractionHand hand) {
         /*if(player.isSneaking()) {
             //TODO open menu to select terminal
         return new TypedActionResult<>(ActionResult.SUCCESS, player.getStackInHand(hand));
@@ -40,13 +39,13 @@ public class ItemWUT extends ItemWT {
     }
 
     @Override
-    public boolean open(final PlayerEntity player, final MenuLocator locator) {
+    public boolean open(final Player player, final MenuLocator locator) {
         return WUTHandler.open(player, locator);
     }
 
     @Override
     @Environment(EnvType.CLIENT)
-    public void appendTooltip(final ItemStack stack, final World world, final List<Text> lines, final TooltipContext advancedTooltips) {
+    public void appendHoverText(final ItemStack stack, final Level world, final List<Component> lines, final TooltipFlag advancedTooltips) {
         lines.add(TextConstants.UNIVERSAL);
         if(WUTHandler.hasTerminal(stack, "crafting"))
             lines.add(TextConstants.CRAFTING);
@@ -54,6 +53,6 @@ public class ItemWUT extends ItemWT {
             lines.add(TextConstants.PATTERN_ACCESS);
         if(WUTHandler.hasTerminal(stack, "pattern_encoding"))
             lines.add(TextConstants.PATTERN_ENCODING);
-        super.appendTooltip(stack, world, lines, advancedTooltips);
+        super.appendHoverText(stack, world, lines, advancedTooltips);
     }
 }

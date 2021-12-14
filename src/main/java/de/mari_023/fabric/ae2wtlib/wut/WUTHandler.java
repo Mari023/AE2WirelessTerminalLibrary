@@ -13,13 +13,12 @@ import de.mari_023.fabric.ae2wtlib.wat.ItemWAT;
 import de.mari_023.fabric.ae2wtlib.wet.ItemWET;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.Identifier;
-
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,68 +29,68 @@ public class WUTHandler {
 
     public static String getCurrentTerminal(ItemStack wirelessUniversalTerminal) {
         if(wirelessUniversalTerminal.getItem() instanceof WirelessCraftingTerminalItem) return "crafting";
-        if(!(wirelessUniversalTerminal.getItem() instanceof ItemWT) || wirelessUniversalTerminal.getNbt() == null)
+        if(!(wirelessUniversalTerminal.getItem() instanceof ItemWT) || wirelessUniversalTerminal.getTag() == null)
             return "noTerminal";
         if(!(wirelessUniversalTerminal.getItem() instanceof ItemWUT)) {
             if(wirelessUniversalTerminal.getItem() instanceof ItemWET) return "pattern_encoding";
             else if(wirelessUniversalTerminal.getItem() instanceof ItemWAT) return "pattern_access";
             else return "noTerminal";
         }
-        String currentTerminal = wirelessUniversalTerminal.getNbt().getString("currentTerminal");
+        String currentTerminal = wirelessUniversalTerminal.getTag().getString("currentTerminal");
 
         if(wirelessTerminals.containsKey(currentTerminal)) return currentTerminal;
         for(String terminal : terminalNames)
-            if(wirelessUniversalTerminal.getNbt().getBoolean(terminal)) {
+            if(wirelessUniversalTerminal.getTag().getBoolean(terminal)) {
                 currentTerminal = terminal;
-                wirelessUniversalTerminal.getNbt().putString("currentTerminal", currentTerminal);
+                wirelessUniversalTerminal.getTag().putString("currentTerminal", currentTerminal);
                 break;
             }
         return currentTerminal;
     }
 
-    public static void setCurrentTerminal(PlayerEntity playerEntity, int slot, ItemStack itemStack, String terminal) {
+    public static void setCurrentTerminal(Player playerEntity, int slot, ItemStack itemStack, String terminal) {
         if(!hasTerminal(itemStack, terminal)) return;
-        assert itemStack.getNbt() != null;
-        itemStack.getNbt().putString("currentTerminal", terminal);
-        updateClientTerminal((ServerPlayerEntity) playerEntity, slot, itemStack.getNbt());
+        assert itemStack.getTag() != null;
+        itemStack.getTag().putString("currentTerminal", terminal);
+        updateClientTerminal((ServerPlayer) playerEntity, slot, itemStack.getTag());
     }
 
     public static boolean hasTerminal(ItemStack itemStack, String terminal) {
         if(!terminalNames.contains(terminal)) return false;
-        if(itemStack.getNbt() == null) return false;
-        return itemStack.getNbt().getBoolean(terminal);
+        if(itemStack.getTag() == null) return false;
+        return itemStack.getTag().getBoolean(terminal);
     }
 
-    public static void cycle(PlayerEntity playerEntity, int slot, ItemStack itemStack) {
-        if(itemStack.getNbt() == null) return;
+    public static void cycle(Player playerEntity, int slot, ItemStack itemStack) {
+        if(itemStack.getTag() == null) return;
         String nextTerminal = getCurrentTerminal(itemStack);
         do {
             int i = terminalNames.indexOf(nextTerminal) + 1;
             if(i == terminalNames.size()) i = 0;
             nextTerminal = terminalNames.get(i);
-        } while(!itemStack.getNbt().getBoolean(nextTerminal));
-        itemStack.getNbt().putString("currentTerminal", nextTerminal);
-        updateClientTerminal((ServerPlayerEntity) playerEntity, slot, itemStack.getNbt());
+        } while(!itemStack.getTag().getBoolean(nextTerminal));
+        itemStack.getTag().putString("currentTerminal", nextTerminal);
+        updateClientTerminal((ServerPlayer) playerEntity, slot, itemStack.getTag());
     }
 
-    public static void updateClientTerminal(ServerPlayerEntity playerEntity, int slot, NbtCompound tag) {
-        PacketByteBuf buf = PacketByteBufs.create();
+    public static void updateClientTerminal(ServerPlayer playerEntity, int slot, CompoundTag tag) {
+        FriendlyByteBuf buf = PacketByteBufs.create();
         buf.writeInt(slot);
         buf.writeNbt(tag);
-        ServerPlayNetworking.send(playerEntity, new Identifier(AE2wtlib.MOD_NAME, "update_wut"), buf);
+        ServerPlayNetworking.send(playerEntity, new ResourceLocation(AE2wtlib.MOD_NAME, "update_wut"), buf);
     }
 
-    public static boolean open(final PlayerEntity player, final MenuLocator locator) {
+    public static boolean open(final Player player, final MenuLocator locator) {
         int slot = locator.getItemIndex();
         ItemStack is;
         if(slot >= 100 && slot < 200 && AE2wtlibConfig.INSTANCE.allowTrinket())
             is = TrinketsHelper.getTrinketsInventory(player).getStackInSlot(slot - 100);
-        else is = player.getInventory().getStack(slot);
+        else is = player.getInventory().getItem(slot);
 
-        if(is.getNbt() == null) return false;
+        if(is.getTag() == null) return false;
         String currentTerminal = getCurrentTerminal(is);
         if(!wirelessTerminals.containsKey(currentTerminal)) {
-            player.sendMessage(TextConstants.TERMINAL_EMPTY, false);
+            player.displayClientMessage(TextConstants.TERMINAL_EMPTY, false);
             return false;
         }
         return wirelessTerminals.get(currentTerminal).containerOpener().tryOpen(player, locator, is);
@@ -108,11 +107,11 @@ public class WUTHandler {
 
     @FunctionalInterface
     public interface ContainerOpener {
-        boolean tryOpen(PlayerEntity player, MenuLocator locator, ItemStack stack);
+        boolean tryOpen(Player player, MenuLocator locator, ItemStack stack);
     }
 
     @FunctionalInterface
     public interface WTMenuHostFactory {
-        WTMenuHost create(final PlayerEntity ep, int inventorySlot, final ItemStack is, BiConsumer<PlayerEntity, ISubMenu> returnToMainMenu);
+        WTMenuHost create(final Player ep, int inventorySlot, final ItemStack is, BiConsumer<Player, ISubMenu> returnToMainMenu);
     }
 }

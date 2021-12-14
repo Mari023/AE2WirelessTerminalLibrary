@@ -17,21 +17,20 @@ import de.mari_023.fabric.ae2wtlib.trinket.CombinedTrinketInventory;
 import de.mari_023.fabric.ae2wtlib.trinket.TrinketsHelper;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
 import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.server.network.ServerPlayerEntity;
-
 import java.util.HashMap;
 import java.util.OptionalLong;
 import java.util.Set;
 import java.util.UUID;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 
 public class CraftingTerminalHandler {
 
     private static final HashMap<UUID, CraftingTerminalHandler> players = new HashMap<>();//TODO clear on leave (client)
-    private final PlayerEntity player;
+    private final Player player;
     private ItemStack craftingTerminal = ItemStack.EMPTY;
     private IActionHost securityStation;
     private IGrid targetGrid;
@@ -42,24 +41,24 @@ public class CraftingTerminalHandler {
     private double sqRange = Double.MAX_VALUE;
     private HashMap<Item, Long> restockAbleItems = new HashMap<>();
 
-    private CraftingTerminalHandler(PlayerEntity player) {
+    private CraftingTerminalHandler(Player player) {
         this.player = player;
     }
 
-    public static CraftingTerminalHandler getCraftingTerminalHandler(PlayerEntity player) {
-        if(players.containsKey(player.getUuid())) {
-            if(player == players.get(player.getUuid()).player ||
-                    (!(player instanceof ServerPlayerEntity) && (players.get(player.getUuid()).player instanceof ServerPlayerEntity)))
-                return players.get(player.getUuid());
+    public static CraftingTerminalHandler getCraftingTerminalHandler(Player player) {
+        if(players.containsKey(player.getUUID())) {
+            if(player == players.get(player.getUUID()).player ||
+                    (!(player instanceof ServerPlayer) && (players.get(player.getUUID()).player instanceof ServerPlayer)))
+                return players.get(player.getUUID());
             removePlayer(player);
         }
         CraftingTerminalHandler handler = new CraftingTerminalHandler(player);
-        players.put(player.getUuid(), handler);
+        players.put(player.getUUID(), handler);
         return handler;
     }
 
-    public static void removePlayer(PlayerEntity player) {//TODO remove on disconnect (server)
-        players.remove(player.getUuid());
+    public static void removePlayer(Player player) {//TODO remove on disconnect (server)
+        players.remove(player.getUUID());
     }
 
     public void invalidateCache() {
@@ -75,7 +74,7 @@ public class CraftingTerminalHandler {
     }
 
     public ItemStack getCraftingTerminal() {
-        PlayerInventory inv = player.getInventory();
+        Inventory inv = player.getInventory();
         if((!craftingTerminal.isEmpty()) && inv.contains(craftingTerminal)) return craftingTerminal;
         if(AE2wtlibConfig.INSTANCE.allowTrinket()) {
             CombinedTrinketInventory trinketInv = TrinketsHelper.getTrinketsInventory(player);
@@ -90,8 +89,8 @@ public class CraftingTerminalHandler {
             }
         }
 
-        for(int i = 0; i < inv.size(); i++) {
-            ItemStack terminal = inv.getStack(i);
+        for(int i = 0; i < inv.getContainerSize(); i++) {
+            ItemStack terminal = inv.getItem(i);
             if(terminal.getItem() instanceof WirelessCraftingTerminalItem || (terminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(terminal, "crafting"))) {
                 securityStation = null;
                 targetGrid = null;
@@ -114,7 +113,7 @@ public class CraftingTerminalHandler {
         final OptionalLong unParsedKey = ((WirelessTerminalItem) craftingTerminal.getItem()).getGridKey(craftingTerminal);
         if(unParsedKey.isEmpty()) return securityStation = null;
         final long parsedKey = unParsedKey.getAsLong();
-        return securityStation = Locatables.securityStations().get(player.world, parsedKey);
+        return securityStation = Locatables.securityStations().get(player.level, parsedKey);
     }
 
     public IGrid getTargetGrid() {
@@ -164,7 +163,7 @@ public class CraftingTerminalHandler {
 
         final DimensionalBlockPos dc = wap.getLocation();
 
-        if(dc.getLevel() != player.world) return false;
+        if(dc.getLevel() != player.level) return false;
 
         final double offX = dc.getPos().getX() - player.getX();
         final double offY = dc.getPos().getY() - player.getY();

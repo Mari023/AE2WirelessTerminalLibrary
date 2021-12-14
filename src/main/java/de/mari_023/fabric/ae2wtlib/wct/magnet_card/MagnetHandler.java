@@ -8,33 +8,32 @@ import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.wct.CraftingTerminalHandler;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.entity.ItemEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.predicate.entity.EntityPredicates;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.Identifier;
-
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class MagnetHandler {
     public void doMagnet(MinecraftServer server) {
-        List<ServerPlayerEntity> playerList = server.getPlayerManager().getPlayerList();
-        for(ServerPlayerEntity player : playerList) {
+        List<ServerPlayer> playerList = server.getPlayerList().getPlayers();
+        for(ServerPlayer player : playerList) {
             if(ItemMagnetCard.isActiveMagnet(CraftingTerminalHandler.getCraftingTerminalHandler(player).getCraftingTerminal())) {
-                List<ItemEntity> entityItems = player.getWorld().getEntitiesByClass(ItemEntity.class, player.getBoundingBox().expand(AE2wtlibConfig.INSTANCE.magnetCardRange()), EntityPredicates.VALID_ENTITY);
-                boolean sneaking = !player.isSneaking();
-                for(ItemEntity entityItemNearby : entityItems) if(sneaking) entityItemNearby.onPlayerCollision(player);
+                List<ItemEntity> entityItems = player.getLevel().getEntitiesOfClass(ItemEntity.class, player.getBoundingBox().inflate(AE2wtlibConfig.INSTANCE.magnetCardRange()), EntitySelector.ENTITY_STILL_ALIVE);
+                boolean sneaking = !player.isShiftKeyDown();
+                for(ItemEntity entityItemNearby : entityItems) if(sneaking) entityItemNearby.playerTouch(player);
             }
             sendRestockAble(player);
         }
     }
 
-    public void sendRestockAble(ServerPlayerEntity player) {
+    public void sendRestockAble(ServerPlayer player) {
         try {
             CraftingTerminalHandler handler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
             if(player.isCreative() || !ItemWT.getBoolean(handler.getCraftingTerminal(), "restock") || !handler.inRange())
@@ -44,8 +43,8 @@ public class MagnetHandler {
             if(handler.getItemStorageChannel() == null) return;
             KeyCounter storageList = handler.getItemStorageChannel().getAvailableStacks();
 
-            for(int i = 0; i < player.getInventory().size(); i++) {
-                ItemStack stack = player.getInventory().getStack(i);
+            for(int i = 0; i < player.getInventory().getContainerSize(); i++) {
+                ItemStack stack = player.getInventory().getItem(i);
                 if(stack.isEmpty()) continue;
                 if(!items.containsKey(stack.getItem())) {
                     AEItemKey key = AEItemKey.of(stack);
@@ -54,12 +53,12 @@ public class MagnetHandler {
                 }
             }
 
-            PacketByteBuf buf = PacketByteBufs.create();
+            FriendlyByteBuf buf = PacketByteBufs.create();
             for(Map.Entry<Item, Long> entry : items.entrySet()) {
-                buf.writeItemStack(new ItemStack(entry.getKey()));
+                buf.writeItem(new ItemStack(entry.getKey()));
                 buf.writeLong(entry.getValue());
             }
-            ServerPlayNetworking.send(player, new Identifier(AE2wtlib.MOD_NAME, "restock_amounts"), buf);
+            ServerPlayNetworking.send(player, new ResourceLocation(AE2wtlib.MOD_NAME, "restock_amounts"), buf);
         } catch(NullPointerException ignored) {}
     }
 }

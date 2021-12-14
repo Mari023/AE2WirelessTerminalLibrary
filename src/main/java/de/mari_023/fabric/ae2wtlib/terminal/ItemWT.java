@@ -4,35 +4,34 @@ import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.menu.MenuLocator;
 import de.mari_023.fabric.ae2wtlib.AE2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.trinket.TrinketsHelper;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.world.World;
-
 import java.util.function.DoubleSupplier;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 public abstract class ItemWT extends WirelessTerminalItem implements IUniversalWirelessTerminalItem {
 
-    public ItemWT(final DoubleSupplier powerCapacity, Item.Settings props) {
+    public ItemWT(final DoubleSupplier powerCapacity, Item.Properties props) {
         super(powerCapacity, props);
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(final World w, final PlayerEntity player, final Hand hand) {
-        var is = player.getStackInHand(hand);
+    public InteractionResultHolder<ItemStack> use(final Level w, final Player player, final InteractionHand hand) {
+        var is = player.getItemInHand(hand);
         if(canOpen(is, player)) {
             open(player, MenuLocator.forHand(player, hand));
-            return new TypedActionResult<>(ActionResult.SUCCESS, is);
+            return new InteractionResultHolder<>(InteractionResult.SUCCESS, is);
         }
-        return new TypedActionResult<>(ActionResult.FAIL, is);
+        return new InteractionResultHolder<>(InteractionResult.FAIL, is);
     }
 
     @Override
-    public boolean checkPreconditions(ItemStack item, PlayerEntity player) {
+    public boolean checkPreconditions(ItemStack item, Player player) {
         return super.checkPreconditions(item, player);
     }
 
@@ -42,11 +41,11 @@ public abstract class ItemWT extends WirelessTerminalItem implements IUniversalW
      * @return True if the menu was opened.
      */
     @Override
-    public boolean openFromInventory(PlayerEntity player, int inventorySlot) {
+    public boolean openFromInventory(Player player, int inventorySlot) {
         ItemStack it;
         if(inventorySlot >= 100 && inventorySlot < 200 && AE2wtlibConfig.INSTANCE.allowTrinket())
             it = TrinketsHelper.getTrinketsInventory(player).getStackInSlot(inventorySlot - 100);
-        else it = player.getInventory().getStack(inventorySlot);
+        else it = player.getInventory().getItem(inventorySlot);
 
         return tryOpen(player, MenuLocator.forInventorySlot(inventorySlot), it);
     }
@@ -60,7 +59,7 @@ public abstract class ItemWT extends WirelessTerminalItem implements IUniversalW
      */
     public static ItemStack getSavedSlot(ItemStack hostItem, String slot) {
         if(!(hostItem.getItem() instanceof IUniversalWirelessTerminalItem)) return ItemStack.EMPTY;
-        return ItemStack.fromNbt(hostItem.getOrCreateNbt().getCompound(slot));
+        return ItemStack.of(hostItem.getOrCreateTag().getCompound(slot));
     }
 
     /**
@@ -73,9 +72,9 @@ public abstract class ItemWT extends WirelessTerminalItem implements IUniversalW
      */
     public static void setSavedSlot(ItemStack hostItem, ItemStack savedItem, String slot) {
         if(!(hostItem.getItem() instanceof IUniversalWirelessTerminalItem)) return;
-        NbtCompound wctTag = hostItem.getOrCreateNbt();
+        CompoundTag wctTag = hostItem.getOrCreateTag();
         if(savedItem.isEmpty()) wctTag.remove(slot);
-        else wctTag.put(slot, savedItem.writeNbt(new NbtCompound()));
+        else wctTag.put(slot, savedItem.save(new CompoundTag()));
     }
 
     /**
@@ -86,7 +85,7 @@ public abstract class ItemWT extends WirelessTerminalItem implements IUniversalW
      */
     public static boolean getBoolean(ItemStack hostItem, String key) {
         if(!(hostItem.getItem() instanceof IUniversalWirelessTerminalItem)) return false;
-        return hostItem.getOrCreateNbt().getBoolean(key);
+        return hostItem.getOrCreateTag().getBoolean(key);
     }
 
     /**
@@ -99,7 +98,7 @@ public abstract class ItemWT extends WirelessTerminalItem implements IUniversalW
      */
     public static void setBoolean(ItemStack hostItem, boolean b, String key) {
         if(!(hostItem.getItem() instanceof IUniversalWirelessTerminalItem)) return;
-        NbtCompound wctTag = hostItem.getOrCreateNbt();
+        CompoundTag wctTag = hostItem.getOrCreateTag();
         wctTag.putBoolean(key, b);
     }
 }

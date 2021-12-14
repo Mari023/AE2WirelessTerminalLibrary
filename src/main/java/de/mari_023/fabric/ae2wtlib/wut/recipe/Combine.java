@@ -1,13 +1,13 @@
 package de.mari_023.fabric.ae2wtlib.wut.recipe;
 
-import net.minecraft.inventory.CraftingInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.world.World;
+import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.level.Level;
 
 public class Combine extends Common {
     private final Ingredient terminalA;
@@ -15,14 +15,14 @@ public class Combine extends Common {
     private final String terminalAName;
     private final String terminalBName;
 
-    public Combine(Ingredient terminalA, Ingredient terminalB, String terminalAName, String TerminalBName, Identifier id) {
+    public Combine(Ingredient terminalA, Ingredient terminalB, String terminalAName, String TerminalBName, ResourceLocation id) {
         super(id);
         this.terminalA = terminalA;
         this.terminalB = terminalB;
         this.terminalAName = terminalAName;
         this.terminalBName = TerminalBName;
-        outputStack.getOrCreateNbt().putBoolean(terminalAName, true);
-        outputStack.getOrCreateNbt().putBoolean(TerminalBName, true);
+        outputStack.getOrCreateTag().putBoolean(terminalAName, true);
+        outputStack.getOrCreateTag().putBoolean(TerminalBName, true);
     }
 
     public Ingredient getTerminalA() {
@@ -42,22 +42,22 @@ public class Combine extends Common {
     }
 
     @Override
-    public boolean matches(CraftingInventory inv, World world) {
+    public boolean matches(CraftingContainer inv, Level world) {
         return !InputHelper.getInputStack(inv, terminalA).isEmpty() && !InputHelper.getInputStack(inv, terminalB).isEmpty() && InputHelper.getInputCount(inv) == 2;
     }
 
     @Override
-    public ItemStack craft(CraftingInventory inv) {//TODO combine stored energy
-        NbtCompound terminalA = InputHelper.getInputStack(inv, this.terminalA).getNbt();
-        if(terminalA == null) terminalA = new NbtCompound();
+    public ItemStack assemble(CraftingContainer inv) {//TODO combine stored energy
+        CompoundTag terminalA = InputHelper.getInputStack(inv, this.terminalA).getTag();
+        if(terminalA == null) terminalA = new CompoundTag();
         else terminalA = terminalA.copy();
 
-        NbtCompound terminalB = InputHelper.getInputStack(inv, this.terminalB).getNbt();
-        if(terminalB == null) terminalB = new NbtCompound();
+        CompoundTag terminalB = InputHelper.getInputStack(inv, this.terminalB).getTag();
+        if(terminalB == null) terminalB = new CompoundTag();
         else terminalB = terminalB.copy();
 
         ItemStack wut = outputStack.copy();
-        wut.getOrCreateNbt().copyFrom(terminalB).copyFrom(terminalA);
+        wut.getOrCreateTag().merge(terminalB).merge(terminalA);
         return wut;
     }
 
@@ -66,8 +66,8 @@ public class Combine extends Common {
         return CombineSerializer.INSTANCE;
     }
 
-    public DefaultedList<Ingredient> getIngredients() {
-        DefaultedList<Ingredient> inputs = DefaultedList.of();
+    public NonNullList<Ingredient> getIngredients() {
+        NonNullList<Ingredient> inputs = NonNullList.create();
         inputs.add(terminalA);
         inputs.add(terminalB);
         return inputs;

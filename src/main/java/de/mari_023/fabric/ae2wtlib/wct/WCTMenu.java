@@ -16,18 +16,17 @@ import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetSettings;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.screen.PlayerScreenHandler;
-import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.screen.slot.Slot;
-import net.minecraft.util.Identifier;
-
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 import java.util.List;
 
 public class WCTMenu extends CraftingTermMenu implements IWTInvHolder {
 
-    public static final ScreenHandlerType<WCTMenu> TYPE = MenuTypeBuilder.create(WCTMenu::new, WCTMenuHost.class).requirePermission(SecurityPermissions.CRAFT).build("wireless_crafting_terminal");
+    public static final MenuType<WCTMenu> TYPE = MenuTypeBuilder.create(WCTMenu::new, WCTMenuHost.class).requirePermission(SecurityPermissions.CRAFT).build("wireless_crafting_terminal");
 
     public static final String ACTION_DELETE = "delete";
     public static final String MAGNET_MODE = "magnetMode";
@@ -36,7 +35,7 @@ public class WCTMenu extends CraftingTermMenu implements IWTInvHolder {
 
     private final WCTMenuHost wctGUIObject;
 
-    public WCTMenu(int id, final PlayerInventory ip, final WCTMenuHost gui) {
+    public WCTMenu(int id, final Inventory ip, final WCTMenuHost gui) {
         super(TYPE, id, ip, gui, true);
         wctGUIObject = gui;
 
@@ -46,40 +45,40 @@ public class WCTMenu extends CraftingTermMenu implements IWTInvHolder {
 
         SlotsWithTrinket[5] = addSlot(new AppEngSlot(wtInventory, 3) {
             @Environment(EnvType.CLIENT)
-            public Pair<Identifier, Identifier> getBackgroundSprite() {
-                return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, PlayerScreenHandler.EMPTY_HELMET_SLOT_TEXTURE);
+            public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
+                return Pair.of(InventoryMenu.BLOCK_ATLAS, InventoryMenu.EMPTY_ARMOR_SLOT_HELMET);
             }
         }, SlotSemantic.MACHINE_INPUT);
         SlotsWithTrinket[6] = addSlot(new AppEngSlot(wtInventory, 2) {
             @Environment(EnvType.CLIENT)
-            public Pair<Identifier, Identifier> getBackgroundSprite() {
-                return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, PlayerScreenHandler.EMPTY_CHESTPLATE_SLOT_TEXTURE);
+            public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
+                return Pair.of(InventoryMenu.BLOCK_ATLAS, InventoryMenu.EMPTY_ARMOR_SLOT_CHESTPLATE);
             }
         }, SlotSemantic.MACHINE_PROCESSING);
         SlotsWithTrinket[7] = addSlot(new AppEngSlot(wtInventory, 1) {
             @Environment(EnvType.CLIENT)
-            public Pair<Identifier, Identifier> getBackgroundSprite() {
-                return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, PlayerScreenHandler.EMPTY_LEGGINGS_SLOT_TEXTURE);
+            public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
+                return Pair.of(InventoryMenu.BLOCK_ATLAS, InventoryMenu.EMPTY_ARMOR_SLOT_LEGGINGS);
             }
         }, SlotSemantic.MACHINE_OUTPUT);
         SlotsWithTrinket[8] = addSlot(new AppEngSlot(wtInventory, 0) {
             @Environment(EnvType.CLIENT)
-            public Pair<Identifier, Identifier> getBackgroundSprite() {
-                return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, PlayerScreenHandler.EMPTY_BOOTS_SLOT_TEXTURE);
+            public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
+                return Pair.of(InventoryMenu.BLOCK_ATLAS, InventoryMenu.EMPTY_ARMOR_SLOT_BOOTS);
             }
         }, SlotSemantic.MACHINE_CRAFTING_GRID);
 
         if(slotIndex == 40)
             SlotsWithTrinket[45] = addSlot(new DisabledSlot(wtInventory.toContainer(), WTInventory.OFF_HAND) {
                 @Environment(EnvType.CLIENT)
-                public Pair<Identifier, Identifier> getBackgroundSprite() {
-                    return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, PlayerScreenHandler.EMPTY_OFFHAND_ARMOR_SLOT);
+                public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
+                    return Pair.of(InventoryMenu.BLOCK_ATLAS, InventoryMenu.EMPTY_ARMOR_SLOT_SHIELD);
                 }
             }, SlotSemantic.PROCESSING_PRIMARY_RESULT);
         else SlotsWithTrinket[45] = addSlot(new AppEngSlot(wtInventory, WTInventory.OFF_HAND) {
             @Environment(EnvType.CLIENT)
-            public Pair<Identifier, Identifier> getBackgroundSprite() {
-                return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, PlayerScreenHandler.EMPTY_OFFHAND_ARMOR_SLOT);
+            public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
+                return Pair.of(InventoryMenu.BLOCK_ATLAS, InventoryMenu.EMPTY_ARMOR_SLOT_SHIELD);
             }
         }, SlotSemantic.PROCESSING_PRIMARY_RESULT);
         addSlot(new AppEngSlot(wtInventory, WTInventory.TRASH), SlotSemantic.INSCRIBER_PLATE_BOTTOM);

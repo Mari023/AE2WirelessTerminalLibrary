@@ -13,7 +13,7 @@ import java.util.Optional;
 public class WUTDisplay extends DefaultCraftingDisplay<Common> {
 
     public WUTDisplay(Common recipe) {
-        super(EntryIngredients.ofIngredients(recipe.getIngredients()), Collections.singletonList(EntryIngredients.of(recipe.getOutput())), Optional.of(recipe));
+        super(EntryIngredients.ofIngredients(recipe.getIngredients()), Collections.singletonList(EntryIngredients.of(recipe.getResultItem())), Optional.of(recipe));
     }
 
     @Override

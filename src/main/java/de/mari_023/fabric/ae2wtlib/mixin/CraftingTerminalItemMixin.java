@@ -8,10 +8,10 @@ import appeng.menu.MenuOpener;
 import de.mari_023.fabric.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
 import de.mari_023.fabric.ae2wtlib.wct.WCTMenu;
 import de.mari_023.fabric.ae2wtlib.wct.WCTMenuHost;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -28,17 +28,17 @@ public class CraftingTerminalItemMixin extends WirelessTerminalItem implements I
      * @reason use my own crafting terminal GUI
      */
     @Overwrite
-    public ScreenHandlerType<?> getMenuType() {
+    public MenuType<?> getMenuType() {
         return WCTMenu.TYPE;
     }
 
     @Override
-    public boolean open(PlayerEntity player, MenuLocator locator) {
+    public boolean open(Player player, MenuLocator locator) {
         return MenuOpener.open(WCTMenu.TYPE, player, locator);
     }
 
     @Override
-    public boolean checkPreconditions(ItemStack item, PlayerEntity player) {
+    public boolean checkPreconditions(ItemStack item, Player player) {
         return super.checkPreconditions(item, player);
     }
 
@@ -48,7 +48,7 @@ public class CraftingTerminalItemMixin extends WirelessTerminalItem implements I
      */
     @Nullable
     @Overwrite
-    public ItemMenuHost getMenuHost(PlayerEntity player, int inventorySlot, ItemStack stack, @Nullable BlockPos pos) {
+    public ItemMenuHost getMenuHost(Player player, int inventorySlot, ItemStack stack, @Nullable BlockPos pos) {
         return new WCTMenuHost(player, inventorySlot, stack, (p, subMenu) -> openFromInventory(p, inventorySlot));
     }
 }

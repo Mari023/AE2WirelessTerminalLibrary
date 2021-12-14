@@ -1,6 +1,7 @@
 package de.mari_023.fabric.ae2wtlib.client;
 
 import appeng.api.IAEAddonEntrypoint;
+import com.mojang.blaze3d.platform.InputConstants;
 import de.mari_023.fabric.ae2wtlib.AE2wtlib;
 import de.mari_023.fabric.ae2wtlib.wct.WCTMenu;
 import de.mari_023.fabric.ae2wtlib.wct.WCTScreen;
@@ -15,10 +16,9 @@ import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.util.InputUtil;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import org.lwjgl.glfw.GLFW;
 
 @Environment(EnvType.CLIENT)
@@ -34,11 +34,11 @@ public class AE2wtlibclient implements IAEAddonEntrypoint {
     }
 
     public static void registerKeybindings() {
-        KeyBinding wct = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.ae2wtlib.wct", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "key.category.ae2wtlib"));
-        KeyBinding wpt = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.ae2wtlib.wpt", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "key.category.ae2wtlib"));
-        KeyBinding wit = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.ae2wtlib.wit", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "key.category.ae2wtlib"));
-        KeyBinding toggleRestock = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.ae2wtlib.toggleRestock", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "key.category.ae2wtlib"));
-        KeyBinding toggleMagnet = KeyBindingHelper.registerKeyBinding(new KeyBinding("key.ae2wtlib.toggleMagnet", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "key.category.ae2wtlib"));
+        KeyMapping wct = KeyBindingHelper.registerKeyBinding(new KeyMapping("key.ae2wtlib.wct", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "key.category.ae2wtlib"));
+        KeyMapping wpt = KeyBindingHelper.registerKeyBinding(new KeyMapping("key.ae2wtlib.wpt", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "key.category.ae2wtlib"));
+        KeyMapping wit = KeyBindingHelper.registerKeyBinding(new KeyMapping("key.ae2wtlib.wit", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "key.category.ae2wtlib"));
+        KeyMapping toggleRestock = KeyBindingHelper.registerKeyBinding(new KeyMapping("key.ae2wtlib.toggleRestock", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "key.category.ae2wtlib"));
+        KeyMapping toggleMagnet = KeyBindingHelper.registerKeyBinding(new KeyMapping("key.ae2wtlib.toggleMagnet", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "key.category.ae2wtlib"));
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             checkKeybindings(wct, "crafting");
@@ -49,11 +49,11 @@ public class AE2wtlibclient implements IAEAddonEntrypoint {
         });
     }
 
-    private static void checkKeybindings(KeyBinding binding, String type) {
-        while(binding.wasPressed()) {
-            PacketByteBuf buf = PacketByteBufs.create();
-            buf.writeString(type);
-            ClientPlayNetworking.send(new Identifier(AE2wtlib.MOD_NAME, "hotkey"), buf);
+    private static void checkKeybindings(KeyMapping binding, String type) {
+        while(binding.consumeClick()) {
+            FriendlyByteBuf buf = PacketByteBufs.create();
+            buf.writeUtf(type);
+            ClientPlayNetworking.send(new ResourceLocation(AE2wtlib.MOD_NAME, "hotkey"), buf);
         }
     }
 }

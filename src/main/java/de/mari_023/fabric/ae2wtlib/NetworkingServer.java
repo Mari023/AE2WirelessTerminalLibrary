@@ -17,15 +17,15 @@ import de.mari_023.fabric.ae2wtlib.wet.ItemWET;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
 import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
 
 public class NetworkingServer {
     public static void registerServer() {
-        ServerPlayNetworking.registerGlobalReceiver(new Identifier(AE2wtlib.MOD_NAME, "cycle_terminal"), (server, player, handler, buf, sender) -> server.execute(() -> {
-            final ScreenHandler screenHandler = player.currentScreenHandler;
+        ServerPlayNetworking.registerGlobalReceiver(new ResourceLocation(AE2wtlib.MOD_NAME, "cycle_terminal"), (server, player, handler, buf, sender) -> server.execute(() -> {
+            final AbstractContainerMenu screenHandler = player.containerMenu;
 
             if(!(screenHandler instanceof AEBaseMenu)) return;
 
@@ -34,22 +34,22 @@ public class NetworkingServer {
             ItemStack item;
             if(slot >= 100 && slot < 200 && AE2wtlibConfig.INSTANCE.allowTrinket())
                 item = TrinketsHelper.getTrinketsInventory(player).getStackInSlot(slot - 100);
-            else item = player.getInventory().getStack(slot);
+            else item = player.getInventory().getItem(slot);
 
             if(!(item.getItem() instanceof ItemWUT)) return;
             WUTHandler.cycle(player, slot, item);
 
             WUTHandler.open(player, locator);
         }));
-        ServerPlayNetworking.registerGlobalReceiver(new Identifier(AE2wtlib.MOD_NAME, "hotkey"), (server, player, handler, buf, sender) -> {
+        ServerPlayNetworking.registerGlobalReceiver(new ResourceLocation(AE2wtlib.MOD_NAME, "hotkey"), (server, player, handler, buf, sender) -> {
             buf.retain();
             server.execute(() -> {//TODO unify this for all terminals
-                String terminalName = buf.readString(32767);
+                String terminalName = buf.readUtf(32767);
                 if(terminalName.equalsIgnoreCase("crafting")) {
                     int slot = -1;
                     ItemStack terminal = null;
-                    for(int i = 0; i < player.getInventory().size(); i++) {
-                        terminal = player.getInventory().getStack(i);
+                    for(int i = 0; i < player.getInventory().getContainerSize(); i++) {
+                        terminal = player.getInventory().getItem(i);
                         if(terminal.getItem() instanceof WirelessCraftingTerminalItem || (terminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(terminal, "crafting"))) {
                             slot = i;
                             WUTHandler.setCurrentTerminal(player, slot, terminal, "crafting");
@@ -76,11 +76,11 @@ public class NetworkingServer {
                     if(((IUniversalWirelessTerminalItem) AEItems.WIRELESS_CRAFTING_TERMINAL.asItem()).canOpen(terminal, player))
                         ((IUniversalWirelessTerminalItem) AEItems.WIRELESS_CRAFTING_TERMINAL.asItem()).open(player, MenuLocator.forInventorySlot(slot));
                 } else if(terminalName.equalsIgnoreCase("pattern_encoding")) {
-                    PlayerInventory inv = player.getInventory();
+                    Inventory inv = player.getInventory();
                     int slot = -1;
                     ItemStack terminal = null;
-                    for(int i = 0; i < inv.size(); i++) {
-                        terminal = inv.getStack(i);
+                    for(int i = 0; i < inv.getContainerSize(); i++) {
+                        terminal = inv.getItem(i);
                         if(terminal.getItem() instanceof ItemWET || (terminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(terminal, "pattern_encoding"))) {
                             slot = i;
                             WUTHandler.setCurrentTerminal(player, slot, terminal, "pattern_encoding");
@@ -108,11 +108,11 @@ public class NetworkingServer {
                     if(AE2wtlib.PATTERN_ENCODING_TERMINAL.canOpen(terminal, player))
                         AE2wtlib.PATTERN_ENCODING_TERMINAL.open(player, MenuLocator.forInventorySlot(slot));
                 } else if(terminalName.equalsIgnoreCase("pattern_access")) {
-                    PlayerInventory inv = player.getInventory();
+                    Inventory inv = player.getInventory();
                     int slot = -1;
                     ItemStack terminal = null;
-                    for(int i = 0; i < inv.size(); i++) {
-                        terminal = inv.getStack(i);
+                    for(int i = 0; i < inv.getContainerSize(); i++) {
+                        terminal = inv.getItem(i);
                         if(terminal.getItem() instanceof ItemWAT || (terminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(terminal, "pattern_access"))) {
                             slot = i;
                             WUTHandler.setCurrentTerminal(player, slot, terminal, "pattern_access");
@@ -147,12 +147,12 @@ public class NetworkingServer {
                         return;
                     }
                     ItemWT.setBoolean(terminal, !ItemWT.getBoolean(terminal, "restock"), "restock");
-                    WUTHandler.updateClientTerminal(player, craftingTerminalHandler.getSlot(), terminal.getNbt());
+                    WUTHandler.updateClientTerminal(player, craftingTerminalHandler.getSlot(), terminal.getTag());
 
                     if(ItemWT.getBoolean(terminal, "restock"))
-                        player.sendMessage(TextConstants.RESTOCK_ON, true);
+                        player.displayClientMessage(TextConstants.RESTOCK_ON, true);
                     else
-                        player.sendMessage(TextConstants.RESTOCK_OFF, true);
+                        player.displayClientMessage(TextConstants.RESTOCK_OFF, true);
                 } else if(terminalName.equalsIgnoreCase("toggleMagnet")) {
                     ItemStack terminal = CraftingTerminalHandler.getCraftingTerminalHandler(player).getCraftingTerminal();
                     if(terminal.isEmpty()) {
@@ -162,15 +162,15 @@ public class NetworkingServer {
                     MagnetSettings settings = ItemMagnetCard.loadMagnetSettings(terminal);
                     switch(settings.magnetMode) {
                         case OFF -> {
-                            player.sendMessage(TextConstants.HOTKEY_MAGNETCARD_INVENTORY, true);
+                            player.displayClientMessage(TextConstants.HOTKEY_MAGNETCARD_INVENTORY, true);
                             settings.magnetMode = MagnetMode.PICKUP_INVENTORY;
                         }
                         case PICKUP_INVENTORY -> {
-                            player.sendMessage(TextConstants.HOTKEY_MAGNETCARD_ME, true);
+                            player.displayClientMessage(TextConstants.HOTKEY_MAGNETCARD_ME, true);
                             settings.magnetMode = MagnetMode.PICKUP_ME;
                         }
                         case PICKUP_ME -> {
-                            player.sendMessage(TextConstants.HOTKEY_MAGNETCARD_OFF, true);
+                            player.displayClientMessage(TextConstants.HOTKEY_MAGNETCARD_OFF, true);
                             settings.magnetMode = MagnetMode.OFF;
                         }
                     }

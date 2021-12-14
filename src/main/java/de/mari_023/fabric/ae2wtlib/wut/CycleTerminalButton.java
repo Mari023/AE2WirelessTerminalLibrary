@@ -2,21 +2,21 @@ package de.mari_023.fabric.ae2wtlib.wut;
 
 import appeng.client.gui.widgets.ITooltip;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import de.mari_023.fabric.ae2wtlib.TextConstants;
 import de.mari_023.fabric.ae2wtlib.AE2wtlib;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.client.util.math.Rect2i;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.renderer.Rect2i;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 
-public class CycleTerminalButton extends ButtonWidget implements ITooltip {
+public class CycleTerminalButton extends Button implements ITooltip {
 
-    public CycleTerminalButton(PressAction onPress) {
+    public CycleTerminalButton(OnPress onPress) {
         super(0, 0, 16, 16, TextConstants.CYCLE, onPress);
         visible = true;
         active = true;
@@ -24,7 +24,7 @@ public class CycleTerminalButton extends ButtonWidget implements ITooltip {
 
     @Override
     public @NotNull
-    List<Text> getTooltipMessage() {
+    List<Component> getTooltipMessage() {
         return Collections.singletonList(TextConstants.CYCLE_TOOLTIP);
     }
 
@@ -39,27 +39,27 @@ public class CycleTerminalButton extends ButtonWidget implements ITooltip {
         return true;
     }
 
-    public static final Identifier TEXTURE_STATES = new Identifier("ae2", "textures/guis/states.png");
-    public static final Identifier nextTerminal = new Identifier(AE2wtlib.MOD_NAME, "textures/wireless_universal_terminal.png");
+    public static final ResourceLocation TEXTURE_STATES = new ResourceLocation("ae2", "textures/guis/states.png");
+    public static final ResourceLocation nextTerminal = new ResourceLocation(AE2wtlib.MOD_NAME, "textures/wireless_universal_terminal.png");
 
     @Override
-    public void renderButton(MatrixStack matrices, final int mouseX, final int mouseY, float partial) {
+    public void renderButton(PoseStack matrices, final int mouseX, final int mouseY, float partial) {
         if(!visible) return;
-        matrices.push();
+        matrices.pushPose();
         RenderSystem.setShaderTexture(0, TEXTURE_STATES);
         RenderSystem.disableDepthTest();
         RenderSystem.enableBlend();
 
-        drawTexture(matrices, x, y, 240, 240, 16, 16);
+        blit(matrices, x, y, 240, 240, 16, 16);
 
         RenderSystem.setShaderTexture(0, nextTerminal);
 
         if(active) RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         else RenderSystem.setShaderColor(0.5f, 0.5f, 0.5f, 1.0f);
 
-        drawTexture(matrices, x + 1, y + 1, 14, 14, 0, 0, 512, 512, 512, 512);
+        blit(matrices, x + 1, y + 1, 14, 14, 0, 0, 512, 512, 512, 512);
 
-        matrices.pop();
-        if(isHovered()) renderTooltip(matrices, mouseX, mouseY);
+        matrices.popPose();
+        if(isHoveredOrFocused()) renderToolTip(matrices, mouseX, mouseY);
     }
 }

@@ -6,8 +6,8 @@ import appeng.menu.implementations.MenuTypeBuilder;
 import de.mari_023.fabric.ae2wtlib.AE2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.trinket.TrinketsHelper;
 import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -23,13 +23,13 @@ public class ContainerTypeBuilderMixin<I> {
     private Class<I> hostInterface;
 
     @Inject(method = "getHostFromPlayerInventory", at = @At(value = "HEAD"), cancellable = true)
-    public void serverPacketData(PlayerEntity player, MenuLocator locator, CallbackInfoReturnable<I> cir) {
+    public void serverPacketData(Player player, MenuLocator locator, CallbackInfoReturnable<I> cir) {
         int slot = locator.getItemIndex();
         ItemStack it;
 
         if(slot >= 100 && slot < 200 && AE2wtlibConfig.INSTANCE.allowTrinket())
             it = TrinketsHelper.getTrinketsInventory(player).getStackInSlot(slot - 100);
-        else it = player.getInventory().getStack(slot);
+        else it = player.getInventory().getItem(slot);
 
         if(it.isEmpty()) return;
 
