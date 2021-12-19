@@ -2,18 +2,19 @@ package de.mari_023.fabric.ae2wtlib.wet;
 
 import appeng.api.config.SecurityPermissions;
 import appeng.api.networking.IGridNode;
-import appeng.menu.SlotSemantic;
 import appeng.menu.implementations.MenuTypeBuilder;
 import appeng.menu.me.items.PatternTermMenu;
 import appeng.menu.slot.AppEngSlot;
-import de.mari_023.fabric.ae2wtlib.terminal.WTInventory;
+import de.mari_023.fabric.ae2wtlib.AE2wtlibSlotSemantics;
 import de.mari_023.fabric.ae2wtlib.terminal.IWTInvHolder;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
+import de.mari_023.fabric.ae2wtlib.terminal.WTInventory;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
-import java.util.List;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
+
+import java.util.List;
 
 public class WETMenu extends PatternTermMenu implements IWTInvHolder {
 
@@ -25,7 +26,7 @@ public class WETMenu extends PatternTermMenu implements IWTInvHolder {
         super(TYPE, id, ip, gui, true);
         WETGUIObject = gui;
 
-        addSlot(new AppEngSlot(new WTInventory(getPlayerInventory(), WETGUIObject.getItemStack(), this), WTInventory.INFINITY_BOOSTER_CARD), SlotSemantic.BIOMETRIC_CARD);
+        addSlot(new AppEngSlot(new WTInventory(getPlayerInventory(), WETGUIObject.getItemStack(), this), WTInventory.INFINITY_BOOSTER_CARD), AE2wtlibSlotSemantics.INFINITY_BOOSTER_CARD);
 
         if(isClient()) {//FIXME set craftingMode and substitute serverside
             setCraftingMode(ItemWT.getBoolean(WETGUIObject.getItemStack(), "craftingMode"));

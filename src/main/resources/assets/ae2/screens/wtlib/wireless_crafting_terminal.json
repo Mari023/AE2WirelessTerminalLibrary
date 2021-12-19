@@ -21,43 +21,35 @@
       "bottom": 26,
       "grid": "HORIZONTAL"
     },
-    "INSCRIBER_PLATE_BOTTOM": {
-      "$comment": "TRASH",
+    "AE2WTLIB_TRASH": {
       "left": 98,
       "bottom": 106
     },
-    "INSCRIBER_PLATE_TOP": {
-      "$comment": "MAGNET_CARD",
+    "AE2WTLIB_MAGNET_CARD": {
       "left": 134,
       "bottom": 104
     },
-    "BIOMETRIC_CARD": {
-      "$comment": "INFINITY_BOOSTER_CARD",
+    "AE2WTLIB_INFINITY_BOOSTER_CARD": {
       "left": 152,
       "bottom": 104
     },
-    "MACHINE_INPUT": {
-      "$comment": "HELMET",
+    "AE2WTLIB_HELMET": {
       "left": 8,
       "bottom": 160
     },
-    "MACHINE_PROCESSING": {
-      "$comment": "CHESTPLATE",
+    "AE2WTLIB_CHESTPLATE": {
       "left": 8,
       "bottom": 142
     },
-    "MACHINE_OUTPUT": {
-      "$comment": "LEGGINGS",
+    "AE2WTLIB_LEGGINGS": {
       "left": 8,
       "bottom": 124
     },
-    "MACHINE_CRAFTING_GRID": {
-      "$comment": "BOOT",
+    "AE2WTLIB_BOOTS": {
       "left": 8,
       "bottom": 106
     },
-    "PROCESSING_PRIMARY_RESULT": {
-      "$comment": "OFFHAND",
+    "AE2WTLIB_OFFHAND": {
       "left": 80,
       "bottom": 106
     }
