@@ -24,7 +24,7 @@ public class RestockRender {
         CraftingTerminalHandler handler = CraftingTerminalHandler.getCraftingTerminalHandler(Minecraft.getInstance().player);
         if(Minecraft.getInstance().player.isCreative() || !ItemWT.getBoolean(handler.getCraftingTerminal(), "restock") || !handler.inRange() || stack.getCount() == 1)
             return;
-        ((ItemRenderer) (Object) this).renderGuiItemDecorations(renderer, stack, x, y, ReadableNumberConverter.INSTANCE.toSlimReadableForm(handler.getAccessibleAmount(stack)));
+        ((ItemRenderer) (Object) this).renderGuiItemDecorations(renderer, stack, x, y, ReadableNumberConverter.format(handler.getAccessibleAmount(stack), 3));
         ci.cancel();
     }
 }
