@@ -339,7 +339,15 @@
           "PROCESSING_FIRST_OPTIONAL_RESULT",
           "PROCESSING_SECOND_OPTIONAL_RESULT",
           "BIOMETRIC_CARD",
-          "READONLY_STACKS"
+          "READONLY_STACKS",
+          "AE2WTLIB_HELMET",
+          "AE2WTLIB_CHESTPLATE",
+          "AE2WTLIB_LEGGINGS",
+          "AE2WTLIB_BOOTS",
+          "AE2WTLIB_OFFHAND",
+          "AE2WTLIB_TRASH",
+          "AE2WTLIB_MAGNET_CARD",
+          "AE2WTLIB_INFINITY_BOOSTER_CARD"
         ]
       }
     },

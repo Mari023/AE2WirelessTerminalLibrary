@@ -2,14 +2,14 @@ package de.mari_023.fabric.ae2wtlib.wct;
 
 import appeng.api.config.SecurityPermissions;
 import appeng.api.networking.IGridNode;
-import appeng.menu.SlotSemantic;
 import appeng.menu.implementations.MenuTypeBuilder;
 import appeng.menu.me.items.CraftingTermMenu;
 import appeng.menu.slot.AppEngSlot;
 import appeng.menu.slot.DisabledSlot;
 import com.mojang.datafixers.util.Pair;
-import de.mari_023.fabric.ae2wtlib.terminal.WTInventory;
+import de.mari_023.fabric.ae2wtlib.AE2wtlibSlotSemantics;
 import de.mari_023.fabric.ae2wtlib.terminal.IWTInvHolder;
+import de.mari_023.fabric.ae2wtlib.terminal.WTInventory;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.ItemMagnetCard;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetMode;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetSettings;
@@ -22,6 +22,7 @@ import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+
 import java.util.List;
 
 public class WCTMenu extends CraftingTermMenu implements IWTInvHolder {
@@ -48,25 +49,25 @@ public class WCTMenu extends CraftingTermMenu implements IWTInvHolder {
             public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
                 return Pair.of(InventoryMenu.BLOCK_ATLAS, InventoryMenu.EMPTY_ARMOR_SLOT_HELMET);
             }
-        }, SlotSemantic.MACHINE_INPUT);
+        }, AE2wtlibSlotSemantics.HELMET);
         SlotsWithTrinket[6] = addSlot(new AppEngSlot(wtInventory, 2) {
             @Environment(EnvType.CLIENT)
             public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
                 return Pair.of(InventoryMenu.BLOCK_ATLAS, InventoryMenu.EMPTY_ARMOR_SLOT_CHESTPLATE);
             }
-        }, SlotSemantic.MACHINE_PROCESSING);
+        }, AE2wtlibSlotSemantics.CHESTPLATE);
         SlotsWithTrinket[7] = addSlot(new AppEngSlot(wtInventory, 1) {
             @Environment(EnvType.CLIENT)
             public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
                 return Pair.of(InventoryMenu.BLOCK_ATLAS, InventoryMenu.EMPTY_ARMOR_SLOT_LEGGINGS);
             }
-        }, SlotSemantic.MACHINE_OUTPUT);
+        }, AE2wtlibSlotSemantics.LEGGINGS);
         SlotsWithTrinket[8] = addSlot(new AppEngSlot(wtInventory, 0) {
             @Environment(EnvType.CLIENT)
             public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
                 return Pair.of(InventoryMenu.BLOCK_ATLAS, InventoryMenu.EMPTY_ARMOR_SLOT_BOOTS);
             }
-        }, SlotSemantic.MACHINE_CRAFTING_GRID);
+        }, AE2wtlibSlotSemantics.BOOTS);
 
         if(slotIndex == 40)
             SlotsWithTrinket[45] = addSlot(new DisabledSlot(wtInventory.toContainer(), WTInventory.OFF_HAND) {
@@ -74,16 +75,16 @@ public class WCTMenu extends CraftingTermMenu implements IWTInvHolder {
                 public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
                     return Pair.of(InventoryMenu.BLOCK_ATLAS, InventoryMenu.EMPTY_ARMOR_SLOT_SHIELD);
                 }
-            }, SlotSemantic.PROCESSING_PRIMARY_RESULT);
+            }, AE2wtlibSlotSemantics.OFFHAND);
         else SlotsWithTrinket[45] = addSlot(new AppEngSlot(wtInventory, WTInventory.OFF_HAND) {
             @Environment(EnvType.CLIENT)
             public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
                 return Pair.of(InventoryMenu.BLOCK_ATLAS, InventoryMenu.EMPTY_ARMOR_SLOT_SHIELD);
             }
-        }, SlotSemantic.PROCESSING_PRIMARY_RESULT);
-        addSlot(new AppEngSlot(wtInventory, WTInventory.TRASH), SlotSemantic.INSCRIBER_PLATE_BOTTOM);
-        addSlot(new AppEngSlot(wtInventory, WTInventory.INFINITY_BOOSTER_CARD), SlotSemantic.BIOMETRIC_CARD);
-        addSlot(new AppEngSlot(wtInventory, WTInventory.MAGNET_CARD), SlotSemantic.INSCRIBER_PLATE_TOP);//TODO fetch texture for card background
+        }, AE2wtlibSlotSemantics.OFFHAND);
+        addSlot(new AppEngSlot(wtInventory, WTInventory.TRASH), AE2wtlibSlotSemantics.TRASH);
+        addSlot(new AppEngSlot(wtInventory, WTInventory.INFINITY_BOOSTER_CARD), AE2wtlibSlotSemantics.INFINITY_BOOSTER_CARD);
+        addSlot(new AppEngSlot(wtInventory, WTInventory.MAGNET_CARD), AE2wtlibSlotSemantics.MAGNET_CARD);//TODO fetch texture for card background
 
         registerClientAction(ACTION_DELETE, this::deleteTrashSlot);
         registerClientAction(MAGNET_MODE, MagnetMode.class, this::setMagnetMode);
