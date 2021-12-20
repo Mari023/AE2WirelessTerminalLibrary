@@ -7,19 +7,19 @@ public class AE2wtlibSlotSemantics {
 
     private AE2wtlibSlotSemantics() {}
 
-    public static final SlotSemantic HELMET = add("HELMET");
-    public static final SlotSemantic CHESTPLATE = add("CHESTPLATE");
-    public static final SlotSemantic LEGGINGS = add("LEGGINGS");
-    public static final SlotSemantic BOOTS = add("BOOTS");
+    public static final SlotSemantic HELMET = register("HELMET");
+    public static final SlotSemantic CHESTPLATE = register("CHESTPLATE");
+    public static final SlotSemantic LEGGINGS = register("LEGGINGS");
+    public static final SlotSemantic BOOTS = register("BOOTS");
 
-    public static final SlotSemantic OFFHAND = add("OFFHAND");
+    public static final SlotSemantic OFFHAND = register("OFFHAND");
 
-    public static final SlotSemantic TRASH = add("TRASH");
-    public static final SlotSemantic MAGNET_CARD = add("MAGNET_CARD");
-    public static final SlotSemantic INFINITY_BOOSTER_CARD = add("INFINITY_BOOSTER_CARD");
+    public static final SlotSemantic TRASH = register("TRASH");
+    public static final SlotSemantic MAGNET_CARD = register("MAGNET_CARD");
+    public static final SlotSemantic INFINITY_BOOSTER_CARD = register("INFINITY_BOOSTER_CARD");
 
 
-    private static SlotSemantic add(String id) {
-        return SlotSemantics.add("AE2WTLIB_"+id, false);
+    private static SlotSemantic register(String id) {
+        return SlotSemantics.register("AE2WTLIB_"+id, false);
     }
 }
