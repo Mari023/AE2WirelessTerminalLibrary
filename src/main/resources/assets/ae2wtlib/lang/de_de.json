@@ -19,6 +19,9 @@
   "gui.ae2wtlib.restock": "Nachfüllen: ",
   "gui.ae2wtlib.off": "Aus",
   "gui.ae2wtlib.on": "An",
+  "gui.ae2wtlib.slot.infinity_booster_card.desc": "Unendlicher Drahtlosverstärker",
+  "gui.ae2wtlib.slot.magnetcard.desc" : "Magnet Karte",
+
   "item.ae2wtlib.wireless_universal_terminal": "Drahtlose Universalkonsole",
   "item.ae2wtlib.wireless_universal_terminal.desc": "Installierte Konsolen:",
 

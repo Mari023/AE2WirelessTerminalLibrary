@@ -1,10 +1,9 @@
 package de.mari_023.fabric.ae2wtlib;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.*;
+
+import java.util.List;
 
 public final class TextConstants {
 
@@ -39,4 +38,7 @@ public final class TextConstants {
     public static final TranslatableComponent CYCLE_TOOLTIP = new TranslatableComponent("gui.ae2wtlib.cycle_terminal.desc");
 
     public static final MutableComponent DELETE = new TranslatableComponent("gui.ae2wtlib.emptytrash").append("\n").append(new TranslatableComponent("gui.ae2wtlib.emptytrash.desc"));
+
+    public static final List<Component> BOOSTER_SLOT = List.of(new TranslatableComponent("gui.ae2wtlib.slot.infinity_booster_card.desc"));
+    public static final List<Component> MAGNETCARD_SLOT = List.of(new TranslatableComponent("gui.ae2wtlib.slot.magnetcard.desc"));
 }

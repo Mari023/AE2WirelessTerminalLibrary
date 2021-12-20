@@ -6,8 +6,10 @@ import appeng.menu.implementations.MenuTypeBuilder;
 import appeng.menu.me.items.CraftingTermMenu;
 import appeng.menu.slot.AppEngSlot;
 import appeng.menu.slot.DisabledSlot;
+import appeng.menu.slot.RestrictedInputSlot;
 import com.mojang.datafixers.util.Pair;
 import de.mari_023.fabric.ae2wtlib.AE2wtlibSlotSemantics;
+import de.mari_023.fabric.ae2wtlib.TextConstants;
 import de.mari_023.fabric.ae2wtlib.terminal.IWTInvHolder;
 import de.mari_023.fabric.ae2wtlib.terminal.WTInventory;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.ItemMagnetCard;
@@ -16,6 +18,7 @@ import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetSettings;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.InventoryMenu;
@@ -24,6 +27,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
+import java.util.function.Function;
 
 public class WCTMenu extends CraftingTermMenu implements IWTInvHolder {
 
@@ -83,8 +87,24 @@ public class WCTMenu extends CraftingTermMenu implements IWTInvHolder {
             }
         }, AE2wtlibSlotSemantics.OFFHAND);
         addSlot(new AppEngSlot(wtInventory, WTInventory.TRASH), AE2wtlibSlotSemantics.TRASH);
-        addSlot(new AppEngSlot(wtInventory, WTInventory.INFINITY_BOOSTER_CARD), AE2wtlibSlotSemantics.INFINITY_BOOSTER_CARD);
-        addSlot(new AppEngSlot(wtInventory, WTInventory.MAGNET_CARD), AE2wtlibSlotSemantics.MAGNET_CARD);//TODO fetch texture for card background
+
+        AppEngSlot infinityBoosterCardSlot = new AppEngSlot(wtInventory, WTInventory.INFINITY_BOOSTER_CARD) {
+            @Override
+            public List<Component> getCustomTooltip(Function<ItemStack, List<Component>> getItemTooltip, ItemStack carriedItem) {
+                return TextConstants.BOOSTER_SLOT;
+            }
+        };
+        infinityBoosterCardSlot.setIcon(RestrictedInputSlot.PlacableItemType.UPGRADES.icon);
+        addSlot(infinityBoosterCardSlot, AE2wtlibSlotSemantics.INFINITY_BOOSTER_CARD);
+
+        AppEngSlot magnetCardSlot = new AppEngSlot(wtInventory, WTInventory.MAGNET_CARD) {
+            @Override
+            public List<Component> getCustomTooltip(Function<ItemStack, List<Component>> getItemTooltip, ItemStack carriedItem) {
+                return TextConstants.MAGNETCARD_SLOT;
+            }
+        };
+        magnetCardSlot.setIcon(RestrictedInputSlot.PlacableItemType.UPGRADES.icon);
+        addSlot(magnetCardSlot, AE2wtlibSlotSemantics.MAGNET_CARD);
 
         registerClientAction(ACTION_DELETE, this::deleteTrashSlot);
         registerClientAction(MAGNET_MODE, MagnetMode.class, this::setMagnetMode);

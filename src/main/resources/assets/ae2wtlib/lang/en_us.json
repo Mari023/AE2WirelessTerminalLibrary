@@ -19,6 +19,8 @@
   "gui.ae2wtlib.restock": "Restock: ",
   "gui.ae2wtlib.off": "Off",
   "gui.ae2wtlib.on": "On",
+  "gui.ae2wtlib.slot.infinity_booster_card.desc": "Infinity Booster Card",
+  "gui.ae2wtlib.slot.magnetcard.desc" : "Magnet Card",
 
   "item.ae2wtlib.wireless_pattern_encoding_terminal": "Wireless Pattern Encoding Terminal",
   "item.ae2wtlib.wireless_pattern_access_terminal": "Wireless Pattern Access Terminal",
