@@ -1,18 +1,16 @@
 package de.mari_023.fabric.ae2wtlib.mixin;
 
-import appeng.api.implementations.menuobjects.ItemMenuHost;
 import appeng.items.tools.powered.WirelessCraftingTerminalItem;
 import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.menu.MenuLocator;
 import appeng.menu.MenuOpener;
+import de.mari_023.fabric.ae2wtlib.AE2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
+import de.mari_023.fabric.ae2wtlib.trinket.TrinketsHelper;
 import de.mari_023.fabric.ae2wtlib.wct.WCTMenu;
-import de.mari_023.fabric.ae2wtlib.wct.WCTMenuHost;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 
@@ -43,12 +41,17 @@ public class CraftingTerminalItemMixin extends WirelessTerminalItem implements I
     }
 
     /**
-     * @author Mari_023
-     * @reason use my own crafting terminal GUI
+     * Open a wireless terminal from a slot in the player inventory, i.e. activated via hotkey.
+     *
+     * @return True if the menu was opened.
      */
-    @Nullable
-    @Overwrite
-    public ItemMenuHost getMenuHost(Player player, int inventorySlot, ItemStack stack, @Nullable BlockPos pos) {
-        return new WCTMenuHost(player, inventorySlot, stack, (p, subMenu) -> openFromInventory(p, inventorySlot));
+    @Override
+    public boolean openFromInventory(Player player, int inventorySlot) {
+        ItemStack it;
+        if(inventorySlot >= 100 && inventorySlot < 200 && AE2wtlibConfig.INSTANCE.allowTrinket())
+            it = TrinketsHelper.getTrinketsInventory(player).getStackInSlot(inventorySlot - 100);
+        else it = player.getInventory().getItem(inventorySlot);
+
+        return tryOpen(player, MenuLocator.forInventorySlot(inventorySlot), it);
     }
 }
