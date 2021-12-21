@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = MenuTypeBuilder.class, remap = false)
-public class ContainerTypeBuilderMixin<I> {
+public class MenuTypeBuilderMixin<I> {
 
     @Shadow
     @Final

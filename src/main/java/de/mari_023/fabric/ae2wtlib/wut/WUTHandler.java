@@ -27,22 +27,22 @@ import java.util.function.BiConsumer;
 
 public class WUTHandler {
 
-    public static String getCurrentTerminal(ItemStack wirelessUniversalTerminal) {
-        if(wirelessUniversalTerminal.getItem() instanceof WirelessCraftingTerminalItem) return "crafting";
-        if(!(wirelessUniversalTerminal.getItem() instanceof ItemWT) || wirelessUniversalTerminal.getTag() == null)
+    public static String getCurrentTerminal(ItemStack terminal) {
+        if(terminal.getItem() instanceof WirelessCraftingTerminalItem) return "crafting";
+        if(!(terminal.getItem() instanceof ItemWT) || terminal.getTag() == null)
             return "noTerminal";
-        if(!(wirelessUniversalTerminal.getItem() instanceof ItemWUT)) {
-            if(wirelessUniversalTerminal.getItem() instanceof ItemWET) return "pattern_encoding";
-            else if(wirelessUniversalTerminal.getItem() instanceof ItemWAT) return "pattern_access";
+        if(!(terminal.getItem() instanceof ItemWUT)) {
+            if(terminal.getItem() instanceof ItemWET) return "pattern_encoding";
+            else if(terminal.getItem() instanceof ItemWAT) return "pattern_access";
             else return "noTerminal";
         }
-        String currentTerminal = wirelessUniversalTerminal.getTag().getString("currentTerminal");
+        String currentTerminal = terminal.getTag().getString("currentTerminal");
 
         if(wirelessTerminals.containsKey(currentTerminal)) return currentTerminal;
-        for(String terminal : terminalNames)
-            if(wirelessUniversalTerminal.getTag().getBoolean(terminal)) {
-                currentTerminal = terminal;
-                wirelessUniversalTerminal.getTag().putString("currentTerminal", currentTerminal);
+        for(String term : terminalNames)
+            if(terminal.getTag().getBoolean(term)) {
+                currentTerminal = term;
+                terminal.getTag().putString("currentTerminal", currentTerminal);
                 break;
             }
         return currentTerminal;
