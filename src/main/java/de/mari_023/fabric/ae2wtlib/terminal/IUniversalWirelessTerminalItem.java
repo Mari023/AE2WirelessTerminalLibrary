@@ -11,6 +11,13 @@ public interface IUniversalWirelessTerminalItem extends IInfinityBoosterCardHold
         return !item.isEmpty() && checkPreconditions(item, player);
     }
 
+    /**
+     * I can't just use openFromInventory(), because I need the stack of the terminal to determine it's MenuType
+     * @param player
+     * @param locator
+     * @param stack
+     * @return true if it can open and did so successfully
+     */
     default boolean tryOpen(Player player, MenuLocator locator, ItemStack stack) {
         if(canOpen(stack, player)) return open(player, locator);
         return false;
