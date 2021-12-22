@@ -1,10 +1,10 @@
 package de.mari_023.fabric.ae2wtlib.wut;
 
 import appeng.core.AEConfig;
-import appeng.menu.MenuLocator;
-import de.mari_023.fabric.ae2wtlib.TextConstants;
+import appeng.menu.locator.MenuLocator;
 import de.mari_023.fabric.ae2wtlib.AE2wtlib;
 import de.mari_023.fabric.ae2wtlib.AE2wtlibConfig;
+import de.mari_023.fabric.ae2wtlib.TextConstants;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -16,6 +16,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+
 import java.util.List;
 
 public class ItemWUT extends ItemWT {

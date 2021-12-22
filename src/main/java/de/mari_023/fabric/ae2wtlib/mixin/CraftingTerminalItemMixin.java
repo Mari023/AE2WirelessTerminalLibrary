@@ -2,8 +2,9 @@ package de.mari_023.fabric.ae2wtlib.mixin;
 
 import appeng.items.tools.powered.WirelessCraftingTerminalItem;
 import appeng.items.tools.powered.WirelessTerminalItem;
-import appeng.menu.MenuLocator;
 import appeng.menu.MenuOpener;
+import appeng.menu.locator.MenuLocator;
+import appeng.menu.locator.MenuLocators;
 import de.mari_023.fabric.ae2wtlib.AE2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
 import de.mari_023.fabric.ae2wtlib.trinket.TrinketsHelper;
@@ -52,6 +53,6 @@ public class CraftingTerminalItemMixin extends WirelessTerminalItem implements I
             it = TrinketsHelper.getTrinketsInventory(player).getStackInSlot(inventorySlot - 100);
         else it = player.getInventory().getItem(inventorySlot);
 
-        return tryOpen(player, MenuLocator.forInventorySlot(inventorySlot), it);
+        return tryOpen(player, MenuLocators.forInventorySlot(inventorySlot), it);
     }
 }

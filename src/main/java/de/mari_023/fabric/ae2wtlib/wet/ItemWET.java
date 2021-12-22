@@ -1,8 +1,8 @@
 package de.mari_023.fabric.ae2wtlib.wet;
 
 import appeng.core.AEConfig;
-import appeng.menu.MenuLocator;
 import appeng.menu.MenuOpener;
+import appeng.menu.locator.MenuLocator;
 import de.mari_023.fabric.ae2wtlib.AE2wtlib;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;

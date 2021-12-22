@@ -1,18 +1,20 @@
 package de.mari_023.fabric.ae2wtlib;
 
 import appeng.core.definitions.AEItems;
+import appeng.helpers.WirelessTerminalMenuHost;
 import appeng.items.tools.powered.WirelessCraftingTerminalItem;
 import appeng.menu.AEBaseMenu;
-import appeng.menu.MenuLocator;
+import appeng.menu.locator.MenuLocator;
+import appeng.menu.locator.MenuLocators;
 import de.mari_023.fabric.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.trinket.CombinedTrinketInventory;
 import de.mari_023.fabric.ae2wtlib.trinket.TrinketsHelper;
+import de.mari_023.fabric.ae2wtlib.wat.ItemWAT;
 import de.mari_023.fabric.ae2wtlib.wct.CraftingTerminalHandler;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.ItemMagnetCard;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetMode;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetSettings;
-import de.mari_023.fabric.ae2wtlib.wat.ItemWAT;
 import de.mari_023.fabric.ae2wtlib.wet.ItemWET;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
 import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
@@ -30,14 +32,13 @@ public class NetworkingServer {
             if(!(screenHandler instanceof AEBaseMenu)) return;
 
             final MenuLocator locator = ((AEBaseMenu) screenHandler).getLocator();
-            int slot = locator.getItemIndex();
-            ItemStack item;
-            if(slot >= 100 && slot < 200 && AE2wtlibConfig.INSTANCE.allowTrinket())
-                item = TrinketsHelper.getTrinketsInventory(player).getStackInSlot(slot - 100);
-            else item = player.getInventory().getItem(slot);
+            WirelessTerminalMenuHost host = locator.locate(player, WirelessTerminalMenuHost.class);
+            if(host == null || host.getSlot() == null) return;
+            ItemStack item = host.getItemStack();
 
             if(!(item.getItem() instanceof ItemWUT)) return;
-            WUTHandler.cycle(player, slot, item);
+
+            WUTHandler.cycle(player, host.getSlot(), item);//TODO use locator
 
             WUTHandler.open(player, locator);
         }));
@@ -74,7 +75,7 @@ public class NetworkingServer {
                     }
 
                     if(((IUniversalWirelessTerminalItem) AEItems.WIRELESS_CRAFTING_TERMINAL.asItem()).canOpen(terminal, player))
-                        ((IUniversalWirelessTerminalItem) AEItems.WIRELESS_CRAFTING_TERMINAL.asItem()).open(player, MenuLocator.forInventorySlot(slot));
+                        ((IUniversalWirelessTerminalItem) AEItems.WIRELESS_CRAFTING_TERMINAL.asItem()).open(player, MenuLocators.forInventorySlot(slot));
                 } else if(terminalName.equalsIgnoreCase("pattern_encoding")) {
                     Inventory inv = player.getInventory();
                     int slot = -1;
@@ -106,7 +107,7 @@ public class NetworkingServer {
                     }
 
                     if(AE2wtlib.PATTERN_ENCODING_TERMINAL.canOpen(terminal, player))
-                        AE2wtlib.PATTERN_ENCODING_TERMINAL.open(player, MenuLocator.forInventorySlot(slot));
+                        AE2wtlib.PATTERN_ENCODING_TERMINAL.open(player, MenuLocators.forInventorySlot(slot));
                 } else if(terminalName.equalsIgnoreCase("pattern_access")) {
                     Inventory inv = player.getInventory();
                     int slot = -1;
@@ -138,7 +139,7 @@ public class NetworkingServer {
                     }
 
                     if(AE2wtlib.PATTERN_ACCESS_TERMINAL.canOpen(terminal, player))
-                        AE2wtlib.PATTERN_ACCESS_TERMINAL.open(player, MenuLocator.forInventorySlot(slot));
+                        AE2wtlib.PATTERN_ACCESS_TERMINAL.open(player, MenuLocators.forInventorySlot(slot));
                 } else if(terminalName.equalsIgnoreCase("toggleRestock")) {
                     CraftingTerminalHandler craftingTerminalHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
                     ItemStack terminal = craftingTerminalHandler.getCraftingTerminal();

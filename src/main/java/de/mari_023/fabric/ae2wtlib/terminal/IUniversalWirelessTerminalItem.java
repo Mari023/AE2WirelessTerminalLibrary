@@ -1,6 +1,6 @@
 package de.mari_023.fabric.ae2wtlib.terminal;
 
-import appeng.menu.MenuLocator;
+import appeng.menu.locator.MenuLocator;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 

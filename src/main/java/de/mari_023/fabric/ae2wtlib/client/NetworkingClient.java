@@ -23,7 +23,7 @@ public class NetworkingClient {
         });
         ClientPlayNetworking.registerGlobalReceiver(new ResourceLocation(AE2wtlib.MOD_NAME, "update_wut"), (client, handler, buf, responseSender) -> {
             buf.retain();
-            client.execute(() -> {
+            client.execute(() -> {//TODO use locator
                 if(client.player == null) return;
                 int slot = buf.readInt();
                 ItemStack is;

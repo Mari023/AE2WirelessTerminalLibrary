@@ -1,14 +1,13 @@
 package de.mari_023.fabric.ae2wtlib.wut;
 
+import appeng.helpers.WirelessTerminalMenuHost;
 import appeng.items.tools.powered.WirelessCraftingTerminalItem;
 import appeng.menu.ISubMenu;
-import appeng.menu.MenuLocator;
-import de.mari_023.fabric.ae2wtlib.TextConstants;
+import appeng.menu.locator.MenuLocator;
 import de.mari_023.fabric.ae2wtlib.AE2wtlib;
-import de.mari_023.fabric.ae2wtlib.AE2wtlibConfig;
+import de.mari_023.fabric.ae2wtlib.TextConstants;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.terminal.WTMenuHost;
-import de.mari_023.fabric.ae2wtlib.trinket.TrinketsHelper;
 import de.mari_023.fabric.ae2wtlib.wat.ItemWAT;
 import de.mari_023.fabric.ae2wtlib.wet.ItemWET;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
@@ -19,6 +18,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -70,7 +70,7 @@ public class WUTHandler {
             nextTerminal = terminalNames.get(i);
         } while(!itemStack.getTag().getBoolean(nextTerminal));
         itemStack.getTag().putString("currentTerminal", nextTerminal);
-        updateClientTerminal((ServerPlayer) playerEntity, slot, itemStack.getTag());
+        updateClientTerminal((ServerPlayer) playerEntity, slot, itemStack.getTag());//TODO use locator
     }
 
     public static void updateClientTerminal(ServerPlayer playerEntity, int slot, CompoundTag tag) {
@@ -81,11 +81,9 @@ public class WUTHandler {
     }
 
     public static boolean open(final Player player, final MenuLocator locator) {
-        int slot = locator.getItemIndex();
-        ItemStack is;
-        if(slot >= 100 && slot < 200 && AE2wtlibConfig.INSTANCE.allowTrinket())
-            is = TrinketsHelper.getTrinketsInventory(player).getStackInSlot(slot - 100);
-        else is = player.getInventory().getItem(slot);
+        WirelessTerminalMenuHost host = locator.locate(player, WirelessTerminalMenuHost.class);
+        if(host == null) return false;
+        ItemStack is = host.getItemStack();
 
         if(is.getTag() == null) return false;
         String currentTerminal = getCurrentTerminal(is);
