@@ -17,6 +17,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
@@ -97,9 +98,9 @@ public class WUTHandler {
     public static final Map<String, WTDefinition> wirelessTerminals = new HashMap<>();
     public static final List<String> terminalNames = new ArrayList<>();
 
-    public static void addTerminal(String name, ContainerOpener open, WTMenuHostFactory WTMenuHostFactory) {
+    public static void addTerminal(String name, ContainerOpener open, WTMenuHostFactory WTMenuHostFactory, MenuType<?> menuType) {
         if(terminalNames.contains(name)) return;
-        wirelessTerminals.put(name, new WTDefinition(open, WTMenuHostFactory));
+        wirelessTerminals.put(name, new WTDefinition(open, WTMenuHostFactory, menuType));
         terminalNames.add(name);
     }
 

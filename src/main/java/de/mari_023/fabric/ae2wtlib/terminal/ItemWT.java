@@ -3,6 +3,7 @@ package de.mari_023.fabric.ae2wtlib.terminal;
 import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.menu.locator.MenuLocators;
 import de.mari_023.fabric.ae2wtlib.AE2wtlibConfig;
+import de.mari_023.fabric.ae2wtlib.trinket.TrinketLocator;
 import de.mari_023.fabric.ae2wtlib.trinket.TrinketsHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
@@ -24,8 +25,8 @@ public abstract class ItemWT extends WirelessTerminalItem implements IUniversalW
     @Override
     public InteractionResultHolder<ItemStack> use(final Level w, final Player player, final InteractionHand hand) {
         var is = player.getItemInHand(hand);
-        if(canOpen(is, player)) {
-            open(player, MenuLocators.forHand(player, hand));
+        if(checkPreconditions(is, player)) {
+            open(player, is, MenuLocators.forHand(player, hand));
             return new InteractionResultHolder<>(InteractionResult.SUCCESS, is);
         }
         return new InteractionResultHolder<>(InteractionResult.FAIL, is);
@@ -43,12 +44,10 @@ public abstract class ItemWT extends WirelessTerminalItem implements IUniversalW
      */
     @Override
     public boolean openFromInventory(Player player, int inventorySlot) {
-        ItemStack it;
         if(inventorySlot >= 100 && inventorySlot < 200 && AE2wtlibConfig.INSTANCE.allowTrinket())
-            it = TrinketsHelper.getTrinketsInventory(player).getStackInSlot(inventorySlot - 100);
-        else it = player.getInventory().getItem(inventorySlot);
-
-        return tryOpen(player, MenuLocators.forInventorySlot(inventorySlot), it);
+            return tryOpen(player, new TrinketLocator(inventorySlot), TrinketsHelper.getTrinketsInventory(player).getStackInSlot(inventorySlot - 100));
+        else
+            return tryOpen(player, MenuLocators.forInventorySlot(inventorySlot), player.getInventory().getItem(inventorySlot));
     }
 
     /**

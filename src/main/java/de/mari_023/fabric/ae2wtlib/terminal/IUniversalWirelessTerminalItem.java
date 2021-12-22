@@ -1,27 +1,36 @@
 package de.mari_023.fabric.ae2wtlib.terminal;
 
+import appeng.api.implementations.menuobjects.ItemMenuHost;
+import appeng.helpers.WirelessTerminalMenuHost;
+import appeng.menu.MenuOpener;
 import appeng.menu.locator.MenuLocator;
+import de.mari_023.fabric.ae2wtlib.trinket.TrinketLocator;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 public interface IUniversalWirelessTerminalItem extends IInfinityBoosterCardHolder {
-    boolean open(final Player player, final MenuLocator locator);
-
-    default boolean canOpen(ItemStack item, Player player) {
-        return !item.isEmpty() && checkPreconditions(item, player);
+    default boolean open(final Player player, ItemStack stack, final MenuLocator locator) {
+        return MenuOpener.open(getMenuType(stack), player, locator);
     }
 
-    /**
-     * I can't just use openFromInventory(), because I need the stack of the terminal to determine it's MenuType
-     * @param player
-     * @param locator
-     * @param stack
-     * @return true if it can open and did so successfully
-     */
     default boolean tryOpen(Player player, MenuLocator locator, ItemStack stack) {
-        if(canOpen(stack, player)) return open(player, locator);
+        if(checkPreconditions(stack, player)) return open(player, stack, locator);
         return false;
     }
+
+    @Nullable
+    default ItemMenuHost getMenuHost(Player player, MenuLocator locator, ItemStack stack) {
+        Integer slot = null;
+        if(locator instanceof TrinketLocator trinketLocator) slot = trinketLocator.itemIndex();
+        //if(locator instanceof MenuItemLocator menuItemLocator) slot = menuItemLocator.itemIndex();//TODO set the slot
+
+        return new WirelessTerminalMenuHost(player, slot, stack,
+                (p, subMenu) -> tryOpen(p, locator, stack));
+    }
+
+    MenuType<?> getMenuType(ItemStack stack);
 
     boolean checkPreconditions(ItemStack item, Player player);
 
@@ -30,11 +39,13 @@ public interface IUniversalWirelessTerminalItem extends IInfinityBoosterCardHold
     }
 
     default void setBoosterCard(ItemStack hostItem, ItemStack boosterCard) {
-        if(hostItem.getItem() instanceof IInfinityBoosterCardHolder) ItemWT.setSavedSlot(hostItem, boosterCard, "boosterCard");
+        if(hostItem.getItem() instanceof IInfinityBoosterCardHolder)
+            ItemWT.setSavedSlot(hostItem, boosterCard, "boosterCard");
     }
 
     default ItemStack getBoosterCard(ItemStack hostItem) {
-        if(hostItem.getItem() instanceof IInfinityBoosterCardHolder) return ItemWT.getSavedSlot(hostItem, "boosterCard");
+        if(hostItem.getItem() instanceof IInfinityBoosterCardHolder)
+            return ItemWT.getSavedSlot(hostItem, "boosterCard");
         return ItemStack.EMPTY;
     }
 }

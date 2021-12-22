@@ -2,11 +2,10 @@ package de.mari_023.fabric.ae2wtlib.mixin;
 
 import appeng.items.tools.powered.WirelessCraftingTerminalItem;
 import appeng.items.tools.powered.WirelessTerminalItem;
-import appeng.menu.MenuOpener;
-import appeng.menu.locator.MenuLocator;
 import appeng.menu.locator.MenuLocators;
 import de.mari_023.fabric.ae2wtlib.AE2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
+import de.mari_023.fabric.ae2wtlib.trinket.TrinketLocator;
 import de.mari_023.fabric.ae2wtlib.trinket.TrinketsHelper;
 import de.mari_023.fabric.ae2wtlib.wct.WCTMenu;
 import net.minecraft.world.entity.player.Player;
@@ -31,9 +30,8 @@ public class CraftingTerminalItemMixin extends WirelessTerminalItem implements I
         return WCTMenu.TYPE;
     }
 
-    @Override
-    public boolean open(Player player, MenuLocator locator) {
-        return MenuOpener.open(WCTMenu.TYPE, player, locator);
+    public MenuType<?> getMenuType(ItemStack stack) {
+        return getMenuType();
     }
 
     @Override
@@ -48,11 +46,9 @@ public class CraftingTerminalItemMixin extends WirelessTerminalItem implements I
      */
     @Override
     public boolean openFromInventory(Player player, int inventorySlot) {
-        ItemStack it;
         if(inventorySlot >= 100 && inventorySlot < 200 && AE2wtlibConfig.INSTANCE.allowTrinket())
-            it = TrinketsHelper.getTrinketsInventory(player).getStackInSlot(inventorySlot - 100);
-        else it = player.getInventory().getItem(inventorySlot);
-
-        return tryOpen(player, MenuLocators.forInventorySlot(inventorySlot), it);
+            return tryOpen(player, new TrinketLocator(inventorySlot), TrinketsHelper.getTrinketsInventory(player).getStackInSlot(inventorySlot - 100));
+        else
+            return tryOpen(player, MenuLocators.forInventorySlot(inventorySlot), player.getInventory().getItem(inventorySlot));
     }
 }

@@ -13,6 +13,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -40,8 +41,13 @@ public class ItemWUT extends ItemWT {
     }
 
     @Override
-    public boolean open(final Player player, final MenuLocator locator) {
+    public boolean open(final Player player, ItemStack stack, final MenuLocator locator) {
         return WUTHandler.open(player, locator);
+    }
+
+    @Override
+    public MenuType<?> getMenuType(ItemStack stack) {
+        return WUTHandler.wirelessTerminals.get(WUTHandler.getCurrentTerminal(stack)).menuType();
     }
 
     @Override

@@ -4,14 +4,19 @@ import appeng.api.IAEAddonEntrypoint;
 import appeng.api.features.GridLinkables;
 import appeng.core.definitions.AEItems;
 import appeng.items.tools.powered.WirelessTerminalItem;
+import appeng.menu.locator.MenuLocators;
 import de.mari_023.fabric.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemInfinityBooster;
+import de.mari_023.fabric.ae2wtlib.trinket.TrinketLocator;
+import de.mari_023.fabric.ae2wtlib.wat.ItemWAT;
+import de.mari_023.fabric.ae2wtlib.wat.WATMenu;
+import de.mari_023.fabric.ae2wtlib.wat.WATMenuHost;
+import de.mari_023.fabric.ae2wtlib.wct.WCTMenu;
 import de.mari_023.fabric.ae2wtlib.wct.WCTMenuHost;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.ItemMagnetCard;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetHandler;
-import de.mari_023.fabric.ae2wtlib.wat.ItemWAT;
-import de.mari_023.fabric.ae2wtlib.wat.WATMenuHost;
 import de.mari_023.fabric.ae2wtlib.wet.ItemWET;
+import de.mari_023.fabric.ae2wtlib.wet.WETMenu;
 import de.mari_023.fabric.ae2wtlib.wet.WETMenuHost;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
 import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
@@ -45,9 +50,11 @@ public class AE2wtlib implements IAEAddonEntrypoint {
             Registry.register(Registry.ITEM, new ResourceLocation(MOD_NAME, "you_need_to_enable_trinkets_to_join_this_server"), CHECK_TRINKETS);
         registerItems();
 
-        WUTHandler.addTerminal("crafting", ((IUniversalWirelessTerminalItem) AEItems.WIRELESS_CRAFTING_TERMINAL.asItem())::tryOpen, WCTMenuHost::new);
-        WUTHandler.addTerminal("pattern_encoding", PATTERN_ENCODING_TERMINAL::tryOpen, WETMenuHost::new);
-        WUTHandler.addTerminal("pattern_access", PATTERN_ACCESS_TERMINAL::tryOpen, WATMenuHost::new);
+        MenuLocators.register(TrinketLocator.class, TrinketLocator::writeToPacket, TrinketLocator::readFromPacket);
+
+        WUTHandler.addTerminal("crafting", ((IUniversalWirelessTerminalItem) AEItems.WIRELESS_CRAFTING_TERMINAL.asItem())::tryOpen, WCTMenuHost::new, WCTMenu.TYPE);
+        WUTHandler.addTerminal("pattern_encoding", PATTERN_ENCODING_TERMINAL::tryOpen, WETMenuHost::new, WETMenu.TYPE);
+        WUTHandler.addTerminal("pattern_access", PATTERN_ACCESS_TERMINAL::tryOpen, WATMenuHost::new, WATMenu.TYPE);
 
         Registry.register(Registry.RECIPE_SERIALIZER, CombineSerializer.ID, CombineSerializer.INSTANCE);
         Registry.register(Registry.RECIPE_SERIALIZER, UpgradeSerializer.ID, UpgradeSerializer.INSTANCE);

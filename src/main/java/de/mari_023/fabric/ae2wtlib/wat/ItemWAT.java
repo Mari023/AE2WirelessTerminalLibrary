@@ -7,6 +7,8 @@ import de.mari_023.fabric.ae2wtlib.AE2wtlib;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.ItemStack;
 
 public class ItemWAT extends ItemWT {
 
@@ -15,7 +17,7 @@ public class ItemWAT extends ItemWT {
     }
 
     @Override
-    public boolean open(final Player player, final MenuLocator locator) {
-        return MenuOpener.open(WATMenu.TYPE, player, locator);
+    public MenuType<?> getMenuType(ItemStack stack) {
+        return WATMenu.TYPE;
     }
 }
