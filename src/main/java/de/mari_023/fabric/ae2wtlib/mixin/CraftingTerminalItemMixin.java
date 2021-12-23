@@ -4,10 +4,7 @@ import appeng.api.implementations.menuobjects.ItemMenuHost;
 import appeng.items.tools.powered.WirelessCraftingTerminalItem;
 import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.menu.locator.MenuLocators;
-import de.mari_023.fabric.ae2wtlib.AE2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
-import de.mari_023.fabric.ae2wtlib.trinket.TrinketLocator;
-import de.mari_023.fabric.ae2wtlib.trinket.TrinketsHelper;
 import de.mari_023.fabric.ae2wtlib.wct.WCTMenu;
 import de.mari_023.fabric.ae2wtlib.wct.WCTMenuHost;
 import net.minecraft.core.BlockPos;
@@ -49,20 +46,13 @@ public class CraftingTerminalItemMixin extends WirelessTerminalItem implements I
      * @return True if the menu was opened.
      */
     @Override
-    public boolean openFromInventory(Player player, int inventorySlot) {
-        if(inventorySlot >= 100 && inventorySlot < 200 && AE2wtlibConfig.INSTANCE.allowTrinket())
+    public boolean openFromInventory(Player player, int inventorySlot) {//TODO maybe remove this since it shouldn't get called anyways
+        /*if(inventorySlot >= 100 && inventorySlot < 200 && AE2wtlibConfig.INSTANCE.allowTrinket())
             return tryOpen(player, new TrinketLocator(inventorySlot), TrinketsHelper.getTrinketsInventory(player).getStackInSlot(inventorySlot - 100));
         else
-            return tryOpen(player, MenuLocators.forInventorySlot(inventorySlot), player.getInventory().getItem(inventorySlot));
+            return tryOpen(player, MenuLocators.forInventorySlot(inventorySlot), player.getInventory().getItem(inventorySlot));*/
+        throw new IllegalStateException(String.format("%s called WirelessCraftingTerminalItem#openFromInventory() in slot %d", player, inventorySlot));
     }
-
-    /*@Nullable
-    public ItemMenuHost getMenuHost(Player player, MenuLocator locator, ItemStack stack) {
-        Integer slot = null;
-        if(locator instanceof TrinketLocator trinketLocator) slot = trinketLocator.itemIndex();
-
-        return new WCTMenuHost(player, slot, stack, (p, subMenu) -> tryOpen(p, locator, stack));
-    }*/
 
     @Nullable
     public ItemMenuHost getMenuHost(Player player, int slot, ItemStack stack, @Nullable BlockPos pos) {

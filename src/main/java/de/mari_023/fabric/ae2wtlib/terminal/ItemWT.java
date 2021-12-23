@@ -3,9 +3,6 @@ package de.mari_023.fabric.ae2wtlib.terminal;
 import appeng.api.implementations.menuobjects.ItemMenuHost;
 import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.menu.locator.MenuLocators;
-import de.mari_023.fabric.ae2wtlib.AE2wtlibConfig;
-import de.mari_023.fabric.ae2wtlib.trinket.TrinketLocator;
-import de.mari_023.fabric.ae2wtlib.trinket.TrinketsHelper;
 import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -41,17 +38,13 @@ public abstract class ItemWT extends WirelessTerminalItem implements IUniversalW
         return super.checkPreconditions(item, player);
     }
 
-    /**
-     * Open a wireless terminal from a slot in the player inventory, i.e. activated via hotkey.
-     *
-     * @return True if the menu was opened.
-     */
     @Override
     public boolean openFromInventory(Player player, int inventorySlot) {//TODO maybe remove this since it shouldn't get called anyways
-        if(inventorySlot >= 100 && inventorySlot < 200 && AE2wtlibConfig.INSTANCE.allowTrinket())
+        /*if(inventorySlot >= 100 && inventorySlot < 200 && AE2wtlibConfig.INSTANCE.allowTrinket())
             return tryOpen(player, new TrinketLocator(inventorySlot), TrinketsHelper.getTrinketsInventory(player).getStackInSlot(inventorySlot - 100));
         else
-            return tryOpen(player, MenuLocators.forInventorySlot(inventorySlot), player.getInventory().getItem(inventorySlot));
+            return tryOpen(player, MenuLocators.forInventorySlot(inventorySlot), player.getInventory().getItem(inventorySlot));*/
+        throw new IllegalStateException(String.format("%s called openFromInventory() in slot %d with item %s", player, inventorySlot, this));
     }
 
     @Nullable

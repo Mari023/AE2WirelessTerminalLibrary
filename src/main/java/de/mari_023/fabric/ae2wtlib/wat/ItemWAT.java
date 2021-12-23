@@ -17,12 +17,4 @@ public class ItemWAT extends ItemWT {
     public MenuType<?> getMenuType(ItemStack stack) {
         return WATMenu.TYPE;
     }
-
-    /*@Nullable
-    public ItemMenuHost getMenuHost(Player player, MenuLocator locator, ItemStack stack) {
-        Integer slot = null;
-        if(locator instanceof TrinketLocator trinketLocator) slot = trinketLocator.itemIndex();
-
-        return new WATMenuHost(player, slot, stack, (p, subMenu) -> tryOpen(p, locator, stack));
-    }*/
 }
