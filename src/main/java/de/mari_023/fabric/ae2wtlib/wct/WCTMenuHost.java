@@ -20,7 +20,7 @@ import net.minecraft.world.item.ItemStack;
 public class WCTMenuHost extends WTMenuHost implements IViewCellStorage, ISegmentedInventory, InternalInventoryHost {
     private final AppEngInternalInventory craftingGrid = new AppEngInternalInventory(this, 9);
 
-    public WCTMenuHost(final Player ep, int inventorySlot, final ItemStack is, BiConsumer<Player, ISubMenu> returnToMainMenu) {
+    public WCTMenuHost(final Player ep, @Nullable Integer inventorySlot, final ItemStack is, BiConsumer<Player, ISubMenu> returnToMainMenu) {
         super(ep, inventorySlot, is, returnToMainMenu);
         craftingGrid.readFromNBT(getItemStack().getOrCreateTag(), "craftingGrid");
     }

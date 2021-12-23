@@ -19,6 +19,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 public class WETMenuHost extends WTMenuHost implements ISegmentedInventory, IViewCellStorage, IPatternTerminalHost {
 
@@ -29,7 +30,7 @@ public class WETMenuHost extends WTMenuHost implements ISegmentedInventory, IVie
     private final AppEngInternalInventory output;
     private final AppEngInternalInventory pattern;
 
-    public WETMenuHost(final Player ep, int inventorySlot, final ItemStack is, BiConsumer<Player, ISubMenu> returnToMainMenu) {
+    public WETMenuHost(final Player ep, @Nullable Integer inventorySlot, final ItemStack is, BiConsumer<Player, ISubMenu> returnToMainMenu) {
         super(ep, inventorySlot, is, returnToMainMenu);
         crafting = new WTlibInternalInventory(this, 9, "pattern_crafting", is);
         output = new WTlibInternalInventory(this, 3, "output", is);

@@ -22,14 +22,14 @@ public record TrinketLocator(int itemIndex) implements MenuLocator {
                 if(hostInterface.isInstance(menuHost)) return hostInterface.cast(menuHost);
 
                 if(menuHost != null) {
-                    AELog.warn("Item in slot %d of %s did not create a compatible menu of type %s: %s", itemIndex, player, hostInterface, menuHost);
+                    AELog.warn("Item in slot %d of %s did not create a compatible menu of type %s: %s", itemIndex - 100, player, hostInterface, menuHost);
                 }
 
                 return null;
             }
         }
 
-        AELog.warn("Item in slot %d of %s is not an IMenuItem: %s", itemIndex, player, it);
+        AELog.warn("Item in Trinket slot %d of %s is not an IMenuItem: %s", itemIndex - 100, player, it);
         return null;
     }
 

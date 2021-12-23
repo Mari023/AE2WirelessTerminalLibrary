@@ -12,6 +12,7 @@ import java.util.function.BiConsumer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class WTMenuHost extends WirelessTerminalMenuHost {
 
@@ -20,7 +21,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost {
     private boolean rangeCheck;
     private IGridNode securityTerminalNode;
 
-    public WTMenuHost(final Player player, int inventorySlot, final ItemStack is, BiConsumer<Player, ISubMenu> returnToMainMenu) {
+    public WTMenuHost(final Player player, @Nullable Integer inventorySlot, final ItemStack is, BiConsumer<Player, ISubMenu> returnToMainMenu) {
         super(player, inventorySlot, is, returnToMainMenu);
         viewCellInventory = new ViewCellInventory(is);
         myPlayer = player;

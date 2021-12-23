@@ -62,4 +62,12 @@ public class ItemWUT extends ItemWT {
             lines.add(TextConstants.PATTERN_ENCODING);
         super.appendHoverText(stack, world, lines, advancedTooltips);
     }
+
+    /*@Nullable
+    public ItemMenuHost getMenuHost(Player player, MenuLocator locator, ItemStack stack) {
+        Integer slot = null;
+        if(locator instanceof TrinketLocator trinketLocator) slot = trinketLocator.itemIndex();
+
+        return WUTHandler.wirelessTerminals.get(WUTHandler.getCurrentTerminal(stack)).wTMenuHostFactory().create(player, slot, stack, (p, subMenu) -> tryOpen(player, locator, stack));
+    }*/
 }

@@ -46,7 +46,7 @@ public class WCTMenu extends CraftingTermMenu implements IWTInvHolder {
 
         wtInventory = new WTInventory(getPlayerInventory(), wctGUIObject.getItemStack(), this);
 
-        final int slotIndex = wctGUIObject.getSlot();
+        boolean isInOffhand = Integer.valueOf(40).equals(wctGUIObject.getSlot());
 
         SlotsWithTrinket[5] = addSlot(new AppEngSlot(wtInventory, 3) {
             @Environment(EnvType.CLIENT)
@@ -73,7 +73,7 @@ public class WCTMenu extends CraftingTermMenu implements IWTInvHolder {
             }
         }, AE2wtlibSlotSemantics.BOOTS);
 
-        if(slotIndex == 40)
+        if(isInOffhand)
             SlotsWithTrinket[45] = addSlot(new DisabledSlot(wtInventory.toContainer(), WTInventory.OFF_HAND) {
                 @Environment(EnvType.CLIENT)
                 public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {

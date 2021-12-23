@@ -1,13 +1,13 @@
 package de.mari_023.fabric.ae2wtlib;
 
 import appeng.core.definitions.AEItems;
-import appeng.helpers.WirelessTerminalMenuHost;
 import appeng.items.tools.powered.WirelessCraftingTerminalItem;
 import appeng.menu.AEBaseMenu;
 import appeng.menu.locator.MenuLocator;
 import appeng.menu.locator.MenuLocators;
 import de.mari_023.fabric.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
+import de.mari_023.fabric.ae2wtlib.terminal.WTMenuHost;
 import de.mari_023.fabric.ae2wtlib.trinket.CombinedTrinketInventory;
 import de.mari_023.fabric.ae2wtlib.trinket.TrinketLocator;
 import de.mari_023.fabric.ae2wtlib.trinket.TrinketsHelper;
@@ -33,7 +33,7 @@ public class NetworkingServer {
             if(!(screenHandler instanceof AEBaseMenu)) return;
 
             final MenuLocator locator = ((AEBaseMenu) screenHandler).getLocator();
-            WirelessTerminalMenuHost host = locator.locate(player, WirelessTerminalMenuHost.class);
+            WTMenuHost host = locator.locate(player, WTMenuHost.class);
             if(host == null || host.getSlot() == null) return;
             ItemStack item = host.getItemStack();
 

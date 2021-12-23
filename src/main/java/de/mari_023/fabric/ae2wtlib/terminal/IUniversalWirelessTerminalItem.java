@@ -1,10 +1,10 @@
 package de.mari_023.fabric.ae2wtlib.terminal;
 
 import appeng.api.implementations.menuobjects.ItemMenuHost;
-import appeng.helpers.WirelessTerminalMenuHost;
 import appeng.menu.MenuOpener;
 import appeng.menu.locator.MenuLocator;
 import de.mari_023.fabric.ae2wtlib.trinket.TrinketLocator;
+import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
@@ -26,8 +26,7 @@ public interface IUniversalWirelessTerminalItem extends IInfinityBoosterCardHold
         if(locator instanceof TrinketLocator trinketLocator) slot = trinketLocator.itemIndex();
         //if(locator instanceof MenuItemLocator menuItemLocator) slot = menuItemLocator.itemIndex();//TODO set the slot
 
-        return new WirelessTerminalMenuHost(player, slot, stack,
-                (p, subMenu) -> tryOpen(p, locator, stack));
+        return WUTHandler.wirelessTerminals.get(WUTHandler.getCurrentTerminal(stack)).wTMenuHostFactory().create(player, slot, stack, (p, subMenu) -> tryOpen(player, locator, stack));
     }
 
     MenuType<?> getMenuType(ItemStack stack);

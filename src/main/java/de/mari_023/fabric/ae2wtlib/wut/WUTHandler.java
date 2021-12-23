@@ -1,6 +1,5 @@
 package de.mari_023.fabric.ae2wtlib.wut;
 
-import appeng.helpers.WirelessTerminalMenuHost;
 import appeng.items.tools.powered.WirelessCraftingTerminalItem;
 import appeng.menu.ISubMenu;
 import appeng.menu.locator.MenuLocator;
@@ -19,6 +18,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -82,7 +82,7 @@ public class WUTHandler {
     }
 
     public static boolean open(final Player player, final MenuLocator locator) {
-        WirelessTerminalMenuHost host = locator.locate(player, WirelessTerminalMenuHost.class);
+        WTMenuHost host = locator.locate(player, WTMenuHost.class);
         if(host == null) return false;
         ItemStack is = host.getItemStack();
 
@@ -111,6 +111,6 @@ public class WUTHandler {
 
     @FunctionalInterface
     public interface WTMenuHostFactory {
-        WTMenuHost create(final Player ep, int inventorySlot, final ItemStack is, BiConsumer<Player, ISubMenu> returnToMainMenu);
+        WTMenuHost create(final Player ep, @Nullable Integer inventorySlot, final ItemStack is, BiConsumer<Player, ISubMenu> returnToMainMenu);
     }
 }

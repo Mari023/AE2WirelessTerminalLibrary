@@ -1,10 +1,13 @@
 package de.mari_023.fabric.ae2wtlib.terminal;
 
+import appeng.api.implementations.menuobjects.ItemMenuHost;
 import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.menu.locator.MenuLocators;
 import de.mari_023.fabric.ae2wtlib.AE2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.trinket.TrinketLocator;
 import de.mari_023.fabric.ae2wtlib.trinket.TrinketsHelper;
+import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -13,6 +16,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.function.DoubleSupplier;
 
@@ -43,11 +47,17 @@ public abstract class ItemWT extends WirelessTerminalItem implements IUniversalW
      * @return True if the menu was opened.
      */
     @Override
-    public boolean openFromInventory(Player player, int inventorySlot) {
+    public boolean openFromInventory(Player player, int inventorySlot) {//TODO maybe remove this since it shouldn't get called anyways
         if(inventorySlot >= 100 && inventorySlot < 200 && AE2wtlibConfig.INSTANCE.allowTrinket())
             return tryOpen(player, new TrinketLocator(inventorySlot), TrinketsHelper.getTrinketsInventory(player).getStackInSlot(inventorySlot - 100));
         else
             return tryOpen(player, MenuLocators.forInventorySlot(inventorySlot), player.getInventory().getItem(inventorySlot));
+    }
+
+    @Nullable
+    public ItemMenuHost getMenuHost(Player player, int slot, ItemStack stack, @Nullable BlockPos pos) {
+
+        return WUTHandler.wirelessTerminals.get(WUTHandler.getCurrentTerminal(stack)).wTMenuHostFactory().create(player, slot, stack, (p, subMenu) -> tryOpen(player, MenuLocators.forInventorySlot(slot), stack));
     }
 
     /**
