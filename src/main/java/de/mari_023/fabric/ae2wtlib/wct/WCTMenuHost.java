@@ -48,5 +48,6 @@ public class WCTMenuHost extends WTMenuHost implements IViewCellStorage, ISegmen
     }
 
     @Override
-    public void onChangeInventory(InternalInventory inv, int slot, ItemStack removedStack, ItemStack newStack) {}
+    public void onChangeInventory(InternalInventory inv, int slot) {
+    }
 }

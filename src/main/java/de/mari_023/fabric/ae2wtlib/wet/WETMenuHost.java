@@ -63,7 +63,7 @@ public class WETMenuHost extends WTMenuHost implements ISegmentedInventory, IVie
     public void saveChanges() {}
 
     @Override
-    public void onChangeInventory(final InternalInventory inv, final int slot, final ItemStack removedStack, final ItemStack newStack) {
+    public void onChangeInventory(final InternalInventory inv, final int slot) {
         if(inv == pattern && slot == 1) {
             final ItemStack is = pattern.getStackInSlot(1);
             final IPatternDetails details = PatternDetailsHelper.decodePattern(is, getPlayer().level);
