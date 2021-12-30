@@ -12,6 +12,8 @@ import appeng.container.ContainerOpener;
 import appeng.container.me.crafting.CraftConfirmContainer;
 import de.mari_023.fabric.ae2wtlib.wct.WCTContainer;
 import de.mari_023.fabric.ae2wtlib.wct.WCTGuiObject;
+import de.mari_023.fabric.ae2wtlib.wpt.WPTContainer;
+import de.mari_023.fabric.ae2wtlib.wpt.WPTGuiObject;
 import net.minecraft.screen.ScreenHandlerType;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -38,15 +40,18 @@ public abstract class CraftConfirmContainerMixin {
 
     @Inject(method = "startJob", at = @At(value = "HEAD"), cancellable = true)
     public void serverPacketData(CallbackInfo ci) {
-        ScreenHandlerType<?> originalGui = null;
+        ScreenHandlerType<?> originalGui;
         IActionHost ah = ((AEBaseContainerMixin) this).invokeGetActionHost();
         if(ah instanceof WCTGuiObject) originalGui = WCTContainer.TYPE;
+        else if(ah instanceof WPTGuiObject) originalGui = WPTContainer.TYPE;
+        else return;
 
         if(result == null || result.isSimulation()) return;
 
         ICraftingLink g = ((ICraftingGrid) getGrid().getCache(ICraftingGrid.class)).submitJob(result, null, selectedCpu, true, getActionSrc());
         setAutoStart(false);
-        if(g != null && originalGui != null && ((AEBaseContainer) (Object) this).getLocator() != null)
+        if(g != null && ((AEBaseContainer) (Object) this).getLocator() != null)
             ContainerOpener.openContainer(originalGui, ((AEBaseContainer) (Object) this).getPlayerInventory().player, ((AEBaseContainer) (Object) this).getLocator());
+        ci.cancel();
     }
 }
