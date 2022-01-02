@@ -31,11 +31,11 @@ public class WUTHandler {
     public static String getCurrentTerminal(ItemStack terminal) {
         if(terminal.getItem() instanceof WirelessCraftingTerminalItem) return "crafting";
         if(!(terminal.getItem() instanceof ItemWT) || terminal.getTag() == null)
-            return "noTerminal";
+            return "";
         if(!(terminal.getItem() instanceof ItemWUT)) {
             if(terminal.getItem() instanceof ItemWET) return "pattern_encoding";
             else if(terminal.getItem() instanceof ItemWAT) return "pattern_access";
-            else return "noTerminal";
+            else return "";
         }
         String currentTerminal = terminal.getTag().getString("currentTerminal");
 
