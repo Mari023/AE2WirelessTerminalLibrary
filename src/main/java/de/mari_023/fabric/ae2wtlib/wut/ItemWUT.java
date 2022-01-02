@@ -10,6 +10,7 @@ import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -31,6 +32,10 @@ public class ItemWUT extends ItemWT {
 
     @Override
     public InteractionResultHolder<ItemStack> use(final Level w, final Player player, final InteractionHand hand) {
+        if(WUTHandler.getCurrentTerminal(player.getItemInHand(hand)).equals("noTerminal")) {
+            player.sendMessage(TextConstants.TERMINAL_EMPTY, Util.NIL_UUID);
+            return new InteractionResultHolder<>(InteractionResult.FAIL, player.getItemInHand(hand));
+        }
         /*if(player.isShiftKeyDown()) {
             if(w.isClientSide()) Minecraft.getInstance().setScreen(new WUTSelectScreen(player.getItemInHand(hand)));
             return new InteractionResultHolder<>(InteractionResult.SUCCESS, player.getItemInHand(hand));
