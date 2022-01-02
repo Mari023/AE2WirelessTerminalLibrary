@@ -175,6 +175,10 @@
     "cycleTerminal": {
       "left": -20,
       "top": 128
+    },
+    "viewCells": {
+      "right": -2,
+      "top": 53
     }
   }
 }

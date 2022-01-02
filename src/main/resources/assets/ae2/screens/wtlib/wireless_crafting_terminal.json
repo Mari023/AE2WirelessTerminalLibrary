@@ -116,6 +116,10 @@
     "player": {
       "left": 52,
       "bottom": 94
+    },
+    "viewCells": {
+      "right": -2,
+      "top": 53
     }
   }
 }
