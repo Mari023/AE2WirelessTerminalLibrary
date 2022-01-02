@@ -33,7 +33,7 @@ public class ItemWUT extends ItemWT {
     @Override
     public InteractionResultHolder<ItemStack> use(final Level w, final Player player, final InteractionHand hand) {
         if(WUTHandler.getCurrentTerminal(player.getItemInHand(hand)).equals("")) {
-            player.sendMessage(TextConstants.TERMINAL_EMPTY, Util.NIL_UUID);
+            if(!w.isClientSide()) player.sendMessage(TextConstants.TERMINAL_EMPTY, Util.NIL_UUID);
             return new InteractionResultHolder<>(InteractionResult.FAIL, player.getItemInHand(hand));
         }
         /*if(player.isShiftKeyDown()) {
