@@ -31,10 +31,10 @@ public class ItemWUT extends ItemWT {
 
     @Override
     public InteractionResultHolder<ItemStack> use(final Level w, final Player player, final InteractionHand hand) {
-        if(player.isShiftKeyDown()) {
+        /*if(player.isShiftKeyDown()) {
             if(w.isClientSide()) Minecraft.getInstance().setScreen(new WUTSelectScreen(player.getItemInHand(hand)));
             return new InteractionResultHolder<>(InteractionResult.SUCCESS, player.getItemInHand(hand));
-        } else return super.use(w, player, hand);
+        } else*/ return super.use(w, player, hand);
     }
 
     @Override
