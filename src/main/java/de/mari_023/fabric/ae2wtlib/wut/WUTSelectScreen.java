@@ -17,8 +17,8 @@ public class WUTSelectScreen extends Screen {
 
     protected WUTSelectScreen(ItemStack terminal) {
         super(new TranslatableComponent("gui.ae2wtlib.wireless_universal_terminal"));
-        for (String currentTerminal : WUTHandler.terminalNames) {
-            if (WUTHandler.hasTerminal(terminal, currentTerminal)) terminals.add(currentTerminal);
+        for(String currentTerminal : WUTHandler.terminalNames) {
+            if(WUTHandler.hasTerminal(terminal, currentTerminal)) terminals.add(currentTerminal);
         }
     }
 
@@ -26,8 +26,8 @@ public class WUTSelectScreen extends Screen {
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
         int angle = 360 / terminals.size();
 
-        for (int i = 0; i < terminals.size(); i++) {
-            drawDoughnutSegment(poseStack, i * angle, angle, width / 2f, height / 2f, 100, 50, Color.DARK_GRAY.getRGB());
+        for(int i = 0; i < terminals.size(); i++) {
+            drawDoughnutSegment(poseStack, i * angle, (i + 1) * angle, width / 2f, height / 2f, 100, 50, Color.DARK_GRAY.getRGB());
         }
     }
 
@@ -44,12 +44,12 @@ public class WUTSelectScreen extends Screen {
 
         Matrix4f modelMatrix = poseStack.last().pose();
         bufferBuilder.begin(VertexFormat.Mode.TRIANGLE_FAN, DefaultVertexFormat.POSITION_COLOR);
-        for (int i = startingAngle; i <= endingAngle; i++) {
+        for(int i = startingAngle; i <= endingAngle; i++) {
             double x = Math.sin(Math.toRadians(i)) * innerRingRadius;
             double y = Math.cos(Math.toRadians(i)) * innerRingRadius;
             bufferBuilder.vertex(modelMatrix, (float) (centerX + x), (float) (centerY - y), 0).color(f1, f2, f3, f).endVertex();
         }
-        for (int i = endingAngle; i >= startingAngle; i--) {
+        for(int i = endingAngle; i >= startingAngle; i--) {
             double x = Math.sin(Math.toRadians(i)) * outerRingRadius;
             double y = Math.cos(Math.toRadians(i)) * outerRingRadius;
             bufferBuilder.vertex(modelMatrix, (float) (centerX + x), (float) (centerY - y), 0).color(f1, f2, f3, f).endVertex();
