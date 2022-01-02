@@ -1,6 +1,7 @@
 package de.mari_023.fabric.ae2wtlib.wut;
 
 import appeng.core.AEConfig;
+import appeng.core.definitions.AEItems;
 import appeng.menu.locator.MenuLocator;
 import de.mari_023.fabric.ae2wtlib.AE2wtlib;
 import de.mari_023.fabric.ae2wtlib.AE2wtlibConfig;
@@ -30,15 +31,15 @@ public class ItemWUT extends ItemWT {
 
     @Override
     public InteractionResultHolder<ItemStack> use(final Level w, final Player player, final InteractionHand hand) {
-        if (player.isShiftKeyDown()) {
+        if(player.isShiftKeyDown()) {
             if(w.isClientSide()) Minecraft.getInstance().setScreen(new WUTSelectScreen(player.getItemInHand(hand)));
             return new InteractionResultHolder<>(InteractionResult.SUCCESS, player.getItemInHand(hand));
         } else return super.use(w, player, hand);
     }
 
     @Override
-    public double getChargeRate() {
-        return super.getChargeRate() * AE2wtlibConfig.INSTANCE.WUTChargeRateMultiplier();
+    public double getChargeRate(ItemStack stack) {
+        return 800d * (AE2wtlibConfig.INSTANCE.WUTChargeRateMultiplier() + 1 + getUpgrades(stack).getInstalledUpgrades(AEItems.ENERGY_CARD));
     }
 
     @Override
@@ -55,11 +56,11 @@ public class ItemWUT extends ItemWT {
     @Environment(EnvType.CLIENT)
     public void appendHoverText(final ItemStack stack, final Level world, final List<Component> lines, final TooltipFlag advancedTooltips) {
         lines.add(TextConstants.UNIVERSAL);
-        if (WUTHandler.hasTerminal(stack, "crafting"))
+        if(WUTHandler.hasTerminal(stack, "crafting"))
             lines.add(TextConstants.CRAFTING);
-        if (WUTHandler.hasTerminal(stack, "pattern_access"))
+        if(WUTHandler.hasTerminal(stack, "pattern_access"))
             lines.add(TextConstants.PATTERN_ACCESS);
-        if (WUTHandler.hasTerminal(stack, "pattern_encoding"))
+        if(WUTHandler.hasTerminal(stack, "pattern_encoding"))
             lines.add(TextConstants.PATTERN_ENCODING);
         super.appendHoverText(stack, world, lines, advancedTooltips);
     }

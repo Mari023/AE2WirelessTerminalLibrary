@@ -3,7 +3,7 @@ package de.mari_023.fabric.ae2wtlib.wet;
 import appeng.api.config.SecurityPermissions;
 import appeng.api.networking.IGridNode;
 import appeng.menu.implementations.MenuTypeBuilder;
-import appeng.menu.me.items.PatternTermMenu;
+import appeng.menu.me.items.PatternEncodingTermMenu;
 import appeng.menu.slot.AppEngSlot;
 import appeng.menu.slot.RestrictedInputSlot;
 import de.mari_023.fabric.ae2wtlib.AE2wtlibSlotSemantics;
@@ -20,7 +20,7 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 import java.util.function.Function;
 
-public class WETMenu extends PatternTermMenu implements IWTInvHolder {
+public class WETMenu extends PatternEncodingTermMenu implements IWTInvHolder {
 
     public static final MenuType<WETMenu> TYPE = MenuTypeBuilder.create(WETMenu::new, WETMenuHost.class).requirePermission(SecurityPermissions.CRAFT).build("wireless_pattern_encoding_terminal");
 
@@ -40,19 +40,10 @@ public class WETMenu extends PatternTermMenu implements IWTInvHolder {
         addSlot(infinityBoosterCardSlot, AE2wtlibSlotSemantics.INFINITY_BOOSTER_CARD);
 
         if(isClient()) {//FIXME set craftingMode and substitute serverside
-            setCraftingMode(ItemWT.getBoolean(WETGUIObject.getItemStack(), "craftingMode"));
+            //WETGUIObject.setCraftingRecipe(ItemWT.getBoolean(WETGUIObject.getItemStack(), "craftingMode"));
             setSubstitute(ItemWT.getBoolean(WETGUIObject.getItemStack(), "substitute"));
             setSubstituteFluids(ItemWT.getBoolean(WETGUIObject.getItemStack(), "substitute_fluids"));
         }
-    }
-
-    public boolean isCraftingMode() {
-        return WETGUIObject.isCraftingRecipe();
-    }
-
-    public void setCraftingMode(boolean craftingMode) {
-        super.setCraftingMode(craftingMode);
-        WETGUIObject.setCraftingRecipe(craftingMode);
     }
 
     public boolean isSubstitute() {

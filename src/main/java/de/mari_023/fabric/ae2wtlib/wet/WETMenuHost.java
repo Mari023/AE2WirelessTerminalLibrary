@@ -9,12 +9,15 @@ import appeng.api.stacks.GenericStack;
 import appeng.crafting.pattern.IAEPatternDetails;
 import appeng.helpers.IPatternTerminalHost;
 import appeng.menu.ISubMenu;
+import appeng.parts.encoding.EncodingMode;
 import appeng.util.inv.AppEngInternalInventory;
 import de.mari_023.fabric.ae2wtlib.AE2wtlib;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.terminal.WTMenuHost;
 import de.mari_023.fabric.ae2wtlib.terminal.WTlibInternalInventory;
+
 import java.util.function.BiConsumer;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
@@ -23,6 +26,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class WETMenuHost extends WTMenuHost implements ISegmentedInventory, IViewCellStorage, IPatternTerminalHost {
 
+    private EncodingMode mode = EncodingMode.CRAFTING;
     private boolean craftingMode = true;
     private boolean substitute = false;
     private boolean substituteFluids = true;
@@ -57,6 +61,17 @@ public class WETMenuHost extends WTMenuHost implements ISegmentedInventory, IVie
         else if(id.equals(IPatternTerminalHost.INV_OUTPUT)) return output;
         else if(id.equals(PATTERNS)) return pattern;
         else return null;
+    }
+
+    @Override
+    public EncodingMode getMode() {
+        return mode;
+    }
+
+    @Override
+    public void setMode(EncodingMode mode) {
+        this.mode = mode;
+        fixCraftingRecipes();
     }
 
     @Override
