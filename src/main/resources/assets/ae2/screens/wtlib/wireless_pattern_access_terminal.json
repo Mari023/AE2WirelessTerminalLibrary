@@ -1,34 +1,7 @@
 {
   "$schema": "schema.json",
-  "includes": ["../common/common.json", "../common/player_inventory.json"],
-  "slots": {
-    "AE2WTLIB_INFINITY_BOOSTER_CARD": {
-      "left": 173,
-      "bottom": 93
-    }
-  },
-  "text": {
-    "dialog_title": {
-      "text": {
-        "translate": "gui.ae2.InterfaceTerminal"
-      },
-      "position": {
-        "left": 8,
-        "top": 6
-      }
-    }
-  },
+  "includes": ["../pattern_access_terminal.json"],
   "widgets": {
-    "scrollbar": {
-      "left": 175,
-      "top": 18
-    },
-    "search": {
-      "left": 104,
-      "top": 4,
-      "width": 65,
-      "height": 12
-    },
     "cycleTerminal": {
       "left": -20,
       "top": 28
