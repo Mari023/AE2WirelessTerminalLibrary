@@ -9,13 +9,12 @@ import appeng.parts.reporting.CraftingTerminalPart;
 import appeng.util.inv.AppEngInternalInventory;
 import appeng.util.inv.InternalInventoryHost;
 import de.mari_023.fabric.ae2wtlib.terminal.WTMenuHost;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.BiConsumer;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.ItemStack;
 
 public class WCTMenuHost extends WTMenuHost implements IViewCellStorage, ISegmentedInventory, InternalInventoryHost {
     private final AppEngInternalInventory craftingGrid = new AppEngInternalInventory(this, 9);
@@ -23,11 +22,6 @@ public class WCTMenuHost extends WTMenuHost implements IViewCellStorage, ISegmen
     public WCTMenuHost(final Player ep, @Nullable Integer inventorySlot, final ItemStack is, BiConsumer<Player, ISubMenu> returnToMainMenu) {
         super(ep, inventorySlot, is, returnToMainMenu);
         craftingGrid.readFromNBT(getItemStack().getOrCreateTag(), "craftingGrid");
-    }
-
-    @Override
-    public MenuType<?> getType() {
-        return WCTMenu.TYPE;
     }
 
     @Override

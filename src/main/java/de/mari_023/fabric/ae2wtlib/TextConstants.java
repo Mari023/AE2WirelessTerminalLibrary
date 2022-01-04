@@ -39,6 +39,5 @@ public final class TextConstants {
 
     public static final MutableComponent DELETE = new TranslatableComponent("gui.ae2wtlib.emptytrash").append("\n").append(new TranslatableComponent("gui.ae2wtlib.emptytrash.desc"));
 
-    public static final List<Component> BOOSTER_SLOT = List.of(new TranslatableComponent("gui.ae2wtlib.slot.infinity_booster_card.desc"));
     public static final List<Component> MAGNETCARD_SLOT = List.of(new TranslatableComponent("gui.ae2wtlib.slot.magnetcard.desc"));
 }

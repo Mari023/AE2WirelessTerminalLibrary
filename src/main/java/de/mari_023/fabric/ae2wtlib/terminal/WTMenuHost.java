@@ -10,7 +10,6 @@ import appeng.menu.ISubMenu;
 import de.mari_023.fabric.ae2wtlib.AE2wtlib;
 import de.mari_023.fabric.ae2wtlib.AE2wtlibConfig;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
@@ -43,8 +42,6 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost {
         if(node != null) return node;
         return securityTerminalNode;
     }
-
-    public abstract MenuType<?> getType();
 
     public boolean rangeCheck() {
         rangeCheck = super.rangeCheck();

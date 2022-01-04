@@ -16,10 +16,9 @@ public class AE2wtlibSlotSemantics {
 
     public static final SlotSemantic TRASH = register("TRASH");
     public static final SlotSemantic MAGNET_CARD = register("MAGNET_CARD");
-    public static final SlotSemantic INFINITY_BOOSTER_CARD = register("INFINITY_BOOSTER_CARD");
 
 
     private static SlotSemantic register(String id) {
-        return SlotSemantics.register("AE2WTLIB_"+id, false);
+        return SlotSemantics.register("AE2WTLIB_" + id, false);
     }
 }

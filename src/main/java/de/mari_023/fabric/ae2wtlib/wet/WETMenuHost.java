@@ -15,14 +15,12 @@ import de.mari_023.fabric.ae2wtlib.AE2wtlib;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.terminal.WTMenuHost;
 import de.mari_023.fabric.ae2wtlib.terminal.WTlibInternalInventory;
-
-import java.util.function.BiConsumer;
-
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.function.BiConsumer;
 
 public class WETMenuHost extends WTMenuHost implements ISegmentedInventory, IViewCellStorage, IPatternTerminalHost {
 
@@ -39,11 +37,6 @@ public class WETMenuHost extends WTMenuHost implements ISegmentedInventory, IVie
         crafting = new WTlibInternalInventory(this, 9, "pattern_crafting", is);
         output = new WTlibInternalInventory(this, 3, "output", is);
         pattern = new WTlibInternalInventory(this, 2, "pattern", is);
-    }
-
-    @Override
-    public MenuType<?> getType() {
-        return WETMenu.TYPE;
     }
 
     @Override

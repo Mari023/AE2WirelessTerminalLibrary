@@ -21,8 +21,6 @@ public interface IUniversalWirelessTerminalItem {
 
     @Nullable
     default ItemMenuHost getMenuHost(Player player, MenuLocator locator, ItemStack stack) {
-        //Integer slot = null;
-        //if(locator instanceof MenuItemLocator menuItemLocator) slot = menuItemLocator.itemIndex();//TODO set the slot, so it will be locked properly
         return WUTHandler.wirelessTerminals.get(WUTHandler.getCurrentTerminal(stack)).wTMenuHostFactory().create(player, null, stack, (p, subMenu) -> tryOpen(player, locator, stack));
     }
 
