@@ -88,15 +88,6 @@ public class WCTMenu extends CraftingTermMenu implements IWTInvHolder {
         }, AE2wtlibSlotSemantics.OFFHAND);
         addSlot(new AppEngSlot(wtInventory, WTInventory.TRASH), AE2wtlibSlotSemantics.TRASH);
 
-        AppEngSlot infinityBoosterCardSlot = new AppEngSlot(wtInventory, WTInventory.INFINITY_BOOSTER_CARD) {
-            @Override
-            public List<Component> getCustomTooltip(Function<ItemStack, List<Component>> getItemTooltip, ItemStack carriedItem) {
-                return TextConstants.BOOSTER_SLOT;
-            }
-        };
-        infinityBoosterCardSlot.setIcon(RestrictedInputSlot.PlacableItemType.UPGRADES.icon);
-        addSlot(infinityBoosterCardSlot, AE2wtlibSlotSemantics.INFINITY_BOOSTER_CARD);
-
         AppEngSlot magnetCardSlot = new AppEngSlot(wtInventory, WTInventory.MAGNET_CARD) {
             @Override
             public List<Component> getCustomTooltip(Function<ItemStack, List<Component>> getItemTooltip, ItemStack carriedItem) {

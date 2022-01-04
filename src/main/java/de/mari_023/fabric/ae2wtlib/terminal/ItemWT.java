@@ -40,10 +40,6 @@ public abstract class ItemWT extends WirelessTerminalItem implements IUniversalW
 
     @Override
     public boolean openFromInventory(Player player, int inventorySlot) {//TODO maybe remove this since it shouldn't get called anyways
-        /*if(inventorySlot >= 100 && inventorySlot < 200 && AE2wtlibConfig.INSTANCE.allowTrinket())
-            return tryOpen(player, new TrinketLocator(inventorySlot), TrinketsHelper.getTrinketsInventory(player).getStackInSlot(inventorySlot - 100));
-        else
-            return tryOpen(player, MenuLocators.forInventorySlot(inventorySlot), player.getInventory().getItem(inventorySlot));*/
         throw new IllegalStateException(String.format("%s called openFromInventory() in slot %d with item %s", player, inventorySlot, this));
     }
 

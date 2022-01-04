@@ -2,11 +2,11 @@ package de.mari_023.fabric.ae2wtlib;
 
 import appeng.api.IAEAddonEntrypoint;
 import appeng.api.features.GridLinkables;
+import appeng.api.upgrades.Upgrades;
 import appeng.core.definitions.AEItems;
 import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.menu.locator.MenuLocators;
 import de.mari_023.fabric.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
-import de.mari_023.fabric.ae2wtlib.terminal.ItemInfinityBooster;
 import de.mari_023.fabric.ae2wtlib.trinket.TrinketLocator;
 import de.mari_023.fabric.ae2wtlib.wat.ItemWAT;
 import de.mari_023.fabric.ae2wtlib.wat.WATMenu;
@@ -40,7 +40,7 @@ public class AE2wtlib implements IAEAddonEntrypoint {
     public static ItemWAT PATTERN_ACCESS_TERMINAL;
     public static ItemWUT UNIVERSAL_TERMINAL;
 
-    public static ItemInfinityBooster INFINITY_BOOSTER;
+    public static Item INFINITY_BOOSTER;
     public static ItemMagnetCard MAGNET_CARD;
     public static final Item CHECK_TRINKETS = new Item(new FabricItemSettings());
 
@@ -67,7 +67,7 @@ public class AE2wtlib implements IAEAddonEntrypoint {
         PATTERN_ENCODING_TERMINAL = new ItemWET();
         PATTERN_ACCESS_TERMINAL = new ItemWAT();
         UNIVERSAL_TERMINAL = new ItemWUT();
-        INFINITY_BOOSTER = new ItemInfinityBooster();
+        INFINITY_BOOSTER = Upgrades.createUpgradeCardItem(new FabricItemSettings().tab(AE2wtlib.ITEM_GROUP).stacksTo(1));
         MAGNET_CARD = new ItemMagnetCard();
 
         Registry.register(Registry.ITEM, new ResourceLocation(MOD_NAME, "infinity_booster_card"), INFINITY_BOOSTER);
@@ -79,5 +79,14 @@ public class AE2wtlib implements IAEAddonEntrypoint {
         GridLinkables.register(PATTERN_ENCODING_TERMINAL, WirelessTerminalItem.LINKABLE_HANDLER);
         GridLinkables.register(PATTERN_ACCESS_TERMINAL, WirelessTerminalItem.LINKABLE_HANDLER);
         GridLinkables.register(UNIVERSAL_TERMINAL, WirelessTerminalItem.LINKABLE_HANDLER);
+
+        Upgrades.add(AEItems.ENERGY_CARD, UNIVERSAL_TERMINAL, 2);
+        Upgrades.add(AEItems.ENERGY_CARD, PATTERN_ACCESS_TERMINAL, 2);
+        Upgrades.add(AEItems.ENERGY_CARD, PATTERN_ENCODING_TERMINAL, 2);
+
+        Upgrades.add(INFINITY_BOOSTER, AEItems.WIRELESS_CRAFTING_TERMINAL, 1);
+        Upgrades.add(INFINITY_BOOSTER, PATTERN_ENCODING_TERMINAL, 1);
+        Upgrades.add(INFINITY_BOOSTER, PATTERN_ACCESS_TERMINAL, 1);
+        Upgrades.add(INFINITY_BOOSTER, UNIVERSAL_TERMINAL, 1);
     }
 }

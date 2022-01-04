@@ -7,29 +7,31 @@ import appeng.api.networking.IGridNode;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.networking.storage.IStorageService;
 import appeng.api.storage.MEStorage;
+import appeng.api.upgrades.UpgradeInventories;
 import appeng.api.util.DimensionalBlockPos;
 import appeng.blockentity.networking.WirelessBlockEntity;
 import appeng.items.tools.powered.WirelessCraftingTerminalItem;
 import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.menu.locator.MenuLocator;
 import appeng.menu.locator.MenuLocators;
+import de.mari_023.fabric.ae2wtlib.AE2wtlib;
 import de.mari_023.fabric.ae2wtlib.AE2wtlibConfig;
-import de.mari_023.fabric.ae2wtlib.terminal.IInfinityBoosterCardHolder;
 import de.mari_023.fabric.ae2wtlib.trinket.CombinedTrinketInventory;
 import de.mari_023.fabric.ae2wtlib.trinket.TrinketLocator;
 import de.mari_023.fabric.ae2wtlib.trinket.TrinketsHelper;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
 import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
-import java.util.HashMap;
-import java.util.OptionalLong;
-import java.util.Set;
-import java.util.UUID;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.HashMap;
+import java.util.OptionalLong;
+import java.util.Set;
+import java.util.UUID;
 
 public class CraftingTerminalHandler {
 
@@ -143,8 +145,9 @@ public class CraftingTerminalHandler {
     }
 
     public boolean inRange() {
-        if(getCraftingTerminal().isEmpty()) return false;
-        if(((IInfinityBoosterCardHolder) craftingTerminal.getItem()).hasBoosterCard(craftingTerminal)) return true;
+        ItemStack is = getCraftingTerminal();
+        if(is.isEmpty()) return false;
+        if(UpgradeInventories.forItem(is,2).isInstalled(AE2wtlib.INFINITY_BOOSTER)) return true;
         sqRange = Double.MAX_VALUE;
 
         if(getTargetGrid() == null) return false;

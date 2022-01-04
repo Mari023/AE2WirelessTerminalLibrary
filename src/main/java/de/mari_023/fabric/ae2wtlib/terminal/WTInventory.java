@@ -15,7 +15,6 @@ public class WTInventory implements InternalInventory {
 
     public static final int OFF_HAND = 4;
     public static final int TRASH = 5;
-    public static final int INFINITY_BOOSTER_CARD = 6;
     public static final int MAGNET_CARD = 7;
     private static final int SLOT_OFFSET = 36;
 
@@ -39,8 +38,6 @@ public class WTInventory implements InternalInventory {
         if(i < 4 && i >= 0) return playerInventory.getItem(i + SLOT_OFFSET);
         else if(i == OFF_HAND) return playerInventory.getItem(Inventory.SLOT_OFFHAND);
         else if(i == TRASH) return ItemWT.getSavedSlot(wt, "trash");
-        else if(i == INFINITY_BOOSTER_CARD && wt.getItem() instanceof IInfinityBoosterCardHolder)
-            return ((IInfinityBoosterCardHolder) wt.getItem()).getBoosterCard(wt);
         else if(i == MAGNET_CARD) return ItemWT.getSavedSlot(wt, "magnetCard");
         return null;
     }
@@ -59,8 +56,6 @@ public class WTInventory implements InternalInventory {
         else if(i == Inventory.SLOT_OFFHAND)
             return playerInventory.canPlaceItem(Inventory.SLOT_OFFHAND, itemStack);
         else if(i == TRASH) return true;
-        else if(i == INFINITY_BOOSTER_CARD)
-            return itemStack.getItem() instanceof ItemInfinityBooster || itemStack.isEmpty();
         else if(i == MAGNET_CARD)
             return itemStack.getItem() instanceof ItemMagnetCard || itemStack.isEmpty();
         return false;
@@ -74,9 +69,6 @@ public class WTInventory implements InternalInventory {
             playerInventory.setItem(Inventory.SLOT_OFFHAND, itemStack);
         } else if(i == TRASH) {
             ItemWT.setSavedSlot(wt, itemStack, "trash");
-        } else if(i == INFINITY_BOOSTER_CARD) {
-            if(!(itemStack.getItem() instanceof ItemInfinityBooster) && !itemStack.equals(ItemStack.EMPTY)) return;
-            ((IInfinityBoosterCardHolder) wt.getItem()).setBoosterCard(wt, itemStack);
         } else if(i == MAGNET_CARD) {
             if(!(itemStack.getItem() instanceof ItemMagnetCard) && !itemStack.equals(ItemStack.EMPTY)) return;
             ItemWT.setSavedSlot(wt, itemStack, "magnetCard");
