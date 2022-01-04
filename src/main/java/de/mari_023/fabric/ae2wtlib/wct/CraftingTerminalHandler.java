@@ -11,9 +11,12 @@ import appeng.api.util.DimensionalBlockPos;
 import appeng.blockentity.networking.WirelessBlockEntity;
 import appeng.items.tools.powered.WirelessCraftingTerminalItem;
 import appeng.items.tools.powered.WirelessTerminalItem;
+import appeng.menu.locator.MenuLocator;
+import appeng.menu.locator.MenuLocators;
 import de.mari_023.fabric.ae2wtlib.AE2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.terminal.IInfinityBoosterCardHolder;
 import de.mari_023.fabric.ae2wtlib.trinket.CombinedTrinketInventory;
+import de.mari_023.fabric.ae2wtlib.trinket.TrinketLocator;
 import de.mari_023.fabric.ae2wtlib.trinket.TrinketsHelper;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
 import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
@@ -26,6 +29,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 public class CraftingTerminalHandler {
 
@@ -36,7 +40,7 @@ public class CraftingTerminalHandler {
     private IGrid targetGrid;
     private IStorageService storageGrid;
     private MEStorage itemStorageChannel;
-    private int slot = -1;
+    private MenuLocator locator;
     private IWirelessAccessPoint myWap;
     private double sqRange = Double.MAX_VALUE;
     private HashMap<Item, Long> restockAbleItems = new HashMap<>();
@@ -63,7 +67,7 @@ public class CraftingTerminalHandler {
 
     public void invalidateCache() {
         craftingTerminal = ItemStack.EMPTY;
-        slot = -1;
+        locator = null;
         securityStation = null;
         targetGrid = null;
         storageGrid = null;
@@ -83,7 +87,7 @@ public class CraftingTerminalHandler {
                 if(terminal.getItem() instanceof WirelessCraftingTerminalItem || (terminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(terminal, "crafting"))) {
                     securityStation = null;
                     targetGrid = null;
-                    slot = i;
+                    locator = new TrinketLocator(i);
                     return craftingTerminal = terminal;
                 }
             }
@@ -94,7 +98,7 @@ public class CraftingTerminalHandler {
             if(terminal.getItem() instanceof WirelessCraftingTerminalItem || (terminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(terminal, "crafting"))) {
                 securityStation = null;
                 targetGrid = null;
-                slot = i;
+                locator = MenuLocators.forInventorySlot(i);
                 return craftingTerminal = terminal;
             }
         }
@@ -102,9 +106,10 @@ public class CraftingTerminalHandler {
         return ItemStack.EMPTY;
     }
 
-    public int getSlot() {
-        if(getCraftingTerminal().isEmpty()) return slot = 0;
-        return slot;
+    @Nullable
+    public MenuLocator getLocator() {
+        if(getCraftingTerminal().isEmpty()) return null;
+        return locator;
     }
 
     public IActionHost getSecurityStation() {

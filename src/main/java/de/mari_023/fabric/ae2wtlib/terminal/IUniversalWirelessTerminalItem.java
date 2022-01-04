@@ -22,11 +22,9 @@ public interface IUniversalWirelessTerminalItem extends IInfinityBoosterCardHold
 
     @Nullable
     default ItemMenuHost getMenuHost(Player player, MenuLocator locator, ItemStack stack) {
-        Integer slot = null;
-        if(locator instanceof TrinketLocator trinketLocator) slot = trinketLocator.itemIndex();
+        //Integer slot = null;
         //if(locator instanceof MenuItemLocator menuItemLocator) slot = menuItemLocator.itemIndex();//TODO set the slot
-
-        return WUTHandler.wirelessTerminals.get(WUTHandler.getCurrentTerminal(stack)).wTMenuHostFactory().create(player, slot, stack, (p, subMenu) -> tryOpen(player, locator, stack));
+        return WUTHandler.wirelessTerminals.get(WUTHandler.getCurrentTerminal(stack)).wTMenuHostFactory().create(player, null, stack, (p, subMenu) -> tryOpen(player, locator, stack));
     }
 
     MenuType<?> getMenuType(ItemStack stack);

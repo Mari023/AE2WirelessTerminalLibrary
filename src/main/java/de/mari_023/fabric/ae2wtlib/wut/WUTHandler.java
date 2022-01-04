@@ -3,6 +3,7 @@ package de.mari_023.fabric.ae2wtlib.wut;
 import appeng.items.tools.powered.WirelessCraftingTerminalItem;
 import appeng.menu.ISubMenu;
 import appeng.menu.locator.MenuLocator;
+import appeng.menu.locator.MenuLocators;
 import de.mari_023.fabric.ae2wtlib.AE2wtlib;
 import de.mari_023.fabric.ae2wtlib.TextConstants;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
@@ -49,11 +50,11 @@ public class WUTHandler {
         return currentTerminal;
     }
 
-    public static void setCurrentTerminal(Player playerEntity, int slot, ItemStack itemStack, String terminal) {
+    public static void setCurrentTerminal(Player playerEntity, MenuLocator locator, ItemStack itemStack, String terminal) {
         if(!hasTerminal(itemStack, terminal)) return;
         assert itemStack.getTag() != null;
         itemStack.getTag().putString("currentTerminal", terminal);
-        updateClientTerminal((ServerPlayer) playerEntity, slot, itemStack.getTag());
+        updateClientTerminal((ServerPlayer) playerEntity, locator, itemStack.getTag());
     }
 
     public static boolean hasTerminal(ItemStack itemStack, String terminal) {
@@ -62,7 +63,7 @@ public class WUTHandler {
         return itemStack.getTag().getBoolean(terminal);
     }
 
-    public static void cycle(Player playerEntity, int slot, ItemStack itemStack) {
+    public static void cycle(Player playerEntity, MenuLocator locator, ItemStack itemStack) {
         if(itemStack.getTag() == null) return;
         String nextTerminal = getCurrentTerminal(itemStack);
         do {
@@ -71,12 +72,12 @@ public class WUTHandler {
             nextTerminal = terminalNames.get(i);
         } while(!itemStack.getTag().getBoolean(nextTerminal));
         itemStack.getTag().putString("currentTerminal", nextTerminal);
-        updateClientTerminal((ServerPlayer) playerEntity, slot, itemStack.getTag());//TODO use locator
+        updateClientTerminal((ServerPlayer) playerEntity, locator, itemStack.getTag());
     }
 
-    public static void updateClientTerminal(ServerPlayer playerEntity, int slot, CompoundTag tag) {
+    public static void updateClientTerminal(ServerPlayer playerEntity, MenuLocator locator, CompoundTag tag) {
         FriendlyByteBuf buf = PacketByteBufs.create();
-        buf.writeInt(slot);
+        MenuLocators.writeToPacket(buf, locator);
         buf.writeNbt(tag);
         ServerPlayNetworking.send(playerEntity, new ResourceLocation(AE2wtlib.MOD_NAME, "update_wut"), buf);
     }

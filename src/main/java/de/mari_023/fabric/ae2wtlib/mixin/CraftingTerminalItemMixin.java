@@ -40,17 +40,8 @@ public class CraftingTerminalItemMixin extends WirelessTerminalItem implements I
         return super.checkPreconditions(item, player);
     }
 
-    /**
-     * Open a wireless terminal from a slot in the player inventory, i.e. activated via hotkey.
-     *
-     * @return True if the menu was opened.
-     */
     @Override
     public boolean openFromInventory(Player player, int inventorySlot) {//TODO maybe remove this since it shouldn't get called anyways
-        /*if(inventorySlot >= 100 && inventorySlot < 200 && AE2wtlibConfig.INSTANCE.allowTrinket())
-            return tryOpen(player, new TrinketLocator(inventorySlot), TrinketsHelper.getTrinketsInventory(player).getStackInSlot(inventorySlot - 100));
-        else
-            return tryOpen(player, MenuLocators.forInventorySlot(inventorySlot), player.getInventory().getItem(inventorySlot));*/
         throw new IllegalStateException(String.format("%s called WirelessCraftingTerminalItem#openFromInventory() in slot %d", player, inventorySlot));
     }
 

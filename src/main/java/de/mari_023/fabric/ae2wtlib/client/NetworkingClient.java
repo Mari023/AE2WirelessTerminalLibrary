@@ -1,14 +1,15 @@
 package de.mari_023.fabric.ae2wtlib.client;
 
+import appeng.menu.locator.MenuLocator;
+import appeng.menu.locator.MenuLocators;
 import de.mari_023.fabric.ae2wtlib.AE2wtlib;
-import de.mari_023.fabric.ae2wtlib.AE2wtlibConfig;
-import de.mari_023.fabric.ae2wtlib.trinket.TrinketsHelper;
+import de.mari_023.fabric.ae2wtlib.terminal.WTMenuHost;
 import de.mari_023.fabric.ae2wtlib.wct.CraftingTerminalHandler;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
+
 import java.util.HashMap;
 
 public class NetworkingClient {
@@ -23,15 +24,12 @@ public class NetworkingClient {
         });
         ClientPlayNetworking.registerGlobalReceiver(new ResourceLocation(AE2wtlib.MOD_NAME, "update_wut"), (client, handler, buf, responseSender) -> {
             buf.retain();
-            client.execute(() -> {//TODO use locator
+            client.execute(() -> {
                 if(client.player == null) return;
-                int slot = buf.readInt();
-                ItemStack is;
+                MenuLocator locator = MenuLocators.readFromPacket(buf);
                 CompoundTag tag = buf.readNbt();
-                if(slot >= 100 && slot < 200 && AE2wtlibConfig.INSTANCE.allowTrinket())
-                    is = TrinketsHelper.getTrinketsInventory(client.player).getStackInSlot(slot - 100);
-                else is = client.player.getInventory().getItem(slot);
-                is.setTag(tag);
+                WTMenuHost host = locator.locate(client.player, WTMenuHost.class);
+                if(host != null) host.getItemStack().setTag(tag);
                 buf.release();
                 CraftingTerminalHandler.getCraftingTerminalHandler(client.player).invalidateCache();
             });

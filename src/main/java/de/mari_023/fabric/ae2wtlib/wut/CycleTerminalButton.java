@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
+
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
@@ -27,7 +28,6 @@ public class CycleTerminalButton extends Button implements ITooltip {
     List<Component> getTooltipMessage() {
         return Collections.singletonList(TextConstants.CYCLE_TOOLTIP);
     }
-
 
     @Override
     public Rect2i getTooltipArea() {
