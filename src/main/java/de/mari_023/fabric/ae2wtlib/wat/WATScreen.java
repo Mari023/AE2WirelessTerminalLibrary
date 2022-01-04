@@ -3,6 +3,9 @@ package de.mari_023.fabric.ae2wtlib.wat;
 import appeng.client.gui.me.interfaceterminal.InterfaceTerminalScreen;
 import appeng.client.gui.style.ScreenStyle;
 import appeng.client.gui.style.StyleManager;
+import appeng.client.gui.widgets.ToolboxPanel;
+import appeng.client.gui.widgets.UpgradesPanel;
+import appeng.menu.SlotSemantics;
 import de.mari_023.fabric.ae2wtlib.wut.CycleTerminalButton;
 import de.mari_023.fabric.ae2wtlib.wut.IUniversalTerminalCapable;
 import net.minecraft.network.chat.Component;
@@ -27,5 +30,9 @@ public class WATScreen extends InterfaceTerminalScreen<WATMenu> implements IUniv
     public WATScreen(WATMenu container, Inventory playerInventory, Component title) {
         super(container, playerInventory, title, STYLE);
         if(getMenu().isWUT()) widgets.add("cycleTerminal", new CycleTerminalButton(btn -> cycleTerminal()));
+
+        widgets.add("upgrades", new UpgradesPanel(getMenu().getSlots(SlotSemantics.UPGRADE), getMenu().getHost()));
+        if(getMenu().getToolbox().isPresent())
+            widgets.add("toolbox", new ToolboxPanel(style, getMenu().getToolbox().getName()));
     }
 }
