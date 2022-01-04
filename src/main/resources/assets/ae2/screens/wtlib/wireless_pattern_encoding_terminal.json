@@ -6,9 +6,10 @@
       "left": -20,
       "top": 128
     },
-    "viewCells": {
+    "upgrades": {
+      "$comment": "The upgrade panel found on some screens",
       "right": -2,
-      "top": 53
+      "top": 107
     }
   }
 }
