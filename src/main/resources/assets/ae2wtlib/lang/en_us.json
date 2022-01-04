@@ -19,7 +19,6 @@
   "gui.ae2wtlib.restock": "Restock: ",
   "gui.ae2wtlib.off": "Off",
   "gui.ae2wtlib.on": "On",
-  "gui.ae2wtlib.slot.infinity_booster_card.desc": "Infinity Booster Card",
   "gui.ae2wtlib.slot.magnetcard.desc" : "Magnet Card",
 
   "item.ae2wtlib.wireless_pattern_encoding_terminal": "Wireless Pattern Encoding Terminal",
@@ -36,18 +35,15 @@
 
   "text.autoconfig.ae2wtlib.title": "AE2 Wireless Terminals",
 
-  "text.autoconfig.ae2wtlib.option.chargeRate": "Charge Rate",
-  "text.autoconfig.ae2wtlib.option.wutChargeRateMultiplier": "Wireless Universal Terminal Charge Rate Multiplier",
-  "text.autoconfig.ae2wtlib.option.wutBatterySizeMultiplier": "Wireless Universal Terminal Battery Size Multiplier",
   "text.autoconfig.ae2wtlib.option.outOfRangePowerMultiplier": "Out of Range Power Multiplier",
   "text.autoconfig.ae2wtlib.option.magnetCardRange": "Magnet Card Range",
   "text.autoconfig.ae2wtlib.option.enableTrinket": "Enable Trinkets Integration",
 
-  "text.autoconfig.ae2wtlib.option.wutChargeRateMultiplier.@Tooltip": "",
   "text.autoconfig.ae2wtlib.option.outOfRangePowerMultiplier.@Tooltip": "If this is lower than 1, being in range of a Wireless Access Point would use more power in some cases.",
   "text.autoconfig.ae2wtlib.option.magnetCardRange.@Tooltip": "",
 
-  "text.autoconfig.ae2wtlib.option.enableTrinket.@Tooltip[0]": "This will break things if it is different than a server you might connect to.",
-  "text.autoconfig.ae2wtlib.option.enableTrinket.@Tooltip[1]": "It is only effective if Trinkets is installed."
+  "text.autoconfig.ae2wtlib.option.enableTrinket.@Tooltip[0]": "This setting has to be the same on both client and server.",
+  "text.autoconfig.ae2wtlib.option.enableTrinket.@Tooltip[1]": "You need to restart to apply a change.",
+  "text.autoconfig.ae2wtlib.option.enableTrinket.@Tooltip[2]": "It is only effective if Trinkets is installed."
 
 }

@@ -1,6 +1,7 @@
 package de.mari_023.fabric.ae2wtlib.terminal;
 
 import appeng.api.implementations.menuobjects.ItemMenuHost;
+import appeng.core.AEConfig;
 import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.menu.locator.MenuLocators;
 import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
@@ -19,8 +20,8 @@ import java.util.function.DoubleSupplier;
 
 public abstract class ItemWT extends WirelessTerminalItem implements IUniversalWirelessTerminalItem {
 
-    public ItemWT(final DoubleSupplier powerCapacity, Item.Properties props) {
-        super(powerCapacity, props);
+    public ItemWT(Item.Properties props) {
+        super(AEConfig.instance().getWirelessTerminalBattery(), props);
     }
 
     @Override

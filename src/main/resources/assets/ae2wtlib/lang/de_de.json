@@ -19,7 +19,6 @@
   "gui.ae2wtlib.restock": "Nachfüllen: ",
   "gui.ae2wtlib.off": "Aus",
   "gui.ae2wtlib.on": "An",
-  "gui.ae2wtlib.slot.infinity_booster_card.desc": "Unendlicher Drahtlosverstärker",
   "gui.ae2wtlib.slot.magnetcard.desc" : "Magnet Karte",
 
   "item.ae2wtlib.wireless_universal_terminal": "Drahtlose Universalkonsole",
@@ -33,17 +32,13 @@
 
 
   "text.autoconfig.ae2wtlib.title": "AE2 Wireless Terminals",
-
-  "text.autoconfig.ae2wtlib.option.chargeRate": "Laderate",
-  "text.autoconfig.ae2wtlib.option.wutChargeRateMultiplier": "Laderatenmultiplikator der Drahtlose Universalkonsole",
-  "text.autoconfig.ae2wtlib.option.wutBatterySizeMultiplier": "Batteriemultiplikator der Drahtlose Universalkonsole",
   "text.autoconfig.ae2wtlib.option.outOfRangePowerMultiplier": "Leistungsmultiplikator außer Reichweite",
   "text.autoconfig.ae2wtlib.option.magnetCardRange": "Reichweite der Magnet Karte",
   "text.autoconfig.ae2wtlib.option.enableTrinket": "Trinkets Integration aktivieren",
-  "text.autoconfig.ae2wtlib.option.wutChargeRateMultiplier.@Tooltip": "",
   "text.autoconfig.ae2wtlib.option.outOfRangePowerMultiplier.@Tooltip": "Wenn dieser Wer kleiner als 1 ist, könnten Drahtlose Konsolen innerhalb der Reichweite eines Drahtlosen Zugangspunktes mehr Strom verbrauchen als außerhalb.",
   "text.autoconfig.ae2wtlib.option.magnetCardRange.@Tooltip": "",
 
-  "text.autoconfig.ae2wtlib.option.enableTrinket.@Tooltip[0]": "Diese Einstellung kann zu Problemen führen wenn die anders ist als auf einem Server mit welchem man sich verbindet.",
-  "text.autoconfig.ae2wtlib.option.enableTrinket.@Tooltip[1]": "Sie wird nur beachtet wenn Trinkets Installiert ist."
+  "text.autoconfig.ae2wtlib.option.enableTrinket.@Tooltip[0]": "Diese Einstellung muss für Server und Clients gleich sein.",
+  "text.autoconfig.ae2wtlib.option.enableTrinket.@Tooltip[1]": "Ein Neustart ist notwendig um diese Einstellung zu übernehmen",
+  "text.autoconfig.ae2wtlib.option.enableTrinket.@Tooltip[2]": "Sie wird nur beachtet wenn Trinkets Installiert ist."
 }

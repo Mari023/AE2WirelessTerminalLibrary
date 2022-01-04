@@ -33,19 +33,13 @@
 
 
   "text.autoconfig.ae2wtlib.title": "AE2 무선 터미널",
-
-  "text.autoconfig.ae2wtlib.option.chargeRate": "충전 속도",
-  "text.autoconfig.ae2wtlib.option.wutChargeRateMultiplier": "무선 범용 터미널 충전 속도 배율",
-  "text.autoconfig.ae2wtlib.option.wutBatterySizeMultiplier": "무선 범용 터미널 배터리 크기 배율",
   "text.autoconfig.ae2wtlib.option.outOfRangePowerMultiplier": "범위 밖 전력 소모 배율",
   "text.autoconfig.ae2wtlib.option.magnetCardRange": "마그넷 카드 범위",
   "text.autoconfig.ae2wtlib.option.enableTrinket": "Trinkets 통합 사용",
-
-  "text.autoconfig.ae2wtlib.option.wutChargeRateMultiplier.@Tooltip": "",
   "text.autoconfig.ae2wtlib.option.outOfRangePowerMultiplier.@Tooltip": "값이 1보다 낮을 경우, 무선 액세스 지점에 있을 때 더 많은 전력을 소모하는 경우도 있습니다.",
   "text.autoconfig.ae2wtlib.option.magnetCardRange.@Tooltip": "",
 
   "text.autoconfig.ae2wtlib.option.enableTrinket.@Tooltip[0]": "연결할 수 있는 서버와 다를 경우 오류가 발생합니다.",
-  "text.autoconfig.ae2wtlib.option.enableTrinket.@Tooltip[1]": "Trinkets가 설치된 경우에만 효과가 있습니다."
+  "text.autoconfig.ae2wtlib.option.enableTrinket.@Tooltip[2]": "Trinkets가 설치된 경우에만 효과가 있습니다."
 
 }

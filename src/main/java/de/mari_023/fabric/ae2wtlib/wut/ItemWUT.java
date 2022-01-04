@@ -1,10 +1,10 @@
 package de.mari_023.fabric.ae2wtlib.wut;
 
-import appeng.core.AEConfig;
+import appeng.api.upgrades.IUpgradeInventory;
+import appeng.api.upgrades.UpgradeInventories;
 import appeng.core.definitions.AEItems;
 import appeng.menu.locator.MenuLocator;
 import de.mari_023.fabric.ae2wtlib.AE2wtlib;
-import de.mari_023.fabric.ae2wtlib.AE2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.TextConstants;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import net.fabricmc.api.EnvType;
@@ -26,7 +26,7 @@ import java.util.List;
 public class ItemWUT extends ItemWT {
 
     public ItemWUT() {
-        super(() -> AEConfig.instance().getWirelessTerminalBattery().getAsDouble() * AE2wtlibConfig.INSTANCE.WUTBatterySizeMultiplier(), new FabricItemSettings().tab(AE2wtlib.ITEM_GROUP).stacksTo(1));
+        super(new FabricItemSettings().tab(AE2wtlib.ITEM_GROUP).stacksTo(1));
     }
 
     @Override
@@ -38,12 +38,13 @@ public class ItemWUT extends ItemWT {
         /*if(player.isShiftKeyDown()) {
             if(w.isClientSide()) Minecraft.getInstance().setScreen(new WUTSelectScreen(player.getItemInHand(hand)));
             return new InteractionResultHolder<>(InteractionResult.SUCCESS, player.getItemInHand(hand));
-        } else*/ return super.use(w, player, hand);
+        } else*/
+        return super.use(w, player, hand);
     }
 
     @Override
     public double getChargeRate(ItemStack stack) {
-        return 800d * (AE2wtlibConfig.INSTANCE.WUTChargeRateMultiplier() + 1 + getUpgrades(stack).getInstalledUpgrades(AEItems.ENERGY_CARD));
+        return 800d * (countInstalledTerminals(stack) + 1 + getUpgrades(stack).getInstalledUpgrades(AEItems.ENERGY_CARD));
     }
 
     @Override
@@ -67,5 +68,22 @@ public class ItemWUT extends ItemWT {
         if(WUTHandler.hasTerminal(stack, "pattern_encoding"))
             lines.add(TextConstants.PATTERN_ENCODING);
         super.appendHoverText(stack, world, lines, advancedTooltips);
+    }
+
+    @Override
+    public IUpgradeInventory getUpgrades(ItemStack stack) {
+        return UpgradeInventories.forItem(stack, countInstalledTerminals(stack) * 2, this::onUpgradesChanged);
+    }
+
+    private void onUpgradesChanged(ItemStack stack, IUpgradeInventory upgrades) {
+        setAEMaxPowerMultiplier(stack, countInstalledTerminals(stack) + upgrades.getInstalledUpgrades(AEItems.ENERGY_CARD));
+    }
+
+    public int countInstalledTerminals(ItemStack stack) {
+        int terminals = 0;
+        for(String s : WUTHandler.terminalNames) {
+            if(WUTHandler.hasTerminal(stack, s)) terminals++;
+        }
+        return terminals;
     }
 }
