@@ -9,7 +9,6 @@ import de.mari_023.fabric.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.terminal.WTMenuHost;
 import de.mari_023.fabric.ae2wtlib.trinket.CombinedTrinketInventory;
-import de.mari_023.fabric.ae2wtlib.trinket.TrinketLocator;
 import de.mari_023.fabric.ae2wtlib.trinket.TrinketsHelper;
 import de.mari_023.fabric.ae2wtlib.wat.ItemWAT;
 import de.mari_023.fabric.ae2wtlib.wct.CraftingTerminalHandler;
@@ -63,7 +62,7 @@ public class NetworkingServer {
                         for(int i = 0; i < trinketInv.size(); i++) {
                             ItemStack trinketTerminal = trinketInv.getStackInSlot(i);
                             if(trinketTerminal.getItem() instanceof WirelessCraftingTerminalItem || (trinketTerminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(trinketTerminal, "crafting"))) {
-                                locator = new TrinketLocator(i + 100);
+                                locator = trinketInv.getLocator(i);
                                 WUTHandler.setCurrentTerminal(player, locator, trinketTerminal, "crafting");
                                 terminal = trinketTerminal;
                                 break;
@@ -93,7 +92,7 @@ public class NetworkingServer {
                         for(int i = 0; i < trinketInv.size(); i++) {
                             ItemStack trinketTerminal = trinketInv.getStackInSlot(i);
                             if(trinketTerminal.getItem() instanceof ItemWET || (trinketTerminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(trinketTerminal, "pattern_encoding"))) {
-                                locator = new TrinketLocator(i + 100);
+                                locator = trinketInv.getLocator(i);
                                 WUTHandler.setCurrentTerminal(player, locator, trinketTerminal, "pattern_encoding");
                                 terminal = trinketTerminal;
                                 break;
@@ -124,7 +123,7 @@ public class NetworkingServer {
                         for(int i = 0; i < trinketInv.size(); i++) {
                             ItemStack trinketTerminal = trinketInv.getStackInSlot(i);
                             if(trinketTerminal.getItem() instanceof ItemWAT || (trinketTerminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(trinketTerminal, "pattern_access"))) {
-                                locator = new TrinketLocator(i + 100);
+                                locator = trinketInv.getLocator(i);
                                 WUTHandler.setCurrentTerminal(player, locator, trinketTerminal, "pattern_access");
                                 terminal = trinketTerminal;
                                 break;

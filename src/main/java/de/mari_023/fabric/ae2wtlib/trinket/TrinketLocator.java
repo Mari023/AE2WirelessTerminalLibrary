@@ -10,11 +10,11 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-public record TrinketLocator(int itemIndex) implements MenuLocator {
+public record TrinketLocator(String group, String type, int slot) implements MenuLocator {
 
     @Nullable
     public <T> T locate(Player player, Class<T> hostInterface) {
-        ItemStack it = TrinketsHelper.getTrinketsInventory(player).getStackInSlot(itemIndex - 100);
+        ItemStack it = TrinketsHelper.getTrinket(player, group, type, slot);
         if(!it.isEmpty()) {
             Item item = it.getItem();
             if(item instanceof IUniversalWirelessTerminalItem guiItem) {
@@ -22,22 +22,24 @@ public record TrinketLocator(int itemIndex) implements MenuLocator {
                 if(hostInterface.isInstance(menuHost)) return hostInterface.cast(menuHost);
 
                 if(menuHost != null) {
-                    AELog.warn("Item in slot %d of %s did not create a compatible menu of type %s: %s", itemIndex - 100, player, hostInterface, menuHost);
+                    AELog.warn("Item in Trinket group %s type %s slot %d of %s did not create a compatible menu of type %s: %s", group, type, slot, player, hostInterface, menuHost);
                 }
 
                 return null;
             }
         }
 
-        AELog.warn("Item in Trinket slot %d of %s is not an IMenuItem: %s", itemIndex - 100, player, it);
+        AELog.warn("Item in  Trinket group %s type %s slot %d of %s is not an IMenuItem: %s", group, type, slot, player, it);
         return null;
     }
 
     public void writeToPacket(FriendlyByteBuf buf) {
-        buf.writeInt(itemIndex);
+        buf.writeUtf(group);
+        buf.writeUtf(type);
+        buf.writeInt(slot);
     }
 
     public static TrinketLocator readFromPacket(FriendlyByteBuf buf) {
-        return new TrinketLocator(buf.readInt());
+        return new TrinketLocator(buf.readUtf(), buf.readUtf(), buf.readInt());
     }
 }

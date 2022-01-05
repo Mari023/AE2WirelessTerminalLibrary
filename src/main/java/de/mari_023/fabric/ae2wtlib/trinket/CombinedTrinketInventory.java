@@ -5,8 +5,11 @@ import dev.emi.trinkets.api.TrinketInventory;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
-import net.minecraft.world.item.ItemStack;
 
+import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
+
+@Deprecated
 public class CombinedTrinketInventory implements InternalInventory {
 
     private final Map<String, Map<String, TrinketInventory>> inventory;
@@ -24,6 +27,21 @@ public class CombinedTrinketInventory implements InternalInventory {
             }
         }
         return currentIndex;
+    }
+
+    @Nullable
+    public TrinketLocator getLocator(int index) {//TODO move to a search function in TrinketsHelper
+        int currentIndex = 0;
+        for(Map.Entry<String, Map<String, TrinketInventory>> group : inventory.entrySet()) {
+            for(Map.Entry<String, TrinketInventory> slotType : group.getValue().entrySet()) {
+                if(index >= currentIndex + slotType.getValue().getContainerSize()) {
+                    currentIndex += slotType.getValue().getContainerSize();
+                } else {
+                    return new TrinketLocator(group.getKey(), slotType.getKey(), index - currentIndex);
+                }
+            }
+        }
+        return null;
     }
 
     @Override
