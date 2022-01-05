@@ -5,26 +5,48 @@
   "gui.ae2wtlib.emptytrash": "Корзина",
   "gui.ae2wtlib.emptytrash.desc": "Удалить содержимое корзины",
 
-  "item.ae2wtlib.infinity_booster_card": "Карта бесконечного ускорения",
-  "item.ae2wtlib.infinity_booster_card.desc": "Расширяет кол-во беспроводных терминалов до бесконечности",
-  "item.ae2wtlib.magnet_card": "Магнитная карта",
-  "item.ae2wtlib.magnet_card.desc": "Магнитное улучшение для беспроводного терминала",
+  "item.ae2wtlib.infinity_booster_card": "Бесконечная карта ускорения",
+  "item.ae2wtlib.infinity_booster_card.desc": "Расширяет беспроводные терминалы до бесконечности",
+  "item.ae2wtlib.magnet_card": "Магнитная карта ",
+  "item.ae2wtlib.magnet_card.desc": "Магнитное улучшение для беспроводного терминала крафта",
 
   "gui.ae2wtlib.magnetcard": "Магнитная карта",
-  "gui.ae2wtlib.magnetcard.desc.off": "Выключена",
+  "gui.ae2wtlib.magnetcard.desc.off": "Выключить",
   "gui.ae2wtlib.magnetcard.desc.inv": "Подбирать в инвентарь",
-  "gui.ae2wtlib.magnetcard.desc.me": "Подбирать в МЕ систему",
-  "gui.ae2wtlib.cycle_terminal.desc": "Открыть следующей терминал",
+  "gui.ae2wtlib.magnetcard.desc.me": "Подбирать в МЭ",
+  "gui.ae2wtlib.cycle_terminal.desc": "Открыть следующий терминал",
   "gui.ae2wtlib.magnetcard.hotkey": "Магнитная карта: ",
-  "gui.ae2wtlib.restock": "Автопополнение: ",
-  "gui.ae2wtlib.off": "Вкл",
-  "gui.ae2wtlib.on": "Выкл",
-  "item.ae2wtlib.wireless_universal_terminal": "Универсальный беспроводной терминал",
+  "gui.ae2wtlib.restock": "Авто пополнение: ",
+  "gui.ae2wtlib.off": "Выключить",
+  "gui.ae2wtlib.on": "Включить",
+  "gui.ae2wtlib.slot.infinity_booster_card.desc": "Бесконечная карта ускорения",
+  "gui.ae2wtlib.slot.magnetcard.desc" : "Магнитная карта",
+
+  "item.ae2wtlib.wireless_pattern_encoding_terminal": "Беспроводной терминал кодирования шаблонов",
+  "item.ae2wtlib.wireless_pattern_access_terminal": "Беспроводной терминал доступа к шаблонам (НЕ ТОЧНЫЙ ПЕРЕВОД)",
+  "item.ae2wtlib.wireless_universal_terminal": "Беспроводной универсальный терминал",
   "item.ae2wtlib.wireless_universal_terminal.desc": "Установленные терминалы:",
 
   "key.ae2wtlib.wct": "Открыть беспроводной терминал крафта",
   "key.ae2wtlib.wpt": "Открыть беспроводной терминал шаблонов",
-  "key.ae2wtlib.wit": "Открыть беспроводной терминал интерфейсов",
-  "key.ae2wtlib.toggleRestock": "Переключить автопополнение",
-  "key.ae2wtlib.toggleMagnet": "Переключить магнитную карту"
+  "key.ae2wtlib.wit": "Открыть беспроводной терминал интерфейса",
+  "key.ae2wtlib.toggleRestock": "Переключить авто пополнение",
+  "key.ae2wtlib.toggleMagnet": "Переключить магнитную карту",
+
+
+  "text.autoconfig.ae2wtlib.title": "AE2 Wireless Terminals",
+
+  "text.autoconfig.ae2wtlib.option.chargeRate": "Скорость заряда",
+  "text.autoconfig.ae2wtlib.option.wutChargeRateMultiplier": "Множитель скорости заряда беспроводного универсального терминала",
+  "text.autoconfig.ae2wtlib.option.wutBatterySizeMultiplier": "Размер батареи беспроводного универсального терминала",
+  "text.autoconfig.ae2wtlib.option.outOfRangePowerMultiplier": "Множитель мощности вне диапазона",
+  "text.autoconfig.ae2wtlib.option.magnetCardRange": "Диапазон магнитной карты",
+  "text.autoconfig.ae2wtlib.option.enableTrinket": "Включить Trinkets интеграцию",
+
+  "text.autoconfig.ae2wtlib.option.wutChargeRateMultiplier.@Tooltip": "",
+  "text.autoconfig.ae2wtlib.option.outOfRangePowerMultiplier.@Tooltip": "Если оно меньше 1, нахождение в зоне действия беспроводной точки доступа потребляет больше энергии..",
+  "text.autoconfig.ae2wtlib.option.magnetCardRange.@Tooltip": "",
+
+  "text.autoconfig.ae2wtlib.option.enableTrinket.@Tooltip[0]": "Это сломает работу, если он отличается от сервера, к которому вы можете подключиться.",
+  "text.autoconfig.ae2wtlib.option.enableTrinket.@Tooltip[1]": "Он эффективен только в том случае, если установлены Trinkets."
 }
