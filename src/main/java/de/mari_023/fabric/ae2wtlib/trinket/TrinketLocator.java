@@ -33,6 +33,10 @@ public record TrinketLocator(String group, String type, int slot) implements Men
         return null;
     }
 
+    public ItemStack locateItem(Player player) {
+        return TrinketsHelper.getTrinket(player, group, type, slot);
+    }
+
     public void writeToPacket(FriendlyByteBuf buf) {
         buf.writeUtf(group);
         buf.writeUtf(type);

@@ -54,13 +54,13 @@ public abstract class Restock {
 
     private void restock(Player playerEntity) {
         if(isEmpty() && !playerEntity.isCreative()) return;
-        CraftingTerminalHandler CTHandler = CraftingTerminalHandler.getCraftingTerminalHandler(playerEntity);
-        if(!CTHandler.inRange() || !ItemWT.getBoolean(CTHandler.getCraftingTerminal(), "restock") || CTHandler.getItemStorageChannel() == null)
+        CraftingTerminalHandler cTHandler = CraftingTerminalHandler.getCraftingTerminalHandler(playerEntity);
+        if(!cTHandler.inRange() || !ItemWT.getBoolean(cTHandler.getCraftingTerminal(), "restock") || cTHandler.getTargetGrid().getStorageService().getInventory() == null)
             return;
         int toAdd = getMaxStackSize() - getCount();
         if(toAdd == 0) return;
         ItemStack request = copy();
-        long extractedItems = CTHandler.getItemStorageChannel().extract(AEItemKey.of(request), toAdd, Actionable.MODULATE, new PlayerSource(playerEntity, CTHandler.getSecurityStation()));
+        long extractedItems = cTHandler.getTargetGrid().getStorageService().getInventory().extract(AEItemKey.of(request), toAdd, Actionable.MODULATE, new PlayerSource(playerEntity, cTHandler.getSecurityStation()));
         if(extractedItems > Integer.MAX_VALUE)
             throw new IllegalStateException("Extracted amount cannot be larger than requested amount");
         setCount(getCount() + (int) extractedItems);

@@ -25,11 +25,11 @@ public class PlayerInventoryInsertStack {
     @Inject(method = "add(Lnet/minecraft/world/item/ItemStack;)Z", at = @At(value = "HEAD"), cancellable = true)
     public void insertStackInME(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
         if(stack.isEmpty()) return;
-        CraftingTerminalHandler CTHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
-        ItemStack terminal = CTHandler.getCraftingTerminal();
-        if(ItemMagnetCard.isPickupME(terminal) && CTHandler.inRange()) {
-            if(CTHandler.getStorageGrid() == null) return;
-            long inserted = CTHandler.getStorageGrid().getInventory().insert(AEItemKey.of(stack), stack.getCount(), Actionable.MODULATE, new PlayerSource(player, CTHandler.getSecurityStation()));
+        CraftingTerminalHandler cTHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
+        ItemStack terminal = cTHandler.getCraftingTerminal();
+        if(ItemMagnetCard.isPickupME(terminal) && cTHandler.inRange()) {
+            if(cTHandler.getTargetGrid().getStorageService() == null) return;
+            long inserted = cTHandler.getTargetGrid().getStorageService().getInventory().insert(AEItemKey.of(stack), stack.getCount(), Actionable.MODULATE, new PlayerSource(player, cTHandler.getSecurityStation()));
             int leftover = (int) (stack.getCount() - inserted);
             if(leftover == 0) {
                 stack.setCount(0);

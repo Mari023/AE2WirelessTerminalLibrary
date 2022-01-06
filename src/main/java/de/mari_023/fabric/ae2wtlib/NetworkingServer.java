@@ -1,26 +1,17 @@
 package de.mari_023.fabric.ae2wtlib;
 
-import appeng.core.definitions.AEItems;
-import appeng.items.tools.powered.WirelessCraftingTerminalItem;
 import appeng.menu.AEBaseMenu;
 import appeng.menu.locator.MenuLocator;
-import appeng.menu.locator.MenuLocators;
-import de.mari_023.fabric.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.terminal.WTMenuHost;
-import de.mari_023.fabric.ae2wtlib.trinket.CombinedTrinketInventory;
-import de.mari_023.fabric.ae2wtlib.trinket.TrinketsHelper;
-import de.mari_023.fabric.ae2wtlib.wat.ItemWAT;
 import de.mari_023.fabric.ae2wtlib.wct.CraftingTerminalHandler;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.ItemMagnetCard;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetMode;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetSettings;
-import de.mari_023.fabric.ae2wtlib.wet.ItemWET;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
 import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 
@@ -44,100 +35,9 @@ public class NetworkingServer {
         }));
         ServerPlayNetworking.registerGlobalReceiver(new ResourceLocation(AE2wtlib.MOD_NAME, "hotkey"), (server, player, handler, buf, sender) -> {
             buf.retain();
-            server.execute(() -> {//TODO unify this for all terminals
+            server.execute(() -> {
                 String terminalName = buf.readUtf(32767);
-                if(terminalName.equalsIgnoreCase("crafting")) {
-                    MenuLocator locator = null;
-                    ItemStack terminal = null;
-                    for(int i = 0; i < player.getInventory().getContainerSize(); i++) {
-                        terminal = player.getInventory().getItem(i);
-                        if(terminal.getItem() instanceof WirelessCraftingTerminalItem || (terminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(terminal, "crafting"))) {
-                            locator = MenuLocators.forInventorySlot(i);
-                            WUTHandler.setCurrentTerminal(player, locator, terminal, "crafting");
-                            break;
-                        }
-                    }
-                    if(AE2wtlibConfig.INSTANCE.allowTrinket()) {
-                        CombinedTrinketInventory trinketInv = TrinketsHelper.getTrinketsInventory(player);
-                        for(int i = 0; i < trinketInv.size(); i++) {
-                            ItemStack trinketTerminal = trinketInv.getStackInSlot(i);
-                            if(trinketTerminal.getItem() instanceof WirelessCraftingTerminalItem || (trinketTerminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(trinketTerminal, "crafting"))) {
-                                locator = trinketInv.getLocator(i);
-                                WUTHandler.setCurrentTerminal(player, locator, trinketTerminal, "crafting");
-                                terminal = trinketTerminal;
-                                break;
-                            }
-                        }
-                    }
-                    if(locator == null) {
-                        buf.release();
-                        return;
-                    }
-
-                    ((IUniversalWirelessTerminalItem) AEItems.WIRELESS_CRAFTING_TERMINAL.asItem()).tryOpen(player, locator, terminal);
-                } else if(terminalName.equalsIgnoreCase("pattern_encoding")) {
-                    Inventory inv = player.getInventory();
-                    MenuLocator locator = null;
-                    ItemStack terminal = null;
-                    for(int i = 0; i < inv.getContainerSize(); i++) {
-                        terminal = inv.getItem(i);
-                        if(terminal.getItem() instanceof ItemWET || (terminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(terminal, "pattern_encoding"))) {
-                            locator = MenuLocators.forInventorySlot(i);
-                            WUTHandler.setCurrentTerminal(player, locator, terminal, "pattern_encoding");
-                            break;
-                        }
-                    }
-                    if(AE2wtlibConfig.INSTANCE.allowTrinket()) {
-                        CombinedTrinketInventory trinketInv = TrinketsHelper.getTrinketsInventory(player);
-                        for(int i = 0; i < trinketInv.size(); i++) {
-                            ItemStack trinketTerminal = trinketInv.getStackInSlot(i);
-                            if(trinketTerminal.getItem() instanceof ItemWET || (trinketTerminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(trinketTerminal, "pattern_encoding"))) {
-                                locator = trinketInv.getLocator(i);
-                                WUTHandler.setCurrentTerminal(player, locator, trinketTerminal, "pattern_encoding");
-                                terminal = trinketTerminal;
-                                break;
-                            }
-                        }
-                    }
-
-                    if(locator == null) {
-                        buf.release();
-                        return;
-                    }
-
-                    AE2wtlib.PATTERN_ENCODING_TERMINAL.tryOpen(player, locator, terminal);
-                } else if(terminalName.equalsIgnoreCase("pattern_access")) {
-                    Inventory inv = player.getInventory();
-                    MenuLocator locator = null;
-                    ItemStack terminal = null;
-                    for(int i = 0; i < inv.getContainerSize(); i++) {
-                        terminal = inv.getItem(i);
-                        if(terminal.getItem() instanceof ItemWAT || (terminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(terminal, "pattern_access"))) {
-                            locator = MenuLocators.forInventorySlot(i);
-                            WUTHandler.setCurrentTerminal(player, locator, terminal, "pattern_access");
-                            break;
-                        }
-                    }
-                    if(AE2wtlibConfig.INSTANCE.allowTrinket()) {
-                        CombinedTrinketInventory trinketInv = TrinketsHelper.getTrinketsInventory(player);
-                        for(int i = 0; i < trinketInv.size(); i++) {
-                            ItemStack trinketTerminal = trinketInv.getStackInSlot(i);
-                            if(trinketTerminal.getItem() instanceof ItemWAT || (trinketTerminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(trinketTerminal, "pattern_access"))) {
-                                locator = trinketInv.getLocator(i);
-                                WUTHandler.setCurrentTerminal(player, locator, trinketTerminal, "pattern_access");
-                                terminal = trinketTerminal;
-                                break;
-                            }
-                        }
-                    }
-
-                    if(locator == null) {
-                        buf.release();
-                        return;
-                    }
-
-                    AE2wtlib.PATTERN_ACCESS_TERMINAL.tryOpen(player, locator, terminal);
-                } else if(terminalName.equalsIgnoreCase("toggleRestock")) {
+                if(terminalName.equalsIgnoreCase("toggleRestock")) {
                     CraftingTerminalHandler craftingTerminalHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
                     ItemStack terminal = craftingTerminalHandler.getCraftingTerminal();
                     if(terminal.isEmpty()) {
@@ -173,6 +73,17 @@ public class NetworkingServer {
                         }
                     }
                     ItemMagnetCard.saveMagnetSettings(terminal, settings);
+                } else {
+                    MenuLocator locator = WUTHandler.findTerminal(player, terminalName);
+
+                    if(locator == null) {
+                        buf.release();
+                        return;
+                    }
+
+                    ItemStack terminal = WUTHandler.getItemStackFromLocator(player, locator);
+                    WUTHandler.setCurrentTerminal(player, locator, terminal, terminalName);
+                    WUTHandler.wirelessTerminals.get(terminalName).item().tryOpen(player, locator, terminal);
                 }
                 buf.release();
             });

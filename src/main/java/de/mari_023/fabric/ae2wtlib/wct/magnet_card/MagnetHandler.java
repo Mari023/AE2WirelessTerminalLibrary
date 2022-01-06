@@ -16,6 +16,7 @@ import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,8 +41,8 @@ public class MagnetHandler {
                 return;
             HashMap<Item, Long> items = new HashMap<>();
 
-            if(handler.getItemStorageChannel() == null) return;
-            KeyCounter storageList = handler.getItemStorageChannel().getAvailableStacks();
+            if(handler.getTargetGrid().getStorageService().getInventory() == null) return;
+            KeyCounter storageList = handler.getTargetGrid().getStorageService().getInventory().getAvailableStacks();
 
             for(int i = 0; i < player.getInventory().getContainerSize(); i++) {
                 ItemStack stack = player.getInventory().getItem(i);

@@ -52,9 +52,9 @@ public class AE2wtlib implements IAEAddonEntrypoint {
 
         MenuLocators.register(TrinketLocator.class, TrinketLocator::writeToPacket, TrinketLocator::readFromPacket);
 
-        WUTHandler.addTerminal("crafting", ((IUniversalWirelessTerminalItem) AEItems.WIRELESS_CRAFTING_TERMINAL.asItem())::tryOpen, WCTMenuHost::new, WCTMenu.TYPE);
-        WUTHandler.addTerminal("pattern_encoding", PATTERN_ENCODING_TERMINAL::tryOpen, WETMenuHost::new, WETMenu.TYPE);
-        WUTHandler.addTerminal("pattern_access", PATTERN_ACCESS_TERMINAL::tryOpen, WATMenuHost::new, WATMenu.TYPE);
+        WUTHandler.addTerminal("crafting", ((IUniversalWirelessTerminalItem) AEItems.WIRELESS_CRAFTING_TERMINAL.asItem())::tryOpen, WCTMenuHost::new, WCTMenu.TYPE, (IUniversalWirelessTerminalItem) AEItems.WIRELESS_CRAFTING_TERMINAL.asItem());
+        WUTHandler.addTerminal("pattern_encoding", PATTERN_ENCODING_TERMINAL::tryOpen, WETMenuHost::new, WETMenu.TYPE, PATTERN_ENCODING_TERMINAL);
+        WUTHandler.addTerminal("pattern_access", PATTERN_ACCESS_TERMINAL::tryOpen, WATMenuHost::new, WATMenu.TYPE, PATTERN_ACCESS_TERMINAL);
 
         addUpgrades();//TODO add an entrypoint for addons to register their terminals before this
 

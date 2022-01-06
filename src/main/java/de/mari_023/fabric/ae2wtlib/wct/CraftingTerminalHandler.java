@@ -5,20 +5,13 @@ import appeng.api.implementations.blockentities.IWirelessAccessPoint;
 import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.security.IActionHost;
-import appeng.api.networking.storage.IStorageService;
-import appeng.api.storage.MEStorage;
-import appeng.api.upgrades.UpgradeInventories;
+import appeng.api.upgrades.IUpgradeableItem;
 import appeng.api.util.DimensionalBlockPos;
 import appeng.blockentity.networking.WirelessBlockEntity;
-import appeng.items.tools.powered.WirelessCraftingTerminalItem;
 import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.menu.locator.MenuLocator;
-import appeng.menu.locator.MenuLocators;
 import de.mari_023.fabric.ae2wtlib.AE2wtlib;
-import de.mari_023.fabric.ae2wtlib.AE2wtlibConfig;
-import de.mari_023.fabric.ae2wtlib.trinket.CombinedTrinketInventory;
 import de.mari_023.fabric.ae2wtlib.trinket.TrinketsHelper;
-import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
 import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
@@ -39,8 +32,6 @@ public class CraftingTerminalHandler {
     private ItemStack craftingTerminal = ItemStack.EMPTY;
     private IActionHost securityStation;
     private IGrid targetGrid;
-    private IStorageService storageGrid;
-    private MEStorage itemStorageChannel;
     private MenuLocator locator;
     private IWirelessAccessPoint myWap;
     private double sqRange = Double.MAX_VALUE;
@@ -71,8 +62,6 @@ public class CraftingTerminalHandler {
         locator = null;
         securityStation = null;
         targetGrid = null;
-        storageGrid = null;
-        itemStorageChannel = null;
         myWap = null;
         sqRange = Double.MAX_VALUE;
         restockAbleItems.clear();
@@ -80,31 +69,20 @@ public class CraftingTerminalHandler {
 
     public ItemStack getCraftingTerminal() {
         Inventory inv = player.getInventory();
-        if((!craftingTerminal.isEmpty()) && inv.contains(craftingTerminal)) return craftingTerminal;
-        if(AE2wtlibConfig.INSTANCE.allowTrinket()) {
-            CombinedTrinketInventory trinketInv = TrinketsHelper.getTrinketsInventory(player);
-            for(int i = 0; i < trinketInv.size(); i++) {
-                ItemStack terminal = trinketInv.getStackInSlot(i);
-                if(terminal.getItem() instanceof WirelessCraftingTerminalItem || (terminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(terminal, "crafting"))) {
-                    securityStation = null;
-                    targetGrid = null;
-                    locator = trinketInv.getLocator(i);
-                    return craftingTerminal = terminal;
-                }
-            }
-        }
+        if((!craftingTerminal.isEmpty()) && (inv.contains(craftingTerminal) || TrinketsHelper.isStillPresent(player, craftingTerminal)))
+            return craftingTerminal;
 
-        for(int i = 0; i < inv.getContainerSize(); i++) {
-            ItemStack terminal = inv.getItem(i);
-            if(terminal.getItem() instanceof WirelessCraftingTerminalItem || (terminal.getItem() instanceof ItemWUT && WUTHandler.hasTerminal(terminal, "crafting"))) {
-                securityStation = null;
-                targetGrid = null;
-                locator = MenuLocators.forInventorySlot(i);
-                return craftingTerminal = terminal;
-            }
+        MenuLocator locator = WUTHandler.findTerminal(player, "crafting");
+
+        craftingTerminal = WUTHandler.getItemStackFromLocator(player, locator);
+
+        if(craftingTerminal.isEmpty()) {
+            invalidateCache();
+        } else {
+            securityStation = null;
+            targetGrid = null;
         }
-        invalidateCache();
-        return ItemStack.EMPTY;
+        return craftingTerminal;
     }
 
     @Nullable
@@ -130,27 +108,13 @@ public class CraftingTerminalHandler {
         return targetGrid = n.getGrid();
     }
 
-    public IStorageService getStorageGrid() {
-        if(getTargetGrid() == null) return storageGrid = null;
-        if(storageGrid == null) return storageGrid = targetGrid.getStorageService();
-        return storageGrid;
-    }
-
-    public MEStorage getItemStorageChannel() {
-        if(getStorageGrid() == null) return itemStorageChannel = null;
-        if(itemStorageChannel == null)
-            return itemStorageChannel = storageGrid.getInventory();
-        return itemStorageChannel;
-    }
-
     public boolean inRange() {
         ItemStack is = getCraftingTerminal();
         if(is.isEmpty()) return false;
-        if(UpgradeInventories.forItem(is,2).isInstalled(AE2wtlib.INFINITY_BOOSTER)) return true;
+        if(((IUpgradeableItem) is.getItem()).getUpgrades(is).isInstalled(AE2wtlib.INFINITY_BOOSTER)) return true;
         sqRange = Double.MAX_VALUE;
 
         if(getTargetGrid() == null) return false;
-        if(targetGrid == null) return false;
         if(myWap != null && myWap.getGrid() == targetGrid && testWap(myWap)) return true;
 
         final Set<WirelessBlockEntity> tw = targetGrid.getMachines(WirelessBlockEntity.class);
