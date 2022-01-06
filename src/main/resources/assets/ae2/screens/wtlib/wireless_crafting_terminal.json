@@ -97,14 +97,6 @@
       "left": 116,
       "bottom": 106
     },
-    "magnetCardToggleButton": {
-      "left": -20,
-      "top": 148
-    },
-    "cycleTerminal": {
-      "left": -20,
-      "top": 128
-    },
     "player": {
       "left": 52,
       "bottom": 94

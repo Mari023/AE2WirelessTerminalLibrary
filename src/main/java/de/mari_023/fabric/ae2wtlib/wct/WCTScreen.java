@@ -1,30 +1,25 @@
 package de.mari_023.fabric.ae2wtlib.wct;
 
-import appeng.api.upgrades.IUpgradeInventory;
-import appeng.api.upgrades.UpgradeInventories;
 import appeng.client.gui.Icon;
 import appeng.client.gui.me.items.CraftingTermScreen;
 import appeng.client.gui.style.ScreenStyle;
 import appeng.client.gui.style.StyleManager;
 import appeng.client.gui.widgets.IconButton;
 import com.mojang.blaze3d.vertex.PoseStack;
-import de.mari_023.fabric.ae2wtlib.TextConstants;
 import de.mari_023.fabric.ae2wtlib.AE2wtlib;
-import de.mari_023.fabric.ae2wtlib.terminal.WTMenuHost;
+import de.mari_023.fabric.ae2wtlib.TextConstants;
 import de.mari_023.fabric.ae2wtlib.util.ItemButton;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetMode;
 import de.mari_023.fabric.ae2wtlib.wut.CycleTerminalButton;
 import de.mari_023.fabric.ae2wtlib.wut.IUniversalTerminalCapable;
 import dev.emi.trinkets.api.SlotGroup;
-
-import java.io.IOException;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.item.ItemStack;
+
+import java.io.IOException;
 
 public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversalTerminalCapable {
 
@@ -65,10 +60,10 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
         deleteButton.setMessage(TextConstants.DELETE);
         widgets.add("emptyTrash", deleteButton);
 
-        magnetCardToggleButton = new ItemButton(btn -> setMagnetMode(), new ResourceLocation(AE2wtlib.MOD_NAME, "textures/magnet_card.png"));
-        widgets.add("magnetCardToggleButton", magnetCardToggleButton);
+        if(getMenu().isWUT()) addToLeftToolbar(new CycleTerminalButton(btn -> cycleTerminal()));
 
-        if(getMenu().isWUT()) widgets.add("cycleTerminal", new CycleTerminalButton(btn -> cycleTerminal()));
+        magnetCardToggleButton = new ItemButton(btn -> setMagnetMode(), new ResourceLocation(AE2wtlib.MOD_NAME, "textures/magnet_card.png"));
+        addToLeftToolbar(magnetCardToggleButton);
 
         widgets.add("player", new PlayerEntityWidget(Minecraft.getInstance().player));
     }
