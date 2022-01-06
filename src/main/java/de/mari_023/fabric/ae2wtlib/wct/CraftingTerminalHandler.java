@@ -11,6 +11,7 @@ import appeng.blockentity.networking.WirelessBlockEntity;
 import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.menu.locator.MenuLocator;
 import de.mari_023.fabric.ae2wtlib.AE2wtlib;
+import de.mari_023.fabric.ae2wtlib.AE2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.trinket.TrinketsHelper;
 import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
 import net.minecraft.server.level.ServerPlayer;
@@ -69,10 +70,11 @@ public class CraftingTerminalHandler {
 
     public ItemStack getCraftingTerminal() {
         Inventory inv = player.getInventory();
-        if((!craftingTerminal.isEmpty()) && (inv.contains(craftingTerminal) || TrinketsHelper.isStillPresent(player, craftingTerminal)))
+        if((!craftingTerminal.isEmpty()) && (inv.contains(craftingTerminal)
+                || (AE2wtlibConfig.INSTANCE.allowTrinket() && TrinketsHelper.isStillPresent(player, craftingTerminal))))
             return craftingTerminal;
 
-        MenuLocator locator = WUTHandler.findTerminal(player, "crafting");
+        locator = WUTHandler.findTerminal(player, "crafting");
 
         craftingTerminal = WUTHandler.getItemStackFromLocator(player, locator);
 
