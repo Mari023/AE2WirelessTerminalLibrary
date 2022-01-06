@@ -7,6 +7,10 @@ import net.minecraft.resources.ResourceLocation;
 
 public interface IUniversalTerminalCapable {
     default void cycleTerminal() {
-        ClientPlayNetworking.send(new ResourceLocation(AE2wtlib.MOD_NAME, "cycle_terminal"), PacketByteBufs.create());
+        var buf = PacketByteBufs.create();
+        buf.writeBoolean(isHandlingRightClick());
+        ClientPlayNetworking.send(new ResourceLocation(AE2wtlib.MOD_NAME, "cycle_terminal"), buf);
     }
+
+    boolean isHandlingRightClick();
 }
