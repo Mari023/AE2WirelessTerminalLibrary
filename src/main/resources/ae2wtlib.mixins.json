@@ -8,8 +8,7 @@
     "CraftingTerminalItemMixin",
     "PlayerInventoryInsertStack",
     "Restock",
-    "TrinketWCTContainer",
-    "TrinketWT"
+    "TrinketWCTContainer"
   ],
   "client": [
     "RestockRender"
