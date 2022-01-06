@@ -17,22 +17,26 @@ import net.minecraft.world.item.ItemStack;
 
 public class NetworkingServer {
     public static void registerServer() {
-        ServerPlayNetworking.registerGlobalReceiver(new ResourceLocation(AE2wtlib.MOD_NAME, "cycle_terminal"), (server, player, handler, buf, sender) -> server.execute(() -> {
-            final AbstractContainerMenu screenHandler = player.containerMenu;
+        ServerPlayNetworking.registerGlobalReceiver(new ResourceLocation(AE2wtlib.MOD_NAME, "cycle_terminal"), (server, player, handler, buf, sender) -> {
+            buf.retain();
+            server.execute(() -> {
+                final AbstractContainerMenu screenHandler = player.containerMenu;
 
-            if(!(screenHandler instanceof AEBaseMenu)) return;
+                if(!(screenHandler instanceof AEBaseMenu)) return;
 
-            final MenuLocator locator = ((AEBaseMenu) screenHandler).getLocator();
-            WTMenuHost host = locator.locate(player, WTMenuHost.class);
-            if(host == null) return;
-            ItemStack item = host.getItemStack();
+                final MenuLocator locator = ((AEBaseMenu) screenHandler).getLocator();
+                WTMenuHost host = locator.locate(player, WTMenuHost.class);
+                if(host == null) return;
+                ItemStack item = host.getItemStack();
 
-            if(!(item.getItem() instanceof ItemWUT)) return;
+                if(!(item.getItem() instanceof ItemWUT)) return;
 
-            WUTHandler.cycle(player, locator, item, buf.readBoolean());
+                WUTHandler.cycle(player, locator, item, buf.readBoolean());
 
-            WUTHandler.open(player, locator);
-        }));
+                WUTHandler.open(player, locator);
+                buf.release();
+            });
+        });
         ServerPlayNetworking.registerGlobalReceiver(new ResourceLocation(AE2wtlib.MOD_NAME, "hotkey"), (server, player, handler, buf, sender) -> {
             buf.retain();
             server.execute(() -> {
