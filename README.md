@@ -3,7 +3,7 @@
 [![Modrinth downloads](https://modrinth-utils.vercel.app/api/badge/downloads?id=pNabrMMw&logo=true)](https://modrinth.com/mod/applied-energistics-2-wireless-terminals)
 [![Modrinth Versions](https://modrinth-utils.vercel.app/api/badge/versions?id=pNabrMMw&logo=true)](https://modrinth.com/mod/applied-energistics-2-wireless-terminals/versions)
 
-[<README На Русском>](/RUREADEME.md)
+Read this in other languages: [<Русском>](/RUREADEME.md)
 
 Applied Energistics 2 Wireless Terminals
 ========================================
