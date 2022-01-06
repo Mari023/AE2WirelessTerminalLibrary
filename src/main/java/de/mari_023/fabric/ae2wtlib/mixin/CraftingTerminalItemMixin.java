@@ -36,11 +36,6 @@ public class CraftingTerminalItemMixin extends WirelessTerminalItem implements I
     }
 
     @Override
-    public boolean checkPreconditions(ItemStack item, Player player) {
-        return super.checkPreconditions(item, player);
-    }
-
-    @Override
     public boolean openFromInventory(Player player, int inventorySlot) {//TODO maybe remove this since it shouldn't get called anyways
         throw new IllegalStateException(String.format("%s called WirelessCraftingTerminalItem#openFromInventory() in slot %d", player, inventorySlot));
     }

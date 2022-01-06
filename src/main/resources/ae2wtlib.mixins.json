@@ -9,8 +9,7 @@
     "PlayerInventoryInsertStack",
     "Restock",
     "TrinketWCTContainer",
-    "TrinketWT",
-    "WirelessTerminalItemMixin"
+    "TrinketWT"
   ],
   "client": [
     "RestockRender"

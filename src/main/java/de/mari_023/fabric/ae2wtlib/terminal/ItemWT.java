@@ -16,8 +16,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.function.DoubleSupplier;
-
 public abstract class ItemWT extends WirelessTerminalItem implements IUniversalWirelessTerminalItem {
 
     public ItemWT(Item.Properties props) {
@@ -26,17 +24,12 @@ public abstract class ItemWT extends WirelessTerminalItem implements IUniversalW
 
     @Override
     public InteractionResultHolder<ItemStack> use(final Level w, final Player player, final InteractionHand hand) {
-        var is = player.getItemInHand(hand);
-        if(checkPreconditions(is, player)) {
+        ItemStack is = player.getItemInHand(hand);
+        if(checkUniversalPreconditions(is, player)) {
             open(player, is, MenuLocators.forHand(player, hand));
             return new InteractionResultHolder<>(InteractionResult.SUCCESS, is);
         }
         return new InteractionResultHolder<>(InteractionResult.FAIL, is);
-    }
-
-    @Override
-    public boolean checkPreconditions(ItemStack item, Player player) {
-        return super.checkPreconditions(item, player);
     }
 
     @Override
