@@ -39,15 +39,13 @@ public class WCTMenu extends CraftingTermMenu {
     public static final String ACTION_DELETE = "delete";
     public static final String MAGNET_MODE = "magnetMode";
 
-    final WTInventory wtInventory;
-
     private final WCTMenuHost wctGUIObject;
 
     public WCTMenu(int id, final Inventory ip, final WCTMenuHost gui) {
         super(TYPE, id, ip, gui, true);
         wctGUIObject = gui;
 
-        wtInventory = new WTInventory(wctGUIObject.getItemStack(), this);
+        WTInventory wtInventory = new WTInventory(wctGUIObject.getItemStack(), this);
 
         boolean isInOffhand = Integer.valueOf(40).equals(wctGUIObject.getSlot());
 
@@ -110,9 +108,9 @@ public class WCTMenu extends CraftingTermMenu {
                 return getPlayerInventory().canPlaceItem(Inventory.SLOT_OFFHAND, stack);
             }
         }, AE2wtlibSlotSemantics.OFFHAND);
-        addSlot(new AppEngSlot(wtInventory, WTInventory.TRASH), AE2wtlibSlotSemantics.TRASH);
+        addSlot(new AppEngSlot(wctGUIObject.getSubInventory(WCTMenuHost.INV_TRASH), 0), AE2wtlibSlotSemantics.TRASH);
 
-        AppEngSlot magnetCardSlot = new AppEngSlot(wtInventory, WTInventory.MAGNET_CARD) {
+        AppEngSlot magnetCardSlot = new AppEngSlot(wtInventory, 0) {
             @Override
             public List<Component> getCustomTooltip(Function<ItemStack, List<Component>> getItemTooltip, ItemStack carriedItem) {
                 return TextConstants.MAGNETCARD_SLOT;
@@ -140,7 +138,7 @@ public class WCTMenu extends CraftingTermMenu {
 
     public void deleteTrashSlot() {
         if(isClient()) sendClientAction(ACTION_DELETE);
-        wtInventory.setItemDirect(WTInventory.TRASH, ItemStack.EMPTY);
+        wctGUIObject.getSubInventory(WCTMenuHost.INV_TRASH).setItemDirect(0, ItemStack.EMPTY);
     }
 
     private MagnetSettings magnetSettings;

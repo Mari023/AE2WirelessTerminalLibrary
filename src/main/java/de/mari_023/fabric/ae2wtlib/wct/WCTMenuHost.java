@@ -8,7 +8,9 @@ import appeng.menu.ISubMenu;
 import appeng.parts.reporting.CraftingTerminalPart;
 import appeng.util.inv.AppEngInternalInventory;
 import appeng.util.inv.InternalInventoryHost;
+import de.mari_023.fabric.ae2wtlib.AE2wtlib;
 import de.mari_023.fabric.ae2wtlib.terminal.WTMenuHost;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -18,6 +20,8 @@ import java.util.function.BiConsumer;
 
 public class WCTMenuHost extends WTMenuHost implements IViewCellStorage, ISegmentedInventory, InternalInventoryHost {
     private final AppEngInternalInventory craftingGrid = new AppEngInternalInventory(this, 9);
+    private final AppEngInternalInventory trash = new AppEngInternalInventory(this, 1);
+    public static ResourceLocation INV_TRASH = new ResourceLocation(AE2wtlib.MOD_NAME, "wct_trash");
 
     public WCTMenuHost(final Player ep, @Nullable Integer inventorySlot, final ItemStack is, BiConsumer<Player, ISubMenu> returnToMainMenu) {
         super(ep, inventorySlot, is, returnToMainMenu);
@@ -33,19 +37,24 @@ public class WCTMenuHost extends WTMenuHost implements IViewCellStorage, ISegmen
     @Override
     public InternalInventory getSubInventory(ResourceLocation id) {
         if(id.equals(CraftingTerminalPart.INV_CRAFTING)) return craftingGrid;
+        if(id.equals(INV_TRASH)) return trash;
         else return null;
     }
 
     @Override
     protected void readFromNbt() {
         super.readFromNbt();
-        craftingGrid.readFromNBT(getItemStack().getOrCreateTag(), "craftingGrid");
+        CompoundTag tag = getItemStack().getOrCreateTag();
+        craftingGrid.readFromNBT(tag, "craftingGrid");
+        trash.readFromNBT(tag, "trash");
     }
 
     @Override
     public void saveChanges() {
         super.saveChanges();
-        craftingGrid.writeToNBT(getItemStack().getOrCreateTag(), "craftingGrid");
+        CompoundTag tag = getItemStack().getOrCreateTag();
+        craftingGrid.writeToNBT(tag, "craftingGrid");
+        trash.writeToNBT(tag, "trash");
     }
 
     @Override
