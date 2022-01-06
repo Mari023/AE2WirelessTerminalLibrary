@@ -2,6 +2,7 @@ package de.mari_023.fabric.ae2wtlib.terminal;
 
 import appeng.api.features.Locatables;
 import appeng.api.networking.IGridNode;
+import appeng.api.networking.security.IActionHost;
 import appeng.api.upgrades.IUpgradeInventory;
 import appeng.api.upgrades.UpgradeInventories;
 import appeng.helpers.WirelessTerminalMenuHost;
@@ -27,9 +28,11 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost {
         super(player, inventorySlot, is, returnToMainMenu);
         viewCellInventory = new ViewCellInventory(is);
         myPlayer = player;
-        var actionHost = Locatables.securityStations().get(player.level, ((WirelessTerminalItem) is.getItem()).getGridKey(is).getAsLong());
-        if(actionHost != null) securityTerminalNode = actionHost.getActionableNode();
         upgradeInventory = UpgradeInventories.forItem(is,2, this::updateUpgrades);
+
+        if(((WirelessTerminalItem) is.getItem()).getGridKey(is).isEmpty()) return;
+        IActionHost actionHost = Locatables.securityStations().get(player.level, ((WirelessTerminalItem) is.getItem()).getGridKey(is).getAsLong());
+        if(actionHost != null) securityTerminalNode = actionHost.getActionableNode();
     }
 
     public void updateUpgrades(ItemStack stack, IUpgradeInventory upgrades) {
