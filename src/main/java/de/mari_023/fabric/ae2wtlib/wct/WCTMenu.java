@@ -10,7 +10,6 @@ import appeng.menu.slot.RestrictedInputSlot;
 import com.mojang.datafixers.util.Pair;
 import de.mari_023.fabric.ae2wtlib.AE2wtlibSlotSemantics;
 import de.mari_023.fabric.ae2wtlib.TextConstants;
-import de.mari_023.fabric.ae2wtlib.terminal.IWTInvHolder;
 import de.mari_023.fabric.ae2wtlib.terminal.WTInventory;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.ItemMagnetCard;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetMode;
@@ -29,7 +28,7 @@ import net.minecraft.world.item.ItemStack;
 import java.util.List;
 import java.util.function.Function;
 
-public class WCTMenu extends CraftingTermMenu implements IWTInvHolder {
+public class WCTMenu extends CraftingTermMenu {
 
     public static final MenuType<WCTMenu> TYPE = MenuTypeBuilder.create(WCTMenu::new, WCTMenuHost.class).requirePermission(SecurityPermissions.CRAFT).build("wireless_crafting_terminal");
 

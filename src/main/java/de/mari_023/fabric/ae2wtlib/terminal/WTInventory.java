@@ -14,15 +14,17 @@ import org.jetbrains.annotations.NotNull;
 public class WTInventory implements InternalInventory {
 
     public static final int OFF_HAND = 4;
+    @Deprecated
     public static final int TRASH = 5;
+    @Deprecated
     public static final int MAGNET_CARD = 7;
     private static final int SLOT_OFFSET = 36;
 
     private final Inventory playerInventory;
     private final ItemStack wt;
-    private final IWTInvHolder host;
+    private final WCTMenu host;
 
-    public WTInventory(Inventory playerInventory, ItemStack wt, IWTInvHolder host) {
+    public WTInventory(Inventory playerInventory, ItemStack wt, WCTMenu host) {
         this.playerInventory = playerInventory;
         this.wt = wt;
         this.host = host;
@@ -72,7 +74,7 @@ public class WTInventory implements InternalInventory {
         } else if(i == MAGNET_CARD) {
             if(!(itemStack.getItem() instanceof ItemMagnetCard) && !itemStack.equals(ItemStack.EMPTY)) return;
             ItemWT.setSavedSlot(wt, itemStack, "magnetCard");
-            if(host instanceof WCTMenu) ((WCTMenu) host).reloadMagnetSettings();
+            host.reloadMagnetSettings();
         }
     }
 }
