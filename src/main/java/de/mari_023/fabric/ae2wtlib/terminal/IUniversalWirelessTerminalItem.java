@@ -46,18 +46,18 @@ public interface IUniversalWirelessTerminalItem {
 
         OptionalLong key = getGridKey(item);
         if(key.isEmpty()) {
-            player.sendMessage(PlayerMessages.DeviceNotLinked.get(), Util.NIL_UUID);
+            player.sendMessage(PlayerMessages.DeviceNotLinked.text(), Util.NIL_UUID);
             return false;
         }
 
         IActionHost securityStation = Locatables.securityStations().get(level, key.getAsLong());
         if(securityStation == null) {
-            player.sendMessage(PlayerMessages.StationCanNotBeLocated.get(), Util.NIL_UUID);
+            player.sendMessage(PlayerMessages.StationCanNotBeLocated.text(), Util.NIL_UUID);
             return false;
         }
 
         if(!hasPower(player, 0.5, item)) {
-            player.sendMessage(PlayerMessages.DeviceNotPowered.get(), Util.NIL_UUID);
+            player.sendMessage(PlayerMessages.DeviceNotPowered.text(), Util.NIL_UUID);
             return false;
         }
         return true;
