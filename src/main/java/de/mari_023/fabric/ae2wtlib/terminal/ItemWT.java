@@ -77,7 +77,6 @@ public abstract class ItemWT extends WirelessTerminalItem implements IUniversalW
      * @param hostItem the Terminal to load from
      * @return the boolean or false if it wasn't found
      */
-    @Deprecated
     public static boolean getBoolean(ItemStack hostItem, String key) {
         if(!(hostItem.getItem() instanceof IUniversalWirelessTerminalItem)) return false;
         return hostItem.getOrCreateTag().getBoolean(key);
@@ -91,7 +90,6 @@ public abstract class ItemWT extends WirelessTerminalItem implements IUniversalW
      * @param b        the boolean to store
      * @param key      the location where the stored item will be
      */
-    @Deprecated
     public static void setBoolean(ItemStack hostItem, boolean b, String key) {
         if(!(hostItem.getItem() instanceof IUniversalWirelessTerminalItem)) return;
         CompoundTag wctTag = hostItem.getOrCreateTag();

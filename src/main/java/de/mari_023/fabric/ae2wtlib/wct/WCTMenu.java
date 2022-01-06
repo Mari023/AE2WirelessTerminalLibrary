@@ -47,7 +47,8 @@ public class WCTMenu extends CraftingTermMenu {
             }
 
             public boolean mayPlace(ItemStack stack) {
-                return getPlayerInventory().canPlaceItem(39, stack) && stack.getItem() instanceof ArmorItem aItem && aItem.getSlot().equals(EquipmentSlot.FEET);
+                return getPlayerInventory().canPlaceItem(39, stack) && ((stack.getItem() instanceof ArmorItem aItem && aItem.getSlot().equals(EquipmentSlot.HEAD))
+                        || (stack.getItem() instanceof BlockItem bItem && bItem.getBlock() instanceof Wearable));
             }
         }, AE2wtlibSlotSemantics.HELMET);
         SlotsWithTrinket[6] = addSlot(new Slot(getPlayerInventory(), 38, 0, 0) {
@@ -57,7 +58,7 @@ public class WCTMenu extends CraftingTermMenu {
             }
 
             public boolean mayPlace(ItemStack stack) {
-                return getPlayerInventory().canPlaceItem(38, stack) && stack.getItem() instanceof ArmorItem aItem && aItem.getSlot().equals(EquipmentSlot.LEGS);
+                return getPlayerInventory().canPlaceItem(38, stack) && stack.getItem() instanceof ArmorItem aItem && aItem.getSlot().equals(EquipmentSlot.CHEST);
             }
         }, AE2wtlibSlotSemantics.CHESTPLATE);
         SlotsWithTrinket[7] = addSlot(new Slot(getPlayerInventory(), 37, 0, 0) {
@@ -67,7 +68,7 @@ public class WCTMenu extends CraftingTermMenu {
             }
 
             public boolean mayPlace(ItemStack stack) {
-                return getPlayerInventory().canPlaceItem(37, stack) && stack.getItem() instanceof ArmorItem aItem && aItem.getSlot().equals(EquipmentSlot.CHEST);
+                return getPlayerInventory().canPlaceItem(37, stack) && stack.getItem() instanceof ArmorItem aItem && aItem.getSlot().equals(EquipmentSlot.LEGS);
             }
         }, AE2wtlibSlotSemantics.LEGGINGS);
         SlotsWithTrinket[8] = addSlot(new Slot(getPlayerInventory(), 36, 0, 0) {
@@ -77,8 +78,7 @@ public class WCTMenu extends CraftingTermMenu {
             }
 
             public boolean mayPlace(ItemStack stack) {
-                return getPlayerInventory().canPlaceItem(36, stack) && ((stack.getItem() instanceof ArmorItem aItem && aItem.getSlot().equals(EquipmentSlot.HEAD))
-                        || (stack.getItem() instanceof BlockItem bItem && bItem.getBlock() instanceof Wearable));
+                return getPlayerInventory().canPlaceItem(36, stack) && stack.getItem() instanceof ArmorItem aItem && aItem.getSlot().equals(EquipmentSlot.FEET);
             }
         }, AE2wtlibSlotSemantics.BOOTS);
 
@@ -93,10 +93,6 @@ public class WCTMenu extends CraftingTermMenu {
             @Environment(EnvType.CLIENT)
             public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
                 return Pair.of(InventoryMenu.BLOCK_ATLAS, InventoryMenu.EMPTY_ARMOR_SLOT_SHIELD);
-            }
-
-            public boolean mayPlace(ItemStack stack) {
-                return getPlayerInventory().canPlaceItem(Inventory.SLOT_OFFHAND, stack);
             }
         }, AE2wtlibSlotSemantics.OFFHAND);
         addSlot(new AppEngSlot(wctGUIObject.getSubInventory(WCTMenuHost.INV_TRASH), 0), AE2wtlibSlotSemantics.TRASH);
