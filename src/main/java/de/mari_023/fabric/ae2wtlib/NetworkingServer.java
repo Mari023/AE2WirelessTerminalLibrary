@@ -29,7 +29,7 @@ public class NetworkingServer {
 
             if(!(item.getItem() instanceof ItemWUT)) return;
 
-            WUTHandler.cycle(player, locator, item);
+            WUTHandler.cycle(player, locator, item, buf.readBoolean());
 
             WUTHandler.open(player, locator);
         }));

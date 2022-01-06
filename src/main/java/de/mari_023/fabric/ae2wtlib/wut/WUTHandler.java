@@ -66,12 +66,19 @@ public class WUTHandler {
         return terminal.getItem().equals(wirelessTerminals.get(terminalName).item());
     }
 
-    public static void cycle(Player playerEntity, MenuLocator locator, ItemStack itemStack) {
+    public static void cycle(Player playerEntity, MenuLocator locator, ItemStack itemStack, boolean isHandlingRightClick) {
         if(itemStack.getTag() == null) return;
         String nextTerminal = getCurrentTerminal(itemStack);
         do {
-            int i = terminalNames.indexOf(nextTerminal) + 1;
-            if(i == terminalNames.size()) i = 0;
+            int i;
+            if(isHandlingRightClick) {
+                i = terminalNames.indexOf(nextTerminal) - 1;
+                if(i == 0) i = terminalNames.size();
+
+            } else {
+                i = terminalNames.indexOf(nextTerminal) + 1;
+                if(i == terminalNames.size()) i = 0;
+            }
             nextTerminal = terminalNames.get(i);
         } while(!itemStack.getTag().getBoolean(nextTerminal));
         itemStack.getTag().putString("currentTerminal", nextTerminal);
