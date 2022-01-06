@@ -20,7 +20,7 @@ public class WATScreen extends InterfaceTerminalScreen<WATMenu> implements IUniv
     static {
         ScreenStyle style;
         try {
-            style = StyleManager.loadStyleDoc("/screens/wtlib/wireless_pattern_access_terminal.json");
+            style = StyleManager.loadStyleDoc("/screens/pattern_access_terminal.json");
         } catch(IOException ignored) {
             style = null;
         }
@@ -29,7 +29,7 @@ public class WATScreen extends InterfaceTerminalScreen<WATMenu> implements IUniv
 
     public WATScreen(WATMenu container, Inventory playerInventory, Component title) {
         super(container, playerInventory, title, STYLE);
-        if(getMenu().isWUT()) widgets.add("cycleTerminal", new CycleTerminalButton(btn -> cycleTerminal()));
+        if(getMenu().isWUT()) addToLeftToolbar(new CycleTerminalButton(btn -> cycleTerminal()));
 
         widgets.add("upgrades", new UpgradesPanel(getMenu().getSlots(SlotSemantics.UPGRADE), getMenu().getHost()));
         if(getMenu().getToolbox().isPresent())

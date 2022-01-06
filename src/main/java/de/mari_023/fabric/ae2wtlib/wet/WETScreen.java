@@ -26,7 +26,6 @@ public class WETScreen extends PatternEncodingTermScreen<WETMenu> implements IUn
 
     public WETScreen(WETMenu container, Inventory playerInventory, Component title) {
         super(container, playerInventory, title, STYLE);
-
-        if(getMenu().isWUT()) widgets.add("cycleTerminal", new CycleTerminalButton(btn -> cycleTerminal()));
+        if(getMenu().isWUT()) addToLeftToolbar(new CycleTerminalButton(btn -> cycleTerminal()));
     }
 }

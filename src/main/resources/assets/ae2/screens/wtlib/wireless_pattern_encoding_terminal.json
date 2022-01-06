@@ -2,10 +2,6 @@
   "$schema": "schema.json",
   "includes": ["../terminals/pattern_encoding_terminal.json"],
   "widgets": {
-    "cycleTerminal": {
-      "left": -20,
-      "top": 128
-    },
     "upgrades": {
       "$comment": "The upgrade panel found on some screens",
       "right": -2,
