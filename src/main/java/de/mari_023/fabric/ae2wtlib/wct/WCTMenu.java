@@ -19,11 +19,15 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Wearable;
 
 import java.util.List;
 import java.util.function.Function;
@@ -43,46 +47,67 @@ public class WCTMenu extends CraftingTermMenu {
         super(TYPE, id, ip, gui, true);
         wctGUIObject = gui;
 
-        wtInventory = new WTInventory(getPlayerInventory(), wctGUIObject.getItemStack(), this);
+        wtInventory = new WTInventory(wctGUIObject.getItemStack(), this);
 
         boolean isInOffhand = Integer.valueOf(40).equals(wctGUIObject.getSlot());
 
-        SlotsWithTrinket[5] = addSlot(new AppEngSlot(wtInventory, 3) {
+        SlotsWithTrinket[5] = addSlot(new Slot(getPlayerInventory(), 39, 0, 0) {
             @Environment(EnvType.CLIENT)
             public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
                 return Pair.of(InventoryMenu.BLOCK_ATLAS, InventoryMenu.EMPTY_ARMOR_SLOT_HELMET);
             }
+
+            public boolean mayPlace(ItemStack stack) {
+                return getPlayerInventory().canPlaceItem(39, stack) && stack.getItem() instanceof ArmorItem aItem && aItem.getSlot().equals(EquipmentSlot.FEET);
+            }
         }, AE2wtlibSlotSemantics.HELMET);
-        SlotsWithTrinket[6] = addSlot(new AppEngSlot(wtInventory, 2) {
+        SlotsWithTrinket[6] = addSlot(new Slot(getPlayerInventory(), 38, 0, 0) {
             @Environment(EnvType.CLIENT)
             public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
                 return Pair.of(InventoryMenu.BLOCK_ATLAS, InventoryMenu.EMPTY_ARMOR_SLOT_CHESTPLATE);
             }
+
+            public boolean mayPlace(ItemStack stack) {
+                return getPlayerInventory().canPlaceItem(38, stack) && stack.getItem() instanceof ArmorItem aItem && aItem.getSlot().equals(EquipmentSlot.LEGS);
+            }
         }, AE2wtlibSlotSemantics.CHESTPLATE);
-        SlotsWithTrinket[7] = addSlot(new AppEngSlot(wtInventory, 1) {
+        SlotsWithTrinket[7] = addSlot(new Slot(getPlayerInventory(), 37, 0, 0) {
             @Environment(EnvType.CLIENT)
             public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
                 return Pair.of(InventoryMenu.BLOCK_ATLAS, InventoryMenu.EMPTY_ARMOR_SLOT_LEGGINGS);
             }
+
+            public boolean mayPlace(ItemStack stack) {
+                return getPlayerInventory().canPlaceItem(37, stack) && stack.getItem() instanceof ArmorItem aItem && aItem.getSlot().equals(EquipmentSlot.CHEST);
+            }
         }, AE2wtlibSlotSemantics.LEGGINGS);
-        SlotsWithTrinket[8] = addSlot(new AppEngSlot(wtInventory, 0) {
+        SlotsWithTrinket[8] = addSlot(new Slot(getPlayerInventory(), 36, 0, 0) {
             @Environment(EnvType.CLIENT)
             public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
                 return Pair.of(InventoryMenu.BLOCK_ATLAS, InventoryMenu.EMPTY_ARMOR_SLOT_BOOTS);
             }
+
+            public boolean mayPlace(ItemStack stack) {
+                return getPlayerInventory().canPlaceItem(36, stack) && ((stack.getItem() instanceof ArmorItem aItem && aItem.getSlot().equals(EquipmentSlot.HEAD))
+                        || (stack.getItem() instanceof BlockItem bItem && bItem.getBlock() instanceof Wearable));
+            }
         }, AE2wtlibSlotSemantics.BOOTS);
 
         if(isInOffhand)
-            SlotsWithTrinket[45] = addSlot(new DisabledSlot(wtInventory.toContainer(), WTInventory.OFF_HAND) {
+            SlotsWithTrinket[45] = addSlot(new DisabledSlot(getPlayerInventory(), Inventory.SLOT_OFFHAND) {
                 @Environment(EnvType.CLIENT)
                 public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
                     return Pair.of(InventoryMenu.BLOCK_ATLAS, InventoryMenu.EMPTY_ARMOR_SLOT_SHIELD);
                 }
             }, AE2wtlibSlotSemantics.OFFHAND);
-        else SlotsWithTrinket[45] = addSlot(new AppEngSlot(wtInventory, WTInventory.OFF_HAND) {
+        else SlotsWithTrinket[45] = addSlot(new Slot(getPlayerInventory(), Inventory.SLOT_OFFHAND, 0, 0) {
             @Environment(EnvType.CLIENT)
             public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
                 return Pair.of(InventoryMenu.BLOCK_ATLAS, InventoryMenu.EMPTY_ARMOR_SLOT_SHIELD);
+            }
+
+            public boolean mayPlace(ItemStack stack) {
+                return getPlayerInventory().canPlaceItem(Inventory.SLOT_OFFHAND, stack);
             }
         }, AE2wtlibSlotSemantics.OFFHAND);
         addSlot(new AppEngSlot(wtInventory, WTInventory.TRASH), AE2wtlibSlotSemantics.TRASH);
