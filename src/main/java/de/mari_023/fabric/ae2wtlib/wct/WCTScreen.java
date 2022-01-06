@@ -69,19 +69,36 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
     }
 
     private void setMagnetMode() {
-        switch(getMenu().getMagnetSettings().magnetMode) {
-            case INVALID:
-            case NO_CARD:
-                return;
-            case OFF:
-                getMenu().setMagnetMode(MagnetMode.PICKUP_INVENTORY);
-                break;
-            case PICKUP_INVENTORY:
-                getMenu().setMagnetMode(MagnetMode.PICKUP_ME);
-                break;
-            case PICKUP_ME:
-                getMenu().setMagnetMode(MagnetMode.OFF);
-                break;
+        if(isHandlingRightClick()) {
+            switch(getMenu().getMagnetSettings().magnetMode) {
+                case INVALID:
+                case NO_CARD:
+                    break;
+                case OFF:
+                    getMenu().setMagnetMode(MagnetMode.PICKUP_ME);
+                    break;
+                case PICKUP_INVENTORY:
+                    getMenu().setMagnetMode(MagnetMode.OFF);
+                    break;
+                case PICKUP_ME:
+                    getMenu().setMagnetMode(MagnetMode.PICKUP_INVENTORY);
+                    break;
+            }
+        } else {
+            switch(getMenu().getMagnetSettings().magnetMode) {
+                case INVALID:
+                case NO_CARD:
+                    break;
+                case OFF:
+                    getMenu().setMagnetMode(MagnetMode.PICKUP_INVENTORY);
+                    break;
+                case PICKUP_INVENTORY:
+                    getMenu().setMagnetMode(MagnetMode.PICKUP_ME);
+                    break;
+                case PICKUP_ME:
+                    getMenu().setMagnetMode(MagnetMode.OFF);
+                    break;
+            }
         }
     }
 
