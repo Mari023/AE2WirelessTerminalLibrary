@@ -19,7 +19,6 @@
   "gui.ae2wtlib.restock": "Авто пополнение: ",
   "gui.ae2wtlib.off": "Выключить",
   "gui.ae2wtlib.on": "Включить",
-  "gui.ae2wtlib.slot.infinity_booster_card.desc": "Бесконечная карта ускорения",
   "gui.ae2wtlib.slot.magnetcard.desc" : "Магнитная карта",
 
   "item.ae2wtlib.wireless_pattern_encoding_terminal": "Беспроводной терминал кодирования шаблонов",
@@ -35,18 +34,12 @@
 
 
   "text.autoconfig.ae2wtlib.title": "AE2 Wireless Terminals",
-
-  "text.autoconfig.ae2wtlib.option.chargeRate": "Скорость заряда",
-  "text.autoconfig.ae2wtlib.option.wutChargeRateMultiplier": "Множитель скорости заряда беспроводного универсального терминала",
-  "text.autoconfig.ae2wtlib.option.wutBatterySizeMultiplier": "Размер батареи беспроводного универсального терминала",
   "text.autoconfig.ae2wtlib.option.outOfRangePowerMultiplier": "Множитель мощности вне диапазона",
   "text.autoconfig.ae2wtlib.option.magnetCardRange": "Диапазон магнитной карты",
   "text.autoconfig.ae2wtlib.option.enableTrinket": "Включить Trinkets интеграцию",
-
-  "text.autoconfig.ae2wtlib.option.wutChargeRateMultiplier.@Tooltip": "",
   "text.autoconfig.ae2wtlib.option.outOfRangePowerMultiplier.@Tooltip": "Если оно меньше 1, нахождение в зоне действия беспроводной точки доступа потребляет больше энергии..",
   "text.autoconfig.ae2wtlib.option.magnetCardRange.@Tooltip": "",
 
   "text.autoconfig.ae2wtlib.option.enableTrinket.@Tooltip[0]": "Это сломает работу, если он отличается от сервера, к которому вы можете подключиться.",
-  "text.autoconfig.ae2wtlib.option.enableTrinket.@Tooltip[1]": "Он эффективен только в том случае, если установлены Trinkets."
+  "text.autoconfig.ae2wtlib.option.enableTrinket.@Tooltip[2]": "Он эффективен только в том случае, если установлены Trinkets."
 }
