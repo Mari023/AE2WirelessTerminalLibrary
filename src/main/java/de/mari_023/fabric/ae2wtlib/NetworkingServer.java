@@ -5,7 +5,7 @@ import appeng.menu.locator.MenuLocator;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.terminal.WTMenuHost;
 import de.mari_023.fabric.ae2wtlib.wct.CraftingTerminalHandler;
-import de.mari_023.fabric.ae2wtlib.wct.magnet_card.ItemMagnetCard;
+import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetHandler;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetMode;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetSettings;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
@@ -57,7 +57,7 @@ public class NetworkingServer {
                         buf.release();
                         return;
                     }
-                    MagnetSettings settings = ItemMagnetCard.loadMagnetSettings(terminal);
+                    MagnetSettings settings = MagnetHandler.getMagnetSettings(terminal);
                     switch(settings.magnetMode) {
                         case OFF -> {
                             player.displayClientMessage(TextConstants.HOTKEY_MAGNETCARD_INVENTORY, true);
@@ -72,7 +72,7 @@ public class NetworkingServer {
                             settings.magnetMode = MagnetMode.OFF;
                         }
                     }
-                    ItemMagnetCard.saveMagnetSettings(terminal, settings);
+                    MagnetHandler.saveMagnetSettings(terminal, settings);
                 } else {
                     MenuLocator locator = WUTHandler.findTerminal(player, terminalName);
 

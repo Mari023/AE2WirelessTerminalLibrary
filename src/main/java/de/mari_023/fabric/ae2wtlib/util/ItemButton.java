@@ -37,13 +37,13 @@ public class ItemButton extends Button implements ITooltip {
         RenderSystem.disableDepthTest();
         RenderSystem.enableBlend();
         if(isFocused()) {
-            fill(matrices, x - 1, y - 1, x + width + 1, y + height + 1, 0xFFFFFFFF);
+            fill(matrices, x - 1, y - 1, x + 17, y + 17, 0xFFFFFFFF);
         }
-        blit(matrices, x, y, width, height, 240, 240, 16, 16, 256, 256);
+        blit(matrices, x, y, 16, 16, 240, 240, 16, 16, 256, 256);
         if(active) RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         else RenderSystem.setShaderColor(0.5f, 0.5f, 0.5f, 1.0f);
         RenderSystem.setShaderTexture(0, texture);
-        blit(matrices, x, y, width, height, 0, 0, 512, 512, 512, 512);
+        blit(matrices, x, y, 16, 16, 0, 0, 512, 512, 512, 512);
         RenderSystem.enableDepthTest();
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         matrices.popPose();
@@ -58,21 +58,11 @@ public class ItemButton extends Button implements ITooltip {
 
     @Override
     public Rect2i getTooltipArea() {
-        return new Rect2i(x, y, width, height);
+        return new Rect2i(x, y, 16, 16);
     }
 
     @Override
     public boolean isTooltipAreaVisible() {
         return visible;
-    }
-
-    public void setHalfSize(final boolean halfSize) {
-        if(halfSize) {
-            width = 8;
-            height = 8;
-        } else {
-            width = 16;
-            height = 16;
-        }
     }
 }

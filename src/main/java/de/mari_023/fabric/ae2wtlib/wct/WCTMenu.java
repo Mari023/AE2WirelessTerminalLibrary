@@ -6,18 +6,14 @@ import appeng.menu.implementations.MenuTypeBuilder;
 import appeng.menu.me.items.CraftingTermMenu;
 import appeng.menu.slot.AppEngSlot;
 import appeng.menu.slot.DisabledSlot;
-import appeng.menu.slot.RestrictedInputSlot;
 import com.mojang.datafixers.util.Pair;
 import de.mari_023.fabric.ae2wtlib.AE2wtlibSlotSemantics;
-import de.mari_023.fabric.ae2wtlib.TextConstants;
-import de.mari_023.fabric.ae2wtlib.terminal.WTInventory;
-import de.mari_023.fabric.ae2wtlib.wct.magnet_card.ItemMagnetCard;
+import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetHandler;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetMode;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetSettings;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
@@ -28,9 +24,6 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Wearable;
-
-import java.util.List;
-import java.util.function.Function;
 
 public class WCTMenu extends CraftingTermMenu {
 
@@ -44,8 +37,6 @@ public class WCTMenu extends CraftingTermMenu {
     public WCTMenu(int id, final Inventory ip, final WCTMenuHost gui) {
         super(TYPE, id, ip, gui, true);
         wctGUIObject = gui;
-
-        WTInventory wtInventory = new WTInventory(wctGUIObject.getItemStack(), this);
 
         boolean isInOffhand = Integer.valueOf(40).equals(wctGUIObject.getSlot());
 
@@ -110,15 +101,6 @@ public class WCTMenu extends CraftingTermMenu {
         }, AE2wtlibSlotSemantics.OFFHAND);
         addSlot(new AppEngSlot(wctGUIObject.getSubInventory(WCTMenuHost.INV_TRASH), 0), AE2wtlibSlotSemantics.TRASH);
 
-        AppEngSlot magnetCardSlot = new AppEngSlot(wtInventory, 0) {
-            @Override
-            public List<Component> getCustomTooltip(Function<ItemStack, List<Component>> getItemTooltip, ItemStack carriedItem) {
-                return TextConstants.MAGNETCARD_SLOT;
-            }
-        };
-        magnetCardSlot.setIcon(RestrictedInputSlot.PlacableItemType.UPGRADES.icon);
-        addSlot(magnetCardSlot, AE2wtlibSlotSemantics.MAGNET_CARD);
-
         registerClientAction(ACTION_DELETE, this::deleteTrashSlot);
         registerClientAction(MAGNET_MODE, MagnetMode.class, this::setMagnetMode);
 
@@ -144,16 +126,11 @@ public class WCTMenu extends CraftingTermMenu {
     private MagnetSettings magnetSettings;
 
     public MagnetSettings getMagnetSettings() {
-        if(magnetSettings == null) return reloadMagnetSettings();
-        return magnetSettings;
+        return magnetSettings = MagnetHandler.getMagnetSettings(wctGUIObject.getItemStack());
     }
 
     public void saveMagnetSettings() {
-        ItemMagnetCard.saveMagnetSettings(wctGUIObject.getItemStack(), magnetSettings);
-    }
-
-    public MagnetSettings reloadMagnetSettings() {
-        return magnetSettings = ItemMagnetCard.loadMagnetSettings(wctGUIObject.getItemStack());
+        MagnetHandler.saveMagnetSettings(wctGUIObject.getItemStack(), magnetSettings);
     }
 
     public void setMagnetMode(MagnetMode mode) {

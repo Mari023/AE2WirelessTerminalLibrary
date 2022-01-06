@@ -25,10 +25,6 @@
       "left": 98,
       "bottom": 106
     },
-    "AE2WTLIB_MAGNET_CARD": {
-      "left": 134,
-      "bottom": 104
-    },
     "AE2WTLIB_HELMET": {
       "left": 8,
       "bottom": 160
@@ -102,8 +98,8 @@
       "bottom": 106
     },
     "magnetCardToggleButton": {
-      "left": 142,
-      "bottom": 114
+      "left": -20,
+      "top": 148
     },
     "cycleTerminal": {
       "left": -20,

@@ -30,4 +30,8 @@ public class MagnetSettings {
         tag.putByte("magnetMode", magnetMode.getId());
         return tag;
     }
+
+    public boolean isActive() {
+        return magnetMode == MagnetMode.PICKUP_INVENTORY || magnetMode == MagnetMode.PICKUP_ME;
+    }
 }

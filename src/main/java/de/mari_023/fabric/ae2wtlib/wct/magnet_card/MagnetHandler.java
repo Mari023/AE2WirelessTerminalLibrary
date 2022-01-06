@@ -2,12 +2,14 @@ package de.mari_023.fabric.ae2wtlib.wct.magnet_card;
 
 import appeng.api.stacks.AEItemKey;
 import appeng.api.stacks.KeyCounter;
+import appeng.api.upgrades.IUpgradeableItem;
 import de.mari_023.fabric.ae2wtlib.AE2wtlib;
 import de.mari_023.fabric.ae2wtlib.AE2wtlibConfig;
 import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import de.mari_023.fabric.ae2wtlib.wct.CraftingTerminalHandler;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
@@ -25,7 +27,7 @@ public class MagnetHandler {
     public void doMagnet(MinecraftServer server) {
         List<ServerPlayer> playerList = server.getPlayerList().getPlayers();
         for(ServerPlayer player : playerList) {
-            if(ItemMagnetCard.isActiveMagnet(CraftingTerminalHandler.getCraftingTerminalHandler(player).getCraftingTerminal())) {
+            if(getMagnetSettings(CraftingTerminalHandler.getCraftingTerminalHandler(player).getCraftingTerminal()).isActive()) {
                 List<ItemEntity> entityItems = player.getLevel().getEntitiesOfClass(ItemEntity.class, player.getBoundingBox().inflate(AE2wtlibConfig.INSTANCE.magnetCardRange()), EntitySelector.ENTITY_STILL_ALIVE);
                 boolean sneaking = !player.isShiftKeyDown();
                 for(ItemEntity entityItemNearby : entityItems) if(sneaking) entityItemNearby.playerTouch(player);
@@ -61,5 +63,16 @@ public class MagnetHandler {
             }
             ServerPlayNetworking.send(player, new ResourceLocation(AE2wtlib.MOD_NAME, "restock_amounts"), buf);
         } catch(NullPointerException ignored) {}
+    }
+
+    public static void saveMagnetSettings(ItemStack terminal, MagnetSettings magnetSettings) {
+        if(terminal.getItem() instanceof IUpgradeableItem upgradeableItem && upgradeableItem.getUpgrades(terminal).isInstalled(AE2wtlib.MAGNET_CARD))
+            terminal.getOrCreateTag().put("magnet_settings", magnetSettings.toTag());
+    }
+
+    public static MagnetSettings getMagnetSettings(ItemStack terminal) {
+        if(terminal.getItem() instanceof IUpgradeableItem upgradeableItem && upgradeableItem.getUpgrades(terminal).isInstalled(AE2wtlib.MAGNET_CARD))
+        return new MagnetSettings((CompoundTag) terminal.getOrCreateTag().get("magnet_settings"));
+        return new MagnetSettings();
     }
 }

@@ -13,7 +13,6 @@ import de.mari_023.fabric.ae2wtlib.wat.WATMenu;
 import de.mari_023.fabric.ae2wtlib.wat.WATMenuHost;
 import de.mari_023.fabric.ae2wtlib.wct.WCTMenu;
 import de.mari_023.fabric.ae2wtlib.wct.WCTMenuHost;
-import de.mari_023.fabric.ae2wtlib.wct.magnet_card.ItemMagnetCard;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetHandler;
 import de.mari_023.fabric.ae2wtlib.wet.ItemWET;
 import de.mari_023.fabric.ae2wtlib.wet.WETMenu;
@@ -41,7 +40,7 @@ public class AE2wtlib implements IAEAddonEntrypoint {
     public static ItemWUT UNIVERSAL_TERMINAL;
 
     public static Item INFINITY_BOOSTER;
-    public static ItemMagnetCard MAGNET_CARD;
+    public static Item MAGNET_CARD;
     public static final Item CHECK_TRINKETS = new Item(new FabricItemSettings());
 
     @Override
@@ -70,7 +69,7 @@ public class AE2wtlib implements IAEAddonEntrypoint {
         PATTERN_ACCESS_TERMINAL = new ItemWAT();
         UNIVERSAL_TERMINAL = new ItemWUT();
         INFINITY_BOOSTER = Upgrades.createUpgradeCardItem(new FabricItemSettings().tab(AE2wtlib.ITEM_GROUP).stacksTo(1));
-        MAGNET_CARD = new ItemMagnetCard();
+        MAGNET_CARD = Upgrades.createUpgradeCardItem(new FabricItemSettings().tab(AE2wtlib.ITEM_GROUP).stacksTo(1));
 
         Registry.register(Registry.ITEM, new ResourceLocation(MOD_NAME, "infinity_booster_card"), INFINITY_BOOSTER);
         Registry.register(Registry.ITEM, new ResourceLocation(MOD_NAME, "magnet_card"), MAGNET_CARD);
@@ -92,5 +91,8 @@ public class AE2wtlib implements IAEAddonEntrypoint {
         Upgrades.add(INFINITY_BOOSTER, PATTERN_ENCODING_TERMINAL, 1);
         Upgrades.add(INFINITY_BOOSTER, PATTERN_ACCESS_TERMINAL, 1);
         Upgrades.add(INFINITY_BOOSTER, UNIVERSAL_TERMINAL, 1);
+
+        Upgrades.add(MAGNET_CARD, AEItems.WIRELESS_CRAFTING_TERMINAL, 1);
+        Upgrades.add(MAGNET_CARD, UNIVERSAL_TERMINAL, 1);
     }
 }

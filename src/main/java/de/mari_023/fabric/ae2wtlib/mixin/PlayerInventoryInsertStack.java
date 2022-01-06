@@ -4,7 +4,8 @@ import appeng.api.config.Actionable;
 import appeng.api.stacks.AEItemKey;
 import appeng.me.helpers.PlayerSource;
 import de.mari_023.fabric.ae2wtlib.wct.CraftingTerminalHandler;
-import de.mari_023.fabric.ae2wtlib.wct.magnet_card.ItemMagnetCard;
+import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetHandler;
+import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetMode;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -27,7 +28,7 @@ public class PlayerInventoryInsertStack {
         if(stack.isEmpty()) return;
         CraftingTerminalHandler cTHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
         ItemStack terminal = cTHandler.getCraftingTerminal();
-        if(ItemMagnetCard.isPickupME(terminal) && cTHandler.inRange()) {
+        if(MagnetHandler.getMagnetSettings(terminal).magnetMode == MagnetMode.PICKUP_ME && cTHandler.inRange()) {
             if(cTHandler.getTargetGrid().getStorageService() == null) return;
             long inserted = cTHandler.getTargetGrid().getStorageService().getInventory().insert(AEItemKey.of(stack), stack.getCount(), Actionable.MODULATE, new PlayerSource(player, cTHandler.getSecurityStation()));
             int leftover = (int) (stack.getCount() - inserted);

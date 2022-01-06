@@ -15,8 +15,6 @@ public class AE2wtlibSlotSemantics {
     public static final SlotSemantic OFFHAND = register("OFFHAND");
 
     public static final SlotSemantic TRASH = register("TRASH");
-    public static final SlotSemantic MAGNET_CARD = register("MAGNET_CARD");
-
 
     private static SlotSemantic register(String id) {
         return SlotSemantics.register("AE2WTLIB_" + id, false);
