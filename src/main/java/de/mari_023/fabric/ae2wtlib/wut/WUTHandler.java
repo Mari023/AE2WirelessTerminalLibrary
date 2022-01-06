@@ -73,8 +73,7 @@ public class WUTHandler {
             int i;
             if(isHandlingRightClick) {
                 i = terminalNames.indexOf(nextTerminal) - 1;
-                if(i == 0) i = terminalNames.size();
-
+                if(i == -1) i = terminalNames.size() - 1;
             } else {
                 i = terminalNames.indexOf(nextTerminal) + 1;
                 if(i == terminalNames.size()) i = 0;
