@@ -49,6 +49,7 @@ public abstract class ItemWT extends WirelessTerminalItem implements IUniversalW
      * @param slot     the location where the item is stored
      * @return the stored Item or {@link ItemStack}.EMPTY if it wasn't found
      */
+    @Deprecated
     public static ItemStack getSavedSlot(ItemStack hostItem, String slot) {
         if(!(hostItem.getItem() instanceof IUniversalWirelessTerminalItem)) return ItemStack.EMPTY;
         return ItemStack.of(hostItem.getOrCreateTag().getCompound(slot));
@@ -62,6 +63,7 @@ public abstract class ItemWT extends WirelessTerminalItem implements IUniversalW
      * @param savedItem the item to store
      * @param slot      the location where the stored item will be
      */
+    @Deprecated
     public static void setSavedSlot(ItemStack hostItem, ItemStack savedItem, String slot) {
         if(!(hostItem.getItem() instanceof IUniversalWirelessTerminalItem)) return;
         CompoundTag wctTag = hostItem.getOrCreateTag();
@@ -75,6 +77,7 @@ public abstract class ItemWT extends WirelessTerminalItem implements IUniversalW
      * @param hostItem the Terminal to load from
      * @return the boolean or false if it wasn't found
      */
+    @Deprecated
     public static boolean getBoolean(ItemStack hostItem, String key) {
         if(!(hostItem.getItem() instanceof IUniversalWirelessTerminalItem)) return false;
         return hostItem.getOrCreateTag().getBoolean(key);
@@ -88,6 +91,7 @@ public abstract class ItemWT extends WirelessTerminalItem implements IUniversalW
      * @param b        the boolean to store
      * @param key      the location where the stored item will be
      */
+    @Deprecated
     public static void setBoolean(ItemStack hostItem, boolean b, String key) {
         if(!(hostItem.getItem() instanceof IUniversalWirelessTerminalItem)) return;
         CompoundTag wctTag = hostItem.getOrCreateTag();
