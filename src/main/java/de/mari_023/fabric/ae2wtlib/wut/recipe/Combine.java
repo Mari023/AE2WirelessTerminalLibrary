@@ -47,7 +47,7 @@ public class Combine extends Common {
     }
 
     @Override
-    public ItemStack assemble(CraftingContainer inv) {//TODO combine stored energy
+    public ItemStack assemble(CraftingContainer inv) {//TODO combine stored energy and upgrades
         CompoundTag terminalA = InputHelper.getInputStack(inv, this.terminalA).getTag();
         if(terminalA == null) terminalA = new CompoundTag();
         else terminalA = terminalA.copy();

@@ -37,7 +37,7 @@ public class Upgrade extends Common {
     }
 
     @Override
-    public ItemStack assemble(CraftingContainer inv) {//TODO combine stored energy
+    public ItemStack assemble(CraftingContainer inv) {//TODO combine stored energy and upgrades
         ItemStack wut = InputHelper.getInputStack(inv, InputHelper.WUT).copy();
         CompoundTag terminal = InputHelper.getInputStack(inv, this.terminal).getOrCreateTag().copy();
         wut.getOrCreateTag().putBoolean(terminalName, true);
