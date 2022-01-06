@@ -34,7 +34,7 @@ public class WETMenuHost extends WTMenuHost implements ISegmentedInventory, IVie
 
     public WETMenuHost(final Player ep, @Nullable Integer inventorySlot, final ItemStack is, BiConsumer<Player, ISubMenu> returnToMainMenu) {
         super(ep, inventorySlot, is, returnToMainMenu);
-        loadFromNbt();
+        readFromNbt();
     }
 
     @Override
@@ -59,17 +59,20 @@ public class WETMenuHost extends WTMenuHost implements ISegmentedInventory, IVie
     public void setMode(EncodingMode mode) {
         this.mode = mode;
         fixCraftingRecipes();
+        saveChanges();
     }
 
-    private void loadFromNbt() {
+    @Override
+    protected void readFromNbt() {
+        super.readFromNbt();
         CompoundTag tag = getItemStack().getOrCreateTag();
         try {
             mode = EncodingMode.valueOf(tag.getString("wet_mode"));
         } catch(IllegalArgumentException ignored) {
             mode = EncodingMode.CRAFTING;
         }
-        setSubstitution(tag.getBoolean("wet_substitute"));
-        setFluidSubstitution(tag.getBoolean("wet_substituteFluids"));
+        substitute = tag.getBoolean("wet_substitute");
+        substituteFluids = tag.getBoolean("wet_substituteFluids");
         pattern.readFromNBT(tag, "wet_pattern");
         output.readFromNBT(tag, "wet_outputList");
         crafting.readFromNBT(tag, "wet_craftingGrid");
@@ -77,6 +80,7 @@ public class WETMenuHost extends WTMenuHost implements ISegmentedInventory, IVie
 
     @Override
     public void saveChanges() {
+        super.saveChanges();
         CompoundTag tag = getItemStack().getOrCreateTag();
         tag.putString("wet_mode", mode.name());
         tag.putBoolean("wet_substitute", substitute);
@@ -109,6 +113,7 @@ public class WETMenuHost extends WTMenuHost implements ISegmentedInventory, IVie
                 }
             }
         } else if(inv == crafting) fixCraftingRecipes();
+        saveChanges();
     }
 
     public boolean isSubstitution() {
@@ -117,6 +122,7 @@ public class WETMenuHost extends WTMenuHost implements ISegmentedInventory, IVie
 
     public void setSubstitution(final boolean canSubstitute) {
         substitute = canSubstitute;
+        saveChanges();
     }
 
     public boolean isFluidSubstitution() {
@@ -125,5 +131,6 @@ public class WETMenuHost extends WTMenuHost implements ISegmentedInventory, IVie
 
     public void setFluidSubstitution(final boolean canSubstitute) {
         substituteFluids = canSubstitute;
+        saveChanges();
     }
 }

@@ -144,11 +144,6 @@ public class WCTMenu extends CraftingTermMenu implements IWTInvHolder {
         return wctGUIObject.getItemStack().getItem() instanceof ItemWUT;
     }
 
-    @Override
-    public List<ItemStack> getViewCells() {
-        return wctGUIObject.getViewCellStorage().getViewCells();
-    }
-
     public final Slot[] SlotsWithTrinket = new Slot[46];
 
     //Trinkets starting here

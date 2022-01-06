@@ -8,9 +8,6 @@ import de.mari_023.fabric.ae2wtlib.terminal.IWTInvHolder;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.ItemStack;
-
-import java.util.List;
 
 public class WETMenu extends PatternEncodingTermMenu implements IWTInvHolder {
 
@@ -30,10 +27,5 @@ public class WETMenu extends PatternEncodingTermMenu implements IWTInvHolder {
 
     public boolean isWUT() {
         return WETGUIObject.getItemStack().getItem() instanceof ItemWUT;
-    }
-
-    @Override
-    public List<ItemStack> getViewCells() {
-        return WETGUIObject.getViewCellStorage().getViewCells();
     }
 }

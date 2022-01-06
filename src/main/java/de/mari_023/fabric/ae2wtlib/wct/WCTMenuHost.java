@@ -21,7 +21,7 @@ public class WCTMenuHost extends WTMenuHost implements IViewCellStorage, ISegmen
 
     public WCTMenuHost(final Player ep, @Nullable Integer inventorySlot, final ItemStack is, BiConsumer<Player, ISubMenu> returnToMainMenu) {
         super(ep, inventorySlot, is, returnToMainMenu);
-        craftingGrid.readFromNBT(getItemStack().getOrCreateTag(), "craftingGrid");
+        readFromNbt();
     }
 
     @Override
@@ -37,11 +37,19 @@ public class WCTMenuHost extends WTMenuHost implements IViewCellStorage, ISegmen
     }
 
     @Override
+    protected void readFromNbt() {
+        super.readFromNbt();
+        craftingGrid.readFromNBT(getItemStack().getOrCreateTag(), "craftingGrid");
+    }
+
+    @Override
     public void saveChanges() {
+        super.saveChanges();
         craftingGrid.writeToNBT(getItemStack().getOrCreateTag(), "craftingGrid");
     }
 
     @Override
     public void onChangeInventory(InternalInventory inv, int slot) {
+        saveChanges();
     }
 }

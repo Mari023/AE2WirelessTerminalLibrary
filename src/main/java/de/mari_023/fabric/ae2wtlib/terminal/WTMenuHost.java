@@ -1,6 +1,7 @@
 package de.mari_023.fabric.ae2wtlib.terminal;
 
 import appeng.api.features.Locatables;
+import appeng.api.inventories.InternalInventory;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.upgrades.IUpgradeInventory;
@@ -8,6 +9,8 @@ import appeng.api.upgrades.UpgradeInventories;
 import appeng.helpers.WirelessTerminalMenuHost;
 import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.menu.ISubMenu;
+import appeng.util.inv.AppEngInternalInventory;
+import appeng.util.inv.InternalInventoryHost;
 import de.mari_023.fabric.ae2wtlib.AE2wtlib;
 import de.mari_023.fabric.ae2wtlib.AE2wtlibConfig;
 import net.minecraft.world.entity.player.Player;
@@ -16,9 +19,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.BiConsumer;
 
-public abstract class WTMenuHost extends WirelessTerminalMenuHost {
+public abstract class WTMenuHost extends WirelessTerminalMenuHost implements InternalInventoryHost {
 
-    private final ViewCellInventory viewCellInventory;
+    private final AppEngInternalInventory viewCellInventory;
     private final Player myPlayer;
     private boolean rangeCheck;
     private IGridNode securityTerminalNode;
@@ -26,9 +29,9 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost {
 
     public WTMenuHost(final Player player, @Nullable Integer inventorySlot, final ItemStack is, BiConsumer<Player, ISubMenu> returnToMainMenu) {
         super(player, inventorySlot, is, returnToMainMenu);
-        viewCellInventory = new ViewCellInventory(is);
+        viewCellInventory = new AppEngInternalInventory(this, 5);
         myPlayer = player;
-        upgradeInventory = UpgradeInventories.forItem(is,2, this::updateUpgrades);
+        upgradeInventory = UpgradeInventories.forItem(is, 2, this::updateUpgrades);
 
         if(((WirelessTerminalItem) is.getItem()).getGridKey(is).isEmpty()) return;
         IActionHost actionHost = Locatables.securityStations().get(player.level, ((WirelessTerminalItem) is.getItem()).getGridKey(is).getAsLong());
@@ -37,6 +40,20 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost {
 
     public void updateUpgrades(ItemStack stack, IUpgradeInventory upgrades) {
         upgradeInventory = upgrades;
+    }
+
+    protected void readFromNbt() {
+        viewCellInventory.readFromNBT(getItemStack().getOrCreateTag(), "viewcells");
+    }
+
+    public void saveChanges() {
+        viewCellInventory.writeToNBT(getItemStack().getOrCreateTag(), "viewcells");
+    }
+
+
+    @Override
+    public void onChangeInventory(InternalInventory inv, int slot) {
+        saveChanges();
     }
 
     @Override
@@ -59,7 +76,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost {
         return myPlayer;
     }
 
-    public ViewCellInventory getViewCellStorage() {
+    public AppEngInternalInventory getViewCellStorage() {
         return viewCellInventory;
     }
 
