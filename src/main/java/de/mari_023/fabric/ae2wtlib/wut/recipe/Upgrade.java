@@ -1,5 +1,7 @@
 package de.mari_023.fabric.ae2wtlib.wut.recipe;
 
+import appeng.api.config.Actionable;
+import appeng.items.tools.powered.powersink.AEBasePoweredItem;
 import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -37,12 +39,16 @@ public class Upgrade extends Common {
     }
 
     @Override
-    public ItemStack assemble(CraftingContainer inv) {//TODO combine stored energy and upgrades
+    public ItemStack assemble(CraftingContainer inv) {
         ItemStack wut = InputHelper.getInputStack(inv, InputHelper.WUT).copy();
         CompoundTag terminal = InputHelper.getInputStack(inv, this.terminal).getOrCreateTag().copy();
         wut.getOrCreateTag().putBoolean(terminalName, true);
         terminal.merge(wut.getOrCreateTag());
         wut.setTag(terminal);
+
+        AEBasePoweredItem item = (AEBasePoweredItem) wut.getItem();
+        item.extractAEPower(wut, item.getAECurrentPower(wut), Actionable.MODULATE);
+        item.injectAEPower(wut, ((AEBasePoweredItem) this.terminal.getItems()[0].getItem()).getAECurrentPower(this.terminal.getItems()[0]), Actionable.MODULATE);
 
         return wut;
     }
