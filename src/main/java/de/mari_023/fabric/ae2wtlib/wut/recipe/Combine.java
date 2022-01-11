@@ -1,5 +1,8 @@
 package de.mari_023.fabric.ae2wtlib.wut.recipe;
 
+import appeng.api.config.Actionable;
+import appeng.items.tools.powered.powersink.AEBasePoweredItem;
+import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -47,17 +50,27 @@ public class Combine extends Common {
     }
 
     @Override
-    public ItemStack assemble(CraftingContainer inv) {//TODO combine stored energy and upgrades
+    public ItemStack assemble(CraftingContainer inv) {
         CompoundTag terminalA = InputHelper.getInputStack(inv, this.terminalA).getTag();
-        if(terminalA == null) terminalA = new CompoundTag();
+        if (terminalA == null) terminalA = new CompoundTag();
         else terminalA = terminalA.copy();
 
         CompoundTag terminalB = InputHelper.getInputStack(inv, this.terminalB).getTag();
-        if(terminalB == null) terminalB = new CompoundTag();
+        if (terminalB == null) terminalB = new CompoundTag();
         else terminalB = terminalB.copy();
 
         ItemStack wut = outputStack.copy();
+
         wut.getOrCreateTag().merge(terminalB).merge(terminalA);
+
+        AEBasePoweredItem item = (AEBasePoweredItem) outputStack.getItem();
+        item.extractAEPower(wut, item.getAECurrentPower(wut), Actionable.MODULATE); // clear power
+        item.injectAEPower(wut,
+                ((AEBasePoweredItem) this.terminalA.getItems()[0].getItem()).getAECurrentPower(this.terminalA.getItems()[0]) +
+                        ((AEBasePoweredItem) this.terminalB.getItems()[0].getItem()).getAECurrentPower(this.terminalB.getItems()[0]),
+                Actionable.MODULATE
+        ); // set power
+
         return wut;
     }
 

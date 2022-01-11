@@ -147,7 +147,8 @@ curseforge {
                 displayName = project.version
             }
 
-            relations {//TODO cloth config required
+            relations {
+                requiredDependency 'cloth-config'
                 requiredDependency 'fabric-api'
                 requiredDependency 'applied-energistics-2'
                 optionalDependency 'roughly-enough-items'
