@@ -1,9 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "a a",
-    " b "
-  ],
+  "pattern": ["a a", " b "],
   "key": {
     "a": {
       "item": "ae2:fluix_pearl"

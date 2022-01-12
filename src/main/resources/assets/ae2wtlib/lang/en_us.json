@@ -19,7 +19,7 @@
   "gui.ae2wtlib.restock": "Restock: ",
   "gui.ae2wtlib.off": "Off",
   "gui.ae2wtlib.on": "On",
-  "gui.ae2wtlib.slot.magnetcard.desc" : "Magnet Card",
+  "gui.ae2wtlib.slot.magnetcard.desc": "Magnet Card",
 
   "item.ae2wtlib.wireless_pattern_encoding_terminal": "Wireless Pattern Encoding Terminal",
   "item.ae2wtlib.wireless_pattern_access_terminal": "Wireless Pattern Access Terminal",
@@ -31,7 +31,6 @@
   "key.ae2wtlib.wit": "Open Wireless Interface Terminal",
   "key.ae2wtlib.toggleRestock": "Toggle Restock",
   "key.ae2wtlib.toggleMagnet": "Toggle Magnet Card",
-
 
   "text.autoconfig.ae2wtlib.title": "AE2 Wireless Terminals",
 
@@ -45,5 +44,4 @@
   "text.autoconfig.ae2wtlib.option.enableTrinket.@Tooltip[0]": "This setting has to be the same on both client and server.",
   "text.autoconfig.ae2wtlib.option.enableTrinket.@Tooltip[1]": "You need to restart to apply a change.",
   "text.autoconfig.ae2wtlib.option.enableTrinket.@Tooltip[2]": "It is only effective if Trinkets is installed."
-
 }

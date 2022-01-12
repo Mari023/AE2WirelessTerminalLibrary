@@ -1,9 +1,7 @@
 {
   "parent": "minecraft:recipes/root",
   "rewards": {
-    "recipes": [
-      "ae2wtlib:infinity_booster_card"
-    ]
+    "recipes": ["ae2wtlib:infinity_booster_card"]
   },
   "criteria": {
     "has_wct": {
@@ -43,12 +41,5 @@
       }
     }
   },
-  "requirements": [
-    [
-      "has_wct",
-      "has_wpt",
-      "has_wit",
-      "has_the_recipe"
-    ]
-  ]
+  "requirements": [["has_wct", "has_wpt", "has_wit", "has_the_recipe"]]
 }

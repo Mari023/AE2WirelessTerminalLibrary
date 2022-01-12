@@ -4,11 +4,7 @@
   "version": "${version}",
   "name": "AE2WTLib",
   "description": "Adds Wireless versions of ae2 Terminals with infinite range capabilities.",
-  "authors": [
-    "mari_023",
-    "Ridanisaurus",
-    "DomamaN202"
-  ],
+  "authors": ["mari_023", "Ridanisaurus", "DomamaN202"],
   "contact": {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/applied-energistics-2-wireless-terminals",
     "sources": "https://github.com/Mari023/AE2WirelessTerminalLibrary",
@@ -18,22 +14,12 @@
   "icon": "assets/ae2wtlib/icon.png",
   "environment": "*",
   "entrypoints": {
-    "ae2:client": [
-      "de.mari_023.fabric.ae2wtlib.client.AE2wtlibclient"
-    ],
-    "ae2": [
-      "de.mari_023.fabric.ae2wtlib.AE2wtlib"
-    ],
-    "rei_plugins": [
-      "de.mari_023.fabric.ae2wtlib.rei.Plugin"
-    ],
-    "modmenu": [
-      "de.mari_023.fabric.ae2wtlib.ModMenuIntegration"
-    ]
+    "ae2:client": ["de.mari_023.fabric.ae2wtlib.client.AE2wtlibclient"],
+    "ae2": ["de.mari_023.fabric.ae2wtlib.AE2wtlib"],
+    "rei_plugins": ["de.mari_023.fabric.ae2wtlib.rei.Plugin"],
+    "modmenu": ["de.mari_023.fabric.ae2wtlib.ModMenuIntegration"]
   },
-  "mixins": [
-    "ae2wtlib.mixins.json"
-  ],
+  "mixins": ["ae2wtlib.mixins.json"],
   "depends": {
     "fabric": "*",
     "minecraft": "*",

@@ -1,9 +1,7 @@
 {
   "parent": "minecraft:recipes/root",
   "rewards": {
-    "recipes": [
-      "ae2wtlib:wireless_universal_terminal/ip"
-    ]
+    "recipes": ["ae2wtlib:wireless_universal_terminal/ip"]
   },
   "criteria": {
     "has_wpt": {
@@ -33,11 +31,5 @@
       }
     }
   },
-  "requirements": [
-    [
-      "has_wit",
-      "has_wpt",
-      "has_the_recipe"
-    ]
-  ]
+  "requirements": [["has_wit", "has_wpt", "has_the_recipe"]]
 }

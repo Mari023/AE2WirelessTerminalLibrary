@@ -1,9 +1,7 @@
 {
   "parent": "minecraft:recipes/root",
   "rewards": {
-    "recipes": [
-      "ae2wtlib:wireless_universal_terminal/ci"
-    ]
+    "recipes": ["ae2wtlib:wireless_universal_terminal/ci"]
   },
   "criteria": {
     "has_wct": {
@@ -33,11 +31,5 @@
       }
     }
   },
-  "requirements": [
-    [
-      "has_wct",
-      "has_wit",
-      "has_the_recipe"
-    ]
-  ]
+  "requirements": [["has_wct", "has_wit", "has_the_recipe"]]
 }

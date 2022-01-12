@@ -31,7 +31,6 @@
   "key.ae2wtlib.toggleRestock": "보충 토글",
   "key.ae2wtlib.toggleMagnet": "마그넷 카드 토글",
 
-
   "text.autoconfig.ae2wtlib.title": "AE2 무선 터미널",
   "text.autoconfig.ae2wtlib.option.outOfRangePowerMultiplier": "범위 밖 전력 소모 배율",
   "text.autoconfig.ae2wtlib.option.magnetCardRange": "마그넷 카드 범위",
@@ -41,5 +40,4 @@
 
   "text.autoconfig.ae2wtlib.option.enableTrinket.@Tooltip[0]": "연결할 수 있는 서버와 다를 경우 오류가 발생합니다.",
   "text.autoconfig.ae2wtlib.option.enableTrinket.@Tooltip[2]": "Trinkets가 설치된 경우에만 효과가 있습니다."
-
 }

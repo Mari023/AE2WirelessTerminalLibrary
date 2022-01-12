@@ -1,9 +1,7 @@
 {
   "parent": "minecraft:recipes/root",
   "rewards": {
-    "recipes": [
-      "ae2wtlib:wireless_universal_terminal/upgrade_pattern"
-    ]
+    "recipes": ["ae2wtlib:wireless_universal_terminal/upgrade_pattern"]
   },
   "criteria": {
     "has_wpt": {
@@ -23,10 +21,5 @@
       }
     }
   },
-  "requirements": [
-    [
-      "has_wpt",
-      "has_the_recipe"
-    ]
-  ]
+  "requirements": [["has_wpt", "has_the_recipe"]]
 }

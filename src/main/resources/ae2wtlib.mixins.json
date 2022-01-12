@@ -10,9 +10,7 @@
     "Restock",
     "TrinketWCTContainer"
   ],
-  "client": [
-    "RestockRender"
-  ],
+  "client": ["RestockRender"],
   "injectors": {
     "defaultRequire": 1
   }

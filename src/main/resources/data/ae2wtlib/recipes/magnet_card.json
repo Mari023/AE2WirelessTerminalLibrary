@@ -1,10 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "abc",
-    "ded",
-    "ddd"
-  ],
+  "pattern": ["abc", "ded", "ddd"],
   "key": {
     "a": {
       "item": "minecraft:redstone_block"
