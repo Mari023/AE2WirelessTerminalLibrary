@@ -1,5 +1,7 @@
 package de.mari_023.fabric.ae2wtlib.wct;
 
+import java.util.Objects;
+
 import com.mojang.datafixers.util.Pair;
 
 import net.fabricmc.api.EnvType;
@@ -27,8 +29,6 @@ import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetHandler;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetMode;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetSettings;
 import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
-
-import java.util.Objects;
 
 public class WCTMenu extends CraftingTermMenu {
 
