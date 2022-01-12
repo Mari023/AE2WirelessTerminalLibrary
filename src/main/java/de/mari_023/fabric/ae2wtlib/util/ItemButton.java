@@ -1,18 +1,20 @@
 package de.mari_023.fabric.ae2wtlib.util;
 
-import appeng.client.gui.widgets.ITooltip;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Collections;
 import java.util.List;
+
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
+
+import org.jetbrains.annotations.NotNull;
 
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
+
+import appeng.client.gui.widgets.ITooltip;
 
 public class ItemButton extends Button implements ITooltip {
 
@@ -31,24 +33,28 @@ public class ItemButton extends Button implements ITooltip {
 
     @Override
     public void renderButton(PoseStack matrices, final int mouseX, final int mouseY, float partial) {
-        if(!visible) return;
+        if (!visible)
+            return;
         matrices.pushPose();
         RenderSystem.setShaderTexture(0, TEXTURE_STATES);
         RenderSystem.disableDepthTest();
         RenderSystem.enableBlend();
-        if(isFocused()) {
+        if (isFocused()) {
             fill(matrices, x - 1, y - 1, x + 17, y + 17, 0xFFFFFFFF);
         }
         blit(matrices, x, y, 16, 16, 240, 240, 16, 16, 256, 256);
-        if(active) RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-        else RenderSystem.setShaderColor(0.5f, 0.5f, 0.5f, 1.0f);
+        if (active)
+            RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+        else
+            RenderSystem.setShaderColor(0.5f, 0.5f, 0.5f, 1.0f);
         RenderSystem.setShaderTexture(0, texture);
         blit(matrices, x, y, 16, 16, 0, 0, 512, 512, 512, 512);
         RenderSystem.enableDepthTest();
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         matrices.popPose();
 
-        if(isHoveredOrFocused()) renderToolTip(matrices, mouseX, mouseY);
+        if (isHoveredOrFocused())
+            renderToolTip(matrices, mouseX, mouseY);
     }
 
     @Override

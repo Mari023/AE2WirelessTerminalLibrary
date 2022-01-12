@@ -14,7 +14,8 @@ public class Combine extends Common {
     private final String terminalAName;
     private final String terminalBName;
 
-    public Combine(Ingredient terminalA, Ingredient terminalB, String terminalAName, String TerminalBName, ResourceLocation id) {
+    public Combine(Ingredient terminalA, Ingredient terminalB, String terminalAName, String TerminalBName,
+            ResourceLocation id) {
         super(id);
         this.terminalA = terminalA;
         this.terminalB = terminalB;
@@ -42,7 +43,8 @@ public class Combine extends Common {
 
     @Override
     public boolean matches(CraftingContainer inv, Level world) {
-        return !InputHelper.getInputStack(inv, terminalA).isEmpty() && !InputHelper.getInputStack(inv, terminalB).isEmpty() && InputHelper.getInputCount(inv) == 2;
+        return !InputHelper.getInputStack(inv, terminalA).isEmpty()
+                && !InputHelper.getInputStack(inv, terminalB).isEmpty() && InputHelper.getInputCount(inv) == 2;
     }
 
     @Override

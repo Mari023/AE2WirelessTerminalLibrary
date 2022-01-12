@@ -10,12 +10,13 @@ public class MagnetSettings {
     /**
      * loads {@link MagnetSettings} from a tag.
      *
-     * @param tag tag to load the settings from.
-     *            An empty tag will result in Default {@link MagnetSettings}
+     * @param tag tag to load the settings from. An empty tag will result in Default {@link MagnetSettings}
      */
     public MagnetSettings(CompoundTag tag) {
-        if(tag == null) magnetMode = MagnetMode.DEFAULT;
-        else magnetMode = MagnetMode.fromByte(tag.getByte("magnetMode"));
+        if (tag == null)
+            magnetMode = MagnetMode.DEFAULT;
+        else
+            magnetMode = MagnetMode.fromByte(tag.getByte("magnetMode"));
     }
 
     /**

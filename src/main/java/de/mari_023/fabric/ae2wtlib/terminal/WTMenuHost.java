@@ -1,5 +1,12 @@
 package de.mari_023.fabric.ae2wtlib.terminal;
 
+import java.util.function.BiConsumer;
+
+import org.jetbrains.annotations.Nullable;
+
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+
 import appeng.api.features.Locatables;
 import appeng.api.inventories.InternalInventory;
 import appeng.api.networking.IGridNode;
@@ -11,13 +18,9 @@ import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.menu.ISubMenu;
 import appeng.util.inv.AppEngInternalInventory;
 import appeng.util.inv.InternalInventoryHost;
+
 import de.mari_023.fabric.ae2wtlib.AE2wtlib;
 import de.mari_023.fabric.ae2wtlib.AE2wtlibConfig;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.function.BiConsumer;
 
 public abstract class WTMenuHost extends WirelessTerminalMenuHost implements InternalInventoryHost {
 
@@ -27,15 +30,19 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost implements Int
     private IGridNode securityTerminalNode;
     private IUpgradeInventory upgradeInventory;
 
-    public WTMenuHost(final Player player, @Nullable Integer inventorySlot, final ItemStack is, BiConsumer<Player, ISubMenu> returnToMainMenu) {
+    public WTMenuHost(final Player player, @Nullable Integer inventorySlot, final ItemStack is,
+            BiConsumer<Player, ISubMenu> returnToMainMenu) {
         super(player, inventorySlot, is, returnToMainMenu);
         viewCellInventory = new AppEngInternalInventory(this, 5);
         myPlayer = player;
         upgradeInventory = UpgradeInventories.forItem(is, 2, this::updateUpgrades);
 
-        if(((WirelessTerminalItem) is.getItem()).getGridKey(is).isEmpty()) return;
-        IActionHost actionHost = Locatables.securityStations().get(player.level, ((WirelessTerminalItem) is.getItem()).getGridKey(is).getAsLong());
-        if(actionHost != null) securityTerminalNode = actionHost.getActionableNode();
+        if (((WirelessTerminalItem) is.getItem()).getGridKey(is).isEmpty())
+            return;
+        IActionHost actionHost = Locatables.securityStations().get(player.level,
+                ((WirelessTerminalItem) is.getItem()).getGridKey(is).getAsLong());
+        if (actionHost != null)
+            securityTerminalNode = actionHost.getActionableNode();
     }
 
     public void updateUpgrades(ItemStack stack, IUpgradeInventory upgrades) {
@@ -50,7 +57,6 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost implements Int
         viewCellInventory.writeToNBT(getItemStack().getOrCreateTag(), "viewcells");
     }
 
-
     @Override
     public void onChangeInventory(InternalInventory inv, int slot) {
         saveChanges();
@@ -59,7 +65,8 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost implements Int
     @Override
     public IGridNode getActionableNode() {
         IGridNode node = super.getActionableNode();
-        if(node != null) return node;
+        if (node != null)
+            return node;
         return securityTerminalNode;
     }
 
@@ -82,7 +89,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost implements Int
 
     @Override
     protected void setPowerDrainPerTick(double powerDrainPerTick) {
-        if(rangeCheck) {
+        if (rangeCheck) {
             super.setPowerDrainPerTick(powerDrainPerTick);
         } else {
             super.setPowerDrainPerTick(AE2wtlibConfig.INSTANCE.getOutOfRangePower());

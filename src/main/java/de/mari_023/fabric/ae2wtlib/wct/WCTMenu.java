@@ -1,17 +1,7 @@
 package de.mari_023.fabric.ae2wtlib.wct;
 
-import appeng.api.config.SecurityPermissions;
-import appeng.api.networking.IGridNode;
-import appeng.menu.implementations.MenuTypeBuilder;
-import appeng.menu.me.items.CraftingTermMenu;
-import appeng.menu.slot.AppEngSlot;
-import appeng.menu.slot.DisabledSlot;
 import com.mojang.datafixers.util.Pair;
-import de.mari_023.fabric.ae2wtlib.AE2wtlibSlotSemantics;
-import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetHandler;
-import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetMode;
-import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetSettings;
-import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.resources.ResourceLocation;
@@ -25,9 +15,25 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Wearable;
 
+import appeng.api.config.SecurityPermissions;
+import appeng.api.networking.IGridNode;
+import appeng.menu.implementations.MenuTypeBuilder;
+import appeng.menu.me.items.CraftingTermMenu;
+import appeng.menu.slot.AppEngSlot;
+import appeng.menu.slot.DisabledSlot;
+
+import de.mari_023.fabric.ae2wtlib.AE2wtlibSlotSemantics;
+import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetHandler;
+import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetMode;
+import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetSettings;
+import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
+
+import java.util.Objects;
+
 public class WCTMenu extends CraftingTermMenu {
 
-    public static final MenuType<WCTMenu> TYPE = MenuTypeBuilder.create(WCTMenu::new, WCTMenuHost.class).requirePermission(SecurityPermissions.CRAFT).build("wireless_crafting_terminal");
+    public static final MenuType<WCTMenu> TYPE = MenuTypeBuilder.create(WCTMenu::new, WCTMenuHost.class)
+            .requirePermission(SecurityPermissions.CRAFT).build("wireless_crafting_terminal");
 
     public static final String ACTION_DELETE = "delete";
     public static final String MAGNET_MODE = "magnetMode";
@@ -47,7 +53,8 @@ public class WCTMenu extends CraftingTermMenu {
             }
 
             public boolean mayPlace(ItemStack stack) {
-                return getPlayerInventory().canPlaceItem(39, stack) && ((stack.getItem() instanceof ArmorItem aItem && aItem.getSlot().equals(EquipmentSlot.HEAD))
+                return getPlayerInventory().canPlaceItem(39, stack) && ((stack.getItem() instanceof ArmorItem aItem
+                        && aItem.getSlot().equals(EquipmentSlot.HEAD))
                         || (stack.getItem() instanceof BlockItem bItem && bItem.getBlock() instanceof Wearable));
             }
         }, AE2wtlibSlotSemantics.HELMET);
@@ -58,7 +65,8 @@ public class WCTMenu extends CraftingTermMenu {
             }
 
             public boolean mayPlace(ItemStack stack) {
-                return getPlayerInventory().canPlaceItem(38, stack) && stack.getItem() instanceof ArmorItem aItem && aItem.getSlot().equals(EquipmentSlot.CHEST);
+                return getPlayerInventory().canPlaceItem(38, stack) && stack.getItem() instanceof ArmorItem aItem
+                        && aItem.getSlot().equals(EquipmentSlot.CHEST);
             }
         }, AE2wtlibSlotSemantics.CHESTPLATE);
         SlotsWithTrinket[7] = addSlot(new Slot(getPlayerInventory(), 37, 0, 0) {
@@ -68,7 +76,8 @@ public class WCTMenu extends CraftingTermMenu {
             }
 
             public boolean mayPlace(ItemStack stack) {
-                return getPlayerInventory().canPlaceItem(37, stack) && stack.getItem() instanceof ArmorItem aItem && aItem.getSlot().equals(EquipmentSlot.LEGS);
+                return getPlayerInventory().canPlaceItem(37, stack) && stack.getItem() instanceof ArmorItem aItem
+                        && aItem.getSlot().equals(EquipmentSlot.LEGS);
             }
         }, AE2wtlibSlotSemantics.LEGGINGS);
         SlotsWithTrinket[8] = addSlot(new Slot(getPlayerInventory(), 36, 0, 0) {
@@ -78,23 +87,25 @@ public class WCTMenu extends CraftingTermMenu {
             }
 
             public boolean mayPlace(ItemStack stack) {
-                return getPlayerInventory().canPlaceItem(36, stack) && stack.getItem() instanceof ArmorItem aItem && aItem.getSlot().equals(EquipmentSlot.FEET);
+                return getPlayerInventory().canPlaceItem(36, stack) && stack.getItem() instanceof ArmorItem aItem
+                        && aItem.getSlot().equals(EquipmentSlot.FEET);
             }
         }, AE2wtlibSlotSemantics.BOOTS);
 
-        if(isInOffhand)
+        if (isInOffhand)
             SlotsWithTrinket[45] = addSlot(new DisabledSlot(getPlayerInventory(), Inventory.SLOT_OFFHAND) {
                 @Environment(EnvType.CLIENT)
                 public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
                     return Pair.of(InventoryMenu.BLOCK_ATLAS, InventoryMenu.EMPTY_ARMOR_SLOT_SHIELD);
                 }
             }, AE2wtlibSlotSemantics.OFFHAND);
-        else SlotsWithTrinket[45] = addSlot(new Slot(getPlayerInventory(), Inventory.SLOT_OFFHAND, 0, 0) {
-            @Environment(EnvType.CLIENT)
-            public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
-                return Pair.of(InventoryMenu.BLOCK_ATLAS, InventoryMenu.EMPTY_ARMOR_SLOT_SHIELD);
-            }
-        }, AE2wtlibSlotSemantics.OFFHAND);
+        else
+            SlotsWithTrinket[45] = addSlot(new Slot(getPlayerInventory(), Inventory.SLOT_OFFHAND, 0, 0) {
+                @Environment(EnvType.CLIENT)
+                public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
+                    return Pair.of(InventoryMenu.BLOCK_ATLAS, InventoryMenu.EMPTY_ARMOR_SLOT_SHIELD);
+                }
+            }, AE2wtlibSlotSemantics.OFFHAND);
         addSlot(new AppEngSlot(wctGUIObject.getSubInventory(WCTMenuHost.INV_TRASH), 0), AE2wtlibSlotSemantics.TRASH);
 
         registerClientAction(ACTION_DELETE, this::deleteTrashSlot);
@@ -112,8 +123,9 @@ public class WCTMenu extends CraftingTermMenu {
     }
 
     public void deleteTrashSlot() {
-        if(isClient()) sendClientAction(ACTION_DELETE);
-        wctGUIObject.getSubInventory(WCTMenuHost.INV_TRASH).setItemDirect(0, ItemStack.EMPTY);
+        if (isClient())
+            sendClientAction(ACTION_DELETE);
+        Objects.requireNonNull(wctGUIObject.getSubInventory(WCTMenuHost.INV_TRASH)).setItemDirect(0, ItemStack.EMPTY);
     }
 
     private MagnetSettings magnetSettings;
@@ -127,7 +139,8 @@ public class WCTMenu extends CraftingTermMenu {
     }
 
     public void setMagnetMode(MagnetMode mode) {
-        if(isClient()) sendClientAction(MAGNET_MODE, mode);
+        if (isClient())
+            sendClientAction(MAGNET_MODE, mode);
         getMagnetSettings().magnetMode = mode;
         saveMagnetSettings();
     }

@@ -1,12 +1,7 @@
 package de.mari_023.fabric.ae2wtlib.wut;
 
-import appeng.api.upgrades.IUpgradeInventory;
-import appeng.api.upgrades.UpgradeInventories;
-import appeng.core.definitions.AEItems;
-import appeng.menu.locator.MenuLocator;
-import de.mari_023.fabric.ae2wtlib.AE2wtlib;
-import de.mari_023.fabric.ae2wtlib.TextConstants;
-import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
+import java.util.List;
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
@@ -21,7 +16,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 
-import java.util.List;
+import appeng.api.upgrades.IUpgradeInventory;
+import appeng.api.upgrades.UpgradeInventories;
+import appeng.core.definitions.AEItems;
+import appeng.menu.locator.MenuLocator;
+
+import de.mari_023.fabric.ae2wtlib.AE2wtlib;
+import de.mari_023.fabric.ae2wtlib.TextConstants;
+import de.mari_023.fabric.ae2wtlib.terminal.ItemWT;
 
 public class ItemWUT extends ItemWT {
 
@@ -31,20 +33,23 @@ public class ItemWUT extends ItemWT {
 
     @Override
     public InteractionResultHolder<ItemStack> use(final Level w, final Player player, final InteractionHand hand) {
-        if(WUTHandler.getCurrentTerminal(player.getItemInHand(hand)).equals("")) {
-            if(!w.isClientSide()) player.sendMessage(TextConstants.TERMINAL_EMPTY, Util.NIL_UUID);
+        if (WUTHandler.getCurrentTerminal(player.getItemInHand(hand)).equals("")) {
+            if (!w.isClientSide())
+                player.sendMessage(TextConstants.TERMINAL_EMPTY, Util.NIL_UUID);
             return new InteractionResultHolder<>(InteractionResult.FAIL, player.getItemInHand(hand));
         }
-        /*if(player.isShiftKeyDown()) {
-            if(w.isClientSide()) Minecraft.getInstance().setScreen(new WUTSelectScreen(player.getItemInHand(hand)));
-            return new InteractionResultHolder<>(InteractionResult.SUCCESS, player.getItemInHand(hand));
-        } else*/
+        /*
+         * if(player.isShiftKeyDown()) { if(w.isClientSide()) Minecraft.getInstance().setScreen(new
+         * WUTSelectScreen(player.getItemInHand(hand))); return new InteractionResultHolder<>(InteractionResult.SUCCESS,
+         * player.getItemInHand(hand)); } else
+         */
         return super.use(w, player, hand);
     }
 
     @Override
     public double getChargeRate(ItemStack stack) {
-        return 800d * (countInstalledTerminals(stack) + 1 + getUpgrades(stack).getInstalledUpgrades(AEItems.ENERGY_CARD));
+        return 800d
+                * (countInstalledTerminals(stack) + 1 + getUpgrades(stack).getInstalledUpgrades(AEItems.ENERGY_CARD));
     }
 
     @Override
@@ -59,13 +64,14 @@ public class ItemWUT extends ItemWT {
 
     @Override
     @Environment(EnvType.CLIENT)
-    public void appendHoverText(final ItemStack stack, final Level world, final List<Component> lines, final TooltipFlag advancedTooltips) {
+    public void appendHoverText(final ItemStack stack, final Level world, final List<Component> lines,
+            final TooltipFlag advancedTooltips) {
         lines.add(TextConstants.UNIVERSAL);
-        if(WUTHandler.hasTerminal(stack, "crafting"))
+        if (WUTHandler.hasTerminal(stack, "crafting"))
             lines.add(TextConstants.CRAFTING);
-        if(WUTHandler.hasTerminal(stack, "pattern_access"))
+        if (WUTHandler.hasTerminal(stack, "pattern_access"))
             lines.add(TextConstants.PATTERN_ACCESS);
-        if(WUTHandler.hasTerminal(stack, "pattern_encoding"))
+        if (WUTHandler.hasTerminal(stack, "pattern_encoding"))
             lines.add(TextConstants.PATTERN_ENCODING);
         super.appendHoverText(stack, world, lines, advancedTooltips);
     }
@@ -76,13 +82,15 @@ public class ItemWUT extends ItemWT {
     }
 
     private void onUpgradesChanged(ItemStack stack, IUpgradeInventory upgrades) {
-        setAEMaxPowerMultiplier(stack, countInstalledTerminals(stack) + upgrades.getInstalledUpgrades(AEItems.ENERGY_CARD));
+        setAEMaxPowerMultiplier(stack,
+                countInstalledTerminals(stack) + upgrades.getInstalledUpgrades(AEItems.ENERGY_CARD));
     }
 
     public int countInstalledTerminals(ItemStack stack) {
         int terminals = 0;
-        for(String s : WUTHandler.terminalNames) {
-            if(WUTHandler.hasTerminal(stack, s)) terminals++;
+        for (String s : WUTHandler.terminalNames) {
+            if (WUTHandler.hasTerminal(stack, s))
+                terminals++;
         }
         return terminals;
     }

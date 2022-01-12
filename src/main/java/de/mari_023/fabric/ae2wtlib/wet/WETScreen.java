@@ -1,14 +1,16 @@
 package de.mari_023.fabric.ae2wtlib.wet;
 
-import appeng.client.gui.me.items.PatternEncodingTermScreen;
-import appeng.client.gui.style.ScreenStyle;
-import appeng.client.gui.style.StyleManager;
-import de.mari_023.fabric.ae2wtlib.wut.CycleTerminalButton;
-import de.mari_023.fabric.ae2wtlib.wut.IUniversalTerminalCapable;
+import java.io.IOException;
+
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
-import java.io.IOException;
+import appeng.client.gui.me.items.PatternEncodingTermScreen;
+import appeng.client.gui.style.ScreenStyle;
+import appeng.client.gui.style.StyleManager;
+
+import de.mari_023.fabric.ae2wtlib.wut.CycleTerminalButton;
+import de.mari_023.fabric.ae2wtlib.wut.IUniversalTerminalCapable;
 
 public class WETScreen extends PatternEncodingTermScreen<WETMenu> implements IUniversalTerminalCapable {
 
@@ -18,7 +20,7 @@ public class WETScreen extends PatternEncodingTermScreen<WETMenu> implements IUn
         ScreenStyle STYLE1;
         try {
             STYLE1 = StyleManager.loadStyleDoc("/screens/wtlib/wireless_pattern_encoding_terminal.json");
-        } catch(IOException ignored) {
+        } catch (IOException ignored) {
             STYLE1 = null;
         }
         STYLE = STYLE1;
@@ -26,6 +28,7 @@ public class WETScreen extends PatternEncodingTermScreen<WETMenu> implements IUn
 
     public WETScreen(WETMenu container, Inventory playerInventory, Component title) {
         super(container, playerInventory, title, STYLE);
-        if(getMenu().isWUT()) addToLeftToolbar(new CycleTerminalButton(btn -> cycleTerminal()));
+        if (getMenu().isWUT())
+            addToLeftToolbar(new CycleTerminalButton(btn -> cycleTerminal()));
     }
 }

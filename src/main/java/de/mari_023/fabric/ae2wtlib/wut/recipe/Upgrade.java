@@ -1,6 +1,5 @@
 package de.mari_023.fabric.ae2wtlib.wut.recipe;
 
-import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
@@ -8,6 +7,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
+
+import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
 
 public class Upgrade extends Common {
     private final Ingredient terminal;
@@ -37,7 +38,8 @@ public class Upgrade extends Common {
 
     @Override
     public ItemStack assemble(CraftingContainer inv) {
-        return mergeTerminal(InputHelper.getInputStack(inv, InputHelper.WUT).copy(), InputHelper.getInputStack(inv, terminal).copy(), terminalName);
+        return mergeTerminal(InputHelper.getInputStack(inv, InputHelper.WUT).copy(),
+                InputHelper.getInputStack(inv, terminal).copy(), terminalName);
     }
 
     @Override

@@ -1,5 +1,14 @@
 package de.mari_023.fabric.ae2wtlib.wet;
 
+import java.util.function.BiConsumer;
+
+import org.jetbrains.annotations.Nullable;
+
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+
 import appeng.api.crafting.IPatternDetails;
 import appeng.api.crafting.PatternDetailsHelper;
 import appeng.api.implementations.blockentities.IViewCellStorage;
@@ -13,15 +22,9 @@ import appeng.helpers.IPatternTerminalHost;
 import appeng.menu.ISubMenu;
 import appeng.parts.encoding.EncodingMode;
 import appeng.util.inv.AppEngInternalInventory;
+
 import de.mari_023.fabric.ae2wtlib.AE2wtlib;
 import de.mari_023.fabric.ae2wtlib.terminal.WTMenuHost;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.function.BiConsumer;
 
 public class WETMenuHost extends WTMenuHost implements ISegmentedInventory, IViewCellStorage, IPatternTerminalHost {
 
@@ -32,7 +35,8 @@ public class WETMenuHost extends WTMenuHost implements ISegmentedInventory, IVie
     private final AppEngInternalInventory output = new AppEngInternalInventory(this, 3);
     private final AppEngInternalInventory pattern = new AppEngInternalInventory(this, 2);
 
-    public WETMenuHost(final Player ep, @Nullable Integer inventorySlot, final ItemStack is, BiConsumer<Player, ISubMenu> returnToMainMenu) {
+    public WETMenuHost(final Player ep, @Nullable Integer inventorySlot, final ItemStack is,
+            BiConsumer<Player, ISubMenu> returnToMainMenu) {
         super(ep, inventorySlot, is, returnToMainMenu);
         readFromNbt();
     }
@@ -44,10 +48,14 @@ public class WETMenuHost extends WTMenuHost implements ISegmentedInventory, IVie
 
     @Override
     public InternalInventory getSubInventory(ResourceLocation id) {
-        if(id.equals(IPatternTerminalHost.INV_CRAFTING)) return crafting;
-        else if(id.equals(IPatternTerminalHost.INV_OUTPUT)) return output;
-        else if(id.equals(PATTERNS)) return pattern;
-        else return null;
+        if (id.equals(IPatternTerminalHost.INV_CRAFTING))
+            return crafting;
+        else if (id.equals(IPatternTerminalHost.INV_OUTPUT))
+            return output;
+        else if (id.equals(PATTERNS))
+            return pattern;
+        else
+            return null;
     }
 
     @Override
@@ -68,7 +76,7 @@ public class WETMenuHost extends WTMenuHost implements ISegmentedInventory, IVie
         CompoundTag tag = getItemStack().getOrCreateTag();
         try {
             mode = EncodingMode.valueOf(tag.getString("wet_mode"));
-        } catch(IllegalArgumentException ignored) {
+        } catch (IllegalArgumentException ignored) {
             mode = EncodingMode.CRAFTING;
         }
         substitute = tag.getBoolean("wet_substitute");
@@ -92,27 +100,28 @@ public class WETMenuHost extends WTMenuHost implements ISegmentedInventory, IVie
 
     @Override
     public void onChangeInventory(final InternalInventory inv, final int slot) {
-        if(inv == pattern && slot == 1) {
+        if (inv == pattern && slot == 1) {
             final ItemStack is = pattern.getStackInSlot(1);
             final IPatternDetails details = PatternDetailsHelper.decodePattern(is, getPlayer().getLevel());
-            if(details instanceof AECraftingPattern) {
+            if (details instanceof AECraftingPattern) {
                 setMode(EncodingMode.CRAFTING);
-            } else if(details instanceof AEProcessingPattern) {
+            } else if (details instanceof AEProcessingPattern) {
                 setMode(EncodingMode.PROCESSING);
             }
-            if(details instanceof IAEPatternDetails aeDetails) {
+            if (details instanceof IAEPatternDetails aeDetails) {
                 setSubstitution(aeDetails.canSubstitute());
                 setFluidSubstitution(aeDetails.canSubstituteFluids());
 
-                for(int x = 0; x < crafting.size() && x < aeDetails.getSparseInputs().length; x++) {
+                for (int x = 0; x < crafting.size() && x < aeDetails.getSparseInputs().length; x++) {
                     crafting.setItemDirect(x, GenericStack.wrapInItemStack(aeDetails.getSparseInputs()[x]));
                 }
 
-                for(int x = 0; x < output.size() && x < aeDetails.getSparseOutputs().length; x++) {
+                for (int x = 0; x < output.size() && x < aeDetails.getSparseOutputs().length; x++) {
                     output.setItemDirect(x, GenericStack.wrapInItemStack(aeDetails.getSparseOutputs()[x]));
                 }
             }
-        } else if(inv == crafting) fixCraftingRecipes();
+        } else if (inv == crafting)
+            fixCraftingRecipes();
         saveChanges();
     }
 

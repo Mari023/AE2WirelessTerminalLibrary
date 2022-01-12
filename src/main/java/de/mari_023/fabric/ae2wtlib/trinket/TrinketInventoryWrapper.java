@@ -1,9 +1,12 @@
 package de.mari_023.fabric.ae2wtlib.trinket;
 
-import appeng.api.inventories.InternalInventory;
-import dev.emi.trinkets.api.TrinketInventory;
-import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
+
+import net.minecraft.world.item.ItemStack;
+
+import dev.emi.trinkets.api.TrinketInventory;
+
+import appeng.api.inventories.InternalInventory;
 
 public class TrinketInventoryWrapper implements InternalInventory {
 

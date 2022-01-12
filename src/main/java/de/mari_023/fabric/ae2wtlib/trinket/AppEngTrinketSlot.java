@@ -1,13 +1,16 @@
 package de.mari_023.fabric.ae2wtlib.trinket;
 
-import appeng.menu.slot.AppEngSlot;
-import dev.emi.trinkets.TrinketsClient;
-import dev.emi.trinkets.api.SlotGroup;
-import dev.emi.trinkets.api.SlotType;
+import org.jetbrains.annotations.NotNull;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
+
+import dev.emi.trinkets.TrinketsClient;
+import dev.emi.trinkets.api.SlotGroup;
+import dev.emi.trinkets.api.SlotType;
+
+import appeng.menu.slot.AppEngSlot;
 
 public class AppEngTrinketSlot extends AppEngSlot {
     private final SlotGroup group;
@@ -17,7 +20,8 @@ public class AppEngTrinketSlot extends AppEngSlot {
     public final TrinketInventoryWrapper trinketInventory;
     public final boolean locked;
 
-    public AppEngTrinketSlot(TrinketInventoryWrapper inventory, int invSlot, SlotGroup group, SlotType type, int slotOffset, boolean alwaysVisible, boolean locked) {
+    public AppEngTrinketSlot(TrinketInventoryWrapper inventory, int invSlot, SlotGroup group, SlotType type,
+            int slotOffset, boolean alwaysVisible, boolean locked) {
         super(inventory, invSlot);
         this.group = group;
         this.type = type;
@@ -48,9 +52,9 @@ public class AppEngTrinketSlot extends AppEngSlot {
     }
 
     public boolean isTrinketFocused() {
-        if(TrinketsClient.activeGroup == group) {
+        if (TrinketsClient.activeGroup == group) {
             return slotOffset == 0 || TrinketsClient.activeType == type;
-        } else if(TrinketsClient.quickMoveGroup == group) {
+        } else if (TrinketsClient.quickMoveGroup == group) {
             return slotOffset == 0 || TrinketsClient.quickMoveType == type && TrinketsClient.quickMoveTimer > 0;
         }
         return false;

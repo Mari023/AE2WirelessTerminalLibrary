@@ -1,6 +1,7 @@
 package de.mari_023.fabric.ae2wtlib.wct;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -22,5 +23,6 @@ public class PlayerEntityWidget extends AbstractWidget {
     }
 
     @Override
-    public void updateNarration(NarrationElementOutput builder) {}
+    public void updateNarration(NarrationElementOutput builder) {
+    }
 }

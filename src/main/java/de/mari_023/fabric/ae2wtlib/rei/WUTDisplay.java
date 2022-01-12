@@ -1,19 +1,22 @@
 package de.mari_023.fabric.ae2wtlib.rei;
 
-import de.mari_023.fabric.ae2wtlib.wut.recipe.Common;
-import me.shedaniel.rei.api.common.util.EntryIngredients;
-import me.shedaniel.rei.plugin.common.displays.crafting.DefaultCraftingDisplay;
+import java.util.Collections;
+import java.util.Optional;
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-import java.util.Collections;
-import java.util.Optional;
+import me.shedaniel.rei.api.common.util.EntryIngredients;
+import me.shedaniel.rei.plugin.common.displays.crafting.DefaultCraftingDisplay;
+
+import de.mari_023.fabric.ae2wtlib.wut.recipe.Common;
 
 @Environment(EnvType.CLIENT)
 public class WUTDisplay extends DefaultCraftingDisplay<Common> {
 
     public WUTDisplay(Common recipe) {
-        super(EntryIngredients.ofIngredients(recipe.getIngredients()), Collections.singletonList(EntryIngredients.of(recipe.getResultItem())), Optional.of(recipe));
+        super(EntryIngredients.ofIngredients(recipe.getIngredients()),
+                Collections.singletonList(EntryIngredients.of(recipe.getResultItem())), Optional.of(recipe));
     }
 
     @Override

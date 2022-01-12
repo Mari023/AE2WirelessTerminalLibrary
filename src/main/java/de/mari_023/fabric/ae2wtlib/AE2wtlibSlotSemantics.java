@@ -5,7 +5,8 @@ import appeng.menu.SlotSemantics;
 
 public class AE2wtlibSlotSemantics {
 
-    private AE2wtlibSlotSemantics() {}
+    private AE2wtlibSlotSemantics() {
+    }
 
     public static final SlotSemantic HELMET = register("HELMET");
     public static final SlotSemantic CHESTPLATE = register("CHESTPLATE");

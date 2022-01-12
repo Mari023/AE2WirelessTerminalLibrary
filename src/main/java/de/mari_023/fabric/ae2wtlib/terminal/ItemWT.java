@@ -1,10 +1,7 @@
 package de.mari_023.fabric.ae2wtlib.terminal;
 
-import appeng.api.implementations.menuobjects.ItemMenuHost;
-import appeng.core.AEConfig;
-import appeng.items.tools.powered.WirelessTerminalItem;
-import appeng.menu.locator.MenuLocators;
-import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
@@ -14,7 +11,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
+
+import appeng.api.implementations.menuobjects.ItemMenuHost;
+import appeng.core.AEConfig;
+import appeng.items.tools.powered.WirelessTerminalItem;
+import appeng.menu.locator.MenuLocators;
+
+import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
 
 public abstract class ItemWT extends WirelessTerminalItem implements IUniversalWirelessTerminalItem {
 
@@ -25,7 +28,7 @@ public abstract class ItemWT extends WirelessTerminalItem implements IUniversalW
     @Override
     public InteractionResultHolder<ItemStack> use(final Level w, final Player player, final InteractionHand hand) {
         ItemStack is = player.getItemInHand(hand);
-        if(checkUniversalPreconditions(is, player)) {
+        if (checkUniversalPreconditions(is, player)) {
             open(player, is, MenuLocators.forHand(player, hand));
             return new InteractionResultHolder<>(InteractionResult.SUCCESS, is);
         }
@@ -33,13 +36,16 @@ public abstract class ItemWT extends WirelessTerminalItem implements IUniversalW
     }
 
     @Override
-    public boolean openFromInventory(Player player, int inventorySlot) {//TODO maybe remove this since it shouldn't get called anyways
-        throw new IllegalStateException(String.format("%s called openFromInventory() in slot %d with item %s", player, inventorySlot, this));
+    public boolean openFromInventory(Player player, int inventorySlot) {// TODO maybe remove this since it shouldn't get
+                                                                        // called anyways
+        throw new IllegalStateException(
+                String.format("%s called openFromInventory() in slot %d with item %s", player, inventorySlot, this));
     }
 
     @Nullable
     public ItemMenuHost getMenuHost(Player player, int slot, ItemStack stack, @Nullable BlockPos pos) {
-        return WUTHandler.wirelessTerminals.get(WUTHandler.getCurrentTerminal(stack)).wTMenuHostFactory().create(player, slot, stack, (p, subMenu) -> tryOpen(player, MenuLocators.forInventorySlot(slot), stack));
+        return WUTHandler.wirelessTerminals.get(WUTHandler.getCurrentTerminal(stack)).wTMenuHostFactory().create(player,
+                slot, stack, (p, subMenu) -> tryOpen(player, MenuLocators.forInventorySlot(slot), stack));
     }
 
     /**
@@ -51,13 +57,13 @@ public abstract class ItemWT extends WirelessTerminalItem implements IUniversalW
      */
     @Deprecated
     public static ItemStack getSavedSlot(ItemStack hostItem, String slot) {
-        if(!(hostItem.getItem() instanceof IUniversalWirelessTerminalItem)) return ItemStack.EMPTY;
+        if (!(hostItem.getItem() instanceof IUniversalWirelessTerminalItem))
+            return ItemStack.EMPTY;
         return ItemStack.of(hostItem.getOrCreateTag().getCompound(slot));
     }
 
     /**
-     * store an {@link ItemStack} in a WirelessTerminal
-     * this will overwrite any previously existing tags in slot
+     * store an {@link ItemStack} in a WirelessTerminal this will overwrite any previously existing tags in slot
      *
      * @param hostItem  the Terminal to store in
      * @param savedItem the item to store
@@ -65,10 +71,13 @@ public abstract class ItemWT extends WirelessTerminalItem implements IUniversalW
      */
     @Deprecated
     public static void setSavedSlot(ItemStack hostItem, ItemStack savedItem, String slot) {
-        if(!(hostItem.getItem() instanceof IUniversalWirelessTerminalItem)) return;
+        if (!(hostItem.getItem() instanceof IUniversalWirelessTerminalItem))
+            return;
         CompoundTag wctTag = hostItem.getOrCreateTag();
-        if(savedItem.isEmpty()) wctTag.remove(slot);
-        else wctTag.put(slot, savedItem.save(new CompoundTag()));
+        if (savedItem.isEmpty())
+            wctTag.remove(slot);
+        else
+            wctTag.put(slot, savedItem.save(new CompoundTag()));
     }
 
     /**
@@ -78,20 +87,21 @@ public abstract class ItemWT extends WirelessTerminalItem implements IUniversalW
      * @return the boolean or false if it wasn't found
      */
     public static boolean getBoolean(ItemStack hostItem, String key) {
-        if(!(hostItem.getItem() instanceof IUniversalWirelessTerminalItem)) return false;
+        if (!(hostItem.getItem() instanceof IUniversalWirelessTerminalItem))
+            return false;
         return hostItem.getOrCreateTag().getBoolean(key);
     }
 
     /**
-     * store a boolean in a WirelessTerminal
-     * this will overwrite any previously existing tags in slot
+     * store a boolean in a WirelessTerminal this will overwrite any previously existing tags in slot
      *
      * @param hostItem the Terminal to store in
      * @param b        the boolean to store
      * @param key      the location where the stored item will be
      */
     public static void setBoolean(ItemStack hostItem, boolean b, String key) {
-        if(!(hostItem.getItem() instanceof IUniversalWirelessTerminalItem)) return;
+        if (!(hostItem.getItem() instanceof IUniversalWirelessTerminalItem))
+            return;
         CompoundTag wctTag = hostItem.getOrCreateTag();
         wctTag.putBoolean(key, b);
     }

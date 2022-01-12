@@ -7,9 +7,9 @@ public class AngleHelper {
     }
 
     public static float correctAngle(float angle) {
-        if(angle < 0) {
+        if (angle < 0) {
             angle += 360;
-        } else if(angle > 360) {
+        } else if (angle > 360) {
             angle -= 360;
         }
         return angle;

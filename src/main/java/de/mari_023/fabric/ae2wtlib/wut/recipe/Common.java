@@ -1,11 +1,7 @@
 package de.mari_023.fabric.ae2wtlib.wut.recipe;
 
-import appeng.api.config.Actionable;
-import appeng.api.upgrades.IUpgradeInventory;
-import appeng.items.tools.powered.WirelessTerminalItem;
-import appeng.items.tools.powered.powersink.AEBasePoweredItem;
-import de.mari_023.fabric.ae2wtlib.AE2wtlib;
-import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
+import java.util.Iterator;
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.nbt.CompoundTag;
@@ -13,7 +9,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 
-import java.util.Iterator;
+import appeng.api.config.Actionable;
+import appeng.api.upgrades.IUpgradeInventory;
+import appeng.items.tools.powered.WirelessTerminalItem;
+import appeng.items.tools.powered.powersink.AEBasePoweredItem;
+
+import de.mari_023.fabric.ae2wtlib.AE2wtlib;
+import de.mari_023.fabric.ae2wtlib.wut.ItemWUT;
 
 public abstract class Common implements CraftingRecipe {
     /**
@@ -58,28 +60,30 @@ public abstract class Common implements CraftingRecipe {
      * @return the upgraded wireless universal terminal
      */
     public ItemStack mergeTerminal(ItemStack wut, ItemStack toMerge, String terminalName) {
-        if(!(wut.getItem() instanceof ItemWUT itemWUT)) return ItemStack.EMPTY;
-        if(!(toMerge.getItem() instanceof WirelessTerminalItem itemWT)) return ItemStack.EMPTY;
+        if (!(wut.getItem() instanceof ItemWUT itemWUT))
+            return ItemStack.EMPTY;
+        if (!(toMerge.getItem() instanceof WirelessTerminalItem itemWT))
+            return ItemStack.EMPTY;
 
-        //add upgrades to nbt
+        // add upgrades to nbt
         CompoundTag wutTag = wut.getOrCreateTag();
         wutTag.putBoolean(terminalName, true);
         wut.setTag(wutTag);
 
-        //merge upgrades, this also updates max energy
+        // merge upgrades, this also updates max energy
         Iterator<ItemStack> iterator = itemWT.getUpgrades(toMerge).iterator();
         IUpgradeInventory wutUpgrades = itemWUT.getUpgrades(wut);
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
             wutUpgrades.addItems(iterator.next());
         }
 
-        //merge power
+        // merge power
         itemWUT.injectAEPower(wut, itemWT.getAECurrentPower(toMerge), Actionable.MODULATE);
 
-        //merge nbt
+        // merge nbt
         wutTag = wut.getOrCreateTag();
         CompoundTag toMergeTag = toMerge.getOrCreateTag().copy();
-        //remove the keys that are already handled
+        // remove the keys that are already handled
         toMergeTag.remove(CURRENT_POWER_NBT_KEY);
         toMergeTag.remove(MAX_POWER_NBT_KEY);
         toMergeTag.remove(TAG_UPGRADES);

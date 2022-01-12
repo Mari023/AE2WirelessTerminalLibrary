@@ -1,23 +1,26 @@
 package de.mari_023.fabric.ae2wtlib.wct;
 
+import java.io.IOException;
+
+import com.mojang.blaze3d.vertex.PoseStack;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
+
 import appeng.client.gui.Icon;
 import appeng.client.gui.me.items.CraftingTermScreen;
 import appeng.client.gui.style.ScreenStyle;
 import appeng.client.gui.style.StyleManager;
 import appeng.client.gui.widgets.IconButton;
-import com.mojang.blaze3d.vertex.PoseStack;
+
 import de.mari_023.fabric.ae2wtlib.AE2wtlib;
 import de.mari_023.fabric.ae2wtlib.TextConstants;
 import de.mari_023.fabric.ae2wtlib.util.ItemButton;
 import de.mari_023.fabric.ae2wtlib.wct.magnet_card.MagnetMode;
 import de.mari_023.fabric.ae2wtlib.wut.CycleTerminalButton;
 import de.mari_023.fabric.ae2wtlib.wut.IUniversalTerminalCapable;
-import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Inventory;
-
-import java.io.IOException;
 
 public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversalTerminalCapable {
 
@@ -29,7 +32,7 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
         ScreenStyle STYLE1;
         try {
             STYLE1 = StyleManager.loadStyleDoc("/screens/wtlib/wireless_crafting_terminal.json");
-        } catch(IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             STYLE1 = null;
         }
@@ -48,17 +51,19 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
         deleteButton.setMessage(TextConstants.DELETE);
         widgets.add("emptyTrash", deleteButton);
 
-        if(getMenu().isWUT()) addToLeftToolbar(new CycleTerminalButton(btn -> cycleTerminal()));
+        if (getMenu().isWUT())
+            addToLeftToolbar(new CycleTerminalButton(btn -> cycleTerminal()));
 
-        magnetCardToggleButton = new ItemButton(btn -> setMagnetMode(), new ResourceLocation(AE2wtlib.MOD_NAME, "textures/magnet_card.png"));
+        magnetCardToggleButton = new ItemButton(btn -> setMagnetMode(),
+                new ResourceLocation(AE2wtlib.MOD_NAME, "textures/magnet_card.png"));
         addToLeftToolbar(magnetCardToggleButton);
 
         widgets.add("player", new PlayerEntityWidget(Minecraft.getInstance().player));
     }
 
     private void setMagnetMode() {
-        if(isHandlingRightClick()) {
-            switch(getMenu().getMagnetSettings().magnetMode) {
+        if (isHandlingRightClick()) {
+            switch (getMenu().getMagnetSettings().magnetMode) {
                 case INVALID:
                 case NO_CARD:
                     break;
@@ -73,7 +78,7 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
                     break;
             }
         } else {
-            switch(getMenu().getMagnetSettings().magnetMode) {
+            switch (getMenu().getMagnetSettings().magnetMode) {
                 case INVALID:
                 case NO_CARD:
                     break;
@@ -91,7 +96,7 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
     }
 
     private void setMagnetModeText() {
-        switch(getMenu().getMagnetSettings().magnetMode) {
+        switch (getMenu().getMagnetSettings().magnetMode) {
             case INVALID, NO_CARD -> magnetCardToggleButton.setVisibility(false);
             case OFF -> {
                 magnetCardToggleButton.setVisibility(true);
@@ -116,6 +121,7 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
     public void render(PoseStack matrices, int mouseX, int mouseY, float delta) {
         try {
             super.render(matrices, mouseX, mouseY, delta);
-        } catch(Exception ignored) {}
+        } catch (Exception ignored) {
+        }
     }
 }
