@@ -2,7 +2,6 @@ package de.mari_023.fabric.ae2wtlib.wut.recipe;
 
 import de.mari_023.fabric.ae2wtlib.wut.WUTHandler;
 import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
@@ -37,14 +36,8 @@ public class Upgrade extends Common {
     }
 
     @Override
-    public ItemStack assemble(CraftingContainer inv) {//TODO combine stored energy and upgrades
-        ItemStack wut = InputHelper.getInputStack(inv, InputHelper.WUT).copy();
-        CompoundTag terminal = InputHelper.getInputStack(inv, this.terminal).getOrCreateTag().copy();
-        wut.getOrCreateTag().putBoolean(terminalName, true);
-        terminal.merge(wut.getOrCreateTag());
-        wut.setTag(terminal);
-
-        return wut;
+    public ItemStack assemble(CraftingContainer inv) {
+        return mergeTerminal(InputHelper.getInputStack(inv, InputHelper.WUT).copy(), InputHelper.getInputStack(inv, terminal).copy(), terminalName);
     }
 
     @Override

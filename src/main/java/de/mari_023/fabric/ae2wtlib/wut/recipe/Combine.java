@@ -1,7 +1,6 @@
 package de.mari_023.fabric.ae2wtlib.wut.recipe;
 
 import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
@@ -47,17 +46,10 @@ public class Combine extends Common {
     }
 
     @Override
-    public ItemStack assemble(CraftingContainer inv) {//TODO combine stored energy and upgrades
-        CompoundTag terminalA = InputHelper.getInputStack(inv, this.terminalA).getTag();
-        if(terminalA == null) terminalA = new CompoundTag();
-        else terminalA = terminalA.copy();
+    public ItemStack assemble(CraftingContainer inv) {
+        ItemStack wut = mergeTerminal(outputStack.copy(), InputHelper.getInputStack(inv, terminalA), terminalAName);
+        wut = mergeTerminal(wut, InputHelper.getInputStack(inv, terminalB), terminalBName);
 
-        CompoundTag terminalB = InputHelper.getInputStack(inv, this.terminalB).getTag();
-        if(terminalB == null) terminalB = new CompoundTag();
-        else terminalB = terminalB.copy();
-
-        ItemStack wut = outputStack.copy();
-        wut.getOrCreateTag().merge(terminalB).merge(terminalA);
         return wut;
     }
 
