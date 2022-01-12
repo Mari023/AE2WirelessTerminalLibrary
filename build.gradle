@@ -183,6 +183,9 @@ jar {
 }
 
 spotless {
+    repositories {
+        maven { url("https://plugins.gradle.org/m2/") }
+    }
 
     java {
         target 'src/*/java/**/*.java'
