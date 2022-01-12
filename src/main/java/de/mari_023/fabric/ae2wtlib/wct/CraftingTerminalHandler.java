@@ -2,6 +2,8 @@ package de.mari_023.fabric.ae2wtlib.wct;
 
 import java.util.*;
 
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -76,7 +78,10 @@ public class CraftingTerminalHandler {
 
         locator = WUTHandler.findTerminal(player, "crafting");
 
-        craftingTerminal = WUTHandler.getItemStackFromLocator(player, locator);
+        if (locator == null)
+            craftingTerminal = ItemStack.EMPTY;
+        else
+            craftingTerminal = WUTHandler.getItemStackFromLocator(player, locator);
 
         if (craftingTerminal.isEmpty()) {
             invalidateCache();
@@ -87,10 +92,11 @@ public class CraftingTerminalHandler {
         return craftingTerminal;
     }
 
-    public Optional<MenuLocator> getLocator() {
+    @Nullable
+    public MenuLocator getLocator() {
         if (getCraftingTerminal().isEmpty())
-            return Optional.empty();
-        return Optional.of(locator);
+            return null;
+        return locator;
     }
 
     public IActionHost getSecurityStation() {

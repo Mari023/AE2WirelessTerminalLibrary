@@ -1,7 +1,5 @@
 package de.mari_023.fabric.ae2wtlib;
 
-import java.util.Optional;
-
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -59,9 +57,9 @@ public class NetworkingServer {
                                 return;
                             }
                             ItemWT.setBoolean(terminal, !ItemWT.getBoolean(terminal, "restock"), "restock");
-                            Optional<MenuLocator> locator = craftingTerminalHandler.getLocator();
-                            locator.ifPresent(menuLocator -> WUTHandler.updateClientTerminal(player, menuLocator,
-                                    terminal.getTag()));
+                            MenuLocator locator = craftingTerminalHandler.getLocator();
+                            if (locator != null)
+                                WUTHandler.updateClientTerminal(player, locator, terminal.getTag());
 
                             if (ItemWT.getBoolean(terminal, "restock"))
                                 player.displayClientMessage(TextConstants.RESTOCK_ON, true);

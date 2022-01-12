@@ -121,6 +121,7 @@ public class WUTHandler {
         return wirelessTerminals.get(currentTerminal).containerOpener().tryOpen(player, locator, is);
     }
 
+    @Nullable
     public static MenuLocator findTerminal(Player player, String terminalName) {
         if (AE2wtlibConfig.INSTANCE.allowTrinket()) {
             TrinketLocator trinketLocator = TrinketsHelper.findTerminal(player, terminalName);
@@ -135,9 +136,7 @@ public class WUTHandler {
         return null;
     }
 
-    public static ItemStack getItemStackFromLocator(Player player, @Nullable MenuLocator locator) {
-        if (locator == null)
-            return ItemStack.EMPTY;
+    public static ItemStack getItemStackFromLocator(Player player, MenuLocator locator) {
         if (locator instanceof TrinketLocator trinketLocator)
             return trinketLocator.locateItem(player);
         ItemMenuHost host = locator.locate(player, WTMenuHost.class);
