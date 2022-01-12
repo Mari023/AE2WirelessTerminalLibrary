@@ -1,9 +1,10 @@
 package de.mari_023.fabric.ae2wtlib;
 
-import java.util.List;
-
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.*;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 
 public final class TextConstants {
 
@@ -58,7 +59,4 @@ public final class TextConstants {
 
     public static final MutableComponent DELETE = new TranslatableComponent("gui.ae2wtlib.emptytrash").append("\n")
             .append(new TranslatableComponent("gui.ae2wtlib.emptytrash.desc"));
-
-    public static final List<Component> MAGNETCARD_SLOT = List
-            .of(new TranslatableComponent("gui.ae2wtlib.slot.magnetcard.desc"));
 }

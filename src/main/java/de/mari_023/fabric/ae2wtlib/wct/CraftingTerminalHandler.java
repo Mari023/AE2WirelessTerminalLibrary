@@ -1,11 +1,6 @@
 package de.mari_023.fabric.ae2wtlib.wct;
 
-import java.util.HashMap;
-import java.util.OptionalLong;
-import java.util.Set;
-import java.util.UUID;
-
-import org.jetbrains.annotations.Nullable;
+import java.util.*;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
@@ -92,11 +87,10 @@ public class CraftingTerminalHandler {
         return craftingTerminal;
     }
 
-    @Nullable
-    public MenuLocator getLocator() {
+    public Optional<MenuLocator> getLocator() {
         if (getCraftingTerminal().isEmpty())
-            return null;
-        return locator;
+            return Optional.empty();
+        return Optional.of(locator);
     }
 
     public IActionHost getSecurityStation() {

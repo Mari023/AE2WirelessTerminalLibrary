@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -58,7 +57,7 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
                 new ResourceLocation(AE2wtlib.MOD_NAME, "textures/magnet_card.png"));
         addToLeftToolbar(magnetCardToggleButton);
 
-        widgets.add("player", new PlayerEntityWidget(Minecraft.getInstance().player));
+        widgets.add("player", new PlayerEntityWidget(getPlayer()));
     }
 
     private void setMagnetMode() {

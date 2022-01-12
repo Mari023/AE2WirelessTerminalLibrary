@@ -98,7 +98,7 @@ public class WUTHandler {
         updateClientTerminal((ServerPlayer) playerEntity, locator, itemStack.getTag());
     }
 
-    public static void updateClientTerminal(ServerPlayer playerEntity, MenuLocator locator, CompoundTag tag) {
+    public static void updateClientTerminal(ServerPlayer playerEntity, MenuLocator locator, @Nullable CompoundTag tag) {
         FriendlyByteBuf buf = PacketByteBufs.create();
         MenuLocators.writeToPacket(buf, locator);
         buf.writeNbt(tag);

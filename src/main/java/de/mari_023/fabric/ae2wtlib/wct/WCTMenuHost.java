@@ -24,7 +24,7 @@ import de.mari_023.fabric.ae2wtlib.terminal.WTMenuHost;
 public class WCTMenuHost extends WTMenuHost implements IViewCellStorage, ISegmentedInventory, InternalInventoryHost {
     private final AppEngInternalInventory craftingGrid = new AppEngInternalInventory(this, 9);
     private final AppEngInternalInventory trash = new AppEngInternalInventory(this, 1);
-    public static ResourceLocation INV_TRASH = new ResourceLocation(AE2wtlib.MOD_NAME, "wct_trash");
+    public static final ResourceLocation INV_TRASH = new ResourceLocation(AE2wtlib.MOD_NAME, "wct_trash");
 
     public WCTMenuHost(final Player ep, @Nullable Integer inventorySlot, final ItemStack is,
             BiConsumer<Player, ISubMenu> returnToMainMenu) {

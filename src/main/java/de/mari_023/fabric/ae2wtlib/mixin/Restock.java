@@ -46,7 +46,8 @@ public abstract class Restock {
 
     @Inject(method = "useOn", at = @At(value = "RETURN"))
     public void useOnBlockRestock(UseOnContext context, CallbackInfoReturnable<InteractionResult> cir) {
-        if (!context.getLevel().isClientSide() && cir.getReturnValue().equals(InteractionResult.CONSUME))
+        if (!context.getLevel().isClientSide() && cir.getReturnValue().equals(InteractionResult.CONSUME)
+                && context.getPlayer() != null)
             restock(context.getPlayer());
     }
 

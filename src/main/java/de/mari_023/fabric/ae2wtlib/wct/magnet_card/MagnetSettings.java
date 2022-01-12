@@ -1,5 +1,7 @@
 package de.mari_023.fabric.ae2wtlib.wct.magnet_card;
 
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 
@@ -12,7 +14,7 @@ public class MagnetSettings {
      *
      * @param tag tag to load the settings from. An empty tag will result in Default {@link MagnetSettings}
      */
-    public MagnetSettings(CompoundTag tag) {
+    public MagnetSettings(@Nullable CompoundTag tag) {
         if (tag == null)
             magnetMode = MagnetMode.DEFAULT;
         else
