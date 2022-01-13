@@ -74,9 +74,9 @@ public class AE2wtlibclient implements IAEAddonEntrypoint {
         }
     }
 
+    // TODO use {@link InitScreens} method for this
     /**
      * Registers a screen for a given menu and ensures the given style is applied after opening the screen.
-     * TODO use {@link InitScreens} method for this
      */
     private static <M extends AEBaseMenu, U extends AEBaseScreen<M>> void register(MenuType<M> type,
             InitScreens.StyledScreenFactory<M, U> factory, String stylePath) {

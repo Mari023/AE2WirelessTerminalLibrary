@@ -1,7 +1,10 @@
 package de.mari_023.fabric.ae2wtlib.wct;
 
+import java.util.Objects;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
@@ -41,7 +44,7 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
                 new ResourceLocation(AE2wtlib.MOD_NAME, "textures/magnet_card.png"));
         addToLeftToolbar(magnetCardToggleButton);
 
-        widgets.add("player", new PlayerEntityWidget(getPlayer()));
+        widgets.add("player", new PlayerEntityWidget(Objects.requireNonNull(Minecraft.getInstance().player)));
     }
 
     private void setMagnetMode() {
