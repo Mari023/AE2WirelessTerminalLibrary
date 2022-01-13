@@ -1,7 +1,5 @@
 package de.mari_023.fabric.ae2wtlib.wct;
 
-import java.io.IOException;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.network.chat.Component;
@@ -11,7 +9,6 @@ import net.minecraft.world.entity.player.Inventory;
 import appeng.client.gui.Icon;
 import appeng.client.gui.me.items.CraftingTermScreen;
 import appeng.client.gui.style.ScreenStyle;
-import appeng.client.gui.style.StyleManager;
 import appeng.client.gui.widgets.IconButton;
 
 import de.mari_023.fabric.ae2wtlib.AE2wtlib;
@@ -25,21 +22,8 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
 
     ItemButton magnetCardToggleButton;
 
-    private static final ScreenStyle STYLE;
-
-    static {
-        ScreenStyle STYLE1;
-        try {
-            STYLE1 = StyleManager.loadStyleDoc("/screens/wtlib/wireless_crafting_terminal.json");
-        } catch (IOException e) {
-            e.printStackTrace();
-            STYLE1 = null;
-        }
-        STYLE = STYLE1;
-    }
-
-    public WCTScreen(WCTMenu container, Inventory playerInventory, Component title) {
-        super(container, playerInventory, title, STYLE);
+    public WCTScreen(WCTMenu container, Inventory playerInventory, Component title, ScreenStyle style) {
+        super(container, playerInventory, title, style);
         IconButton deleteButton = new IconButton(btn -> getMenu().deleteTrashSlot()) {
             @Override
             protected Icon getIcon() {
