@@ -1,17 +1,17 @@
 modLoader = "javafml"
 loaderVersion = "[38,)"
-#issueTrackerURL = ""
-license = "Insert License Here"
+issueTrackerURL = "https://github.com/Mari023/AE2WirelessTerminalLibrary/issues"
+license = "MIT"
 
 [[mods]]
-modId = "examplemod"
+modId = "ae2wtlib"
 version = "${version}"
-displayName = "Example Mod"
-authors = "Me!"
+displayName = "AE2WTLib"
+authors = "mari_023, Ridanisaurus, DomamaN202"
 description = '''
-This is an example description! Tell everyone what your mod is about!
+Adds Wireless versions of ae2 Terminals with infinite range capabilities.
 '''
-#logoFile = ""
+logoFile = "assets/ae2wtlib/icon.png"
 
 [[dependencies.examplemod]]
 modId = "forge"
@@ -28,8 +28,8 @@ ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.examplemod]]
-modId = "architectury"
+modId = "ae2"
 mandatory = true
-versionRange = "[3.3.7,)"
+versionRange = "[10.0.0-beta.4]"
 ordering = "AFTER"
 side = "BOTH"
