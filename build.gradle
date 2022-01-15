@@ -5,16 +5,12 @@ buildscript {
 }
 
 plugins {
-    id 'fabric-loom' version '0.10-SNAPSHOT'
-    id 'maven-publish'
+    id "architectury-plugin" version "3.4-SNAPSHOT"
+    id "dev.architectury.loom" version "0.10.0-SNAPSHOT" apply false
     id "com.diffplug.spotless" version "5.12.4"
     id "com.modrinth.minotaur" version '1.2.1'
     id 'com.matthewprenger.cursegradle' version '1.4.0'
-    id 'io.github.juuxel.loom-quiltflower-mini' version '1.2.1'
 }
-
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
 
 version = project.mod_version + "-SNAPSHOT"
 verType = project.verType
@@ -42,91 +38,88 @@ if (ext.tag) {
     }
 }
 
-archivesBaseName = project.archives_base_name
-group = project.maven_group
+architectury {
+    minecraft = rootProject.minecraft_version
+}
 
-repositories {
-    mavenLocal()
-    mavenCentral()
-    maven {
-        name "Modmaven"
-        url "https://modmaven.dev/"
-        content {
-            includeGroup "net.fabricmc.fabric-api"
-            includeGroup "appeng"
-        }
+subprojects {
+    apply plugin: "dev.architectury.loom"
+
+    loom {
+        silentMojangMappingsLicense()
     }
-    maven {
-        url "https://maven.bai.lol"
-        content {
-            includeGroup "mcp.mobius.waila"
-        }
-    }
-    maven {
-        url "https://maven.shedaniel.me/"
-        content {
-            includeGroup "me.shedaniel"
-            includeGroup "me.shedaniel.cloth"
-            includeGroup "dev.architectury"
-        }
-    }
-    maven {
-        name = "TerraformersMC"
-        url = "https://maven.terraformersmc.com/"
-        content {
-            includeGroup "com.terraformersmc"
-            includeGroup "dev.emi"
-        }
-    }
-    maven {
-        name = "Ladysnake Libs"
-        url = "https://ladysnake.jfrog.io/artifactory/mods"
-        content {
-            includeGroup "io.github.onyxstudios.Cardinal-Components-API"
-        }
-    }
-    maven {
-        url "https://maven.parchmentmc.net/"
-        content {
-            includeGroup "org.parchmentmc.data"
-        }
+
+    dependencies {
+        minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
+        mappings loom.officialMojangMappings()
     }
 }
 
-dependencies {
-    //to change the versions see the gradle.properties file
-    minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings loom.layered() {
-        officialMojangMappings()
-        parchment("org.parchmentmc.data:parchment-1.17.1:2021.09.05@zip")
+allprojects {
+    apply plugin: "java"
+    apply plugin: "architectury-plugin"
+    apply plugin: "maven-publish"
+
+    archivesBaseName = rootProject.archives_base_name
+    version = rootProject.mod_version
+    group = rootProject.maven_group
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven {
+            name "Modmaven"
+            url "https://modmaven.dev/"
+            content {
+                includeGroup "net.fabricmc.fabric-api"
+                includeGroup "appeng"
+            }
+        }
+        maven {
+            url "https://maven.bai.lol"
+            content {
+                includeGroup "mcp.mobius.waila"
+            }
+        }
+        maven {
+            url "https://maven.shedaniel.me/"
+            content {
+                includeGroup "me.shedaniel"
+                includeGroup "me.shedaniel.cloth"
+                includeGroup "dev.architectury"
+            }
+        }
+        maven {
+            name = "TerraformersMC"
+            url = "https://maven.terraformersmc.com/"
+            content {
+                includeGroup "com.terraformersmc"
+                includeGroup "dev.emi"
+            }
+        }
+        maven {
+            name = "Ladysnake Libs"
+            url = "https://ladysnake.jfrog.io/artifactory/mods"
+            content {
+                includeGroup "io.github.onyxstudios.Cardinal-Components-API"
+            }
+        }
+        maven {
+            url "https://maven.parchmentmc.net/"
+            content {
+                includeGroup "org.parchmentmc.data"
+            }
+        }
     }
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-    // Fabric API. This is technically optional, but you probably want it anyway.
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-
-    // PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
-    // You may need to force-disable transitiveness on them.
-    modApi("me.shedaniel.cloth:cloth-config-fabric:${project.cloth}")
-    modApi("com.terraformersmc:modmenu:${project.mod_menu_version}")
-    modImplementation "me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}"
-    modImplementation "dev.emi:trinkets:${project.trinkets_version}"
-    modImplementation "appeng:appliedenergistics2-fabric:${project.ae2_version}"
-}
-
-processResources {
-    inputs.property "version", version
-
-    filesMatching("fabric.mod.json") {
-        expand "version": version
+    tasks.withType(JavaCompile) {
+        options.encoding = "UTF-8"
+        options.release = 17
     }
-}
 
-// ensure that the encoding is set to UTF-8, no matter what the system default is
-// this fixes some edge cases with special characters not displaying correctly
-// see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
-tasks.withType(JavaCompile) {
-    options.encoding = "UTF-8"
+    java {
+        withSourcesJar()
+    }
 }
 
 import com.modrinth.minotaur.TaskModrinthUpload
@@ -176,10 +169,6 @@ curseforge {
     }
 }
 
-jar {
-    from "LICENSE"
-}
-
 spotless {
     buildscript {
         repositories {
@@ -188,7 +177,7 @@ spotless {
     }
 
     java {
-        target 'src/*/java/**/*.java'
+        target '*/src/*/java/**/*.java'
 
         endWithNewline()
         indentWithSpaces()
@@ -199,7 +188,7 @@ spotless {
     }
 
     format 'json', {
-        target 'src/*/resources/**/*.json'
+        target '*/src/*/resources/**/*.json'
         prettier().config(['parser': 'json'])
     }
 }
