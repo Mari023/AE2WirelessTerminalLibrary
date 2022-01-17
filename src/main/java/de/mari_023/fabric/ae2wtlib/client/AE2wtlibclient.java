@@ -1,15 +1,9 @@
 package de.mari_023.fabric.ae2wtlib.client;
 
-import appeng.api.IAEAddonEntrypoint;
-import appeng.init.client.InitScreens;
 import com.mojang.blaze3d.platform.InputConstants;
-import de.mari_023.fabric.ae2wtlib.AE2wtlib;
-import de.mari_023.fabric.ae2wtlib.wat.WATMenu;
-import de.mari_023.fabric.ae2wtlib.wat.WATScreen;
-import de.mari_023.fabric.ae2wtlib.wct.WCTMenu;
-import de.mari_023.fabric.ae2wtlib.wct.WCTScreen;
-import de.mari_023.fabric.ae2wtlib.wet.WETMenu;
-import de.mari_023.fabric.ae2wtlib.wet.WETScreen;
+
+import org.lwjgl.glfw.GLFW;
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -19,7 +13,17 @@ import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import org.lwjgl.glfw.GLFW;
+
+import appeng.api.IAEAddonEntrypoint;
+import appeng.init.client.InitScreens;
+
+import de.mari_023.fabric.ae2wtlib.AE2wtlib;
+import de.mari_023.fabric.ae2wtlib.wat.WATMenu;
+import de.mari_023.fabric.ae2wtlib.wat.WATScreen;
+import de.mari_023.fabric.ae2wtlib.wct.WCTMenu;
+import de.mari_023.fabric.ae2wtlib.wct.WCTScreen;
+import de.mari_023.fabric.ae2wtlib.wet.WETMenu;
+import de.mari_023.fabric.ae2wtlib.wet.WETScreen;
 
 @Environment(EnvType.CLIENT)
 public class AE2wtlibclient implements IAEAddonEntrypoint {
