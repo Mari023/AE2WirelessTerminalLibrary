@@ -5,6 +5,7 @@ dependencies {
     modImplementation ("appeng:appliedenergistics2-fabric:${rootProject.ae2_fabric_version}") {
         exclude group: 'net.fabricmc.fabric-api'
     }
+    modApi "dev.architectury:architectury:${rootProject.architectury_version}"
 
 }
 

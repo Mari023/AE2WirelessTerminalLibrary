@@ -1,8 +1,6 @@
 package de.mari_023.ae2wtlib;
 
-import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
@@ -41,7 +39,7 @@ public class AE2wtlib {
 
     public static Item INFINITY_BOOSTER;
     public static Item MAGNET_CARD;
-    public static final Item CHECK_TRINKETS = new Item(new FabricItemSettings());
+    public static final Item CHECK_TRINKETS = new Item(new Item.Properties());
 
     public static void onAe2Initialized() {
         if (AE2wtlibConfig.INSTANCE.allowTrinket())
@@ -72,8 +70,8 @@ public class AE2wtlib {
         PATTERN_ACCESS_TERMINAL = new ItemWAT();
         UNIVERSAL_TERMINAL = new ItemWUT();
         INFINITY_BOOSTER = Upgrades
-                .createUpgradeCardItem(new FabricItemSettings().tab(AE2wtlib.ITEM_GROUP).stacksTo(1));
-        MAGNET_CARD = Upgrades.createUpgradeCardItem(new FabricItemSettings().tab(AE2wtlib.ITEM_GROUP).stacksTo(1));
+                .createUpgradeCardItem(new Item.Properties().tab(AE2wtlib.ITEM_GROUP).stacksTo(1));
+        MAGNET_CARD = Upgrades.createUpgradeCardItem(new Item.Properties().tab(AE2wtlib.ITEM_GROUP).stacksTo(1));
 
         Registry.register(Registry.ITEM, new ResourceLocation(MOD_NAME, "infinity_booster_card"), INFINITY_BOOSTER);
         Registry.register(Registry.ITEM, new ResourceLocation(MOD_NAME, "magnet_card"), MAGNET_CARD);

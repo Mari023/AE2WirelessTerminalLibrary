@@ -21,6 +21,7 @@ dependencies {
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
     modImplementation "appeng:appliedenergistics2:${rootProject.ae2_forge_version}"
+    modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
 }
 
 processResources {
