@@ -77,6 +77,9 @@ public abstract class Common implements CraftingRecipe {
             wutUpgrades.addItems(iterator.next());
         }
 
+        // update max power
+        itemWUT.onUpgradesChanged(wut, itemWUT.getUpgrades(wut));
+
         // merge power
         itemWUT.injectAEPower(wut, itemWT.getAECurrentPower(toMerge), Actionable.MODULATE);
 

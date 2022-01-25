@@ -81,7 +81,7 @@ public class ItemWUT extends ItemWT {
         return UpgradeInventories.forItem(stack, countInstalledTerminals(stack) * 2, this::onUpgradesChanged);
     }
 
-    private void onUpgradesChanged(ItemStack stack, IUpgradeInventory upgrades) {
+    public void onUpgradesChanged(ItemStack stack, IUpgradeInventory upgrades) {
         setAEMaxPowerMultiplier(stack,
                 countInstalledTerminals(stack) + upgrades.getInstalledUpgrades(AEItems.ENERGY_CARD));
     }
