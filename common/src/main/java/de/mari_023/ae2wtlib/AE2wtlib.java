@@ -41,9 +41,6 @@ public class AE2wtlib {
     public static final Item CHECK_TRINKETS = new Item(new Item.Properties());
 
     public static void onAe2Initialized() {
-        if (AE2wtlibConfig.INSTANCE.allowTrinket())
-            Registry.register(Registry.ITEM,
-                    new ResourceLocation(MOD_NAME, "you_need_to_enable_trinkets_to_join_this_server"), CHECK_TRINKETS);
         registerItems();
 
         WUTHandler.addTerminal("crafting",
