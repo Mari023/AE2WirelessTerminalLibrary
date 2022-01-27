@@ -30,7 +30,7 @@ side = "BOTH"
 [[dependencies.ae2wtlib]]
 modId = "ae2"
 mandatory = true
-versionRange = "[10.0.0-beta.4]"
+versionRange = "[10.0.1]"
 ordering = "AFTER"
 side = "BOTH"
 
