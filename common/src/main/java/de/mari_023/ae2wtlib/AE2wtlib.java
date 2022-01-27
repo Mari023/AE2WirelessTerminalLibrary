@@ -7,6 +7,9 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
+import de.mari_023.ae2wtlib.networking.NetworkingManager;
+import de.mari_023.ae2wtlib.networking.c2s.CycleTerminalPacket;
+import de.mari_023.ae2wtlib.networking.c2s.HotkeyPacket;
 import de.mari_023.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
 import de.mari_023.ae2wtlib.wat.ItemWAT;
 import de.mari_023.ae2wtlib.wat.WATMenu;
@@ -61,7 +64,8 @@ public class AE2wtlib {
         Registry.register(Registry.RECIPE_SERIALIZER, CombineSerializer.ID, CombineSerializer.INSTANCE);
         Registry.register(Registry.RECIPE_SERIALIZER, UpgradeSerializer.ID, UpgradeSerializer.INSTANCE);
 
-        NetworkingServer.registerServer();
+        NetworkingManager.registerServerBoundPacket(CycleTerminalPacket.NAME, CycleTerminalPacket::new);
+        NetworkingManager.registerServerBoundPacket(HotkeyPacket.NAME, HotkeyPacket::new);
         ServerTickEvents.START_SERVER_TICK.register(new MagnetHandler()::doMagnet);
     }
 

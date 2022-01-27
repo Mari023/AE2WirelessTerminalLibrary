@@ -8,13 +8,13 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.KeyMapping;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
 
-import de.mari_023.ae2wtlib.AE2wtlib;
+import de.mari_023.ae2wtlib.networking.NetworkingManager;
+import de.mari_023.ae2wtlib.networking.c2s.HotkeyPacket;
+import de.mari_023.ae2wtlib.networking.s2c.RestockAmountPacket;
+import de.mari_023.ae2wtlib.networking.s2c.UpdateRestockPacket;
+import de.mari_023.ae2wtlib.networking.s2c.UpdateWUTPackage;
 import de.mari_023.ae2wtlib.wat.WATMenu;
 import de.mari_023.ae2wtlib.wat.WATScreen;
 import de.mari_023.ae2wtlib.wct.WCTMenu;
@@ -33,7 +33,9 @@ public class AE2wtlibclient implements IAEAddonEntrypoint {
         InitScreens.register(WETMenu.TYPE, WETScreen::new, "/screens/wtlib/wireless_pattern_encoding_terminal.json");
         InitScreens.register(WATMenu.TYPE, WATScreen::new, "/screens/pattern_access_terminal.json");
 
-        NetworkingClient.registerClient();
+        NetworkingManager.registerClientBoundPacket(UpdateWUTPackage.NAME, UpdateWUTPackage::new);
+        NetworkingManager.registerClientBoundPacket(UpdateRestockPacket.NAME, UpdateRestockPacket::new);
+        NetworkingManager.registerClientBoundPacket(RestockAmountPacket.NAME, RestockAmountPacket::new);
         registerKeybindings();
     }
 
@@ -60,9 +62,7 @@ public class AE2wtlibclient implements IAEAddonEntrypoint {
 
     private static void checkKeybindings(KeyMapping binding, String type) {
         while (binding.consumeClick()) {
-            FriendlyByteBuf buf = PacketByteBufs.create();
-            buf.writeUtf(type);
-            ClientPlayNetworking.send(new ResourceLocation(AE2wtlib.MOD_NAME, "hotkey"), buf);
+            NetworkingManager.sendToServer(new HotkeyPacket(type));
         }
     }
 }

@@ -6,10 +6,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -19,7 +15,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 
-import de.mari_023.ae2wtlib.AE2wtlib;
+import de.mari_023.ae2wtlib.networking.NetworkingManager;
+import de.mari_023.ae2wtlib.networking.s2c.UpdateRestockPacket;
 import de.mari_023.ae2wtlib.terminal.ItemWT;
 import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
 
@@ -75,10 +72,7 @@ public abstract class Restock {
         if (extractedItems > Integer.MAX_VALUE)
             throw new IllegalStateException("Extracted amount cannot be larger than requested amount");
         setCount(getCount() + (int) extractedItems);
-        FriendlyByteBuf buf = PacketByteBufs.create();
-        buf.writeInt(playerEntity.getInventory().findSlotMatchingUnusedItem((ItemStack) (Object) this));
-        buf.writeInt(getCount());
-        ServerPlayNetworking.send((ServerPlayer) playerEntity,
-                new ResourceLocation(AE2wtlib.MOD_NAME, "update_restock"), buf);
+        NetworkingManager.sendToClient((ServerPlayer) playerEntity, new UpdateRestockPacket(
+                playerEntity.getInventory().findSlotMatchingUnusedItem((ItemStack) (Object) this), getCount()));
     }
 }

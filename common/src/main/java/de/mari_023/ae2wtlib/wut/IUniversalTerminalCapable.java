@@ -1,16 +1,11 @@
 package de.mari_023.ae2wtlib.wut;
 
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.minecraft.resources.ResourceLocation;
-
-import de.mari_023.ae2wtlib.AE2wtlib;
+import de.mari_023.ae2wtlib.networking.NetworkingManager;
+import de.mari_023.ae2wtlib.networking.c2s.CycleTerminalPacket;
 
 public interface IUniversalTerminalCapable {
     default void cycleTerminal() {
-        var buf = PacketByteBufs.create();
-        buf.writeBoolean(isHandlingRightClick());
-        ClientPlayNetworking.send(new ResourceLocation(AE2wtlib.MOD_NAME, "cycle_terminal"), buf);
+        NetworkingManager.sendToServer(new CycleTerminalPacket(isHandlingRightClick()));
     }
 
     boolean isHandlingRightClick();

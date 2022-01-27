@@ -8,19 +8,16 @@ import java.util.function.BiConsumer;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 
-import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.Platform;
 import de.mari_023.ae2wtlib.TextConstants;
+import de.mari_023.ae2wtlib.networking.NetworkingManager;
+import de.mari_023.ae2wtlib.networking.s2c.UpdateWUTPackage;
 import de.mari_023.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
 import de.mari_023.ae2wtlib.terminal.WTMenuHost;
 
@@ -99,10 +96,7 @@ public class WUTHandler {
     }
 
     public static void updateClientTerminal(ServerPlayer playerEntity, MenuLocator locator, @Nullable CompoundTag tag) {
-        FriendlyByteBuf buf = PacketByteBufs.create();
-        MenuLocators.writeToPacket(buf, locator);
-        buf.writeNbt(tag);
-        ServerPlayNetworking.send(playerEntity, new ResourceLocation(AE2wtlib.MOD_NAME, "update_wut"), buf);
+        NetworkingManager.sendToClient(playerEntity, new UpdateWUTPackage(locator, tag));
     }
 
     public static boolean open(final Player player, final MenuLocator locator) {

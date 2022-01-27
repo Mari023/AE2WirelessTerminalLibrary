@@ -2,13 +2,8 @@ package de.mari_023.ae2wtlib.wct.magnet_card;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntitySelector;
@@ -18,6 +13,8 @@ import net.minecraft.world.item.ItemStack;
 
 import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.AE2wtlibConfig;
+import de.mari_023.ae2wtlib.networking.NetworkingManager;
+import de.mari_023.ae2wtlib.networking.s2c.RestockAmountPacket;
 import de.mari_023.ae2wtlib.terminal.ItemWT;
 import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
 
@@ -68,12 +65,7 @@ public class MagnetHandler {
                 }
             }
 
-            FriendlyByteBuf buf = PacketByteBufs.create();
-            for (Map.Entry<Item, Long> entry : items.entrySet()) {
-                buf.writeItem(new ItemStack(entry.getKey()));
-                buf.writeLong(entry.getValue());
-            }
-            ServerPlayNetworking.send(player, new ResourceLocation(AE2wtlib.MOD_NAME, "restock_amounts"), buf);
+            NetworkingManager.sendToClient(player, new RestockAmountPacket(items));
         } catch (NullPointerException ignored) {
         }
     }
