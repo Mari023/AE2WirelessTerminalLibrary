@@ -12,6 +12,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
+import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 import appeng.api.implementations.menuobjects.ItemMenuHost;
@@ -21,8 +22,9 @@ import appeng.menu.locator.MenuLocators;
 
 public abstract class ItemWT extends WirelessTerminalItem implements IUniversalWirelessTerminalItem {
 
-    public ItemWT(Item.Properties props) {
-        super(AEConfig.instance().getWirelessTerminalBattery(), props);
+    public ItemWT() {
+        super(AEConfig.instance().getWirelessTerminalBattery(),
+                new Item.Properties().tab(AE2wtlib.ITEM_GROUP).stacksTo(1));
     }
 
     @Override

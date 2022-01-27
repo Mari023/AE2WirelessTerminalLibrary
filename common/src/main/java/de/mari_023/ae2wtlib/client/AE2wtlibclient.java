@@ -1,17 +1,9 @@
 package de.mari_023.ae2wtlib.client;
 
-import com.mojang.blaze3d.platform.InputConstants;
-
-import org.lwjgl.glfw.GLFW;
-
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.minecraft.client.KeyMapping;
 
 import de.mari_023.ae2wtlib.networking.NetworkingManager;
-import de.mari_023.ae2wtlib.networking.c2s.HotkeyPacket;
 import de.mari_023.ae2wtlib.networking.s2c.RestockAmountPacket;
 import de.mari_023.ae2wtlib.networking.s2c.UpdateRestockPacket;
 import de.mari_023.ae2wtlib.networking.s2c.UpdateWUTPackage;
@@ -36,33 +28,6 @@ public class AE2wtlibclient implements IAEAddonEntrypoint {
         NetworkingManager.registerClientBoundPacket(UpdateWUTPackage.NAME, UpdateWUTPackage::new);
         NetworkingManager.registerClientBoundPacket(UpdateRestockPacket.NAME, UpdateRestockPacket::new);
         NetworkingManager.registerClientBoundPacket(RestockAmountPacket.NAME, RestockAmountPacket::new);
-        registerKeybindings();
-    }
-
-    public static void registerKeybindings() {
-        KeyMapping wct = KeyBindingHelper.registerKeyBinding(new KeyMapping("key.ae2wtlib.wct",
-                InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "key.category.ae2wtlib"));
-        KeyMapping wpt = KeyBindingHelper.registerKeyBinding(new KeyMapping("key.ae2wtlib.wpt",
-                InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "key.category.ae2wtlib"));
-        KeyMapping wit = KeyBindingHelper.registerKeyBinding(new KeyMapping("key.ae2wtlib.wit",
-                InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "key.category.ae2wtlib"));
-        KeyMapping toggleRestock = KeyBindingHelper.registerKeyBinding(new KeyMapping("key.ae2wtlib.toggleRestock",
-                InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "key.category.ae2wtlib"));
-        KeyMapping toggleMagnet = KeyBindingHelper.registerKeyBinding(new KeyMapping("key.ae2wtlib.toggleMagnet",
-                InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "key.category.ae2wtlib"));
-
-        ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            checkKeybindings(wct, "crafting");
-            checkKeybindings(wpt, "pattern_encoding");
-            checkKeybindings(wit, "pattern_access");
-            checkKeybindings(toggleRestock, "toggleRestock");
-            checkKeybindings(toggleMagnet, "toggleMagnet");
-        });
-    }
-
-    private static void checkKeybindings(KeyMapping binding, String type) {
-        while (binding.consumeClick()) {
-            NetworkingManager.sendToServer(new HotkeyPacket(type));
-        }
+        KeyBindings.registerKeyBindings();
     }
 }
