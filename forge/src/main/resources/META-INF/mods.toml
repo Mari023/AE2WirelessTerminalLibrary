@@ -13,23 +13,30 @@ Adds Wireless versions of ae2 Terminals with infinite range capabilities.
 '''
 logoFile = "assets/ae2wtlib/icon.png"
 
-[[dependencies.examplemod]]
+[[dependencies.ae2wtlib]]
 modId = "forge"
 mandatory = true
 versionRange = "[38,)"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.examplemod]]
+[[dependencies.ae2wtlib]]
 modId = "minecraft"
 mandatory = true
 versionRange = "[1.18,)"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.examplemod]]
+[[dependencies.ae2wtlib]]
 modId = "ae2"
 mandatory = true
 versionRange = "[10.0.0-beta.4]"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.ae2wtlib]]
+modId = "cloth_config"
+mandatory = true
+versionRange = "*"
 ordering = "AFTER"
 side = "BOTH"

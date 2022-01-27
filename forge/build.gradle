@@ -22,6 +22,7 @@ dependencies {
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
     modImplementation "appeng:appliedenergistics2:${rootProject.ae2_forge_version}"
     modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
+    modApi "me.shedaniel.cloth:cloth-config-forge:${rootProject.cloth}"
 }
 
 processResources {
