@@ -1,11 +1,9 @@
 package de.mari_023.ae2wtlib;
 
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 
 import de.mari_023.ae2wtlib.networking.NetworkingManager;
 import de.mari_023.ae2wtlib.networking.c2s.CycleTerminalPacket;
@@ -16,7 +14,6 @@ import de.mari_023.ae2wtlib.wat.WATMenu;
 import de.mari_023.ae2wtlib.wat.WATMenuHost;
 import de.mari_023.ae2wtlib.wct.WCTMenu;
 import de.mari_023.ae2wtlib.wct.WCTMenuHost;
-import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHandler;
 import de.mari_023.ae2wtlib.wet.ItemWET;
 import de.mari_023.ae2wtlib.wet.WETMenu;
 import de.mari_023.ae2wtlib.wet.WETMenuHost;
@@ -33,8 +30,7 @@ import appeng.items.tools.powered.WirelessTerminalItem;
 public class AE2wtlib {
     public static final String MOD_NAME = "ae2wtlib";
 
-    public static final CreativeModeTab ITEM_GROUP = FabricItemGroupBuilder
-            .build(new ResourceLocation(MOD_NAME, "general"), () -> new ItemStack(AE2wtlib.UNIVERSAL_TERMINAL));
+    public static final CreativeModeTab ITEM_GROUP = Platform.getCreativeModeTab();
 
     public static ItemWET PATTERN_ENCODING_TERMINAL;
     public static ItemWAT PATTERN_ACCESS_TERMINAL;
@@ -66,7 +62,7 @@ public class AE2wtlib {
 
         NetworkingManager.registerServerBoundPacket(CycleTerminalPacket.NAME, CycleTerminalPacket::new);
         NetworkingManager.registerServerBoundPacket(HotkeyPacket.NAME, HotkeyPacket::new);
-        ServerTickEvents.START_SERVER_TICK.register(new MagnetHandler()::doMagnet);
+
     }
 
     public static void registerItems() {

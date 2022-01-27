@@ -2,9 +2,13 @@ package de.mari_023.ae2wtlib.fabric;
 
 import org.jetbrains.annotations.Nullable;
 
+import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 
+import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.AE2wtlibConfig;
 import de.mari_023.ae2wtlib.fabric.trinket.TrinketLocator;
 import de.mari_023.ae2wtlib.fabric.trinket.TrinketsHelper;
@@ -28,5 +32,10 @@ public class PlatformImpl {
             return TrinketsHelper.findTerminal(player, terminalName);
         }
         return null;
+    }
+
+    public static CreativeModeTab getCreativeModeTab() {
+        return FabricItemGroupBuilder.build(new ResourceLocation(AE2wtlib.MOD_NAME, "general"),
+                () -> new ItemStack(AE2wtlib.UNIVERSAL_TERMINAL));
     }
 }

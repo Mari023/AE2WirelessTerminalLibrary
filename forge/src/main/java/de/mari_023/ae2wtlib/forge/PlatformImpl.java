@@ -3,6 +3,7 @@ package de.mari_023.ae2wtlib.forge;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 
 import appeng.menu.locator.MenuLocator;
@@ -19,5 +20,9 @@ public class PlatformImpl {
     @Nullable
     public static MenuLocator findTerminal(Player player, String terminalName) {
         return null;
+    }
+
+    public static CreativeModeTab getCreativeModeTab() {
+        return null;// FIXME implement
     }
 }
