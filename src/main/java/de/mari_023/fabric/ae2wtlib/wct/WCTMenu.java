@@ -123,7 +123,7 @@ public class WCTMenu extends CraftingTermMenu {
     }
 
     public void deleteTrashSlot() {
-        if (isClient())
+        if (isClientSide())
             sendClientAction(ACTION_DELETE);
         Objects.requireNonNull(wctGUIObject.getSubInventory(WCTMenuHost.INV_TRASH)).setItemDirect(0, ItemStack.EMPTY);
     }
@@ -139,7 +139,7 @@ public class WCTMenu extends CraftingTermMenu {
     }
 
     public void setMagnetMode(MagnetMode mode) {
-        if (isClient())
+        if (isClientSide())
             sendClientAction(MAGNET_MODE, mode);
         getMagnetSettings().magnetMode = mode;
         saveMagnetSettings();
