@@ -63,7 +63,7 @@ public abstract class Restock {
             return;
         CraftingTerminalHandler cTHandler = CraftingTerminalHandler.getCraftingTerminalHandler(playerEntity);
         if (!cTHandler.inRange() || !ItemWT.getBoolean(cTHandler.getCraftingTerminal(), "restock")
-                || cTHandler.getTargetGrid().getStorageService().getInventory() == null)
+                || cTHandler.getTargetGrid() == null || cTHandler.getTargetGrid().getStorageService() == null)
             return;
         int toAdd = getMaxStackSize() - getCount();
         if (toAdd == 0)

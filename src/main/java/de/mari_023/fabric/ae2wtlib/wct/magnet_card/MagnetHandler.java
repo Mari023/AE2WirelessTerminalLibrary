@@ -51,7 +51,7 @@ public class MagnetHandler {
                 return;
             HashMap<Item, Long> items = new HashMap<>();
 
-            if (handler.getTargetGrid().getStorageService().getInventory() == null)
+            if (handler.getTargetGrid() == null || handler.getTargetGrid().getStorageService().getInventory() == null)
                 return;
             KeyCounter storageList = handler.getTargetGrid().getStorageService().getInventory().getAvailableStacks();
 

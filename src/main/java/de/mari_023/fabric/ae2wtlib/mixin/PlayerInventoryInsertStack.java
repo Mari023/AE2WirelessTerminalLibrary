@@ -33,7 +33,7 @@ public class PlayerInventoryInsertStack {
         CraftingTerminalHandler cTHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
         ItemStack terminal = cTHandler.getCraftingTerminal();
         if (MagnetHandler.getMagnetSettings(terminal).magnetMode == MagnetMode.PICKUP_ME && cTHandler.inRange()) {
-            if (cTHandler.getTargetGrid().getStorageService() == null)
+            if (cTHandler.getTargetGrid() == null || cTHandler.getTargetGrid().getStorageService() == null)
                 return;
             long inserted = cTHandler.getTargetGrid().getStorageService().getInventory().insert(AEItemKey.of(stack),
                     stack.getCount(), Actionable.MODULATE, new PlayerSource(player, cTHandler.getSecurityStation()));

@@ -99,6 +99,7 @@ public class CraftingTerminalHandler {
         return locator;
     }
 
+    @Nullable
     public IActionHost getSecurityStation() {
         if (getCraftingTerminal().isEmpty())
             return securityStation = null;
@@ -112,6 +113,7 @@ public class CraftingTerminalHandler {
         return securityStation = Locatables.securityStations().get(player.level, parsedKey);
     }
 
+    @Nullable
     public IGrid getTargetGrid() {
         if (getSecurityStation() == null)
             return targetGrid = null;
