@@ -8,12 +8,9 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Ingredient;
 
-import de.mari_023.ae2wtlib.AE2wtlib;
-
 public class UpgradeSerializer extends Serializer<Upgrade> {
     public static final UpgradeSerializer INSTANCE = new UpgradeSerializer();
     public static final String NAME = "upgrade";
-    public static final ResourceLocation ID = new ResourceLocation(AE2wtlib.MOD_NAME, NAME);
 
     @Override
     public Upgrade fromJson(ResourceLocation id, JsonObject json) {

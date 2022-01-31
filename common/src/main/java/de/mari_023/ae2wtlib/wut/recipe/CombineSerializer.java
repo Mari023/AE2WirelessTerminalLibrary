@@ -8,12 +8,9 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Ingredient;
 
-import de.mari_023.ae2wtlib.AE2wtlib;
-
 public class CombineSerializer extends Serializer<Combine> {
     public static final CombineSerializer INSTANCE = new CombineSerializer();
     public static final String NAME = "combine";
-    public static final ResourceLocation ID = new ResourceLocation(AE2wtlib.MOD_NAME, NAME);
 
     @Override
     public Combine fromJson(ResourceLocation id, JsonObject json) {

@@ -1,25 +1,19 @@
 package de.mari_023.ae2wtlib;
 
-import net.minecraft.core.Registry;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 
 import de.mari_023.ae2wtlib.networking.NetworkingManager;
 import de.mari_023.ae2wtlib.networking.c2s.CycleTerminalPacket;
 import de.mari_023.ae2wtlib.networking.c2s.HotkeyPacket;
-import de.mari_023.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
 import de.mari_023.ae2wtlib.wat.ItemWAT;
 import de.mari_023.ae2wtlib.wat.WATMenu;
 import de.mari_023.ae2wtlib.wat.WATMenuHost;
-import de.mari_023.ae2wtlib.wct.WCTMenu;
-import de.mari_023.ae2wtlib.wct.WCTMenuHost;
 import de.mari_023.ae2wtlib.wet.ItemWET;
 import de.mari_023.ae2wtlib.wet.WETMenu;
 import de.mari_023.ae2wtlib.wet.WETMenuHost;
 import de.mari_023.ae2wtlib.wut.ItemWUT;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
-import de.mari_023.ae2wtlib.wut.recipe.CombineSerializer;
-import de.mari_023.ae2wtlib.wut.recipe.UpgradeSerializer;
 
 import appeng.api.features.GridLinkables;
 import appeng.api.upgrades.Upgrades;
@@ -42,10 +36,11 @@ public class AE2wtlib {
     public static void onAe2Initialized() {
         createItems();
 
-        WUTHandler.addTerminal("crafting",
-                ((IUniversalWirelessTerminalItem) AEItems.WIRELESS_CRAFTING_TERMINAL.asItem())::tryOpen,
-                WCTMenuHost::new, WCTMenu.TYPE,
-                (IUniversalWirelessTerminalItem) AEItems.WIRELESS_CRAFTING_TERMINAL.asItem());//FIXME forge mixins
+        /*
+         * WUTHandler.addTerminal("crafting", ((IUniversalWirelessTerminalItem)
+         * AEItems.WIRELESS_CRAFTING_TERMINAL.asItem())::tryOpen, WCTMenuHost::new, WCTMenu.TYPE,
+         * (IUniversalWirelessTerminalItem) AEItems.WIRELESS_CRAFTING_TERMINAL.asItem());
+         */// FIXME forge mixins
         WUTHandler.addTerminal("pattern_encoding", PATTERN_ENCODING_TERMINAL::tryOpen, WETMenuHost::new, WETMenu.TYPE,
                 PATTERN_ENCODING_TERMINAL);
         WUTHandler.addTerminal("pattern_access", PATTERN_ACCESS_TERMINAL::tryOpen, WATMenuHost::new, WATMenu.TYPE,
@@ -53,8 +48,10 @@ public class AE2wtlib {
 
         addUpgrades();// TODO add an entrypoint for addons to register their terminals before this
 
-        Registry.register(Registry.RECIPE_SERIALIZER, CombineSerializer.ID, CombineSerializer.INSTANCE);//FIXME forge
-        Registry.register(Registry.RECIPE_SERIALIZER, UpgradeSerializer.ID, UpgradeSerializer.INSTANCE);
+        /*
+         * Platform.registerRecipe(CombineSerializer.NAME, CombineSerializer.INSTANCE);
+         * Platform.registerRecipe(UpgradeSerializer.NAME, UpgradeSerializer.INSTANCE);
+         */ // FIXME implement IForgeRegistryEntry
 
         NetworkingManager.registerServerBoundPacket(CycleTerminalPacket.NAME, CycleTerminalPacket::new);
         NetworkingManager.registerServerBoundPacket(HotkeyPacket.NAME, HotkeyPacket::new);
