@@ -1,6 +1,6 @@
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-package de.mari_023.ae2wtlib;
+package de.mari_023.ae2wtlib.client.forge;
 
 import net.minecraft.MethodsReturnNonnullByDefault;
 

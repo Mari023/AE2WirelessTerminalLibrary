@@ -3,9 +3,11 @@ package de.mari_023.ae2wtlib.fabric;
 import org.jetbrains.annotations.Nullable;
 
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 import de.mari_023.ae2wtlib.AE2wtlib;
@@ -27,7 +29,7 @@ public class PlatformImpl {
     }
 
     @Nullable
-    public static MenuLocator findTerminal(Player player, String terminalName) {
+    public static MenuLocator findTerminalFromAccessory(Player player, String terminalName) {
         if (AE2wtlibConfig.INSTANCE.allowTrinket()) {
             return TrinketsHelper.findTerminal(player, terminalName);
         }
@@ -37,5 +39,9 @@ public class PlatformImpl {
     public static CreativeModeTab getCreativeModeTab() {
         return FabricItemGroupBuilder.build(new ResourceLocation(AE2wtlib.MOD_NAME, "general"),
                 () -> new ItemStack(AE2wtlib.UNIVERSAL_TERMINAL));
+    }
+
+    public static void registerItem(String name, Item item) {
+        Registry.register(Registry.ITEM, new ResourceLocation(AE2wtlib.MOD_NAME, name), item);
     }
 }

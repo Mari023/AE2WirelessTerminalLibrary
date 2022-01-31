@@ -117,7 +117,7 @@ public class WUTHandler {
 
     @Nullable
     public static MenuLocator findTerminal(Player player, String terminalName) {
-        MenuLocator locator = Platform.findTerminal(player, terminalName);
+        MenuLocator locator = Platform.findTerminalFromAccessory(player, terminalName);
         if (locator != null)
             return locator;
 

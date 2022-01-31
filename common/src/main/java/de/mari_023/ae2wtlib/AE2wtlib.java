@@ -1,7 +1,6 @@
 package de.mari_023.ae2wtlib;
 
 import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 
@@ -41,12 +40,12 @@ public class AE2wtlib {
     public static final Item CHECK_TRINKETS = new Item(new Item.Properties());
 
     public static void onAe2Initialized() {
-        registerItems();
+        createItems();
 
         WUTHandler.addTerminal("crafting",
                 ((IUniversalWirelessTerminalItem) AEItems.WIRELESS_CRAFTING_TERMINAL.asItem())::tryOpen,
                 WCTMenuHost::new, WCTMenu.TYPE,
-                (IUniversalWirelessTerminalItem) AEItems.WIRELESS_CRAFTING_TERMINAL.asItem());
+                (IUniversalWirelessTerminalItem) AEItems.WIRELESS_CRAFTING_TERMINAL.asItem());//FIXME forge mixins
         WUTHandler.addTerminal("pattern_encoding", PATTERN_ENCODING_TERMINAL::tryOpen, WETMenuHost::new, WETMenu.TYPE,
                 PATTERN_ENCODING_TERMINAL);
         WUTHandler.addTerminal("pattern_access", PATTERN_ACCESS_TERMINAL::tryOpen, WATMenuHost::new, WATMenu.TYPE,
@@ -54,7 +53,7 @@ public class AE2wtlib {
 
         addUpgrades();// TODO add an entrypoint for addons to register their terminals before this
 
-        Registry.register(Registry.RECIPE_SERIALIZER, CombineSerializer.ID, CombineSerializer.INSTANCE);
+        Registry.register(Registry.RECIPE_SERIALIZER, CombineSerializer.ID, CombineSerializer.INSTANCE);//FIXME forge
         Registry.register(Registry.RECIPE_SERIALIZER, UpgradeSerializer.ID, UpgradeSerializer.INSTANCE);
 
         NetworkingManager.registerServerBoundPacket(CycleTerminalPacket.NAME, CycleTerminalPacket::new);
@@ -62,7 +61,7 @@ public class AE2wtlib {
 
     }
 
-    public static void registerItems() {
+    public static void createItems() {
         PATTERN_ENCODING_TERMINAL = new ItemWET();
         PATTERN_ACCESS_TERMINAL = new ItemWAT();
         UNIVERSAL_TERMINAL = new ItemWUT();
@@ -70,14 +69,11 @@ public class AE2wtlib {
                 .createUpgradeCardItem(new Item.Properties().tab(AE2wtlib.ITEM_GROUP).stacksTo(1));
         MAGNET_CARD = Upgrades.createUpgradeCardItem(new Item.Properties().tab(AE2wtlib.ITEM_GROUP).stacksTo(1));
 
-        Registry.register(Registry.ITEM, new ResourceLocation(MOD_NAME, "infinity_booster_card"), INFINITY_BOOSTER);
-        Registry.register(Registry.ITEM, new ResourceLocation(MOD_NAME, "magnet_card"), MAGNET_CARD);
-        Registry.register(Registry.ITEM, new ResourceLocation(MOD_NAME, "wireless_pattern_encoding_terminal"),
-                PATTERN_ENCODING_TERMINAL);
-        Registry.register(Registry.ITEM, new ResourceLocation(MOD_NAME, "wireless_pattern_access_terminal"),
-                PATTERN_ACCESS_TERMINAL);
-        Registry.register(Registry.ITEM, new ResourceLocation(MOD_NAME, "wireless_universal_terminal"),
-                UNIVERSAL_TERMINAL);
+        Platform.registerItem("infinity_booster_card", INFINITY_BOOSTER);
+        Platform.registerItem("magnet_card", MAGNET_CARD);
+        Platform.registerItem("wireless_pattern_encoding_terminal", PATTERN_ENCODING_TERMINAL);
+        Platform.registerItem("wireless_pattern_access_terminal", PATTERN_ACCESS_TERMINAL);
+        Platform.registerItem("wireless_universal_terminal", UNIVERSAL_TERMINAL);
 
         GridLinkables.register(PATTERN_ENCODING_TERMINAL, WirelessTerminalItem.LINKABLE_HANDLER);
         GridLinkables.register(PATTERN_ACCESS_TERMINAL, WirelessTerminalItem.LINKABLE_HANDLER);
