@@ -14,7 +14,7 @@
   "icon": "assets/ae2wtlib/icon.png",
   "environment": "*",
   "entrypoints": {
-    "ae2:client": ["de.mari_023.ae2wtlib.client.AE2wtlibclient"],
+    "ae2:client": ["de.mari_023.ae2wtlib.client.fabric.AE2wtlibClientFabric"],
     "ae2": ["de.mari_023.ae2wtlib.fabric.AE2wtlibEntrypoint"],
     "rei_plugins": ["de.mari_023.ae2wtlib.rei.Plugin"],
     "modmenu": ["de.mari_023.ae2wtlib.fabric.ModMenuIntegration"]

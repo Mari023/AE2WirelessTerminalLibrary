@@ -9,6 +9,9 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import de.mari_023.ae2wtlib.AE2wtlib;
+import de.mari_023.ae2wtlib.AE2wtlibConfig;
+import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 
 @Mod(AE2wtlib.MOD_NAME)
 public class AE2wtlibForge {
@@ -20,6 +23,8 @@ public class AE2wtlibForge {
             AE2wtlib.MOD_NAME);
 
     public AE2wtlibForge() {
+        AutoConfig.register(AE2wtlibConfig.class, JanksonConfigSerializer::new);
+        AE2wtlibConfig.INSTANCE = AutoConfig.getConfigHolder(AE2wtlibConfig.class).getConfig();
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         ITEMS.register(modEventBus);
         RECIPES.register(modEventBus);

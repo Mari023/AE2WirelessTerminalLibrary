@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "de.mari_023.ae2wtlib.mixin",
+  "compatibilityLevel": "JAVA_16",
+  "mixins": [
+    "CraftingTerminalItemMixin",
+    "PlayerInventoryInsertStack",
+    "Restock",
+    "TrinketWCTContainer"
+  ],
+  "client": ["RestockRender"],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
