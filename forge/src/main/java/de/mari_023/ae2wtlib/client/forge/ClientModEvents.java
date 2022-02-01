@@ -8,11 +8,14 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.client.AE2wtlibClient;
 
-@Mod.EventBusSubscriber(modid = AE2wtlib.MOD_NAME, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
-public class AE2wtlibClientForge {
+@Mod.EventBusSubscriber(modid = AE2wtlib.MOD_NAME, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+public final class ClientModEvents {
+
+    private ClientModEvents() {
+    }
 
     @SubscribeEvent
-    public void clientSetup(FMLClientSetupEvent event) {//doesn't actually run
-        event.enqueueWork(AE2wtlibClient::onAe2Initialized);
+    public static void clientSetup(FMLClientSetupEvent event) {
+        AE2wtlibClient.onAe2Initialized();
     }
 }
