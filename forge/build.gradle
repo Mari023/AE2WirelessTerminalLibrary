@@ -56,6 +56,12 @@ sourcesJar {
     from commonSources.archiveFile.map { zipTree(it) }
 }
 
+loom {
+    forge {
+        mixinConfig "ae2wtlib.mixins.json"
+    }
+}
+
 components.java {
     withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
         skip()
