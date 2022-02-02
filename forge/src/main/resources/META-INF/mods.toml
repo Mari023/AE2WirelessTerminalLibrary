@@ -40,3 +40,10 @@ mandatory = true
 versionRange = "*"
 ordering = "AFTER"
 side = "BOTH"
+
+[[dependencies.ae2wtlib]]
+modId = "architectury"
+mandatory = true
+versionRange = "*"
+ordering = "AFTER"
+side = "BOTH"
