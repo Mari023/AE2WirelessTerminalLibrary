@@ -11,6 +11,7 @@ import net.minecraft.world.level.Level;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 public class Upgrade extends Common {
+    public static UpgradeSerializer serializer;
     private final Ingredient terminal;
     private final String terminalName;
 
@@ -44,7 +45,7 @@ public class Upgrade extends Common {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return UpgradeSerializer.INSTANCE;
+        return serializer;
     }
 
     public NonNullList<Ingredient> getIngredients() {

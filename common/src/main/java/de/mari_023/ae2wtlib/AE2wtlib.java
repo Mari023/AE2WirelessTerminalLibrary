@@ -51,10 +51,7 @@ public class AE2wtlib {
 
         addUpgrades();// TODO add an entrypoint for addons to register their terminals before this
 
-        /*
-         * Platform.registerRecipe(CombineSerializer.NAME, CombineSerializer.INSTANCE);
-         * Platform.registerRecipe(UpgradeSerializer.NAME, UpgradeSerializer.INSTANCE);
-         */ // FIXME implement IForgeRegistryEntry
+        Platform.registerRecipes();
 
         NetworkingManager.registerServerBoundPacket(CycleTerminalPacket.NAME, CycleTerminalPacket::new);
         NetworkingManager.registerServerBoundPacket(HotkeyPacket.NAME, HotkeyPacket::new);

@@ -9,6 +9,8 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 
 public class Combine extends Common {
+    public static CombineSerializer serializer;
+
     private final Ingredient terminalA;
     private final Ingredient terminalB;
     private final String terminalAName;
@@ -57,7 +59,7 @@ public class Combine extends Common {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return CombineSerializer.INSTANCE;
+        return serializer;
     }
 
     public NonNullList<Ingredient> getIngredients() {

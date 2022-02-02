@@ -9,6 +9,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 
 import de.mari_023.ae2wtlib.AE2wtlib;
+import de.mari_023.ae2wtlib.forge.recipes.ForgeCombineSerializer;
+import de.mari_023.ae2wtlib.forge.recipes.ForgeUpgradeSerializer;
+import de.mari_023.ae2wtlib.wut.recipe.Combine;
+import de.mari_023.ae2wtlib.wut.recipe.CombineSerializer;
+import de.mari_023.ae2wtlib.wut.recipe.Upgrade;
+import de.mari_023.ae2wtlib.wut.recipe.UpgradeSerializer;
 
 import appeng.menu.locator.MenuLocator;
 
@@ -39,7 +45,12 @@ public class PlatformImpl {
         AE2wtlibForge.ITEMS.register(name, () -> item);
     }
 
-    public static void registerRecipe(String name, RecipeSerializer<?> serializer) {
+    private static void registerRecipe(String name, RecipeSerializer<?> serializer) {
         AE2wtlibForge.RECIPES.register(name, () -> serializer);
+    }
+
+    public static void registerRecipes() {
+        registerRecipe(UpgradeSerializer.NAME, Upgrade.serializer = new ForgeUpgradeSerializer());
+        registerRecipe(CombineSerializer.NAME, Combine.serializer = new ForgeCombineSerializer());
     }
 }

@@ -6,7 +6,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeSerializer;
 
 import dev.architectury.injectables.annotations.ExpectPlatform;
 
@@ -41,7 +40,7 @@ public class Platform {
     }
 
     @ExpectPlatform
-    public static void registerRecipe(String name, RecipeSerializer<?> serializer) {
+    public static void registerRecipes() {
         throw new AssertionError();
     }
 }

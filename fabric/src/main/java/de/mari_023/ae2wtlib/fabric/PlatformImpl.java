@@ -15,6 +15,10 @@ import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.AE2wtlibConfig;
 import de.mari_023.ae2wtlib.fabric.trinket.TrinketLocator;
 import de.mari_023.ae2wtlib.fabric.trinket.TrinketsHelper;
+import de.mari_023.ae2wtlib.wut.recipe.Combine;
+import de.mari_023.ae2wtlib.wut.recipe.CombineSerializer;
+import de.mari_023.ae2wtlib.wut.recipe.Upgrade;
+import de.mari_023.ae2wtlib.wut.recipe.UpgradeSerializer;
 
 import appeng.menu.locator.MenuLocator;
 
@@ -46,7 +50,14 @@ public class PlatformImpl {
         Registry.register(Registry.ITEM, new ResourceLocation(AE2wtlib.MOD_NAME, name), item);
     }
 
-    public static void registerRecipe(String name, RecipeSerializer<?> serializer) {
+    private static void registerRecipe(String name, RecipeSerializer<?> serializer) {
         Registry.register(Registry.RECIPE_SERIALIZER, new ResourceLocation(AE2wtlib.MOD_NAME, name), serializer);
+    }
+
+    public static void registerRecipes() {
+        registerRecipe(UpgradeSerializer.NAME, Upgrade.serializer = new UpgradeSerializer() {
+        });
+        registerRecipe(CombineSerializer.NAME, Combine.serializer = new CombineSerializer() {
+        });
     }
 }
