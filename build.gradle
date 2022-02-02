@@ -8,13 +8,10 @@ plugins {
     id "architectury-plugin" version "3.4-SNAPSHOT"
     id "dev.architectury.loom" version "0.10.0-SNAPSHOT" apply false
     id "com.diffplug.spotless" version "5.12.4"
-    id "com.modrinth.minotaur" version '1.2.1'
-    id 'com.matthewprenger.cursegradle' version '1.4.0'
 }
 
 version = project.mod_version + "-SNAPSHOT"
 verType = project.verType
-boolean shouldPublish = false
 
 ext.pr = System.getenv('PR_NUMBER') ?: ""
 if (ext.pr) {
@@ -26,15 +23,12 @@ if (ext.tag) {
     version = ext.tag
     if (project.version.contains("alpha")) {
         verType = "alpha"
-        shouldPublish = true
     }
     if (project.version.contains("beta")) {
         verType = "beta"
-        shouldPublish = true
     }
     if (project.version.contains("release")) {
         verType = "release"
-        shouldPublish = true
     }
 }
 
@@ -119,53 +113,6 @@ allprojects {
 
     java {
         withSourcesJar()
-    }
-}
-
-import com.modrinth.minotaur.TaskModrinthUpload
-
-task publishModrinth(type: TaskModrinthUpload) {
-    if (shouldPublish) {
-        token = System.getenv("MODRINTH_TOKEN")
-        projectId = 'pNabrMMw'
-        uploadFile = remapJar
-        addGameVersion('1.18.1')
-        addLoader('fabric')
-        versionNumber = project.version
-        versionType = verType
-        changelog = System.getenv("CHANGELOG") ?: "Please visit our [releases](https://github.com/Mari023/AE2WirelessTerminalLibrary/releases) for a changelog"
-    }
-}
-
-curseforge {
-    if (shouldPublish) {
-        apiKey = System.getenv("CURSEFORGE_TOKEN")
-        project {
-            id = '459929'
-            changelogType = "markdown"
-            changelog = System.getenv("CHANGELOG") ?: "Please visit our [releases](https://github.com/Mari023/AE2WirelessTerminalLibrary/releases) for a changelog"
-            releaseType = verType
-            addGameVersion '1.18.1'
-            addGameVersion 'Fabric'
-            addGameVersion "Java 17"
-            mainArtifact(remapJar) {
-                displayName = project.version
-            }
-
-            relations {
-                requiredDependency 'cloth-config'
-                requiredDependency 'fabric-api'
-                requiredDependency 'applied-energistics-2'
-                optionalDependency 'roughly-enough-items'
-                optionalDependency 'trinkets-fabric'
-            }
-            afterEvaluate {
-                uploadTask.dependsOn(remapJar)
-            }
-        }
-    }
-    options {
-        forgeGradleIntegration = false
     }
 }
 

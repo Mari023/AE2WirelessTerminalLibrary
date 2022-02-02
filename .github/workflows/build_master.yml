@@ -38,7 +38,6 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew remapJar
         env:
-          CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
           HASH: $(git rev-parse --short "$GITHUB_SHA")
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v2.2.2
@@ -46,5 +45,3 @@ jobs:
           path: build/libs/AE2WTLib-**.jar
       - name: format
         run: ./gradlew spotlessCheck
-        env:
-          CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}

@@ -34,22 +34,8 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew remapJar
         env:
-          CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
           TAG: ${{ github.event.release.tag_name }}
       - name: Upload a Build Artifact for debug purposes only
         uses: actions/upload-artifact@v2.2.2
         with:
           path: build/libs/AE2WTLib-**.jar
-      - name: modrinth task
-        run: ./gradlew publishModrinth
-        env:
-          CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
-          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
-          TAG: ${{ github.event.release.tag_name }}
-          CHANGELOG: ${{ github.event.release.body }}
-      - name: curseForge Task
-        run: ./gradlew curseforge
-        env:
-          CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
-          TAG: ${{ github.event.release.tag_name }}
-          CHANGELOG: ${{ github.event.release.body }}
