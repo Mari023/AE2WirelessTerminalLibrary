@@ -1,7 +1,9 @@
 package de.mari_023.ae2wtlib.forge;
 
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -10,6 +12,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.AE2wtlibConfig;
+import de.mari_023.ae2wtlib.wat.WATMenu;
+import de.mari_023.ae2wtlib.wct.WCTMenu;
+import de.mari_023.ae2wtlib.wet.WETMenu;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 
@@ -28,6 +33,11 @@ public class AE2wtlibForge {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         ITEMS.register(modEventBus);
         RECIPES.register(modEventBus);
+        modEventBus.addGenericListener(MenuType.class,
+                (RegistryEvent.Register<MenuType<?>> event) -> event.getRegistry().registerAll(
+                        WCTMenu.TYPE,
+                        WATMenu.TYPE,
+                        WETMenu.TYPE));
         AE2wtlib.onAe2Initialized();
     }
 }
