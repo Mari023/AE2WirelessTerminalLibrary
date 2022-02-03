@@ -19,6 +19,11 @@ import de.mari_023.ae2wtlib.wut.recipe.UpgradeSerializer;
 import appeng.menu.locator.MenuLocator;
 
 public class PlatformImpl {
+
+    public static boolean trinketsPresent() {
+        return false;
+    }
+
     public static boolean isStillPresentTrinkets(Player player, ItemStack terminal) {
         return false;
     }

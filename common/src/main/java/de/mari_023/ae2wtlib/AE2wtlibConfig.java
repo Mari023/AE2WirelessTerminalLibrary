@@ -1,7 +1,5 @@
 package de.mari_023.ae2wtlib;
 
-import net.fabricmc.loader.api.FabricLoader;
-
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 
@@ -32,7 +30,7 @@ public class AE2wtlibConfig implements ConfigData {
 
     public boolean allowTrinket() {
         if (!trinketChecked)
-            trinketPresent = isTrinketEnabled() && FabricLoader.getInstance().isModLoaded("trinkets");
+            trinketPresent = isTrinketEnabled() && Platform.trinketsPresent();
         trinketChecked = true;
         return trinketPresent;
     }

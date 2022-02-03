@@ -1,5 +1,6 @@
 package de.mari_023.ae2wtlib.fabric;
 
+import net.fabricmc.loader.api.FabricLoader;
 import org.jetbrains.annotations.Nullable;
 
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
@@ -23,6 +24,11 @@ import de.mari_023.ae2wtlib.wut.recipe.UpgradeSerializer;
 import appeng.menu.locator.MenuLocator;
 
 public class PlatformImpl {
+
+    public static boolean trinketsPresent() {
+        return FabricLoader.getInstance().isModLoaded("trinkets");
+    }
+
     public static boolean isStillPresentTrinkets(Player player, ItemStack terminal) {
         return TrinketsHelper.isStillPresent(player, terminal);
     }

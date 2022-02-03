@@ -14,6 +14,11 @@ import appeng.menu.locator.MenuLocator;
 public class Platform {
 
     @ExpectPlatform
+    public static boolean trinketsPresent() {
+        throw new AssertionError();
+    }
+
+    @ExpectPlatform
     public static boolean isStillPresentTrinkets(Player player, ItemStack terminal) {
         throw new AssertionError();
     }
