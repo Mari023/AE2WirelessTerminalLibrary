@@ -48,9 +48,9 @@ jobs:
             trinkets-fabric | suggests
           java: 17
           version: ${{ github.event.release.tag_name }}-fabric
-          name: ${{ github.event.release.name }} (Fabric)
-          files-primary: fabric/build/libs/!(*-@(dev|sources)).jar
-          files-secondary: fabric/build/libs/*-@(dev|sources).jar
+          name: ${{ github.event.release.tag_name }}-fabric
+          files-primary: fabric/build/libs/!(*-@(dev|dev-shadow)).jar
+          files-secondary: ""
 
       - name: Publish Forge
         uses: Kir-Antipov/mc-publish@v2.1
@@ -61,7 +61,6 @@ jobs:
           curseforge-id: 459929
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
 
-          github-token: ${{ secrets.GITHUB_TOKEN }}
           loaders: forge
           game-versions: 1.18.1
           dependencies: |
@@ -70,6 +69,6 @@ jobs:
             architectury-forge | depends
           java: 17
           version: ${{ github.event.release.tag_name }}-forge
-          name: ${{ github.event.release.name }} (Forge)
-          files-primary: forge/build/libs/!(*-@(dev|sources)).jar
-          files-secondary: forge/build/libs/*-@(dev|sources).jar
+          name: ${{ github.event.release.tag_name }}-forge
+          files-primary: forge/build/libs/!(*-@(dev|dev-shadow)).jar
+          files-secondary: ""

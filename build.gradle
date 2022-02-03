@@ -11,7 +11,6 @@ plugins {
 }
 
 version = project.mod_version + "-SNAPSHOT"
-verType = project.verType
 
 ext.pr = System.getenv('PR_NUMBER') ?: ""
 if (ext.pr) {
@@ -21,15 +20,6 @@ if (ext.pr) {
 ext.tag = System.getenv('TAG') ?: ""
 if (ext.tag) {
     version = ext.tag
-    if (project.version.contains("alpha")) {
-        verType = "alpha"
-    }
-    if (project.version.contains("beta")) {
-        verType = "beta"
-    }
-    if (project.version.contains("release")) {
-        verType = "release"
-    }
 }
 
 architectury {
@@ -55,7 +45,7 @@ allprojects {
     apply plugin: "maven-publish"
 
     archivesBaseName = rootProject.archives_base_name
-    version = rootProject.mod_version
+    version = rootProject.version
     group = rootProject.maven_group
 
     repositories {
