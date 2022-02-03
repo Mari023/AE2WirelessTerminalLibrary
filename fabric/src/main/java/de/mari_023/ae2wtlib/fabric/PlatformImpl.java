@@ -1,9 +1,9 @@
 package de.mari_023.ae2wtlib.fabric;
 
-import net.fabricmc.loader.api.FabricLoader;
 import org.jetbrains.annotations.Nullable;
 
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
