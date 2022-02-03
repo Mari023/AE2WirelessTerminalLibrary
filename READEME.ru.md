@@ -20,13 +20,6 @@ Applied Energistics 2 Wireless Terminals
 - Магнитная карта - для фильтрации предметов
 - Отображение `Trinkets` в беспроводном терминале крафта
 
-## FAQ
-
-- Q: Что насчёт порта на `forge`?
-- A: [tfarecnim уже сделал его](https://www.curseforge.com/minecraft/mc-mods/applied-energistics-2-wireless-terminals-forge)
-- Возможно я буду изучать `architectury` что позволит моду запускаться на `forge` и `fabric` одновременно
-
-
 ## Лицензия
 
 * Applied Energistics 2 Wireless Terminals

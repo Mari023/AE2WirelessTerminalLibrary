@@ -25,13 +25,6 @@ It also adds a wireless universal terminal which has all wireless terminals in o
 - Magnet Card can't filter items
 - Displaying Trinkets in wireless crafting terminal
 
-## FAQ
-
-- Q: Will you (back-)port this to Forge?
-- A: [tfarecnim made a port](https://www.curseforge.com/minecraft/mc-mods/applied-energistics-2-wireless-terminals-forge)
-- I might at some point look into architectury which would enable me to have both a fabric and a forge version
-
-
 ## License
 
 * Applied Energistics 2 Wireless Terminals
