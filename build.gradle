@@ -67,6 +67,7 @@ allprojects {
             content {
                 includeGroup "net.fabricmc.fabric-api"
                 includeGroup "appeng"
+                includeGroup "mezz.jei"
             }
         }
         maven {
