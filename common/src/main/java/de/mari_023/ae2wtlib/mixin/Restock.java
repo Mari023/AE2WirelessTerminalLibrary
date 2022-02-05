@@ -15,7 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 
-import de.mari_023.ae2wtlib.networking.NetworkingManager;
+import de.mari_023.ae2wtlib.networking.c2s.ServerNetworkManager;
 import de.mari_023.ae2wtlib.networking.s2c.UpdateRestockPacket;
 import de.mari_023.ae2wtlib.terminal.ItemWT;
 import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
@@ -72,7 +72,7 @@ public abstract class Restock {
         if (extractedItems > Integer.MAX_VALUE)
             throw new IllegalStateException("Extracted amount cannot be larger than requested amount");
         setCount(getCount() + (int) extractedItems);
-        NetworkingManager.sendToClient((ServerPlayer) playerEntity, new UpdateRestockPacket(
+        ServerNetworkManager.sendToClient((ServerPlayer) playerEntity, new UpdateRestockPacket(
                 playerEntity.getInventory().findSlotMatchingUnusedItem((ItemStack) (Object) this), getCount()));
     }
 }

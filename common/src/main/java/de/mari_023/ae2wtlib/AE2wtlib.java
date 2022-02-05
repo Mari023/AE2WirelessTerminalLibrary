@@ -3,9 +3,9 @@ package de.mari_023.ae2wtlib;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 
-import de.mari_023.ae2wtlib.networking.NetworkingManager;
 import de.mari_023.ae2wtlib.networking.c2s.CycleTerminalPacket;
 import de.mari_023.ae2wtlib.networking.c2s.HotkeyPacket;
+import de.mari_023.ae2wtlib.networking.c2s.ServerNetworkManager;
 import de.mari_023.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
 import de.mari_023.ae2wtlib.wat.ItemWAT;
 import de.mari_023.ae2wtlib.wat.WATMenu;
@@ -53,8 +53,8 @@ public class AE2wtlib {
 
         Platform.registerRecipes();
 
-        NetworkingManager.registerServerBoundPacket(CycleTerminalPacket.NAME, CycleTerminalPacket::new);
-        NetworkingManager.registerServerBoundPacket(HotkeyPacket.NAME, HotkeyPacket::new);
+        ServerNetworkManager.registerServerBoundPacket(CycleTerminalPacket.NAME, CycleTerminalPacket::new);
+        ServerNetworkManager.registerServerBoundPacket(HotkeyPacket.NAME, HotkeyPacket::new);
 
     }
 

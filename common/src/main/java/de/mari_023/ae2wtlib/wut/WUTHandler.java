@@ -16,7 +16,7 @@ import net.minecraft.world.item.ItemStack;
 
 import de.mari_023.ae2wtlib.Platform;
 import de.mari_023.ae2wtlib.TextConstants;
-import de.mari_023.ae2wtlib.networking.NetworkingManager;
+import de.mari_023.ae2wtlib.networking.c2s.ServerNetworkManager;
 import de.mari_023.ae2wtlib.networking.s2c.UpdateWUTPackage;
 import de.mari_023.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
 import de.mari_023.ae2wtlib.terminal.WTMenuHost;
@@ -96,7 +96,7 @@ public class WUTHandler {
     }
 
     public static void updateClientTerminal(ServerPlayer playerEntity, MenuLocator locator, @Nullable CompoundTag tag) {
-        NetworkingManager.sendToClient(playerEntity, new UpdateWUTPackage(locator, tag));
+        ServerNetworkManager.sendToClient(playerEntity, new UpdateWUTPackage(locator, tag));
     }
 
     public static boolean open(final Player player, final MenuLocator locator) {

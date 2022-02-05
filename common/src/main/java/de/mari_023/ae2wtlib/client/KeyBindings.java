@@ -6,7 +6,7 @@ import org.lwjgl.glfw.GLFW;
 
 import net.minecraft.client.KeyMapping;
 
-import de.mari_023.ae2wtlib.networking.NetworkingManager;
+import de.mari_023.ae2wtlib.networking.ClientNetworkManager;
 import de.mari_023.ae2wtlib.networking.c2s.HotkeyPacket;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 
@@ -44,7 +44,7 @@ public class KeyBindings {
 
     private static void checkKeybinding(KeyMapping binding, String type) {
         while (binding.consumeClick()) {
-            NetworkingManager.sendToServer(new HotkeyPacket(type));
+            ClientNetworkManager.sendToServer(new HotkeyPacket(type));
         }
     }
 }

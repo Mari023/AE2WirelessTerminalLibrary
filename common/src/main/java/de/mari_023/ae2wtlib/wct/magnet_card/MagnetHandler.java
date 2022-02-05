@@ -13,7 +13,7 @@ import net.minecraft.world.item.ItemStack;
 
 import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.AE2wtlibConfig;
-import de.mari_023.ae2wtlib.networking.NetworkingManager;
+import de.mari_023.ae2wtlib.networking.c2s.ServerNetworkManager;
 import de.mari_023.ae2wtlib.networking.s2c.RestockAmountPacket;
 import de.mari_023.ae2wtlib.terminal.ItemWT;
 import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
@@ -65,7 +65,7 @@ public class MagnetHandler {
                 }
             }
 
-            NetworkingManager.sendToClient(player, new RestockAmountPacket(items));
+            ServerNetworkManager.sendToClient(player, new RestockAmountPacket(items));
         } catch (NullPointerException ignored) {
         }
     }
