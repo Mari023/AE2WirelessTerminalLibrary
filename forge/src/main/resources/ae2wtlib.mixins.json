@@ -10,6 +10,7 @@
     "TrinketWCTContainer",
     "ListTagMixin"
   ],
+  "refmap": "AE2WTLib-common-refmap.json",
   "client": ["RestockRender"],
   "injectors": {
     "defaultRequire": 1
