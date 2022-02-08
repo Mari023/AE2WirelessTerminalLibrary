@@ -8,8 +8,7 @@
   "mixins": [
     "CraftingTerminalItemMixin",
     "PlayerInventoryInsertStack",
-    "Restock",
-    "TrinketWCTContainer"
+    "Restock"
   ],
   "client": ["RestockRender"],
   "injectors": {

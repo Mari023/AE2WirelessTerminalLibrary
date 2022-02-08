@@ -7,7 +7,6 @@
     "CraftingTerminalItemMixin",
     "PlayerInventoryInsertStack",
     "Restock",
-    "TrinketWCTContainer",
     "ListTagMixin"
   ],
   "refmap": "AE2WTLib-common-refmap.json",
