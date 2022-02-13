@@ -15,6 +15,7 @@ import appeng.menu.locator.MenuLocators;
 public class AE2wtlibEntrypoint implements IAEAddonEntrypoint {
     @Override
     public void onAe2Initialized() {
+        AE2wtlibConfig.init();
         MenuLocators.register(TrinketLocator.class, TrinketLocator::writeToPacket, TrinketLocator::readFromPacket);
         if (AE2wtlibConfig.INSTANCE.allowTrinket())
             Registry.register(Registry.ITEM,

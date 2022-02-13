@@ -28,8 +28,7 @@ public class AE2wtlibForge {
             AE2wtlib.MOD_NAME);
 
     public AE2wtlibForge() {
-        AutoConfig.register(AE2wtlibConfig.class, JanksonConfigSerializer::new);
-        AE2wtlibConfig.INSTANCE = AutoConfig.getConfigHolder(AE2wtlibConfig.class).getConfig();
+        AE2wtlibConfig.init();
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         ITEMS.register(modEventBus);
         RECIPES.register(modEventBus);
