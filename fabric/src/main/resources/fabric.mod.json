@@ -11,7 +11,7 @@
     "issues": "https://github.com/Mari023/AE2WirelessTerminalLibrary/issues"
   },
   "license": "MIT",
-  "icon": "assets/ae2wtlib/icon.png",
+  "icon": "icon.png",
   "environment": "*",
   "entrypoints": {
     "ae2:client": ["de.mari_023.ae2wtlib.client.fabric.AE2wtlibClientFabric"],
