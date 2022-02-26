@@ -25,6 +25,7 @@ dependencies {
     modApi "me.shedaniel.cloth:cloth-config-forge:${rootProject.cloth}"
     modCompileOnly ("mezz.jei:jei-1.18.1:${rootProject.jei_version}:api")
     modImplementation ("mezz.jei:jei-1.18.1:${rootProject.jei_version}")
+    modImplementation "top.theillusivec4.curios:curios-forge:${rootProject.curios_version}"
 }
 
 processResources {
