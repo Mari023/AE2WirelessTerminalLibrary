@@ -23,8 +23,8 @@ dependencies {
     modImplementation "appeng:appliedenergistics2:${rootProject.ae2_forge_version}"
     modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
     modApi "me.shedaniel.cloth:cloth-config-forge:${rootProject.cloth}"
-    modCompileOnly ("mezz.jei:jei-1.18.1:${rootProject.jei_version}:api")
-    modImplementation ("mezz.jei:jei-1.18.1:${rootProject.jei_version}")
+    modCompileOnly ("mezz.jei:jei-${rootProject.minecraft_version}:${rootProject.jei_version}:api")
+    modImplementation ("mezz.jei:jei-${rootProject.minecraft_version}:${rootProject.jei_version}")
     modImplementation "top.theillusivec4.curios:curios-forge:${rootProject.curios_version}"
 }
 
