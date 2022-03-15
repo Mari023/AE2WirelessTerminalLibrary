@@ -43,7 +43,7 @@ public class FixedWTInv implements InternalInventory {
         else if(i == INFINITY_BOOSTER_CARD && wt.getItem() instanceof IInfinityBoosterCardHolder)
             return ((IInfinityBoosterCardHolder) wt.getItem()).getBoosterCard(wt);
         else if(i == MAGNET_CARD && wt.getItem() instanceof ItemWT) return ItemWT.getSavedSlot(wt, "magnetCard");
-        return null;
+        throw new IllegalStateException(String.format("Trying to read from slot %d in ItemStack %s", i, wt));
     }
 
     @Override
