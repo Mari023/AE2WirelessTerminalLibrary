@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
+import de.mari_023.ae2wtlib.AE2wtlib;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.nbt.CompoundTag;
@@ -145,7 +146,13 @@ public class WUTHandler {
             MenuType<?> menuType, IUniversalWirelessTerminalItem item) {
         if (terminalNames.contains(name))
             return;
-        wirelessTerminals.put(name, new WTDefinition(open, WTMenuHostFactory, menuType, item));
+
+        ItemStack wut = new ItemStack(AE2wtlib.UNIVERSAL_TERMINAL);
+        CompoundTag tag = new CompoundTag();
+        tag.putBoolean(name, true);
+        wut.setTag(tag);
+
+        wirelessTerminals.put(name, new WTDefinition(open, WTMenuHostFactory, menuType, item, wut));
         terminalNames.add(name);
     }
 
