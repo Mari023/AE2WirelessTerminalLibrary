@@ -5,9 +5,11 @@ import net.minecraft.resources.ResourceLocation;
 import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.wct.WCTMenu;
 import de.mari_023.ae2wtlib.wet.WETMenu;
+import de.mari_023.ae2wtlib.wut.WUTHandler;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaRecipeCategoryUid;
+import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeTransferRegistration;
 
 import appeng.integration.modules.jei.transfer.EncodePatternTransferHandler;
@@ -29,5 +31,10 @@ public class JEIPlugin implements IModPlugin {
                 VanillaRecipeCategoryUid.CRAFTING);
         registration.addUniversalRecipeTransferHandler(
                 new EncodePatternTransferHandler<>(WETMenu.class, registration.getTransferHelper()));
+    }
+
+    public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
+        registration.addRecipeCatalyst(WUTHandler.wirelessTerminals.get("crafting").universalTerminal(),
+                VanillaRecipeCategoryUid.CRAFTING);
     }
 }
