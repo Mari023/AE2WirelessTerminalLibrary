@@ -23,7 +23,7 @@ import appeng.client.gui.widgets.IconButton;
 
 public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversalTerminalCapable {
 
-    ItemButton magnetCardToggleButton;
+    private final ItemButton magnetCardToggleButton;
 
     public WCTScreen(WCTMenu container, Inventory playerInventory, Component title, ScreenStyle style) {
         super(container, playerInventory, title, style);
