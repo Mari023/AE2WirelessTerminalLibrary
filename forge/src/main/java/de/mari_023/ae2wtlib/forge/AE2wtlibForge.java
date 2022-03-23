@@ -1,7 +1,5 @@
 package de.mari_023.ae2wtlib.forge;
 
-import appeng.menu.locator.MenuLocators;
-import de.mari_023.ae2wtlib.forge.curio.CurioLocator;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -14,9 +12,12 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.AE2wtlibConfig;
+import de.mari_023.ae2wtlib.forge.curio.CurioLocator;
 import de.mari_023.ae2wtlib.wat.WATMenu;
 import de.mari_023.ae2wtlib.wct.WCTMenu;
 import de.mari_023.ae2wtlib.wet.WETMenu;
+
+import appeng.menu.locator.MenuLocators;
 
 @Mod(AE2wtlib.MOD_NAME)
 public class AE2wtlibForge {

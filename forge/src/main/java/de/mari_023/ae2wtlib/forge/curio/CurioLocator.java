@@ -1,17 +1,17 @@
 package de.mari_023.ae2wtlib.forge.curio;
 
-import appeng.api.implementations.menuobjects.ItemMenuHost;
-import appeng.core.AELog;
-import de.mari_023.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 
+import de.mari_023.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
 import top.theillusivec4.curios.api.CuriosApi;
 
+import appeng.api.implementations.menuobjects.ItemMenuHost;
+import appeng.core.AELog;
 import appeng.menu.locator.MenuLocator;
 
 public record CurioLocator(String identifier, int index) implements MenuLocator {
