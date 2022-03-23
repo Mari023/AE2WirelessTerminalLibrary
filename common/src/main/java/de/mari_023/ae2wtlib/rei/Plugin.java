@@ -1,18 +1,18 @@
 package de.mari_023.ae2wtlib.rei;
 
-import de.mari_023.ae2wtlib.wut.WUTHandler;
-import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
-import me.shedaniel.rei.plugin.common.BuiltinPlugin;
 import net.minecraft.world.item.crafting.RecipeType;
 
 import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.AE2wtlibConfig;
+import de.mari_023.ae2wtlib.wut.WUTHandler;
 import de.mari_023.ae2wtlib.wut.recipe.Combine;
 import de.mari_023.ae2wtlib.wut.recipe.Upgrade;
 import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
+import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
 import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
 import me.shedaniel.rei.api.client.registry.entry.EntryRegistry;
 import me.shedaniel.rei.api.common.util.EntryStacks;
+import me.shedaniel.rei.plugin.common.BuiltinPlugin;
 
 public class Plugin implements REIClientPlugin {
 
@@ -27,10 +27,10 @@ public class Plugin implements REIClientPlugin {
         registry.registerRecipeFiller(Upgrade.class, RecipeType.CRAFTING, WUTDisplay::new);
     }
 
-
     @Override
     public void registerCategories(CategoryRegistry registry) {
-        registry.addWorkstations(BuiltinPlugin.CRAFTING, EntryStacks.of(WUTHandler.wirelessTerminals.get("crafting").universalTerminal()));
+        registry.addWorkstations(BuiltinPlugin.CRAFTING,
+                EntryStacks.of(WUTHandler.wirelessTerminals.get("crafting").universalTerminal()));
     }
 
     @Override
