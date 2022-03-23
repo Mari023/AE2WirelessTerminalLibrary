@@ -52,13 +52,13 @@ public class PlatformImpl {
         List<SlotResult> slotResults = CuriosApi.getCuriosHelper().findCurios(player, AE2wtlib.UNIVERSAL_TERMINAL);
         for (SlotResult slotResult : slotResults) {
             if (WUTHandler.hasTerminal(slotResult.stack(), terminalName)) {
-                return new CurioLocator(slotResult.slotContext());
+                return new CurioLocator(slotResult.slotContext().identifier(), slotResult.slotContext().index());
             }
         }
 
         return CuriosApi.getCuriosHelper()
                 .findFirstCurio(player, (Item) WUTHandler.wirelessTerminals.get(terminalName).item())
-                .map(result -> new CurioLocator(result.slotContext())).orElse(null);
+                .map(result -> new CurioLocator(result.slotContext().identifier(), result.slotContext().index())).orElse(null);
     }
 
     public static CreativeModeTab getCreativeModeTab() {

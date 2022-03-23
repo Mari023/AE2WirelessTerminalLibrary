@@ -1,5 +1,7 @@
 package de.mari_023.ae2wtlib.forge;
 
+import appeng.menu.locator.MenuLocators;
+import de.mari_023.ae2wtlib.forge.curio.CurioLocator;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -27,6 +29,7 @@ public class AE2wtlibForge {
 
     public AE2wtlibForge() {
         AE2wtlibConfig.init();
+        MenuLocators.register(CurioLocator.class, CurioLocator::writeToPacket, CurioLocator::readFromPacket);
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         ITEMS.register(modEventBus);
         RECIPES.register(modEventBus);

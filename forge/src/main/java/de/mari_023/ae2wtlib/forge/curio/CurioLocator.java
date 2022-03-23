@@ -3,6 +3,7 @@ package de.mari_023.ae2wtlib.forge.curio;
 import appeng.api.implementations.menuobjects.ItemMenuHost;
 import appeng.core.AELog;
 import de.mari_023.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -10,11 +11,10 @@ import org.jetbrains.annotations.Nullable;
 import net.minecraft.world.entity.player.Player;
 
 import top.theillusivec4.curios.api.CuriosApi;
-import top.theillusivec4.curios.api.SlotContext;
 
 import appeng.menu.locator.MenuLocator;
 
-public record CurioLocator(SlotContext slotContext) implements MenuLocator {
+public record CurioLocator(String identifier, int index) implements MenuLocator {
     @Override
     public <T> @Nullable T locate(Player player, Class<T> hostInterface) {
         ItemStack it = locateItem(player);
@@ -27,20 +27,29 @@ public record CurioLocator(SlotContext slotContext) implements MenuLocator {
 
                 if (menuHost != null) {
                     AELog.warn(
-                            "Item in Curio slot %s of %s did not create a compatible menu of type %s: %s",
-                            slotContext, player, hostInterface, menuHost);
+                            "Item in Curio slot with ID %s and index %s of %s did not create a compatible menu of type %s: %s",
+                            identifier, index, player, hostInterface, menuHost);
                 }
 
                 return null;
             }
         }
 
-        AELog.warn("Item in Curio slot %s of %s is not an IMenuItem: %s",
-                slotContext, player, it);
+        AELog.warn("Item in Curio slot with ID %s and index %s of %s is not an IMenuItem: %s",
+                identifier, index, player, it);
         return null;
     }
 
     public ItemStack locateItem(Player player) {
-        return CuriosApi.getCuriosHelper().findCurios(player, slotContext.identifier()).get(slotContext.index()).stack();
+        return CuriosApi.getCuriosHelper().findCurios(player, identifier).get(index).stack();
+    }
+
+    public void writeToPacket(FriendlyByteBuf buf) {
+        buf.writeUtf(identifier);
+        buf.writeInt(index);
+    }
+
+    public static CurioLocator readFromPacket(FriendlyByteBuf buf) {
+        return new CurioLocator(buf.readUtf(), buf.readInt());
     }
 }
