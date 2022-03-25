@@ -9,9 +9,7 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
 
@@ -28,8 +26,29 @@ jobs:
         env:
           TAG: ${{ github.event.release.tag_name }}
 
-      - name: Publish Fabric
-        uses: Kir-Antipov/mc-publish@v2.1
+      - name: Upload a fabric build
+        uses: actions/upload-artifact@v2.2.2
+        with:
+          path: fabric/build/libs/!(*-@(dev|dev-shadow)).jar
+          name: fabric
+          retention-days: 2
+      - name: Upload a forge build
+        uses: actions/upload-artifact@v2.2.2
+        with:
+          path: forge/build/libs/!(*-@(dev|dev-shadow)).jar
+          name: forge
+          retention-days: 2
+
+  publish_fabric:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: fabric
+          path: download
+
+      - uses: Kir-Antipov/mc-publish@v2.1
         with:
           modrinth-id: pNabrMMw
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
@@ -49,11 +68,19 @@ jobs:
           java: 17
           version: ${{ github.event.release.tag_name }}-fabric
           name: ${{ github.event.release.tag_name }}-fabric
-          files-primary: fabric/build/libs/!(*-@(dev|dev-shadow)).jar
+          files-primary: download/**.jar
           files-secondary: ""
 
-      - name: Publish Forge
-        uses: Kir-Antipov/mc-publish@v2.1
+  publish_forge:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: forge
+          path: download
+
+      - uses: Kir-Antipov/mc-publish@v2.1
         with:
           modrinth-id: pNabrMMw
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
@@ -70,5 +97,5 @@ jobs:
           java: 17
           version: ${{ github.event.release.tag_name }}-forge
           name: ${{ github.event.release.tag_name }}-forge
-          files-primary: forge/build/libs/!(*-@(dev|dev-shadow)).jar
+          files-primary: download/**.jar
           files-secondary: ""
