@@ -29,13 +29,13 @@ jobs:
       - name: Upload a fabric build
         uses: actions/upload-artifact@v2.2.2
         with:
-          path: fabric/build/libs/!(*-@(dev|dev-shadow)).jar
+          path: fabric/build/libs/**.jar
           name: fabric
           retention-days: 2
       - name: Upload a forge build
         uses: actions/upload-artifact@v2.2.2
         with:
-          path: forge/build/libs/!(*-@(dev|dev-shadow)).jar
+          path: forge/build/libs/**.jar
           name: forge
           retention-days: 2
 
@@ -68,7 +68,7 @@ jobs:
           java: 17
           version: ${{ github.event.release.tag_name }}-fabric
           name: ${{ github.event.release.tag_name }}-fabric
-          files-primary: download/**.jar
+          files-primary: download/!(*-@(dev|dev-shadow)).jar
           files-secondary: ""
 
   publish_forge:
@@ -98,5 +98,5 @@ jobs:
           java: 17
           version: ${{ github.event.release.tag_name }}-forge
           name: ${{ github.event.release.tag_name }}-forge
-          files-primary: download/**.jar
+          files-primary: download/!(*-@(dev|dev-shadow)).jar
           files-secondary: ""
