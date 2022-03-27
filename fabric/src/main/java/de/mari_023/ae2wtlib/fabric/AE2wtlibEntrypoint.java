@@ -14,7 +14,8 @@ public class AE2wtlibEntrypoint implements IAEAddonEntrypoint {
     @Override
     public void onAe2Initialized() {
         AE2wtlibConfig.init();
-        MenuLocators.register(TrinketLocator.class, TrinketLocator::writeToPacket, TrinketLocator::readFromPacket);
+        if (PlatformImpl.trinketsPresent())
+            MenuLocators.register(TrinketLocator.class, TrinketLocator::writeToPacket, TrinketLocator::readFromPacket);
         AE2wtlib.onAe2Initialized();
         ServerTickEvents.START_SERVER_TICK.register(new MagnetHandler()::doMagnet);
     }
