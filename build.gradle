@@ -86,7 +86,7 @@ allprojects {
             name = "Ladysnake Libs"
             url = "https://ladysnake.jfrog.io/artifactory/mods"
             content {
-                includeGroup "io.github.onyxstudios.Cardinal-Components-API"
+                includeGroup "dev.onyxstudios.cardinal-components-api"
             }
         }
         maven {
