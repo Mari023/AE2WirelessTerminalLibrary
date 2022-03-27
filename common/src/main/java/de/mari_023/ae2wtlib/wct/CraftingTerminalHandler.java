@@ -14,7 +14,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 import de.mari_023.ae2wtlib.AE2wtlib;
-import de.mari_023.ae2wtlib.AE2wtlibConfig;
 import de.mari_023.ae2wtlib.Platform;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 
@@ -76,7 +75,7 @@ public class CraftingTerminalHandler {
     public ItemStack getCraftingTerminal() {
         Inventory inv = player.getInventory();
         if ((!craftingTerminal.isEmpty()) && (inv.contains(craftingTerminal)
-                || (AE2wtlibConfig.INSTANCE.allowTrinket()
+                || (Platform.trinketsPresent()
                         && Platform.isStillPresentTrinkets(player, craftingTerminal))))
             return craftingTerminal;
 

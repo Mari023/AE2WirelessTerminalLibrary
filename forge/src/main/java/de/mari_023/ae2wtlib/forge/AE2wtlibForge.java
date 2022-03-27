@@ -30,7 +30,7 @@ public class AE2wtlibForge {
 
     public AE2wtlibForge() {
         AE2wtlibConfig.init();
-        MenuLocators.register(CurioLocator.class, CurioLocator::writeToPacket, CurioLocator::readFromPacket);
+        if(PlatformImpl.trinketsPresent()) MenuLocators.register(CurioLocator.class, CurioLocator::writeToPacket, CurioLocator::readFromPacket);
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         ITEMS.register(modEventBus);
         RECIPES.register(modEventBus);

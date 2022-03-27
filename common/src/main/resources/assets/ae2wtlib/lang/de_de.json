@@ -35,9 +35,5 @@
   "text.autoconfig.de/mari_023/ae2wtlib.option.magnetCardRange": "Reichweite der Magnet Karte",
   "text.autoconfig.de/mari_023/ae2wtlib.option.enableTrinket": "Trinkets Integration aktivieren",
   "text.autoconfig.de/mari_023/ae2wtlib.option.outOfRangePowerMultiplier.@Tooltip": "Wenn dieser Wer kleiner als 1 ist, könnten Drahtlose Konsolen innerhalb der Reichweite eines Drahtlosen Zugangspunktes mehr Strom verbrauchen als außerhalb.",
-  "text.autoconfig.de/mari_023/ae2wtlib.option.magnetCardRange.@Tooltip": "",
-
-  "text.autoconfig.de/mari_023/ae2wtlib.option.enableTrinket.@Tooltip[0]": "Diese Einstellung muss für Server und Clients gleich sein.",
-  "text.autoconfig.de/mari_023/ae2wtlib.option.enableTrinket.@Tooltip[1]": "Ein Neustart ist notwendig um diese Einstellung zu übernehmen",
-  "text.autoconfig.de/mari_023/ae2wtlib.option.enableTrinket.@Tooltip[2]": "Sie wird nur beachtet wenn Trinkets Installiert ist."
+  "text.autoconfig.de/mari_023/ae2wtlib.option.magnetCardRange.@Tooltip": ""
 }

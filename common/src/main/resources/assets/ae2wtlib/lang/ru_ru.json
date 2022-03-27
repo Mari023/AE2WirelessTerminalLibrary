@@ -37,8 +37,5 @@
   "text.autoconfig.de/mari_023/ae2wtlib.option.magnetCardRange": "Диапазон магнитной карты",
   "text.autoconfig.de/mari_023/ae2wtlib.option.enableTrinket": "Включить Trinkets интеграцию",
   "text.autoconfig.de/mari_023/ae2wtlib.option.outOfRangePowerMultiplier.@Tooltip": "Если оно меньше 1, нахождение в зоне действия беспроводной точки доступа потребляет больше энергии..",
-  "text.autoconfig.de/mari_023/ae2wtlib.option.magnetCardRange.@Tooltip": "",
-
-  "text.autoconfig.de/mari_023/ae2wtlib.option.enableTrinket.@Tooltip[0]": "Это сломает работу, если он отличается от сервера, к которому вы можете подключиться.",
-  "text.autoconfig.de/mari_023/ae2wtlib.option.enableTrinket.@Tooltip[2]": "Он эффективен только в том случае, если установлены Trinkets."
+  "text.autoconfig.de/mari_023/ae2wtlib.option.magnetCardRange.@Tooltip": ""
 }

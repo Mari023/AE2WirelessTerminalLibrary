@@ -39,9 +39,5 @@
   "text.autoconfig.de/mari_023/ae2wtlib.option.enableTrinket": "Enable Trinkets Integration",
 
   "text.autoconfig.de/mari_023/ae2wtlib.option.outOfRangePowerMultiplier.@Tooltip": "If this is lower than 1, being in range of a Wireless Access Point would use more power in some cases.",
-  "text.autoconfig.de/mari_023/ae2wtlib.option.magnetCardRange.@Tooltip": "",
-
-  "text.autoconfig.de/mari_023/ae2wtlib.option.enableTrinket.@Tooltip[0]": "This setting has to be the same on both client and server.",
-  "text.autoconfig.de/mari_023/ae2wtlib.option.enableTrinket.@Tooltip[1]": "You need to restart to apply a change.",
-  "text.autoconfig.de/mari_023/ae2wtlib.option.enableTrinket.@Tooltip[2]": "It is only effective if Trinkets is installed."
+  "text.autoconfig.de/mari_023/ae2wtlib.option.magnetCardRange.@Tooltip": ""
 }
