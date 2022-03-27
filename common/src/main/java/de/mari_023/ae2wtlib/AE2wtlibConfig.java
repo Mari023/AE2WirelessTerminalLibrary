@@ -16,29 +16,12 @@ public class AE2wtlibConfig implements ConfigData {
 
     private double magnetCardRange = 16.0;
 
-    @ConfigEntry.Gui.Tooltip(count = 3)
-    private boolean enableTrinket = true;
-
     @ConfigEntry.Gui.Excluded
     public static AE2wtlibConfig INSTANCE;
-
-    @ConfigEntry.Gui.Excluded
-    private static boolean trinketPresent, trinketChecked;
 
     public double getOutOfRangePower() {
         return AEConfig.instance().wireless_getDrainRate(AEConfig.instance().wireless_getMaxRange(64))
                 * outOfRangePowerMultiplier;
-    }
-
-    public boolean allowTrinket() {
-        if (!trinketChecked)
-            trinketPresent = isTrinketEnabled() && Platform.trinketsPresent();
-        trinketChecked = true;
-        return trinketPresent;
-    }
-
-    private boolean isTrinketEnabled() {
-        return enableTrinket;
     }
 
     public double magnetCardRange() {

@@ -6,7 +6,7 @@ buildscript {
 
 plugins {
     id "architectury-plugin" version "3.4-SNAPSHOT"
-    id "dev.architectury.loom" version "0.10.0-SNAPSHOT" apply false
+    id "dev.architectury.loom" version "0.11.0-SNAPSHOT" apply false
     id "com.diffplug.spotless" version "5.12.4"
 }
 
@@ -86,7 +86,7 @@ allprojects {
             name = "Ladysnake Libs"
             url = "https://ladysnake.jfrog.io/artifactory/mods"
             content {
-                includeGroup "io.github.onyxstudios.Cardinal-Components-API"
+                includeGroup "dev.onyxstudios.cardinal-components-api"
             }
         }
         maven {

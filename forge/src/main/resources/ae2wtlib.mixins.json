@@ -6,8 +6,7 @@
   "mixins": [
     "CraftingTerminalItemMixin",
     "PlayerInventoryInsertStack",
-    "Restock",
-    "ListTagMixin"
+    "Restock"
   ],
   "refmap": "AE2WTLib-common-refmap.json",
   "client": ["RestockRender"],

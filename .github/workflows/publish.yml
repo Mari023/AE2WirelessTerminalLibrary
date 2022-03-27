@@ -58,7 +58,7 @@ jobs:
 
           github-token: ${{ secrets.GITHUB_TOKEN }}
           loaders: fabric
-          game-versions: 1.18.1
+          game-versions: 1.18.2
           dependencies: |
             cloth-config | depends
             fabric-api | depends
@@ -89,11 +89,12 @@ jobs:
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
 
           loaders: forge
-          game-versions: 1.18.1
+          game-versions: 1.18.2
           dependencies: |
             cloth-config | depends
             applied-energistics-2 | depends
             architectury-forge | depends
+            curios | suggests
           java: 17
           version: ${{ github.event.release.tag_name }}-forge
           name: ${{ github.event.release.tag_name }}-forge

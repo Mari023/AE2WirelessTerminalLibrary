@@ -21,7 +21,9 @@ dependencies {
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
-    modImplementation "dev.emi:trinkets:${rootProject.trinkets_version}"
+    modCompileOnly ("dev.emi:trinkets:${rootProject.trinkets_version}") { transitive false }
+    modCompileOnly ("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cca_version}")
+    //modRuntimeOnly "dev.emi:trinkets:${rootProject.trinkets_version}"
     modImplementation "me.shedaniel:RoughlyEnoughItems-fabric:${rootProject.rei_version}"
     //modApi("me.shedaniel.cloth:cloth-config-fabric:${project.cloth}")
     modApi("com.terraformersmc:modmenu:${project.mod_menu_version}")

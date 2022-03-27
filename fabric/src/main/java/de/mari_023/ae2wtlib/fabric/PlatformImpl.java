@@ -13,7 +13,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 
 import de.mari_023.ae2wtlib.AE2wtlib;
-import de.mari_023.ae2wtlib.AE2wtlibConfig;
 import de.mari_023.ae2wtlib.fabric.trinket.TrinketLocator;
 import de.mari_023.ae2wtlib.fabric.trinket.TrinketsHelper;
 import de.mari_023.ae2wtlib.wut.recipe.Combine;
@@ -41,7 +40,7 @@ public class PlatformImpl {
 
     @Nullable
     public static MenuLocator findTerminalFromAccessory(Player player, String terminalName) {
-        if (AE2wtlibConfig.INSTANCE.allowTrinket()) {
+        if (trinketsPresent()) {
             return TrinketsHelper.findTerminal(player, terminalName);
         }
         return null;

@@ -5,6 +5,9 @@ dependencies {
     modImplementation ("appeng:appliedenergistics2-fabric:${rootProject.ae2_fabric_version}") /*{
         exclude group: 'net.fabricmc.fabric-api'
     }*/
+    modImplementation "me.shedaniel:RoughlyEnoughItems-api:${rootProject.rei_version}"
+    modImplementation "me.shedaniel:RoughlyEnoughItems-default-plugin:${rootProject.rei_version}"
+    modApi("me.shedaniel.cloth:cloth-config:${rootProject.cloth}")
 
 }
 
