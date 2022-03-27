@@ -34,7 +34,6 @@ public class AE2wtlib {
 
     public static Item INFINITY_BOOSTER;
     public static Item MAGNET_CARD;
-    public static final Item CHECK_TRINKETS = new Item(new Item.Properties());
 
     public static void onAe2Initialized() {
         createItems();
