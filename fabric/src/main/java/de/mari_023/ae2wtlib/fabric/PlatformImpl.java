@@ -13,7 +13,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 
 import de.mari_023.ae2wtlib.AE2wtlib;
-import de.mari_023.ae2wtlib.Platform;
 import de.mari_023.ae2wtlib.fabric.trinket.TrinketLocator;
 import de.mari_023.ae2wtlib.fabric.trinket.TrinketsHelper;
 import de.mari_023.ae2wtlib.wut.recipe.Combine;

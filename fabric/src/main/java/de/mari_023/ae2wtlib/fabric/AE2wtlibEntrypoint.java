@@ -1,12 +1,9 @@
 package de.mari_023.ae2wtlib.fabric;
 
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
-import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceLocation;
 
 import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.AE2wtlibConfig;
-import de.mari_023.ae2wtlib.Platform;
 import de.mari_023.ae2wtlib.fabric.trinket.TrinketLocator;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHandler;
 
