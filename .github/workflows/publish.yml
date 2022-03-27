@@ -94,6 +94,7 @@ jobs:
             cloth-config | depends
             applied-energistics-2 | depends
             architectury-forge | depends
+            curios | suggests
           java: 17
           version: ${{ github.event.release.tag_name }}-forge
           name: ${{ github.event.release.tag_name }}-forge
