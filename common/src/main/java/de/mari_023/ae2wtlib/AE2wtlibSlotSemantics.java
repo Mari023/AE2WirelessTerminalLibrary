@@ -17,6 +17,9 @@ public class AE2wtlibSlotSemantics {
 
     public static final SlotSemantic TRASH = register("TRASH");
 
+    public static final SlotSemantic PICKUP_CONFIG = register("PICKUP_CONFIG");
+    public static final SlotSemantic INSERT_CONFIG = register("INSERT_CONFIG");
+
     private static SlotSemantic register(String id) {
         return SlotSemantics.register("AE2WTLIB_" + id, false);
     }

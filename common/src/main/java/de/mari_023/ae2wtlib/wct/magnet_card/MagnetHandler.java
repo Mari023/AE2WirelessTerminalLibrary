@@ -8,6 +8,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
@@ -24,24 +25,15 @@ import appeng.api.upgrades.IUpgradeableItem;
 
 public class MagnetHandler {
     public void doMagnet(MinecraftServer server) {
-        List<ServerPlayer> playerList = server.getPlayerList().getPlayers();
-        for (ServerPlayer player : playerList) {
-            if (getMagnetSettings(CraftingTerminalHandler.getCraftingTerminalHandler(player).getCraftingTerminal())
-                    .isActive()) {
-                List<ItemEntity> entityItems = player.getLevel().getEntitiesOfClass(ItemEntity.class,
-                        player.getBoundingBox().inflate(AE2wtlibConfig.INSTANCE.magnetCardRange()),
-                        EntitySelector.ENTITY_STILL_ALIVE);
-                boolean sneaking = !player.isShiftKeyDown();
-                for (ItemEntity entityItemNearby : entityItems)
-                    if (sneaking)
-                        entityItemNearby.playerTouch(player);
-            }
+        // TODO I am pretty sure there is something like player tick, which will do this for us
+        for (ServerPlayer player : server.getPlayerList().getPlayers()) {
+            handleMagnet(player);
             sendRestockAble(player);
         }
     }
 
-    public void sendRestockAble(ServerPlayer player) {
-        try {
+    private static void sendRestockAble(ServerPlayer player) {
+        try {// TODO is this even necessary anymore?
             CraftingTerminalHandler handler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
             if (player.isCreative() || !ItemWT.getBoolean(handler.getCraftingTerminal(), "restock")
                     || !handler.inRange())
@@ -56,17 +48,37 @@ public class MagnetHandler {
                 ItemStack stack = player.getInventory().getItem(i);
                 if (stack.isEmpty())
                     continue;
-                if (!items.containsKey(stack.getItem())) {
-                    AEItemKey key = AEItemKey.of(stack);
-                    if (key == null)
-                        items.put(stack.getItem(), 0L);
-                    else
-                        items.put(stack.getItem(), storageList.get(key));
-                }
+                if (items.containsKey(stack.getItem()))
+                    continue;
+                AEItemKey key = AEItemKey.of(stack);
+                if (key == null)
+                    items.put(stack.getItem(), 0L);
+                else
+                    items.put(stack.getItem(), storageList.get(key));
             }
 
             ServerNetworkManager.sendToClient(player, new RestockAmountPacket(items));
         } catch (NullPointerException ignored) {
+        }
+    }
+
+    private static void handleMagnet(Player player) {
+        CraftingTerminalHandler ctHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
+        if (!getMagnetSettings(ctHandler.getCraftingTerminal()).isActive())
+            return;
+        MagnetHost magnetHost = ctHandler.getMagnetHost();
+        if (magnetHost == null)
+            return;
+
+        List<ItemEntity> entityItems = player.getLevel().getEntitiesOfClass(ItemEntity.class,
+                player.getBoundingBox().inflate(AE2wtlibConfig.INSTANCE.magnetCardRange()),
+                EntitySelector.ENTITY_STILL_ALIVE);
+        if (player.isShiftKeyDown())
+            return;
+        for (ItemEntity entityItemNearby : entityItems) {
+            if (magnetHost.getPickupFilter().matchesFilter(AEItemKey.of(entityItemNearby.getItem()),
+                    magnetHost.getPickupMode()))
+                entityItemNearby.playerTouch(player);
         }
     }
 
