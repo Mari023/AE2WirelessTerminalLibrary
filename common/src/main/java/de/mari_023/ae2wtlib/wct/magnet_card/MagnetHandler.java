@@ -25,7 +25,6 @@ import appeng.api.upgrades.IUpgradeableItem;
 
 public class MagnetHandler {
     public void doMagnet(MinecraftServer server) {
-        // TODO I am pretty sure there is something like player tick, which will do this for us
         for (ServerPlayer player : server.getPlayerList().getPlayers()) {
             handleMagnet(player);
             sendRestockAble(player);
@@ -33,7 +32,7 @@ public class MagnetHandler {
     }
 
     private static void sendRestockAble(ServerPlayer player) {
-        try {// TODO is this even necessary anymore?
+        try {
             CraftingTerminalHandler handler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
             if (player.isCreative() || !ItemWT.getBoolean(handler.getCraftingTerminal(), "restock")
                     || !handler.inRange())
@@ -58,7 +57,7 @@ public class MagnetHandler {
             }
 
             ServerNetworkManager.sendToClient(player, new RestockAmountPacket(items));
-        } catch (NullPointerException ignored) {
+        } catch (NullPointerException ignored) {// TODO is this even necessary anymore?
         }
     }
 

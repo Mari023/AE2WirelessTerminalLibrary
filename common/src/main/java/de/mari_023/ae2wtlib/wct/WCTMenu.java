@@ -21,10 +21,12 @@ import de.mari_023.ae2wtlib.AE2wtlibSlotSemantics;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHandler;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetMode;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetSettings;
+import de.mari_023.ae2wtlib.wct.magnet_card.config.MagnetMenu;
 import de.mari_023.ae2wtlib.wut.ItemWUT;
 
 import appeng.api.config.SecurityPermissions;
 import appeng.api.networking.IGridNode;
+import appeng.menu.MenuOpener;
 import appeng.menu.implementations.MenuTypeBuilder;
 import appeng.menu.me.items.CraftingTermMenu;
 import appeng.menu.slot.AppEngSlot;
@@ -37,6 +39,7 @@ public class WCTMenu extends CraftingTermMenu {
 
     public static final String ACTION_DELETE = "delete";
     public static final String MAGNET_MODE = "magnetMode";
+    public static final String MAGNET_MENU = "magnetMenu";
 
     private final WCTMenuHost wctGUIObject;
 
@@ -110,6 +113,7 @@ public class WCTMenu extends CraftingTermMenu {
 
         registerClientAction(ACTION_DELETE, this::deleteTrashSlot);
         registerClientAction(MAGNET_MODE, MagnetMode.class, this::setMagnetMode);
+        registerClientAction(MAGNET_MENU, this::openMagnetMenu);
     }
 
     @Override
@@ -143,6 +147,14 @@ public class WCTMenu extends CraftingTermMenu {
             sendClientAction(MAGNET_MODE, mode);
         getMagnetSettings().magnetMode = mode;
         saveMagnetSettings();
+    }
+
+    public void openMagnetMenu() {
+        if (isClientSide()) {
+            sendClientAction(MAGNET_MENU);
+            return;
+        }
+        MenuOpener.open(MagnetMenu.TYPE, getPlayer(), getLocator());
     }
 
     public boolean isWUT() {

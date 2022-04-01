@@ -24,6 +24,7 @@ import appeng.client.gui.widgets.IconButton;
 public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversalTerminalCapable {
 
     private final ItemButton magnetCardToggleButton;
+    private final ItemButton magnetCardMenuButton;
 
     public WCTScreen(WCTMenu container, Inventory playerInventory, Component title, ScreenStyle style) {
         super(container, playerInventory, title, style);
@@ -43,6 +44,10 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
         magnetCardToggleButton = new ItemButton(btn -> setMagnetMode(),
                 new ResourceLocation(AE2wtlib.MOD_NAME, "textures/magnet_card.png"));
         addToLeftToolbar(magnetCardToggleButton);
+
+        magnetCardMenuButton = new ItemButton(btn -> getMenu().openMagnetMenu(),
+                new ResourceLocation(AE2wtlib.MOD_NAME, "textures/magnet_card.png"));
+        addToLeftToolbar(magnetCardMenuButton);
 
         widgets.add("player", new PlayerEntityWidget(Objects.requireNonNull(Minecraft.getInstance().player)));
     }
@@ -83,17 +88,23 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
 
     private void setMagnetModeText() {
         switch (getMenu().getMagnetSettings().magnetMode) {
-            case INVALID, NO_CARD -> magnetCardToggleButton.setVisibility(false);
+            case INVALID, NO_CARD -> {
+                magnetCardToggleButton.setVisibility(false);
+                magnetCardMenuButton.setVisibility(false);
+            }
             case OFF -> {
                 magnetCardToggleButton.setVisibility(true);
+                magnetCardMenuButton.setVisibility(true);
                 magnetCardToggleButton.setMessage(TextConstants.MAGNETCARD_OFF);
             }
             case PICKUP_INVENTORY -> {
                 magnetCardToggleButton.setVisibility(true);
+                magnetCardMenuButton.setVisibility(true);
                 magnetCardToggleButton.setMessage(TextConstants.MAGNETCARD_INVENTORY);
             }
             case PICKUP_ME -> {
                 magnetCardToggleButton.setVisibility(true);
+                magnetCardMenuButton.setVisibility(true);
                 magnetCardToggleButton.setMessage(TextConstants.MAGNETCARD_ME);
             }
         }

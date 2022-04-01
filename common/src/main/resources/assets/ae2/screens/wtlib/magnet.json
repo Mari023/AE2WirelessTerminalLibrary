@@ -1,0 +1,37 @@
+{
+  "$schema": "schema.json",
+  "includes": ["../common/common.json", "../common/player_inventory.json"],
+  "background": {
+    "texture": "wtlib/guis/magnet.png",
+    "srcRect": [0, 0, 176, 251]
+  },
+  "slots": {
+    "AE2WTLIB_PICKUP_CONFIG": {
+      "left": 8,
+      "top": 29,
+      "grid": "BREAK_AFTER_9COLS"
+    },
+    "AE2WTLIB_INSERT_CONFIG": {
+      "left": 8,
+      "top": 109,
+      "grid": "BREAK_AFTER_9COLS"
+    }
+  },
+  "text": {
+    "dialog_title": {
+      "text": {
+        "translate": "gui.ae2wtlib.Magnet"
+      },
+      "position": {
+        "left": 8,
+        "top": 6
+      }
+    }
+  },
+  "widgets": {
+    "back": {
+      "left": 154,
+      "top": 0
+    }
+  }
+}

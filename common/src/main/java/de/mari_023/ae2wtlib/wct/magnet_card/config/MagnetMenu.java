@@ -8,16 +8,25 @@ import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
 import de.mari_023.ae2wtlib.wct.WCTMenuHost;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHost;
 
+import appeng.api.storage.ISubMenuHost;
 import appeng.menu.AEBaseMenu;
+import appeng.menu.ISubMenu;
 import appeng.menu.SlotSemantic;
+import appeng.menu.implementations.MenuTypeBuilder;
 import appeng.menu.slot.FakeSlot;
 import appeng.util.ConfigInventory;
 import appeng.util.ConfigMenuInventory;
 
-public class MagnetMenu extends AEBaseMenu {
+public class MagnetMenu extends AEBaseMenu implements ISubMenu {
 
-    public MagnetMenu(MenuType<?> menuType, int id, Inventory playerInventory, WCTMenuHost host) {
-        super(menuType, id, playerInventory, host);
+    public static final MenuType<MagnetMenu> TYPE = MenuTypeBuilder.create(MagnetMenu::new, WCTMenuHost.class)
+            .build("magnet");
+
+    private final WCTMenuHost host;
+
+    public MagnetMenu(int id, Inventory playerInventory, WCTMenuHost host) {
+        super(TYPE, id, playerInventory, host);
+        this.host = host;
 
         MagnetHost magnetHost = CraftingTerminalHandler.getCraftingTerminalHandler(playerInventory.player)
                 .getMagnetHost();
@@ -37,5 +46,10 @@ public class MagnetMenu extends AEBaseMenu {
                 addSlot(new FakeSlot(inv, y * 3 + x), slotSemantic);
             }
         }
+    }
+
+    @Override
+    public ISubMenuHost getHost() {
+        return host;
     }
 }
