@@ -36,6 +36,7 @@ public class MagnetMenu extends AEBaseMenu implements ISubMenu {
 
         addConfigSlots(magnetHost.pickupConfig, AE2wtlibSlotSemantics.PICKUP_CONFIG);
         addConfigSlots(magnetHost.insertConfig, AE2wtlibSlotSemantics.INSERT_CONFIG);
+        createPlayerInventorySlots(playerInventory);
     }
 
     private void addConfigSlots(ConfigInventory config, SlotSemantic slotSemantic) {

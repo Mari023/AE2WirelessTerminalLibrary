@@ -190,7 +190,7 @@ public class CraftingTerminalHandler {
         if (magnetHost == null) {
             if (getCraftingTerminal().isEmpty())
                 return null;
-            magnetHost = new MagnetHost();
+            magnetHost = new MagnetHost(this);
         }
         return magnetHost;
     }

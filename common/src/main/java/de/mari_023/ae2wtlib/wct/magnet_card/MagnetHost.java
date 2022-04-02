@@ -4,19 +4,28 @@ import appeng.api.config.FuzzyMode;
 import appeng.api.config.IncludeExclude;
 import appeng.util.ConfigInventory;
 import appeng.util.prioritylist.IPartitionList;
+import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
+import net.minecraft.nbt.CompoundTag;
 
 public class MagnetHost {
 
-    public final ConfigInventory pickupConfig = ConfigInventory.configTypes(null,
-            27, this::updatePickupFilter);
-    public final ConfigInventory insertConfig = ConfigInventory.configTypes(null,
-            27, this::updateInsertFilter);
+    public final ConfigInventory pickupConfig = ConfigInventory.configTypes(27, this::updatePickupFilter);
+    public final ConfigInventory insertConfig = ConfigInventory.configTypes(27, this::updateInsertFilter);
 
     private IPartitionList pickupFilter = createFilter(pickupConfig);
     private IPartitionList insertFilter = createFilter(insertConfig);
 
     private IncludeExclude pickupMode = IncludeExclude.WHITELIST;// TODO load on create
     private IncludeExclude insertMode = IncludeExclude.WHITELIST;
+
+    private final CraftingTerminalHandler ctHandler;
+
+    public MagnetHost(CraftingTerminalHandler ctHandler) {
+        this.ctHandler = ctHandler;
+        CompoundTag tag = ctHandler.getCraftingTerminal().getOrCreateTag();
+        pickupConfig.readFromChildTag(tag, "pickupConfig");
+        insertConfig.readFromChildTag(tag, "insertConfig");
+    }
 
     private IPartitionList createFilter(ConfigInventory config) {
         IPartitionList.Builder builder = IPartitionList.builder();
@@ -29,10 +38,12 @@ public class MagnetHost {
 
     private void updatePickupFilter() {
         pickupFilter = createFilter(pickupConfig);
+        pickupConfig.writeToChildTag(ctHandler.getCraftingTerminal().getOrCreateTag(), "pickupConfig");
     }
 
     private void updateInsertFilter() {
         insertFilter = createFilter(insertConfig);
+        insertConfig.writeToChildTag(ctHandler.getCraftingTerminal().getOrCreateTag(), "insertConfig");
     }
 
     public IPartitionList getPickupFilter() {
