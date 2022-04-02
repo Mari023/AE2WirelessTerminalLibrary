@@ -1,11 +1,13 @@
 package de.mari_023.ae2wtlib.wct.magnet_card;
 
+import net.minecraft.nbt.CompoundTag;
+
+import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
+
 import appeng.api.config.FuzzyMode;
 import appeng.api.config.IncludeExclude;
 import appeng.util.ConfigInventory;
 import appeng.util.prioritylist.IPartitionList;
-import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
-import net.minecraft.nbt.CompoundTag;
 
 public class MagnetHost {
 
