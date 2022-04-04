@@ -44,7 +44,7 @@ public class MagnetMenu extends AEBaseMenu implements ISubMenu {
 
         for (int y = 0; y < 3; y++) {
             for (int x = 0; x < 9; x++) {
-                addSlot(new FakeSlot(inv, y * 3 + x), slotSemantic);
+                addSlot(new FakeSlot(inv, y * 9 + x), slotSemantic);
             }
         }
     }
