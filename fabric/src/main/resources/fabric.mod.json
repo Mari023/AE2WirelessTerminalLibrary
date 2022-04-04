@@ -23,7 +23,7 @@
   "depends": {
     "fabric": "*",
     "minecraft": "*",
-    "ae2": ">=11.0.0-alpha.1",
+    "ae2": ">=${ae2_version}",
     "cloth-config2": "*"
   },
   "suggests": {

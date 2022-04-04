@@ -30,9 +30,10 @@ dependencies {
 
 processResources {
     inputs.property "version", project.version
+    inputs.property "ae2_version", rootProject.ae2_forge_version
 
     filesMatching("META-INF/mods.toml") {
-        expand "version": project.version
+        expand "version": project.version, "ae2_version": rootProject.ae2_forge_version
     }
 }
 
