@@ -98,7 +98,7 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
     }
 
     public void render(PoseStack matrices, int mouseX, int mouseY, float delta) {
-        try {//TODO why do we need this?
+        try {// TODO why do we need this?
             super.render(matrices, mouseX, mouseY, delta);
         } catch (Exception ignored) {
         }
