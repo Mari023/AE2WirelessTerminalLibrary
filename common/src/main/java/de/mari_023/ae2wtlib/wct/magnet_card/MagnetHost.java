@@ -17,16 +17,18 @@ public class MagnetHost {
     private IPartitionList pickupFilter = createFilter(pickupConfig);
     private IPartitionList insertFilter = createFilter(insertConfig);
 
-    private IncludeExclude pickupMode = IncludeExclude.WHITELIST;// TODO load on create
-    private IncludeExclude insertMode = IncludeExclude.WHITELIST;
+    private IncludeExclude pickupMode;
+    private IncludeExclude insertMode;
 
     private final CraftingTerminalHandler ctHandler;
 
     public MagnetHost(CraftingTerminalHandler ctHandler) {
         this.ctHandler = ctHandler;
-        CompoundTag tag = ctHandler.getCraftingTerminal().getOrCreateTag();
+        CompoundTag tag = getTag();
         pickupConfig.readFromChildTag(tag, "pickupConfig");
         insertConfig.readFromChildTag(tag, "insertConfig");
+        pickupMode = booleanToIncludeExclude(tag.getBoolean("pickupMode"));
+        insertMode = booleanToIncludeExclude(tag.getBoolean("insertMode"));
     }
 
     private IPartitionList createFilter(ConfigInventory config) {
@@ -58,6 +60,7 @@ public class MagnetHost {
 
     public void togglePickupMode() {
         pickupMode = toggle(pickupMode);
+        getTag().putBoolean("pickupMode", includeExcludeToBoolean(pickupMode));
     }
 
     public IPartitionList getInsertFilter() {
@@ -70,6 +73,11 @@ public class MagnetHost {
 
     public void toggleInsertMode() {
         insertMode = toggle(insertMode);
+        getTag().putBoolean("insertMode", includeExcludeToBoolean(insertMode));
+    }
+
+    public CompoundTag getTag() {
+        return ctHandler.getCraftingTerminal().getOrCreateTag();
     }
 
     public IncludeExclude toggle(IncludeExclude includeExclude) {
@@ -77,5 +85,16 @@ public class MagnetHost {
             case WHITELIST -> IncludeExclude.BLACKLIST;
             case BLACKLIST -> IncludeExclude.WHITELIST;
         };
+    }
+
+    public boolean includeExcludeToBoolean(IncludeExclude includeExclude) {
+        return switch (includeExclude) {
+            case WHITELIST -> true;
+            case BLACKLIST -> false;
+        };
+    }
+
+    public IncludeExclude booleanToIncludeExclude(boolean b) {
+        return b ? IncludeExclude.WHITELIST : IncludeExclude.BLACKLIST;
     }
 }
