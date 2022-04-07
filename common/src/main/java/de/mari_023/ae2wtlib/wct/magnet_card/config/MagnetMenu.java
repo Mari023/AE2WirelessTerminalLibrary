@@ -23,12 +23,15 @@ public class MagnetMenu extends AEBaseMenu implements ISubMenu {
             .build("magnet");
 
     private final WCTMenuHost host;
+    private final MagnetHost magnetHost;
+    private final static String TOGGLE_PICKUP_MODE = "togglepickupmode";
+    private final static String TOGGLE_INSERT_MODE = "toggleinsertmode";
 
     public MagnetMenu(int id, Inventory playerInventory, WCTMenuHost host) {
         super(TYPE, id, playerInventory, host);
         this.host = host;
 
-        MagnetHost magnetHost = CraftingTerminalHandler.getCraftingTerminalHandler(playerInventory.player)
+        magnetHost = CraftingTerminalHandler.getCraftingTerminalHandler(playerInventory.player)
                 .getMagnetHost();
 
         if (magnetHost == null)
@@ -37,6 +40,8 @@ public class MagnetMenu extends AEBaseMenu implements ISubMenu {
         addConfigSlots(magnetHost.pickupConfig, AE2wtlibSlotSemantics.PICKUP_CONFIG);
         addConfigSlots(magnetHost.insertConfig, AE2wtlibSlotSemantics.INSERT_CONFIG);
         createPlayerInventorySlots(playerInventory);
+        registerClientAction(TOGGLE_PICKUP_MODE, this::togglePickupMode);
+        registerClientAction(TOGGLE_INSERT_MODE, this::toggleInsertMode);
     }
 
     private void addConfigSlots(ConfigInventory config, SlotSemantic slotSemantic) {
@@ -52,5 +57,21 @@ public class MagnetMenu extends AEBaseMenu implements ISubMenu {
     @Override
     public ISubMenuHost getHost() {
         return host;
+    }
+
+    public MagnetHost getMagnetHost() {
+        return magnetHost;
+    }
+
+    public void togglePickupMode() {
+        if (isClientSide())
+            sendClientAction(TOGGLE_PICKUP_MODE);
+        magnetHost.togglePickupMode();
+    }
+
+    public void toggleInsertMode() {
+        if (isClientSide())
+            sendClientAction(TOGGLE_INSERT_MODE);
+        magnetHost.toggleInsertMode();
     }
 }

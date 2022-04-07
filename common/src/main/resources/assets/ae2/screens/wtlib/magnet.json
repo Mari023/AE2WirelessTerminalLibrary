@@ -32,6 +32,14 @@
     "back": {
       "left": 154,
       "top": 0
+    },
+    "pickup_mode": {
+      "left": 80,
+      "top": 84
+    },
+    "insert_mode": {
+      "left": 80,
+      "top": 101
     }
   }
 }

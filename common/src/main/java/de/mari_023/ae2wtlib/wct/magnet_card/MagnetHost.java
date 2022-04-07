@@ -56,8 +56,8 @@ public class MagnetHost {
         return pickupMode;
     }
 
-    public void setPickupMode(IncludeExclude pickupMode) {
-        this.pickupMode = pickupMode;
+    public void togglePickupMode() {
+        pickupMode = toggle(pickupMode);
     }
 
     public IPartitionList getInsertFilter() {
@@ -68,7 +68,16 @@ public class MagnetHost {
         return insertMode;
     }
 
-    public void setInsertMode(IncludeExclude insertMode) {
-        this.insertMode = insertMode;
+    public void toggleInsertMode() {
+        insertMode = toggle(insertMode);
+    }
+
+    public IncludeExclude toggle(IncludeExclude includeExclude) {
+        return switch (includeExclude) {
+            case WHITELIST:
+                yield IncludeExclude.BLACKLIST;
+            case BLACKLIST:
+                yield IncludeExclude.WHITELIST;
+        };
     }
 }
