@@ -64,14 +64,18 @@ public class MagnetMenu extends AEBaseMenu implements ISubMenu {
     }
 
     public void togglePickupMode() {
-        if (isClientSide())
+        if (isClientSide()) {
             sendClientAction(TOGGLE_PICKUP_MODE);
+            return;
+        }
         magnetHost.togglePickupMode();
     }
 
     public void toggleInsertMode() {
-        if (isClientSide())
+        if (isClientSide()) {
             sendClientAction(TOGGLE_INSERT_MODE);
+            return;
+        }
         magnetHost.toggleInsertMode();
     }
 }
