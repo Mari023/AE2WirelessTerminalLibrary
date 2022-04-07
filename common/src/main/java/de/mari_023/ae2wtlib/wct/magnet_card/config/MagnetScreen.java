@@ -1,7 +1,5 @@
 package de.mari_023.ae2wtlib.wct.magnet_card.config;
 
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -32,16 +30,10 @@ public class MagnetScreen extends AEBaseScreen<MagnetMenu> {
         });
     }
 
-    @Nullable
     private Icon icon(IncludeExclude includeExclude) {
-        switch (includeExclude) {
-            case WHITELIST -> {
-                return Icon.WHITELIST;
-            }
-            case BLACKLIST -> {
-                return Icon.BLACKLIST;
-            }
-        }
-        return null;
+        return switch (includeExclude) {
+            case WHITELIST -> Icon.WHITELIST;
+            case BLACKLIST -> Icon.BLACKLIST;
+        };
     }
 }

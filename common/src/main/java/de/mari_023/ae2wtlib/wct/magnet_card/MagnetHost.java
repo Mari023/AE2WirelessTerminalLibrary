@@ -74,10 +74,8 @@ public class MagnetHost {
 
     public IncludeExclude toggle(IncludeExclude includeExclude) {
         return switch (includeExclude) {
-            case WHITELIST:
-                yield IncludeExclude.BLACKLIST;
-            case BLACKLIST:
-                yield IncludeExclude.WHITELIST;
+            case WHITELIST -> IncludeExclude.BLACKLIST;
+            case BLACKLIST -> IncludeExclude.WHITELIST;
         };
     }
 }

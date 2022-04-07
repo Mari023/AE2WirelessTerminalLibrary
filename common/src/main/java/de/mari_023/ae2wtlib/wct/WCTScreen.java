@@ -55,34 +55,16 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
     private void setMagnetMode() {
         if (isHandlingRightClick()) {
             switch (getMenu().getMagnetSettings().magnetMode) {
-                case INVALID:
-                case NO_CARD:
-                    break;
-                case OFF:
-                    getMenu().setMagnetMode(MagnetMode.PICKUP_ME);
-                    break;
-                case PICKUP_INVENTORY:
-                    getMenu().setMagnetMode(MagnetMode.OFF);
-                    break;
-                case PICKUP_ME:
-                    getMenu().setMagnetMode(MagnetMode.PICKUP_INVENTORY);
-                    break;
+                case OFF -> getMenu().setMagnetMode(MagnetMode.PICKUP_ME);
+                case PICKUP_INVENTORY -> getMenu().setMagnetMode(MagnetMode.OFF);
+                case PICKUP_ME -> getMenu().setMagnetMode(MagnetMode.PICKUP_INVENTORY);
             }
-        } else {
-            switch (getMenu().getMagnetSettings().magnetMode) {
-                case INVALID:
-                case NO_CARD:
-                    break;
-                case OFF:
-                    getMenu().setMagnetMode(MagnetMode.PICKUP_INVENTORY);
-                    break;
-                case PICKUP_INVENTORY:
-                    getMenu().setMagnetMode(MagnetMode.PICKUP_ME);
-                    break;
-                case PICKUP_ME:
-                    getMenu().setMagnetMode(MagnetMode.OFF);
-                    break;
-            }
+            return;
+        }
+        switch (getMenu().getMagnetSettings().magnetMode) {
+            case OFF -> getMenu().setMagnetMode(MagnetMode.PICKUP_INVENTORY);
+            case PICKUP_INVENTORY -> getMenu().setMagnetMode(MagnetMode.PICKUP_ME);
+            case PICKUP_ME -> getMenu().setMagnetMode(MagnetMode.OFF);
         }
     }
 
@@ -116,7 +98,7 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
     }
 
     public void render(PoseStack matrices, int mouseX, int mouseY, float delta) {
-        try {
+        try {//TODO why do we need this?
             super.render(matrices, mouseX, mouseY, delta);
         } catch (Exception ignored) {
         }
