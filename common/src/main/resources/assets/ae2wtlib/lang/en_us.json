@@ -21,6 +21,15 @@
   "gui.ae2wtlib.on": "On",
   "gui.ae2wtlib.slot.magnetcard.desc": "Magnet Card",
 
+  "gui.ae2wtlib.whitelist": "Whitelist",
+  "gui.ae2wtlib.blacklist": "Blacklist",
+  "gui.ae2wtlib.pickup": "Pickup",
+  "gui.ae2wtlib.insert": "Insert",
+  "gui.ae2wtlib.filter": " Filter: ",
+  "gui.ae2wtlib.copy_pickup": "Copy to Pickup",
+  "gui.ae2wtlib.copy_insert": "Copy to Insert",
+  "gui.ae2wtlib.switch": "Switch Filters",
+
   "item.ae2wtlib.wireless_pattern_encoding_terminal": "Wireless Pattern Encoding Terminal",
   "item.ae2wtlib.wireless_pattern_access_terminal": "Wireless Pattern Access Terminal",
   "item.ae2wtlib.wireless_universal_terminal": "Wireless Universal Terminal",

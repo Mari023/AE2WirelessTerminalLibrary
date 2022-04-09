@@ -67,17 +67,18 @@ public final class TextConstants {
     private static final TranslatableComponent WHITELIST = new TranslatableComponent("gui.ae2wtlib.whitelist");
     private static final TranslatableComponent BLACKLIST = new TranslatableComponent("gui.ae2wtlib.blacklist");
 
-    private static final MutableComponent PICKUP = new TranslatableComponent("gui.ae2wtlib.pickup_filter");
-    private static final MutableComponent INSERT = new TranslatableComponent("gui.ae2wtlib.insert_filter");
+    private static final TranslatableComponent PICKUP = new TranslatableComponent("gui.ae2wtlib.pickup");
+    private static final TranslatableComponent INSERT = new TranslatableComponent("gui.ae2wtlib.insert");
 
-    public static final MutableComponent PICKUP_WHITELIST = PICKUP.copy().append(WHITELIST);
-    public static final MutableComponent PICKUP_BLACKLIST = PICKUP.copy().append(BLACKLIST);
-    public static final MutableComponent INSERT_WHITELIST = INSERT.copy().append(WHITELIST);
-    public static final MutableComponent INSERT_BLACKLIST = INSERT.copy().append(BLACKLIST);
+    private static final TranslatableComponent FILTER = new TranslatableComponent("gui.ae2wtlib.filter");
 
-    private static final TranslatableComponent COPY = new TranslatableComponent("gui.ae2wtlib.copy");
-    public static final MutableComponent COPY_PICKUP = COPY.copy().append(PICKUP);
-    public static final MutableComponent COPY_INSERT = COPY.copy().append(INSERT);
+    public static final MutableComponent PICKUP_WHITELIST = PICKUP.copy().append(FILTER).append(WHITELIST);
+    public static final MutableComponent PICKUP_BLACKLIST = PICKUP.copy().append(FILTER).append(BLACKLIST);
+    public static final MutableComponent INSERT_WHITELIST = INSERT.copy().append(FILTER).append(WHITELIST);
+    public static final MutableComponent INSERT_BLACKLIST = INSERT.copy().append(FILTER).append(BLACKLIST);
+
+    public static final MutableComponent COPY_PICKUP = new TranslatableComponent("gui.ae2wtlib.copy_pickup");
+    public static final MutableComponent COPY_INSERT = new TranslatableComponent("gui.ae2wtlib.copy_insert");
 
     public static MutableComponent getPickupMode(IncludeExclude includeExclude) {
         return switch (includeExclude) {
