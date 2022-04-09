@@ -3,7 +3,7 @@
   "includes": ["../common/common.json", "../common/player_inventory.json"],
   "background": {
     "texture": "wtlib/guis/magnet.png",
-    "srcRect": [0, 0, 176, 251]
+    "srcRect": [0, 0, 176, 256]
   },
   "slots": {
     "AE2WTLIB_PICKUP_CONFIG": {
@@ -18,12 +18,12 @@
     },
     "PLAYER_INVENTORY": {
       "left": 8,
-      "bottom": 82,
+      "bottom": 83,
       "grid": "BREAK_AFTER_9COLS"
     },
     "PLAYER_HOTBAR": {
       "left": 8,
-      "bottom": 24,
+      "bottom": 25,
       "grid": "HORIZONTAL"
     }
   },
@@ -43,7 +43,7 @@
       },
       "position": {
         "left": 8,
-        "bottom": 87
+        "bottom": 92
       }
     }
   },
@@ -54,23 +54,23 @@
       "hideEdge": true
     },
     "pickup_mode": {
-      "left": 80,
+      "left": 62,
       "top": 73
     },
     "insert_mode": {
-      "left": 80,
+      "left": 62,
       "top": 91
     },
     "copy_down": {
-      "left": 98,
+      "left": 80,
       "top": 73
     },
     "copy_up": {
-      "left": 98,
+      "left": 80,
       "top": 91
     },
     "switch": {
-      "left": 116,
+      "left": 98,
       "top": 82
     }
   }

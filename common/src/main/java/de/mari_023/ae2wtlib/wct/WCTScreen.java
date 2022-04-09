@@ -48,6 +48,7 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
         magnetCardMenuButton = new ItemButton(btn -> getMenu().openMagnetMenu(),
                 new ResourceLocation(AE2wtlib.MOD_NAME, "textures/magnet_card.png"));
         addToLeftToolbar(magnetCardMenuButton);
+        magnetCardMenuButton.setMessage(TextConstants.MAGNET_FILTER);
 
         widgets.add("player", new PlayerEntityWidget(Objects.requireNonNull(Minecraft.getInstance().player)));
     }
