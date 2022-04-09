@@ -13,6 +13,7 @@ import net.minecraft.world.item.ItemStack;
 
 import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHandler;
+import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHost;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetMode;
 
 import appeng.api.config.Actionable;
@@ -32,17 +33,30 @@ public class PlayerInventoryInsertStack {
             return;
         CraftingTerminalHandler cTHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
         ItemStack terminal = cTHandler.getCraftingTerminal();
-        if (MagnetHandler.getMagnetSettings(terminal).magnetMode == MagnetMode.PICKUP_ME && cTHandler.inRange()) {
-            if (cTHandler.getTargetGrid() == null || cTHandler.getTargetGrid().getStorageService() == null)
-                return;
-            long inserted = cTHandler.getTargetGrid().getStorageService().getInventory().insert(AEItemKey.of(stack),
-                    stack.getCount(), Actionable.MODULATE, new PlayerSource(player, cTHandler.getSecurityStation()));
-            int leftover = (int) (stack.getCount() - inserted);
-            if (leftover == 0) {
-                stack.setCount(0);
-                cir.setReturnValue(true);
-            } else
-                stack.setCount(leftover);
-        }
+
+        if (!(MagnetHandler.getMagnetSettings(terminal).magnetMode == MagnetMode.PICKUP_ME))
+            return;
+        if (!cTHandler.inRange())
+            return;
+
+        MagnetHost magnetHost = cTHandler.getMagnetHost();
+        if (magnetHost == null)
+            return;
+        if (!magnetHost.getInsertFilter().matchesFilter(AEItemKey.of(stack), magnetHost.getInsertMode()))
+            return;
+
+        if (cTHandler.getTargetGrid() == null)
+            return;
+        if (cTHandler.getTargetGrid().getStorageService() == null)
+            return;
+
+        long inserted = cTHandler.getTargetGrid().getStorageService().getInventory().insert(AEItemKey.of(stack),
+                stack.getCount(), Actionable.MODULATE, new PlayerSource(player, cTHandler.getSecurityStation()));
+        int leftover = (int) (stack.getCount() - inserted);
+        if (leftover == 0) {
+            stack.setCount(0);
+            cir.setReturnValue(true);
+        } else
+            stack.setCount(leftover);
     }
 }

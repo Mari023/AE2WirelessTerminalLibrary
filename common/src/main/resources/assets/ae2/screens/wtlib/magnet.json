@@ -1,0 +1,77 @@
+{
+  "$schema": "schema.json",
+  "includes": ["../common/common.json", "../common/player_inventory.json"],
+  "background": {
+    "texture": "wtlib/guis/magnet.png",
+    "srcRect": [0, 0, 176, 256]
+  },
+  "slots": {
+    "AE2WTLIB_PICKUP_CONFIG": {
+      "left": 8,
+      "top": 18,
+      "grid": "BREAK_AFTER_9COLS"
+    },
+    "AE2WTLIB_INSERT_CONFIG": {
+      "left": 8,
+      "top": 110,
+      "grid": "BREAK_AFTER_9COLS"
+    },
+    "PLAYER_INVENTORY": {
+      "left": 8,
+      "bottom": 83,
+      "grid": "BREAK_AFTER_9COLS"
+    },
+    "PLAYER_HOTBAR": {
+      "left": 8,
+      "bottom": 25,
+      "grid": "HORIZONTAL"
+    }
+  },
+  "text": {
+    "dialog_title": {
+      "text": {
+        "translate": "gui.ae2wtlib.Magnet"
+      },
+      "position": {
+        "left": 8,
+        "top": 6
+      }
+    },
+    "player_inventory_title": {
+      "text": {
+        "translate": "container.inventory"
+      },
+      "position": {
+        "left": 8,
+        "bottom": 92
+      }
+    }
+  },
+  "widgets": {
+    "back": {
+      "left": 151,
+      "top": -4,
+      "hideEdge": true
+    },
+    "pickup_mode": {
+      "left": 62,
+      "top": 73
+    },
+    "insert_mode": {
+      "left": 62,
+      "top": 91
+    },
+    "copy_down": {
+      "left": 80,
+      "top": 73
+    },
+    "copy_up": {
+      "left": 80,
+      "top": 91
+    },
+    "switch": {
+      "left": 98,
+      "top": 82
+    }
+  }
+}

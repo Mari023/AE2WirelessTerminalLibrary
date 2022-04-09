@@ -24,6 +24,7 @@ import appeng.client.gui.widgets.IconButton;
 public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversalTerminalCapable {
 
     private final ItemButton magnetCardToggleButton;
+    private final ItemButton magnetCardMenuButton;
 
     public WCTScreen(WCTMenu container, Inventory playerInventory, Component title, ScreenStyle style) {
         super(container, playerInventory, title, style);
@@ -44,56 +45,49 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
                 new ResourceLocation(AE2wtlib.MOD_NAME, "textures/magnet_card.png"));
         addToLeftToolbar(magnetCardToggleButton);
 
+        magnetCardMenuButton = new ItemButton(btn -> getMenu().openMagnetMenu(),
+                new ResourceLocation(AE2wtlib.MOD_NAME, "textures/magnet_card.png"));
+        addToLeftToolbar(magnetCardMenuButton);
+        magnetCardMenuButton.setMessage(TextConstants.MAGNET_FILTER);
+
         widgets.add("player", new PlayerEntityWidget(Objects.requireNonNull(Minecraft.getInstance().player)));
     }
 
     private void setMagnetMode() {
         if (isHandlingRightClick()) {
             switch (getMenu().getMagnetSettings().magnetMode) {
-                case INVALID:
-                case NO_CARD:
-                    break;
-                case OFF:
-                    getMenu().setMagnetMode(MagnetMode.PICKUP_ME);
-                    break;
-                case PICKUP_INVENTORY:
-                    getMenu().setMagnetMode(MagnetMode.OFF);
-                    break;
-                case PICKUP_ME:
-                    getMenu().setMagnetMode(MagnetMode.PICKUP_INVENTORY);
-                    break;
+                case OFF -> getMenu().setMagnetMode(MagnetMode.PICKUP_ME);
+                case PICKUP_INVENTORY -> getMenu().setMagnetMode(MagnetMode.OFF);
+                case PICKUP_ME -> getMenu().setMagnetMode(MagnetMode.PICKUP_INVENTORY);
             }
-        } else {
-            switch (getMenu().getMagnetSettings().magnetMode) {
-                case INVALID:
-                case NO_CARD:
-                    break;
-                case OFF:
-                    getMenu().setMagnetMode(MagnetMode.PICKUP_INVENTORY);
-                    break;
-                case PICKUP_INVENTORY:
-                    getMenu().setMagnetMode(MagnetMode.PICKUP_ME);
-                    break;
-                case PICKUP_ME:
-                    getMenu().setMagnetMode(MagnetMode.OFF);
-                    break;
-            }
+            return;
+        }
+        switch (getMenu().getMagnetSettings().magnetMode) {
+            case OFF -> getMenu().setMagnetMode(MagnetMode.PICKUP_INVENTORY);
+            case PICKUP_INVENTORY -> getMenu().setMagnetMode(MagnetMode.PICKUP_ME);
+            case PICKUP_ME -> getMenu().setMagnetMode(MagnetMode.OFF);
         }
     }
 
     private void setMagnetModeText() {
         switch (getMenu().getMagnetSettings().magnetMode) {
-            case INVALID, NO_CARD -> magnetCardToggleButton.setVisibility(false);
+            case INVALID, NO_CARD -> {
+                magnetCardToggleButton.setVisibility(false);
+                magnetCardMenuButton.setVisibility(false);
+            }
             case OFF -> {
                 magnetCardToggleButton.setVisibility(true);
+                magnetCardMenuButton.setVisibility(true);
                 magnetCardToggleButton.setMessage(TextConstants.MAGNETCARD_OFF);
             }
             case PICKUP_INVENTORY -> {
                 magnetCardToggleButton.setVisibility(true);
+                magnetCardMenuButton.setVisibility(true);
                 magnetCardToggleButton.setMessage(TextConstants.MAGNETCARD_INVENTORY);
             }
             case PICKUP_ME -> {
                 magnetCardToggleButton.setVisibility(true);
+                magnetCardMenuButton.setVisibility(true);
                 magnetCardToggleButton.setMessage(TextConstants.MAGNETCARD_ME);
             }
         }
@@ -105,7 +99,7 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
     }
 
     public void render(PoseStack matrices, int mouseX, int mouseY, float delta) {
-        try {
+        try {// TODO why do we need this?
             super.render(matrices, mouseX, mouseY, delta);
         } catch (Exception ignored) {
         }

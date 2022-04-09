@@ -15,6 +15,7 @@ import net.minecraft.world.item.ItemStack;
 
 import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.Platform;
+import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHost;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 import appeng.api.features.Locatables;
@@ -40,6 +41,7 @@ public class CraftingTerminalHandler {
     private IWirelessAccessPoint myWap;
     private double sqRange = Double.MAX_VALUE;
     private HashMap<Item, Long> restockAbleItems = new HashMap<>();
+    private MagnetHost magnetHost;
 
     private CraftingTerminalHandler(Player player) {
         this.player = player;
@@ -70,6 +72,7 @@ public class CraftingTerminalHandler {
         myWap = null;
         sqRange = Double.MAX_VALUE;
         restockAbleItems.clear();
+        magnetHost = null;
     }
 
     public ItemStack getCraftingTerminal() {
@@ -180,5 +183,15 @@ public class CraftingTerminalHandler {
 
     public void setRestockAbleItems(HashMap<Item, Long> items) {
         restockAbleItems = items;
+    }
+
+    @Nullable
+    public MagnetHost getMagnetHost() {
+        if (magnetHost == null) {
+            if (getCraftingTerminal().isEmpty())
+                return null;
+            magnetHost = new MagnetHost(this);
+        }
+        return magnetHost;
     }
 }

@@ -6,6 +6,8 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 
+import appeng.api.config.IncludeExclude;
+
 public final class TextConstants {
 
     private TextConstants() {
@@ -59,4 +61,38 @@ public final class TextConstants {
 
     public static final MutableComponent DELETE = new TranslatableComponent("gui.ae2wtlib.emptytrash").append("\n")
             .append(new TranslatableComponent("gui.ae2wtlib.emptytrash.desc"));
+
+    public static final TranslatableComponent MAGNET_FILTER = new TranslatableComponent("gui.ae2wtlib.Magnet");
+
+    private static final TranslatableComponent WHITELIST = new TranslatableComponent("gui.ae2wtlib.whitelist");
+    private static final TranslatableComponent BLACKLIST = new TranslatableComponent("gui.ae2wtlib.blacklist");
+
+    private static final TranslatableComponent PICKUP = new TranslatableComponent("gui.ae2wtlib.pickup");
+    private static final TranslatableComponent INSERT = new TranslatableComponent("gui.ae2wtlib.insert");
+
+    private static final TranslatableComponent FILTER = new TranslatableComponent("gui.ae2wtlib.filter");
+
+    public static final MutableComponent PICKUP_WHITELIST = PICKUP.copy().append(FILTER).append(WHITELIST);
+    public static final MutableComponent PICKUP_BLACKLIST = PICKUP.copy().append(FILTER).append(BLACKLIST);
+    public static final MutableComponent INSERT_WHITELIST = INSERT.copy().append(FILTER).append(WHITELIST);
+    public static final MutableComponent INSERT_BLACKLIST = INSERT.copy().append(FILTER).append(BLACKLIST);
+
+    public static final MutableComponent COPY_PICKUP = new TranslatableComponent("gui.ae2wtlib.copy_pickup");
+    public static final MutableComponent COPY_INSERT = new TranslatableComponent("gui.ae2wtlib.copy_insert");
+
+    public static MutableComponent getPickupMode(IncludeExclude includeExclude) {
+        return switch (includeExclude) {
+            case WHITELIST -> PICKUP_WHITELIST;
+            case BLACKLIST -> PICKUP_BLACKLIST;
+        };
+    }
+
+    public static MutableComponent getInsertMode(IncludeExclude includeExclude) {
+        return switch (includeExclude) {
+            case WHITELIST -> INSERT_WHITELIST;
+            case BLACKLIST -> INSERT_BLACKLIST;
+        };
+    }
+
+    public static final TranslatableComponent SWITCH = new TranslatableComponent("gui.ae2wtlib.switch");
 }

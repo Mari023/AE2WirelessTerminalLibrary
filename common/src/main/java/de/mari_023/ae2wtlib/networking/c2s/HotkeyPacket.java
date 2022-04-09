@@ -55,20 +55,21 @@ public class HotkeyPacket extends AE2wtlibPacket {
             if (terminal.isEmpty())
                 return;
             MagnetSettings settings = MagnetHandler.getMagnetSettings(terminal);
-            switch (settings.magnetMode) {
+            settings.magnetMode = switch (settings.magnetMode) {
                 case OFF -> {
                     serverPlayer.displayClientMessage(TextConstants.HOTKEY_MAGNETCARD_INVENTORY, true);
-                    settings.magnetMode = MagnetMode.PICKUP_INVENTORY;
+                    yield MagnetMode.PICKUP_INVENTORY;
                 }
                 case PICKUP_INVENTORY -> {
                     serverPlayer.displayClientMessage(TextConstants.HOTKEY_MAGNETCARD_ME, true);
-                    settings.magnetMode = MagnetMode.PICKUP_ME;
+                    yield MagnetMode.PICKUP_ME;
                 }
                 case PICKUP_ME -> {
                     serverPlayer.displayClientMessage(TextConstants.HOTKEY_MAGNETCARD_OFF, true);
-                    settings.magnetMode = MagnetMode.OFF;
+                    yield MagnetMode.OFF;
                 }
-            }
+                default -> settings.magnetMode;
+            };
             MagnetHandler.saveMagnetSettings(terminal, settings);
         } else {
             MenuLocator locator = WUTHandler.findTerminal(serverPlayer, terminalName);
