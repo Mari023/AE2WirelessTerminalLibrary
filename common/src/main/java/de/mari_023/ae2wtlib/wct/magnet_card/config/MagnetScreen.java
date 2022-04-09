@@ -28,6 +28,27 @@ public class MagnetScreen extends AEBaseScreen<MagnetMenu> {
                 return icon(menu.getMagnetHost().getInsertMode());
             }
         });
+
+        widgets.add("copy_up", new IconButton(button -> menu.copyUp()) {
+            @Override
+            protected Icon getIcon() {
+                return Icon.ARROW_UP;
+            }
+        });
+
+        widgets.add("copy_down", new IconButton(button -> menu.copyDown()) {
+            @Override
+            protected Icon getIcon() {
+                return Icon.ARROW_DOWN;
+            }
+        });
+
+        widgets.add("switch", new IconButton(button -> menu.switchInsertPickup()) {
+            @Override
+            protected Icon getIcon() {
+                return Icon.SCHEDULING_ROUND_ROBIN;
+            }
+        });
     }
 
     private Icon icon(IncludeExclude includeExclude) {

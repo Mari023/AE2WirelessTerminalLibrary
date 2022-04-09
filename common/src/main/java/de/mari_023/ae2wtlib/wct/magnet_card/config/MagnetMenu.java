@@ -27,6 +27,9 @@ public class MagnetMenu extends AEBaseMenu implements ISubMenu {
     private final MagnetHost magnetHost;
     private final static String TOGGLE_PICKUP_MODE = "togglepickupmode";
     private final static String TOGGLE_INSERT_MODE = "toggleinsertmode";
+    private final static String COPY_UP = "copy_up";
+    private final static String COPY_DOWN = "copy_down";
+    private final static String SWITCH_INSERT_PICKUP = "switch";
 
     public MagnetMenu(int id, Inventory playerInventory, WCTMenuHost host) {
         super(TYPE, id, playerInventory, host);
@@ -43,6 +46,9 @@ public class MagnetMenu extends AEBaseMenu implements ISubMenu {
         createPlayerInventorySlots(playerInventory);
         registerClientAction(TOGGLE_PICKUP_MODE, this::togglePickupMode);
         registerClientAction(TOGGLE_INSERT_MODE, this::toggleInsertMode);
+        registerClientAction(COPY_UP, this::copyUp);
+        registerClientAction(COPY_DOWN, this::copyDown);
+        registerClientAction(SWITCH_INSERT_PICKUP, this::switchInsertPickup);
     }
 
     private void addConfigSlots(ConfigInventory config, SlotSemantic slotSemantic) {
@@ -80,5 +86,32 @@ public class MagnetMenu extends AEBaseMenu implements ISubMenu {
                 return;
         }
         magnetHost.toggleInsertMode();
+    }
+
+    public void copyUp() {
+        if (isClientSide()) {
+            sendClientAction(COPY_UP);
+            if (Minecraft.getInstance().isLocalServer())
+                return;
+        }
+        magnetHost.copyUp();
+    }
+
+    public void copyDown() {
+        if (isClientSide()) {
+            sendClientAction(COPY_DOWN);
+            if (Minecraft.getInstance().isLocalServer())
+                return;
+        }
+        magnetHost.copyDown();
+    }
+
+    public void switchInsertPickup() {
+        if (isClientSide()) {
+            sendClientAction(SWITCH_INSERT_PICKUP);
+            if (Minecraft.getInstance().isLocalServer())
+                return;
+        }
+        magnetHost.switchInsertPickup();
     }
 }

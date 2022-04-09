@@ -8,13 +8,23 @@
   "slots": {
     "AE2WTLIB_PICKUP_CONFIG": {
       "left": 8,
-      "top": 29,
+      "top": 18,
       "grid": "BREAK_AFTER_9COLS"
     },
     "AE2WTLIB_INSERT_CONFIG": {
       "left": 8,
-      "top": 109,
+      "top": 110,
       "grid": "BREAK_AFTER_9COLS"
+    },
+    "PLAYER_INVENTORY": {
+      "left": 8,
+      "bottom": 82,
+      "grid": "BREAK_AFTER_9COLS"
+    },
+    "PLAYER_HOTBAR": {
+      "left": 8,
+      "bottom": 24,
+      "grid": "HORIZONTAL"
     }
   },
   "text": {
@@ -26,20 +36,42 @@
         "left": 8,
         "top": 6
       }
+    },
+    "player_inventory_title": {
+      "text": {
+        "translate": "container.inventory"
+      },
+      "position": {
+        "left": 8,
+        "bottom": 87
+      }
     }
   },
   "widgets": {
     "back": {
-      "left": 154,
-      "top": 0
+      "left": 151,
+      "top": -4,
+      "hideEdge": true
     },
     "pickup_mode": {
       "left": 80,
-      "top": 84
+      "top": 73
     },
     "insert_mode": {
       "left": 80,
-      "top": 101
+      "top": 91
+    },
+    "copy_down": {
+      "left": 98,
+      "top": 73
+    },
+    "copy_up": {
+      "left": 98,
+      "top": 91
+    },
+    "switch": {
+      "left": 116,
+      "top": 82
     }
   }
 }

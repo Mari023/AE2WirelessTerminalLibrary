@@ -97,4 +97,20 @@ public class MagnetHost {
     public IncludeExclude booleanToIncludeExclude(boolean b) {
         return b ? IncludeExclude.WHITELIST : IncludeExclude.BLACKLIST;
     }
+
+    public void copyUp() {
+        pickupConfig.readFromChildTag(getTag(), "insertConfig");
+    }
+
+    public void copyDown() {
+        insertConfig.readFromChildTag(getTag(), "pickupConfig");
+    }
+
+    public void switchInsertPickup() {
+        pickupConfig.writeToChildTag(ctHandler.getCraftingTerminal().getOrCreateTag(), "insertConfig");
+        insertConfig.writeToChildTag(ctHandler.getCraftingTerminal().getOrCreateTag(), "pickupConfig");
+
+        pickupConfig.readFromChildTag(getTag(), "pickupConfig");
+        insertConfig.readFromChildTag(getTag(), "insertConfig");
+    }
 }
