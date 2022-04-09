@@ -21,6 +21,7 @@
   "gui.ae2wtlib.on": "An",
   "gui.ae2wtlib.slot.magnetcard.desc": "Magnet Karte",
 
+  "gui.ae2wtlib.magnet": "Magnet Filter",
   "gui.ae2wtlib.whitelist": "Whitelist",
   "gui.ae2wtlib.blacklist": "Blacklist",
   "gui.ae2wtlib.pickup": "Aufsammel",
