@@ -91,7 +91,7 @@ jobs:
           loaders: forge
           game-versions: 1.18.2
           dependencies: |
-            cloth-config | depends
+            cloth-config-forge | depends
             applied-energistics-2 | depends
             architectury-forge | depends
             curios | suggests
