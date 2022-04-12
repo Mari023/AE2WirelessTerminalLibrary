@@ -1,5 +1,6 @@
 package de.mari_023.ae2wtlib.forge;
 
+import net.minecraft.world.entity.item.ItemEntity;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.entity.player.Player;
@@ -59,5 +60,9 @@ public class PlatformImpl {
     public static void registerRecipes() {
         registerRecipe(UpgradeSerializer.NAME, Upgrade.serializer = new ForgeUpgradeSerializer());
         registerRecipe(CombineSerializer.NAME, Combine.serializer = new ForgeCombineSerializer());
+    }
+
+    public static boolean preventRemoteMovement(ItemEntity item) {
+        return !item.getPersistentData().contains("PreventRemoteMovement");
     }
 }

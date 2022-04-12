@@ -1,5 +1,6 @@
 package de.mari_023.ae2wtlib;
 
+import net.minecraft.world.entity.item.ItemEntity;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.entity.player.Player;
@@ -47,5 +48,10 @@ public class Platform {
     @ExpectPlatform
     public static void registerRecipes() {
         throw new AssertionError();
+    }
+
+    @ExpectPlatform
+    public static boolean preventRemoteMovement(ItemEntity item) {
+        return true;
     }
 }

@@ -1,5 +1,6 @@
 package de.mari_023.ae2wtlib.fabric;
 
+import net.minecraft.world.entity.item.ItemEntity;
 import org.jetbrains.annotations.Nullable;
 
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
@@ -64,5 +65,9 @@ public class PlatformImpl {
         });
         registerRecipe(CombineSerializer.NAME, Combine.serializer = new CombineSerializer() {
         });
+    }
+
+    public static boolean preventRemoteMovement(ItemEntity item) {
+        return true;
     }
 }

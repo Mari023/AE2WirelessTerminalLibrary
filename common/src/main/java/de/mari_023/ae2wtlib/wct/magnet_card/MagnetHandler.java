@@ -3,6 +3,7 @@ package de.mari_023.ae2wtlib.wct.magnet_card;
 import java.util.HashMap;
 import java.util.List;
 
+import de.mari_023.ae2wtlib.Platform;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -76,7 +77,8 @@ public class MagnetHandler {
             return;
         for (ItemEntity entityItemNearby : entityItems) {
             if (magnetHost.getPickupFilter().matchesFilter(AEItemKey.of(entityItemNearby.getItem()),
-                    magnetHost.getPickupMode()))
+                    magnetHost.getPickupMode())
+                    && !Platform.preventRemoteMovement(entityItemNearby))
                 entityItemNearby.playerTouch(player);
         }
     }
