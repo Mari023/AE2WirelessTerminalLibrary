@@ -3,7 +3,6 @@ package de.mari_023.ae2wtlib.wct.magnet_card;
 import java.util.HashMap;
 import java.util.List;
 
-import de.mari_023.ae2wtlib.Platform;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -15,6 +14,7 @@ import net.minecraft.world.item.ItemStack;
 
 import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.AE2wtlibConfig;
+import de.mari_023.ae2wtlib.Platform;
 import de.mari_023.ae2wtlib.networking.c2s.ServerNetworkManager;
 import de.mari_023.ae2wtlib.networking.s2c.RestockAmountPacket;
 import de.mari_023.ae2wtlib.terminal.ItemWT;
