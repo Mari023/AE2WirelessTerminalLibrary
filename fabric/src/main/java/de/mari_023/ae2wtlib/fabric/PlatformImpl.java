@@ -68,6 +68,6 @@ public class PlatformImpl {
     }
 
     public static boolean preventRemoteMovement(ItemEntity item) {
-        return true;
+        return false;
     }
 }
