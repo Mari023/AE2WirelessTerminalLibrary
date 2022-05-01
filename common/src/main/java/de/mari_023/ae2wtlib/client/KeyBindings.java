@@ -12,16 +12,10 @@ import dev.architectury.injectables.annotations.ExpectPlatform;
 
 public class KeyBindings {
     public static void registerKeyBindings() {
-        KeyMapping wct = createBinding("key.ae2wtlib.wct");
-        KeyMapping wpt = createBinding("key.ae2wtlib.wpt");
-        KeyMapping wit = createBinding("key.ae2wtlib.wit");
         KeyMapping toggleRestock = createBinding("key.ae2wtlib.toggleRestock");
         KeyMapping toggleMagnet = createBinding("key.ae2wtlib.toggleMagnet");
 
         checkKeybindings(() -> {
-            checkKeybinding(wct, "crafting");
-            checkKeybinding(wpt, "pattern_encoding");
-            checkKeybinding(wit, "pattern_access");
             checkKeybinding(toggleRestock, "toggleRestock");
             checkKeybinding(toggleMagnet, "toggleMagnet");
         });

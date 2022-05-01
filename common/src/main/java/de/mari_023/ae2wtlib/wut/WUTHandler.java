@@ -17,12 +17,14 @@ import net.minecraft.world.item.ItemStack;
 import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.Platform;
 import de.mari_023.ae2wtlib.TextConstants;
+import de.mari_023.ae2wtlib.hotkeys.Ae2WTLibLocatingService;
 import de.mari_023.ae2wtlib.networking.c2s.ServerNetworkManager;
 import de.mari_023.ae2wtlib.networking.s2c.UpdateWUTPackage;
 import de.mari_023.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
 import de.mari_023.ae2wtlib.terminal.WTMenuHost;
 
 import appeng.api.implementations.menuobjects.ItemMenuHost;
+import appeng.hotkeys.HotkeyActions;
 import appeng.menu.ISubMenu;
 import appeng.menu.locator.MenuLocator;
 import appeng.menu.locator.MenuLocators;
@@ -151,6 +153,8 @@ public class WUTHandler {
         CompoundTag tag = new CompoundTag();
         tag.putBoolean(name, true);
         wut.setTag(tag);
+
+        HotkeyActions.register(new Ae2WTLibLocatingService(name), "wireless_" + name + "_terminal");
 
         wirelessTerminals.put(name, new WTDefinition(open, WTMenuHostFactory, menuType, item, wut));
         terminalNames.add(name);
