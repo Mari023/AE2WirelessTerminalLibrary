@@ -91,9 +91,9 @@ jobs:
           loaders: forge
           game-versions: 1.18.2
           dependencies: |
-            cloth-config-forge | depends
+            cloth-config | depends
             applied-energistics-2 | depends
-            architectury-forge | depends
+            architectury-api | depends
             curios | suggests
           java: 17
           version: ${{ github.event.release.tag_name }}-forge
