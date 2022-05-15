@@ -15,7 +15,10 @@ import net.minecraft.world.level.Level;
 import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 
+import appeng.api.config.Settings;
+import appeng.api.config.ShowPatternProviders;
 import appeng.api.implementations.menuobjects.ItemMenuHost;
+import appeng.api.util.IConfigManager;
 import appeng.core.AEConfig;
 import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.menu.locator.MenuLocators;
@@ -106,5 +109,15 @@ public abstract class ItemWT extends WirelessTerminalItem implements IUniversalW
             return;
         CompoundTag wctTag = hostItem.getOrCreateTag();
         wctTag.putBoolean(key, b);
+    }
+
+    /**
+     * add config for wat (also needed for wut)
+     */
+    public IConfigManager getConfigManager(ItemStack target) {
+        var configManager = super.getConfigManager(target);
+        configManager.registerSetting(Settings.TERMINAL_SHOW_PATTERN_PROVIDERS, ShowPatternProviders.VISIBLE);
+        configManager.readFromNBT(target.getOrCreateTag().copy());
+        return configManager;
     }
 }
