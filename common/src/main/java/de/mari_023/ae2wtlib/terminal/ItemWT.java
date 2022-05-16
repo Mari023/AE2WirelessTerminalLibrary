@@ -42,7 +42,7 @@ public abstract class ItemWT extends WirelessTerminalItem implements IUniversalW
 
     @Override
     public boolean openFromInventory(Player player, int inventorySlot) {// TODO maybe remove this since it shouldn't get
-                                                                        // called anyways
+        // called anyways
         throw new IllegalStateException(
                 String.format("%s called openFromInventory() in slot %d with item %s", player, inventorySlot, this));
     }
@@ -116,8 +116,10 @@ public abstract class ItemWT extends WirelessTerminalItem implements IUniversalW
      */
     public IConfigManager getConfigManager(ItemStack target) {
         var configManager = super.getConfigManager(target);
-        configManager.registerSetting(Settings.TERMINAL_SHOW_PATTERN_PROVIDERS, ShowPatternProviders.VISIBLE);
-        configManager.readFromNBT(target.getOrCreateTag().copy());
+        if (WUTHandler.getCurrentTerminal(target).equals("pattern_access")) {
+            configManager.registerSetting(Settings.TERMINAL_SHOW_PATTERN_PROVIDERS, ShowPatternProviders.VISIBLE);
+            configManager.readFromNBT(target.getOrCreateTag().copy());
+        }
         return configManager;
     }
 }
