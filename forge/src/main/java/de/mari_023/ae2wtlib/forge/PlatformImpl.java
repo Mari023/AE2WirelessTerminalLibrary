@@ -63,6 +63,6 @@ public class PlatformImpl {
     }
 
     public static boolean preventRemoteMovement(ItemEntity item) {
-        return !item.getPersistentData().contains("PreventRemoteMovement");
+        return item.getPersistentData().contains("PreventRemoteMovement");
     }
 }
