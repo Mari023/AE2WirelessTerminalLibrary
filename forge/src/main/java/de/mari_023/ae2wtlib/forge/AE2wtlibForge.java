@@ -1,5 +1,6 @@
 package de.mari_023.ae2wtlib.forge;
 
+import de.mari_023.ae2wtlib.wct.magnet_card.config.MagnetMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -39,7 +40,8 @@ public class AE2wtlibForge {
                 (RegistryEvent.Register<MenuType<?>> event) -> event.getRegistry().registerAll(
                         WCTMenu.TYPE,
                         WATMenu.TYPE,
-                        WETMenu.TYPE));
+                        WETMenu.TYPE,
+                        MagnetMenu.TYPE));
         AE2wtlib.onAe2Initialized();
     }
 }
