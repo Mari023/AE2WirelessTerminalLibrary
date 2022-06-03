@@ -1,6 +1,5 @@
 package de.mari_023.ae2wtlib.forge;
 
-import de.mari_023.ae2wtlib.wct.magnet_card.config.MagnetMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -16,6 +15,7 @@ import de.mari_023.ae2wtlib.AE2wtlibConfig;
 import de.mari_023.ae2wtlib.forge.curio.CurioLocator;
 import de.mari_023.ae2wtlib.wat.WATMenu;
 import de.mari_023.ae2wtlib.wct.WCTMenu;
+import de.mari_023.ae2wtlib.wct.magnet_card.config.MagnetMenu;
 import de.mari_023.ae2wtlib.wet.WETMenu;
 
 import appeng.menu.locator.MenuLocators;

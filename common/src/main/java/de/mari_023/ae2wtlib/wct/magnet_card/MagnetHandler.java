@@ -27,9 +27,13 @@ import appeng.api.upgrades.IUpgradeableItem;
 public class MagnetHandler {
     public void doMagnet(MinecraftServer server) {
         for (ServerPlayer player : server.getPlayerList().getPlayers()) {
-            handleMagnet(player);
-            sendRestockAble(player);
+            doMagnet(player);
         }
+    }
+
+    public static void doMagnet(ServerPlayer player) {
+        handleMagnet(player);
+        sendRestockAble(player);
     }
 
     private static void sendRestockAble(ServerPlayer player) {
