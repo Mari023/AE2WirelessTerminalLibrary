@@ -3,8 +3,9 @@ package de.mari_023.ae2wtlib;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 
+import de.mari_023.ae2wtlib.hotkeys.MagnetHotkeyAction;
+import de.mari_023.ae2wtlib.hotkeys.RestockHotkeyAction;
 import de.mari_023.ae2wtlib.networking.c2s.CycleTerminalPacket;
-import de.mari_023.ae2wtlib.networking.c2s.HotkeyPacket;
 import de.mari_023.ae2wtlib.networking.c2s.ServerNetworkManager;
 import de.mari_023.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
 import de.mari_023.ae2wtlib.wat.ItemWAT;
@@ -19,8 +20,10 @@ import de.mari_023.ae2wtlib.wut.ItemWUT;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 import appeng.api.features.GridLinkables;
+import appeng.api.features.HotkeyAction;
 import appeng.api.upgrades.Upgrades;
 import appeng.core.definitions.AEItems;
+import appeng.hotkeys.HotkeyActions;
 import appeng.items.tools.powered.WirelessTerminalItem;
 
 public class AE2wtlib {
@@ -41,7 +44,8 @@ public class AE2wtlib {
         WUTHandler.addTerminal("crafting",
                 ((IUniversalWirelessTerminalItem) AEItems.WIRELESS_CRAFTING_TERMINAL.asItem())::tryOpen,
                 WCTMenuHost::new, WCTMenu.TYPE,
-                (IUniversalWirelessTerminalItem) AEItems.WIRELESS_CRAFTING_TERMINAL.asItem());
+                (IUniversalWirelessTerminalItem) AEItems.WIRELESS_CRAFTING_TERMINAL.asItem(),
+                HotkeyAction.WIRELESS_TERMINAL);
 
         WUTHandler.addTerminal("pattern_encoding", PATTERN_ENCODING_TERMINAL::tryOpen, WETMenuHost::new, WETMenu.TYPE,
                 PATTERN_ENCODING_TERMINAL);
@@ -53,8 +57,8 @@ public class AE2wtlib {
         Platform.registerRecipes();
 
         ServerNetworkManager.registerServerBoundPacket(CycleTerminalPacket.NAME, CycleTerminalPacket::new);
-        ServerNetworkManager.registerServerBoundPacket(HotkeyPacket.NAME, HotkeyPacket::new);
-
+        HotkeyActions.register(new RestockHotkeyAction(), "ae2wtlib_restock");
+        HotkeyActions.register(new MagnetHotkeyAction(), "ae2wtlib_magnet");
     }
 
     public static void createItems() {

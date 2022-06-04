@@ -29,6 +29,5 @@ public class AE2wtlibClient {
         ClientNetworkManager.registerClientBoundPacket(UpdateWUTPackage.NAME, UpdateWUTPackage::new);
         ClientNetworkManager.registerClientBoundPacket(UpdateRestockPacket.NAME, UpdateRestockPacket::new);
         ClientNetworkManager.registerClientBoundPacket(RestockAmountPacket.NAME, RestockAmountPacket::new);
-        KeyBindings.registerKeyBindings();
     }
 }

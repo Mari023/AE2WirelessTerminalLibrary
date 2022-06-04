@@ -145,7 +145,7 @@ public class WUTHandler {
     public static final List<String> terminalNames = new ArrayList<>();
 
     public static void addTerminal(String name, ContainerOpener open, WTMenuHostFactory WTMenuHostFactory,
-            MenuType<?> menuType, IUniversalWirelessTerminalItem item) {
+            MenuType<?> menuType, IUniversalWirelessTerminalItem item, String hotkeyName) {
         if (terminalNames.contains(name))
             return;
 
@@ -154,10 +154,15 @@ public class WUTHandler {
         tag.putBoolean(name, true);
         wut.setTag(tag);
 
-        HotkeyActions.register(new Ae2WTLibLocatingService(name), "wireless_" + name + "_terminal");
+        HotkeyActions.register(new Ae2WTLibLocatingService(name), hotkeyName);
 
         wirelessTerminals.put(name, new WTDefinition(open, WTMenuHostFactory, menuType, item, wut));
         terminalNames.add(name);
+    }
+
+    public static void addTerminal(String name, ContainerOpener open, WTMenuHostFactory WTMenuHostFactory,
+            MenuType<?> menuType, IUniversalWirelessTerminalItem item) {
+        addTerminal(name, open, WTMenuHostFactory, menuType, item, "wireless_" + name + "_terminal");
     }
 
     @FunctionalInterface
