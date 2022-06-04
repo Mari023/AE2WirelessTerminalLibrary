@@ -37,11 +37,10 @@
   "item.ae2wtlib.wireless_universal_terminal": "Wireless Universal Terminal",
   "item.ae2wtlib.wireless_universal_terminal.desc": "Installed Terminals:",
 
-  "key.ae2wtlib.wct": "Open Wireless Crafting Terminal",
-  "key.ae2wtlib.wpt": "Open Wireless Pattern Terminal",
-  "key.ae2wtlib.wit": "Open Wireless Interface Terminal",
-  "key.ae2wtlib.toggleRestock": "Toggle Restock",
-  "key.ae2wtlib.toggleMagnet": "Toggle Magnet Card",
+  "key.ae2.wireless_pattern_access_terminal": "Open Wireless Pattern Access Terminal",
+  "key.ae2.wireless_pattern_encoding_terminal": "Open Wireless Pattern Encoding Terminal",
+  "key.ae2.ae2wtlib_restock": "Toggle Restock",
+  "key.ae2.ae2wtlib_magnet": "Toggle Magnet Card",
 
   "text.autoconfig.de/mari_023/ae2wtlib.title": "AE2 Wireless Terminals",
 

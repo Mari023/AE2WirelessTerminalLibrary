@@ -23,9 +23,8 @@
   "item.ae2wtlib.wireless_universal_terminal": "无线通用终端",
   "item.ae2wtlib.wireless_universal_terminal.desc": "已安装的终端:",
 
-  "key.ae2wtlib.wct": "打开无线合成终端",
-  "key.ae2wtlib.wpt": "打开无线样板终端",
-  "key.ae2wtlib.wit": "打开无线接口终端",
-  "key.ae2wtlib.toggleRestock": "切换快捷栏补货",
-  "key.ae2wtlib.toggleMagnet": "切换磁卡"
+  "key.ae2.wireless_pattern_access_terminal": "打开无线样板终端",
+  "key.ae2.wireless_pattern_encoding_terminal": "打开无线接口终端",
+  "key.ae2.ae2wtlib_restock": "切换快捷栏补货",
+  "key.ae2.ae2wtlib_magnet": "切换磁卡"
 }

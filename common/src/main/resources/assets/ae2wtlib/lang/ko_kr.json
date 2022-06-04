@@ -26,11 +26,10 @@
   "item.ae2wtlib.wireless_universal_terminal": "무선 범용 터미널",
   "item.ae2wtlib.wireless_universal_terminal.desc": "설치된 터미널:",
 
-  "key.ae2wtlib.wct": "무선 조합 터미널 열기",
-  "key.ae2wtlib.wpt": "무선 패턴 터미널 열기",
-  "key.ae2wtlib.wit": "무선 인터페이스 터미널 열기",
-  "key.ae2wtlib.toggleRestock": "보충 토글",
-  "key.ae2wtlib.toggleMagnet": "마그넷 카드 토글",
+  "key.ae2.wireless_pattern_access_terminal": "무선 패턴 터미널 열기",
+  "key.ae2.wireless_pattern_encoding_terminal": "무선 인터페이스 터미널 열기",
+  "key.ae2.ae2wtlib_restock": "보충 토글",
+  "key.ae2.ae2wtlib_magnet": "마그넷 카드 토글",
 
   "text.autoconfig.de/mari_023/ae2wtlib.title": "AE2 무선 터미널",
   "text.autoconfig.de/mari_023/ae2wtlib.option.outOfRangePowerMultiplier": "범위 밖 전력 소모 배율",

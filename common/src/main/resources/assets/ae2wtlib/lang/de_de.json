@@ -35,11 +35,10 @@
   "item.ae2wtlib.wireless_universal_terminal": "Drahtlose Universalkonsole",
   "item.ae2wtlib.wireless_universal_terminal.desc": "Installierte Konsolen:",
 
-  "key.ae2wtlib.wct": "Drahtlose Fertigungskonsole Öffnen",
-  "key.ae2wtlib.wpt": "Drahtlose Schablonenkonsole Öffnen",
-  "key.ae2wtlib.wit": "Drahtlose Schnittstellenkonsole Öffnen",
-  "key.ae2wtlib.toggleRestock": "Nachfüllen umschalten",
-  "key.ae2wtlib.toggleMagnet": "Magnet Karte umschalten",
+  "key.ae2.wireless_pattern_access_terminal": "Drahtlose Schablonenkonsole Öffnen",
+  "key.ae2.wireless_pattern_encoding_terminal": "Drahtlose Schnittstellenkonsole Öffnen",
+  "key.ae2.ae2wtlib_restock": "Nachfüllen umschalten",
+  "key.ae2.ae2wtlib_magnet": "Magnet Karte umschalten",
 
   "text.autoconfig.de/mari_023/ae2wtlib.title": "AE2 Wireless Terminals",
   "text.autoconfig.de/mari_023/ae2wtlib.option.outOfRangePowerMultiplier": "Leistungsmultiplikator außer Reichweite",
