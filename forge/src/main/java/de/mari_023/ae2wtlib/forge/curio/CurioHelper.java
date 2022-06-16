@@ -5,10 +5,8 @@ import java.util.List;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
-import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotResult;
@@ -37,16 +35,11 @@ public final class CurioHelper {
 
     @Nullable
     public static MenuLocator findTerminal(Player player, String terminalName) {
-        List<SlotResult> slotResults = CuriosApi.getCuriosHelper().findCurios(player, AE2wtlib.UNIVERSAL_TERMINAL);
-        for (SlotResult slotResult : slotResults) {
-            if (WUTHandler.hasTerminal(slotResult.stack(), terminalName)) {
-                return new CurioLocator(slotResult.slotContext().identifier(), slotResult.slotContext().index());
-            }
+        var slotResult = CuriosApi.getCuriosHelper().findFirstCurio(player,
+                stack -> WUTHandler.hasTerminal(stack, terminalName));
+        if (slotResult.isPresent() && slotResult.get().slotContext() != null) {
+            return new CurioLocator(slotResult.get().slotContext());
         }
-
-        return CuriosApi.getCuriosHelper()
-                .findFirstCurio(player, (Item) WUTHandler.wirelessTerminals.get(terminalName).item())
-                .map(result -> new CurioLocator(result.slotContext().identifier(), result.slotContext().index()))
-                .orElse(null);
+        return null;
     }
 }
