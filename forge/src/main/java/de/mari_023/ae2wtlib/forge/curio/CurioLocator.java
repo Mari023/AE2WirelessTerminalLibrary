@@ -10,6 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import de.mari_023.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotContext;
+import top.theillusivec4.curios.api.SlotResult;
 
 import appeng.api.implementations.menuobjects.ItemMenuHost;
 import appeng.core.AELog;
@@ -47,7 +48,12 @@ public record CurioLocator(String identifier, int index) implements MenuLocator 
     }
 
     public ItemStack locateItem(Player player) {
-        return CuriosApi.getCuriosHelper().findCurios(player, identifier).get(index).stack();
+        var slotResults = CuriosApi.getCuriosHelper().findCurios(player, identifier);
+        for (SlotResult result : slotResults) {
+            if (result.slotContext().index() == index)
+                return result.stack();
+        }
+        return ItemStack.EMPTY;
     }
 
     public void writeToPacket(FriendlyByteBuf buf) {
