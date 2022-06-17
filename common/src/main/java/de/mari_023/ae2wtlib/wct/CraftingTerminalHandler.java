@@ -181,6 +181,10 @@ public class CraftingTerminalHandler {
                 + (restockAbleItems.get(stack.getItem()) == null ? 0 : restockAbleItems.get(stack.getItem()));
     }
 
+    public boolean isRestockable(ItemStack stack) {
+        return restockAbleItems.containsKey(stack.getItem());
+    }
+
     public void setRestockAbleItems(HashMap<Item, Long> items) {
         restockAbleItems = items;
     }

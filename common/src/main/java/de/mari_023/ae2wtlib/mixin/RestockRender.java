@@ -25,12 +25,12 @@ public class RestockRender {
     /** TODO maybe hook into {@link Gui#renderSlot(int, int, float, Player, ItemStack, int)} instead **/
     @Inject(method = "renderGuiItemDecorations(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;II)V", at = @At(value = "INVOKE"), cancellable = true)
     public void renderGuiItemOverlay(Font renderer, ItemStack stack, int x, int y, CallbackInfo ci) {
-        if (Minecraft.getInstance().player == null)
+        if (Minecraft.getInstance().player == null || Minecraft.getInstance().player.isCreative())
             return;
         CraftingTerminalHandler handler = CraftingTerminalHandler
                 .getCraftingTerminalHandler(Minecraft.getInstance().player);
-        if (Minecraft.getInstance().player.isCreative() || !ItemWT.getBoolean(handler.getCraftingTerminal(), "restock")
-                || !handler.inRange() || stack.getCount() == 1)
+        if (stack.getCount() == 1 || handler.isRestockable(stack)
+                || !ItemWT.getBoolean(handler.getCraftingTerminal(), "restock") || !handler.inRange())
             return;
         ((ItemRenderer) (Object) this).renderGuiItemDecorations(renderer, stack, x, y,
                 ReadableNumberConverter.format(handler.getAccessibleAmount(stack), 3));
