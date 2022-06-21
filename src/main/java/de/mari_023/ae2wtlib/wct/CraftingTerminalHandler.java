@@ -134,7 +134,7 @@ public class CraftingTerminalHandler {
         ItemStack is = getCraftingTerminal();
         if (is.isEmpty())
             return false;
-        if (((IUpgradeableItem) is.getItem()).getUpgrades(is).isInstalled(AE2wtlib.INFINITY_BOOSTER))
+        if (((IUpgradeableItem) is.getItem()).getUpgrades(is).isInstalled(AE2wtlib.QUANTUM_LINK_CARD))
             return true;
         sqRange = Double.MAX_VALUE;
 

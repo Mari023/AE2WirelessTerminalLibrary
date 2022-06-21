@@ -16,6 +16,7 @@ public class AE2wtlibSlotSemantics {
     public static final SlotSemantic OFFHAND = register("OFFHAND");
 
     public static final SlotSemantic TRASH = register("TRASH");
+    public static final SlotSemantic SINGULARITY = register("SINGULARITY");
 
     public static final SlotSemantic PICKUP_CONFIG = register("PICKUP_CONFIG");
     public static final SlotSemantic INSERT_CONFIG = register("INSERT_CONFIG");

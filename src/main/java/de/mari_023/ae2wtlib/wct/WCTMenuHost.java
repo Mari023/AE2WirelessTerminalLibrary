@@ -44,8 +44,7 @@ public class WCTMenuHost extends WTMenuHost implements IViewCellStorage, ISegmen
             return craftingGrid;
         if (id.equals(INV_TRASH))
             return trash;
-        else
-            return null;
+        return super.getSubInventory(id);
     }
 
     @Override

@@ -2,6 +2,8 @@ package de.mari_023.ae2wtlib.terminal;
 
 import java.util.function.BiConsumer;
 
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.entity.player.Player;
@@ -24,11 +26,14 @@ import appeng.util.inv.InternalInventoryHost;
 
 public abstract class WTMenuHost extends WirelessTerminalMenuHost implements InternalInventoryHost {
 
+    private final AppEngInternalInventory singularity = new AppEngInternalInventory(this, 1);
+
     private final AppEngInternalInventory viewCellInventory;
     private final Player myPlayer;
     private boolean rangeCheck;
     private IGridNode securityTerminalNode;
     private IUpgradeInventory upgradeInventory;
+    public static final ResourceLocation INV_SINGULARITY = new ResourceLocation(AE2wtlib.MOD_NAME, "singularity");
 
     public WTMenuHost(final Player player, @Nullable Integer inventorySlot, final ItemStack is,
             BiConsumer<Player, ISubMenu> returnToMainMenu) {
@@ -50,11 +55,15 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost implements Int
     }
 
     protected void readFromNbt() {
-        viewCellInventory.readFromNBT(getItemStack().getOrCreateTag(), "viewcells");
+        CompoundTag tag = getItemStack().getOrCreateTag();
+        viewCellInventory.readFromNBT(tag, "viewcells");
+        singularity.readFromNBT(tag, "singularity");
     }
 
     public void saveChanges() {
-        viewCellInventory.writeToNBT(getItemStack().getOrCreateTag(), "viewcells");
+        CompoundTag tag = getItemStack().getOrCreateTag();
+        viewCellInventory.writeToNBT(tag, "viewcells");
+        singularity.writeToNBT(tag, "singularity");
     }
 
     @Override
@@ -76,7 +85,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost implements Int
     }
 
     public boolean hasBoosterCard() {
-        return upgradeInventory.isInstalled(AE2wtlib.INFINITY_BOOSTER);
+        return upgradeInventory.isInstalled(AE2wtlib.QUANTUM_LINK_CARD);
     }
 
     public Player getPlayer() {
@@ -94,5 +103,13 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost implements Int
         } else {
             super.setPowerDrainPerTick(AE2wtlibConfig.INSTANCE.getOutOfRangePower());
         }
+    }
+
+
+    @Nullable
+    public InternalInventory getSubInventory(ResourceLocation id) {
+        if (id.equals(INV_SINGULARITY))
+            return singularity;
+        return null;
     }
 }

@@ -35,7 +35,7 @@ public class AE2wtlib {
     public static ItemWAT PATTERN_ACCESS_TERMINAL;
     public static ItemWUT UNIVERSAL_TERMINAL;
 
-    public static Item INFINITY_BOOSTER;
+    public static Item QUANTUM_LINK_CARD;
     public static Item MAGNET_CARD;
 
     public static void onAe2Initialized() {
@@ -65,11 +65,11 @@ public class AE2wtlib {
         PATTERN_ENCODING_TERMINAL = new ItemWET();
         PATTERN_ACCESS_TERMINAL = new ItemWAT();
         UNIVERSAL_TERMINAL = new ItemWUT();
-        INFINITY_BOOSTER = Upgrades
+        QUANTUM_LINK_CARD = Upgrades
                 .createUpgradeCardItem(new Item.Properties().tab(AE2wtlib.ITEM_GROUP).stacksTo(1));
         MAGNET_CARD = Upgrades.createUpgradeCardItem(new Item.Properties().tab(AE2wtlib.ITEM_GROUP).stacksTo(1));
 
-        Platform.registerItem("infinity_booster_card", INFINITY_BOOSTER);
+        Platform.registerItem("quantum_link_card", QUANTUM_LINK_CARD);
         Platform.registerItem("magnet_card", MAGNET_CARD);
         Platform.registerItem("wireless_pattern_encoding_terminal", PATTERN_ENCODING_TERMINAL);
         Platform.registerItem("wireless_pattern_access_terminal", PATTERN_ACCESS_TERMINAL);
@@ -85,10 +85,10 @@ public class AE2wtlib {
         Upgrades.add(AEItems.ENERGY_CARD, PATTERN_ACCESS_TERMINAL, 2);
         Upgrades.add(AEItems.ENERGY_CARD, PATTERN_ENCODING_TERMINAL, 2);
 
-        Upgrades.add(INFINITY_BOOSTER, AEItems.WIRELESS_CRAFTING_TERMINAL, 1);
-        Upgrades.add(INFINITY_BOOSTER, PATTERN_ENCODING_TERMINAL, 1);
-        Upgrades.add(INFINITY_BOOSTER, PATTERN_ACCESS_TERMINAL, 1);
-        Upgrades.add(INFINITY_BOOSTER, UNIVERSAL_TERMINAL, 1);
+        Upgrades.add(QUANTUM_LINK_CARD, AEItems.WIRELESS_CRAFTING_TERMINAL, 1);
+        Upgrades.add(QUANTUM_LINK_CARD, PATTERN_ENCODING_TERMINAL, 1);
+        Upgrades.add(QUANTUM_LINK_CARD, PATTERN_ACCESS_TERMINAL, 1);
+        Upgrades.add(QUANTUM_LINK_CARD, UNIVERSAL_TERMINAL, 1);
 
         Upgrades.add(MAGNET_CARD, AEItems.WIRELESS_CRAFTING_TERMINAL, 1);
         Upgrades.add(MAGNET_CARD, UNIVERSAL_TERMINAL, 1);
