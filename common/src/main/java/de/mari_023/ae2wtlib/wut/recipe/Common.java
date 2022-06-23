@@ -2,8 +2,6 @@ package de.mari_023.ae2wtlib.wut.recipe;
 
 import java.util.Iterator;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -35,7 +33,6 @@ public abstract class Common implements CraftingRecipe {
         this.id = id;
     }
 
-    @Environment(EnvType.CLIENT)
     @Override
     public boolean canCraftInDimensions(int width, int height) {
         return width > 1 || height > 1;
