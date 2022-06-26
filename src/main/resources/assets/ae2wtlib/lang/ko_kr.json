@@ -6,8 +6,6 @@
   "gui.ae2wtlib.emptytrash": "휴지통 비우기",
   "gui.ae2wtlib.emptytrash.desc": "휴지통 슬롯의 내용물을 삭제합니다.",
 
-  "item.ae2wtlib.infinity_booster_card": "무한 부스터 카드",
-  "item.ae2wtlib.infinity_booster_card.desc": "무선 터미널 범위를 무한하게 확장합니다.",
   "item.ae2wtlib.magnet_card": "마그넷 카드",
   "item.ae2wtlib.magnet_card.desc": "무선 조합 터미널용 마그넷 업그레이드 카드입니다.",
 

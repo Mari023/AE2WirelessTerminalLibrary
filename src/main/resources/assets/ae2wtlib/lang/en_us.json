@@ -6,8 +6,8 @@
   "gui.ae2wtlib.emptytrash": "Empty Trash",
   "gui.ae2wtlib.emptytrash.desc": "Delete contents of the Trash slot",
 
-  "item.ae2wtlib.infinity_booster_card": "Infinity Booster Card",
-  "item.ae2wtlib.infinity_booster_card.desc": "Expands Wireless Terminals to infinity",
+  "item.ae2wtlib.quantum_bridge_card": "Quantum Bridge Card",
+  "item.ae2wtlib.quantum_bridge_card.desc": "Allows wireless terminals to connect to a quantum bridge, allowing for unlimited range",
   "item.ae2wtlib.magnet_card": "Magnet Card",
   "item.ae2wtlib.magnet_card.desc": "Magnet upgrade for the Wireless Crafting Terminal",
 

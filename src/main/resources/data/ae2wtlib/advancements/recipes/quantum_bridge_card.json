@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:recipes/root",
   "rewards": {
-    "recipes": ["ae2wtlib:infinity_booster_card"]
+    "recipes": ["ae2wtlib:quantum_bridge_card"]
   },
   "criteria": {
     "has_wct": {
@@ -37,7 +37,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "ae2wtlib:infinity_booster_card"
+        "recipe": "ae2wtlib:quantum_bridge_card"
       }
     }
   },

@@ -6,8 +6,8 @@
   "gui.ae2wtlib.emptytrash": "Müll löschen",
   "gui.ae2wtlib.emptytrash.desc": "Löscht den Inhalt des Müll slots",
 
-  "item.ae2wtlib.infinity_booster_card": "Unendlicher Drahtlosverstärker",
-  "item.ae2wtlib.infinity_booster_card.desc": "Erweitert die Reichweite von Drahtloskonsolen ins unendliche",
+  "item.ae2wtlib.quantum_bridge_card": "Quantenbrückenkarte",
+  "item.ae2wtlib.quantum_bridge_card.desc": "Ermöglicht es Drahtloskonsolen sich mit Quantenbrücken zur verbinden. Ermöglicht unendliche Reichweite",
   "item.ae2wtlib.magnet_card": "Magnet Karte",
   "item.ae2wtlib.magnet_card.desc": "Magnet Upgrade für die Drahtlose Fertigungskonsole",
 

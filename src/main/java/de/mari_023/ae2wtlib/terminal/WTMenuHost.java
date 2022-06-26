@@ -85,7 +85,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost implements Int
     }
 
     public boolean hasBoosterCard() {
-        return upgradeInventory.isInstalled(AE2wtlib.QUANTUM_LINK_CARD);
+        return upgradeInventory.isInstalled(AE2wtlib.QUANTUM_BRIDGE_CARD);
     }
 
     public Player getPlayer() {

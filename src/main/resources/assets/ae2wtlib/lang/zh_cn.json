@@ -6,8 +6,6 @@
   "gui.ae2wtlib.emptytrash": "清空垃圾桶",
   "gui.ae2wtlib.emptytrash.desc": "删除垃圾桶内的物品",
 
-  "item.ae2wtlib.infinity_booster_card": "无限增幅卡",
-  "item.ae2wtlib.infinity_booster_card.desc": "允许你在世界各地访问无线终端",
   "item.ae2wtlib.magnet_card": "磁卡",
   "item.ae2wtlib.magnet_card.desc": "为无线合成终端安装磁卡",
 
