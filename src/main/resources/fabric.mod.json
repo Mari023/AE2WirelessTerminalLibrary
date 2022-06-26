@@ -16,7 +16,7 @@
   "entrypoints": {
     "ae2:client": ["de.mari_023.ae2wtlib.client.AE2wtlibClient"],
     "ae2": ["de.mari_023.ae2wtlib.AE2wtlibEntrypoint"],
-    "rei_plugins": [
+    "rei_client": [
       "de.mari_023.ae2wtlib.rei.Plugin"
     ],
     "modmenu": ["de.mari_023.ae2wtlib.ModMenuIntegration"]
