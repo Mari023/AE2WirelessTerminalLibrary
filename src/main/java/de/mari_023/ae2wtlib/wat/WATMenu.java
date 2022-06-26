@@ -1,5 +1,6 @@
 package de.mari_023.ae2wtlib.wat;
 
+import appeng.menu.implementations.PatternAccessTermMenu;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
 
@@ -10,11 +11,10 @@ import appeng.api.storage.ITerminalHost;
 import appeng.api.upgrades.IUpgradeInventory;
 import appeng.menu.SlotSemantics;
 import appeng.menu.ToolboxMenu;
-import appeng.menu.implementations.InterfaceTerminalMenu;
 import appeng.menu.implementations.MenuTypeBuilder;
 import appeng.menu.slot.RestrictedInputSlot;
 
-public class WATMenu extends InterfaceTerminalMenu {
+public class WATMenu extends PatternAccessTermMenu {
 
     public static final MenuType<WATMenu> TYPE = MenuTypeBuilder.create(WATMenu::new, WATMenuHost.class)
             .requirePermission(SecurityPermissions.BUILD).build("wireless_pattern_access_terminal");
