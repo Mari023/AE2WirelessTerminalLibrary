@@ -2,6 +2,7 @@ package de.mari_023.ae2wtlib.wct;
 
 import java.util.Objects;
 
+import appeng.menu.slot.RestrictedInputSlot;
 import com.mojang.datafixers.util.Pair;
 
 import net.fabricmc.api.EnvType;
@@ -110,6 +111,7 @@ public class WCTMenu extends CraftingTermMenu {
                 }
             }, AE2wtlibSlotSemantics.OFFHAND);
         addSlot(new AppEngSlot(wctGUIObject.getSubInventory(WCTMenuHost.INV_TRASH), 0), AE2wtlibSlotSemantics.TRASH);
+        addSlot(new RestrictedInputSlot(RestrictedInputSlot.PlacableItemType.QE_SINGULARITY, wctGUIObject.getSubInventory(WCTMenuHost.INV_SINGULARITY), 0), AE2wtlibSlotSemantics.SINGULARITY);
 
         registerClientAction(ACTION_DELETE, this::deleteTrashSlot);
         registerClientAction(MAGNET_MODE, MagnetMode.class, this::setMagnetMode);

@@ -349,7 +349,8 @@
           "AE2WTLIB_MAGNET_CARD",
           "AE2WTLIB_INFINITY_BOOSTER_CARD",
           "AE2WTLIB_PICKUP_CONFIG",
-          "AE2WTLIB_INSERT_CONFIG"
+          "AE2WTLIB_INSERT_CONFIG",
+          "AE2WTLIB_SINGULARITY"
         ]
       }
     },

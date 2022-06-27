@@ -44,6 +44,10 @@
     "AE2WTLIB_OFFHAND": {
       "left": 80,
       "bottom": 106
+    },
+    "AE2WTLIB_SINGULARITY": {
+      "left": 116,
+      "bottom": 106
     }
   },
   "text": {
