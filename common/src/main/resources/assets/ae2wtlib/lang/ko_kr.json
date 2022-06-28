@@ -21,7 +21,7 @@
   "gui.ae2wtlib.off": "끄기",
   "gui.ae2wtlib.on": "켜기",
   "gui.ae2wtlib.slot.magnetcard.desc": "마그넷 카드",
-  
+
   "gui.ae2wtlib.Magnet": "마그넷 필터",
   "gui.ae2wtlib.whitelist": "화이트리스트",
   "gui.ae2wtlib.blacklist": "블랙리스트",
@@ -43,11 +43,11 @@
   "key.ae2.ae2wtlib_magnet": "마그넷 카드 토글",
 
   "text.autoconfig.de/mari_023/ae2wtlib.title": "AE2 무선 터미널",
-  
+
   "text.autoconfig.de/mari_023/ae2wtlib.option.outOfRangePowerMultiplier": "범위 밖 전력 소모 배율",
   "text.autoconfig.de/mari_023/ae2wtlib.option.magnetCardRange": "마그넷 카드 범위",
   "text.autoconfig.de/mari_023/ae2wtlib.option.enableTrinket": "Trinkets 통합 사용",
-  
+
   "text.autoconfig.de/mari_023/ae2wtlib.option.outOfRangePowerMultiplier.@Tooltip": "값이 1보다 낮을 경우, 무선 액세스 지점에 있을 때 더 많은 전력을 소모하는 경우도 있습니다.",
   "text.autoconfig.de/mari_023/ae2wtlib.option.magnetCardRange.@Tooltip": ""
 }
