@@ -1,7 +1,6 @@
 {
   "itemGroup.ae2wtlib.general": "AE2 Drahtlose Zugangskonsolen (AE2WTLib)",
   "itemGroup.ae2wtlib": "AE2 Drahtlose Zugangskonsolen (AE2WTLib)",
-  "key.category.ae2wtlib": "AE2 Drahtlose Zugangskonsolen (AE2WTLib)",
 
   "gui.ae2wtlib.emptytrash": "Müll löschen",
   "gui.ae2wtlib.emptytrash.desc": "Löscht den Inhalt des Müll slots",

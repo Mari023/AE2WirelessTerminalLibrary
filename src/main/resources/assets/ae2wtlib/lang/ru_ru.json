@@ -1,7 +1,6 @@
 {
   "itemGroup.ae2wtlib.general": "AE2 Wireless Terminals (AE2WTLib)",
   "itemGroup.ae2wtlib": "AE2 Wireless Terminals (AE2WTLib)",
-  "key.category.ae2wtlib": "AE2 Wireless Terminals (AE2WTLib)",
 
   "gui.ae2wtlib.emptytrash": "Корзина",
   "gui.ae2wtlib.emptytrash.desc": "Удалить содержимое корзины",
