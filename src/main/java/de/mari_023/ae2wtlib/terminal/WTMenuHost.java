@@ -2,6 +2,7 @@ package de.mari_023.ae2wtlib.terminal;
 
 import java.util.function.BiConsumer;
 
+import appeng.me.cluster.implementations.QuantumCluster;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
@@ -26,17 +27,19 @@ import appeng.util.inv.InternalInventoryHost;
 
 public abstract class WTMenuHost extends WirelessTerminalMenuHost implements InternalInventoryHost {
 
-    private final AppEngInternalInventory singularity = new AppEngInternalInventory(this, 1);
+    private final AppEngInternalInventory singularityInventory = new AppEngInternalInventory(this, 1);
 
     private final AppEngInternalInventory viewCellInventory;
     private final Player myPlayer;
     private boolean rangeCheck;
     private IGridNode securityTerminalNode;
+
+    private IActionHost quantumBridge;
     private IUpgradeInventory upgradeInventory;
     public static final ResourceLocation INV_SINGULARITY = new ResourceLocation(AE2wtlib.MOD_NAME, "singularity");
 
     public WTMenuHost(final Player player, @Nullable Integer inventorySlot, final ItemStack is,
-            BiConsumer<Player, ISubMenu> returnToMainMenu) {
+                      BiConsumer<Player, ISubMenu> returnToMainMenu) {
         super(player, inventorySlot, is, returnToMainMenu);
         viewCellInventory = new AppEngInternalInventory(this, 5);
         myPlayer = player;
@@ -57,13 +60,13 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost implements Int
     protected void readFromNbt() {
         CompoundTag tag = getItemStack().getOrCreateTag();
         viewCellInventory.readFromNBT(tag, "viewcells");
-        singularity.readFromNBT(tag, "singularity");
+        singularityInventory.readFromNBT(tag, "singularity");
     }
 
     public void saveChanges() {
         CompoundTag tag = getItemStack().getOrCreateTag();
         viewCellInventory.writeToNBT(tag, "viewcells");
-        singularity.writeToNBT(tag, "singularity");
+        singularityInventory.writeToNBT(tag, "singularity");
     }
 
     @Override
@@ -81,11 +84,47 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost implements Int
 
     public boolean rangeCheck() {
         rangeCheck = super.rangeCheck();
-        return rangeCheck || hasBoosterCard();
+        return rangeCheck || isQuantumLinked();
     }
 
-    public boolean hasBoosterCard() {
+    public boolean hasQuantumUpgrade() {
         return upgradeInventory.isInstalled(AE2wtlib.QUANTUM_BRIDGE_CARD);
+    }
+
+    public boolean isQuantumLinked() {
+        if (getPlayer().getLevel().isClientSide()) return true;
+
+        if (!hasQuantumUpgrade()) return false;
+        long frequency = getQEFrequency();
+        if (frequency == 0) return false;
+        if (quantumBridge == null) {
+            if (!findQuantumBridge(frequency)) return false;
+        } else {
+            if (quantumBridge instanceof QuantumCluster quantumCluster) {
+                long frequencyOther = quantumCluster.getCenter().getQEFrequency();
+                if (!(frequencyOther == frequency || frequencyOther == -frequency))
+                    if (!findQuantumBridge(frequency)) return false;
+            } else if (!findQuantumBridge(frequency)) return false;
+        }
+        if(quantumBridge.getActionableNode() == null) return false;
+        return quantumBridge.getActionableNode().getGrid() == securityTerminalNode.getGrid();
+    }
+
+    private long getQEFrequency() {
+        final ItemStack is = singularityInventory.getStackInSlot(0);
+        if (!is.isEmpty()) {
+            final CompoundTag c = is.getTag();
+            if (c != null) {
+                return c.getLong("freq");
+            }
+        }
+        return 0;
+    }
+
+    private boolean findQuantumBridge(long frequency) {
+        quantumBridge = Locatables.quantumNetworkBridges().get(getPlayer().getLevel(), frequency);
+        if(quantumBridge == null) quantumBridge = Locatables.quantumNetworkBridges().get(getPlayer().getLevel(), -frequency);
+        return quantumBridge != null;
     }
 
     public Player getPlayer() {
@@ -109,7 +148,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost implements Int
     @Nullable
     public InternalInventory getSubInventory(ResourceLocation id) {
         if (id.equals(INV_SINGULARITY))
-            return singularity;
+            return singularityInventory;
         return null;
     }
 }
