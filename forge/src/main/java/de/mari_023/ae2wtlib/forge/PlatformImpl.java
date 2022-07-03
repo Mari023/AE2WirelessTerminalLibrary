@@ -37,7 +37,10 @@ public class PlatformImpl {
 
     @Nullable
     public static MenuLocator findTerminalFromAccessory(Player player, String terminalName) {
-        return CurioHelper.findTerminal(player, terminalName);
+        if (trinketsPresent()) {
+            return CurioHelper.findTerminal(player, terminalName);
+        }
+        return null;
     }
 
     public static CreativeModeTab getCreativeModeTab() {
