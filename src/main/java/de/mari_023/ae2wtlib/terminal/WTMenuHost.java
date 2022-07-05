@@ -88,7 +88,8 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost implements Int
     }
 
     public boolean hasQuantumUpgrade() {
-        return upgradeInventory.isInstalled(AE2wtlib.QUANTUM_BRIDGE_CARD);
+        /*return upgradeInventory.isInstalled(AE2wtlib.QUANTUM_BRIDGE_CARD);*/
+        return false;//FIXME quantum card
     }
 
     public boolean isQuantumLinked() {

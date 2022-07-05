@@ -130,12 +130,12 @@ public class CraftingTerminalHandler {
         return targetGrid = n.getGrid();
     }
 
-    public boolean inRange() {
+    public boolean inRange() {//FIXME quantum card
         ItemStack is = getCraftingTerminal();
         if (is.isEmpty())
             return false;
-        if (((IUpgradeableItem) is.getItem()).getUpgrades(is).isInstalled(AE2wtlib.QUANTUM_BRIDGE_CARD))
-            return true;
+        /*if (((IUpgradeableItem) is.getItem()).getUpgrades(is).isInstalled(AE2wtlib.QUANTUM_BRIDGE_CARD))
+            return true;*/
         sqRange = Double.MAX_VALUE;
 
         if (getTargetGrid() == null)

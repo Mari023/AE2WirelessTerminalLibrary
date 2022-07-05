@@ -65,11 +65,11 @@ public class AE2wtlib {
         PATTERN_ENCODING_TERMINAL = new ItemWET();
         PATTERN_ACCESS_TERMINAL = new ItemWAT();
         UNIVERSAL_TERMINAL = new ItemWUT();
-        QUANTUM_BRIDGE_CARD = Upgrades
-                .createUpgradeCardItem(new Item.Properties().tab(AE2wtlib.ITEM_GROUP).stacksTo(1));
+        /*QUANTUM_BRIDGE_CARD = Upgrades
+                .createUpgradeCardItem(new Item.Properties().tab(AE2wtlib.ITEM_GROUP).stacksTo(1));*/
         MAGNET_CARD = Upgrades.createUpgradeCardItem(new Item.Properties().tab(AE2wtlib.ITEM_GROUP).stacksTo(1));
 
-        Platform.registerItem("quantum_bridge_card", QUANTUM_BRIDGE_CARD);
+        //Platform.registerItem("quantum_bridge_card", QUANTUM_BRIDGE_CARD);
         Platform.registerItem("magnet_card", MAGNET_CARD);
         Platform.registerItem("wireless_pattern_encoding_terminal", PATTERN_ENCODING_TERMINAL);
         Platform.registerItem("wireless_pattern_access_terminal", PATTERN_ACCESS_TERMINAL);
@@ -85,10 +85,10 @@ public class AE2wtlib {
         Upgrades.add(AEItems.ENERGY_CARD, PATTERN_ACCESS_TERMINAL, 2);
         Upgrades.add(AEItems.ENERGY_CARD, PATTERN_ENCODING_TERMINAL, 2);
 
-        Upgrades.add(QUANTUM_BRIDGE_CARD, AEItems.WIRELESS_CRAFTING_TERMINAL, 1);
+        /*Upgrades.add(QUANTUM_BRIDGE_CARD, AEItems.WIRELESS_CRAFTING_TERMINAL, 1);
         Upgrades.add(QUANTUM_BRIDGE_CARD, PATTERN_ENCODING_TERMINAL, 1);
         Upgrades.add(QUANTUM_BRIDGE_CARD, PATTERN_ACCESS_TERMINAL, 1);
-        Upgrades.add(QUANTUM_BRIDGE_CARD, UNIVERSAL_TERMINAL, 1);
+        Upgrades.add(QUANTUM_BRIDGE_CARD, UNIVERSAL_TERMINAL, 1);*/
 
         Upgrades.add(MAGNET_CARD, AEItems.WIRELESS_CRAFTING_TERMINAL, 1);
         Upgrades.add(MAGNET_CARD, UNIVERSAL_TERMINAL, 1);
