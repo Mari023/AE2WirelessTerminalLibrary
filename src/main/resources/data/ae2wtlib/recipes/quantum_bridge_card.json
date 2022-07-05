@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["a a", " b "],
+  "key": {
+    "a": {
+      "item": "ae2:fluix_pearl"
+    },
+    "b": {
+      "item": "ae2:wireless_receiver"
+    }
+  },
+  "result": {
+    "item": "ae2wtlib:quantum_bridge_card"
+  }
+}

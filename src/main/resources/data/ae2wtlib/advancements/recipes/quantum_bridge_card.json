@@ -1,0 +1,45 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": ["ae2wtlib:quantum_bridge_card"]
+  },
+  "criteria": {
+    "has_wct": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "ae2:wireless_crafting_terminal"
+          }
+        ]
+      }
+    },
+    "has_wpt": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "ae2wtlib:wireless_pattern_encoding_terminal"
+          }
+        ]
+      }
+    },
+    "has_wit": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "ae2wtlib:wireless_pattern_access_terminal"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "ae2wtlib:quantum_bridge_card"
+      }
+    }
+  },
+  "requirements": [["has_wct", "has_wpt", "has_wit", "has_the_recipe"]]
+}
