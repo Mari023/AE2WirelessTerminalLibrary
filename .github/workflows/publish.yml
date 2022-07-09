@@ -42,7 +42,7 @@ jobs:
           name: fabric
           path: download
 
-      - uses: Kir-Antipov/mc-publish@v3.0
+      - uses: Kir-Antipov/mc-publish@v3.1
         with:
           modrinth-id: pNabrMMw
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
@@ -53,10 +53,16 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           loaders: fabric
           game-versions: 1.19
-          dependencies: |
+          curseforge-dependencies: |
             cloth-config | depends
             fabric-api | depends
             applied-energistics-2 | depends
+            roughly-enough-items | suggests
+            trinkets | suggests
+          modrinth-dependencies: |
+            cloth-config | depends
+            fabric-api | depends
+            ae2 | depends
             roughly-enough-items | suggests
             trinkets | suggests
           java: 17
