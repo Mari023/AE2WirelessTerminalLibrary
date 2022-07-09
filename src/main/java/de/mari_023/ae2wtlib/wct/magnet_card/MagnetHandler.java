@@ -80,7 +80,9 @@ public class MagnetHandler {
         if (player.isShiftKeyDown())
             return;
         for (ItemEntity entityItemNearby : entityItems) {
-            if (magnetHost.getPickupFilter().matchesFilter(AEItemKey.of(entityItemNearby.getItem()),
+            var item = AEItemKey.of(entityItemNearby.getItem());
+            if (item == null) continue;
+            if (magnetHost.getPickupFilter().matchesFilter(item,
                     magnetHost.getPickupMode())
                     && !Platform.preventRemoteMovement(entityItemNearby))
                 entityItemNearby.playerTouch(player);
