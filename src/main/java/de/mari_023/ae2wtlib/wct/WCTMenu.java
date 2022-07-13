@@ -42,13 +42,13 @@ public class WCTMenu extends CraftingTermMenu {
     public static final String MAGNET_MODE = "magnetMode";
     public static final String MAGNET_MENU = "magnetMenu";
 
-    private final WCTMenuHost wctGUIObject;
+    private final WCTMenuHost wctMenuHost;
 
     public WCTMenu(int id, final Inventory ip, final WCTMenuHost gui) {
         super(TYPE, id, ip, gui, true);
-        wctGUIObject = gui;
+        wctMenuHost = gui;
 
-        boolean isInOffhand = Integer.valueOf(40).equals(wctGUIObject.getSlot());
+        boolean isInOffhand = Integer.valueOf(40).equals(wctMenuHost.getSlot());
 
         SlotsWithTrinket[5] = addSlot(new Slot(getPlayerInventory(), 39, 0, 0) {
             @Environment(EnvType.CLIENT)
@@ -110,8 +110,8 @@ public class WCTMenu extends CraftingTermMenu {
                     return Pair.of(InventoryMenu.BLOCK_ATLAS, InventoryMenu.EMPTY_ARMOR_SLOT_SHIELD);
                 }
             }, AE2wtlibSlotSemantics.OFFHAND);
-        addSlot(new AppEngSlot(wctGUIObject.getSubInventory(WCTMenuHost.INV_TRASH), 0), AE2wtlibSlotSemantics.TRASH);
-        addSlot(new RestrictedInputSlot(RestrictedInputSlot.PlacableItemType.QE_SINGULARITY, wctGUIObject.getSubInventory(WCTMenuHost.INV_SINGULARITY), 0), AE2wtlibSlotSemantics.SINGULARITY);
+        addSlot(new AppEngSlot(wctMenuHost.getSubInventory(WCTMenuHost.INV_TRASH), 0), AE2wtlibSlotSemantics.TRASH);
+        addSlot(new RestrictedInputSlot(RestrictedInputSlot.PlacableItemType.QE_SINGULARITY, wctMenuHost.getSubInventory(WCTMenuHost.INV_SINGULARITY), 0), AE2wtlibSlotSemantics.SINGULARITY);
 
         registerClientAction(ACTION_DELETE, this::deleteTrashSlot);
         registerClientAction(MAGNET_MODE, MagnetMode.class, this::setMagnetMode);
@@ -120,7 +120,7 @@ public class WCTMenu extends CraftingTermMenu {
 
     @Override
     public IGridNode getNetworkNode() {
-        return wctGUIObject.getActionableNode();
+        return wctMenuHost.getActionableNode();
     }
 
     @Override
@@ -131,17 +131,17 @@ public class WCTMenu extends CraftingTermMenu {
     public void deleteTrashSlot() {
         if (isClientSide())
             sendClientAction(ACTION_DELETE);
-        Objects.requireNonNull(wctGUIObject.getSubInventory(WCTMenuHost.INV_TRASH)).setItemDirect(0, ItemStack.EMPTY);
+        Objects.requireNonNull(wctMenuHost.getSubInventory(WCTMenuHost.INV_TRASH)).setItemDirect(0, ItemStack.EMPTY);
     }
 
     private MagnetSettings magnetSettings;
 
     public MagnetSettings getMagnetSettings() {
-        return magnetSettings = MagnetHandler.getMagnetSettings(wctGUIObject.getItemStack());
+        return magnetSettings = MagnetHandler.getMagnetSettings(wctMenuHost.getItemStack());
     }
 
     public void saveMagnetSettings() {
-        MagnetHandler.saveMagnetSettings(wctGUIObject.getItemStack(), magnetSettings);
+        MagnetHandler.saveMagnetSettings(wctMenuHost.getItemStack(), magnetSettings);
     }
 
     public void setMagnetMode(MagnetMode mode) {
@@ -160,7 +160,7 @@ public class WCTMenu extends CraftingTermMenu {
     }
 
     public boolean isWUT() {
-        return wctGUIObject.getItemStack().getItem() instanceof ItemWUT;
+        return wctMenuHost.getItemStack().getItem() instanceof ItemWUT;
     }
 
     public final Slot[] SlotsWithTrinket = new Slot[46];

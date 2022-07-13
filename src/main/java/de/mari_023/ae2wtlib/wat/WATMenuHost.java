@@ -17,6 +17,7 @@ public class WATMenuHost extends WTMenuHost {
     public WATMenuHost(final Player ep, @Nullable Integer inventorySlot, final ItemStack is,
             BiConsumer<Player, ISubMenu> returnToMainMenu) {
         super(ep, inventorySlot, is, returnToMainMenu);
+        readFromNbt();
     }
 
     @Override

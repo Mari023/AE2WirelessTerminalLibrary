@@ -1,0 +1,10 @@
+{
+  "$schema": "schema.json",
+  "includes": ["../pattern_access_terminal.json"],
+  "slots": {
+    "AE2WTLIB_SINGULARITY": {
+      "left": 152,
+      "bottom": 106
+    }
+  }
+}

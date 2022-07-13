@@ -1,5 +1,8 @@
 package de.mari_023.ae2wtlib.wet;
 
+import appeng.menu.slot.RestrictedInputSlot;
+import de.mari_023.ae2wtlib.AE2wtlibSlotSemantics;
+import de.mari_023.ae2wtlib.wct.WCTMenuHost;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
 
@@ -15,19 +18,20 @@ public class WETMenu extends PatternEncodingTermMenu {
     public static final MenuType<WETMenu> TYPE = MenuTypeBuilder.create(WETMenu::new, WETMenuHost.class)
             .requirePermission(SecurityPermissions.CRAFT).build("wireless_pattern_encoding_terminal");
 
-    private final WETMenuHost WETGUIObject;
+    private final WETMenuHost wetMenuHost;
 
     public WETMenu(int id, final Inventory ip, final WETMenuHost gui) {
         super(TYPE, id, ip, gui, true);
-        WETGUIObject = gui;
+        wetMenuHost = gui;
+        addSlot(new RestrictedInputSlot(RestrictedInputSlot.PlacableItemType.QE_SINGULARITY, wetMenuHost.getSubInventory(WCTMenuHost.INV_SINGULARITY), 0), AE2wtlibSlotSemantics.SINGULARITY);
     }
 
     @Override
     public IGridNode getNetworkNode() {
-        return WETGUIObject.getActionableNode();
+        return wetMenuHost.getActionableNode();
     }
 
     public boolean isWUT() {
-        return WETGUIObject.getItemStack().getItem() instanceof ItemWUT;
+        return wetMenuHost.getItemStack().getItem() instanceof ItemWUT;
     }
 }

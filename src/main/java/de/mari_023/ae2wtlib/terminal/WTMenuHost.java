@@ -4,6 +4,7 @@ import java.util.function.BiConsumer;
 
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
+import appeng.api.inventories.ISegmentedInventory;
 import appeng.items.tools.powered.powersink.AEBasePoweredItem;
 import appeng.me.cluster.implementations.QuantumCluster;
 import net.minecraft.nbt.CompoundTag;
@@ -28,7 +29,7 @@ import appeng.menu.ISubMenu;
 import appeng.util.inv.AppEngInternalInventory;
 import appeng.util.inv.InternalInventoryHost;
 
-public abstract class WTMenuHost extends WirelessTerminalMenuHost implements InternalInventoryHost {
+public abstract class WTMenuHost extends WirelessTerminalMenuHost implements InternalInventoryHost, ISegmentedInventory {
 
     private final AppEngInternalInventory singularityInventory = new AppEngInternalInventory(this, 1);
 

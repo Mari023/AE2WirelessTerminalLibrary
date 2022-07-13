@@ -24,7 +24,7 @@ public class AE2wtlibClient implements IAEAddonEntrypoint {
     public void onAe2Initialized() {
         InitScreens.register(WCTMenu.TYPE, WCTScreen::new, "/screens/wtlib/wireless_crafting_terminal.json");
         InitScreens.register(WETMenu.TYPE, WETScreen::new, "/screens/wtlib/wireless_pattern_encoding_terminal.json");
-        InitScreens.register(WATMenu.TYPE, WATScreen::new, "/screens/pattern_access_terminal.json");
+        InitScreens.register(WATMenu.TYPE, WATScreen::new, "/screens/wtlib/wireless_pattern_access_terminal.json");
         InitScreens.register(MagnetMenu.TYPE, MagnetScreen::new, "/screens/wtlib/magnet.json");
 
         ClientNetworkManager.registerClientBoundPacket(UpdateWUTPackage.NAME, UpdateWUTPackage::new);
