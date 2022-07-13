@@ -2,6 +2,9 @@ package de.mari_023.ae2wtlib.terminal;
 
 import java.util.function.BiConsumer;
 
+import appeng.api.config.Actionable;
+import appeng.api.config.PowerMultiplier;
+import appeng.items.tools.powered.powersink.AEBasePoweredItem;
 import appeng.me.cluster.implementations.QuantumCluster;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -84,12 +87,11 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost implements Int
 
     public boolean rangeCheck() {
         rangeCheck = super.rangeCheck();
-        return rangeCheck || isQuantumLinked();
+        return isQuantumLinked() || rangeCheck;
     }
 
     public boolean hasQuantumUpgrade() {
-        /*return upgradeInventory.isInstalled(AE2wtlib.QUANTUM_BRIDGE_CARD);*/
-        return false;//FIXME quantum card
+        return upgradeInventory.isInstalled(AE2wtlib.QUANTUM_BRIDGE_CARD);
     }
 
     public boolean isQuantumLinked() {
@@ -142,6 +144,24 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost implements Int
             super.setPowerDrainPerTick(powerDrainPerTick);
         } else {
             super.setPowerDrainPerTick(AE2wtlibConfig.INSTANCE.getOutOfRangePower());
+        }
+    }
+
+    public boolean drainPower() {
+        if(!super.drainPower()) return false;
+        recharge();
+        return true;
+    }
+
+    private void recharge() {
+        if(quantumBridge == null) return;
+        if(getItemStack().getItem() instanceof AEBasePoweredItem item) {
+            double currentPower = item.getAECurrentPower(getItemStack());
+            double maxPower = item.getAEMaxPower(getItemStack());
+            double missing = maxPower - currentPower;
+            if(getActionableNode() == null) return;
+            double extracted = getActionableNode().getGrid().getEnergyService().extractAEPower(missing, Actionable.MODULATE, PowerMultiplier.ONE);
+            item.injectAEPower(getItemStack(), extracted, Actionable.MODULATE);
         }
     }
 
