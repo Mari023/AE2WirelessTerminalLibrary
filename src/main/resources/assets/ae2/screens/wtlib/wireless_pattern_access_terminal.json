@@ -3,8 +3,20 @@
   "includes": ["../pattern_access_terminal.json"],
   "slots": {
     "AE2WTLIB_SINGULARITY": {
-      "left": 152,
-      "bottom": 106
+      "left": 173,
+      "bottom": 93
+    }
+  },
+  "images": {
+    "singularityBackground": {
+      "texture": "wtlib/guis/extras.png",
+      "srcRect": [0, 0, 23, 23]
+    }
+  },
+  "widgets": {
+    "singularityBackground": {
+      "left": 172,
+      "bottom": 94
     }
   }
 }

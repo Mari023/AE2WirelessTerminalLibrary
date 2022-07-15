@@ -1,6 +1,7 @@
 package de.mari_023.ae2wtlib.wat;
 
 import appeng.client.gui.me.patternaccess.PatternAccessTermScreen;
+import de.mari_023.ae2wtlib.terminal.ImageWidget;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -21,5 +22,6 @@ public class WATScreen extends PatternAccessTermScreen<WATMenu> implements IUniv
         widgets.add("upgrades", new UpgradesPanel(getMenu().getSlots(SlotSemantics.UPGRADE), getMenu().getHost()));
         if (getMenu().getToolbox().isPresent())
             widgets.add("toolbox", new ToolboxPanel(style, getMenu().getToolbox().getName()));
+        widgets.add("singularityBackground", new ImageWidget(style.getImage("singularityBackground")));
     }
 }

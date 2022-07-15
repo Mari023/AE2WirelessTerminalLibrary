@@ -6,12 +6,22 @@
       "$comment": "The upgrade panel found on some screens",
       "right": -2,
       "top": 107
+    },
+    "singularityBackground": {
+      "left": 76,
+      "bottom": 106
     }
   },
   "slots": {
     "AE2WTLIB_SINGULARITY": {
-      "left": 152,
-      "bottom": 106
+      "left": 80,
+      "bottom": 102
+    }
+  },
+  "images": {
+    "singularityBackground": {
+      "texture": "wtlib/guis/extras.png",
+      "srcRect": [24, 0, 24, 21]
     }
   }
 }
