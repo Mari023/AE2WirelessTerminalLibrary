@@ -43,8 +43,6 @@ public class AE2wtlib {
     public static Item MAGNET_CARD;
 
     public static void onAe2Initialized() {
-        createItems();
-
         WUTHandler.addTerminal("crafting",
                 ((IUniversalWirelessTerminalItem) AEItems.WIRELESS_CRAFTING_TERMINAL.asItem())::tryOpen,
                 WCTMenuHost::new, WCTMenu.TYPE,

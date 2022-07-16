@@ -5,8 +5,6 @@ import java.util.Objects;
 import appeng.menu.slot.RestrictedInputSlot;
 import com.mojang.datafixers.util.Pair;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
@@ -32,11 +30,13 @@ import appeng.menu.implementations.MenuTypeBuilder;
 import appeng.menu.me.items.CraftingTermMenu;
 import appeng.menu.slot.AppEngSlot;
 import appeng.menu.slot.DisabledSlot;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class WCTMenu extends CraftingTermMenu {
-
+    public static final String ID = "wireless_crafting_terminal";
     public static final MenuType<WCTMenu> TYPE = MenuTypeBuilder.create(WCTMenu::new, WCTMenuHost.class)
-            .requirePermission(SecurityPermissions.CRAFT).build("wireless_crafting_terminal");
+            .requirePermission(SecurityPermissions.CRAFT).build(ID);
 
     public static final String ACTION_DELETE = "delete";
     public static final String MAGNET_MODE = "magnetMode";
@@ -51,7 +51,7 @@ public class WCTMenu extends CraftingTermMenu {
         boolean isInOffhand = Integer.valueOf(40).equals(wctMenuHost.getSlot());
 
         SlotsWithTrinket[5] = addSlot(new Slot(getPlayerInventory(), 39, 0, 0) {
-            @Environment(EnvType.CLIENT)
+            @OnlyIn(Dist.CLIENT)
             public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
                 return Pair.of(InventoryMenu.BLOCK_ATLAS, InventoryMenu.EMPTY_ARMOR_SLOT_HELMET);
             }
@@ -63,7 +63,7 @@ public class WCTMenu extends CraftingTermMenu {
             }
         }, AE2wtlibSlotSemantics.HELMET);
         SlotsWithTrinket[6] = addSlot(new Slot(getPlayerInventory(), 38, 0, 0) {
-            @Environment(EnvType.CLIENT)
+            @OnlyIn(Dist.CLIENT)
             public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
                 return Pair.of(InventoryMenu.BLOCK_ATLAS, InventoryMenu.EMPTY_ARMOR_SLOT_CHESTPLATE);
             }
@@ -74,7 +74,7 @@ public class WCTMenu extends CraftingTermMenu {
             }
         }, AE2wtlibSlotSemantics.CHESTPLATE);
         SlotsWithTrinket[7] = addSlot(new Slot(getPlayerInventory(), 37, 0, 0) {
-            @Environment(EnvType.CLIENT)
+            @OnlyIn(Dist.CLIENT)
             public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
                 return Pair.of(InventoryMenu.BLOCK_ATLAS, InventoryMenu.EMPTY_ARMOR_SLOT_LEGGINGS);
             }
@@ -85,7 +85,7 @@ public class WCTMenu extends CraftingTermMenu {
             }
         }, AE2wtlibSlotSemantics.LEGGINGS);
         SlotsWithTrinket[8] = addSlot(new Slot(getPlayerInventory(), 36, 0, 0) {
-            @Environment(EnvType.CLIENT)
+            @OnlyIn(Dist.CLIENT)
             public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
                 return Pair.of(InventoryMenu.BLOCK_ATLAS, InventoryMenu.EMPTY_ARMOR_SLOT_BOOTS);
             }
@@ -98,14 +98,14 @@ public class WCTMenu extends CraftingTermMenu {
 
         if (isInOffhand)
             SlotsWithTrinket[45] = addSlot(new DisabledSlot(getPlayerInventory(), Inventory.SLOT_OFFHAND) {
-                @Environment(EnvType.CLIENT)
+                @OnlyIn(Dist.CLIENT)
                 public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
                     return Pair.of(InventoryMenu.BLOCK_ATLAS, InventoryMenu.EMPTY_ARMOR_SLOT_SHIELD);
                 }
             }, AE2wtlibSlotSemantics.OFFHAND);
         else
             SlotsWithTrinket[45] = addSlot(new Slot(getPlayerInventory(), Inventory.SLOT_OFFHAND, 0, 0) {
-                @Environment(EnvType.CLIENT)
+                @OnlyIn(Dist.CLIENT)
                 public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
                     return Pair.of(InventoryMenu.BLOCK_ATLAS, InventoryMenu.EMPTY_ARMOR_SLOT_SHIELD);
                 }
