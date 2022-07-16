@@ -3,8 +3,6 @@ package de.mari_023.ae2wtlib.wut;
 import java.util.List;
 
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHandler;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -24,8 +22,12 @@ import appeng.api.upgrades.IUpgradeInventory;
 import appeng.api.upgrades.UpgradeInventories;
 import appeng.core.definitions.AEItems;
 import appeng.menu.locator.MenuLocator;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import top.theillusivec4.curios.api.SlotContext;
+import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
-public class ItemWUT extends ItemWT {
+public class ItemWUT extends ItemWT implements ICurioItem {
     @Override
     public InteractionResultHolder<ItemStack> use(final Level w, final Player player, final InteractionHand hand) {
         if (WUTHandler.getCurrentTerminal(player.getItemInHand(hand)).equals("")) {
@@ -58,7 +60,7 @@ public class ItemWUT extends ItemWT {
     }
 
     @Override
-    @Environment(EnvType.CLIENT)
+    @OnlyIn(Dist.CLIENT)
     public void appendHoverText(final ItemStack stack, final Level world, final List<Component> lines,
             final TooltipFlag advancedTooltips) {
         lines.add(TextConstants.UNIVERSAL);
@@ -95,5 +97,9 @@ public class ItemWUT extends ItemWT {
         if (!(entity instanceof ServerPlayer player)) return;
         if (!WUTHandler.hasTerminal(itemStack, "crafting")) return;
         MagnetHandler.handle(player, itemStack);
+    }
+
+    public void curioTick(SlotContext slotContext, ItemStack stack) {
+        inventoryTick(stack, slotContext.entity().getLevel(), slotContext.entity(), 0, false);
     }
 }

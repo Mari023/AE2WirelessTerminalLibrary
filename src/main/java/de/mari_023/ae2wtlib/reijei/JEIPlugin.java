@@ -7,11 +7,13 @@ import de.mari_023.ae2wtlib.wct.WCTMenu;
 import de.mari_023.ae2wtlib.wet.WETMenu;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 import mezz.jei.api.IModPlugin;
+import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeTransferRegistration;
 import net.minecraft.resources.ResourceLocation;
 
+@JeiPlugin
 public class JEIPlugin implements IModPlugin {
     private static final ResourceLocation ID = new ResourceLocation(AE2wtlib.MOD_NAME, "core");
 
