@@ -1,3 +1,5 @@
+import net.minecraftforge.gradle.common.util.RunConfig
+
 buildscript {
     repositories {
         mavenCentral()
@@ -7,17 +9,21 @@ buildscript {
     }
     dependencies {
         classpath("com.diffplug.spotless:spotless-plugin-gradle:6.19.0")
+        classpath("org.spongepowered:mixingradle:0.7-SNAPSHOT")
     }
 }
 
 apply(plugin = "com.diffplug.spotless")
 
 plugins {
-    id("fabric-loom") version "1.1-SNAPSHOT"
+    id("net.minecraftforge.gradle") version "5.1.+"
+    id("com.diffplug.spotless") version "5.12.4"
     id("maven-publish")
     java
     idea
 }
+
+apply(plugin = "org.spongepowered.mixin")
 
 val modVersion: String by project
 val modloader: String by project
@@ -34,6 +40,8 @@ val runtimeItemlistMod: String by project
 val jeiMinecraftVersion: String by project
 val jeiVersion: String by project
 val reiVersion: String by project
+val forgeVersion: String by project
+val curiosVersion: String by project
 
 version = "$modVersion-SNAPSHOT"
 
@@ -51,40 +59,26 @@ if (tag != "") {
 }
 
 dependencies {
-    minecraft("com.mojang:minecraft:${minecraftVersion}")
-    mappings(loom.officialMojangMappings())
+    add("minecraft", "net.minecraftforge:forge:${minecraftVersion}-${forgeVersion}")
 
-    modImplementation("net.fabricmc:fabric-loader:${fabricLoaderVersion}")
-    modApi("net.fabricmc.fabric-api:fabric-api:${fabricApiVersion}")
-    modCompileOnly("dev.emi:trinkets:${trinketsVersion}") { isTransitive = false }
-    //modRuntimeOnly("dev.emi:trinkets:${trinketsVersion}")
-    modCompileOnly("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${ccaVersion}")
-    modRuntimeOnly("me.shedaniel.cloth:cloth-config-${modloader}:${clothVersion}")
-    modCompileOnly("com.terraformersmc:modmenu:${modMenuVersion}")
-    modCompileOnly("dev.architectury:architectury-${modloader}:${architecturyVersion}")
-    modImplementation("appeng:appliedenergistics2-${modloader}:${ae2Version}") {
+    implementation(fg.deobf("top.theillusivec4.curios:curios-forge:${curiosVersion}"))
+    implementation(fg.deobf("me.shedaniel.cloth:cloth-config-${modloader}:${clothVersion}"))
+    implementation(fg.deobf("dev.architectury:architectury-${modloader}:${architecturyVersion}"))
+    implementation(fg.deobf("appeng:appliedenergistics2-${modloader}:${ae2Version}") as ExternalModuleDependency) {
         exclude(group = "mezz.jei")
         exclude(group = "me.shedaniel")
-        exclude(group = "net.fabricmc.fabric-api")
     }
 
-    modCompileOnly("me.shedaniel:RoughlyEnoughItems-${modloader}:${reiVersion}") {
-        exclude(group = "net.fabricmc.fabric-api")
-    }
-    modCompileOnly("mezz.jei:jei-${jeiMinecraftVersion}-${modloader}:${jeiVersion}") {
-        exclude(group = "mezz.jei")
-    }
+    compileOnly(fg.deobf("me.shedaniel:RoughlyEnoughItems-${modloader}:${reiVersion}"))
+    compileOnly(fg.deobf("mezz.jei:jei-${jeiMinecraftVersion}-${modloader}:${jeiVersion}"))
 
     when (runtimeItemlistMod) {
-        "rei" -> modRuntimeOnly("me.shedaniel:RoughlyEnoughItems-${modloader}:${reiVersion}") {
-            exclude(group = "net.fabricmc.fabric-api")
-        }
+        "rei" -> runtimeOnly(fg.deobf("me.shedaniel:RoughlyEnoughItems-${modloader}:${reiVersion}"))
 
-        "jei" -> modRuntimeOnly("mezz.jei:jei-${jeiMinecraftVersion}-${modloader}:${jeiVersion}") {
-            exclude(group = "mezz.jei")
-        }
+        "jei" -> runtimeOnly(fg.deobf("mezz.jei:jei-${jeiMinecraftVersion}-${modloader}:${jeiVersion}"))
     }
 
+    annotationProcessor("org.spongepowered:mixin:0.8.4:processor")
     implementation("com.google.code.findbugs:jsr305:3.0.2")
 }
 
@@ -140,10 +134,35 @@ repositories {
         }
     }
     maven {
+        url = uri("https://repo.spongepowered.org/maven")
+        content {
+            includeGroup("org.spongepowered")
+        }
+    }
+    maven {
         url = uri("https://api.modrinth.com/maven")
         content {
             includeGroup("maven.modrinth")
         }
+    }
+}
+
+minecraft {
+    mappings("official", minecraftVersion)
+    runs {
+        val config = Action<RunConfig> {
+            properties(mapOf(
+                    "fml.earlyprogresswindow" to "false",
+                    "forge.logging.console.level" to "debug",
+                    "mixin.env.remapRefMap" to "true",
+                    "mixin.env.refMapRemappingFile" to "${projectDir}/build/createSrgToMcp/output.srg"
+            ))
+            workingDirectory = project.file("run").canonicalPath
+            source(sourceSets["main"])
+        }
+
+        create("client", config)
+        create("server", config)
     }
 }
 
@@ -153,11 +172,16 @@ java {
 
 tasks {
     jar {
-        finalizedBy("remapJar")
+        finalizedBy("reobfJar")
+        manifest {
+            attributes(mapOf(
+                    "MixinConfigs" to "ae2wtlib.mixins.json"
+            ))
+        }
     }
 
     processResources {
-        val resourceTargets = "fabric.mod.json"
+        val resourceTargets = "META-INF/mods.toml"
 
         val replaceProperties = mapOf(
                 "version" to version as String,
