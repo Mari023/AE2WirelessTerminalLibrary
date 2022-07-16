@@ -1,12 +1,12 @@
 package de.mari_023.ae2wtlib.mixin;
 
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.Gui;
@@ -19,7 +19,7 @@ import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
 
 import appeng.util.ReadableNumberConverter;
 
-@Environment(EnvType.CLIENT)
+@OnlyIn(Dist.CLIENT)
 @Mixin(ItemRenderer.class)
 public class RestockRender {
     /** TODO maybe hook into {@link Gui#renderSlot(int, int, float, Player, ItemStack, int)} instead **/

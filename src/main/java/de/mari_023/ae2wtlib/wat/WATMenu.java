@@ -18,8 +18,9 @@ import appeng.menu.slot.RestrictedInputSlot;
 
 public class WATMenu extends PatternAccessTermMenu {
 
+    public static final String ID = "wireless_pattern_access_terminal";
     public static final MenuType<WATMenu> TYPE = MenuTypeBuilder.create(WATMenu::new, WATMenuHost.class)
-            .requirePermission(SecurityPermissions.BUILD).build("wireless_pattern_access_terminal");
+            .requirePermission(SecurityPermissions.BUILD).build(ID);
 
     private final WATMenuHost watMenuHost;
     private final ToolboxMenu toolboxMenu;
