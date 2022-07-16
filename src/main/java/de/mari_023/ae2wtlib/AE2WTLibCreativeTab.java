@@ -1,9 +1,10 @@
 package de.mari_023.ae2wtlib;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayDeque;
+import java.util.Collection;
 
-import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -12,14 +13,15 @@ import appeng.api.config.Actionable;
 import appeng.items.tools.powered.WirelessTerminalItem;
 
 public class AE2WTLibCreativeTab {
-    private static final List<ItemStack> items = new ArrayList<>();
+    private static final Collection<ItemStack> items = new ArrayDeque<>();
 
-    public static CreativeModeTab init() {
-        return FabricItemGroup.builder()
+    public static void init(Registry<CreativeModeTab> registry) {
+        var tab = CreativeModeTab.builder()
                 .title(TextConstants.CREATIVE_TAB)
                 .icon(() -> new ItemStack(AE2wtlib.UNIVERSAL_TERMINAL))
                 .displayItems(AE2WTLibCreativeTab::buildDisplayItems)
                 .build();
+        Registry.register(registry, new ResourceLocation(AE2wtlib.MOD_NAME, "main"), tab);
     }
 
     public static void add(Item item) {
