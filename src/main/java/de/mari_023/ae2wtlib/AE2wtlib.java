@@ -1,7 +1,5 @@
 package de.mari_023.ae2wtlib;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.world.item.Item;
 
 import de.mari_023.ae2wtlib.hotkeys.MagnetHotkeyAction;
@@ -43,8 +41,6 @@ public class AE2wtlib {
     public static Item MAGNET_CARD;
 
     public static void onAe2Initialized() {
-        createItems();
-
         WUTHandler.addTerminal("crafting",
                 ((IUniversalWirelessTerminalItem) AEItems.WIRELESS_CRAFTING_TERMINAL.asItem())::tryOpen,
                 WCTMenuHost::new, WCTMenu.TYPE,
@@ -56,8 +52,6 @@ public class AE2wtlib {
         WUTHandler.addTerminal("pattern_access", PATTERN_ACCESS_TERMINAL::tryOpen, WATMenuHost::new, WATMenu.TYPE,
                 PATTERN_ACCESS_TERMINAL);
 
-        registerMenus();
-
         Platform.registerRecipe(UpgradeSerializer.NAME, Upgrade.serializer = new UpgradeSerializer());
         Platform.registerRecipe(CombineSerializer.NAME, Combine.serializer = new CombineSerializer());
 
@@ -65,9 +59,7 @@ public class AE2wtlib {
         HotkeyActions.register(new RestockHotkeyAction(), "ae2wtlib_restock");
         HotkeyActions.register(new MagnetHotkeyAction(), "ae2wtlib_magnet");
 
-        notifyAddons("");// common
-        if (FabricLoader.getInstance().getEnvironmentType().equals(EnvType.SERVER))
-            notifyAddons(":server");
+        // we need something to call addon terminals here
 
         UpgradeHelper.addUpgrades();
     }
@@ -86,33 +78,21 @@ public class AE2wtlib {
         Platform.registerItem("wireless_pattern_access_terminal", PATTERN_ACCESS_TERMINAL);
         Platform.registerItem("wireless_universal_terminal", UNIVERSAL_TERMINAL);
 
-        AE2WTLibCreativeTab.init();
         AE2WTLibCreativeTab.add(PATTERN_ENCODING_TERMINAL);
         AE2WTLibCreativeTab.add(PATTERN_ACCESS_TERMINAL);
         AE2WTLibCreativeTab.add(UNIVERSAL_TERMINAL);
         AE2WTLibCreativeTab.add(QUANTUM_BRIDGE_CARD);
         AE2WTLibCreativeTab.add(MAGNET_CARD);
 
-        Platform.registerTrinket(AEItems.WIRELESS_CRAFTING_TERMINAL.asItem());
-        Platform.registerTrinket(UNIVERSAL_TERMINAL);
-
         GridLinkables.register(PATTERN_ENCODING_TERMINAL, WirelessTerminalItem.LINKABLE_HANDLER);
         GridLinkables.register(PATTERN_ACCESS_TERMINAL, WirelessTerminalItem.LINKABLE_HANDLER);
         GridLinkables.register(UNIVERSAL_TERMINAL, WirelessTerminalItem.LINKABLE_HANDLER);
     }
 
-    private static void registerMenus() {
+    static void registerMenus() {
         Platform.registerMenuType(WCTMenu.ID, WCTMenu.TYPE);
         Platform.registerMenuType(WATMenu.ID, WATMenu.TYPE);
         Platform.registerMenuType(WETMenu.ID, WETMenu.TYPE);
         Platform.registerMenuType(MagnetMenu.ID, MagnetMenu.TYPE);
-    }
-
-    public static void notifyAddons(String type) {
-        var entrypoints = FabricLoader.getInstance().getEntrypointContainers(MOD_NAME + type,
-                IWTLibAddonEntrypoint.class);
-        for (var entrypoint : entrypoints) {
-            entrypoint.getEntrypoint().onWTLibInitialized();
-        }
     }
 }
