@@ -29,11 +29,14 @@ public class RestockRender {
             return;
         CraftingTerminalHandler handler = CraftingTerminalHandler
                 .getCraftingTerminalHandler(Minecraft.getInstance().player);
-        if (stack.getCount() == 1 || !handler.isRestockable(stack)
+        if (!handler.isRestockable(stack)
                 || !ItemWT.getBoolean(handler.getCraftingTerminal(), "restock") || !handler.inRange())
             return;
+        var amount = handler.getAccessibleAmount(stack);
+        if (amount == 1)
+            return;
         ((ItemRenderer) (Object) this).renderGuiItemDecorations(renderer, stack, x, y,
-                ReadableNumberConverter.format(handler.getAccessibleAmount(stack), 3));
+                ReadableNumberConverter.format(amount, 3));
         ci.cancel();
     }
 }

@@ -6,8 +6,7 @@
   "refmap": "mixin.refmap.json",
   "mixins": [
     "CraftingTerminalItemMixin",
-    "PlayerInventoryInsertStack",
-    "Restock"
+    "PlayerInventoryInsertStack"
   ],
   "client": [
     "RestockRender"
