@@ -45,8 +45,6 @@ public class AE2wtlib {
     public static Item MAGNET_CARD;
 
     public static void onAe2Initialized() {
-        createItems();
-
         WUTHandler.addTerminal("crafting",
                 ((IUniversalWirelessTerminalItem) AEItems.WIRELESS_CRAFTING_TERMINAL.asItem())::tryOpen,
                 WCTMenuHost::new, WCTMenu.TYPE,
@@ -57,8 +55,6 @@ public class AE2wtlib {
                 PATTERN_ENCODING_TERMINAL);
         WUTHandler.addTerminal("pattern_access", PATTERN_ACCESS_TERMINAL::tryOpen, WATMenuHost::new, WATMenu.TYPE,
                 PATTERN_ACCESS_TERMINAL);
-
-        registerMenus();
 
         addUpgrades();// TODO add an entrypoint for addons to register their terminals before this
 
@@ -84,9 +80,6 @@ public class AE2wtlib {
         Platform.registerItem("wireless_pattern_access_terminal", PATTERN_ACCESS_TERMINAL);
         Platform.registerItem("wireless_universal_terminal", UNIVERSAL_TERMINAL);
 
-        Platform.registerTrinket(AEItems.WIRELESS_CRAFTING_TERMINAL.asItem());
-        Platform.registerTrinket(UNIVERSAL_TERMINAL);
-
         GridLinkables.register(PATTERN_ENCODING_TERMINAL, WirelessTerminalItem.LINKABLE_HANDLER);
         GridLinkables.register(PATTERN_ACCESS_TERMINAL, WirelessTerminalItem.LINKABLE_HANDLER);
         GridLinkables.register(UNIVERSAL_TERMINAL, WirelessTerminalItem.LINKABLE_HANDLER);
@@ -107,7 +100,7 @@ public class AE2wtlib {
         Upgrades.add(MAGNET_CARD, UNIVERSAL_TERMINAL, 1);
     }
 
-    private static void registerMenus() {
+    public static void registerMenus() {
         Platform.registerMenuType(WCTMenu.ID, WCTMenu.TYPE);
         Platform.registerMenuType(WATMenu.ID, WATMenu.TYPE);
         Platform.registerMenuType(WETMenu.ID, WETMenu.TYPE);
