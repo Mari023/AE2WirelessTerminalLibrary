@@ -43,8 +43,6 @@ public class AE2wtlib {
     public static Item MAGNET_CARD;
 
     public static void onAe2Initialized() {
-        createItems();
-
         WUTHandler.addTerminal("crafting",
                 ((IUniversalWirelessTerminalItem) AEItems.WIRELESS_CRAFTING_TERMINAL.asItem())::tryOpen,
                 WCTMenuHost::new, WCTMenu.TYPE,
@@ -79,9 +77,6 @@ public class AE2wtlib {
         Platform.registerItem("wireless_pattern_encoding_terminal", PATTERN_ENCODING_TERMINAL);
         Platform.registerItem("wireless_pattern_access_terminal", PATTERN_ACCESS_TERMINAL);
         Platform.registerItem("wireless_universal_terminal", UNIVERSAL_TERMINAL);
-
-        Platform.registerTrinket(AEItems.WIRELESS_CRAFTING_TERMINAL.asItem());
-        Platform.registerTrinket(UNIVERSAL_TERMINAL);
 
         GridLinkables.register(PATTERN_ENCODING_TERMINAL, WirelessTerminalItem.LINKABLE_HANDLER);
         GridLinkables.register(PATTERN_ACCESS_TERMINAL, WirelessTerminalItem.LINKABLE_HANDLER);
