@@ -2,10 +2,6 @@ package de.mari_023.ae2wtlib;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
-import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
@@ -13,9 +9,10 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraftforge.fml.ModList;
+import net.minecraftforge.registries.ForgeRegistries;
 
-import de.mari_023.ae2wtlib.trinket.TrinketLocator;
-import de.mari_023.ae2wtlib.trinket.TrinketsHelper;
+import de.mari_023.ae2wtlib.curio.CurioHelper;
 
 import appeng.core.AppEng;
 import appeng.menu.locator.MenuLocator;
@@ -23,50 +20,47 @@ import appeng.menu.locator.MenuLocator;
 public class Platform {
 
     public static boolean trinketsPresent() {
-        return FabricLoader.getInstance().isModLoaded("trinkets");
+        return ModList.get().isLoaded("curios");
     }
 
     public static boolean isStillPresentTrinkets(Player player, ItemStack terminal) {
-        return TrinketsHelper.isStillPresent(player, terminal);
+        return CurioHelper.isStillPresent(player, terminal);
     }
 
     public static ItemStack getItemStackFromTrinketsLocator(Player player, MenuLocator locator) {
-        if (locator instanceof TrinketLocator trinketLocator)
-            return trinketLocator.locateItem(player);
-        return ItemStack.EMPTY;
+        return CurioHelper.getItemStack(player, locator);
     }
 
     @Nullable
     public static MenuLocator findTerminalFromAccessory(Player player, String terminalName) {
         if (trinketsPresent()) {
-            return TrinketsHelper.findTerminal(player, terminalName);
+            return CurioHelper.findTerminal(player, terminalName);
         }
         return null;
     }
 
     public static CreativeModeTab getCreativeModeTab() {
-        return FabricItemGroupBuilder.build(new ResourceLocation(AE2wtlib.MOD_NAME, "general"),
-                () -> new ItemStack(AE2wtlib.UNIVERSAL_TERMINAL));
+        return new CreativeModeTab(AE2wtlib.MOD_NAME) {
+            @Override
+            public ItemStack makeIcon() {
+                return new ItemStack(AE2wtlib.UNIVERSAL_TERMINAL);
+            }
+        };
     }
 
     public static void registerItem(String name, Item item) {
-        Registry.register(Registry.ITEM, new ResourceLocation(AE2wtlib.MOD_NAME, name), item);
+        AE2wtlibForge.ITEMS.put(name, item);
     }
 
     public static void registerRecipe(String name, RecipeSerializer<?> serializer) {
-        Registry.register(Registry.RECIPE_SERIALIZER, new ResourceLocation(AE2wtlib.MOD_NAME, name), serializer);
-    }
-
-    public static void registerTrinket(Item terminal) {
-        if (trinketsPresent())
-            TrinketsHelper.registerTrinket(terminal);
+        AE2wtlibForge.RECIPES.register(name, () -> serializer);
     }
 
     public static boolean preventRemoteMovement(ItemEntity item) {
-        return false;
+        return item.getPersistentData().contains("PreventRemoteMovement");
     }
 
     public static void registerMenuType(String id, MenuType<?> menuType) {
-        Registry.register(Registry.MENU, AppEng.makeId(id), menuType);
+        ForgeRegistries.MENU_TYPES.register(AppEng.makeId(id), menuType);
     }
 }
