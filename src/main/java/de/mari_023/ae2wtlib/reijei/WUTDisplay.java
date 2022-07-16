@@ -3,14 +3,10 @@ package de.mari_023.ae2wtlib.reijei;
 import java.util.Collections;
 import java.util.Optional;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-
 import de.mari_023.ae2wtlib.wut.recipe.Common;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.plugin.common.displays.crafting.DefaultCraftingDisplay;
 
-@Environment(EnvType.CLIENT)
 public class WUTDisplay extends DefaultCraftingDisplay<Common> {
 
     public WUTDisplay(Common recipe) {
