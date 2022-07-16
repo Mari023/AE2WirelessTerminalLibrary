@@ -1,26 +1,27 @@
 package de.mari_023.ae2wtlib.networking;
 
 import de.mari_023.ae2wtlib.AE2wtlib;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import dev.architectury.networking.NetworkManager;
 import net.minecraft.resources.ResourceLocation;
 
 public class ClientNetworkManager {
 
     public static void registerClientBoundPacket(String name, ServerNetworkManager.PacketDeserializer deserializer) {
-        ClientPlayNetworking.registerGlobalReceiver(new ResourceLocation(AE2wtlib.MOD_NAME, name),
-                (client, handler, buf, responseSender) -> {
-                    if (client.player == null)
-                        return;
+        NetworkManager.registerReceiver(NetworkManager.s2c(), new ResourceLocation(AE2wtlib.MOD_NAME, name),
+                (buf, context) -> {
                     buf.retain();
-                    client.execute(() -> {
-                        deserializer.create(buf).processPacketData(client.player);
+                    context.queue(() -> {
+                        if (context.getPlayer() == null)
+                            return;
+                        buf.retain();
+                        deserializer.create(buf).processPacketData(context.getPlayer());
                         buf.release();
                     });
                 });
     }
 
     public static void sendToServer(AE2wtlibPacket packet) {
-        ClientPlayNetworking.send(new ResourceLocation(AE2wtlib.MOD_NAME, packet.getPacketName()),
+        NetworkManager.sendToServer(new ResourceLocation(AE2wtlib.MOD_NAME, packet.getPacketName()),
                 packet.getPacketBuffer());
     }
 }
