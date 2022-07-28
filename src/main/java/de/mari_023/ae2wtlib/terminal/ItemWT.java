@@ -40,13 +40,6 @@ public abstract class ItemWT extends WirelessTerminalItem implements IUniversalW
         return new InteractionResultHolder<>(InteractionResult.FAIL, is);
     }
 
-    @Override
-    public boolean openFromInventory(Player player, int inventorySlot) {// TODO maybe remove this since it shouldn't get
-        // called anyways
-        throw new IllegalStateException(
-                String.format("%s called openFromInventory() in slot %d with item %s", player, inventorySlot, this));
-    }
-
     @Nullable
     public ItemMenuHost getMenuHost(Player player, int slot, ItemStack stack, @Nullable BlockPos pos) {
         return WUTHandler.wirelessTerminals.get(WUTHandler.getCurrentTerminal(stack)).wTMenuHostFactory().create(player,

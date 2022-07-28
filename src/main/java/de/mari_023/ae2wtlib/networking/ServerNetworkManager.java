@@ -6,8 +6,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 
-import de.mari_023.ae2wtlib.networking.AE2wtlibPacket;
-
 public class ServerNetworkManager {
 
     public static void registerServerBoundPacket(String name, PacketDeserializer deserializer) {

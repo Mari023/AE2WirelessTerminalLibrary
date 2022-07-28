@@ -37,33 +37,30 @@ public class MagnetHandler {
     }
 
     private static void sendRestockAble(ServerPlayer player) {
-        try {
-            CraftingTerminalHandler handler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
-            if (player.isCreative() || !ItemWT.getBoolean(handler.getCraftingTerminal(), "restock")
-                    || !handler.inRange())
-                return;
-            HashMap<Item, Long> items = new HashMap<>();
+        CraftingTerminalHandler handler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
+        if (player.isCreative() || !ItemWT.getBoolean(handler.getCraftingTerminal(), "restock")
+                || !handler.inRange())
+            return;
+        HashMap<Item, Long> items = new HashMap<>();
 
-            if (handler.getTargetGrid() == null || handler.getTargetGrid().getStorageService().getInventory() == null)
-                return;
-            KeyCounter storageList = handler.getTargetGrid().getStorageService().getInventory().getAvailableStacks();
+        if (handler.getTargetGrid() == null || handler.getTargetGrid().getStorageService().getInventory() == null)
+            return;
+        KeyCounter storageList = handler.getTargetGrid().getStorageService().getInventory().getAvailableStacks();
 
-            for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
-                ItemStack stack = player.getInventory().getItem(i);
-                if (stack.isEmpty())
-                    continue;
-                if (items.containsKey(stack.getItem()))
-                    continue;
-                AEItemKey key = AEItemKey.of(stack);
-                if (key == null)
-                    items.put(stack.getItem(), 0L);
-                else
-                    items.put(stack.getItem(), storageList.get(key));
-            }
-
-            ServerNetworkManager.sendToClient(player, new RestockAmountPacket(items));
-        } catch (NullPointerException ignored) {// TODO is this even necessary anymore?
+        for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+            ItemStack stack = player.getInventory().getItem(i);
+            if (stack.isEmpty())
+                continue;
+            if (items.containsKey(stack.getItem()))
+                continue;
+            AEItemKey key = AEItemKey.of(stack);
+            if (key == null)
+                items.put(stack.getItem(), 0L);
+            else
+                items.put(stack.getItem(), storageList.get(key));
         }
+
+        ServerNetworkManager.sendToClient(player, new RestockAmountPacket(items));
     }
 
     private static void handleMagnet(Player player) {

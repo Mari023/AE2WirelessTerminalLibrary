@@ -8,11 +8,11 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Ingredient;
 
-public interface CombineSerializer extends Serializer<Combine> {
-    String NAME = "combine";
+public class CombineSerializer extends Serializer<Combine> {
+    public static String NAME = "combine";
 
     @Override
-    default Combine fromJson(ResourceLocation id, JsonObject json) {
+    public Combine fromJson(ResourceLocation id, JsonObject json) {
         CombineJsonFormat recipeJson = new Gson().fromJson(json, CombineJsonFormat.class);
         if (recipeJson.terminalA == null || recipeJson.terminalB == null || validateOutput(recipeJson.terminalAName)
                 || validateOutput(recipeJson.terminalBName))
@@ -23,7 +23,7 @@ public interface CombineSerializer extends Serializer<Combine> {
     }
 
     @Override
-    default void toNetwork(FriendlyByteBuf packetData, Combine recipe) {
+    public void toNetwork(FriendlyByteBuf packetData, Combine recipe) {
         recipe.getTerminalA().toNetwork(packetData);
         recipe.getTerminalB().toNetwork(packetData);
         packetData.writeUtf(recipe.getTerminalAName());
@@ -31,7 +31,7 @@ public interface CombineSerializer extends Serializer<Combine> {
     }
 
     @Override
-    default Combine fromNetwork(ResourceLocation id, FriendlyByteBuf packetData) {
+    public Combine fromNetwork(ResourceLocation id, FriendlyByteBuf packetData) {
         return new Combine(Ingredient.fromNetwork(packetData), Ingredient.fromNetwork(packetData),
                 packetData.readUtf(32767), packetData.readUtf(32767), id);
     }

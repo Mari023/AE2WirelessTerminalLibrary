@@ -59,10 +59,8 @@ public class Platform {
     }
 
     public static void registerRecipes() {
-        registerRecipe(UpgradeSerializer.NAME, Upgrade.serializer = new UpgradeSerializer() {
-        });
-        registerRecipe(CombineSerializer.NAME, Combine.serializer = new CombineSerializer() {
-        });
+        registerRecipe(UpgradeSerializer.NAME, Upgrade.serializer = new UpgradeSerializer());
+        registerRecipe(CombineSerializer.NAME, Combine.serializer = new CombineSerializer());
     }
 
     public static boolean preventRemoteMovement(ItemEntity item) {

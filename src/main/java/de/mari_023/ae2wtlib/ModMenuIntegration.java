@@ -6,7 +6,6 @@ import com.terraformersmc.modmenu.api.ModMenuApi;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
-import de.mari_023.ae2wtlib.AE2wtlibConfig;
 import me.shedaniel.autoconfig.AutoConfig;
 
 @Environment(EnvType.CLIENT)

@@ -38,13 +38,6 @@ public class CraftingTerminalItemMixin extends WirelessTerminalItem implements I
         return getMenuType();
     }
 
-    @Override
-    public boolean openFromInventory(Player player, int inventorySlot) {// TODO maybe remove this since it shouldn't get
-                                                                        // called anyways
-        throw new IllegalStateException(String.format(
-                "%s called WirelessCraftingTerminalItem#openFromInventory() in slot %d", player, inventorySlot));
-    }
-
     @Nullable
     public ItemMenuHost getMenuHost(Player player, int slot, ItemStack stack, @Nullable BlockPos pos) {
 

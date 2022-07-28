@@ -51,9 +51,6 @@ public final class TextConstants {
     public static final Component TERMINAL_EMPTY = Component.literal(
             "This terminal does not contain any other Terminals");
 
-    public static final Component BOOSTER = Component.translatable(
-            "item.ae2wtlib.infinity_booster_card.desc");
-
     public static final Component CYCLE = Component.translatable("gui.ae2wtlib.cycle_terminal");
     public static final Component CYCLE_TOOLTIP = Component.translatable(
             "gui.ae2wtlib.cycle_terminal.desc");

@@ -2,8 +2,6 @@ package de.mari_023.ae2wtlib.wct;
 
 import java.util.Objects;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -96,12 +94,5 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
     protected void updateBeforeRender() {
         super.updateBeforeRender();
         setMagnetModeText();
-    }
-
-    public void render(PoseStack matrices, int mouseX, int mouseY, float delta) {
-        try {// TODO why do we need this?
-            super.render(matrices, mouseX, mouseY, delta);
-        } catch (Exception ignored) {
-        }
     }
 }
