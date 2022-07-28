@@ -1,5 +1,9 @@
 package de.mari_023.ae2wtlib;
 
+import de.mari_023.ae2wtlib.wut.recipe.Combine;
+import de.mari_023.ae2wtlib.wut.recipe.CombineSerializer;
+import de.mari_023.ae2wtlib.wut.recipe.Upgrade;
+import de.mari_023.ae2wtlib.wut.recipe.UpgradeSerializer;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 
@@ -54,7 +58,8 @@ public class AE2wtlib {
 
         addUpgrades();// TODO add an entrypoint for addons to register their terminals before this
 
-        Platform.registerRecipes();
+        Platform.registerRecipe(UpgradeSerializer.NAME, Upgrade.serializer = new UpgradeSerializer());
+        Platform.registerRecipe(CombineSerializer.NAME, Combine.serializer = new CombineSerializer());
 
         ServerNetworkManager.registerServerBoundPacket(CycleTerminalPacket.NAME, CycleTerminalPacket::new);
         HotkeyActions.register(new RestockHotkeyAction(), "ae2wtlib_restock");

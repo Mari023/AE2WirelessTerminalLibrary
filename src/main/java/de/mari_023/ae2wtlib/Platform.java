@@ -2,10 +2,6 @@ package de.mari_023.ae2wtlib;
 
 import de.mari_023.ae2wtlib.trinket.TrinketLocator;
 import de.mari_023.ae2wtlib.trinket.TrinketsHelper;
-import de.mari_023.ae2wtlib.wut.recipe.Combine;
-import de.mari_023.ae2wtlib.wut.recipe.CombineSerializer;
-import de.mari_023.ae2wtlib.wut.recipe.Upgrade;
-import de.mari_023.ae2wtlib.wut.recipe.UpgradeSerializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Registry;
@@ -54,13 +50,8 @@ public class Platform {
         Registry.register(Registry.ITEM, new ResourceLocation(AE2wtlib.MOD_NAME, name), item);
     }
 
-    private static void registerRecipe(String name, RecipeSerializer<?> serializer) {
+    public static void registerRecipe(String name, RecipeSerializer<?> serializer) {
         Registry.register(Registry.RECIPE_SERIALIZER, new ResourceLocation(AE2wtlib.MOD_NAME, name), serializer);
-    }
-
-    public static void registerRecipes() {
-        registerRecipe(UpgradeSerializer.NAME, Upgrade.serializer = new UpgradeSerializer());
-        registerRecipe(CombineSerializer.NAME, Combine.serializer = new CombineSerializer());
     }
 
     public static boolean preventRemoteMovement(ItemEntity item) {
