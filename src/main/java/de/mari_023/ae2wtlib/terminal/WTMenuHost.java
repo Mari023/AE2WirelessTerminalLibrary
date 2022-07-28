@@ -36,6 +36,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost implements Int
     private final AppEngInternalInventory viewCellInventory;
     private final Player myPlayer;
     private boolean rangeCheck;
+    private IActionHost securityTerminal;
     private IGridNode securityTerminalNode;
 
     private IActionHost quantumBridge;
@@ -51,10 +52,10 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost implements Int
 
         if (((WirelessTerminalItem) is.getItem()).getGridKey(is).isEmpty())
             return;
-        IActionHost actionHost = Locatables.securityStations().get(player.level,
+        securityTerminal = Locatables.securityStations().get(player.level,
                 ((WirelessTerminalItem) is.getItem()).getGridKey(is).getAsLong());
-        if (actionHost != null)
-            securityTerminalNode = actionHost.getActionableNode();
+        if (securityTerminal != null)
+            securityTerminalNode = securityTerminal.getActionableNode();
     }
 
     public void updateUpgrades(ItemStack stack, IUpgradeInventory upgrades) {
@@ -172,5 +173,13 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost implements Int
         if (id.equals(INV_SINGULARITY))
             return singularityInventory;
         return null;
+    }
+
+    public boolean stillValid() {
+        return ensureItemStillInSlot();
+    }
+
+    public IActionHost getActionHost() {
+        return securityTerminal;
     }
 }
