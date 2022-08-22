@@ -1,4 +1,4 @@
-package de.mari_023.ae2wtlib.rei;
+package de.mari_023.ae2wtlib.reijei;
 
 import java.util.Collections;
 import java.util.Optional;

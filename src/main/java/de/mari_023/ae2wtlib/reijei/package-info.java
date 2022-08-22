@@ -1,6 +1,6 @@
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-package de.mari_023.ae2wtlib.rei;
+package de.mari_023.ae2wtlib.reijei;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 

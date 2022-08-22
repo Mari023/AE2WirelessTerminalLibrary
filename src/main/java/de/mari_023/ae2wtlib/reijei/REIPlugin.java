@@ -1,4 +1,4 @@
-package de.mari_023.ae2wtlib.rei;
+package de.mari_023.ae2wtlib.reijei;
 
 import net.minecraft.world.item.crafting.RecipeType;
 
@@ -12,7 +12,7 @@ import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import me.shedaniel.rei.plugin.common.BuiltinPlugin;
 
-public class Plugin implements REIClientPlugin {
+public class REIPlugin implements REIClientPlugin {
 
     @Override
     public String getPluginProviderName() {

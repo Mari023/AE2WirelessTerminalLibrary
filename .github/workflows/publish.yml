@@ -52,7 +52,7 @@ jobs:
 
           github-token: ${{ secrets.GITHUB_TOKEN }}
           loaders: fabric
-          game-versions: 1.19
+          game-versions: 1.19.2
           curseforge-dependencies: |
             cloth-config | depends
             fabric-api | depends
