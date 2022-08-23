@@ -69,7 +69,7 @@ jobs:
             roughly-enough-items | suggests
             trinkets | suggests
           java: 17
-          version: ${VERSION_NAME}-fabric
-          name: ${VERSION_NAME}-fabric
+          version: ${{ VERSION_NAME }}-fabric
+          name: ${{ VERSION_NAME }}-fabric
           files-primary: download/!(*-@(dev|dev-shadow)).jar
           files-secondary: ""
