@@ -71,5 +71,5 @@ jobs:
           java: 17
           version: ${{ env.version_name }}-fabric
           name: ${{ env.version_name }}-fabric
-          files-primary: download/!(*-@(dev|dev-shadow)).jar
+          files-primary: download/!(*-@(dev|dev-shadow|sources)).jar
           files-secondary: ""
