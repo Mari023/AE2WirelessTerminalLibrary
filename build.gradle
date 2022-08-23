@@ -18,7 +18,10 @@ if (ext.pr) {
 
 ext.tag = System.getenv('TAG') ?: ""
 if (ext.tag) {
-    version = ext.tag
+    if (!ext.tag.startsWith("fabric/")) {
+        throw new GradleException("Tags for the fabric version should start with fabric/: ${ext.tag}")
+    }
+    version = ext.tag.substring("fabric/".length())
 }
 
 dependencies {
