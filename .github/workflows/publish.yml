@@ -42,6 +42,9 @@ jobs:
           name: fabric
           path: download
 
+      - name: remove modloader prefix from version
+        run: echo 'VERSION_NAME='"$(echo "${{ github.event.release.tag_name }}" | cut -c 8-)" >> $GITHUB_ENV
+
       - uses: Kir-Antipov/mc-publish@v3.1
         with:
           modrinth-id: pNabrMMw
@@ -66,7 +69,7 @@ jobs:
             roughly-enough-items | suggests
             trinkets | suggests
           java: 17
-          version: ${{ github.event.release.tag_name }}-fabric
-          name: ${{ github.event.release.tag_name }}-fabric
+          version: ${VERSION_NAME}-fabric
+          name: ${VERSION_NAME}-fabric
           files-primary: download/!(*-@(dev|dev-shadow)).jar
           files-secondary: ""
