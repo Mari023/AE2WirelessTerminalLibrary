@@ -1,5 +1,8 @@
 package de.mari_023.ae2wtlib.mixin;
 
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
@@ -43,5 +46,11 @@ public class CraftingTerminalItemMixin extends WirelessTerminalItem implements I
 
         return new WCTMenuHost(player, slot, stack,
                 (p, subMenu) -> tryOpen(player, MenuLocators.forInventorySlot(slot), stack));
+    }
+
+    public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int i, boolean bl) {
+        if(level.isClientSide()) return;
+        if(!(entity instanceof ServerPlayer player)) return;
+
     }
 }
