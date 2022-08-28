@@ -2,6 +2,7 @@ package de.mari_023.ae2wtlib.wct;
 
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.WeakHashMap;
 
 import appeng.api.networking.security.IActionHost;
 import org.jetbrains.annotations.Nullable;
@@ -22,8 +23,7 @@ import appeng.menu.locator.MenuLocator;
 
 public class CraftingTerminalHandler {
 
-    private static final HashMap<UUID, CraftingTerminalHandler> players = new HashMap<>();// TODO clear on leave
-    // (client)
+    private static final WeakHashMap<UUID, CraftingTerminalHandler> players = new WeakHashMap<>();
     private final Player player;
     private ItemStack craftingTerminal = ItemStack.EMPTY;
     private WCTMenuHost menuHost;
@@ -48,7 +48,7 @@ public class CraftingTerminalHandler {
         return handler;
     }
 
-    public static void removePlayer(Player player) {// TODO remove on disconnect (server)
+    public static void removePlayer(Player player) {
         players.remove(player.getUUID());
     }
 
