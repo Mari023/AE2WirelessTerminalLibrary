@@ -7,8 +7,6 @@
 
   "item.ae2wtlib.quantum_bridge_card": "Quantum Bridge Card",
   "item.ae2wtlib.quantum_bridge_card.desc": "Allows wireless terminals to connect to a quantum bridge, allowing for unlimited range",
-  "item.ae2wtlib.charger_card": "Charger Card",
-  "item.ae2wtlib.charger_card.desc": "Charges items in your inventory",
   "item.ae2wtlib.magnet_card": "Magnet Card",
   "item.ae2wtlib.magnet_card.desc": "Magnet upgrade for the Wireless Crafting Terminal",
 
