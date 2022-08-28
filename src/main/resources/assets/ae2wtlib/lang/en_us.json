@@ -48,5 +48,8 @@
   "text.autoconfig.de/mari_023/ae2wtlib.option.enableTrinket": "Enable Trinkets Integration",
 
   "text.autoconfig.de/mari_023/ae2wtlib.option.outOfRangePowerMultiplier.@Tooltip": "If this is lower than 1, being in range of a Wireless Access Point would use more power in some cases.",
-  "text.autoconfig.de/mari_023/ae2wtlib.option.magnetCardRange.@Tooltip": ""
+  "text.autoconfig.de/mari_023/ae2wtlib.option.magnetCardRange.@Tooltip": "",
+
+  "ae2wtlib.midnightconfig.outOfRangePowerMultiplier": "Out of range power multiplier",
+  "ae2wtlib.midnightconfig.magnetCardRange": "Magnet Card work range"
 }

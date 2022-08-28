@@ -145,7 +145,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost implements Int
         if (rangeCheck) {
             super.setPowerDrainPerTick(powerDrainPerTick);
         } else {
-            super.setPowerDrainPerTick(AE2wtlibConfig.INSTANCE.getOutOfRangePower());
+            super.setPowerDrainPerTick(AE2wtlibConfig.getOutOfRangePower());
         }
     }
 

@@ -72,7 +72,7 @@ public class MagnetHandler {
             return;
 
         List<ItemEntity> entityItems = player.getLevel().getEntitiesOfClass(ItemEntity.class,
-                player.getBoundingBox().inflate(AE2wtlibConfig.INSTANCE.magnetCardRange()),
+                player.getBoundingBox().inflate(AE2wtlibConfig.magnetCardRange()),
                 EntitySelector.ENTITY_STILL_ALIVE);
         if (player.isShiftKeyDown())
             return;
