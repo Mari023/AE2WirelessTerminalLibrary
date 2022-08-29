@@ -1,7 +1,6 @@
 package de.mari_023.ae2wtlib.wct;
 
 import java.util.HashMap;
-import java.util.UUID;
 import java.util.WeakHashMap;
 
 import appeng.api.networking.security.IActionHost;
@@ -23,7 +22,7 @@ import appeng.menu.locator.MenuLocator;
 
 public class CraftingTerminalHandler {
 
-    private static final WeakHashMap<UUID, CraftingTerminalHandler> players = new WeakHashMap<>();
+    private static final WeakHashMap<Player, CraftingTerminalHandler> players = new WeakHashMap<>();
     private final Player player;
     private ItemStack craftingTerminal = ItemStack.EMPTY;
     private WCTMenuHost menuHost;
@@ -36,20 +35,20 @@ public class CraftingTerminalHandler {
     }
 
     public static CraftingTerminalHandler getCraftingTerminalHandler(Player player) {
-        if (players.containsKey(player.getUUID())) {
-            if (player == players.get(player.getUUID()).player ||
+        if (players.containsKey(player)) {
+            if (player == players.get(player).player ||
                     (!(player instanceof ServerPlayer)
-                            && (players.get(player.getUUID()).player instanceof ServerPlayer)))
-                return players.get(player.getUUID());
+                            && (players.get(player).player instanceof ServerPlayer)))
+                return players.get(player);
             removePlayer(player);
         }
         CraftingTerminalHandler handler = new CraftingTerminalHandler(player);
-        players.put(player.getUUID(), handler);
+        players.put(player, handler);
         return handler;
     }
 
     public static void removePlayer(Player player) {
-        players.remove(player.getUUID());
+        players.remove(player);
     }
 
     public void invalidateCache() {
