@@ -2,12 +2,15 @@ package de.mari_023.ae2wtlib.wut;
 
 import java.util.List;
 
+import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHandler;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
@@ -85,5 +88,12 @@ public class ItemWUT extends ItemWT {
                 terminals++;
         }
         return terminals;
+    }
+
+    public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int i, boolean bl) {
+        if (level.isClientSide()) return;
+        if (!(entity instanceof ServerPlayer player)) return;
+        if (!WUTHandler.hasTerminal(itemStack, "crafting")) return;
+        MagnetHandler.handle(player, itemStack);
     }
 }

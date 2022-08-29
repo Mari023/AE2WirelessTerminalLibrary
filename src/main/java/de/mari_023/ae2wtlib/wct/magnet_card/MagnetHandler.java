@@ -40,7 +40,8 @@ public class MagnetHandler {
     }
 
     private static void sendRestockAble(ServerPlayer player, ItemStack terminal) {
-        if (player.isCreative() || !ItemWT.getBoolean(terminal, "restock")) return;
+        if (player.isCreative()) return;
+        if(!ItemWT.getBoolean(terminal, "restock")) return;
         sendRestockAble(player);
     }
 
@@ -71,7 +72,8 @@ public class MagnetHandler {
     }
 
     private static void handleMagnet(Player player, ItemStack terminal) {
-        if(!getMagnetSettings(terminal).isActive() || player.isShiftKeyDown()) return;
+        if(player.isShiftKeyDown()) return;
+        if(!getMagnetSettings(terminal).isActive()) return;
         handleMagnet(player);
     }
 
