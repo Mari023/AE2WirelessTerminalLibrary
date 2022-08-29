@@ -102,7 +102,7 @@ public class CraftingTerminalHandler {
 
     @Nullable
     public MenuLocator getLocator() {
-        if (getMagnetHost() == null)
+        if (getMenuHost() == null)
             return null;
         return locator;
     }
