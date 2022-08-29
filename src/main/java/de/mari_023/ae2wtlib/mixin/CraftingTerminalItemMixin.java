@@ -1,5 +1,6 @@
 package de.mari_023.ae2wtlib.mixin;
 
+import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHandler;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
@@ -49,8 +50,8 @@ public class CraftingTerminalItemMixin extends WirelessTerminalItem implements I
     }
 
     public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int i, boolean bl) {
-        if(level.isClientSide()) return;
-        if(!(entity instanceof ServerPlayer player)) return;
-
+        if (level.isClientSide()) return;
+        if (!(entity instanceof ServerPlayer player)) return;
+        MagnetHandler.handle(player, itemStack);
     }
 }
