@@ -2,6 +2,7 @@ package de.mari_023.ae2wtlib.wct.magnet_card;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.WeakHashMap;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
@@ -24,11 +25,18 @@ import appeng.api.stacks.KeyCounter;
 import appeng.api.upgrades.IUpgradeableItem;
 
 public class MagnetHandler {
+    private static final WeakHashMap<ServerPlayer, Integer> players = new WeakHashMap<>();
 
     public static void handle(ServerPlayer player, ItemStack terminal) {
-        //TODO make sure this is only called once per tick
+        if (players.containsKey(player) && players.get(player) == getTick(player)) return;
         sendRestockAble(player, terminal);
         handleMagnet(player, terminal);
+        players.put(player, getTick(player));
+    }
+
+    private static int getTick(ServerPlayer player) {
+        if(player.getServer() == null) return -1;
+        return player.getServer().getTickCount();
     }
 
     private static void sendRestockAble(ServerPlayer player, ItemStack terminal) {
