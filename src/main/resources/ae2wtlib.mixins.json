@@ -4,12 +4,17 @@
   "package": "de.mari_023.ae2wtlib.mixin",
   "compatibilityLevel": "JAVA_17",
   "refmap": "AE2WTLib-refmap.json",
+  "plugin": "de.mari_023.ae2wtlib.MixinPlugin",
   "mixins": [
     "CraftingTerminalItemMixin",
     "PlayerInventoryInsertStack",
-    "Restock"
+    "Restock",
+    "TrinketCraftingTerminalMixin",
+    "TrinketUniversalTerminalMixin"
   ],
-  "client": ["RestockRender"],
+  "client": [
+    "RestockRender"
+  ],
   "injectors": {
     "defaultRequire": 1
   }
