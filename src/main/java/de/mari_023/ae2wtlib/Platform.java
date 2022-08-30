@@ -20,7 +20,7 @@ import appeng.menu.locator.MenuLocator;
 public class Platform {
 
     public static boolean trinketsPresent() {
-        return FabricLoader.getInstance().isModLoaded("data/trinkets");
+        return FabricLoader.getInstance().isModLoaded("trinkets");
     }
 
     public static boolean isStillPresentTrinkets(Player player, ItemStack terminal) {
