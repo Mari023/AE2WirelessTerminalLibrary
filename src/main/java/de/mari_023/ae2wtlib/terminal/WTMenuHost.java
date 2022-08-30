@@ -7,6 +7,7 @@ import appeng.api.config.PowerMultiplier;
 import appeng.api.inventories.ISegmentedInventory;
 import appeng.items.tools.powered.powersink.AEBasePoweredItem;
 import appeng.me.cluster.implementations.QuantumCluster;
+import de.mari_023.ae2wtlib.Platform;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
@@ -181,5 +182,10 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost implements Int
 
     public IActionHost getActionHost() {
         return securityTerminal;
+    }
+
+    protected boolean ensureItemStillInSlot() {
+        if(getSlot() != null) return super.ensureItemStillInSlot();
+        return Platform.isStillPresentTrinkets(getPlayer(), getItemStack());
     }
 }
