@@ -20,7 +20,7 @@ import appeng.menu.locator.MenuLocator;
 public class Platform {
 
     public static boolean trinketsPresent() {
-        return FabricLoader.getInstance().isModLoaded("data/trinkets");
+        return FabricLoader.getInstance().isModLoaded("trinkets");
     }
 
     public static boolean isStillPresentTrinkets(Player player, ItemStack terminal) {
@@ -52,6 +52,11 @@ public class Platform {
 
     public static void registerRecipe(String name, RecipeSerializer<?> serializer) {
         Registry.register(Registry.RECIPE_SERIALIZER, new ResourceLocation(AE2wtlib.MOD_NAME, name), serializer);
+    }
+
+    public static void registerTrinket(Item terminal) {
+        if(trinketsPresent())
+            TrinketsHelper.registerTrinket(terminal);
     }
 
     public static boolean preventRemoteMovement(ItemEntity item) {

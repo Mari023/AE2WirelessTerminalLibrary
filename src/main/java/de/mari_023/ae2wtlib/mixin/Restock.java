@@ -38,9 +38,6 @@ public abstract class Restock {
     @Shadow
     public abstract int getCount();
 
-    @Shadow
-    public abstract ItemStack copy();
-
     @Inject(method = "useOn", at = @At(value = "RETURN"))
     public void useOnBlockRestock(UseOnContext context, CallbackInfoReturnable<InteractionResult> cir) {
         if (!context.getLevel().isClientSide() && cir.getReturnValue().equals(InteractionResult.CONSUME)
@@ -65,9 +62,8 @@ public abstract class Restock {
         int toAdd = getMaxStackSize() - getCount();
         if (toAdd == 0)
             return;
-        ItemStack request = copy();
         long extractedItems = cTHandler.getTargetGrid().getStorageService().getInventory().extract(
-                AEItemKey.of(request), toAdd, Actionable.MODULATE,
+                AEItemKey.of((ItemStack) (Object) this), toAdd, Actionable.MODULATE,
                 new PlayerSource(playerEntity, cTHandler.getSecurityStation()));
         if (extractedItems > Integer.MAX_VALUE)
             throw new IllegalStateException("Extracted amount cannot be larger than requested amount");
