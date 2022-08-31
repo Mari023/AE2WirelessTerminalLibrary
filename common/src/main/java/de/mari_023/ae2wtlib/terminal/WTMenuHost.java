@@ -2,6 +2,7 @@ package de.mari_023.ae2wtlib.terminal;
 
 import java.util.function.BiConsumer;
 
+import de.mari_023.ae2wtlib.wut.WUTHandler;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.entity.player.Player;
@@ -35,7 +36,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost implements Int
         super(player, inventorySlot, is, returnToMainMenu);
         viewCellInventory = new AppEngInternalInventory(this, 5);
         myPlayer = player;
-        upgradeInventory = UpgradeInventories.forItem(is, 2, this::updateUpgrades);
+        upgradeInventory = UpgradeInventories.forItem(is, WUTHandler.getUpgradeCardCount(), this::updateUpgrades);
 
         if (((WirelessTerminalItem) is.getItem()).getGridKey(is).isEmpty())
             return;
