@@ -8,6 +8,7 @@ import appeng.api.inventories.ISegmentedInventory;
 import appeng.items.tools.powered.powersink.AEBasePoweredItem;
 import appeng.me.cluster.implementations.QuantumCluster;
 import de.mari_023.ae2wtlib.Platform;
+import de.mari_023.ae2wtlib.wut.WUTHandler;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
@@ -49,7 +50,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost implements Int
         super(player, inventorySlot, is, returnToMainMenu);
         viewCellInventory = new AppEngInternalInventory(this, 5);
         myPlayer = player;
-        upgradeInventory = UpgradeInventories.forItem(is, 2, this::updateUpgrades);
+        upgradeInventory = UpgradeInventories.forItem(is, WUTHandler.getUpgradeCardCount(), this::updateUpgrades);
 
         if (((WirelessTerminalItem) is.getItem()).getGridKey(is).isEmpty())
             return;

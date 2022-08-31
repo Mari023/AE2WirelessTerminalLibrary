@@ -89,7 +89,7 @@ public class AE2wtlib {
     }
 
     private static void addUpgrades() {
-        Upgrades.add(AEItems.ENERGY_CARD, UNIVERSAL_TERMINAL, WUTHandler.terminalNames.size() * 2);
+        Upgrades.add(AEItems.ENERGY_CARD, UNIVERSAL_TERMINAL, WUTHandler.getUpgradeCardCount());
         Upgrades.add(AEItems.ENERGY_CARD, PATTERN_ACCESS_TERMINAL, 2);
         Upgrades.add(AEItems.ENERGY_CARD, PATTERN_ENCODING_TERMINAL, 2);
 

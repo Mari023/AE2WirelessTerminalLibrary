@@ -175,4 +175,8 @@ public class WUTHandler {
         WTMenuHost create(final Player ep, @Nullable Integer inventorySlot, final ItemStack is,
                 BiConsumer<Player, ISubMenu> returnToMainMenu);
     }
+
+    public static int getUpgradeCardCount() {
+        return terminalNames.size() * 2;
+    }
 }
