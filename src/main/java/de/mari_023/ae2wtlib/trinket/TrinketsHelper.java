@@ -4,6 +4,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Predicate;
 
+import dev.emi.trinkets.api.Trinket;
+import net.minecraft.world.item.Item;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.entity.player.Player;
@@ -55,5 +57,10 @@ public class TrinketsHelper {
             }
         }
         return null;
+    }
+
+    public static void registerTrinket(Item terminal) {
+        if (terminal instanceof Trinket trinket)
+            TrinketsApi.registerTrinket(terminal, trinket);
     }
 }

@@ -54,6 +54,11 @@ public class Platform {
         Registry.register(Registry.RECIPE_SERIALIZER, new ResourceLocation(AE2wtlib.MOD_NAME, name), serializer);
     }
 
+    public static void registerTrinket(Item terminal) {
+        if(trinketsPresent())
+            TrinketsHelper.registerTrinket(terminal);
+    }
+
     public static boolean preventRemoteMovement(ItemEntity item) {
         return false;
     }
