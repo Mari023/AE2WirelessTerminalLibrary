@@ -54,6 +54,7 @@ dependencies {
 
         compileOnly fg.deobf("me.shedaniel:RoughlyEnoughItems-forge:${project.rei_version}")
     } else if (project.runtime_itemlist_mod == "rei") {
+        implementation "me.shedaniel.cloth:basic-math:0.6.1"
         implementation fg.deobf("me.shedaniel:RoughlyEnoughItems-forge:${project.rei_version}")
     } else {
         throw new GradleException("Invalid runtime_itemlist_mod value: " + project.runtime_itemlist_mod)
