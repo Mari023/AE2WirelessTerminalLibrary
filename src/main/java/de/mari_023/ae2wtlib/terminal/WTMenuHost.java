@@ -108,6 +108,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost implements Int
             if (!findQuantumBridge(frequency)) return false;
         } else {
             if (quantumBridge instanceof QuantumCluster quantumCluster) {
+                if(quantumCluster.getCenter() == null) return false;
                 long frequencyOther = quantumCluster.getCenter().getQEFrequency();
                 if (!(frequencyOther == frequency || frequencyOther == -frequency))
                     if (!findQuantumBridge(frequency)) return false;
