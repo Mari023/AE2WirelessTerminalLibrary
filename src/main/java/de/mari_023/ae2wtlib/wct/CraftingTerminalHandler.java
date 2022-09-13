@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.WeakHashMap;
 
 import appeng.api.networking.security.IActionHost;
+import de.mari_023.ae2wtlib.terminal.WTMenuHost;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.server.level.ServerPlayer;
@@ -25,7 +26,7 @@ public class CraftingTerminalHandler {
     private static final WeakHashMap<Player, CraftingTerminalHandler> players = new WeakHashMap<>();
     private final Player player;
     private ItemStack craftingTerminal = ItemStack.EMPTY;
-    private WCTMenuHost menuHost;
+    private WTMenuHost menuHost;
     private MenuLocator locator;
     private HashMap<Item, Long> restockAbleItems = new HashMap<>();
     private MagnetHost magnetHost;
@@ -77,7 +78,7 @@ public class CraftingTerminalHandler {
     }
 
     @Nullable
-    public WCTMenuHost getMenuHost() {
+    public WTMenuHost getMenuHost() {
         if (menuHost != null && menuHost.rangeCheck() && menuHost.stillValid()) {
             return menuHost;
         }
@@ -87,7 +88,7 @@ public class CraftingTerminalHandler {
         if (locator == null)
             menuHost = null;
         else
-            menuHost = locator.locate(player, WCTMenuHost.class);
+            menuHost = locator.locate(player, WTMenuHost.class);
 
         if (menuHost == null) {
             invalidateCache();
