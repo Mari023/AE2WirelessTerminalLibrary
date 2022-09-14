@@ -1,4 +1,4 @@
-package de.mari_023.ae2wtlib.util;
+package de.mari_023.ae2wtlib.terminal;
 
 import java.util.Collections;
 import java.util.List;

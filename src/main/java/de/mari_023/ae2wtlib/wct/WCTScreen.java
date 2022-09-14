@@ -9,7 +9,7 @@ import net.minecraft.world.entity.player.Inventory;
 
 import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.TextConstants;
-import de.mari_023.ae2wtlib.util.ItemButton;
+import de.mari_023.ae2wtlib.terminal.ItemButton;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetMode;
 import de.mari_023.ae2wtlib.wut.CycleTerminalButton;
 import de.mari_023.ae2wtlib.wut.IUniversalTerminalCapable;
