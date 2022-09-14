@@ -2,6 +2,7 @@ package de.mari_023.ae2wtlib.wct;
 
 import java.util.Objects;
 
+import de.mari_023.ae2wtlib.terminal.ImageWidget;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -49,6 +50,7 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
         magnetCardMenuButton.setMessage(TextConstants.MAGNET_FILTER);
 
         widgets.add("player", new PlayerEntityWidget(Objects.requireNonNull(Minecraft.getInstance().player)));
+        widgets.add("singularityBackground", new ImageWidget(style.getImage("singularityBackground")));
     }
 
     private void setMagnetMode() {

@@ -1,6 +1,8 @@
 {
   "$schema": "schema.json",
-  "includes": ["../terminals/crafting_terminal.json"],
+  "includes": [
+    "../terminals/crafting_terminal.json"
+  ],
   "slots": {
     "CRAFTING_GRID": {
       "left": 80,
@@ -113,6 +115,18 @@
       "$comment": "The upgrade panel found on some screens",
       "right": -2,
       "top": 107
+    },
+    "singularityBackground": {
+      "left": -9999,
+      "bottom": -9999,
+      "$comment": "See comment on images"
+    }
+  },
+  "images": {
+    "singularityBackground": {
+      "$comment": "This allows texturepacks to set the slot background just for the slot",
+      "texture": "wtlib/guis/crafting.png",
+      "srcRect": [0, 0, 0, 0]
     }
   }
 }
