@@ -2,6 +2,7 @@ package de.mari_023.ae2wtlib.wct;
 
 import java.util.Objects;
 
+import appeng.menu.SlotSemantic;
 import appeng.menu.slot.RestrictedInputSlot;
 
 import net.minecraft.world.entity.player.Inventory;
@@ -94,6 +95,16 @@ public class WCTMenu extends CraftingTermMenu {
             return;
         }
         MenuOpener.open(MagnetMenu.TYPE, getPlayer(), getLocator());
+    }
+
+    @Override
+    protected boolean canSlotsBeHidden(SlotSemantic semantic) {
+        return semantic == AE2wtlibSlotSemantics.OFFHAND
+                || semantic == AE2wtlibSlotSemantics.HELMET
+                || semantic == AE2wtlibSlotSemantics.CHESTPLATE
+                || semantic == AE2wtlibSlotSemantics.LEGGINGS
+                || semantic == AE2wtlibSlotSemantics.BOOTS
+                || semantic == AE2wtlibSlotSemantics.TRASH;
     }
 
     public boolean isWUT() {
