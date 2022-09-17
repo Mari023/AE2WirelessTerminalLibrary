@@ -26,4 +26,8 @@ public class ImageWidget extends AbstractWidget {
     @Override
     public void updateNarration(NarrationElementOutput output) {
     }
+
+    protected boolean clicked(double d, double e) {
+        return false;
+    }
 }
