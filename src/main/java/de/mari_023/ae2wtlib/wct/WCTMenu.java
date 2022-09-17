@@ -6,6 +6,7 @@ import appeng.menu.slot.RestrictedInputSlot;
 
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 
 import de.mari_023.ae2wtlib.AE2wtlibSlotSemantics;
@@ -22,6 +23,7 @@ import appeng.menu.MenuOpener;
 import appeng.menu.implementations.MenuTypeBuilder;
 import appeng.menu.me.items.CraftingTermMenu;
 import appeng.menu.slot.AppEngSlot;
+import net.minecraft.world.item.Wearable;
 
 public class WCTMenu extends CraftingTermMenu {
 
@@ -38,7 +40,12 @@ public class WCTMenu extends CraftingTermMenu {
         super(TYPE, id, ip, gui, true);
         wctMenuHost = gui;
 
-        addSlot(new ArmorSlot(getPlayerInventory(), ArmorSlot.Armor.HEAD), AE2wtlibSlotSemantics.HELMET);
+        addSlot(new ArmorSlot(getPlayerInventory(), ArmorSlot.Armor.HEAD) {
+            @Override
+            public boolean mayPlace(ItemStack stack) {
+                return (stack.getItem() instanceof BlockItem bItem && bItem.getBlock() instanceof Wearable) || super.mayPlace(stack);
+            }
+        }, AE2wtlibSlotSemantics.HELMET);
         addSlot(new ArmorSlot(getPlayerInventory(), ArmorSlot.Armor.CHEST), AE2wtlibSlotSemantics.CHESTPLATE);
         addSlot(new ArmorSlot(getPlayerInventory(), ArmorSlot.Armor.LEGS), AE2wtlibSlotSemantics.LEGGINGS);
         addSlot(new ArmorSlot(getPlayerInventory(), ArmorSlot.Armor.FEET), AE2wtlibSlotSemantics.BOOTS);
