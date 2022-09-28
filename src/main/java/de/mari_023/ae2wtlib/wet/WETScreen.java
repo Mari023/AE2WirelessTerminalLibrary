@@ -1,6 +1,6 @@
 package de.mari_023.ae2wtlib.wet;
 
-import de.mari_023.ae2wtlib.terminal.ImageWidget;
+import appeng.client.gui.widgets.BackgroundPanel;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -15,6 +15,6 @@ public class WETScreen extends PatternEncodingTermScreen<WETMenu> implements IUn
         super(container, playerInventory, title, style);
         if (getMenu().isWUT())
             addToLeftToolbar(new CycleTerminalButton(btn -> cycleTerminal()));
-        widgets.add("singularityBackground", new ImageWidget(style.getImage("singularityBackground")));
+        widgets.add("singularityBackground", new BackgroundPanel(style.getImage("singularityBackground")));
     }
 }

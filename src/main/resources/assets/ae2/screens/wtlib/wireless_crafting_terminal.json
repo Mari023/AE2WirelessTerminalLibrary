@@ -38,8 +38,8 @@
       "bottom": 111
     },
     "AE2WTLIB_SINGULARITY": {
-      "left": 152,
-      "bottom": 111
+      "right": -10,
+      "top": 115
     }
   },
   "text": {
@@ -65,7 +65,7 @@
   "terminalStyle": {
     "bottom": {
       "texture": "wtlib/guis/extras.png",
-      "srcRect": [0, 24, 200, 177]
+      "srcRect": [0, 0, 200, 177]
     }
   },
   "widgets": {
@@ -88,19 +88,19 @@
     "upgrades": {
       "$comment": "The upgrade panel found on some screens",
       "right": -2,
-      "top": 107
+      "top": 142
     },
     "singularityBackground": {
-      "left": -9999,
-      "bottom": -9999,
-      "$comment": "See comment on images"
+      "right": -2,
+      "top": 107
     }
   },
   "images": {
     "singularityBackground": {
-      "$comment": "This allows texturepacks to set the slot background just for the slot",
-      "texture": "wtlib/guis/crafting.png",
-      "srcRect": [0, 0, 0, 0]
+      "texture": "guis/extra_panels.png",
+      "textureWidth": 128,
+      "textureHeight": 128,
+      "srcRect": [0, 0, 32, 32]
     }
   }
 }

@@ -3,20 +3,27 @@
   "includes": ["../pattern_access_terminal.json"],
   "slots": {
     "AE2WTLIB_SINGULARITY": {
-      "left": 173,
-      "bottom": 93
+      "right": -10,
+      "top": 8
     }
   },
   "images": {
     "singularityBackground": {
-      "texture": "wtlib/guis/extras.png",
-      "srcRect": [0, 0, 23, 23]
+      "texture": "guis/extra_panels.png",
+      "textureWidth": 128,
+      "textureHeight": 128,
+      "srcRect": [0, 0, 32, 32]
     }
   },
   "widgets": {
     "singularityBackground": {
-      "left": 172,
-      "bottom": 94
+      "right": -2,
+      "top": 0
+    },
+    "upgrades": {
+      "$comment": "The upgrade panel found on some screens",
+      "right": -2,
+      "top": 33
     }
   }
 }
