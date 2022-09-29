@@ -11,9 +11,9 @@ import appeng.menu.implementations.MenuTypeBuilder;
 import appeng.menu.me.items.PatternEncodingTermMenu;
 
 public class WETMenu extends PatternEncodingTermMenu {
-
+    public static final String ID = "wireless_pattern_encoding_terminal";
     public static final MenuType<WETMenu> TYPE = MenuTypeBuilder.create(WETMenu::new, WETMenuHost.class)
-            .requirePermission(SecurityPermissions.CRAFT).build("wireless_pattern_encoding_terminal");
+            .requirePermission(SecurityPermissions.CRAFT).build(ID);
 
     private final WETMenuHost WETGUIObject;
 

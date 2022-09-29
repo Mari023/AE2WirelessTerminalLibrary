@@ -22,4 +22,7 @@ public class WATScreen extends InterfaceTerminalScreen<WATMenu> implements IUniv
         if (getMenu().getToolbox().isPresent())
             widgets.add("toolbox", new ToolboxPanel(style, getMenu().getToolbox().getName()));
     }
+
+    @Override
+    public void storeState() {}
 }

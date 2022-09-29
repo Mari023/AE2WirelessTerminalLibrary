@@ -1,5 +1,6 @@
 package de.mari_023.ae2wtlib.forge;
 
+import net.minecraft.world.inventory.MenuType;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.entity.item.ItemEntity;
@@ -67,5 +68,8 @@ public class PlatformImpl {
 
     public static boolean preventRemoteMovement(ItemEntity item) {
         return item.getPersistentData().contains("PreventRemoteMovement");
+    }
+
+    public static void registerMenuType(String id, MenuType<?> menuType) {
     }
 }

@@ -1,11 +1,12 @@
 package de.mari_023.ae2wtlib.fabric;
 
+import appeng.core.AppEng;
 import org.jetbrains.annotations.Nullable;
-
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
@@ -69,5 +70,9 @@ public class PlatformImpl {
 
     public static boolean preventRemoteMovement(ItemEntity item) {
         return false;
+    }
+
+    public static void registerMenuType(String id, MenuType<?> menuType) {
+        Registry.register(Registry.MENU, AppEng.makeId(id), menuType);
     }
 }

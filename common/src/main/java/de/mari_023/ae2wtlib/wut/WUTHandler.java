@@ -102,7 +102,7 @@ public class WUTHandler {
         ServerNetworkManager.sendToClient(playerEntity, new UpdateWUTPackage(locator, tag));
     }
 
-    public static boolean open(final Player player, final MenuLocator locator) {
+    public static boolean open(final Player player, final MenuLocator locator, boolean returningFromSubmenu) {
         WTMenuHost host = locator.locate(player, WTMenuHost.class);
         if (host == null)
             return false;
@@ -115,7 +115,7 @@ public class WUTHandler {
             player.displayClientMessage(TextConstants.TERMINAL_EMPTY, false);
             return false;
         }
-        return wirelessTerminals.get(currentTerminal).containerOpener().tryOpen(player, locator, is);
+        return wirelessTerminals.get(currentTerminal).containerOpener().tryOpen(player, locator, is, returningFromSubmenu);
     }
 
     @Nullable
@@ -167,7 +167,7 @@ public class WUTHandler {
 
     @FunctionalInterface
     public interface ContainerOpener {
-        boolean tryOpen(Player player, MenuLocator locator, ItemStack stack);
+        boolean tryOpen(Player player, MenuLocator locator, ItemStack stack, boolean returningFromSubmenu);
     }
 
     @FunctionalInterface

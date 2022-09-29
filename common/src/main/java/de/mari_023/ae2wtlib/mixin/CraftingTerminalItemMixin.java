@@ -49,6 +49,6 @@ public class CraftingTerminalItemMixin extends WirelessTerminalItem implements I
     public ItemMenuHost getMenuHost(Player player, int slot, ItemStack stack, @Nullable BlockPos pos) {
 
         return new WCTMenuHost(player, slot, stack,
-                (p, subMenu) -> tryOpen(player, MenuLocators.forInventorySlot(slot), stack));
+                (p, subMenu) -> tryOpen(player, MenuLocators.forInventorySlot(slot), stack, true));
     }
 }
