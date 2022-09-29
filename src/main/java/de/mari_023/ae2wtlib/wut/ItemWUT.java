@@ -48,8 +48,8 @@ public class ItemWUT extends ItemWT {
     }
 
     @Override
-    public boolean open(final Player player, ItemStack stack, final MenuLocator locator) {
-        return WUTHandler.open(player, locator);
+    public boolean open(final Player player, ItemStack stack, final MenuLocator locator, boolean returningFromSubmenu) {
+        return WUTHandler.open(player, locator, returningFromSubmenu);
     }
 
     @Override

@@ -19,9 +19,9 @@ import appeng.util.ConfigInventory;
 import appeng.util.ConfigMenuInventory;
 
 public class MagnetMenu extends AEBaseMenu implements ISubMenu {
-
+    public static final String ID = "magnet";
     public static final MenuType<MagnetMenu> TYPE = MenuTypeBuilder.create(MagnetMenu::new, WCTMenuHost.class)
-            .build("magnet");
+            .build(ID);
 
     private final WCTMenuHost host;
     private final MagnetHost magnetHost;

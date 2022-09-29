@@ -20,20 +20,20 @@ import appeng.menu.MenuOpener;
 import appeng.menu.locator.MenuLocator;
 
 public interface IUniversalWirelessTerminalItem {
-    default boolean open(final Player player, ItemStack stack, final MenuLocator locator) {
-        return MenuOpener.open(getMenuType(stack), player, locator);
+    default boolean open(final Player player, ItemStack stack, final MenuLocator locator, boolean returningFromSubmenu) {
+        return MenuOpener.open(getMenuType(stack), player, locator, returningFromSubmenu);
     }
 
-    default boolean tryOpen(Player player, MenuLocator locator, ItemStack stack) {
+    default boolean tryOpen(Player player, MenuLocator locator, ItemStack stack, boolean returningFromSubmenu) {
         if (checkUniversalPreconditions(stack, player))
-            return open(player, stack, locator);
+            return open(player, stack, locator, returningFromSubmenu);
         return false;
     }
 
     @Nullable
     default ItemMenuHost getMenuHost(Player player, MenuLocator locator, ItemStack stack) {
         return WUTHandler.wirelessTerminals.get(WUTHandler.getCurrentTerminal(stack)).wTMenuHostFactory().create(player,
-                null, stack, (p, subMenu) -> tryOpen(player, locator, stack));
+                null, stack, (p, subMenu) -> tryOpen(player, locator, stack, true));
     }
 
     MenuType<?> getMenuType(ItemStack stack);

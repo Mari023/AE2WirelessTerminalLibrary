@@ -1,5 +1,6 @@
 package de.mari_023.ae2wtlib;
 
+import de.mari_023.ae2wtlib.wct.magnet_card.config.MagnetMenu;
 import de.mari_023.ae2wtlib.wut.recipe.Combine;
 import de.mari_023.ae2wtlib.wut.recipe.CombineSerializer;
 import de.mari_023.ae2wtlib.wut.recipe.Upgrade;
@@ -56,6 +57,8 @@ public class AE2wtlib {
         WUTHandler.addTerminal("pattern_access", PATTERN_ACCESS_TERMINAL::tryOpen, WATMenuHost::new, WATMenu.TYPE,
                 PATTERN_ACCESS_TERMINAL);
 
+        registerMenus();
+
         addUpgrades();// TODO add an entrypoint for addons to register their terminals before this
 
         Platform.registerRecipe(UpgradeSerializer.NAME, Upgrade.serializer = new UpgradeSerializer());
@@ -100,5 +103,12 @@ public class AE2wtlib {
 
         Upgrades.add(MAGNET_CARD, AEItems.WIRELESS_CRAFTING_TERMINAL, 1);
         Upgrades.add(MAGNET_CARD, UNIVERSAL_TERMINAL, 1);
+    }
+
+    private static void registerMenus() {
+        Platform.registerMenuType(WCTMenu.ID, WCTMenu.TYPE);
+        Platform.registerMenuType(WATMenu.ID, WATMenu.TYPE);
+        Platform.registerMenuType(WETMenu.ID, WETMenu.TYPE);
+        Platform.registerMenuType(MagnetMenu.ID, MagnetMenu.TYPE);
     }
 }

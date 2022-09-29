@@ -27,9 +27,9 @@ import appeng.menu.slot.AppEngSlot;
 import net.minecraft.world.item.Wearable;
 
 public class WCTMenu extends CraftingTermMenu {
-
+    public static final String ID = "wireless_crafting_terminal";
     public static final MenuType<WCTMenu> TYPE = MenuTypeBuilder.create(WCTMenu::new, WCTMenuHost.class)
-            .requirePermission(SecurityPermissions.CRAFT).build("wireless_crafting_terminal");
+            .requirePermission(SecurityPermissions.CRAFT).build(ID);
 
     public static final String ACTION_DELETE = "delete";
     public static final String MAGNET_MODE = "magnetMode";

@@ -44,7 +44,7 @@ public class CycleTerminalPacket extends AE2wtlibPacket {
 
         WUTHandler.cycle(player, locator, item, buf.readBoolean());
 
-        WUTHandler.open(player, locator);
+        WUTHandler.open(player, locator, true);
     }
 
     @Override

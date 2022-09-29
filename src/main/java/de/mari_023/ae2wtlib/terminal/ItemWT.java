@@ -34,7 +34,7 @@ public abstract class ItemWT extends WirelessTerminalItem implements IUniversalW
     public InteractionResultHolder<ItemStack> use(final Level w, final Player player, final InteractionHand hand) {
         ItemStack is = player.getItemInHand(hand);
         if (checkUniversalPreconditions(is, player)) {
-            open(player, is, MenuLocators.forHand(player, hand));
+            open(player, is, MenuLocators.forHand(player, hand), false);
             return new InteractionResultHolder<>(InteractionResult.SUCCESS, is);
         }
         return new InteractionResultHolder<>(InteractionResult.FAIL, is);
@@ -43,7 +43,7 @@ public abstract class ItemWT extends WirelessTerminalItem implements IUniversalW
     @Nullable
     public ItemMenuHost getMenuHost(Player player, int slot, ItemStack stack, @Nullable BlockPos pos) {
         return WUTHandler.wirelessTerminals.get(WUTHandler.getCurrentTerminal(stack)).wTMenuHostFactory().create(player,
-                slot, stack, (p, subMenu) -> tryOpen(player, MenuLocators.forInventorySlot(slot), stack));
+                slot, stack, (p, subMenu) -> tryOpen(player, MenuLocators.forInventorySlot(slot), stack, true));
     }
 
     /**
