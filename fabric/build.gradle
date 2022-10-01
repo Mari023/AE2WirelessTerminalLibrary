@@ -24,11 +24,13 @@ dependencies {
     modCompileOnly ("dev.emi:trinkets:${rootProject.trinkets_version}") { transitive false }
     modCompileOnly ("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cca_version}")
     //modRuntimeOnly "dev.emi:trinkets:${rootProject.trinkets_version}"
-    modImplementation "me.shedaniel:RoughlyEnoughItems-fabric:${rootProject.rei_version}"
-    //modApi("me.shedaniel.cloth:cloth-config-fabric:${project.cloth}")
+    modCompileOnly "me.shedaniel:RoughlyEnoughItems-fabric:${rootProject.rei_version}"
+    modRuntimeOnly("me.shedaniel.cloth:cloth-config-fabric:${project.cloth}")
     modApi("com.terraformersmc:modmenu:${project.mod_menu_version}")
-    modImplementation "appeng:appliedenergistics2-fabric:${rootProject.ae2_fabric_version}"
-
+    modImplementation ("appeng:appliedenergistics2-fabric:${rootProject.ae2_fabric_version}") {
+        exclude group: 'me.shedaniel'
+    }
+    modRuntimeOnly("dev.architectury:architectury-fabric:${rootProject.architectury_version}")
 }
 
 processResources {

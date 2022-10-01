@@ -81,7 +81,8 @@ public class MagnetHandler {
             return;
         for (ItemEntity entityItemNearby : entityItems) {
             var item = AEItemKey.of(entityItemNearby.getItem());
-            if (item == null) continue;
+            if (item == null)
+                continue;
             if (magnetHost.getPickupFilter().matchesFilter(item,
                     magnetHost.getPickupMode())
                     && !Platform.preventRemoteMovement(entityItemNearby))

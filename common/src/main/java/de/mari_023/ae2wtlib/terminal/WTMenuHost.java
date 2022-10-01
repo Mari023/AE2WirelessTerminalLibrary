@@ -2,7 +2,6 @@ package de.mari_023.ae2wtlib.terminal;
 
 import java.util.function.BiConsumer;
 
-import de.mari_023.ae2wtlib.wut.WUTHandler;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.entity.player.Player;
@@ -10,6 +9,7 @@ import net.minecraft.world.item.ItemStack;
 
 import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.AE2wtlibConfig;
+import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 import appeng.api.features.Locatables;
 import appeng.api.inventories.InternalInventory;

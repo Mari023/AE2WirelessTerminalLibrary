@@ -101,6 +101,14 @@ allprojects {
                 includeGroup "top.theillusivec4.curios"
             }
         }
+
+        maven {
+            name 'cursemaven'
+            url "https://www.cursemaven.com"
+            content {
+                includeGroup "curse.maven"
+            }
+        }
     }
 
     tasks.withType(JavaCompile) {

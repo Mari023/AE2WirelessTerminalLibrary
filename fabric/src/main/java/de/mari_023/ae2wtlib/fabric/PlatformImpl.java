@@ -8,6 +8,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -21,6 +22,7 @@ import de.mari_023.ae2wtlib.wut.recipe.CombineSerializer;
 import de.mari_023.ae2wtlib.wut.recipe.Upgrade;
 import de.mari_023.ae2wtlib.wut.recipe.UpgradeSerializer;
 
+import appeng.core.AppEng;
 import appeng.menu.locator.MenuLocator;
 
 public class PlatformImpl {
@@ -69,5 +71,9 @@ public class PlatformImpl {
 
     public static boolean preventRemoteMovement(ItemEntity item) {
         return false;
+    }
+
+    public static void registerMenuType(String id, MenuType<?> menuType) {
+        Registry.register(Registry.MENU, AppEng.makeId(id), menuType);
     }
 }

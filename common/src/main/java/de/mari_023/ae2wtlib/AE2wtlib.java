@@ -13,6 +13,7 @@ import de.mari_023.ae2wtlib.wat.WATMenu;
 import de.mari_023.ae2wtlib.wat.WATMenuHost;
 import de.mari_023.ae2wtlib.wct.WCTMenu;
 import de.mari_023.ae2wtlib.wct.WCTMenuHost;
+import de.mari_023.ae2wtlib.wct.magnet_card.config.MagnetMenu;
 import de.mari_023.ae2wtlib.wet.ItemWET;
 import de.mari_023.ae2wtlib.wet.WETMenu;
 import de.mari_023.ae2wtlib.wet.WETMenuHost;
@@ -92,5 +93,12 @@ public class AE2wtlib {
 
         Upgrades.add(MAGNET_CARD, AEItems.WIRELESS_CRAFTING_TERMINAL, 1);
         Upgrades.add(MAGNET_CARD, UNIVERSAL_TERMINAL, 1);
+    }
+
+    public static void registerMenus() {
+        Platform.registerMenuType(WCTMenu.ID, WCTMenu.TYPE);
+        Platform.registerMenuType(WATMenu.ID, WATMenu.TYPE);
+        Platform.registerMenuType(WETMenu.ID, WETMenu.TYPE);
+        Platform.registerMenuType(MagnetMenu.ID, MagnetMenu.TYPE);
     }
 }

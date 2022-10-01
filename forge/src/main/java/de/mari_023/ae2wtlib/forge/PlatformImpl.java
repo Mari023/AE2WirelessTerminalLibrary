@@ -4,6 +4,7 @@ import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -67,5 +68,8 @@ public class PlatformImpl {
 
     public static boolean preventRemoteMovement(ItemEntity item) {
         return item.getPersistentData().contains("PreventRemoteMovement");
+    }
+
+    public static void registerMenuType(String id, MenuType<?> menuType) {
     }
 }
