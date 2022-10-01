@@ -24,4 +24,7 @@ public class WATScreen extends PatternAccessTermScreen<WATMenu> implements IUniv
             widgets.add("toolbox", new ToolboxPanel(style, getMenu().getToolbox().getName()));
         widgets.add("singularityBackground", new BackgroundPanel(style.getImage("singularityBackground")));
     }
+
+    @Override
+    public void storeState() {}
 }
