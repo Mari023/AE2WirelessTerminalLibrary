@@ -47,28 +47,34 @@ public abstract class Restock {
 
     @Inject(method = "use", at = @At(value = "RETURN"))
     public void useRestock(Level world, Player user, InteractionHand hand,
-            CallbackInfoReturnable<InteractionResultHolder<ItemStack>> cir) {
+                           CallbackInfoReturnable<InteractionResultHolder<ItemStack>> cir) {
         if (!world.isClientSide() && cir.getReturnValue().getResult().equals(InteractionResult.CONSUME))
             restock(user);
     }
 
-    private void restock(Player playerEntity) {
-        if (isEmpty() && !playerEntity.isCreative())
+    private void restock(Player player) {
+        if (isEmpty() && !player.isCreative())
             return;
-        CraftingTerminalHandler cTHandler = CraftingTerminalHandler.getCraftingTerminalHandler(playerEntity);
+        CraftingTerminalHandler cTHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
         if (!cTHandler.inRange() || !ItemWT.getBoolean(cTHandler.getCraftingTerminal(), "restock")
                 || cTHandler.getTargetGrid() == null || cTHandler.getTargetGrid().getStorageService() == null)
             return;
-        int toAdd = getMaxStackSize() - getCount();
+        int toAdd = getMaxStackSize() / 2 - getCount();
         if (toAdd == 0)
             return;
-        long extractedItems = cTHandler.getTargetGrid().getStorageService().getInventory().extract(
-                AEItemKey.of((ItemStack) (Object) this), toAdd, Actionable.MODULATE,
-                new PlayerSource(playerEntity, cTHandler.getSecurityStation()));
-        if (extractedItems > Integer.MAX_VALUE)
-            throw new IllegalStateException("Extracted amount cannot be larger than requested amount");
-        setCount(getCount() + (int) extractedItems);
-        ServerNetworkManager.sendToClient((ServerPlayer) playerEntity, new UpdateRestockPacket(
-                playerEntity.getInventory().findSlotMatchingUnusedItem((ItemStack) (Object) this), getCount()));
+
+        long changed;
+        if (toAdd > 0)
+            changed = cTHandler.getTargetGrid().getStorageService().getInventory().extract(
+                    AEItemKey.of((ItemStack) (Object) this), toAdd, Actionable.MODULATE,
+                    new PlayerSource(player, cTHandler.getSecurityStation()));
+        else
+            changed = - cTHandler.getTargetGrid().getStorageService().getInventory().insert(
+                    AEItemKey.of((ItemStack) (Object) this), - toAdd, Actionable.MODULATE,
+                    new PlayerSource(player, cTHandler.getSecurityStation()));
+
+        setCount(getCount() + (int) changed);
+        ServerNetworkManager.sendToClient((ServerPlayer) player, new UpdateRestockPacket(
+                player.getInventory().findSlotMatchingUnusedItem((ItemStack) (Object) this), getCount()));
     }
 }
