@@ -33,6 +33,8 @@ if (ext.tag) {
     version = ext.tag.substring("forge/".length())
 }
 
+def extraModsDir = "run/forge-extra"
+
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
@@ -62,8 +64,16 @@ dependencies {
 
     annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
-}
 
+    for (extraModJar in fileTree(dir: extraModsDir, include: '*.jar')) {
+        def basename = extraModJar.name.substring(0, extraModJar.name.length() - ".jar".length())
+        def versionSep = basename.lastIndexOf('-')
+        assert versionSep != -1
+        def artifactId = basename.substring(0, versionSep)
+        def version = basename.substring(versionSep + 1)
+        runtimeOnly fg.deobf("extra-mods:$artifactId:$version")
+    }
+}
 
 archivesBaseName = rootProject.archives_base_name
 version = rootProject.version
@@ -72,6 +82,10 @@ group = rootProject.maven_group
 repositories {
     mavenLocal()
     mavenCentral()
+    flatDir {
+        name "extra-mods"
+        dir file(extraModsDir)
+    }
     maven {
         name "Modmaven"
         url "https://modmaven.dev/"
