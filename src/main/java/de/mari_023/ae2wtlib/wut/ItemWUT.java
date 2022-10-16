@@ -2,6 +2,7 @@ package de.mari_023.ae2wtlib.wut;
 
 import java.util.List;
 
+import appeng.api.upgrades.Upgrades;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHandler;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -78,7 +79,7 @@ public class ItemWUT extends ItemWT {
 
     public void onUpgradesChanged(ItemStack stack, IUpgradeInventory upgrades) {
         setAEMaxPowerMultiplier(stack,
-                countInstalledTerminals(stack) + upgrades.getInstalledUpgrades(AEItems.ENERGY_CARD));
+                countInstalledTerminals(stack) + Upgrades.getEnergyCardMultiplier(upgrades));
     }
 
     public int countInstalledTerminals(ItemStack stack) {
