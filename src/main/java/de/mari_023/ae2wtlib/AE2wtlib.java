@@ -1,5 +1,6 @@
 package de.mari_023.ae2wtlib;
 
+import appeng.core.localization.GuiText;
 import de.mari_023.ae2wtlib.wct.magnet_card.config.MagnetMenu;
 import de.mari_023.ae2wtlib.wut.recipe.Combine;
 import de.mari_023.ae2wtlib.wut.recipe.CombineSerializer;
@@ -92,14 +93,15 @@ public class AE2wtlib {
     }
 
     private static void addUpgrades() {
+        var terminals = GuiText.WirelessTerminals.getTranslationKey();
         Upgrades.add(AEItems.ENERGY_CARD, UNIVERSAL_TERMINAL, WUTHandler.getUpgradeCardCount());
-        Upgrades.add(AEItems.ENERGY_CARD, PATTERN_ACCESS_TERMINAL, 2);
-        Upgrades.add(AEItems.ENERGY_CARD, PATTERN_ENCODING_TERMINAL, 2);
+        Upgrades.add(AEItems.ENERGY_CARD, PATTERN_ACCESS_TERMINAL, 2, terminals);
+        Upgrades.add(AEItems.ENERGY_CARD, PATTERN_ENCODING_TERMINAL, 2, terminals);
 
-        Upgrades.add(QUANTUM_BRIDGE_CARD, AEItems.WIRELESS_CRAFTING_TERMINAL, 1);
-        Upgrades.add(QUANTUM_BRIDGE_CARD, PATTERN_ENCODING_TERMINAL, 1);
-        Upgrades.add(QUANTUM_BRIDGE_CARD, PATTERN_ACCESS_TERMINAL, 1);
-        Upgrades.add(QUANTUM_BRIDGE_CARD, UNIVERSAL_TERMINAL, 1);
+        Upgrades.add(QUANTUM_BRIDGE_CARD, AEItems.WIRELESS_CRAFTING_TERMINAL, 1, terminals);
+        Upgrades.add(QUANTUM_BRIDGE_CARD, PATTERN_ENCODING_TERMINAL, 1, terminals);
+        Upgrades.add(QUANTUM_BRIDGE_CARD, PATTERN_ACCESS_TERMINAL, 1, terminals);
+        Upgrades.add(QUANTUM_BRIDGE_CARD, UNIVERSAL_TERMINAL, 1, terminals);
 
         Upgrades.add(MAGNET_CARD, AEItems.WIRELESS_CRAFTING_TERMINAL, 1);
         Upgrades.add(MAGNET_CARD, UNIVERSAL_TERMINAL, 1);
