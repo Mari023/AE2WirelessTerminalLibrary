@@ -1,6 +1,7 @@
 package de.mari_023.ae2wtlib.client;
 
 import appeng.api.IAEAddonEntrypoint;
+import de.mari_023.ae2wtlib.AE2wtlib;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
@@ -30,5 +31,7 @@ public class AE2wtlibClient implements IAEAddonEntrypoint {
         ClientNetworkManager.registerClientBoundPacket(UpdateWUTPackage.NAME, UpdateWUTPackage::new);
         ClientNetworkManager.registerClientBoundPacket(UpdateRestockPacket.NAME, UpdateRestockPacket::new);
         ClientNetworkManager.registerClientBoundPacket(RestockAmountPacket.NAME, RestockAmountPacket::new);
+
+        AE2wtlib.notifyAddons("client");
     }
 }

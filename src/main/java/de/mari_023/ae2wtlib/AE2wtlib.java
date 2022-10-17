@@ -6,6 +6,8 @@ import de.mari_023.ae2wtlib.wut.recipe.Combine;
 import de.mari_023.ae2wtlib.wut.recipe.CombineSerializer;
 import de.mari_023.ae2wtlib.wut.recipe.Upgrade;
 import de.mari_023.ae2wtlib.wut.recipe.UpgradeSerializer;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 
@@ -60,14 +62,17 @@ public class AE2wtlib {
 
         registerMenus();
 
-        addUpgrades();// TODO add an entrypoint for addons to register their terminals before this
-
         Platform.registerRecipe(UpgradeSerializer.NAME, Upgrade.serializer = new UpgradeSerializer());
         Platform.registerRecipe(CombineSerializer.NAME, Combine.serializer = new CombineSerializer());
 
         ServerNetworkManager.registerServerBoundPacket(CycleTerminalPacket.NAME, CycleTerminalPacket::new);
         HotkeyActions.register(new RestockHotkeyAction(), "ae2wtlib_restock");
         HotkeyActions.register(new MagnetHotkeyAction(), "ae2wtlib_magnet");
+
+        notifyAddons("");//common
+        if (FabricLoader.getInstance().getEnvironmentType().equals(EnvType.SERVER)) notifyAddons("server");
+
+        addUpgrades();
     }
 
     public static void createItems() {
@@ -112,5 +117,12 @@ public class AE2wtlib {
         Platform.registerMenuType(WATMenu.ID, WATMenu.TYPE);
         Platform.registerMenuType(WETMenu.ID, WETMenu.TYPE);
         Platform.registerMenuType(MagnetMenu.ID, MagnetMenu.TYPE);
+    }
+
+    public static void notifyAddons(String type) {
+        var entrypoints = FabricLoader.getInstance().getEntrypointContainers(MOD_NAME + type, IWTLibAddonEntrypoint.class);
+        for (var entrypoint : entrypoints) {
+            entrypoint.getEntrypoint().onWTLibInitialized();
+        }
     }
 }
