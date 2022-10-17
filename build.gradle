@@ -18,10 +18,10 @@ if (ext.pr) {
 
 ext.tag = System.getenv('TAG') ?: ""
 if (ext.tag) {
-    if (!ext.tag.startsWith("fabric/")) {
-        throw new GradleException("Tags for the fabric version should start with fabric/: ${ext.tag}")
+    if (!ext.tag.startsWith("${rootProject.modloader}/")) {
+        throw new GradleException("Tags for the ${rootProject.modloader} version should start with ${rootProject.modloader}/: ${ext.tag}")
     }
-    version = ext.tag.substring("fabric/".length())
+    version = ext.tag.substring("${rootProject.modloader}/".length())
 }
 
 dependencies {
@@ -33,29 +33,29 @@ dependencies {
     modCompileOnly("dev.emi:trinkets:${rootProject.trinkets_version}") { transitive false }
     modCompileOnly("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cca_version}")
     //modRuntimeOnly "dev.emi:trinkets:${rootProject.trinkets_version}"
-    modRuntimeOnly("me.shedaniel.cloth:cloth-config-fabric:${project.cloth}")
+    modRuntimeOnly("me.shedaniel.cloth:cloth-config-${rootProject.modloader}:${project.cloth}")
     modApi("com.terraformersmc:modmenu:${project.mod_menu_version}")
-    modImplementation "dev.architectury:architectury-fabric:${rootProject.architectury_version}"
-    modImplementation("maven.modrinth:ae2:${rootProject.ae2_version}") {
+    modImplementation "dev.architectury:architectury-${rootProject.modloader}:${rootProject.architectury_version}"
+    modImplementation("maven.modrinth:ae2:${rootProject.modloader}-${rootProject.ae2_version}") {
         exclude group: "mezz.jei"
         exclude group: "me.shedaniel"
         exclude group: "net.fabricmc.fabric-api"
     }
 
     if (project.runtime_itemlist_mod == "jei") {
-        modImplementation("mezz.jei:jei-${jei_minecraft_version}-fabric:${jei_version}") {
+        modImplementation("mezz.jei:jei-${jei_minecraft_version}-${rootProject.modloader}:${jei_version}") {
             exclude group: "mezz.jei"
         }
 
-        modCompileOnly("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}") {
+        modCompileOnly("me.shedaniel:RoughlyEnoughItems-${rootProject.modloader}:${project.rei_version}") {
             exclude group: "net.fabricmc.fabric-api"
         }
     } else if (project.runtime_itemlist_mod == "rei") {
-        modCompileOnly("mezz.jei:jei-${jei_minecraft_version}-fabric:${jei_version}") {
+        modCompileOnly("mezz.jei:jei-${jei_minecraft_version}-${rootProject.modloader}:${jei_version}") {
             exclude group: "mezz.jei"
         }
 
-        modImplementation("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}") {
+        modImplementation("me.shedaniel:RoughlyEnoughItems-${rootProject.modloader}:${project.rei_version}") {
             exclude group: "net.fabricmc.fabric-api"
         }
     } else {
