@@ -7,6 +7,7 @@ buildscript {
 plugins {
     id "fabric-loom" version "1.0-SNAPSHOT"
     id "com.diffplug.spotless" version "5.12.4"
+    id 'maven-publish'
 }
 
 version = project.mod_version + "-SNAPSHOT"
@@ -183,4 +184,26 @@ spotless {
         target '*/src/*/resources/**/*.json'
         prettier().config(['parser': 'json'])
     }
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = project.group
+            artifactId = 'ae2wtlib-fabric'
+            version = project.version
+
+            // add all the jars that should be included when publishing to maven
+            artifact(remapJar) {
+                builtBy remapJar
+            }
+            artifact(sourcesJar) {
+                builtBy remapSourcesJar
+            }
+        }
+    }
+}
+
+tasks.withType(GenerateModuleMetadata) {
+    enabled = false
 }
