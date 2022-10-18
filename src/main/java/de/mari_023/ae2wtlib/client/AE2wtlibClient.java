@@ -32,6 +32,6 @@ public class AE2wtlibClient implements IAEAddonEntrypoint {
         ClientNetworkManager.registerClientBoundPacket(UpdateRestockPacket.NAME, UpdateRestockPacket::new);
         ClientNetworkManager.registerClientBoundPacket(RestockAmountPacket.NAME, RestockAmountPacket::new);
 
-        AE2wtlib.notifyAddons("client");
+        AE2wtlib.notifyAddons(":client");
     }
 }

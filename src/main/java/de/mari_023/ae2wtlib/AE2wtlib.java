@@ -70,7 +70,7 @@ public class AE2wtlib {
         HotkeyActions.register(new MagnetHotkeyAction(), "ae2wtlib_magnet");
 
         notifyAddons("");//common
-        if (FabricLoader.getInstance().getEnvironmentType().equals(EnvType.SERVER)) notifyAddons("server");
+        if (FabricLoader.getInstance().getEnvironmentType().equals(EnvType.SERVER)) notifyAddons(":server");
 
         addUpgrades();
     }
