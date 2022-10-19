@@ -1,7 +1,8 @@
 {
   "$schema": "schema.json",
   "includes": [
-    "../terminals/crafting_terminal.json"
+    "../terminals/crafting_terminal.json",
+    "universal_terminal_with_viewcells.json"
   ],
   "slots": {
     "CRAFTING_GRID": {
@@ -36,10 +37,6 @@
     "AE2WTLIB_OFFHAND": {
       "left": 80,
       "bottom": 111
-    },
-    "AE2WTLIB_SINGULARITY": {
-      "right": -10,
-      "top": 115
     }
   },
   "text": {
@@ -84,23 +81,6 @@
     "player": {
       "left": 52,
       "bottom": 99
-    },
-    "upgrades": {
-      "$comment": "The upgrade panel found on some screens",
-      "right": -2,
-      "top": 142
-    },
-    "singularityBackground": {
-      "right": -2,
-      "top": 107
-    }
-  },
-  "images": {
-    "singularityBackground": {
-      "texture": "guis/extra_panels.png",
-      "textureWidth": 128,
-      "textureHeight": 128,
-      "srcRect": [0, 0, 32, 32]
     }
   }
 }
