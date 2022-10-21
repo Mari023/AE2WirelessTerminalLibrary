@@ -1,10 +1,9 @@
 package de.mari_023.ae2wtlib.client;
 
-import appeng.api.IAEAddonEntrypoint;
-import de.mari_023.ae2wtlib.AE2wtlib;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 
+import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.networking.ClientNetworkManager;
 import de.mari_023.ae2wtlib.networking.s2c.RestockAmountPacket;
 import de.mari_023.ae2wtlib.networking.s2c.UpdateRestockPacket;
@@ -18,6 +17,7 @@ import de.mari_023.ae2wtlib.wct.magnet_card.config.MagnetScreen;
 import de.mari_023.ae2wtlib.wet.WETMenu;
 import de.mari_023.ae2wtlib.wet.WETScreen;
 
+import appeng.api.IAEAddonEntrypoint;
 import appeng.init.client.InitScreens;
 
 @Environment(EnvType.CLIENT)

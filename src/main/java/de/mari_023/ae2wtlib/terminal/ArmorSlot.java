@@ -1,7 +1,7 @@
 package de.mari_023.ae2wtlib.terminal;
 
-import appeng.menu.slot.AppEngSlot;
 import com.mojang.datafixers.util.Pair;
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.resources.ResourceLocation;
@@ -11,6 +11,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
+
+import appeng.menu.slot.AppEngSlot;
 
 public class ArmorSlot extends AppEngSlot {
     private final Inventory playerInventory;
@@ -28,8 +30,9 @@ public class ArmorSlot extends AppEngSlot {
     }
 
     public boolean mayPlace(ItemStack stack) {
-        return armor == Armor.OFFHAND || (playerInventory.canPlaceItem(armor.invSlot, stack) && stack.getItem() instanceof ArmorItem aItem
-                && aItem.getSlot().equals(armor.equipmentSlot));
+        return armor == Armor.OFFHAND
+                || (playerInventory.canPlaceItem(armor.invSlot, stack) && stack.getItem() instanceof ArmorItem aItem
+                        && aItem.getSlot().equals(armor.equipmentSlot));
     }
 
     public enum Armor {

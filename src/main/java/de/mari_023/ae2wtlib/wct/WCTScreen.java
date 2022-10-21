@@ -2,7 +2,6 @@ package de.mari_023.ae2wtlib.wct;
 
 import java.util.Objects;
 
-import appeng.client.gui.widgets.BackgroundPanel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -18,6 +17,7 @@ import de.mari_023.ae2wtlib.wut.IUniversalTerminalCapable;
 import appeng.client.gui.Icon;
 import appeng.client.gui.me.items.CraftingTermScreen;
 import appeng.client.gui.style.ScreenStyle;
+import appeng.client.gui.widgets.BackgroundPanel;
 import appeng.client.gui.widgets.IconButton;
 
 public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversalTerminalCapable {

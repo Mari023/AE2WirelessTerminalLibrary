@@ -1,8 +1,9 @@
 package de.mari_023.ae2wtlib.terminal;
 
-import appeng.api.inventories.InternalInventory;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
+
+import appeng.api.inventories.InternalInventory;
 
 public class WrappedPlayerInventory implements InternalInventory {
 

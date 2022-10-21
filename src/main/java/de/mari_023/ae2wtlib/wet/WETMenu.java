@@ -1,17 +1,17 @@
 package de.mari_023.ae2wtlib.wet;
 
-import appeng.menu.slot.RestrictedInputSlot;
-import de.mari_023.ae2wtlib.AE2wtlibSlotSemantics;
-import de.mari_023.ae2wtlib.wct.WCTMenuHost;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
 
+import de.mari_023.ae2wtlib.AE2wtlibSlotSemantics;
+import de.mari_023.ae2wtlib.wct.WCTMenuHost;
 import de.mari_023.ae2wtlib.wut.ItemWUT;
 
 import appeng.api.config.SecurityPermissions;
 import appeng.api.networking.IGridNode;
 import appeng.menu.implementations.MenuTypeBuilder;
 import appeng.menu.me.items.PatternEncodingTermMenu;
+import appeng.menu.slot.RestrictedInputSlot;
 
 public class WETMenu extends PatternEncodingTermMenu {
     public static final String ID = "wireless_pattern_encoding_terminal";
@@ -23,7 +23,8 @@ public class WETMenu extends PatternEncodingTermMenu {
     public WETMenu(int id, final Inventory ip, final WETMenuHost gui) {
         super(TYPE, id, ip, gui, true);
         wetMenuHost = gui;
-        addSlot(new RestrictedInputSlot(RestrictedInputSlot.PlacableItemType.QE_SINGULARITY, wetMenuHost.getSubInventory(WCTMenuHost.INV_SINGULARITY), 0), AE2wtlibSlotSemantics.SINGULARITY);
+        addSlot(new RestrictedInputSlot(RestrictedInputSlot.PlacableItemType.QE_SINGULARITY,
+                wetMenuHost.getSubInventory(WCTMenuHost.INV_SINGULARITY), 0), AE2wtlibSlotSemantics.SINGULARITY);
     }
 
     @Override

@@ -4,14 +4,14 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Predicate;
 
-import dev.emi.trinkets.api.Trinket;
-import net.minecraft.world.item.Item;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 import de.mari_023.ae2wtlib.wut.WUTHandler;
+import dev.emi.trinkets.api.Trinket;
 import dev.emi.trinkets.api.TrinketComponent;
 import dev.emi.trinkets.api.TrinketInventory;
 import dev.emi.trinkets.api.TrinketsApi;

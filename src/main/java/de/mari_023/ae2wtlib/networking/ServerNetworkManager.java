@@ -1,10 +1,11 @@
 package de.mari_023.ae2wtlib.networking;
 
-import de.mari_023.ae2wtlib.AE2wtlib;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+
+import de.mari_023.ae2wtlib.AE2wtlib;
 
 public class ServerNetworkManager {
 

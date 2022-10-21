@@ -7,12 +7,12 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
 
-import me.shedaniel.math.Color;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 
 import de.mari_023.ae2wtlib.wut.WUTHandler;
+import me.shedaniel.math.Color;
 
 public class WUTSelectScreen extends Screen {
 
@@ -41,7 +41,7 @@ public class WUTSelectScreen extends Screen {
     }
 
     public static void drawSegment(PoseStack poseStack, int startingAngle, int endingAngle, float centerX,
-                                   float centerY, int outerRadius, int innerRadius, Color color, boolean selected) {
+            float centerY, int outerRadius, int innerRadius, Color color, boolean selected) {
         if (selected) {
             outerRadius += 10;
             color = color.darker(2);

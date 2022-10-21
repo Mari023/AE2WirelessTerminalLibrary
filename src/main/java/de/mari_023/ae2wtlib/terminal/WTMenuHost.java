@@ -2,24 +2,22 @@ package de.mari_023.ae2wtlib.terminal;
 
 import java.util.function.BiConsumer;
 
-import appeng.api.config.Actionable;
-import appeng.api.config.PowerMultiplier;
-import appeng.api.inventories.ISegmentedInventory;
-import appeng.items.tools.powered.powersink.AEBasePoweredItem;
-import appeng.me.cluster.implementations.QuantumCluster;
-import de.mari_023.ae2wtlib.Platform;
-import de.mari_023.ae2wtlib.wut.WUTHandler;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.AE2wtlibConfig;
+import de.mari_023.ae2wtlib.Platform;
+import de.mari_023.ae2wtlib.wut.WUTHandler;
 
+import appeng.api.config.Actionable;
+import appeng.api.config.PowerMultiplier;
 import appeng.api.features.Locatables;
+import appeng.api.inventories.ISegmentedInventory;
 import appeng.api.inventories.InternalInventory;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.security.IActionHost;
@@ -27,11 +25,14 @@ import appeng.api.upgrades.IUpgradeInventory;
 import appeng.api.upgrades.UpgradeInventories;
 import appeng.helpers.WirelessTerminalMenuHost;
 import appeng.items.tools.powered.WirelessTerminalItem;
+import appeng.items.tools.powered.powersink.AEBasePoweredItem;
+import appeng.me.cluster.implementations.QuantumCluster;
 import appeng.menu.ISubMenu;
 import appeng.util.inv.AppEngInternalInventory;
 import appeng.util.inv.InternalInventoryHost;
 
-public abstract class WTMenuHost extends WirelessTerminalMenuHost implements InternalInventoryHost, ISegmentedInventory {
+public abstract class WTMenuHost extends WirelessTerminalMenuHost
+        implements InternalInventoryHost, ISegmentedInventory {
 
     private final AppEngInternalInventory singularityInventory = new AppEngInternalInventory(this, 1);
 
@@ -46,7 +47,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost implements Int
     public static final ResourceLocation INV_SINGULARITY = new ResourceLocation(AE2wtlib.MOD_NAME, "singularity");
 
     public WTMenuHost(final Player player, @Nullable Integer inventorySlot, final ItemStack is,
-                      BiConsumer<Player, ISubMenu> returnToMainMenu) {
+            BiConsumer<Player, ISubMenu> returnToMainMenu) {
         super(player, inventorySlot, is, returnToMainMenu);
         viewCellInventory = new AppEngInternalInventory(this, 5);
         myPlayer = player;
@@ -99,22 +100,30 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost implements Int
     }
 
     public boolean isQuantumLinked() {
-        if (getPlayer().getLevel().isClientSide()) return true;
+        if (getPlayer().getLevel().isClientSide())
+            return true;
 
-        if (!hasQuantumUpgrade()) return false;
+        if (!hasQuantumUpgrade())
+            return false;
         long frequency = getQEFrequency();
-        if (frequency == 0) return false;
+        if (frequency == 0)
+            return false;
         if (quantumBridge == null) {
-            if (!findQuantumBridge(frequency)) return false;
+            if (!findQuantumBridge(frequency))
+                return false;
         } else {
             if (quantumBridge instanceof QuantumCluster quantumCluster) {
-                if(quantumCluster.getCenter() == null) return false;
+                if (quantumCluster.getCenter() == null)
+                    return false;
                 long frequencyOther = quantumCluster.getCenter().getQEFrequency();
                 if (!(frequencyOther == frequency || frequencyOther == -frequency))
-                    if (!findQuantumBridge(frequency)) return false;
-            } else if (!findQuantumBridge(frequency)) return false;
+                    if (!findQuantumBridge(frequency))
+                        return false;
+            } else if (!findQuantumBridge(frequency))
+                return false;
         }
-        if(quantumBridge.getActionableNode() == null) return false;
+        if (quantumBridge.getActionableNode() == null)
+            return false;
         return quantumBridge.getActionableNode().getGrid() == securityTerminalNode.getGrid();
     }
 
@@ -131,7 +140,8 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost implements Int
 
     private boolean findQuantumBridge(long frequency) {
         quantumBridge = Locatables.quantumNetworkBridges().get(getPlayer().getLevel(), frequency);
-        if(quantumBridge == null) quantumBridge = Locatables.quantumNetworkBridges().get(getPlayer().getLevel(), -frequency);
+        if (quantumBridge == null)
+            quantumBridge = Locatables.quantumNetworkBridges().get(getPlayer().getLevel(), -frequency);
         return quantumBridge != null;
     }
 
@@ -153,23 +163,26 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost implements Int
     }
 
     public boolean drainPower() {
-        if(!super.drainPower()) return false;
+        if (!super.drainPower())
+            return false;
         recharge();
         return true;
     }
 
     private void recharge() {
-        if(quantumBridge == null) return;
-        if(getItemStack().getItem() instanceof AEBasePoweredItem item) {
+        if (quantumBridge == null)
+            return;
+        if (getItemStack().getItem() instanceof AEBasePoweredItem item) {
             double currentPower = item.getAECurrentPower(getItemStack());
             double maxPower = item.getAEMaxPower(getItemStack());
             double missing = maxPower - currentPower;
-            if(getActionableNode() == null) return;
-            double extracted = getActionableNode().getGrid().getEnergyService().extractAEPower(missing, Actionable.MODULATE, PowerMultiplier.ONE);
+            if (getActionableNode() == null)
+                return;
+            double extracted = getActionableNode().getGrid().getEnergyService().extractAEPower(missing,
+                    Actionable.MODULATE, PowerMultiplier.ONE);
             item.injectAEPower(getItemStack(), extracted, Actionable.MODULATE);
         }
     }
-
 
     @Nullable
     public InternalInventory getSubInventory(ResourceLocation id) {
@@ -187,7 +200,8 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost implements Int
     }
 
     protected boolean ensureItemStillInSlot() {
-        if(getSlot() != null) return super.ensureItemStillInSlot();
+        if (getSlot() != null)
+            return super.ensureItemStillInSlot();
         return Platform.isStillPresentTrinkets(getPlayer(), getItemStack());
     }
 }

@@ -1,10 +1,5 @@
 package de.mari_023.ae2wtlib;
 
-import de.mari_023.ae2wtlib.wct.magnet_card.config.MagnetMenu;
-import de.mari_023.ae2wtlib.wut.recipe.Combine;
-import de.mari_023.ae2wtlib.wut.recipe.CombineSerializer;
-import de.mari_023.ae2wtlib.wut.recipe.Upgrade;
-import de.mari_023.ae2wtlib.wut.recipe.UpgradeSerializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.world.item.CreativeModeTab;
@@ -12,19 +7,24 @@ import net.minecraft.world.item.Item;
 
 import de.mari_023.ae2wtlib.hotkeys.MagnetHotkeyAction;
 import de.mari_023.ae2wtlib.hotkeys.RestockHotkeyAction;
-import de.mari_023.ae2wtlib.networking.c2s.CycleTerminalPacket;
 import de.mari_023.ae2wtlib.networking.ServerNetworkManager;
+import de.mari_023.ae2wtlib.networking.c2s.CycleTerminalPacket;
 import de.mari_023.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
 import de.mari_023.ae2wtlib.wat.ItemWAT;
 import de.mari_023.ae2wtlib.wat.WATMenu;
 import de.mari_023.ae2wtlib.wat.WATMenuHost;
 import de.mari_023.ae2wtlib.wct.WCTMenu;
 import de.mari_023.ae2wtlib.wct.WCTMenuHost;
+import de.mari_023.ae2wtlib.wct.magnet_card.config.MagnetMenu;
 import de.mari_023.ae2wtlib.wet.ItemWET;
 import de.mari_023.ae2wtlib.wet.WETMenu;
 import de.mari_023.ae2wtlib.wet.WETMenuHost;
 import de.mari_023.ae2wtlib.wut.ItemWUT;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
+import de.mari_023.ae2wtlib.wut.recipe.Combine;
+import de.mari_023.ae2wtlib.wut.recipe.CombineSerializer;
+import de.mari_023.ae2wtlib.wut.recipe.Upgrade;
+import de.mari_023.ae2wtlib.wut.recipe.UpgradeSerializer;
 
 import appeng.api.features.GridLinkables;
 import appeng.api.features.HotkeyAction;
@@ -68,8 +68,9 @@ public class AE2wtlib {
         HotkeyActions.register(new RestockHotkeyAction(), "ae2wtlib_restock");
         HotkeyActions.register(new MagnetHotkeyAction(), "ae2wtlib_magnet");
 
-        notifyAddons("");//common
-        if (FabricLoader.getInstance().getEnvironmentType().equals(EnvType.SERVER)) notifyAddons(":server");
+        notifyAddons("");// common
+        if (FabricLoader.getInstance().getEnvironmentType().equals(EnvType.SERVER))
+            notifyAddons(":server");
 
         UpgradeHelper.addUpgrades();
     }
@@ -104,7 +105,8 @@ public class AE2wtlib {
     }
 
     public static void notifyAddons(String type) {
-        var entrypoints = FabricLoader.getInstance().getEntrypointContainers(MOD_NAME + type, IWTLibAddonEntrypoint.class);
+        var entrypoints = FabricLoader.getInstance().getEntrypointContainers(MOD_NAME + type,
+                IWTLibAddonEntrypoint.class);
         for (var entrypoint : entrypoints) {
             entrypoint.getEntrypoint().onWTLibInitialized();
         }

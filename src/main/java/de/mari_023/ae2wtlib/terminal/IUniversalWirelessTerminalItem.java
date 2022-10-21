@@ -20,7 +20,8 @@ import appeng.menu.MenuOpener;
 import appeng.menu.locator.MenuLocator;
 
 public interface IUniversalWirelessTerminalItem {
-    default boolean open(final Player player, ItemStack stack, final MenuLocator locator, boolean returningFromSubmenu) {
+    default boolean open(final Player player, ItemStack stack, final MenuLocator locator,
+            boolean returningFromSubmenu) {
         return MenuOpener.open(getMenuType(stack), player, locator, returningFromSubmenu);
     }
 

@@ -1,8 +1,9 @@
 package de.mari_023.ae2wtlib.networking;
 
-import de.mari_023.ae2wtlib.AE2wtlib;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.resources.ResourceLocation;
+
+import de.mari_023.ae2wtlib.AE2wtlib;
 
 public class ClientNetworkManager {
 

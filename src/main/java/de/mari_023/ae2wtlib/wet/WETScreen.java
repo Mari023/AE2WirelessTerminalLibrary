@@ -1,6 +1,5 @@
 package de.mari_023.ae2wtlib.wet;
 
-import appeng.client.gui.widgets.BackgroundPanel;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -9,6 +8,7 @@ import de.mari_023.ae2wtlib.wut.IUniversalTerminalCapable;
 
 import appeng.client.gui.me.items.PatternEncodingTermScreen;
 import appeng.client.gui.style.ScreenStyle;
+import appeng.client.gui.widgets.BackgroundPanel;
 
 public class WETScreen extends PatternEncodingTermScreen<WETMenu> implements IUniversalTerminalCapable {
     public WETScreen(WETMenu container, Inventory playerInventory, Component title, ScreenStyle style) {

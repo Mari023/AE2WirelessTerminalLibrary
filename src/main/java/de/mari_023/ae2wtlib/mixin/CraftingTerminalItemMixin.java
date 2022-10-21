@@ -1,21 +1,21 @@
 package de.mari_023.ae2wtlib.mixin;
 
-import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHandler;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 import de.mari_023.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
 import de.mari_023.ae2wtlib.wct.WCTMenu;
 import de.mari_023.ae2wtlib.wct.WCTMenuHost;
+import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHandler;
 
 import appeng.api.implementations.menuobjects.ItemMenuHost;
 import appeng.items.tools.powered.WirelessCraftingTerminalItem;
@@ -50,8 +50,10 @@ public class CraftingTerminalItemMixin extends WirelessTerminalItem implements I
     }
 
     public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int i, boolean bl) {
-        if (level.isClientSide()) return;
-        if (!(entity instanceof ServerPlayer player)) return;
+        if (level.isClientSide())
+            return;
+        if (!(entity instanceof ServerPlayer player))
+            return;
         MagnetHandler.handle(player, itemStack);
     }
 }

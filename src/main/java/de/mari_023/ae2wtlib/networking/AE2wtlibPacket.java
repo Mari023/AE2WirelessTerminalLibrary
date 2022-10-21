@@ -1,9 +1,9 @@
 package de.mari_023.ae2wtlib.networking;
 
+import io.netty.buffer.Unpooled;
+
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
-
-import io.netty.buffer.Unpooled;
 
 public abstract class AE2wtlibPacket {
     protected final FriendlyByteBuf buf;

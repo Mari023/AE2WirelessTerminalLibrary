@@ -2,13 +2,11 @@ package de.mari_023.ae2wtlib.wct;
 
 import java.util.Objects;
 
-import appeng.menu.SlotSemantic;
-import appeng.menu.slot.RestrictedInputSlot;
-
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Wearable;
 
 import de.mari_023.ae2wtlib.AE2wtlibSlotSemantics;
 import de.mari_023.ae2wtlib.terminal.ArmorSlot;
@@ -21,10 +19,11 @@ import de.mari_023.ae2wtlib.wut.ItemWUT;
 import appeng.api.config.SecurityPermissions;
 import appeng.api.networking.IGridNode;
 import appeng.menu.MenuOpener;
+import appeng.menu.SlotSemantic;
 import appeng.menu.implementations.MenuTypeBuilder;
 import appeng.menu.me.items.CraftingTermMenu;
 import appeng.menu.slot.AppEngSlot;
-import net.minecraft.world.item.Wearable;
+import appeng.menu.slot.RestrictedInputSlot;
 
 public class WCTMenu extends CraftingTermMenu {
     public static final String ID = "wireless_crafting_terminal";
@@ -44,7 +43,8 @@ public class WCTMenu extends CraftingTermMenu {
         addSlot(new ArmorSlot(getPlayerInventory(), ArmorSlot.Armor.HEAD) {
             @Override
             public boolean mayPlace(ItemStack stack) {
-                return (stack.getItem() instanceof BlockItem bItem && bItem.getBlock() instanceof Wearable) || super.mayPlace(stack);
+                return (stack.getItem() instanceof BlockItem bItem && bItem.getBlock() instanceof Wearable)
+                        || super.mayPlace(stack);
             }
         }, AE2wtlibSlotSemantics.HELMET);
         addSlot(new ArmorSlot(getPlayerInventory(), ArmorSlot.Armor.CHEST), AE2wtlibSlotSemantics.CHESTPLATE);
@@ -56,7 +56,8 @@ public class WCTMenu extends CraftingTermMenu {
         else
             addSlot(new ArmorSlot(getPlayerInventory(), ArmorSlot.Armor.OFFHAND), AE2wtlibSlotSemantics.OFFHAND);
         addSlot(new AppEngSlot(wctMenuHost.getSubInventory(WCTMenuHost.INV_TRASH), 0), AE2wtlibSlotSemantics.TRASH);
-        addSlot(new RestrictedInputSlot(RestrictedInputSlot.PlacableItemType.QE_SINGULARITY, wctMenuHost.getSubInventory(WCTMenuHost.INV_SINGULARITY), 0), AE2wtlibSlotSemantics.SINGULARITY);
+        addSlot(new RestrictedInputSlot(RestrictedInputSlot.PlacableItemType.QE_SINGULARITY,
+                wctMenuHost.getSubInventory(WCTMenuHost.INV_SINGULARITY), 0), AE2wtlibSlotSemantics.SINGULARITY);
 
         registerClientAction(ACTION_DELETE, this::deleteTrashSlot);
         registerClientAction(MAGNET_MODE, MagnetMode.class, this::setMagnetMode);

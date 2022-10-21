@@ -1,14 +1,14 @@
 package de.mari_023.ae2wtlib.wat;
 
-import appeng.client.gui.me.patternaccess.PatternAccessTermScreen;
-import appeng.client.gui.widgets.BackgroundPanel;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
 import de.mari_023.ae2wtlib.wut.CycleTerminalButton;
 import de.mari_023.ae2wtlib.wut.IUniversalTerminalCapable;
 
+import appeng.client.gui.me.patternaccess.PatternAccessTermScreen;
 import appeng.client.gui.style.ScreenStyle;
+import appeng.client.gui.widgets.BackgroundPanel;
 import appeng.client.gui.widgets.ToolboxPanel;
 import appeng.client.gui.widgets.UpgradesPanel;
 import appeng.menu.SlotSemantics;
@@ -26,5 +26,6 @@ public class WATScreen extends PatternAccessTermScreen<WATMenu> implements IUniv
     }
 
     @Override
-    public void storeState() {}
+    public void storeState() {
+    }
 }

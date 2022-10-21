@@ -47,7 +47,7 @@ public abstract class Restock {
 
     @Inject(method = "use", at = @At(value = "RETURN"))
     public void useRestock(Level world, Player user, InteractionHand hand,
-                           CallbackInfoReturnable<InteractionResultHolder<ItemStack>> cir) {
+            CallbackInfoReturnable<InteractionResultHolder<ItemStack>> cir) {
         if (!world.isClientSide() && cir.getReturnValue().getResult().equals(InteractionResult.CONSUME))
             restock(user);
     }
@@ -69,8 +69,8 @@ public abstract class Restock {
                     AEItemKey.of((ItemStack) (Object) this), toAdd, Actionable.MODULATE,
                     new PlayerSource(player, cTHandler.getSecurityStation()));
         else
-            changed = - cTHandler.getTargetGrid().getStorageService().getInventory().insert(
-                    AEItemKey.of((ItemStack) (Object) this), - toAdd, Actionable.MODULATE,
+            changed = -cTHandler.getTargetGrid().getStorageService().getInventory().insert(
+                    AEItemKey.of((ItemStack) (Object) this), -toAdd, Actionable.MODULATE,
                     new PlayerSource(player, cTHandler.getSecurityStation()));
 
         setCount(getCount() + (int) changed);

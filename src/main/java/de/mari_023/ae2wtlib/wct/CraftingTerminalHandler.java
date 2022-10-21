@@ -3,8 +3,6 @@ package de.mari_023.ae2wtlib.wct;
 import java.util.HashMap;
 import java.util.WeakHashMap;
 
-import appeng.api.networking.security.IActionHost;
-import de.mari_023.ae2wtlib.terminal.WTMenuHost;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.server.level.ServerPlayer;
@@ -14,11 +12,13 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 import de.mari_023.ae2wtlib.Platform;
+import de.mari_023.ae2wtlib.terminal.WTMenuHost;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHost;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridNode;
+import appeng.api.networking.security.IActionHost;
 import appeng.menu.locator.MenuLocator;
 
 public class CraftingTerminalHandler {
@@ -64,15 +64,13 @@ public class CraftingTerminalHandler {
         Inventory inv = player.getInventory();
         if ((!craftingTerminal.isEmpty()) && (inv.contains(craftingTerminal)
                 || (Platform.trinketsPresent()
-                && Platform.isStillPresentTrinkets(player, craftingTerminal))))
+                        && Platform.isStillPresentTrinkets(player, craftingTerminal))))
             return craftingTerminal;
-
 
         if (getMenuHost() == null)
             craftingTerminal = ItemStack.EMPTY;
         else
             craftingTerminal = menuHost.getItemStack();
-
 
         return craftingTerminal;
     }
@@ -118,7 +116,8 @@ public class CraftingTerminalHandler {
     }
 
     public boolean inRange() {
-        if (getMenuHost() == null) return false;
+        if (getMenuHost() == null)
+            return false;
         return getMenuHost().rangeCheck();
     }
 

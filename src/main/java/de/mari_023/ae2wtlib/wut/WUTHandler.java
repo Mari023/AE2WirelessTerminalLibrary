@@ -115,7 +115,8 @@ public class WUTHandler {
             player.displayClientMessage(TextConstants.TERMINAL_EMPTY, false);
             return false;
         }
-        return wirelessTerminals.get(currentTerminal).containerOpener().tryOpen(player, locator, is, returningFromSubmenu);
+        return wirelessTerminals.get(currentTerminal).containerOpener().tryOpen(player, locator, is,
+                returningFromSubmenu);
     }
 
     @Nullable
