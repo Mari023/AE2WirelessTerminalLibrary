@@ -37,7 +37,7 @@ dependencies {
     modRuntimeOnly("me.shedaniel.cloth:cloth-config-${rootProject.modloader}:${project.cloth}")
     modApi("com.terraformersmc:modmenu:${project.mod_menu_version}")
     modImplementation "dev.architectury:architectury-${rootProject.modloader}:${rootProject.architectury_version}"
-    modImplementation("maven.modrinth:ae2:${rootProject.modloader}-${rootProject.ae2_version}") {
+    modImplementation("appeng:appliedenergistics2-${rootProject.modloader}:${rootProject.ae2_version}") {
         exclude group: "mezz.jei"
         exclude group: "me.shedaniel"
         exclude group: "net.fabricmc.fabric-api"
@@ -64,11 +64,6 @@ dependencies {
     }
 
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
-
-    modImplementation("teamreborn:energy:${project.tr_energy_version}") {
-        exclude group: "net.fabricmc.fabric-api"
-    }
-
 }
 
 
