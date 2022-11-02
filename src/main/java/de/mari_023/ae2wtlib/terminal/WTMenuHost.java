@@ -122,9 +122,9 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost
             } else if (!findQuantumBridge(frequency))
                 return false;
         }
-        if (quantumBridge.getActionableNode() == null || getActionableNode() == null)
+        if (quantumBridge.getActionableNode() == null || securityTerminalNode == null)
             return false;
-        return quantumBridge.getActionableNode().getGrid() == getActionableNode().getGrid();
+        return quantumBridge.getActionableNode().getGrid() == securityTerminalNode.getGrid();
     }
 
     private long getQEFrequency() {
