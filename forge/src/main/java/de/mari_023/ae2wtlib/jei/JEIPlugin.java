@@ -27,10 +27,10 @@ public class JEIPlugin implements IModPlugin {
     @Override
     public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
         registration.addRecipeTransferHandler(
-                new UseCraftingRecipeTransfer<>(WCTMenu.class, registration.getTransferHelper()),
+                new UseCraftingRecipeTransfer<>(WCTMenu.class, WCTMenu.TYPE,  registration.getTransferHelper()),
                 VanillaRecipeCategoryUid.CRAFTING);
         registration.addUniversalRecipeTransferHandler(
-                new EncodePatternTransferHandler<>(WETMenu.class, registration.getTransferHelper()));
+                new EncodePatternTransferHandler<>(WETMenu.TYPE, WETMenu.class, registration.getTransferHelper()));
     }
 
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
