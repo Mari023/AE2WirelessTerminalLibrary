@@ -60,7 +60,7 @@ public class CraftingTerminalHandler {
         magnetHost = null;
     }
 
-    public ItemStack getCraftingTerminal() {
+    public ItemStack getCraftingTerminal() {//TODO use Inventory#findSlotMatchingItem(), which ensures the stack is actually identical (unlike #contains() which only cares about the item)
         Inventory inv = player.getInventory();
         if ((!craftingTerminal.isEmpty()) && (inv.contains(craftingTerminal)
                 || (Platform.trinketsPresent()
