@@ -28,10 +28,8 @@ public class TrinketsHelper {
     }
 
     public static boolean isStillPresent(Player player, ItemStack terminal) {
-        Optional<TrinketComponent> optionalComponent = TrinketsApi.getTrinketComponent(player);
-        if (optionalComponent.isEmpty())
-            return false;
-        return optionalComponent.get().isEquipped(Predicate.isEqual(terminal));
+        return TrinketsApi.getTrinketComponent(player)
+                .map(trinketComponent -> trinketComponent.isEquipped(Predicate.isEqual(terminal))).orElse(false);
     }
 
     public static ItemStack getTrinket(Player player, String group, String type, int slot) {

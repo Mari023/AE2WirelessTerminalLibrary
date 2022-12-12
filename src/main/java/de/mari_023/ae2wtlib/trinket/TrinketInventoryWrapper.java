@@ -8,13 +8,7 @@ import dev.emi.trinkets.api.TrinketInventory;
 
 import appeng.api.inventories.InternalInventory;
 
-public class TrinketInventoryWrapper implements InternalInventory {
-
-    public final TrinketInventory trinketInventory;
-
-    public TrinketInventoryWrapper(TrinketInventory trinketInventory) {
-        this.trinketInventory = trinketInventory;
-    }
+public record TrinketInventoryWrapper(TrinketInventory trinketInventory) implements InternalInventory {
 
     @Override
     public int size() {

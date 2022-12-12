@@ -2,7 +2,6 @@ package de.mari_023.ae2wtlib;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 
 import de.mari_023.ae2wtlib.hotkeys.MagnetHotkeyAction;
@@ -35,8 +34,6 @@ import appeng.items.tools.powered.WirelessTerminalItem;
 
 public class AE2wtlib {
     public static final String MOD_NAME = "ae2wtlib";
-
-    public static final CreativeModeTab ITEM_GROUP = AE2WTLibCreativeTab.init();
 
     public static ItemWET PATTERN_ENCODING_TERMINAL;
     public static ItemWAT PATTERN_ACCESS_TERMINAL;
@@ -75,7 +72,7 @@ public class AE2wtlib {
         UpgradeHelper.addUpgrades();
     }
 
-    public static void createItems() {// FIXME 1.19.3 creative tab
+    public static void createItems() {
         PATTERN_ENCODING_TERMINAL = new ItemWET();
         PATTERN_ACCESS_TERMINAL = new ItemWAT();
         UNIVERSAL_TERMINAL = new ItemWUT();
@@ -89,6 +86,7 @@ public class AE2wtlib {
         Platform.registerItem("wireless_pattern_access_terminal", PATTERN_ACCESS_TERMINAL);
         Platform.registerItem("wireless_universal_terminal", UNIVERSAL_TERMINAL);
 
+        AE2WTLibCreativeTab.init();
         AE2WTLibCreativeTab.add(PATTERN_ENCODING_TERMINAL);
         AE2WTLibCreativeTab.add(PATTERN_ACCESS_TERMINAL);
         AE2WTLibCreativeTab.add(UNIVERSAL_TERMINAL);
