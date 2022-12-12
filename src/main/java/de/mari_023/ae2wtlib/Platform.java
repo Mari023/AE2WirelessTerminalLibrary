@@ -1,15 +1,14 @@
 package de.mari_023.ae2wtlib;
 
-import net.minecraft.core.registries.BuiltInRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -49,7 +48,8 @@ public class Platform {
     }
 
     public static void registerRecipe(String name, RecipeSerializer<?> serializer) {
-        Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, new ResourceLocation(AE2wtlib.MOD_NAME, name), serializer);
+        Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, new ResourceLocation(AE2wtlib.MOD_NAME, name),
+                serializer);
     }
 
     public static void registerTrinket(Item terminal) {

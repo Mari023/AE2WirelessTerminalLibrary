@@ -1,12 +1,7 @@
 package de.mari_023.ae2wtlib;
 
-import appeng.api.ids.AECreativeTabIds;
-import appeng.core.MainCreativeTab;
-import appeng.core.definitions.AEBlocks;
 import net.fabricmc.api.EnvType;
-import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 
@@ -80,7 +75,7 @@ public class AE2wtlib {
         UpgradeHelper.addUpgrades();
     }
 
-    public static void createItems() {//FIXME 1.19.3 creative tab
+    public static void createItems() {// FIXME 1.19.3 creative tab
         PATTERN_ENCODING_TERMINAL = new ItemWET();
         PATTERN_ACCESS_TERMINAL = new ItemWAT();
         UNIVERSAL_TERMINAL = new ItemWUT();

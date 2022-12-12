@@ -1,16 +1,14 @@
 package de.mari_023.ae2wtlib;
 
-import appeng.core.definitions.AEBlocks;
-import appeng.core.definitions.AEItems;
+import java.util.ArrayList;
+import java.util.List;
+
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class AE2WTLibCreativeTab {
     private static final List<Item> items = new ArrayList<>();
@@ -29,7 +27,8 @@ public class AE2WTLibCreativeTab {
         items.add(itemDef);
     }
 
-    private static void buildDisplayItems(FeatureFlagSet featureFlagSet, CreativeModeTab.Output output, boolean opItems) {
+    private static void buildDisplayItems(FeatureFlagSet featureFlagSet, CreativeModeTab.Output output,
+            boolean opItems) {
         for (var item : items) {
             output.accept(item);
         }
