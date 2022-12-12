@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "ae2wtlib:wireless_pattern_encoding_terminal"
+    "layer0": "ae2wtlib:item/wireless_pattern_encoding_terminal"
   }
 }

@@ -5,6 +5,7 @@ import java.util.Iterator;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 
 import de.mari_023.ae2wtlib.AE2wtlib;
@@ -46,6 +47,11 @@ public abstract class Common implements CraftingRecipe {
     @Override
     public ResourceLocation getId() {
         return id;
+    }
+
+    @Override
+    public CraftingBookCategory category() {
+        return CraftingBookCategory.EQUIPMENT;
     }
 
     /**

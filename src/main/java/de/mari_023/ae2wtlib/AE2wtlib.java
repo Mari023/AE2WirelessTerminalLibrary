@@ -1,7 +1,12 @@
 package de.mari_023.ae2wtlib;
 
+import appeng.api.ids.AECreativeTabIds;
+import appeng.core.MainCreativeTab;
+import appeng.core.definitions.AEBlocks;
 import net.fabricmc.api.EnvType;
+import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 
@@ -36,7 +41,7 @@ import appeng.items.tools.powered.WirelessTerminalItem;
 public class AE2wtlib {
     public static final String MOD_NAME = "ae2wtlib";
 
-    public static final CreativeModeTab ITEM_GROUP = Platform.getCreativeModeTab();
+    public static final CreativeModeTab ITEM_GROUP = AE2WTLibCreativeTab.init();
 
     public static ItemWET PATTERN_ENCODING_TERMINAL;
     public static ItemWAT PATTERN_ACCESS_TERMINAL;
@@ -75,19 +80,25 @@ public class AE2wtlib {
         UpgradeHelper.addUpgrades();
     }
 
-    public static void createItems() {
+    public static void createItems() {//FIXME 1.19.3 creative tab
         PATTERN_ENCODING_TERMINAL = new ItemWET();
         PATTERN_ACCESS_TERMINAL = new ItemWAT();
         UNIVERSAL_TERMINAL = new ItemWUT();
         QUANTUM_BRIDGE_CARD = Upgrades
-                .createUpgradeCardItem(new Item.Properties().tab(AE2wtlib.ITEM_GROUP).stacksTo(1));
-        MAGNET_CARD = Upgrades.createUpgradeCardItem(new Item.Properties().tab(AE2wtlib.ITEM_GROUP).stacksTo(1));
+                .createUpgradeCardItem(new Item.Properties().stacksTo(1));
+        MAGNET_CARD = Upgrades.createUpgradeCardItem(new Item.Properties().stacksTo(1));
 
         Platform.registerItem("quantum_bridge_card", QUANTUM_BRIDGE_CARD);
         Platform.registerItem("magnet_card", MAGNET_CARD);
         Platform.registerItem("wireless_pattern_encoding_terminal", PATTERN_ENCODING_TERMINAL);
         Platform.registerItem("wireless_pattern_access_terminal", PATTERN_ACCESS_TERMINAL);
         Platform.registerItem("wireless_universal_terminal", UNIVERSAL_TERMINAL);
+
+        AE2WTLibCreativeTab.add(PATTERN_ENCODING_TERMINAL);
+        AE2WTLibCreativeTab.add(PATTERN_ACCESS_TERMINAL);
+        AE2WTLibCreativeTab.add(UNIVERSAL_TERMINAL);
+        AE2WTLibCreativeTab.add(QUANTUM_BRIDGE_CARD);
+        AE2WTLibCreativeTab.add(MAGNET_CARD);
 
         Platform.registerTrinket(AEItems.WIRELESS_CRAFTING_TERMINAL.asItem());
         Platform.registerTrinket(UNIVERSAL_TERMINAL);

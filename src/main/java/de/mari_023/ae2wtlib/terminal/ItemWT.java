@@ -27,7 +27,7 @@ public abstract class ItemWT extends WirelessTerminalItem implements IUniversalW
 
     public ItemWT() {
         super(AEConfig.instance().getWirelessTerminalBattery(),
-                new Item.Properties().tab(AE2wtlib.ITEM_GROUP).stacksTo(1));
+                new Item.Properties().stacksTo(1));
     }
 
     @Override

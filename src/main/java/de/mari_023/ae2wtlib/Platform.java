@@ -1,8 +1,8 @@
 package de.mari_023.ae2wtlib;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import org.jetbrains.annotations.Nullable;
 
-import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
@@ -44,17 +44,12 @@ public class Platform {
         return null;
     }
 
-    public static CreativeModeTab getCreativeModeTab() {
-        return FabricItemGroupBuilder.build(new ResourceLocation(AE2wtlib.MOD_NAME, "general"),
-                () -> new ItemStack(AE2wtlib.UNIVERSAL_TERMINAL));
-    }
-
     public static void registerItem(String name, Item item) {
-        Registry.register(Registry.ITEM, new ResourceLocation(AE2wtlib.MOD_NAME, name), item);
+        Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(AE2wtlib.MOD_NAME, name), item);
     }
 
     public static void registerRecipe(String name, RecipeSerializer<?> serializer) {
-        Registry.register(Registry.RECIPE_SERIALIZER, new ResourceLocation(AE2wtlib.MOD_NAME, name), serializer);
+        Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, new ResourceLocation(AE2wtlib.MOD_NAME, name), serializer);
     }
 
     public static void registerTrinket(Item terminal) {
@@ -67,6 +62,6 @@ public class Platform {
     }
 
     public static void registerMenuType(String id, MenuType<?> menuType) {
-        Registry.register(Registry.MENU, AppEng.makeId(id), menuType);
+        Registry.register(BuiltInRegistries.MENU, AppEng.makeId(id), menuType);
     }
 }

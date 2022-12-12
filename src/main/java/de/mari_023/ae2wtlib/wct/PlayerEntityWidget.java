@@ -19,10 +19,10 @@ public class PlayerEntityWidget extends AbstractWidget {
 
     @Override
     public void renderBg(PoseStack matrices, Minecraft client, int mouseX, int mouseY) {
-        InventoryScreen.renderEntityInInventory(x, y, 30, x - mouseX, y - 44 - mouseY, entity);
+        InventoryScreen.renderEntityInInventory(getX(), getY(), 30, getX() - mouseX, getY() - 44 - mouseY, entity);
     }
 
     @Override
-    public void updateNarration(NarrationElementOutput builder) {
+    protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {
     }
 }

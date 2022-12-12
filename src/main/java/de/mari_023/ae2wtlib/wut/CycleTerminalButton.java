@@ -21,7 +21,7 @@ import appeng.client.gui.widgets.ITooltip;
 public class CycleTerminalButton extends Button implements ITooltip {
 
     public CycleTerminalButton(OnPress onPress) {
-        super(0, 0, 16, 16, TextConstants.CYCLE, onPress);
+        super(0, 0, 16, 16, TextConstants.CYCLE, onPress, Button.DEFAULT_NARRATION);
         visible = true;
         active = true;
     }
@@ -33,7 +33,7 @@ public class CycleTerminalButton extends Button implements ITooltip {
 
     @Override
     public Rect2i getTooltipArea() {
-        return new Rect2i(x, y, 16, 16);
+        return new Rect2i(getX(), getY(), 16, 16);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class CycleTerminalButton extends Button implements ITooltip {
 
     public static final ResourceLocation TEXTURE_STATES = new ResourceLocation("ae2", "textures/guis/states.png");
     public static final ResourceLocation nextTerminal = new ResourceLocation(AE2wtlib.MOD_NAME,
-            "textures/wireless_universal_terminal.png");
+            "textures/item/wireless_universal_terminal.png");
 
     @Override
     public void renderButton(PoseStack matrices, final int mouseX, final int mouseY, float partial) {
@@ -54,10 +54,10 @@ public class CycleTerminalButton extends Button implements ITooltip {
         RenderSystem.disableDepthTest();
         RenderSystem.enableBlend();
         if (isFocused()) {
-            fill(matrices, x - 1, y - 1, x + width + 1, y + height + 1, 0xFFFFFFFF);
+            fill(matrices, getX() - 1, getY() - 1, getX() + width + 1, getY() + height + 1, 0xFFFFFFFF);
         }
 
-        blit(matrices, x, y, 240, 240, 16, 16);
+        blit(matrices, getX(), getY(), 240, 240, 16, 16);
 
         RenderSystem.setShaderTexture(0, nextTerminal);
 
@@ -66,10 +66,8 @@ public class CycleTerminalButton extends Button implements ITooltip {
         else
             RenderSystem.setShaderColor(0.5f, 0.5f, 0.5f, 1.0f);
 
-        blit(matrices, x + 1, y + 1, 14, 14, 0, 0, 512, 512, 512, 512);
+        blit(matrices, getX() + 1, getY() + 1, 14, 14, 0, 0, 512, 512, 512, 512);
 
         matrices.popPose();
-        if (isHoveredOrFocused())
-            renderToolTip(matrices, mouseX, mouseY);
     }
 }

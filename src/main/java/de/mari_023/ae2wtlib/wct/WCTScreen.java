@@ -41,11 +41,11 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
             addToLeftToolbar(new CycleTerminalButton(btn -> cycleTerminal()));
 
         magnetCardToggleButton = new ItemButton(btn -> setMagnetMode(),
-                new ResourceLocation(AE2wtlib.MOD_NAME, "textures/magnet_card.png"));
+                new ResourceLocation(AE2wtlib.MOD_NAME, "textures/item/magnet_card.png"));
         addToLeftToolbar(magnetCardToggleButton);
 
         magnetCardMenuButton = new ItemButton(btn -> getMenu().openMagnetMenu(),
-                new ResourceLocation(AE2wtlib.MOD_NAME, "textures/magnet_card.png"));
+                new ResourceLocation(AE2wtlib.MOD_NAME, "textures/item/magnet_card.png"));
         addToLeftToolbar(magnetCardMenuButton);
         magnetCardMenuButton.setMessage(TextConstants.MAGNET_FILTER);
 

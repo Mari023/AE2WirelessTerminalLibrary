@@ -21,7 +21,7 @@ public class ItemButton extends Button implements ITooltip {
     public static final ResourceLocation TEXTURE_STATES = new ResourceLocation("ae2", "textures/guis/states.png");
 
     public ItemButton(OnPress onPress, ResourceLocation texture) {
-        super(0, 0, 16, 16, Component.empty(), onPress);
+        super(0, 0, 16, 16, Component.empty(), onPress, Button.DEFAULT_NARRATION);
         this.texture = texture;
     }
 
@@ -39,21 +39,18 @@ public class ItemButton extends Button implements ITooltip {
         RenderSystem.disableDepthTest();
         RenderSystem.enableBlend();
         if (isFocused()) {
-            fill(matrices, x - 1, y - 1, x + 17, y + 17, 0xFFFFFFFF);
+            fill(matrices, getX() - 1, getY() - 1, getX() + 17, getY() + 17, 0xFFFFFFFF);
         }
-        blit(matrices, x, y, 16, 16, 240, 240, 16, 16, 256, 256);
+        blit(matrices, getX(), getY(), 16, 16, 240, 240, 16, 16, 256, 256);
         if (active)
             RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         else
             RenderSystem.setShaderColor(0.5f, 0.5f, 0.5f, 1.0f);
         RenderSystem.setShaderTexture(0, texture);
-        blit(matrices, x, y, 16, 16, 0, 0, 512, 512, 512, 512);
+        blit(matrices, getX(), getY(), 16, 16, 0, 0, 512, 512, 512, 512);
         RenderSystem.enableDepthTest();
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         matrices.popPose();
-
-        if (isHoveredOrFocused())
-            renderToolTip(matrices, mouseX, mouseY);
     }
 
     @Override
@@ -63,7 +60,7 @@ public class ItemButton extends Button implements ITooltip {
 
     @Override
     public Rect2i getTooltipArea() {
-        return new Rect2i(x, y, 16, 16);
+        return new Rect2i(getX(), getY(), 16, 16);
     }
 
     @Override
