@@ -3,13 +3,13 @@ package de.mari_023.ae2wtlib;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 
 import net.fabricmc.loader.api.FabricLoader;
-
-import javax.annotation.Nullable;
 
 public class MixinPlugin implements IMixinConfigPlugin {
     @Override
