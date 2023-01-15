@@ -9,7 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Ingredient;
 
 public class CombineSerializer extends Serializer<Combine> {
-    public static String NAME = "combine";
+    public static final String NAME = "combine";
 
     @Override
     public Combine fromJson(ResourceLocation id, JsonObject json) {

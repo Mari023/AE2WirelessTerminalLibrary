@@ -9,11 +9,14 @@ import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 
 import net.fabricmc.loader.api.FabricLoader;
 
+import javax.annotation.Nullable;
+
 public class MixinPlugin implements IMixinConfigPlugin {
     @Override
     public void onLoad(String mixinPackage) {
     }
 
+    @Nullable
     @Override
     public String getRefMapperConfig() {
         return null;
@@ -34,6 +37,7 @@ public class MixinPlugin implements IMixinConfigPlugin {
     public void acceptTargets(Set<String> myTargets, Set<String> otherTargets) {
     }
 
+    @Nullable
     @Override
     public List<String> getMixins() {
         return null;

@@ -64,7 +64,7 @@ public class WUTHandler {
     }
 
     public static boolean hasTerminal(ItemStack terminal, String terminalName) {
-        if (terminal.isEmpty() || terminal.getItem() == null)
+        if (terminal.isEmpty())
             return false;
         if (terminal.getItem() instanceof ItemWUT) {
             if (!terminalNames.contains(terminalName))

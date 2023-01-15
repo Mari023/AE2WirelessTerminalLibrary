@@ -9,7 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Ingredient;
 
 public class UpgradeSerializer extends Serializer<Upgrade> {
-    public static String NAME = "upgrade";
+    public static final String NAME = "upgrade";
 
     @Override
     public Upgrade fromJson(ResourceLocation id, JsonObject json) {

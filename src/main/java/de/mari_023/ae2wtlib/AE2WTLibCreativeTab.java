@@ -15,12 +15,11 @@ public class AE2WTLibCreativeTab {
 
     public static CreativeModeTab INSTANCE;
 
-    public static CreativeModeTab init() {
+    public static void init() {
         INSTANCE = FabricItemGroup.builder(new ResourceLocation(AE2wtlib.MOD_NAME, "general"))
                 .icon(() -> new ItemStack(AE2wtlib.UNIVERSAL_TERMINAL))
                 .displayItems(AE2WTLibCreativeTab::buildDisplayItems)
                 .build();
-        return INSTANCE;
     }
 
     public static void add(Item itemDef) {
