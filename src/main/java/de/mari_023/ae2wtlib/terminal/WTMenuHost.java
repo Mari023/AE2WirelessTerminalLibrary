@@ -14,25 +14,28 @@ import de.mari_023.ae2wtlib.AE2wtlibConfig;
 import de.mari_023.ae2wtlib.Platform;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 
+import appeng.api.config.AccessRestriction;
 import appeng.api.config.Actionable;
-import appeng.api.config.PowerMultiplier;
 import appeng.api.features.Locatables;
 import appeng.api.inventories.ISegmentedInventory;
 import appeng.api.inventories.InternalInventory;
 import appeng.api.networking.IGridNode;
+import appeng.api.networking.energy.IAEPowerStorage;
+import appeng.api.networking.events.GridPowerStorageStateChanged;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.upgrades.IUpgradeInventory;
 import appeng.api.upgrades.UpgradeInventories;
 import appeng.helpers.WirelessTerminalMenuHost;
 import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.items.tools.powered.powersink.AEBasePoweredItem;
+import appeng.me.GridNode;
 import appeng.me.cluster.implementations.QuantumCluster;
 import appeng.menu.ISubMenu;
 import appeng.util.inv.AppEngInternalInventory;
 import appeng.util.inv.InternalInventoryHost;
 
 public abstract class WTMenuHost extends WirelessTerminalMenuHost
-        implements InternalInventoryHost, ISegmentedInventory {
+        implements InternalInventoryHost, ISegmentedInventory, IAEPowerStorage {
 
     private final AppEngInternalInventory singularityInventory = new AppEngInternalInventory(this, 1);
 
@@ -41,7 +44,6 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost
     private boolean rangeCheck;
     private IActionHost securityTerminal;
     private IGridNode securityTerminalNode;
-
     private IActionHost quantumBridge;
     private IUpgradeInventory upgradeInventory;
     public static final ResourceLocation INV_SINGULARITY = new ResourceLocation(AE2wtlib.MOD_NAME, "singularity");
@@ -57,8 +59,13 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost
             return;
         securityTerminal = Locatables.securityStations().get(player.level,
                 ((WirelessTerminalItem) is.getItem()).getGridKey(is).getAsLong());
-        if (securityTerminal != null)
+        if (securityTerminal != null) {
             securityTerminalNode = securityTerminal.getActionableNode();
+            ((GridNode) getActionableNode()).addService(IAEPowerStorage.class, this);// TODO interact with the
+                                                                                     // EnergyService directly
+            getActionableNode().getGrid().postEvent(
+                    new GridPowerStorageStateChanged(this, GridPowerStorageStateChanged.PowerEventType.REQUEST_POWER));
+        }
     }
 
     public void updateUpgrades(ItemStack stack, IUpgradeInventory upgrades) {
@@ -162,28 +169,6 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost
         }
     }
 
-    public boolean drainPower() {
-        if (!super.drainPower())
-            return false;
-        recharge();
-        return true;
-    }
-
-    private void recharge() {
-        if (quantumBridge == null)
-            return;
-        if (getItemStack().getItem() instanceof AEBasePoweredItem item) {
-            double currentPower = item.getAECurrentPower(getItemStack());
-            double maxPower = item.getAEMaxPower(getItemStack());
-            double missing = maxPower - currentPower;
-            if (getActionableNode() == null)
-                return;
-            double extracted = getActionableNode().getGrid().getEnergyService().extractAEPower(missing,
-                    Actionable.MODULATE, PowerMultiplier.ONE);
-            item.injectAEPower(getItemStack(), extracted, Actionable.MODULATE);
-        }
-    }
-
     @Nullable
     public InternalInventory getSubInventory(ResourceLocation id) {
         if (id.equals(INV_SINGULARITY))
@@ -203,5 +188,35 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost
         if (getSlot() != null)
             return super.ensureItemStillInSlot();
         return Platform.isStillPresentTrinkets(getPlayer(), getItemStack());
+    }
+
+    @Override
+    public double injectAEPower(double amt, Actionable mode) {
+        return ((AEBasePoweredItem) getItemStack().getItem()).injectAEPower(getItemStack(), amt, mode);
+    }
+
+    @Override
+    public double getAEMaxPower() {
+        return ((AEBasePoweredItem) getItemStack().getItem()).getAEMaxPower(getItemStack());
+    }
+
+    @Override
+    public double getAECurrentPower() {
+        return ((AEBasePoweredItem) getItemStack().getItem()).getAECurrentPower(getItemStack());
+    }
+
+    @Override
+    public boolean isAEPublicPowerStorage() {
+        return true;
+    }
+
+    @Override
+    public AccessRestriction getPowerFlow() {
+        return AccessRestriction.READ_WRITE;
+    }
+
+    @Override
+    public int getPriority() {
+        return 0;
     }
 }
