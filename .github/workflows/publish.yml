@@ -45,7 +45,7 @@ jobs:
       - name: remove modloader prefix from version
         run: echo "version_name=$(echo "${{ github.event.release.tag_name }}" | cut -c 8-)" >> $GITHUB_ENV
 
-      - uses: Kir-Antipov/mc-publish@v3.1
+      - uses: Kir-Antipov/mc-publish@v3.2
         with:
           modrinth-id: pNabrMMw
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
@@ -53,6 +53,8 @@ jobs:
           curseforge-id: 459929
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
 
+          changelog-file: CHANGELOG.md
+          github-generate-changelog: true
           github-token: ${{ secrets.GITHUB_TOKEN }}
           loaders: fabric
           game-versions: 1.19.3

@@ -1,0 +1,1 @@
+- Use CHANGELOG.md to set changelogs
