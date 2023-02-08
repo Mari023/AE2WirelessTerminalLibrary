@@ -144,6 +144,10 @@ java {
     withSourcesJar()
 }
 
+loom {
+    accessWidenerPath.set(file("src/main/resources/ae2wtlib.accesswidener"))
+}
+
 tasks {
     jar {
         finalizedBy("remapJar")

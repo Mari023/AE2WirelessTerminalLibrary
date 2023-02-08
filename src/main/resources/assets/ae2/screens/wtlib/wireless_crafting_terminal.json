@@ -33,6 +33,10 @@
     "AE2WTLIB_OFFHAND": {
       "left": 80,
       "bottom": 111
+    },
+    "AE2WTLIB_TRINKETS_EXTRA": {
+      "left": 62,
+      "bottom": 111
     }
   },
   "text": {

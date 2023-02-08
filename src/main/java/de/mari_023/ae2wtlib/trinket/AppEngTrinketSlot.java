@@ -15,17 +15,15 @@ import appeng.menu.slot.AppEngSlot;
 public class AppEngTrinketSlot extends AppEngSlot {
     private final SlotGroup group;
     private final SlotType type;
-    private final boolean alwaysVisible;
-    private final int slotOffset;
+    public final int slotOffset;
     public final TrinketInventoryWrapper trinketInventory;
     public final boolean locked;
 
     public AppEngTrinketSlot(TrinketInventoryWrapper inventory, int invSlot, SlotGroup group, SlotType type,
-            int slotOffset, boolean alwaysVisible, boolean locked) {
+                             int slotOffset, boolean locked) {
         super(inventory, invSlot);
         this.group = group;
         this.type = type;
-        this.alwaysVisible = alwaysVisible;
         this.slotOffset = slotOffset;
         this.trinketInventory = inventory;
         this.locked = locked;
@@ -48,7 +46,16 @@ public class AppEngTrinketSlot extends AppEngSlot {
 
     @Override
     public boolean isActive() {
-        return alwaysVisible || isTrinketFocused();
+        return switch (group.getName()) {
+            case "head":
+            case "chest":
+            case "legs":
+            case "feet":
+            case "offhand":
+                yield isTrinketFocused();
+            default:
+                yield slotOffset == 0 || isTrinketFocused();
+        };
     }
 
     public boolean isTrinketFocused() {

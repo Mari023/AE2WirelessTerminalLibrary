@@ -31,5 +31,6 @@
   },
   "suggests": {
     "trinkets": "*"
-  }
+  },
+  "accessWidener": "ae2wtlib.accesswidener"
 }

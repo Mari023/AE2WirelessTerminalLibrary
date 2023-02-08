@@ -51,6 +51,11 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
         widgets.add("singularityBackground", new BackgroundPanel(style.getImage("singularityBackground")));
     }
 
+    public void init() {
+        super.init();
+        getMenu().trinketsSlots.repositionSlots();
+    }
+
     private void setMagnetMode() {
         if (isHandlingRightClick()) {
             switch (getMenu().getMagnetSettings().magnetMode) {

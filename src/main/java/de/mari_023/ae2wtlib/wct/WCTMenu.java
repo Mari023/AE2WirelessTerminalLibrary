@@ -1,5 +1,7 @@
 package de.mari_023.ae2wtlib.wct;
 
+import de.mari_023.ae2wtlib.trinket.AppEngTrinketSlot;
+import de.mari_023.ae2wtlib.trinket.TrinketsSlots;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
@@ -32,6 +34,7 @@ public class WCTMenu extends CraftingTermMenu {
     public static final String TRASH_MENU = "trash";
 
     private final WCTMenuHost wctMenuHost;
+    public final TrinketsSlots trinketsSlots;
 
     public WCTMenu(int id, final Inventory ip, final WCTMenuHost gui) {
         super(TYPE, id, ip, gui, true);
@@ -54,6 +57,8 @@ public class WCTMenu extends CraftingTermMenu {
             addSlot(new ArmorSlot(getPlayerInventory(), ArmorSlot.Armor.OFFHAND), AE2wtlibSlotSemantics.OFFHAND);
         addSlot(new RestrictedInputSlot(RestrictedInputSlot.PlacableItemType.QE_SINGULARITY,
                 wctMenuHost.getSubInventory(WCTMenuHost.INV_SINGULARITY), 0), AE2wtlibSlotSemantics.SINGULARITY);
+
+        trinketsSlots = new TrinketsSlots(this);
 
         registerClientAction(MAGNET_MODE, MagnetMode.class, this::setMagnetMode);
         registerClientAction(MAGNET_MENU, this::openMagnetMenu);
@@ -93,6 +98,10 @@ public class WCTMenu extends CraftingTermMenu {
             return;
         }
         MenuOpener.open(MagnetMenu.TYPE, getPlayer(), getLocator());
+    }
+
+    public void addTrinketSlot(AppEngTrinketSlot slot, SlotSemantic semantic) {
+        addSlot(slot, semantic);
     }
 
     public void openTrashMenu() {

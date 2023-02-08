@@ -21,6 +21,14 @@ public class AE2wtlibSlotSemantics {
     public static final SlotSemantic PICKUP_CONFIG = register("PICKUP_CONFIG");
     public static final SlotSemantic INSERT_CONFIG = register("INSERT_CONFIG");
 
+    public static final SlotSemantic TRINKETS_HELMET = register("TRINKETS_HELMET");
+    public static final SlotSemantic TRINKETS_CHESTPLATE = register("TRINKETS_CHESTPLATE");
+    public static final SlotSemantic TRINKETS_LEGGINGS = register("TRINKETS_LEGGINGS");
+    public static final SlotSemantic TRINKETS_BOOTS = register("TRINKETS_BOOTS");
+    public static final SlotSemantic TRINKETS_MAINHAND = register("TRINKETS_MAINHAND");
+    public static final SlotSemantic TRINKETS_OFFHAND = register("TRINKETS_OFFHAND");
+    public static final SlotSemantic TRINKETS_EXTRA = register("TRINKETS_EXTRA");
+
     private static SlotSemantic register(String id) {
         return SlotSemantics.register("AE2WTLIB_" + id, false);
     }
