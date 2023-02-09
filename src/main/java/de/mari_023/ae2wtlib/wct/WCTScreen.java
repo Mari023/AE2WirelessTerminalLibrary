@@ -27,16 +27,6 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
 
     public WCTScreen(WCTMenu container, Inventory playerInventory, Component title, ScreenStyle style) {
         super(container, playerInventory, title, style);
-        IconButton deleteButton = new IconButton(btn -> getMenu().deleteTrashSlot()) {
-            @Override
-            protected Icon getIcon() {
-                return Icon.CONDENSER_OUTPUT_TRASH;
-            }
-        };
-        deleteButton.setHalfSize(true);
-        deleteButton.setMessage(TextConstants.DELETE);
-        widgets.add("emptyTrash", deleteButton);
-
         if (getMenu().isWUT())
             addToLeftToolbar(new CycleTerminalButton(btn -> cycleTerminal()));
 
@@ -48,6 +38,14 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
                 new ResourceLocation(AE2wtlib.MOD_NAME, "textures/item/magnet_card.png"));
         addToLeftToolbar(magnetCardMenuButton);
         magnetCardMenuButton.setMessage(TextConstants.MAGNET_FILTER);
+        IconButton deleteButton = new IconButton(btn -> getMenu().openTrashMenu()) {
+            @Override
+            protected Icon getIcon() {
+                return Icon.CONDENSER_OUTPUT_TRASH;
+            }
+        };
+        addToLeftToolbar(deleteButton);
+        deleteButton.setMessage(TextConstants.TRASH);
 
         widgets.add("player", new PlayerEntityWidget(Objects.requireNonNull(Minecraft.getInstance().player)));
         widgets.add("singularityBackground", new BackgroundPanel(style.getImage("singularityBackground")));

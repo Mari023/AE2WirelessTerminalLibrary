@@ -2,8 +2,7 @@
   "itemGroup.ae2wtlib.general": "AE2 Drahtlose Zugangskonsolen (AE2WTLib)",
   "itemGroup.ae2wtlib": "AE2 Drahtlose Zugangskonsolen (AE2WTLib)",
 
-  "gui.ae2wtlib.emptytrash": "Müll löschen",
-  "gui.ae2wtlib.emptytrash.desc": "Löscht den Inhalt des Müll slots",
+  "gui.ae2wtlib.trash": "Müll",
 
   "item.ae2wtlib.quantum_bridge_card": "Quantenbrückenkarte",
   "item.ae2wtlib.quantum_bridge_card.desc": "Ermöglicht es Drahtloskonsolen sich mit Quantenbrücken zur verbinden. Ermöglicht unendliche Reichweite",

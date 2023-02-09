@@ -21,7 +21,7 @@ import appeng.util.inv.AppEngInternalInventory;
 
 public class WCTMenuHost extends WTMenuHost implements IViewCellStorage {
     private final AppEngInternalInventory craftingGrid = new AppEngInternalInventory(this, 9);
-    private final AppEngInternalInventory trash = new AppEngInternalInventory(this, 1);
+    private final AppEngInternalInventory trash = new AppEngInternalInventory(this, 27);
     public static final ResourceLocation INV_TRASH = new ResourceLocation(AE2wtlib.MOD_NAME, "wct_trash");
 
     public WCTMenuHost(final Player ep, @Nullable Integer inventorySlot, final ItemStack is,
@@ -50,7 +50,6 @@ public class WCTMenuHost extends WTMenuHost implements IViewCellStorage {
         super.readFromNbt();
         CompoundTag tag = getItemStack().getOrCreateTag();
         craftingGrid.readFromNBT(tag, "craftingGrid");
-        trash.readFromNBT(tag, "trash");
     }
 
     @Override
@@ -58,6 +57,5 @@ public class WCTMenuHost extends WTMenuHost implements IViewCellStorage {
         super.saveChanges();
         CompoundTag tag = getItemStack().getOrCreateTag();
         craftingGrid.writeToNBT(tag, "craftingGrid");
-        trash.writeToNBT(tag, "trash");
     }
 }

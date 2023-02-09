@@ -53,8 +53,7 @@ public final class TextConstants {
     public static final Component CYCLE_TOOLTIP = Component.translatable(
             "gui.ae2wtlib.cycle_terminal.desc");
 
-    public static final MutableComponent DELETE = Component.translatable("gui.ae2wtlib.emptytrash").append("\n")
-            .append(Component.translatable("gui.ae2wtlib.emptytrash.desc"));
+    public static final MutableComponent TRASH = Component.translatable("gui.ae2wtlib.trash");
 
     public static final Component MAGNET_FILTER = Component.translatable("gui.ae2wtlib.Magnet");
 

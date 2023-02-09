@@ -1,7 +1,5 @@
 package de.mari_023.ae2wtlib.wct;
 
-import java.util.Objects;
-
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
@@ -22,7 +20,6 @@ import appeng.menu.MenuOpener;
 import appeng.menu.SlotSemantic;
 import appeng.menu.implementations.MenuTypeBuilder;
 import appeng.menu.me.items.CraftingTermMenu;
-import appeng.menu.slot.AppEngSlot;
 import appeng.menu.slot.RestrictedInputSlot;
 
 public class WCTMenu extends CraftingTermMenu {
@@ -30,9 +27,9 @@ public class WCTMenu extends CraftingTermMenu {
     public static final MenuType<WCTMenu> TYPE = MenuTypeBuilder.create(WCTMenu::new, WCTMenuHost.class)
             .requirePermission(SecurityPermissions.CRAFT).build(ID);
 
-    public static final String ACTION_DELETE = "delete";
     public static final String MAGNET_MODE = "magnetMode";
     public static final String MAGNET_MENU = "magnetMenu";
+    public static final String TRASH_MENU = "trash";
 
     private final WCTMenuHost wctMenuHost;
 
@@ -55,13 +52,12 @@ public class WCTMenu extends CraftingTermMenu {
             addSlot(new ArmorSlot.DisabledOffhandSlot(getPlayerInventory()), AE2wtlibSlotSemantics.OFFHAND);
         else
             addSlot(new ArmorSlot(getPlayerInventory(), ArmorSlot.Armor.OFFHAND), AE2wtlibSlotSemantics.OFFHAND);
-        addSlot(new AppEngSlot(wctMenuHost.getSubInventory(WCTMenuHost.INV_TRASH), 0), AE2wtlibSlotSemantics.TRASH);
         addSlot(new RestrictedInputSlot(RestrictedInputSlot.PlacableItemType.QE_SINGULARITY,
                 wctMenuHost.getSubInventory(WCTMenuHost.INV_SINGULARITY), 0), AE2wtlibSlotSemantics.SINGULARITY);
 
-        registerClientAction(ACTION_DELETE, this::deleteTrashSlot);
         registerClientAction(MAGNET_MODE, MagnetMode.class, this::setMagnetMode);
         registerClientAction(MAGNET_MENU, this::openMagnetMenu);
+        registerClientAction(TRASH_MENU, this::openTrashMenu);
     }
 
     @Override
@@ -72,12 +68,6 @@ public class WCTMenu extends CraftingTermMenu {
     @Override
     public boolean useRealItems() {
         return true;
-    }
-
-    public void deleteTrashSlot() {
-        if (isClientSide())
-            sendClientAction(ACTION_DELETE);
-        Objects.requireNonNull(wctMenuHost.getSubInventory(WCTMenuHost.INV_TRASH)).setItemDirect(0, ItemStack.EMPTY);
     }
 
     private MagnetSettings magnetSettings;
@@ -105,14 +95,21 @@ public class WCTMenu extends CraftingTermMenu {
         MenuOpener.open(MagnetMenu.TYPE, getPlayer(), getLocator());
     }
 
+    public void openTrashMenu() {
+        if (isClientSide()) {
+            sendClientAction(TRASH_MENU);
+            return;
+        }
+        MenuOpener.open(TrashMenu.TYPE, getPlayer(), getLocator());
+    }
+
     @Override
     protected boolean canSlotsBeHidden(SlotSemantic semantic) {
         return semantic == AE2wtlibSlotSemantics.OFFHAND
                 || semantic == AE2wtlibSlotSemantics.HELMET
                 || semantic == AE2wtlibSlotSemantics.CHESTPLATE
                 || semantic == AE2wtlibSlotSemantics.LEGGINGS
-                || semantic == AE2wtlibSlotSemantics.BOOTS
-                || semantic == AE2wtlibSlotSemantics.TRASH;
+                || semantic == AE2wtlibSlotSemantics.BOOTS;
     }
 
     public boolean isWUT() {

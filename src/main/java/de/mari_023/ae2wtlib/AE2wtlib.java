@@ -12,6 +12,7 @@ import de.mari_023.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
 import de.mari_023.ae2wtlib.wat.ItemWAT;
 import de.mari_023.ae2wtlib.wat.WATMenu;
 import de.mari_023.ae2wtlib.wat.WATMenuHost;
+import de.mari_023.ae2wtlib.wct.TrashMenu;
 import de.mari_023.ae2wtlib.wct.WCTMenu;
 import de.mari_023.ae2wtlib.wct.WCTMenuHost;
 import de.mari_023.ae2wtlib.wct.magnet_card.config.MagnetMenu;
@@ -106,6 +107,7 @@ public class AE2wtlib {
         Platform.registerMenuType(WATMenu.ID, WATMenu.TYPE);
         Platform.registerMenuType(WETMenu.ID, WETMenu.TYPE);
         Platform.registerMenuType(MagnetMenu.ID, MagnetMenu.TYPE);
+        Platform.registerMenuType(TrashMenu.ID, TrashMenu.TYPE);
     }
 
     public static void notifyAddons(String type) {

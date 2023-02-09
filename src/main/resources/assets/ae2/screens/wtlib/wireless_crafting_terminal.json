@@ -14,10 +14,6 @@
       "left": 174,
       "bottom": 147
     },
-    "AE2WTLIB_TRASH": {
-      "left": 98,
-      "bottom": 111
-    },
     "AE2WTLIB_HELMET": {
       "left": 8,
       "bottom": 165
@@ -73,10 +69,6 @@
     "clearToPlayerInv": {
       "left": 145,
       "bottom": 167
-    },
-    "emptyTrash": {
-      "left": 116,
-      "bottom": 111
     },
     "player": {
       "left": 52,
