@@ -61,10 +61,10 @@ dependencies {
         exclude(group = "net.fabricmc.fabric-api")
     }
 
-    modCompileOnly("me.shedaniel:RoughlyEnoughItems-fabric:${reiVersion}") {
+    modCompileOnly("me.shedaniel:RoughlyEnoughItems-${modloader}:${reiVersion}") {
         exclude(group = "net.fabricmc.fabric-api")
     }
-    modCompileOnly("mezz.jei:jei-${jeiMinecraftVersion}-fabric:${jeiVersion}") {
+    modCompileOnly("mezz.jei:jei-${jeiMinecraftVersion}-${modloader}:${jeiVersion}") {
         exclude(group = "mezz.jei")
     }
 
