@@ -35,13 +35,10 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost
         implements InternalInventoryHost, ISegmentedInventory {
 
     private final AppEngInternalInventory singularityInventory = new AppEngInternalInventory(this, 1);
-
     private final AppEngInternalInventory viewCellInventory;
-    private final Player myPlayer;
     private boolean rangeCheck;
     private IActionHost securityTerminal;
     private IGridNode securityTerminalNode;
-
     private IActionHost quantumBridge;
     private IUpgradeInventory upgradeInventory;
     public static final ResourceLocation INV_SINGULARITY = new ResourceLocation(AE2wtlib.MOD_NAME, "singularity");
@@ -50,7 +47,6 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost
             BiConsumer<Player, ISubMenu> returnToMainMenu) {
         super(player, inventorySlot, is, returnToMainMenu);
         viewCellInventory = new AppEngInternalInventory(this, 5);
-        myPlayer = player;
         upgradeInventory = UpgradeInventories.forItem(is, WUTHandler.getUpgradeCardCount(), this::updateUpgrades);
 
         if (((WirelessTerminalItem) is.getItem()).getGridKey(is).isEmpty())
@@ -143,10 +139,6 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost
         if (quantumBridge == null)
             quantumBridge = Locatables.quantumNetworkBridges().get(getPlayer().getLevel(), -frequency);
         return quantumBridge != null;
-    }
-
-    public Player getPlayer() {
-        return myPlayer;
     }
 
     public AppEngInternalInventory getViewCellStorage() {
