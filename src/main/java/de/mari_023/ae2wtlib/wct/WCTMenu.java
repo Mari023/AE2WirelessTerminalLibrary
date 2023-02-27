@@ -3,8 +3,8 @@ package de.mari_023.ae2wtlib.wct;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Wearable;
 
 import de.mari_023.ae2wtlib.AE2wtlibSlotSemantics;
 import de.mari_023.ae2wtlib.terminal.ArmorSlot;
@@ -40,7 +40,7 @@ public class WCTMenu extends CraftingTermMenu {
         addSlot(new ArmorSlot(getPlayerInventory(), ArmorSlot.Armor.HEAD) {
             @Override
             public boolean mayPlace(ItemStack stack) {
-                return (stack.getItem() instanceof BlockItem bItem && bItem.getBlock() instanceof Wearable)
+                return (stack.getItem() instanceof BlockItem bItem && bItem.getBlock() instanceof Equipable)
                         || super.mayPlace(stack);
             }
         }, AE2wtlibSlotSemantics.HELMET);

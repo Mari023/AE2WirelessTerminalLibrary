@@ -32,7 +32,7 @@ public class ArmorSlot extends AppEngSlot {
     public boolean mayPlace(ItemStack stack) {
         return armor == Armor.OFFHAND
                 || (playerInventory.canPlaceItem(armor.invSlot, stack) && stack.getItem() instanceof ArmorItem aItem
-                        && aItem.getSlot().equals(armor.equipmentSlot));
+                        && aItem.getEquipmentSlot().equals(armor.equipmentSlot));
     }
 
     public enum Armor {

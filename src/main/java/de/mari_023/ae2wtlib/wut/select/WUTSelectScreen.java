@@ -50,7 +50,6 @@ public class WUTSelectScreen extends Screen {
 
         poseStack.pushPose();
         RenderSystem.enableBlend();
-        RenderSystem.disableTexture();
         RenderSystem.defaultBlendFunc();
         BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
         Matrix4f modelMatrix = poseStack.last().pose();
@@ -71,7 +70,6 @@ public class WUTSelectScreen extends Screen {
         }
 
         BufferUploader.drawWithShader(bufferBuilder.end());
-        RenderSystem.enableTexture();
         RenderSystem.disableBlend();
         poseStack.popPose();
     }

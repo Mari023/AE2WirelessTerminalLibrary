@@ -31,7 +31,7 @@ public class ItemButton extends Button implements ITooltip {
     }
 
     @Override
-    public void renderButton(PoseStack matrices, final int mouseX, final int mouseY, float partial) {
+    public void renderWidget(PoseStack matrices, final int mouseX, final int mouseY, float partial) {
         if (!visible)
             return;
         matrices.pushPose();

@@ -46,7 +46,7 @@ public class CycleTerminalButton extends Button implements ITooltip {
             "textures/item/wireless_universal_terminal.png");
 
     @Override
-    public void renderButton(PoseStack matrices, final int mouseX, final int mouseY, float partial) {
+    public void renderWidget(PoseStack matrices, final int mouseX, final int mouseY, float partial) {
         if (!visible)
             return;
         matrices.pushPose();

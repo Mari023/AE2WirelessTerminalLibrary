@@ -2,6 +2,7 @@ package de.mari_023.ae2wtlib.wut.recipe;
 
 import java.util.Iterator;
 
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -39,8 +40,13 @@ public abstract class Common implements CraftingRecipe {
         return width > 1 || height > 1;
     }
 
-    @Override
+    // FIXME 1.19.4 REI check if this is still necessary
     public ItemStack getResultItem() {
+        return outputStack;
+    }
+
+    @Override
+    public ItemStack getResultItem(RegistryAccess registryAccess) {
         return outputStack;
     }
 

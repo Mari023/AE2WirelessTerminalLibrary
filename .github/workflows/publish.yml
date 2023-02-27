@@ -57,7 +57,7 @@ jobs:
           github-generate-changelog: true
           github-token: ${{ secrets.GITHUB_TOKEN }}
           loaders: fabric
-          game-versions: 1.19.3
+          game-versions: 1.19.4-pre1
           curseforge-dependencies: |
             cloth-config | depends
             fabric-api | depends

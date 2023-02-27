@@ -50,11 +50,11 @@ dependencies {
     modImplementation("net.fabricmc:fabric-loader:${fabricLoaderVersion}")
     modApi("net.fabricmc.fabric-api:fabric-api:${fabricApiVersion}")
     modCompileOnly("dev.emi:trinkets:${trinketsVersion}") { isTransitive = false }
-    modRuntimeOnly("dev.emi:trinkets:${trinketsVersion}")
+    //modRuntimeOnly("dev.emi:trinkets:${trinketsVersion}")
     modCompileOnly("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${ccaVersion}")
     modRuntimeOnly("me.shedaniel.cloth:cloth-config-${modloader}:${clothVersion}")
     modApi("com.terraformersmc:modmenu:${modMenuVersion}")
-    modImplementation("dev.architectury:architectury-${modloader}:${architecturyVersion}")
+    modCompileOnly("dev.architectury:architectury-${modloader}:${architecturyVersion}")
     modImplementation("appeng:appliedenergistics2-${modloader}:${ae2Version}") {
         exclude(group = "mezz.jei")
         exclude(group = "me.shedaniel")

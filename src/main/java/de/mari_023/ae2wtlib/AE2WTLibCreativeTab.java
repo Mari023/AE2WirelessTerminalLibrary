@@ -5,7 +5,6 @@ import java.util.List;
 
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -26,8 +25,8 @@ public class AE2WTLibCreativeTab {
         items.add(itemDef);
     }
 
-    private static void buildDisplayItems(FeatureFlagSet featureFlagSet, CreativeModeTab.Output output,
-            boolean opItems) {
+    private static void buildDisplayItems(CreativeModeTab.ItemDisplayParameters itemDisplayParameters,
+            CreativeModeTab.Output output) {
         for (var item : items) {
             output.accept(item);
         }
