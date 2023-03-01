@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiConsumer;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -25,7 +24,6 @@ import de.mari_023.ae2wtlib.terminal.WTMenuHost;
 
 import appeng.api.implementations.menuobjects.ItemMenuHost;
 import appeng.hotkeys.HotkeyActions;
-import appeng.menu.ISubMenu;
 import appeng.menu.locator.MenuLocator;
 import appeng.menu.locator.MenuLocators;
 
@@ -145,8 +143,9 @@ public class WUTHandler {
     public static final Map<String, WTDefinition> wirelessTerminals = new HashMap<>();
     public static final List<String> terminalNames = new ArrayList<>();
 
-    public static void addTerminal(String name, ContainerOpener open, WTMenuHostFactory WTMenuHostFactory,
-            MenuType<?> menuType, IUniversalWirelessTerminalItem item, String hotkeyName) {
+    public static void addTerminal(String name, WTDefinition.ContainerOpener open,
+            WTDefinition.WTMenuHostFactory WTMenuHostFactory,
+            MenuType<?> menuType, IUniversalWirelessTerminalItem item, String hotkeyName, String itemID) {
         if (terminalNames.contains(name))
             return;
 
@@ -157,24 +156,21 @@ public class WUTHandler {
 
         HotkeyActions.register(new Ae2WTLibLocatingService(name), hotkeyName);
 
-        wirelessTerminals.put(name, new WTDefinition(open, WTMenuHostFactory, menuType, item, wut));
+        wirelessTerminals.put(name, new WTDefinition(open, WTMenuHostFactory, menuType, item, wut,
+                TextConstants.formatTerminalName(itemID)));
         terminalNames.add(name);
     }
 
-    public static void addTerminal(String name, ContainerOpener open, WTMenuHostFactory WTMenuHostFactory,
+    public static void addTerminal(String name, WTDefinition.ContainerOpener open,
+            WTDefinition.WTMenuHostFactory WTMenuHostFactory,
+            MenuType<?> menuType, IUniversalWirelessTerminalItem item, String itemID) {
+        addTerminal(name, open, WTMenuHostFactory, menuType, item, "wireless_" + name + "_terminal", itemID);
+    }
+
+    public static void addTerminal(String name, WTDefinition.ContainerOpener open,
+            WTDefinition.WTMenuHostFactory WTMenuHostFactory,
             MenuType<?> menuType, IUniversalWirelessTerminalItem item) {
-        addTerminal(name, open, WTMenuHostFactory, menuType, item, "wireless_" + name + "_terminal");
-    }
-
-    @FunctionalInterface
-    public interface ContainerOpener {
-        boolean tryOpen(Player player, MenuLocator locator, ItemStack stack, boolean returningFromSubmenu);
-    }
-
-    @FunctionalInterface
-    public interface WTMenuHostFactory {
-        WTMenuHost create(final Player ep, @Nullable Integer inventorySlot, final ItemStack is,
-                BiConsumer<Player, ISubMenu> returnToMainMenu);
+        addTerminal(name, open, WTMenuHostFactory, menuType, item, "item.ae2wtlib.wireless_" + name + "_terminal");
     }
 
     public static int getUpgradeCardCount() {

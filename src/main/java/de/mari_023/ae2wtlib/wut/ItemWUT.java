@@ -63,12 +63,10 @@ public class ItemWUT extends ItemWT {
     public void appendHoverText(final ItemStack stack, final Level world, final List<Component> lines,
             final TooltipFlag advancedTooltips) {
         lines.add(TextConstants.UNIVERSAL);
-        if (WUTHandler.hasTerminal(stack, "crafting"))
-            lines.add(TextConstants.CRAFTING);
-        if (WUTHandler.hasTerminal(stack, "pattern_access"))
-            lines.add(TextConstants.PATTERN_ACCESS);
-        if (WUTHandler.hasTerminal(stack, "pattern_encoding"))
-            lines.add(TextConstants.PATTERN_ENCODING);
+        for (var terminal : WUTHandler.wirelessTerminals.entrySet()) {
+            if (WUTHandler.hasTerminal(stack, terminal.getKey()))
+                lines.add(terminal.getValue().terminalName());
+        }
         super.appendHoverText(stack, world, lines, advancedTooltips);
     }
 

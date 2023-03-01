@@ -39,12 +39,10 @@ public final class TextConstants {
 
     public static final MutableComponent UNIVERSAL = Component.translatable(
             "item.ae2wtlib.wireless_universal_terminal.desc").withStyle(STYLE_GRAY);
-    public static final MutableComponent CRAFTING = Component.translatable("item.ae2.wireless_crafting_terminal")
-            .withStyle(STYLE_GRAY);
-    public static final MutableComponent PATTERN_ENCODING = Component.translatable(
-            "item.ae2wtlib.wireless_pattern_encoding_terminal").withStyle(STYLE_GRAY);
-    public static final MutableComponent PATTERN_ACCESS = Component.translatable(
-            "item.ae2wtlib.wireless_pattern_access_terminal").withStyle(STYLE_GRAY);
+
+    public static MutableComponent formatTerminalName(String terminal) {
+        return Component.translatable(terminal).withStyle(STYLE_GRAY);
+    }
 
     public static final Component TERMINAL_EMPTY = Component.literal(
             "This terminal does not contain any other Terminals");

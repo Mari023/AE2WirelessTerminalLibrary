@@ -50,7 +50,7 @@ public class AE2wtlib {
                 ((IUniversalWirelessTerminalItem) AEItems.WIRELESS_CRAFTING_TERMINAL.asItem())::tryOpen,
                 WCTMenuHost::new, WCTMenu.TYPE,
                 (IUniversalWirelessTerminalItem) AEItems.WIRELESS_CRAFTING_TERMINAL.asItem(),
-                HotkeyAction.WIRELESS_TERMINAL);
+                HotkeyAction.WIRELESS_TERMINAL, "item.ae2.wireless_crafting_terminal");
 
         WUTHandler.addTerminal("pattern_encoding", PATTERN_ENCODING_TERMINAL::tryOpen, WETMenuHost::new, WETMenu.TYPE,
                 PATTERN_ENCODING_TERMINAL);
