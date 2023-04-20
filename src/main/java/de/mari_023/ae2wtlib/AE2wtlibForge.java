@@ -86,7 +86,7 @@ public class AE2wtlibForge {
     }
 
     private static boolean restock(ServerPlayer player, ItemStack item, int count) {
-        if (player.isCreative())
+        if (player.isCreative() || item.isEmpty())
             return true;
         CraftingTerminalHandler cTHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
         if (!cTHandler.inRange() || !ItemWT.getBoolean(cTHandler.getCraftingTerminal(), "restock")
