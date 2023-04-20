@@ -32,6 +32,7 @@ import appeng.api.upgrades.Upgrades;
 import appeng.core.definitions.AEItems;
 import appeng.hotkeys.HotkeyActions;
 import appeng.items.tools.powered.WirelessTerminalItem;
+import appeng.server.testplots.TestPlots;
 
 public class AE2wtlib {
     public static final String MOD_NAME = "ae2wtlib";
@@ -71,6 +72,7 @@ public class AE2wtlib {
             notifyAddons(":server");
 
         UpgradeHelper.addUpgrades();
+        TestPlots.addPlotClass(AE2WTLibTestPlots.class);
     }
 
     public static void createItems() {
