@@ -51,7 +51,7 @@ public class PlayerInventoryInsertStack {
             return;
 
         long inserted = cTHandler.getTargetGrid().getStorageService().getInventory().insert(AEItemKey.of(stack),
-                stack.getCount(), Actionable.MODULATE, new PlayerSource(player, cTHandler.getSecurityStation()));
+                stack.getCount(), Actionable.MODULATE, new PlayerSource(player, null));
         int leftover = (int) (stack.getCount() - inserted);
         if (leftover == 0) {
             stack.setCount(0);

@@ -67,11 +67,11 @@ public abstract class Restock {
         if (toAdd > 0)
             changed = cTHandler.getTargetGrid().getStorageService().getInventory().extract(
                     AEItemKey.of((ItemStack) (Object) this), toAdd, Actionable.MODULATE,
-                    new PlayerSource(player, cTHandler.getSecurityStation()));
+                    new PlayerSource(player, null));
         else
             changed = -cTHandler.getTargetGrid().getStorageService().getInventory().insert(
                     AEItemKey.of((ItemStack) (Object) this), -toAdd, Actionable.MODULATE,
-                    new PlayerSource(player, cTHandler.getSecurityStation()));
+                    new PlayerSource(player, null));
 
         setCount(getCount() + (int) changed);
         ServerNetworkManager.sendToClient((ServerPlayer) player, new UpdateRestockPacket(

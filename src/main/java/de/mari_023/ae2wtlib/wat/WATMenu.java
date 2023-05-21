@@ -7,7 +7,6 @@ import de.mari_023.ae2wtlib.AE2wtlibSlotSemantics;
 import de.mari_023.ae2wtlib.wct.WCTMenuHost;
 import de.mari_023.ae2wtlib.wut.ItemWUT;
 
-import appeng.api.config.SecurityPermissions;
 import appeng.api.storage.ITerminalHost;
 import appeng.api.upgrades.IUpgradeInventory;
 import appeng.menu.SlotSemantics;
@@ -18,8 +17,7 @@ import appeng.menu.slot.RestrictedInputSlot;
 
 public class WATMenu extends PatternAccessTermMenu {
     public static final String ID = "wireless_pattern_access_terminal";
-    public static final MenuType<WATMenu> TYPE = MenuTypeBuilder.create(WATMenu::new, WATMenuHost.class)
-            .requirePermission(SecurityPermissions.BUILD).build(ID);
+    public static final MenuType<WATMenu> TYPE = MenuTypeBuilder.create(WATMenu::new, WATMenuHost.class).build(ID);
 
     private final WATMenuHost watMenuHost;
     private final ToolboxMenu toolboxMenu;

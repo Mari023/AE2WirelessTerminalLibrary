@@ -1,12 +1,19 @@
 buildscript {
     repositories {
         mavenCentral()
+        maven {
+            url = uri("https://plugins.gradle.org/m2/")
+        }
+    }
+    dependencies {
+        classpath("com.diffplug.spotless:spotless-plugin-gradle:6.18.0")
     }
 }
 
+apply(plugin = "com.diffplug.spotless")
+
 plugins {
     id("fabric-loom") version "1.0-SNAPSHOT"
-    id("com.diffplug.spotless") version "5.12.4"
     id("maven-publish")
     java
     idea

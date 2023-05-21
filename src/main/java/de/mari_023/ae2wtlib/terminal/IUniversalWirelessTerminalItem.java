@@ -1,7 +1,6 @@
 package de.mari_023.ae2wtlib.terminal;
 
-import java.util.OptionalLong;
-
+import appeng.api.networking.IGrid;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.entity.player.Player;
@@ -12,9 +11,7 @@ import net.minecraft.world.level.Level;
 import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 
-import appeng.api.features.Locatables;
 import appeng.api.implementations.menuobjects.ItemMenuHost;
-import appeng.api.networking.security.IActionHost;
 import appeng.core.localization.PlayerMessages;
 import appeng.menu.MenuOpener;
 import appeng.menu.locator.MenuLocator;
@@ -44,20 +41,7 @@ public interface IUniversalWirelessTerminalItem {
             return false;
         }
 
-        Level level = player.getCommandSenderWorld();
-        if (level.isClientSide()) {
-            return false;
-        }
-
-        OptionalLong key = getGridKey(item);
-        if (key.isEmpty()) {
-            player.sendSystemMessage(PlayerMessages.DeviceNotLinked.text());
-            return false;
-        }
-
-        IActionHost securityStation = Locatables.securityStations().get(level, key.getAsLong());
-        if (securityStation == null) {
-            player.sendSystemMessage(PlayerMessages.StationCanNotBeLocated.text());
+        if (getLinkedGrid(item, player.level, player) == null) {
             return false;
         }
 
@@ -68,7 +52,7 @@ public interface IUniversalWirelessTerminalItem {
         return true;
     }
 
-    OptionalLong getGridKey(ItemStack item);
-
     boolean hasPower(Player player, double amt, ItemStack is);
+
+    @Nullable IGrid getLinkedGrid(ItemStack item, Level level, @Nullable Player sendMessagesTo);
 }

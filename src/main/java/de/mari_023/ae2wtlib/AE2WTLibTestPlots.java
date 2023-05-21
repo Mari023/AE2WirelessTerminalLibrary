@@ -23,8 +23,7 @@ public class AE2WTLibTestPlots {
     public static void wireless_terminal(PlotBuilder plot) {
         var o = BlockPos.ZERO;
         plot.creativeEnergyCell(o);
-        plot.block(o.east(), AEBlocks.SECURITY_STATION);
-        plot.cable("[2,17] 0 0");
+        plot.cable("[1,17] 0 0");
         plot.blockState(o.east(17).above(), AEBlocks.WIRELESS_ACCESS_POINT.block().defaultBlockState()
                 .setValue(BlockStateProperties.FACING, Direction.UP));
 

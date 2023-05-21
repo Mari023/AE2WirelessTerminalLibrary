@@ -18,7 +18,6 @@ import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridNode;
-import appeng.api.networking.security.IActionHost;
 import appeng.menu.locator.MenuLocator;
 
 public class CraftingTerminalHandler {
@@ -94,10 +93,6 @@ public class CraftingTerminalHandler {
         }
 
         return menuHost;
-    }
-
-    public IActionHost getSecurityStation() {
-        return menuHost.getActionHost();
     }
 
     @Nullable

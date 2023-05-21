@@ -14,7 +14,6 @@ import de.mari_023.ae2wtlib.wct.magnet_card.MagnetSettings;
 import de.mari_023.ae2wtlib.wct.magnet_card.config.MagnetMenu;
 import de.mari_023.ae2wtlib.wut.ItemWUT;
 
-import appeng.api.config.SecurityPermissions;
 import appeng.api.networking.IGridNode;
 import appeng.menu.MenuOpener;
 import appeng.menu.SlotSemantic;
@@ -24,8 +23,7 @@ import appeng.menu.slot.RestrictedInputSlot;
 
 public class WCTMenu extends CraftingTermMenu {
     public static final String ID = "wireless_crafting_terminal";
-    public static final MenuType<WCTMenu> TYPE = MenuTypeBuilder.create(WCTMenu::new, WCTMenuHost.class)
-            .requirePermission(SecurityPermissions.CRAFT).build(ID);
+    public static final MenuType<WCTMenu> TYPE = MenuTypeBuilder.create(WCTMenu::new, WCTMenuHost.class).build(ID);
 
     public static final String MAGNET_MODE = "magnetMode";
     public static final String MAGNET_MENU = "magnetMenu";
@@ -63,11 +61,6 @@ public class WCTMenu extends CraftingTermMenu {
     @Override
     public IGridNode getNetworkNode() {
         return wctMenuHost.getActionableNode();
-    }
-
-    @Override
-    public boolean useRealItems() {
-        return true;
     }
 
     private MagnetSettings magnetSettings;
