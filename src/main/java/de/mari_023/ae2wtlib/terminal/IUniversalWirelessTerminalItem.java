@@ -1,12 +1,11 @@
 package de.mari_023.ae2wtlib.terminal;
 
-import appeng.api.networking.IGrid;
+import net.minecraft.server.level.ServerLevel;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 
 import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
@@ -41,9 +40,8 @@ public interface IUniversalWirelessTerminalItem {
             return false;
         }
 
-        if (getLinkedGrid(item, player.level, player) == null) {
+        if(!(player.getLevel() instanceof ServerLevel))
             return false;
-        }
 
         if (!hasPower(player, 0.5, item)) {
             player.sendSystemMessage(PlayerMessages.DeviceNotPowered.text());
@@ -53,6 +51,4 @@ public interface IUniversalWirelessTerminalItem {
     }
 
     boolean hasPower(Player player, double amt, ItemStack is);
-
-    @Nullable IGrid getLinkedGrid(ItemStack item, Level level, @Nullable Player sendMessagesTo);
 }

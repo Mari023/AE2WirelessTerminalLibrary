@@ -3,6 +3,7 @@ package de.mari_023.ae2wtlib.terminal;
 import java.util.function.BiConsumer;
 
 import appeng.api.networking.IGrid;
+import appeng.api.storage.MEStorage;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.nbt.CompoundTag;
@@ -49,7 +50,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost
         viewCellInventory = new AppEngInternalInventory(this, 5);
         upgradeInventory = UpgradeInventories.forItem(is, WUTHandler.getUpgradeCardCount(), this::updateUpgrades);
 
-        targetGrid = ((WirelessTerminalItem) is.getItem()).getLinkedGrid(is, player.level, player);
+        targetGrid = ((WirelessTerminalItem) is.getItem()).getLinkedGrid(is, player.level, null);
     }
 
     public void updateUpgrades(ItemStack stack, IUpgradeInventory upgrades) {
@@ -73,11 +74,21 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost
         saveChanges();
     }
 
+    @Nullable
     @Override
     public IGridNode getActionableNode() {
-        if(isQuantumLinked())
+        if(isQuantumLinked() && !getPlayer().getLevel().isClientSide())
             return quantumBridge.getActionableNode();
         return super.getActionableNode();
+    }
+
+    @Nullable
+    @Override
+    public MEStorage getInventory() {
+        var node = getActionableNode();
+        if (node == null)
+            return null;
+        return node.getGrid().getStorageService().getInventory();
     }
 
     public boolean rangeCheck() {
