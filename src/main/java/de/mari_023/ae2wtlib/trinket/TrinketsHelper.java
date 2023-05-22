@@ -35,7 +35,7 @@ public class TrinketsHelper {
 
     public static ItemStack getTrinket(Player player, String group, String type, int slot) {
         var inventory = getTrinketsInventory(player);
-        if(inventory.get(group) == null || inventory.get(group).get(type) == null) {
+        if (inventory.get(group) == null || inventory.get(group).get(type) == null) {
             return ItemStack.EMPTY;
         }
         return inventory.get(group).get(type).getItem(slot);

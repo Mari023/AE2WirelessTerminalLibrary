@@ -1,7 +1,5 @@
 package de.mari_023.ae2wtlib;
 
-import appeng.util.SearchInventoryEvent;
-import de.mari_023.ae2wtlib.trinket.TrinketsHelper;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.world.item.Item;
@@ -11,6 +9,7 @@ import de.mari_023.ae2wtlib.hotkeys.RestockHotkeyAction;
 import de.mari_023.ae2wtlib.networking.ServerNetworkManager;
 import de.mari_023.ae2wtlib.networking.c2s.CycleTerminalPacket;
 import de.mari_023.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
+import de.mari_023.ae2wtlib.trinket.TrinketsHelper;
 import de.mari_023.ae2wtlib.wat.ItemWAT;
 import de.mari_023.ae2wtlib.wat.WATMenu;
 import de.mari_023.ae2wtlib.wat.WATMenuHost;
@@ -35,6 +34,7 @@ import appeng.core.definitions.AEItems;
 import appeng.hotkeys.HotkeyActions;
 import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.server.testplots.TestPlots;
+import appeng.util.SearchInventoryEvent;
 
 public class AE2wtlib {
     public static final String MOD_NAME = "ae2wtlib";

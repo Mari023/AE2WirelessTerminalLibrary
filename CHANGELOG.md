@@ -1,2 +1,4 @@
 - Use CHANGELOG.md to set changelogs
 - move trash to its own GUI (#159)
+- show toasts if terminal is in Trinkets Inventory (#183)
+- Do not require power in the terminal to open it when quantum linked (#179)

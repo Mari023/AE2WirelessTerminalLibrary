@@ -38,6 +38,10 @@ public class CraftingTerminalItemMixin extends WirelessTerminalItem implements I
         return WCTMenu.TYPE;
     }
 
+    protected boolean checkPreconditions(ItemStack item, Player player) {
+        return checkUniversalPreconditions(item, player);
+    }
+
     public MenuType<?> getMenuType(ItemStack stack) {
         return getMenuType();
     }

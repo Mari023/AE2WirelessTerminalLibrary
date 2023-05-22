@@ -2,8 +2,6 @@ package de.mari_023.ae2wtlib.terminal;
 
 import java.util.function.BiConsumer;
 
-import appeng.api.networking.IGrid;
-import appeng.api.storage.MEStorage;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.nbt.CompoundTag;
@@ -21,10 +19,13 @@ import appeng.api.config.PowerMultiplier;
 import appeng.api.features.Locatables;
 import appeng.api.inventories.ISegmentedInventory;
 import appeng.api.inventories.InternalInventory;
+import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.security.IActionHost;
+import appeng.api.storage.MEStorage;
 import appeng.api.upgrades.IUpgradeInventory;
 import appeng.api.upgrades.UpgradeInventories;
+import appeng.core.localization.PlayerMessages;
 import appeng.helpers.WirelessTerminalMenuHost;
 import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.items.tools.powered.powersink.AEBasePoweredItem;
@@ -77,7 +78,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost
     @Nullable
     @Override
     public IGridNode getActionableNode() {
-        if(isQuantumLinked() && !getPlayer().getLevel().isClientSide())
+        if (isQuantumLinked() && !getPlayer().getLevel().isClientSide())
             return quantumBridge.getActionableNode();
         return super.getActionableNode();
     }
@@ -125,7 +126,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost
         }
         if (quantumBridge.getActionableNode() == null)
             return false;
-        return quantumBridge.getActionableNode().getGrid() == targetGrid  || targetGrid == null;
+        return quantumBridge.getActionableNode().getGrid() == targetGrid || targetGrid == null;
     }
 
     private long getQEFrequency() {
@@ -160,8 +161,12 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost
     }
 
     public boolean drainPower() {
-        if (!super.drainPower())
+        extractAEPower(1000000000, Actionable.MODULATE, PowerMultiplier.CONFIG);
+        recharge();
+        if (!super.drainPower()) {
+            getPlayer().displayClientMessage(PlayerMessages.DeviceNotPowered.text(), true);
             return false;
+        }
         recharge();
         return true;
     }

@@ -1,8 +1,8 @@
 package de.mari_023.ae2wtlib.terminal;
 
-import net.minecraft.server.level.ServerLevel;
 import org.jetbrains.annotations.Nullable;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
@@ -11,7 +11,6 @@ import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 import appeng.api.implementations.menuobjects.ItemMenuHost;
-import appeng.core.localization.PlayerMessages;
 import appeng.menu.MenuOpener;
 import appeng.menu.locator.MenuLocator;
 
@@ -40,14 +39,7 @@ public interface IUniversalWirelessTerminalItem {
             return false;
         }
 
-        if(!(player.getLevel() instanceof ServerLevel))
-            return false;
-
-        if (!hasPower(player, 0.5, item)) {
-            player.sendSystemMessage(PlayerMessages.DeviceNotPowered.text());
-            return false;
-        }
-        return true;
+        return player.getLevel() instanceof ServerLevel;
     }
 
     boolean hasPower(Player player, double amt, ItemStack is);
