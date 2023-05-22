@@ -12,10 +12,8 @@ import net.minecraft.world.item.ItemStack;
 public class AE2WTLibCreativeTab {
     private static final List<Item> items = new ArrayList<>();
 
-    public static CreativeModeTab INSTANCE;
-
     public static void init() {
-        INSTANCE = FabricItemGroup.builder(new ResourceLocation(AE2wtlib.MOD_NAME, "general"))
+        FabricItemGroup.builder(new ResourceLocation(AE2wtlib.MOD_NAME, "general"))
                 .icon(() -> new ItemStack(AE2wtlib.UNIVERSAL_TERMINAL))
                 .displayItems(AE2WTLibCreativeTab::buildDisplayItems)
                 .build();

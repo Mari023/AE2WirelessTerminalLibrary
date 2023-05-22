@@ -78,14 +78,14 @@ public class MagnetHandler {
     private static void handleMagnet(Player player, ItemStack terminal) {
         if (player.isShiftKeyDown())
             return;
-        if (!getMagnetSettings(terminal).isActive())
+        if (getMagnetSettings(terminal).isDisabled())
             return;
         handleMagnet(player);
     }
 
     private static void handleMagnet(Player player) {
         CraftingTerminalHandler ctHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
-        if (!getMagnetSettings(ctHandler.getCraftingTerminal()).isActive())
+        if (getMagnetSettings(ctHandler.getCraftingTerminal()).isDisabled())
             return;
         MagnetHost magnetHost = ctHandler.getMagnetHost();
         if (magnetHost == null)

@@ -41,6 +41,4 @@ public interface IUniversalWirelessTerminalItem {
 
         return player.getLevel() instanceof ServerLevel;
     }
-
-    boolean hasPower(Player player, double amt, ItemStack is);
 }
