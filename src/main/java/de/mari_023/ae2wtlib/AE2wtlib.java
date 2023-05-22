@@ -1,5 +1,7 @@
 package de.mari_023.ae2wtlib;
 
+import appeng.util.SearchInventoryEvent;
+import de.mari_023.ae2wtlib.trinket.TrinketsHelper;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.world.item.Item;
@@ -66,6 +68,8 @@ public class AE2wtlib {
         ServerNetworkManager.registerServerBoundPacket(CycleTerminalPacket.NAME, CycleTerminalPacket::new);
         HotkeyActions.register(new RestockHotkeyAction(), "ae2wtlib_restock");
         HotkeyActions.register(new MagnetHotkeyAction(), "ae2wtlib_magnet");
+
+        SearchInventoryEvent.EVENT.register(TrinketsHelper::addAllTrinkets);
 
         notifyAddons("");// common
         if (FabricLoader.getInstance().getEnvironmentType().equals(EnvType.SERVER))
