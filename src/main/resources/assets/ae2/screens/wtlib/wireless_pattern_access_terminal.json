@@ -1,7 +1,7 @@
 {
   "$schema": "schema.json",
   "includes": [
-    "../pattern_access_terminal.json",
+    "../terminals/pattern_access_terminal.json",
     "universal_terminal_no_viewcells.json"
   ]
 }

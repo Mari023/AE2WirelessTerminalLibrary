@@ -1,10 +1,14 @@
 package de.mari_023.ae2wtlib;
 
+import java.util.Arrays;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.inventory.CraftingContainer;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.inventory.TransientCraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
@@ -19,6 +23,48 @@ import appeng.server.testplots.TestPlot;
 import appeng.server.testworld.PlotBuilder;
 
 public class AE2WTLibTestPlots {
+    /**
+     * Copied from ae2 <a href=
+     * "https://github.com/AppliedEnergistics/Applied-Energistics-2/blob/6ba7da1ce8fd98e9ec5ce65e8d0d16fcde9c3fd3/src/main/java/appeng/server/testplots/AutoCraftingTestPlots.java#L212">...</a>
+     * TODO PR: make this public
+     */
+    private static ItemStack encodeCraftingPattern(ServerLevel level,
+            Object[] ingredients,
+            boolean allowSubstitutions,
+            boolean allowFluidSubstitutions) {
+
+        // Allow a mixed input of items or item stacks as ingredients
+        var stacks = Arrays.stream(ingredients)
+                .map(in -> {
+                    if (in instanceof ItemLike itemLike) {
+                        return new ItemStack(itemLike);
+                    } else if (in instanceof ItemStack itemStack) {
+                        return itemStack;
+                    } else if (in == null) {
+                        return ItemStack.EMPTY;
+                    } else {
+                        throw new IllegalArgumentException("Unsupported argument: " + in);
+                    }
+                })
+                .toArray(ItemStack[]::new);
+
+        var c = new TransientCraftingContainer(new AutoCraftingMenu(), 3, 3);
+        for (int i = 0; i < stacks.length; i++) {
+            c.setItem(i, stacks[i]);
+        }
+
+        var recipe = level.getRecipeManager().getRecipeFor(RecipeType.CRAFTING, c, level).orElseThrow();
+
+        var result = recipe.assemble(c, level.registryAccess());
+
+        return PatternDetailsHelper.encodeCraftingPattern(
+                recipe,
+                stacks,
+                result,
+                allowSubstitutions,
+                allowFluidSubstitutions);
+    }
+
     @TestPlot("wireless_terminal")
     public static void wireless_terminal(PlotBuilder plot) {
         var o = BlockPos.ZERO;
@@ -56,48 +102,17 @@ public class AE2WTLibTestPlots {
 
         plot.hopper("1 3 0", Direction.DOWN, stack1);
         plot.creativeEnergyCell("1 2 1");
-        plot.blockEntity("1 2 0", AEBlocks.MOLECULAR_ASSEMBLER, molecularAssembler -> {
-            // recipe
-            var craftingContainer = new CraftingContainer(new AutoCraftingMenu(), 3, 3);
-            craftingContainer.setItem(0, stack1);
-            craftingContainer.setItem(1, stack2);
-            var level = molecularAssembler.getLevel();
-            var recipe = level.getRecipeManager().getRecipeFor(RecipeType.CRAFTING, craftingContainer, level).get();
-
-            // Encode pattern
-            var sparseInputs = new ItemStack[9];
-            sparseInputs[0] = stack1;
-            sparseInputs[1] = stack2;
-            for (int i = 2; i < 9; ++i)
-                sparseInputs[i] = ItemStack.EMPTY;
-            var encodedPattern = PatternDetailsHelper.encodeCraftingPattern(recipe, sparseInputs, universalStack,
-                    true, false);
-
-            molecularAssembler.getInternalInventory().setItemDirect(10, encodedPattern);
-        });
+        plot.blockEntity("1 2 0", AEBlocks.MOLECULAR_ASSEMBLER,
+                molecularAssembler -> molecularAssembler.getInternalInventory().setItemDirect(10, encodeCraftingPattern(
+                        (ServerLevel) molecularAssembler.getLevel(), new Object[] { stack1, stack2 }, false, false)));
 
         plot.hopper("1 1 0", Direction.WEST);
         plot.hopper("0 2 0", Direction.DOWN, stack3);
         plot.creativeEnergyCell("0 1 1");
-        plot.blockEntity("0 1 0", AEBlocks.MOLECULAR_ASSEMBLER, molecularAssembler -> {
-            // recipe
-            var craftingContainer = new CraftingContainer(new AutoCraftingMenu(), 3, 3);
-            craftingContainer.setItem(0, universalStack);
-            craftingContainer.setItem(1, stack3);
-            var level = molecularAssembler.getLevel();
-            var recipe = level.getRecipeManager().getRecipeFor(RecipeType.CRAFTING, craftingContainer, level).get();
-
-            // Encode pattern
-            var sparseInputs = new ItemStack[9];
-            sparseInputs[0] = universalStack;
-            sparseInputs[1] = stack3;
-            for (int i = 2; i < 9; ++i)
-                sparseInputs[i] = ItemStack.EMPTY;
-            var encodedPattern = PatternDetailsHelper.encodeCraftingPattern(recipe, sparseInputs, universalStack,
-                    true, false);
-
-            molecularAssembler.getInternalInventory().setItemDirect(10, encodedPattern);
-        });
+        plot.blockEntity("0 1 0", AEBlocks.MOLECULAR_ASSEMBLER,
+                molecularAssembler -> molecularAssembler.getInternalInventory().setItemDirect(10, encodeCraftingPattern(
+                        (ServerLevel) molecularAssembler.getLevel(), new Object[] { universalStack, stack3 }, false,
+                        false)));
         plot.hopper("0 0 0", Direction.DOWN);
 
         plot.test(test -> test.assertTrue(test.countContainerContentAt(BlockPos.ZERO).isEmpty(),

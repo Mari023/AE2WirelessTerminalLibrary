@@ -13,7 +13,7 @@ buildscript {
 apply(plugin = "com.diffplug.spotless")
 
 plugins {
-    id("fabric-loom") version "1.0-SNAPSHOT"
+    id("fabric-loom") version "1.1-SNAPSHOT"
     id("maven-publish")
     java
     idea
@@ -60,7 +60,7 @@ dependencies {
     //modRuntimeOnly("dev.emi:trinkets:${trinketsVersion}")
     modCompileOnly("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${ccaVersion}")
     modRuntimeOnly("me.shedaniel.cloth:cloth-config-${modloader}:${clothVersion}")
-    modApi("com.terraformersmc:modmenu:${modMenuVersion}")
+    modCompileOnly("com.terraformersmc:modmenu:${modMenuVersion}")
     modCompileOnly("dev.architectury:architectury-${modloader}:${architecturyVersion}")
     modImplementation("appeng:appliedenergistics2-${modloader}:${ae2Version}") {
         exclude(group = "mezz.jei")

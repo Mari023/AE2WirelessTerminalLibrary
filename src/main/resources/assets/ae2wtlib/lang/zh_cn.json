@@ -1,6 +1,5 @@
 {
-  "itemGroup.ae2wtlib.general": "AE2无线终端(AE2WTLib)",
-  "itemGroup.ae2wtlib": "AE2无线终端(AE2WTLib)",
+  "gui.ae2wtlib.creativetab": "AE2无线终端(AE2WTLib)",
 
   "item.ae2wtlib.magnet_card": "磁卡",
   "item.ae2wtlib.magnet_card.desc": "为无线合成终端安装磁卡",

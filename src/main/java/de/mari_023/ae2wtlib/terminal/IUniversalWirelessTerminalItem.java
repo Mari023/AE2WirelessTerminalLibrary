@@ -39,6 +39,6 @@ public interface IUniversalWirelessTerminalItem {
             return false;
         }
 
-        return player.getLevel() instanceof ServerLevel;
+        return player.level() instanceof ServerLevel;
     }
 }

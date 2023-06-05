@@ -51,7 +51,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost
         viewCellInventory = new AppEngInternalInventory(this, 5);
         upgradeInventory = UpgradeInventories.forItem(is, WUTHandler.getUpgradeCardCount(), this::updateUpgrades);
 
-        targetGrid = ((WirelessTerminalItem) is.getItem()).getLinkedGrid(is, player.level, null);
+        targetGrid = ((WirelessTerminalItem) is.getItem()).getLinkedGrid(is, player.level(), null);
     }
 
     public void updateUpgrades(ItemStack stack, IUpgradeInventory upgrades) {
@@ -78,7 +78,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost
     @Nullable
     @Override
     public IGridNode getActionableNode() {
-        if (isQuantumLinked() && !getPlayer().getLevel().isClientSide())
+        if (isQuantumLinked() && !getPlayer().level().isClientSide())
             return quantumBridge.getActionableNode();
         return super.getActionableNode();
     }
@@ -102,7 +102,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost
     }
 
     public boolean isQuantumLinked() {
-        if (getPlayer().getLevel().isClientSide())
+        if (getPlayer().level().isClientSide())
             return true;
 
         if (!hasQuantumUpgrade())
@@ -141,9 +141,9 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost
     }
 
     private boolean findQuantumBridge(long frequency) {
-        quantumBridge = Locatables.quantumNetworkBridges().get(getPlayer().getLevel(), frequency);
+        quantumBridge = Locatables.quantumNetworkBridges().get(getPlayer().level(), frequency);
         if (quantumBridge == null)
-            quantumBridge = Locatables.quantumNetworkBridges().get(getPlayer().getLevel(), -frequency);
+            quantumBridge = Locatables.quantumNetworkBridges().get(getPlayer().level(), -frequency);
         return quantumBridge != null;
     }
 
