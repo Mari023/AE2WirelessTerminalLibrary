@@ -59,7 +59,7 @@ public abstract class Restock {
         if (!cTHandler.inRange() || !ItemWT.getBoolean(cTHandler.getCraftingTerminal(), "restock")
                 || cTHandler.getTargetGrid() == null || cTHandler.getTargetGrid().getStorageService() == null)
             return;
-        int toAdd = getMaxStackSize() / 2 - getCount();
+        int toAdd = Math.max(getMaxStackSize() / 2, 1) - getCount();
         if (toAdd == 0)
             return;
 
