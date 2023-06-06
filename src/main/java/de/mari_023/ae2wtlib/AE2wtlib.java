@@ -93,12 +93,13 @@ public class AE2wtlib {
         Platform.registerItem("wireless_pattern_access_terminal", PATTERN_ACCESS_TERMINAL);
         Platform.registerItem("wireless_universal_terminal", UNIVERSAL_TERMINAL);
 
-        AE2WTLibCreativeTab.init();
-        AE2WTLibCreativeTab.add(PATTERN_ENCODING_TERMINAL);
-        AE2WTLibCreativeTab.add(PATTERN_ACCESS_TERMINAL);
-        AE2WTLibCreativeTab.add(UNIVERSAL_TERMINAL);
+        AE2WTLibCreativeTab.addTerminal(AEItems.WIRELESS_CRAFTING_TERMINAL.asItem());
+        AE2WTLibCreativeTab.addTerminal(PATTERN_ENCODING_TERMINAL);
+        AE2WTLibCreativeTab.addTerminal(PATTERN_ACCESS_TERMINAL);
+        AE2WTLibCreativeTab.addTerminal(UNIVERSAL_TERMINAL);
         AE2WTLibCreativeTab.add(QUANTUM_BRIDGE_CARD);
         AE2WTLibCreativeTab.add(MAGNET_CARD);
+        Platform.registerCreativeTab(AE2WTLibCreativeTab.init());
 
         Platform.registerTrinket(AEItems.WIRELESS_CRAFTING_TERMINAL.asItem());
         Platform.registerTrinket(UNIVERSAL_TERMINAL);

@@ -5,10 +5,13 @@ import org.jetbrains.annotations.Nullable;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -45,6 +48,11 @@ public class Platform {
 
     public static void registerItem(String name, Item item) {
         Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(AE2wtlib.MOD_NAME, name), item);
+    }
+
+    public static void registerCreativeTab(CreativeModeTab tab) {
+        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB,
+                ResourceKey.create(Registries.CREATIVE_MODE_TAB, new ResourceLocation(AE2wtlib.MOD_NAME, "main")), tab);
     }
 
     public static void registerRecipe(String name, RecipeSerializer<?> serializer) {
