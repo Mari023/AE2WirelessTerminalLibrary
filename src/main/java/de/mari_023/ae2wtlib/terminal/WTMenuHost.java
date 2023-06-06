@@ -161,7 +161,6 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost
     }
 
     public boolean drainPower() {
-        extractAEPower(1000000000, Actionable.MODULATE, PowerMultiplier.CONFIG);
         recharge();
         if (!super.drainPower()) {
             getPlayer().displayClientMessage(PlayerMessages.DeviceNotPowered.text(), true);
