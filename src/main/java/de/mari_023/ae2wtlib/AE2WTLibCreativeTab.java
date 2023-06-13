@@ -3,12 +3,13 @@ package de.mari_023.ae2wtlib;
 import java.util.ArrayList;
 import java.util.List;
 
-import appeng.api.config.Actionable;
-import appeng.items.tools.powered.WirelessTerminalItem;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+
+import appeng.api.config.Actionable;
+import appeng.items.tools.powered.WirelessTerminalItem;
 
 public class AE2WTLibCreativeTab {
     private static final List<ItemStack> items = new ArrayList<>();
