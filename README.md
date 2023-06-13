@@ -1,10 +1,10 @@
 [![build master](https://github.com/Mari023/AE2WirelessTerminalLibrary/actions/workflows/build.yml/badge.svg)](https://github.com/Mari023/AE2WirelessTerminalLibrary/actions/workflows/build.yml)
 [![Curseforge downloads](http://cf.way2muchnoise.eu/full_459929_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/applied-energistics-2-wireless-terminals)
-[![Modrinth downloads](https://modrinth-utils.vercel.app/api/badge/downloads?id=pNabrMMw&logo=true)](https://modrinth.com/mod/applied-energistics-2-wireless-terminals)
-[![Modrinth Versions](https://modrinth-utils.vercel.app/api/badge/versions?id=pNabrMMw&logo=true)](https://modrinth.com/mod/applied-energistics-2-wireless-terminals/versions)
+[![Modrinth downloads](https://img.shields.io/modrinth/dt/pNabrMMw?color=modrinth&label=modrinth&logo=modrinth)](https://modrinth.com/mod/applied-energistics-2-wireless-terminals)
+[![Modrinth Versions](https://img.shields.io/badge/dynamic/json?color=modrinth&label=modrinth&prefix=Available%20for:%20&query=game_versions&url=https://api.modrinth.com/v2/project/pNabrMMw&style=flat&logo=modrinth)](https://modrinth.com/mod/applied-energistics-2-wireless-terminals/versions)
 
 Read this in other languages:
-- [Русский](/READEME.ru.md)
+- [Русский](/README.ru.md)
 
 Applied Energistics 2 Wireless Terminals
 ========================================
@@ -22,7 +22,6 @@ It also adds a wireless universal terminal which has all wireless terminals in o
 
 ## Missing Features / Known Issues
 
-- Magnet Card can't filter items
 - Displaying Trinkets in wireless crafting terminal
 
 ## License
