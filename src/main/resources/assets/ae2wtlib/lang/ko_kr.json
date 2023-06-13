@@ -1,6 +1,5 @@
 {
-  "itemGroup.ae2wtlib.general": "AE2 무선 터미널 (AE2WTLib)",
-  "itemGroup.ae2wtlib": "AE2 무선 터미널 (AE2WTLib)",
+  "gui.ae2wtlib.creativetab",
 
   "item.ae2wtlib.magnet_card": "마그넷 카드",
   "item.ae2wtlib.magnet_card.desc": "무선 조합 터미널용 마그넷 업그레이드 카드입니다.",

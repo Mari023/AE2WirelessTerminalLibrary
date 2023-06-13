@@ -8,6 +8,7 @@ import com.mojang.blaze3d.vertex.*;
 
 import org.joml.Matrix4f;
 
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
@@ -28,17 +29,18 @@ public class WUTSelectScreen extends Screen {
     }
 
     @Override
-    public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
         int angle = 360 / terminals.size();
         float hWidth = width / 2F;
         float hHeight = height / 2F;
         int selected = (int) AngleHelper.getAngle(mouseX - hWidth, mouseY - (hHeight)) / angle;
 
         for (int i = 0; i < terminals.size(); i++)
-            drawSegment(poseStack, i * angle, (i + 1) * angle, hWidth, hHeight, 100, 50, Color.ofRGB(125, 125, 125),
+            drawSegment(guiGraphics.pose(), i * angle, (i + 1) * angle, hWidth, hHeight, 100, 50,
+                    Color.ofRGB(125, 125, 125),
                     i == selected);
 
-        super.render(poseStack, mouseX, mouseY, partialTicks);
+        super.render(guiGraphics, mouseX, mouseY, partialTicks);
     }
 
     public static void drawSegment(PoseStack poseStack, int startingAngle, int endingAngle, float centerX,

@@ -4,10 +4,10 @@ import java.util.Collections;
 import java.util.List;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 
 import org.jetbrains.annotations.NotNull;
 
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
@@ -31,26 +31,24 @@ public class ItemButton extends Button implements ITooltip {
     }
 
     @Override
-    public void renderWidget(PoseStack matrices, final int mouseX, final int mouseY, float partial) {
+    public void renderWidget(GuiGraphics guiGraphics, final int mouseX, final int mouseY, float partial) {
         if (!visible)
             return;
-        matrices.pushPose();
-        RenderSystem.setShaderTexture(0, TEXTURE_STATES);
+        guiGraphics.pose().pushPose();
         RenderSystem.disableDepthTest();
         RenderSystem.enableBlend();
         if (isFocused()) {
-            fill(matrices, getX() - 1, getY() - 1, getX() + 17, getY() + 17, 0xFFFFFFFF);
+            guiGraphics.fill(getX() - 1, getY() - 1, getX() + 17, getY() + 17, 0xFFFFFFFF);
         }
-        blit(matrices, getX(), getY(), 16, 16, 240, 240, 16, 16, 256, 256);
+        guiGraphics.blit(TEXTURE_STATES, getX(), getY(), 16, 16, 240, 240, 16, 16, 256, 256);
         if (active)
             RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         else
             RenderSystem.setShaderColor(0.5f, 0.5f, 0.5f, 1.0f);
-        RenderSystem.setShaderTexture(0, texture);
-        blit(matrices, getX(), getY(), 16, 16, 0, 0, 512, 512, 512, 512);
+        guiGraphics.blit(texture, getX(), getY(), 16, 16, 0, 0, 512, 512, 512, 512);
         RenderSystem.enableDepthTest();
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-        matrices.popPose();
+        guiGraphics.pose().popPose();
     }
 
     @Override

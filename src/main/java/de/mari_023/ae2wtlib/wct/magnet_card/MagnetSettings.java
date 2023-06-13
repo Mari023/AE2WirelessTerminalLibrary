@@ -34,7 +34,7 @@ public class MagnetSettings {
         return tag;
     }
 
-    public boolean isActive() {
-        return magnetMode == MagnetMode.PICKUP_INVENTORY || magnetMode == MagnetMode.PICKUP_ME;
+    public boolean isDisabled() {
+        return magnetMode != MagnetMode.PICKUP_INVENTORY && magnetMode != MagnetMode.PICKUP_ME;
     }
 }

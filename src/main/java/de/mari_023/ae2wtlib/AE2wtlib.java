@@ -9,6 +9,7 @@ import de.mari_023.ae2wtlib.hotkeys.RestockHotkeyAction;
 import de.mari_023.ae2wtlib.networking.ServerNetworkManager;
 import de.mari_023.ae2wtlib.networking.c2s.CycleTerminalPacket;
 import de.mari_023.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
+import de.mari_023.ae2wtlib.trinket.TrinketsHelper;
 import de.mari_023.ae2wtlib.wat.ItemWAT;
 import de.mari_023.ae2wtlib.wat.WATMenu;
 import de.mari_023.ae2wtlib.wat.WATMenuHost;
@@ -32,6 +33,8 @@ import appeng.api.upgrades.Upgrades;
 import appeng.core.definitions.AEItems;
 import appeng.hotkeys.HotkeyActions;
 import appeng.items.tools.powered.WirelessTerminalItem;
+import appeng.server.testplots.TestPlots;
+import appeng.util.SearchInventoryEvent;
 
 public class AE2wtlib {
     public static final String MOD_NAME = "ae2wtlib";
@@ -66,11 +69,14 @@ public class AE2wtlib {
         HotkeyActions.register(new RestockHotkeyAction(), "ae2wtlib_restock");
         HotkeyActions.register(new MagnetHotkeyAction(), "ae2wtlib_magnet");
 
+        SearchInventoryEvent.EVENT.register(TrinketsHelper::addAllTrinkets);
+
         notifyAddons("");// common
         if (FabricLoader.getInstance().getEnvironmentType().equals(EnvType.SERVER))
             notifyAddons(":server");
 
         UpgradeHelper.addUpgrades();
+        TestPlots.addPlotClass(AE2WTLibTestPlots.class);
     }
 
     public static void createItems() {
@@ -87,12 +93,13 @@ public class AE2wtlib {
         Platform.registerItem("wireless_pattern_access_terminal", PATTERN_ACCESS_TERMINAL);
         Platform.registerItem("wireless_universal_terminal", UNIVERSAL_TERMINAL);
 
-        AE2WTLibCreativeTab.init();
-        AE2WTLibCreativeTab.add(PATTERN_ENCODING_TERMINAL);
-        AE2WTLibCreativeTab.add(PATTERN_ACCESS_TERMINAL);
-        AE2WTLibCreativeTab.add(UNIVERSAL_TERMINAL);
+        AE2WTLibCreativeTab.addTerminal(AEItems.WIRELESS_CRAFTING_TERMINAL.asItem());
+        AE2WTLibCreativeTab.addTerminal(PATTERN_ENCODING_TERMINAL);
+        AE2WTLibCreativeTab.addTerminal(PATTERN_ACCESS_TERMINAL);
+        AE2WTLibCreativeTab.addTerminal(UNIVERSAL_TERMINAL);
         AE2WTLibCreativeTab.add(QUANTUM_BRIDGE_CARD);
         AE2WTLibCreativeTab.add(MAGNET_CARD);
+        Platform.registerCreativeTab(AE2WTLibCreativeTab.init());
 
         Platform.registerTrinket(AEItems.WIRELESS_CRAFTING_TERMINAL.asItem());
         Platform.registerTrinket(UNIVERSAL_TERMINAL);

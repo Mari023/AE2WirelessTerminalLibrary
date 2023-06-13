@@ -19,6 +19,6 @@ public class TrinketCraftingTerminalMixin extends WirelessTerminalItem implement
     }
 
     public void tick(ItemStack stack, SlotReference slot, LivingEntity entity) {
-        inventoryTick(stack, entity.getLevel(), entity, 0, false);
+        inventoryTick(stack, entity.level(), entity, 0, false);
     }
 }

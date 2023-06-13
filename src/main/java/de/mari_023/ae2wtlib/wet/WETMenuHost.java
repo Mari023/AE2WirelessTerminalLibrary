@@ -52,7 +52,7 @@ public class WETMenuHost extends WTMenuHost
 
     @Override
     public Level getLevel() {
-        return getPlayer().getLevel();
+        return getPlayer().level();
     }
 
     @Override

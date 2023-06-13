@@ -86,4 +86,6 @@ public final class TextConstants {
     }
 
     public static final Component SWITCH = Component.translatable("gui.ae2wtlib.switch");
+
+    public static final Component CREATIVE_TAB = Component.translatable("gui.ae2wtlib.creativetab");
 }

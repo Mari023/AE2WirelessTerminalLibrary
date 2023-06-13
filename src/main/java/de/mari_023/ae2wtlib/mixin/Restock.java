@@ -59,7 +59,7 @@ public abstract class Restock {
         if (!cTHandler.inRange() || !ItemWT.getBoolean(cTHandler.getCraftingTerminal(), "restock")
                 || cTHandler.getTargetGrid() == null || cTHandler.getTargetGrid().getStorageService() == null)
             return;
-        int toAdd = getMaxStackSize() / 2 - getCount();
+        int toAdd = Math.max(getMaxStackSize() / 2, 1) - getCount();
         if (toAdd == 0)
             return;
 
@@ -67,11 +67,11 @@ public abstract class Restock {
         if (toAdd > 0)
             changed = cTHandler.getTargetGrid().getStorageService().getInventory().extract(
                     AEItemKey.of((ItemStack) (Object) this), toAdd, Actionable.MODULATE,
-                    new PlayerSource(player, cTHandler.getSecurityStation()));
+                    new PlayerSource(player, null));
         else
             changed = -cTHandler.getTargetGrid().getStorageService().getInventory().insert(
                     AEItemKey.of((ItemStack) (Object) this), -toAdd, Actionable.MODULATE,
-                    new PlayerSource(player, cTHandler.getSecurityStation()));
+                    new PlayerSource(player, null));
 
         setCount(getCount() + (int) changed);
         ServerNetworkManager.sendToClient((ServerPlayer) player, new UpdateRestockPacket(

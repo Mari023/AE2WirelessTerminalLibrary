@@ -68,7 +68,7 @@ public abstract class Common implements CraftingRecipe {
      * @param terminalName the name of the terminal to add
      * @return the upgraded wireless universal terminal
      */
-    public ItemStack mergeTerminal(ItemStack wut, ItemStack toMerge, String terminalName) {
+    public static ItemStack mergeTerminal(ItemStack wut, ItemStack toMerge, String terminalName) {
         if (!(wut.getItem() instanceof ItemWUT itemWUT))
             return ItemStack.EMPTY;
         if (!(toMerge.getItem() instanceof WirelessTerminalItem itemWT))

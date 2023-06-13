@@ -1,2 +1,7 @@
 - Use CHANGELOG.md to set changelogs
 - move trash to its own GUI (#159)
+- show toasts if terminal is in Trinkets Inventory (#183)
+- Do not require power in the terminal to open it when quantum linked (#179)
+- add charged terminals to the creative tab
+- fix restock moving unstackable items in the terminal (#197)
+- update to 1.20.1
