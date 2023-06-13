@@ -37,6 +37,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
+      - uses: actions/checkout@v2
+
       - uses: actions/download-artifact@v3
         with:
           name: fabric
@@ -57,7 +59,7 @@ jobs:
           github-generate-changelog: true
           github-token: ${{ secrets.GITHUB_TOKEN }}
           loaders: fabric
-          game-versions: 1.19.4-pre1
+          game-versions: 1.20.1
           curseforge-dependencies: |
             cloth-config | depends
             fabric-api | depends
