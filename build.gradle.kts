@@ -173,9 +173,6 @@ tasks {
         options.encoding = "UTF-8"
         options.release.set(17)
     }
-    withType<GenerateModuleMetadata> {
-        enabled = false
-    }
 }
 
 configure<com.diffplug.gradle.spotless.SpotlessExtension> {
