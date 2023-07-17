@@ -1,8 +1,11 @@
 package de.mari_023.ae2wtlib;
 
-import appeng.api.config.Actionable;
-import appeng.api.stacks.AEItemKey;
-import appeng.me.helpers.PlayerSource;
+import java.util.function.Consumer;
+
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+
 import de.mari_023.ae2wtlib.networking.ServerNetworkManager;
 import de.mari_023.ae2wtlib.networking.s2c.UpdateRestockPacket;
 import de.mari_023.ae2wtlib.terminal.ItemWT;
@@ -10,23 +13,22 @@ import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHandler;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHost;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetMode;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 
-import java.util.function.IntConsumer;
+import appeng.api.config.Actionable;
+import appeng.api.stacks.AEItemKey;
+import appeng.me.helpers.PlayerSource;
 
 public class AE2wtlibEvents {
-    public static boolean restock(ServerPlayer player, ItemStack item, int count, IntConsumer itemCounter) {
+    public static void restock(ServerPlayer player, ItemStack item, int count, Consumer<ItemStack> setStack) {
         if (player.isCreative())
-            return true;
+            return;
         CraftingTerminalHandler cTHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
         if (!cTHandler.inRange() || !ItemWT.getBoolean(cTHandler.getCraftingTerminal(), "restock")
                 || cTHandler.getTargetGrid() == null || cTHandler.getTargetGrid().getStorageService() == null)
-            return true;
+            return;
         int toAdd = Math.max(item.getMaxStackSize() / 2, 1) - count;
         if (toAdd == 0)
-            return true;
+            return;
 
         long changed;
         if (toAdd > 0)
@@ -38,8 +40,10 @@ public class AE2wtlibEvents {
                     AEItemKey.of(item), -toAdd, Actionable.MODULATE,
                     new PlayerSource(player, null));
 
-        itemCounter.accept(count + (int) changed);
-        return false;
+        item.setCount(count + (int) changed);
+        setStack.accept(item);
+        ServerNetworkManager.sendToClient(player, new UpdateRestockPacket(
+                player.getInventory().findSlotMatchingUnusedItem(item), item.getCount()));
     }
 
     public static boolean insertStackInME(ItemStack stack, Player player) {
@@ -69,8 +73,6 @@ public class AE2wtlibEvents {
         int leftover = (int) (stack.getCount() - inserted);
 
         stack.setCount(leftover);
-        ServerNetworkManager.sendToClient((ServerPlayer) player, new UpdateRestockPacket(
-                player.getInventory().findSlotMatchingUnusedItem(stack), stack.getCount()));
         return leftover == 0;
     }
 }

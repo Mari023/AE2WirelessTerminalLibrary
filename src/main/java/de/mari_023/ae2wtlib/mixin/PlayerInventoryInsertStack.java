@@ -1,6 +1,5 @@
 package de.mari_023.ae2wtlib.mixin;
 
-import de.mari_023.ae2wtlib.AE2wtlibEvents;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -12,6 +11,8 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
+import de.mari_023.ae2wtlib.AE2wtlibEvents;
+
 @Mixin(Inventory.class)
 public class PlayerInventoryInsertStack {
 
@@ -21,7 +22,7 @@ public class PlayerInventoryInsertStack {
 
     @Inject(method = "add(Lnet/minecraft/world/item/ItemStack;)Z", at = @At(value = "HEAD"), cancellable = true)
     public void insertStackInME(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
-        if(AE2wtlibEvents.insertStackInME(stack, player)) {
+        if (AE2wtlibEvents.insertStackInME(stack, player)) {
             cir.setReturnValue(true);
         }
     }
