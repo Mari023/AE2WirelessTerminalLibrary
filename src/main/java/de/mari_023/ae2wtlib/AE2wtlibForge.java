@@ -4,10 +4,12 @@ import java.util.HashMap;
 
 import net.minecraft.core.Registry;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
+import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -23,6 +25,9 @@ import de.mari_023.ae2wtlib.networking.ServerNetworkManager;
 import de.mari_023.ae2wtlib.networking.s2c.UpdateRestockPacket;
 import de.mari_023.ae2wtlib.terminal.ItemWT;
 import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
+import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHandler;
+import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHost;
+import de.mari_023.ae2wtlib.wct.magnet_card.MagnetMode;
 
 import appeng.api.config.Actionable;
 import appeng.api.stacks.AEItemKey;
@@ -85,6 +90,15 @@ public class AE2wtlibForge {
                 player.getInventory().findSlotMatchingUnusedItem(item), item.getCount()));
     }
 
+    @SubscribeEvent(priority = EventPriority.NORMAL)
+    public static void handle(EntityItemPickupEvent event) {
+        if (event.isCanceled()) {
+            return;
+        }
+
+        event.setCanceled(insertStackInME(event.getItem().getItem(), event.getEntity()));
+    }
+
     private static boolean restock(ServerPlayer player, ItemStack item, int count) {
         if (player.isCreative() || item.isEmpty())
             return true;
@@ -107,6 +121,39 @@ public class AE2wtlibForge {
                     new PlayerSource(player, cTHandler.getSecurityStation()));
 
         item.setCount(count + (int) changed);
+        return false;
+    }
+
+    private static boolean insertStackInME(ItemStack stack, Player player) {
+        if (stack.isEmpty())
+            return false;
+        CraftingTerminalHandler cTHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
+        ItemStack terminal = cTHandler.getCraftingTerminal();
+
+        if (!(MagnetHandler.getMagnetSettings(terminal).magnetMode == MagnetMode.PICKUP_ME))
+            return false;
+        if (!cTHandler.inRange())
+            return false;
+
+        MagnetHost magnetHost = cTHandler.getMagnetHost();
+        if (magnetHost == null)
+            return false;
+        if (!magnetHost.getInsertFilter().matchesFilter(AEItemKey.of(stack), magnetHost.getInsertMode()))
+            return false;
+
+        if (cTHandler.getTargetGrid() == null)
+            return false;
+        if (cTHandler.getTargetGrid().getStorageService() == null)
+            return false;
+
+        long inserted = cTHandler.getTargetGrid().getStorageService().getInventory().insert(AEItemKey.of(stack),
+                stack.getCount(), Actionable.MODULATE, new PlayerSource(player, null));
+        int leftover = (int) (stack.getCount() - inserted);
+        if (leftover == 0) {
+            stack.setCount(0);
+            return true;
+        } else
+            stack.setCount(leftover);
         return false;
     }
 }
