@@ -7,23 +7,16 @@ buildscript {
             url = uri("https://plugins.gradle.org/m2/")
         }
     }
-    dependencies {
-        classpath("com.diffplug.spotless:spotless-plugin-gradle:6.19.0")
-        classpath("org.spongepowered:mixingradle:0.7-SNAPSHOT")
-    }
 }
-
-apply(plugin = "com.diffplug.spotless")
 
 plugins {
     id("net.minecraftforge.gradle") version "5.1.+"
-    id("com.diffplug.spotless") version "5.12.4"
+    id("com.diffplug.spotless") version "6.20.0"
+    id("org.spongepowered.mixin") version "0.7+"
     id("maven-publish")
     java
     idea
 }
-
-apply(plugin = "org.spongepowered.mixin")
 
 val modVersion: String by project
 val modloader: String by project
@@ -164,6 +157,11 @@ minecraft {
         create("client", config)
         create("server", config)
     }
+}
+
+mixin {
+    add(sourceSets.main.get(), "ae2wtlib.mixins.refmap.json")
+    config("ae2wtlib.mixins.json")
 }
 
 java {
