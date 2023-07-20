@@ -175,6 +175,11 @@ minecraft {
     }
 }
 
+mixin {
+    add(sourceSets.main, "ae2wtlib.mixins.refmap.json")
+    config("ae2wtlib.mixins.json")
+}
+
 compileJava.options.encoding = 'UTF-8'
 tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
