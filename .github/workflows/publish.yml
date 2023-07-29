@@ -70,6 +70,6 @@ jobs:
             roughly-enough-items | suggests
             trinkets | suggests
           java: 17
-          version: ${{ env.version_name }}-fabric
-          name: ${{ env.version_name }}-fabric
+          version: ${{ env.version_name }}
+          name: ${{ env.version_name }}
           files: download/!(*-@(dev|dev-shadow|sources)).jar
