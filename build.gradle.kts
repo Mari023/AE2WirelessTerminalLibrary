@@ -13,8 +13,9 @@ buildscript {
 apply(plugin = "com.diffplug.spotless")
 
 plugins {
-    id("fabric-loom") version "1.1-SNAPSHOT"
+    id("fabric-loom") version "1.3-SNAPSHOT"
     id("maven-publish")
+    id("io.github.juuxel.loom-vineflower") version "1.11.0"
     java
     idea
 }
@@ -22,6 +23,8 @@ plugins {
 val modVersion: String by project
 val modloader: String by project
 val minecraftVersion: String by project
+val parchmentMinecraftVersion: String by project
+val parchmentVersion: String by project
 val fabricLoaderVersion: String by project
 val fabricApiVersion: String by project
 val trinketsVersion: String by project
@@ -44,7 +47,7 @@ if (pr != "") {
 
 val tag = System.getenv("TAG") ?: ""
 if (tag != "") {
-    if (!tag.startsWith("${modloader}/")) {
+    if (!tag.contains("${modloader}/")) {
         throw GradleException("Tags for the $modloader version should start with ${modloader}/: $tag")
     }
     version = tag.substring("${modloader}/".length)
@@ -52,7 +55,10 @@ if (tag != "") {
 
 dependencies {
     minecraft("com.mojang:minecraft:${minecraftVersion}")
-    mappings(loom.officialMojangMappings())
+    mappings(loom.layered {
+        officialMojangMappings()
+        parchment("org.parchmentmc.data:parchment-${parchmentMinecraftVersion}:${parchmentVersion}@zip")
+    })
 
     modImplementation("net.fabricmc:fabric-loader:${fabricLoaderVersion}")
     modApi("net.fabricmc.fabric-api:fabric-api:${fabricApiVersion}")
