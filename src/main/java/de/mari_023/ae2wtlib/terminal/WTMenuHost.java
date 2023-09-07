@@ -16,7 +16,6 @@ import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
-import appeng.api.features.Locatables;
 import appeng.api.inventories.ISegmentedInventory;
 import appeng.api.inventories.InternalInventory;
 import appeng.api.networking.IGrid;
@@ -97,21 +96,12 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost
         return isQuantumLinked() || rangeCheck;
     }
 
-    public boolean hasQuantumUpgrade() {
-        return upgradeInventory.isInstalled(AE2wtlib.QUANTUM_BRIDGE_CARD);
-    }
-
     public boolean isQuantumLinked() {
-        if (getPlayer().level().isClientSide())
-            return true;
-
-        if (!hasQuantumUpgrade())
-            return false;
-        long frequency = getQEFrequency();
-        if (frequency == 0)
-            return false;
+        long frequency = ItemWT.getQEFrequency(getItemStack(), singularityInventory);
         if (quantumBridge == null) {
-            if (!findQuantumBridge(frequency))
+            quantumBridge = ItemWT.getQuantumBridge(getItemStack(), getPlayer().level(), singularityInventory,
+                    upgradeInventory);
+            if (quantumBridge == null)
                 return false;
         } else {
             if (quantumBridge instanceof QuantumCluster quantumCluster) {
@@ -119,32 +109,14 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost
                     return false;
                 long frequencyOther = quantumCluster.getCenter().getQEFrequency();
                 if (!(frequencyOther == frequency || frequencyOther == -frequency))
-                    if (!findQuantumBridge(frequency))
+                    if (ItemWT.findQuantumBridge(getPlayer().level(), frequency) == null)
                         return false;
-            } else if (!findQuantumBridge(frequency))
+            } else if (ItemWT.findQuantumBridge(getPlayer().level(), frequency) == null)
                 return false;
         }
         if (quantumBridge.getActionableNode() == null)
             return false;
         return quantumBridge.getActionableNode().getGrid() == targetGrid || targetGrid == null;
-    }
-
-    private long getQEFrequency() {
-        final ItemStack is = singularityInventory.getStackInSlot(0);
-        if (!is.isEmpty()) {
-            final CompoundTag c = is.getTag();
-            if (c != null) {
-                return c.getLong("freq");
-            }
-        }
-        return 0;
-    }
-
-    private boolean findQuantumBridge(long frequency) {
-        quantumBridge = Locatables.quantumNetworkBridges().get(getPlayer().level(), frequency);
-        if (quantumBridge == null)
-            quantumBridge = Locatables.quantumNetworkBridges().get(getPlayer().level(), -frequency);
-        return quantumBridge != null;
     }
 
     public AppEngInternalInventory getViewCellStorage() {

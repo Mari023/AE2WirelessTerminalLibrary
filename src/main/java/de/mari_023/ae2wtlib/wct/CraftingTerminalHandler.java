@@ -76,7 +76,7 @@ public class CraftingTerminalHandler {
     }
 
     @Nullable
-    public WTMenuHost getMenuHost() {
+    private WTMenuHost getMenuHost() {
         if (menuHost != null && menuHost.rangeCheck() && menuHost.stillValid()) {
             return menuHost;
         }

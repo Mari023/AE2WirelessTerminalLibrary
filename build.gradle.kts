@@ -9,7 +9,7 @@ buildscript {
 
 plugins {
     id("fabric-loom") version "1.3-SNAPSHOT"
-    id("com.diffplug.spotless") version "6.20.0"
+    id("com.diffplug.spotless") version "6.21.0"
     id("maven-publish")
     id("io.github.juuxel.loom-vineflower") version "1.11.0"
     java

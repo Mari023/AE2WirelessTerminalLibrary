@@ -6,11 +6,13 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 import appeng.api.implementations.menuobjects.ItemMenuHost;
+import appeng.api.networking.IGrid;
 import appeng.menu.MenuOpener;
 import appeng.menu.locator.MenuLocator;
 
@@ -34,10 +36,16 @@ public interface IUniversalWirelessTerminalItem {
 
     MenuType<?> getMenuType(ItemStack stack);
 
+    @Nullable
+    IGrid getLinkedGrid(ItemStack item, Level level, @Nullable Player sendMessagesTo);
+
     default boolean checkUniversalPreconditions(ItemStack item, Player player) {
         if (item.isEmpty() || (item.getItem() != this && item.getItem() != AE2wtlib.UNIVERSAL_TERMINAL)) {
             return false;
         }
+
+        if (getLinkedGrid(item, player.level(), player) == null)
+            return false;
 
         return player.level() instanceof ServerLevel;
     }

@@ -12,21 +12,28 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
+import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 import appeng.api.config.Settings;
 import appeng.api.config.ShowPatternProviders;
+import appeng.api.features.Locatables;
 import appeng.api.implementations.menuobjects.ItemMenuHost;
+import appeng.api.networking.IGrid;
+import appeng.api.networking.security.IActionHost;
+import appeng.api.upgrades.IUpgradeInventory;
+import appeng.api.upgrades.UpgradeInventories;
 import appeng.api.util.IConfigManager;
 import appeng.core.AEConfig;
+import appeng.core.localization.PlayerMessages;
 import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.menu.locator.MenuLocators;
+import appeng.util.inv.AppEngInternalInventory;
 
 public abstract class ItemWT extends WirelessTerminalItem implements IUniversalWirelessTerminalItem {
 
     public ItemWT() {
-        super(AEConfig.instance().getWirelessTerminalBattery(),
-                new Item.Properties().stacksTo(1));
+        super(AEConfig.instance().getWirelessTerminalBattery(), new Item.Properties().stacksTo(1));
     }
 
     @Override
@@ -43,6 +50,72 @@ public abstract class ItemWT extends WirelessTerminalItem implements IUniversalW
     public ItemMenuHost getMenuHost(Player player, int slot, ItemStack stack, @Nullable BlockPos pos) {
         return WUTHandler.wirelessTerminals.get(WUTHandler.getCurrentTerminal(stack)).wTMenuHostFactory().create(player,
                 slot, stack, (p, subMenu) -> tryOpen(player, MenuLocators.forInventorySlot(slot), stack, true));
+    }
+
+    @Nullable
+    public static IActionHost findQuantumBridge(Level level, long frequency) {
+        IActionHost quantumBridge = Locatables.quantumNetworkBridges().get(level, frequency);
+        if (quantumBridge == null)
+            quantumBridge = Locatables.quantumNetworkBridges().get(level, -frequency);
+        return quantumBridge;
+    }
+
+    public static long getQEFrequency(ItemStack stack, @Nullable AppEngInternalInventory inventory) {
+        if (inventory == null) {
+            inventory = new AppEngInternalInventory(null, 1);
+            inventory.readFromNBT(stack.getOrCreateTag(), "singularity");
+        }
+        final ItemStack is = inventory.getStackInSlot(0);
+        if (!is.isEmpty()) {
+            final CompoundTag c = is.getTag();
+            if (c != null) {
+                return c.getLong("freq");
+            }
+        }
+        return 0;
+    }
+
+    private static boolean hasQuantumUpgrade(ItemStack stack, @Nullable IUpgradeInventory inventory) {
+        if (inventory == null)
+            inventory = UpgradeInventories.forItem(stack, WUTHandler.getUpgradeCardCount());
+        return inventory.isInstalled(AE2wtlib.QUANTUM_BRIDGE_CARD);
+    }
+
+    @Nullable
+    public static IActionHost getQuantumBridge(ItemStack itemStack, Level level,
+            @Nullable AppEngInternalInventory singularityInventory, @Nullable IUpgradeInventory upgradeInventory) {
+        if (level.isClientSide())
+            return null;
+
+        if (!hasQuantumUpgrade(itemStack, upgradeInventory))
+            return null;
+        long frequency = getQEFrequency(itemStack, singularityInventory);
+        if (frequency == 0)
+            return null;
+        return findQuantumBridge(level, frequency);
+    }
+
+    @Nullable
+    private IGrid getLinkedGrid(ItemStack item, Level level) {
+        IGrid grid = super.getLinkedGrid(item, level, null);
+        if (grid != null)
+            return grid;
+        var quantumBridge = getQuantumBridge(item, level, null, null);
+        if (quantumBridge == null)
+            return null;
+
+        if (quantumBridge.getActionableNode() == null)
+            return null;
+        return quantumBridge.getActionableNode().getGrid();
+    }
+
+    @Nullable
+    public IGrid getLinkedGrid(ItemStack item, Level level, @Nullable Player sendMessagesTo) {
+        IGrid grid = getLinkedGrid(item, level);
+        if (grid == null && sendMessagesTo != null) {
+            sendMessagesTo.displayClientMessage(PlayerMessages.LinkedNetworkNotFound.text(), true);
+        }
+        return grid;
     }
 
     /**
