@@ -5,7 +5,6 @@ import java.util.List;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -18,18 +17,18 @@ import net.minecraft.world.level.Level;
 
 import de.mari_023.ae2wtlib.TextConstants;
 import de.mari_023.ae2wtlib.terminal.ItemWT;
-import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHandler;
 
 import appeng.api.upgrades.IUpgradeInventory;
 import appeng.api.upgrades.UpgradeInventories;
 import appeng.api.upgrades.Upgrades;
+import appeng.api.util.IConfigManager;
 import appeng.core.definitions.AEItems;
 import appeng.menu.locator.MenuLocator;
 
 public class ItemWUT extends ItemWT {
     @Override
     public InteractionResultHolder<ItemStack> use(final Level w, final Player player, final InteractionHand hand) {
-        if (WUTHandler.getCurrentTerminal(player.getItemInHand(hand)).equals("")) {
+        if (WUTHandler.getCurrentTerminal(player.getItemInHand(hand)).isEmpty()) {
             if (!w.isClientSide())
                 player.sendSystemMessage(TextConstants.TERMINAL_EMPTY);
             return new InteractionResultHolder<>(InteractionResult.FAIL, player.getItemInHand(hand));
@@ -90,12 +89,11 @@ public class ItemWUT extends ItemWT {
     }
 
     public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int i, boolean bl) {
-        if (level.isClientSide())
-            return;
-        if (!(entity instanceof ServerPlayer player))
-            return;
-        if (!WUTHandler.hasTerminal(itemStack, "crafting"))
-            return;
-        MagnetHandler.handle(player, itemStack);
+        WUTHandler.wirelessTerminals.get(WUTHandler.getCurrentTerminal(itemStack)).item().inventoryTick(itemStack,
+                level, entity, i, bl);
+    }
+
+    public IConfigManager getConfigManager(ItemStack target) {
+        return WUTHandler.wirelessTerminals.get(WUTHandler.getCurrentTerminal(target)).item().getConfigManager(target);
     }
 }

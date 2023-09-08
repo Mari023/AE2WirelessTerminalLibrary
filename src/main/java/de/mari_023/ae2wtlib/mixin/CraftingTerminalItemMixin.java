@@ -12,12 +12,14 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
+import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
 import de.mari_023.ae2wtlib.wct.WCTMenu;
 import de.mari_023.ae2wtlib.wct.WCTMenuHost;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHandler;
 
 import appeng.api.implementations.menuobjects.ItemMenuHost;
+import appeng.api.networking.IGrid;
 import appeng.items.tools.powered.WirelessCraftingTerminalItem;
 import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.menu.locator.MenuLocators;
@@ -51,6 +53,11 @@ public class CraftingTerminalItemMixin extends WirelessTerminalItem implements I
 
         return new WCTMenuHost(player, slot, stack,
                 (p, subMenu) -> tryOpen(player, MenuLocators.forInventorySlot(slot), stack, true));
+    }
+
+    @Nullable
+    public IGrid getLinkedGrid(ItemStack item, Level level, @Nullable Player sendMessagesTo) {
+        return AE2wtlib.UNIVERSAL_TERMINAL.getLinkedGrid(item, level, sendMessagesTo);
     }
 
     public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int i, boolean bl) {

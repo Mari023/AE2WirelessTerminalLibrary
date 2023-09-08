@@ -15,15 +15,12 @@ import net.minecraft.world.level.Level;
 import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 
-import appeng.api.config.Settings;
-import appeng.api.config.ShowPatternProviders;
 import appeng.api.features.Locatables;
 import appeng.api.implementations.menuobjects.ItemMenuHost;
 import appeng.api.networking.IGrid;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.upgrades.IUpgradeInventory;
 import appeng.api.upgrades.UpgradeInventories;
-import appeng.api.util.IConfigManager;
 import appeng.core.AEConfig;
 import appeng.core.localization.PlayerMessages;
 import appeng.items.tools.powered.WirelessTerminalItem;
@@ -112,7 +109,7 @@ public abstract class ItemWT extends WirelessTerminalItem implements IUniversalW
     @Nullable
     public IGrid getLinkedGrid(ItemStack item, Level level, @Nullable Player sendMessagesTo) {
         IGrid grid = getLinkedGrid(item, level);
-        if (grid == null && sendMessagesTo != null) {
+        if (grid == null && sendMessagesTo != null && level.isClientSide()) {
             sendMessagesTo.displayClientMessage(PlayerMessages.LinkedNetworkNotFound.text(), true);
         }
         return grid;
@@ -174,17 +171,5 @@ public abstract class ItemWT extends WirelessTerminalItem implements IUniversalW
             return;
         CompoundTag wctTag = hostItem.getOrCreateTag();
         wctTag.putBoolean(key, b);
-    }
-
-    /**
-     * add config for wat (also needed for wut)
-     */
-    public IConfigManager getConfigManager(ItemStack target) {
-        var configManager = super.getConfigManager(target);
-        if (WUTHandler.getCurrentTerminal(target).equals("pattern_access")) {
-            configManager.registerSetting(Settings.TERMINAL_SHOW_PATTERN_PROVIDERS, ShowPatternProviders.VISIBLE);
-            configManager.readFromNBT(target.getOrCreateTag().copy());
-        }
-        return configManager;
     }
 }

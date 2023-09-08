@@ -2,7 +2,7 @@ package de.mari_023.ae2wtlib.terminal;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
@@ -13,8 +13,10 @@ import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 import appeng.api.implementations.menuobjects.ItemMenuHost;
 import appeng.api.networking.IGrid;
+import appeng.api.util.IConfigManager;
 import appeng.menu.MenuOpener;
 import appeng.menu.locator.MenuLocator;
+import appeng.util.ConfigManager;
 
 public interface IUniversalWirelessTerminalItem {
     default boolean open(final Player player, ItemStack stack, final MenuLocator locator,
@@ -44,9 +46,17 @@ public interface IUniversalWirelessTerminalItem {
             return false;
         }
 
-        if (getLinkedGrid(item, player.level(), player) == null)
+        if (player.level().isClientSide())
             return false;
 
-        return player.level() instanceof ServerLevel;
+        return getLinkedGrid(item, player.level(), player) != null;
+    }
+
+    default IConfigManager getConfigManager(ItemStack target) {
+        return new ConfigManager((manager, settingName) -> {
+        });
+    }
+
+    default void inventoryTick(ItemStack itemStack, Level level, Entity entity, int i, boolean bl) {
     }
 }
