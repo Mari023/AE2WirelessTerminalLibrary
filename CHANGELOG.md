@@ -1,1 +1,1 @@
-- fix a mixin crash that sometimes happens (#211) (for real this time)
+- fix crash with aeinfinitybooster (#213)
