@@ -46,6 +46,7 @@ if (tag != "") {
     if (!tag.contains(modloader)) {
         throw GradleException("Tags for the $modloader version should contain ${modloader}: $tag")
     }
+    version = tag
 }
 
 dependencies {
