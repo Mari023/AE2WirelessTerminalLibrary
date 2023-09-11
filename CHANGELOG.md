@@ -1,1 +1,2 @@
-- fix a mixin crash that sometimes happens (#211) (for real this time)
+- fix crash with Wireless Universal Terminal
+- fix Wireless Universal Terminal ticking only the last used and not all installed terminals
