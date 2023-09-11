@@ -43,10 +43,9 @@ if (pr != "") {
 
 val tag = System.getenv("TAG") ?: ""
 if (tag != "") {
-    if (!tag.contains("${modloader}/")) {
-        throw GradleException("Tags for the $modloader version should start with ${modloader}/: $tag")
+    if (!tag.contains(modloader)) {
+        throw GradleException("Tags for the $modloader version should contain ${modloader}: $tag")
     }
-    version = tag.substring("${modloader}/".length)
 }
 
 dependencies {
