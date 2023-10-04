@@ -1,1 +1,2 @@
 - fix a bug where the terminal would not close when the network runs out of power
+- only draw power from the network via quantum bridge until the network's power buffer is at least half full
