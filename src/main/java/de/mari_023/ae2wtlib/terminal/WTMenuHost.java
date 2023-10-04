@@ -152,12 +152,21 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost
             if (getActionableNode() == null || missing <= 0)
                 return;
             var energyService = getActionableNode().getGrid().getEnergyService();
-            double safePower = energyService.getStoredPower() - energyService.getMaxStoredPower()/2;
-            if(safePower <= 0)
-                return;
-            double extracted = energyService.extractAEPower(Math.min(missing, safePower),
-                    Actionable.MODULATE, PowerMultiplier.ONE);
-            item.injectAEPower(getItemStack(), extracted, Actionable.MODULATE);
+            // Never discharge the network below 50%
+            double networkCurrent = energyService.getStoredPower();
+            double networkMax = energyService.getMaxStoredPower();
+            double safePower = networkCurrent - networkMax / 2;
+            if(safePower > 0) {
+                double toMove = Math.min(missing, safePower);
+                double extracted = energyService.extractAEPower(toMove, Actionable.MODULATE, PowerMultiplier.ONE);
+                item.injectAEPower(getItemStack(), extracted, Actionable.MODULATE);
+            } else {
+                double networkMissing = networkMax / 2 - networkCurrent;
+                double available = Math.min(0, maxPower / 2 - currentPower);
+                double toMove = - Math.min(networkMissing, available);
+                double extracted = item.extractAEPower(getItemStack(), toMove, Actionable.MODULATE);
+                energyService.injectPower(extracted, Actionable.MODULATE);
+            }
         }
     }
 
