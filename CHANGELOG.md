@@ -1,0 +1,1 @@
+- fix a bug where the terminal would not close when the network runs out of power
