@@ -45,7 +45,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost
     public static final ResourceLocation INV_SINGULARITY = new ResourceLocation(AE2wtlib.MOD_NAME, "singularity");
 
     public WTMenuHost(final Player player, @Nullable Integer inventorySlot, final ItemStack is,
-                      BiConsumer<Player, ISubMenu> returnToMainMenu) {
+            BiConsumer<Player, ISubMenu> returnToMainMenu) {
         super(player, inventorySlot, is, returnToMainMenu);
         viewCellInventory = new AppEngInternalInventory(this, 5);
         upgradeInventory = UpgradeInventories.forItem(is, WUTHandler.getUpgradeCardCount(), this::updateUpgrades);
@@ -116,7 +116,8 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost
         }
         if (quantumBridge.getActionableNode() == null)
             return false;
-        return (quantumBridge.getActionableNode().getGrid() == targetGrid || targetGrid == null) && targetGrid.getEnergyService().isNetworkPowered();
+        return (quantumBridge.getActionableNode().getGrid() == targetGrid || targetGrid == null)
+                && targetGrid.getEnergyService().isNetworkPowered();
     }
 
     public AppEngInternalInventory getViewCellStorage() {
@@ -156,14 +157,14 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost
             double networkCurrent = energyService.getStoredPower();
             double networkMax = energyService.getMaxStoredPower();
             double safePower = networkCurrent - networkMax / 2;
-            if(safePower > 0) {
+            if (safePower > 0) {
                 double toMove = Math.min(missing, safePower);
                 double extracted = energyService.extractAEPower(toMove, Actionable.MODULATE, PowerMultiplier.ONE);
                 item.injectAEPower(getItemStack(), extracted, Actionable.MODULATE);
             } else {
                 double networkMissing = networkMax / 2 - networkCurrent;
                 double available = Math.min(0, maxPower / 2 - currentPower);
-                double toMove = - Math.min(networkMissing, available);
+                double toMove = -Math.min(networkMissing, available);
                 double extracted = item.extractAEPower(getItemStack(), toMove, Actionable.MODULATE);
                 energyService.injectPower(extracted, Actionable.MODULATE);
             }
