@@ -1,7 +1,7 @@
 package de.mari_023.ae2wtlib;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayDeque;
+import java.util.Collection;
 
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
@@ -13,7 +13,7 @@ import appeng.api.config.Actionable;
 import appeng.items.tools.powered.WirelessTerminalItem;
 
 public class AE2WTLibCreativeTab {
-    private static final List<ItemStack> items = new ArrayList<>();
+    private static final Collection<ItemStack> items = new ArrayDeque<>();
 
     public static void init(Registry<CreativeModeTab> registry) {
         var tab = CreativeModeTab.builder()
