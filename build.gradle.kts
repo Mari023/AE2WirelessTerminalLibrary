@@ -33,6 +33,7 @@ val runtimeItemlistMod: String by project
 val jeiMinecraftVersion: String by project
 val jeiVersion: String by project
 val reiVersion: String by project
+val emiVersion: String by project
 
 version = "$modVersion-SNAPSHOT"
 
@@ -85,6 +86,8 @@ dependencies {
         "jei" -> modRuntimeOnly("mezz.jei:jei-${jeiMinecraftVersion}-${modloader}:${jeiVersion}") {
             exclude(group = "mezz.jei")
         }
+
+        "emi" -> modRuntimeOnly("dev.emi:emi-${modloader}:${emiVersion}+${minecraftVersion}")
     }
 
     implementation("com.google.code.findbugs:jsr305:3.0.2")
