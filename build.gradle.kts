@@ -87,7 +87,12 @@ dependencies {
             exclude(group = "mezz.jei")
         }
 
-        "emi" -> modRuntimeOnly("dev.emi:emi-${modloader}:${emiVersion}+${minecraftVersion}")
+        "emi" -> {
+            modRuntimeOnly("dev.emi:emi-${modloader}:${emiVersion}+${minecraftVersion}")
+            modRuntimeOnly("mezz.jei:jei-${jeiMinecraftVersion}-${modloader}:${jeiVersion}") {
+                exclude(group = "mezz.jei")
+            }
+        }
     }
 
     implementation("com.google.code.findbugs:jsr305:3.0.2")
