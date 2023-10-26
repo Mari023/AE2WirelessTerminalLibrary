@@ -19,6 +19,14 @@ import appeng.api.stacks.AEItemKey;
 import appeng.me.helpers.PlayerSource;
 
 public class AE2wtlibEvents {
+    /**
+     * Attempts to restock an item in a player's inventory from the ME system.
+     *
+     * @param player   The ServerPlayer
+     * @param item     The ItemStack that should be restocked
+     * @param count    Current count of the item
+     * @param setStack A callback for setting the final modified item stack
+     */
     public static void restock(ServerPlayer player, ItemStack item, int count, Consumer<ItemStack> setStack) {
         if (player.isCreative())
             return;
@@ -46,6 +54,14 @@ public class AE2wtlibEvents {
                 player.getInventory().findSlotMatchingUnusedItem(item), item.getCount()));
     }
 
+    /**
+     * Attempts to insert an item stack from a player's inventory into an ME system linked to a terminal the player
+     * carries.
+     *
+     * @param stack  The item stack being inserted
+     * @param player The player attempting the insertion
+     * @return True if the entire stack is successfully inserted; false otherwise.
+     */
     public static boolean insertStackInME(ItemStack stack, Player player) {
         if (stack.isEmpty())
             return false;
