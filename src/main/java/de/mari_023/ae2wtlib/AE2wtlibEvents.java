@@ -30,6 +30,8 @@ public class AE2wtlibEvents {
     public static void restock(ServerPlayer player, ItemStack item, int count, Consumer<ItemStack> setStack) {
         if (player.isCreative())
             return;
+        if (item.isEmpty())
+            return;
         CraftingTerminalHandler cTHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
         if (!cTHandler.inRange() || !ItemWT.getBoolean(cTHandler.getCraftingTerminal(), "restock")
                 || cTHandler.getTargetGrid() == null || cTHandler.getTargetGrid().getStorageService() == null)
