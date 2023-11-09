@@ -1,0 +1,1 @@
+- fix dupe bug with farmers delight 

@@ -65,7 +65,7 @@ public class AE2wtlibEvents {
      * @return True if the entire stack is successfully inserted; false otherwise.
      */
     public static boolean insertStackInME(ItemStack stack, Player player) {
-        if (stack.isEmpty())
+        if (stack.isEmpty() || player.level().isClientSide())
             return false;
         CraftingTerminalHandler cTHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
         ItemStack terminal = cTHandler.getCraftingTerminal();
