@@ -29,7 +29,7 @@ public class PlayerInventoryInsertStack {
 
     @Inject(method = "add(Lnet/minecraft/world/item/ItemStack;)Z", at = @At(value = "HEAD"), cancellable = true)
     public void insertStackInME(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
-        if (stack.isEmpty())
+        if (stack.isEmpty() || player.getLevel().isClientSide())
             return;
         CraftingTerminalHandler cTHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
         ItemStack terminal = cTHandler.getCraftingTerminal();
