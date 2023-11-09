@@ -60,7 +60,13 @@ dependencies {
             exclude group: "net.fabricmc.fabric-api"
         }
     } else {
-        throw new GradleException("Invalid runtime_itemlist_mod value: " + project.runtime_itemlist_mod)
+        modCompileOnly("mezz.jei:jei-${jei_minecraft_version}-${rootProject.modloader}:${jei_version}") {
+            exclude group: "mezz.jei"
+        }
+
+        modCompileOnly("me.shedaniel:RoughlyEnoughItems-${rootProject.modloader}:${project.rei_version}") {
+            exclude group: "net.fabricmc.fabric-api"
+        }
     }
 
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
@@ -108,7 +114,7 @@ repositories {
     }
     maven {
         name = "Ladysnake Libs"
-        url = "https://ladysnake.jfrog.io/artifactory/mods"
+        url = "https://maven.ladysnake.org/releases"
         content {
             includeGroup "dev.onyxstudios.cardinal-components-api"
         }
