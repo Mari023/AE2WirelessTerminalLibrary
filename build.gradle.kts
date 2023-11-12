@@ -1,5 +1,3 @@
-import net.minecraftforge.gradle.common.util.RunConfig
-
 buildscript {
     repositories {
         mavenCentral()
@@ -10,8 +8,7 @@ buildscript {
 }
 
 plugins {
-    id("net.neoforged.gradle") version "[6.0.18,6.2)"
-    id("org.spongepowered.mixin") version "0.7+"
+    id("net.neoforged.gradle.userdev") version "7.0.43"
     id("com.diffplug.spotless") version "6.21.0"
     id("maven-publish")
     java
@@ -36,7 +33,7 @@ val jeiMinecraftVersion: String by project
 val jeiVersion: String by project
 val reiVersion: String by project
 val emiVersion: String by project
-val forgeVersion: String by project
+val neoforgeVersion: String by project
 val curiosVersion: String by project
 
 version = "$modVersion-SNAPSHOT"
@@ -55,27 +52,27 @@ if (tag != "") {
 }
 
 dependencies {
-    add("minecraft", "net.neoforged:forge:${minecraftVersion}-${forgeVersion}")
+    implementation("net.neoforged:neoforge:${neoforgeVersion}")
 
-    implementation(fg.deobf("top.theillusivec4.curios:curios-forge:${curiosVersion}"))
-    implementation(fg.deobf("me.shedaniel.cloth:cloth-config-${modloader}:${clothVersion}"))
-    implementation(fg.deobf("dev.architectury:architectury-${modloader}:${architecturyVersion}"))
-    implementation(fg.deobf("appeng:appliedenergistics2-${modloader}:${ae2Version}") as ExternalModuleDependency) {
+    implementation("top.theillusivec4.curios:curios-forge:${curiosVersion}")
+    implementation("me.shedaniel.cloth:cloth-config-${modloader}:${clothVersion}")
+    implementation("dev.architectury:architectury-${modloader}:${architecturyVersion}")
+    implementation("appeng:appliedenergistics2-neoforge:${ae2Version}") {
         exclude(group = "mezz.jei")
         exclude(group = "me.shedaniel")
     }
 
-    compileOnly(fg.deobf("me.shedaniel:RoughlyEnoughItems-${modloader}:${reiVersion}"))
-    compileOnly(fg.deobf("mezz.jei:jei-${jeiMinecraftVersion}-${modloader}:${jeiVersion}"))
+    compileOnly("me.shedaniel:RoughlyEnoughItems-${modloader}:${reiVersion}")
+    compileOnly("mezz.jei:jei-${jeiMinecraftVersion}-${modloader}:${jeiVersion}")
 
     when (runtimeItemlistMod) {
-        "rei" -> runtimeOnly(fg.deobf("me.shedaniel:RoughlyEnoughItems-${modloader}:${reiVersion}"))
+        "rei" -> runtimeOnly("me.shedaniel:RoughlyEnoughItems-${modloader}:${reiVersion}")
 
-        "jei" -> runtimeOnly(fg.deobf("mezz.jei:jei-${jeiMinecraftVersion}-${modloader}:${jeiVersion}"))
+        "jei" -> runtimeOnly("mezz.jei:jei-${jeiMinecraftVersion}-${modloader}:${jeiVersion}")
 
         "emi" -> {
-            runtimeOnly(fg.deobf("dev.emi:emi-${modloader}:${emiVersion}+${minecraftVersion}"))
-            runtimeOnly(fg.deobf("mezz.jei:jei-${jeiMinecraftVersion}-${modloader}:${jeiVersion}"))
+            runtimeOnly("dev.emi:emi-${modloader}:${emiVersion}+${minecraftVersion}")
+            runtimeOnly("mezz.jei:jei-${jeiMinecraftVersion}-${modloader}:${jeiVersion}")
         }
     }
 
@@ -151,37 +148,14 @@ repositories {
     }
 }
 
-minecraft {
-    mappings("official", minecraftVersion)
-    runs {
-        val config = Action<RunConfig> {
-            properties(mapOf(
-                    "fml.earlyprogresswindow" to "false",
-                    "forge.logging.console.level" to "debug",
-                    "mixin.env.remapRefMap" to "true",
-                    "mixin.env.refMapRemappingFile" to "${projectDir}/build/createSrgToMcp/output.srg"
-            ))
-            workingDirectory = project.file("run").canonicalPath
-            source(sourceSets["main"])
-        }
-
-        create("client", config)
-        create("server", config)
-    }
-}
-
-mixin {
-    add(sourceSets.main.get(), "ae2wtlib.mixins.refmap.json")
-    config("ae2wtlib.mixins.json")
-}
-
 java {
-    withSourcesJar()
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
 }
 
 tasks {
     jar {
-        finalizedBy("reobfJar")
         manifest {
             attributes(mapOf(
                     "MixinConfigs" to "ae2wtlib.mixins.json"
