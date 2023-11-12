@@ -2,7 +2,6 @@ package de.mari_023.ae2wtlib.wut.recipe;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -16,8 +15,8 @@ public class Upgrade extends Common {
     private final Ingredient terminal;
     private final String terminalName;
 
-    public Upgrade(Ingredient terminal, String terminalName, ResourceLocation id) {
-        super(id);
+    public Upgrade(Ingredient terminal, String terminalName) {
+        super();
         this.terminal = terminal;
         this.terminalName = terminalName;
         outputStack.getOrCreateTag().putBoolean(terminalName, true);

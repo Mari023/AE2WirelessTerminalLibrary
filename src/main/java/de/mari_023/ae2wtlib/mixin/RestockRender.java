@@ -9,8 +9,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 import de.mari_023.ae2wtlib.terminal.ItemWT;
 import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
@@ -18,7 +18,7 @@ import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
 import appeng.util.ReadableNumberConverter;
 
 @OnlyIn(Dist.CLIENT)
-@Mixin(GuiGraphics.class)
+@Mixin(value = GuiGraphics.class, remap = false)
 public class RestockRender {
     @Inject(method = "renderItemDecorations(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;II)V", at = @At(value = "HEAD"), cancellable = true)
     public void renderGuiItemOverlay(Font font, ItemStack stack, int x, int y, CallbackInfo ci) {

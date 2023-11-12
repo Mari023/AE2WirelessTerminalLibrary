@@ -4,7 +4,6 @@ import java.util.Iterator;
 
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingRecipe;
@@ -29,11 +28,6 @@ public abstract class Common implements CraftingRecipe {
     private static final String TAG_UPGRADES = "upgrades";
 
     protected final ItemStack outputStack = new ItemStack(AE2wtlib.UNIVERSAL_TERMINAL);
-    protected final ResourceLocation id;
-
-    protected Common(ResourceLocation id) {
-        this.id = id;
-    }
 
     @Override
     public boolean canCraftInDimensions(int width, int height) {
@@ -48,11 +42,6 @@ public abstract class Common implements CraftingRecipe {
     @Override
     public ItemStack getResultItem(RegistryAccess registryAccess) {
         return outputStack;
-    }
-
-    @Override
-    public ResourceLocation getId() {
-        return id;
     }
 
     @Override

@@ -2,7 +2,6 @@ package de.mari_023.ae2wtlib.wut.recipe;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -17,9 +16,8 @@ public class Combine extends Common {
     private final String terminalAName;
     private final String terminalBName;
 
-    public Combine(Ingredient terminalA, Ingredient terminalB, String terminalAName, String TerminalBName,
-            ResourceLocation id) {
-        super(id);
+    public Combine(Ingredient terminalA, Ingredient terminalB, String terminalAName, String TerminalBName) {
+        super();
         this.terminalA = terminalA;
         this.terminalB = terminalB;
         this.terminalAName = terminalAName;
