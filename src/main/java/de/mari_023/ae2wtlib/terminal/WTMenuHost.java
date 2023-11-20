@@ -41,7 +41,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost
     private final IGrid targetGrid;
     private IActionHost quantumBridge;
     private IUpgradeInventory upgradeInventory;
-    public static final ResourceLocation INV_SINGULARITY = new ResourceLocation(AE2wtlib.MOD_NAME, "singularity");
+    public static final ResourceLocation INV_SINGULARITY = AE2wtlib.makeID("singularity");
 
     public WTMenuHost(final Player player, @Nullable Integer inventorySlot, final ItemStack is,
             BiConsumer<Player, ISubMenu> returnToMainMenu) {

@@ -12,7 +12,7 @@ import mezz.jei.api.registration.IRecipeTransferRegistration;
 
 @JeiPlugin
 public class JEIPlugin implements IModPlugin {
-    private static final ResourceLocation ID = new ResourceLocation(AE2wtlib.MOD_NAME, "core");
+    private static final ResourceLocation ID = AE2wtlib.makeID("core");
 
     @Override
     public ResourceLocation getPluginUid() {

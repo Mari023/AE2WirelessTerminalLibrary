@@ -7,7 +7,7 @@ license = "MIT"
 modId = "ae2wtlib"
 version = "${version}"
 displayName = "AE2WTLib"
-authors = "mari_023, Ridanisaurus, DomamaN202"
+authors = "mari_023, Ridanisaurus"
 description = '''
 Adds Wireless versions of ae2 Terminals with infinite range capabilities.
 '''

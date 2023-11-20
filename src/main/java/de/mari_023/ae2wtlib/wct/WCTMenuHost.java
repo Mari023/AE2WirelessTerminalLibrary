@@ -22,7 +22,7 @@ import appeng.util.inv.AppEngInternalInventory;
 public class WCTMenuHost extends WTMenuHost implements IViewCellStorage {
     private final AppEngInternalInventory craftingGrid = new AppEngInternalInventory(this, 9);
     private final AppEngInternalInventory trash = new AppEngInternalInventory(this, 27);
-    public static final ResourceLocation INV_TRASH = new ResourceLocation(AE2wtlib.MOD_NAME, "wct_trash");
+    public static final ResourceLocation INV_TRASH = AE2wtlib.makeID("wct_trash");
 
     public WCTMenuHost(final Player ep, @Nullable Integer inventorySlot, final ItemStack is,
             BiConsumer<Player, ISubMenu> returnToMainMenu) {

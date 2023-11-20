@@ -4,7 +4,6 @@ import java.util.Objects;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 import de.mari_023.ae2wtlib.AE2wtlib;
@@ -31,11 +30,11 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
             addToLeftToolbar(new CycleTerminalButton(btn -> cycleTerminal()));
 
         magnetCardToggleButton = new ItemButton(btn -> setMagnetMode(),
-                new ResourceLocation(AE2wtlib.MOD_NAME, "textures/item/magnet_card.png"));
+                AE2wtlib.makeID("textures/item/magnet_card.png"));
         addToLeftToolbar(magnetCardToggleButton);
 
         magnetCardMenuButton = new ItemButton(btn -> getMenu().openMagnetMenu(),
-                new ResourceLocation(AE2wtlib.MOD_NAME, "textures/item/magnet_card.png"));
+                AE2wtlib.makeID("textures/item/magnet_card.png"));
         addToLeftToolbar(magnetCardMenuButton);
         magnetCardMenuButton.setMessage(TextConstants.MAGNET_FILTER);
         IconButton deleteButton = new IconButton(btn -> getMenu().openTrashMenu()) {

@@ -1,5 +1,6 @@
 package de.mari_023.ae2wtlib;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 
 import de.mari_023.ae2wtlib.curio.CurioHelper;
@@ -104,5 +105,9 @@ public class AE2wtlib {
         Platform.registerMenuType(WETMenu.ID, WETMenu.TYPE);
         Platform.registerMenuType(MagnetMenu.ID, MagnetMenu.TYPE);
         Platform.registerMenuType(TrashMenu.ID, TrashMenu.TYPE);
+    }
+
+    public static ResourceLocation makeID(String name) {
+        return new ResourceLocation(MOD_NAME, name);
     }
 }

@@ -2,6 +2,8 @@ package de.mari_023.ae2wtlib;
 
 import org.jetbrains.annotations.Nullable;
 
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
@@ -9,7 +11,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.neoforged.fml.ModList;
-import net.neoforged.neoforge.registries.ForgeRegistries;
 
 import de.mari_023.ae2wtlib.curio.CurioHelper;
 
@@ -39,11 +40,11 @@ public class Platform {
     }
 
     public static void registerItem(String name, Item item) {
-        AE2wtlibForge.ITEMS.put(name, item);
+        Registry.register(BuiltInRegistries.ITEM, AE2wtlib.makeID(name), item);
     }
 
     public static void registerRecipe(String name, RecipeSerializer<?> serializer) {
-        AE2wtlibForge.RECIPES.register(name, () -> serializer);
+        Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, AE2wtlib.makeID(name), serializer);
     }
 
     public static boolean preventRemoteMovement(ItemEntity item) {
@@ -51,6 +52,6 @@ public class Platform {
     }
 
     public static void registerMenuType(String id, MenuType<?> menuType) {
-        ForgeRegistries.MENU_TYPES.register(AppEng.makeId(id), menuType);
+        Registry.register(BuiltInRegistries.MENU, AppEng.makeId(id), menuType);
     }
 }
