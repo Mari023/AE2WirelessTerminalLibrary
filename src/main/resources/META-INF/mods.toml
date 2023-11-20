@@ -13,6 +13,9 @@ Adds Wireless versions of ae2 Terminals with infinite range capabilities.
 '''
 logoFile = "icon.png"
 
+[[mixins]]
+config="ae2wtlib.mixins.json"
+
 [[dependencies.ae2wtlib]]
 modId = "forge"
 mandatory = true
