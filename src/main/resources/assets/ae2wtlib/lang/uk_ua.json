@@ -1,8 +1,5 @@
 {
-  "itemGroup.ae2wtlib.general": "AE2 Бездротові термінали (AE2WTLib)",
-  "itemGroup.ae2wtlib": "AE2 Бездротові термінали (AE2WTLib)",
-  "gui.ae2wtlib.emptytrash": "Очистити кошик",
-  "gui.ae2wtlib.emptytrash.desc": "Видаліть вміст кошика",
+  "gui.ae2wtlib.creativetab": "AE2 Бездротові термінали (AE2WTLib)",
   "item.ae2wtlib.quantum_bridge_card": "Картка квантового зв'язку",
   "item.ae2wtlib.quantum_bridge_card.desc": "Дозволяє бездротовим терміналам підключатися до квантового мосту, забезпечуючи необмежений радіус дії",
   "item.ae2wtlib.magnet_card": "Магнітна картка",
