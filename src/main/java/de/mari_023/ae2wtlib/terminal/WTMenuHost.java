@@ -1,5 +1,18 @@
 package de.mari_023.ae2wtlib.terminal;
 
+import java.util.function.BiConsumer;
+
+import org.jetbrains.annotations.Nullable;
+
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+
+import de.mari_023.ae2wtlib.AE2wtlib;
+import de.mari_023.ae2wtlib.Platform;
+import de.mari_023.ae2wtlib.wut.WUTHandler;
+
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
 import appeng.api.inventories.ISegmentedInventory;
@@ -18,17 +31,6 @@ import appeng.me.cluster.implementations.QuantumCluster;
 import appeng.menu.ISubMenu;
 import appeng.util.inv.AppEngInternalInventory;
 import appeng.util.inv.InternalInventoryHost;
-import de.mari_023.ae2wtlib.AE2wtlib;
-import de.mari_023.ae2wtlib.AE2wtlibConfig;
-import de.mari_023.ae2wtlib.Platform;
-import de.mari_023.ae2wtlib.wut.WUTHandler;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.function.BiConsumer;
 
 public abstract class WTMenuHost extends WirelessTerminalMenuHost
         implements InternalInventoryHost, ISegmentedInventory {
@@ -42,7 +44,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost
     public static final ResourceLocation INV_SINGULARITY = new ResourceLocation(AE2wtlib.MOD_NAME, "singularity");
 
     public WTMenuHost(final Player player, @Nullable Integer inventorySlot, final ItemStack is,
-                      BiConsumer<Player, ISubMenu> returnToMainMenu) {
+            BiConsumer<Player, ISubMenu> returnToMainMenu) {
         super(player, inventorySlot, is, returnToMainMenu);
         viewCellInventory = new AppEngInternalInventory(this, 5);
         upgradeInventory = UpgradeInventories.forItem(is, WUTHandler.getUpgradeCardCount(), this::updateUpgrades);
@@ -126,7 +128,10 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost
         if (rangeCheck) {
             super.setPowerDrainPerTick(powerDrainPerTick);
         } else {
-            super.setPowerDrainPerTick(AE2wtlibConfig.INSTANCE.getOutOfRangePower());
+            // QuantumBridgeBlockEntity: 22 ae/tick
+            // AbstractReportingPart (terminal): 0.5 ae/tick
+            // -> 22.5 ae/tick
+            super.setPowerDrainPerTick(22.5);
         }
     }
 
