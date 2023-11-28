@@ -57,7 +57,7 @@ dependencies {
     implementation("top.theillusivec4.curios:curios-forge:${curiosVersion}")
     implementation("me.shedaniel.cloth:cloth-config-${modloader}:${clothVersion}")
     implementation("dev.architectury:architectury-${modloader}:${architecturyVersion}")
-    implementation("appeng:appliedenergistics2-neoforge:${ae2Version}") {
+    implementation("maven.modrinth:ae2:${ae2Version}") {
         exclude(group = "mezz.jei")
         exclude(group = "me.shedaniel")
     }
