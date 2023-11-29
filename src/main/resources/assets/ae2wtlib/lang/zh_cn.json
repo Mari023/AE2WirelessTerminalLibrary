@@ -22,9 +22,8 @@
   "gui.ae2wtlib.Magnet": "磁铁过滤器",
   "gui.ae2wtlib.whitelist": "白名单",
   "gui.ae2wtlib.blacklist": "黑名单",
-  "gui.ae2wtlib.pickup": "捡起",
-  "gui.ae2wtlib.insert": "插入",
-  "gui.ae2wtlib.filter": " 筛选：",
+  "gui.ae2wtlib.pickup_filter": "捡起 筛选：",
+  "gui.ae2wtlib.insert_filter": "插入 筛选：",
   "gui.ae2wtlib.copy_pickup": "复制到捡起",
   "gui.ae2wtlib.copy_insert": "复制到插入",
   "gui.ae2wtlib.switch": "切换过滤器",
@@ -41,10 +40,5 @@
 
   "text.autoconfig.de/mari_023/ae2wtlib.title": "AE2 无线终端",
 
-  "text.autoconfig.de/mari_023/ae2wtlib.option.outOfRangePowerMultiplier": "超出范围的功率乘数",
-  "text.autoconfig.de/mari_023/ae2wtlib.option.magnetCardRange": "磁卡范围",
-  "text.autoconfig.de/mari_023/ae2wtlib.option.enableTrinket": "使能 Trinkets 集成",
-
-  "text.autoconfig.de/mari_023/ae2wtlib.option.outOfRangePowerMultiplier.@Tooltip": "如果该值低于 1，则在某些情况下，处于无线接入点范围内会消耗更多功率。",
-  "text.autoconfig.de/mari_023/ae2wtlib.option.magnetCardRange.@Tooltip": ""
+  "text.autoconfig.de/mari_023/ae2wtlib.option.magnetCardRange": "磁卡范围"
 }

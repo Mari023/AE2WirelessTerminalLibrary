@@ -22,9 +22,8 @@
   "gui.ae2wtlib.Magnet": "Magnet Filter",
   "gui.ae2wtlib.whitelist": "Whitelist",
   "gui.ae2wtlib.blacklist": "Blacklist",
-  "gui.ae2wtlib.pickup": "Aufsammel",
-  "gui.ae2wtlib.insert": "Einfüge",
-  "gui.ae2wtlib.filter": "filter: ",
+  "gui.ae2wtlib.pickup_filter": "Aufsammelfilter: ",
+  "gui.ae2wtlib.insert_filter": "Einfügefilter: ",
   "gui.ae2wtlib.copy_pickup": "Zu Aufsammelfilter kopieren",
   "gui.ae2wtlib.copy_insert": "Zu Einfügefilter kopieren",
   "gui.ae2wtlib.switch": "Filter tauschen",
@@ -38,9 +37,5 @@
   "key.ae2.ae2wtlib_magnet": "Magnet Karte umschalten",
 
   "text.autoconfig.de/mari_023/ae2wtlib.title": "AE2 Wireless Terminals",
-  "text.autoconfig.de/mari_023/ae2wtlib.option.outOfRangePowerMultiplier": "Leistungsmultiplikator außer Reichweite",
-  "text.autoconfig.de/mari_023/ae2wtlib.option.magnetCardRange": "Reichweite der Magnet Karte",
-  "text.autoconfig.de/mari_023/ae2wtlib.option.enableTrinket": "Trinkets Integration aktivieren",
-  "text.autoconfig.de/mari_023/ae2wtlib.option.outOfRangePowerMultiplier.@Tooltip": "Wenn dieser Wer kleiner als 1 ist, könnten Drahtlose Konsolen innerhalb der Reichweite eines Drahtlosen Zugangspunktes mehr Strom verbrauchen als außerhalb.",
-  "text.autoconfig.de/mari_023/ae2wtlib.option.magnetCardRange.@Tooltip": ""
+  "text.autoconfig.de/mari_023/ae2wtlib.option.magnetCardRange": "Reichweite der Magnet Karte"
 }

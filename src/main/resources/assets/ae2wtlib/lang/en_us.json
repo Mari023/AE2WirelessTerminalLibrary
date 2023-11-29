@@ -22,9 +22,8 @@
   "gui.ae2wtlib.Magnet": "Magnet Filter",
   "gui.ae2wtlib.whitelist": "Whitelist",
   "gui.ae2wtlib.blacklist": "Blacklist",
-  "gui.ae2wtlib.pickup": "Pickup",
-  "gui.ae2wtlib.insert": "Insert",
-  "gui.ae2wtlib.filter": " Filter: ",
+  "gui.ae2wtlib.pickup_filter": "Pickup Filter: ",
+  "gui.ae2wtlib.insert_filter": "Insert Filter: ",
   "gui.ae2wtlib.copy_pickup": "Copy to Pickup",
   "gui.ae2wtlib.copy_insert": "Copy to Insert",
   "gui.ae2wtlib.switch": "Switch Filters",
@@ -41,10 +40,5 @@
 
   "text.autoconfig.de/mari_023/ae2wtlib.title": "AE2 Wireless Terminals",
 
-  "text.autoconfig.de/mari_023/ae2wtlib.option.outOfRangePowerMultiplier": "Out of Range Power Multiplier",
-  "text.autoconfig.de/mari_023/ae2wtlib.option.magnetCardRange": "Magnet Card Range",
-  "text.autoconfig.de/mari_023/ae2wtlib.option.enableTrinket": "Enable Trinkets Integration",
-
-  "text.autoconfig.de/mari_023/ae2wtlib.option.outOfRangePowerMultiplier.@Tooltip": "If this is lower than 1, being in range of a Wireless Access Point would use more power in some cases.",
-  "text.autoconfig.de/mari_023/ae2wtlib.option.magnetCardRange.@Tooltip": ""
+  "text.autoconfig.de/mari_023/ae2wtlib.option.magnetCardRange": "Magnet Card Range"
 }

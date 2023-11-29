@@ -1,2 +1,3 @@
 - remove reverse charging, it seemed caused more issues than it fixed (fix #230)
 - change energy usage when quantum linked to be more like an ae2 quantum bridges energy usage (22.5 ae / tick) (fix #222)
+- update russian translations

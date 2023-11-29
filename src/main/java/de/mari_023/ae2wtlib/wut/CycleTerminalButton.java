@@ -21,7 +21,7 @@ import appeng.client.gui.widgets.ITooltip;
 public class CycleTerminalButton extends Button implements ITooltip {
 
     public CycleTerminalButton(OnPress onPress) {
-        super(0, 0, 16, 16, TextConstants.CYCLE, onPress, Button.DEFAULT_NARRATION);
+        super(0, 0, 16, 16, Component.empty(), onPress, Button.DEFAULT_NARRATION);
         visible = true;
         active = true;
     }

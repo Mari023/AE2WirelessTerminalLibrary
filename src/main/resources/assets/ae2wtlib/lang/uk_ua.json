@@ -17,9 +17,8 @@
   "gui.ae2wtlib.Magnet": "Магнітний фільтр",
   "gui.ae2wtlib.whitelist": "Білий список",
   "gui.ae2wtlib.blacklist": "Чорний список",
-  "gui.ae2wtlib.pickup": "Підібрати",
-  "gui.ae2wtlib.insert": "Вставити",
-  "gui.ae2wtlib.filter": " Фільтр: ",
+  "gui.ae2wtlib.pickup_filter": "Підібрати Фільтр: ",
+  "gui.ae2wtlib.insert_filter": "Вставити Фільтр: ",
   "gui.ae2wtlib.copy_pickup": "Скопіювати до Підібрати",
   "gui.ae2wtlib.copy_insert": "Скопіювати до Вставити",
   "gui.ae2wtlib.switch": "Перемкнути фільтри",
@@ -32,9 +31,5 @@
   "key.ae2.ae2wtlib_restock": "Перемкнути поповнення",
   "key.ae2.ae2wtlib_magnet": "Перемкнути магнітну картку",
   "text.autoconfig.de/mari_023/ae2wtlib.title": "AE2 Бездротові термінали",
-  "text.autoconfig.de/mari_023/ae2wtlib.option.outOfRangePowerMultiplier": "Множник потужності за межами досяжності",
-  "text.autoconfig.de/mari_023/ae2wtlib.option.magnetCardRange": "Досяжність магнітної картки",
-  "text.autoconfig.de/mari_023/ae2wtlib.option.enableTrinket": "Увімкнути інтеграцію з модом Trinkets",
-  "text.autoconfig.de/mari_023/ae2wtlib.option.outOfRangePowerMultiplier.@Tooltip": "Якщо це значення менше 1, перебування в межах досяжності бездротової точки доступу в деяких випадках споживатиме більше енергії.",
-  "text.autoconfig.de/mari_023/ae2wtlib.option.magnetCardRange.@Tooltip": ""
+  "text.autoconfig.de/mari_023/ae2wtlib.option.magnetCardRange": "Досяжність магнітної картки"
 }

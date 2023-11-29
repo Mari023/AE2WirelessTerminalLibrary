@@ -22,9 +22,8 @@
   "gui.ae2wtlib.Magnet": "Магнитный Фильтр",
   "gui.ae2wtlib.whitelist": "Белый список",
   "gui.ae2wtlib.blacklist": "Чёрный список",
-  "gui.ae2wtlib.pickup": "Pickup",
-  "gui.ae2wtlib.insert": "Insert",
-  "gui.ae2wtlib.filter": " Фильтр: ",
+  "gui.ae2wtlib.pickup_filter": "Фильтр подбора: ",
+  "gui.ae2wtlib.insert_filter": "Insert Filter: ",
   "gui.ae2wtlib.copy_pickup": "Копировать в Pickup",
   "gui.ae2wtlib.copy_insert": "Копировать в Insert",
   "gui.ae2wtlib.switch": "Поменять фильтры местами",
@@ -40,11 +39,6 @@
   "key.ae2.ae2wtlib_magnet": "Переключить магнитную карту",
 
   "text.autoconfig.de/mari_023/ae2wtlib.title": "AE2 Wireless Terminals",
-  
-  "text.autoconfig.de/mari_023/ae2wtlib.option.outOfRangePowerMultiplier": "Множитель мощности вне диапазона",
-  "text.autoconfig.de/mari_023/ae2wtlib.option.magnetCardRange": "Диапазон магнитной карты",
-  "text.autoconfig.de/mari_023/ae2wtlib.option.enableTrinket": "Включить Trinkets интеграцию",
-  
-  "text.autoconfig.de/mari_023/ae2wtlib.option.outOfRangePowerMultiplier.@Tooltip": "Если оно меньше 1, нахождение в зоне действия беспроводной точки доступа в некоторых случаях потребляет больше энергии.",
-  "text.autoconfig.de/mari_023/ae2wtlib.option.magnetCardRange.@Tooltip": ""
+
+  "text.autoconfig.de/mari_023/ae2wtlib.option.magnetCardRange": "Диапазон магнитной карты"
 }
