@@ -1,5 +1,11 @@
 {
-  "item.ae2wtlib.magnet_card": "Магнитная карта ",
+  "gui.ae2wtlib.creativetab": "AE2 Беспроводные терминалы (AE2WTLib)",
+
+  "gui.ae2wtlib.trash": "Мусор",
+
+  "item.ae2wtlib.quantum_bridge_card": "Карта Квантового моста",
+  "item.ae2wtlib.quantum_bridge_card.desc": "Позволяет соеденить беспроводной терминал с квантовым мостом, убирая ограничение дальности",
+  "item.ae2wtlib.magnet_card": "Магнитная карта",
   "item.ae2wtlib.magnet_card.desc": "Магнитное улучшение для беспроводного терминала крафта",
 
   "gui.ae2wtlib.magnetcard": "Магнитная карта",
@@ -13,8 +19,18 @@
   "gui.ae2wtlib.on": "Включить",
   "gui.ae2wtlib.slot.magnetcard.desc": "Магнитная карта",
 
+  "gui.ae2wtlib.Magnet": "Магнитный Фильтр",
+  "gui.ae2wtlib.whitelist": "Белый список",
+  "gui.ae2wtlib.blacklist": "Чёрный список",
+  "gui.ae2wtlib.pickup": "Pickup",
+  "gui.ae2wtlib.insert": "Insert",
+  "gui.ae2wtlib.filter": " Фильтр: ",
+  "gui.ae2wtlib.copy_pickup": "Копировать в Pickup",
+  "gui.ae2wtlib.copy_insert": "Копировать в Insert",
+  "gui.ae2wtlib.switch": "Поменять фильтры местами",
+
   "item.ae2wtlib.wireless_pattern_encoding_terminal": "Беспроводной терминал кодирования шаблонов",
-  "item.ae2wtlib.wireless_pattern_access_terminal": "Беспроводной терминал доступа к шаблонам (НЕ ТОЧНЫЙ ПЕРЕВОД)",
+  "item.ae2wtlib.wireless_pattern_access_terminal": "Беспроводной терминал доступа к шаблонам",
   "item.ae2wtlib.wireless_universal_terminal": "Беспроводной универсальный терминал",
   "item.ae2wtlib.wireless_universal_terminal.desc": "Установленные терминалы:",
 
@@ -24,9 +40,11 @@
   "key.ae2.ae2wtlib_magnet": "Переключить магнитную карту",
 
   "text.autoconfig.de/mari_023/ae2wtlib.title": "AE2 Wireless Terminals",
+  
   "text.autoconfig.de/mari_023/ae2wtlib.option.outOfRangePowerMultiplier": "Множитель мощности вне диапазона",
   "text.autoconfig.de/mari_023/ae2wtlib.option.magnetCardRange": "Диапазон магнитной карты",
   "text.autoconfig.de/mari_023/ae2wtlib.option.enableTrinket": "Включить Trinkets интеграцию",
-  "text.autoconfig.de/mari_023/ae2wtlib.option.outOfRangePowerMultiplier.@Tooltip": "Если оно меньше 1, нахождение в зоне действия беспроводной точки доступа потребляет больше энергии..",
+  
+  "text.autoconfig.de/mari_023/ae2wtlib.option.outOfRangePowerMultiplier.@Tooltip": "Если оно меньше 1, нахождение в зоне действия беспроводной точки доступа в некоторых случаях потребляет больше энергии.",
   "text.autoconfig.de/mari_023/ae2wtlib.option.magnetCardRange.@Tooltip": ""
 }
