@@ -1,17 +1,20 @@
 package de.mari_023.ae2wtlib.wut.recipe;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.mojang.serialization.Codec;
 
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.crafting.Ingredient;
 
 public class CombineSerializer extends Serializer<Combine> {
     public static final String NAME = "combine";
+    private static final Codec<Combine> CODEC = ExtraCodecs.adaptJsonSerializer(CombineSerializer::fromJson, CombineSerializer::toJson);
 
-    public Combine fromJson(JsonObject json) {
+    private static Combine fromJson(JsonElement json) {
         CombineJsonFormat recipeJson = new Gson().fromJson(json, CombineJsonFormat.class);
         if (recipeJson.terminalA == null || recipeJson.terminalB == null || validateOutput(recipeJson.terminalAName)
                 || validateOutput(recipeJson.terminalBName))
@@ -22,9 +25,18 @@ public class CombineSerializer extends Serializer<Combine> {
                 recipeJson.terminalAName, recipeJson.terminalBName);
     }
 
+    private static JsonElement toJson(Combine recipe) {
+        JsonObject json = new JsonObject();
+        json.add("terminalA", recipe.getTerminalA().toJson(false));
+        json.add("terminalB", recipe.getTerminalB().toJson(false));
+        json.addProperty("terminalAName", recipe.getTerminalAName());
+        json.addProperty("terminalBName", recipe.getTerminalBName());
+        return json;
+    }
+
     @Override
     public Codec<Combine> codec() {
-        return null;// FIXME 1.20.2 what does this?
+        return CODEC;
     }
 
     @Override
