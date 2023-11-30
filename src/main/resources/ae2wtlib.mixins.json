@@ -3,7 +3,6 @@
   "minVersion": "0.8",
   "package": "de.mari_023.ae2wtlib.mixin",
   "compatibilityLevel": "JAVA_17",
-  "refmap": "ae2wtlib.mixins.refmap.json",
   "mixins": [
     "CraftingTerminalItemMixin"
   ],
