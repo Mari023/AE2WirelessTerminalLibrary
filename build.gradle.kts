@@ -1,3 +1,5 @@
+import net.neoforged.gradle.dsl.common.runs.run.Run
+
 buildscript {
     repositories {
         mavenCentral()
@@ -8,7 +10,7 @@ buildscript {
 }
 
 plugins {
-    id("net.neoforged.gradle.userdev") version "7.0.43"
+    id("net.neoforged.gradle.userdev") version "7.0.45"
     id("com.diffplug.spotless") version "6.21.0"
     id("maven-publish")
     java
@@ -181,6 +183,16 @@ tasks {
         options.encoding = "UTF-8"
         options.release.set(17)
     }
+}
+
+runs {
+    val config = Action<Run> {
+        workingDirectory = project.file("run")
+        modSource(project.sourceSets.main.get())
+    }
+
+    create("client", config)
+    create("server", config)
 }
 
 configure<com.diffplug.gradle.spotless.SpotlessExtension> {
