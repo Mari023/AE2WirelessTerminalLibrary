@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[38,)"
+loaderVersion = "[1,)"
 issueTrackerURL = "https://github.com/Mari023/AE2WirelessTerminalLibrary/issues"
 license = "MIT"
 
@@ -17,7 +17,7 @@ logoFile = "icon.png"
 config="ae2wtlib.mixins.json"
 
 [[dependencies.ae2wtlib]]
-modId = "forge"
+modId = "neoforge"
 mandatory = true
 versionRange = "*"
 ordering = "NONE"
