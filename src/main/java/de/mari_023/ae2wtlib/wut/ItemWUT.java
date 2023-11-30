@@ -17,8 +17,6 @@ import net.neoforged.api.distmarker.OnlyIn;
 
 import de.mari_023.ae2wtlib.TextConstants;
 import de.mari_023.ae2wtlib.terminal.ItemWT;
-import top.theillusivec4.curios.api.SlotContext;
-import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
 import appeng.api.upgrades.IUpgradeInventory;
 import appeng.api.upgrades.UpgradeInventories;
@@ -27,7 +25,7 @@ import appeng.api.util.IConfigManager;
 import appeng.core.definitions.AEItems;
 import appeng.menu.locator.MenuLocator;
 
-public class ItemWUT extends ItemWT implements ICurioItem {
+public class ItemWUT extends ItemWT /* implements ICurioItem */ {
     @Override
     public InteractionResultHolder<ItemStack> use(final Level w, final Player player, final InteractionHand hand) {
         if (WUTHandler.getCurrentTerminal(player.getItemInHand(hand)).isEmpty()) {
@@ -103,7 +101,8 @@ public class ItemWUT extends ItemWT implements ICurioItem {
         return WUTHandler.wirelessTerminals.get(WUTHandler.getCurrentTerminal(target)).item().getConfigManager(target);
     }
 
-    public void curioTick(SlotContext slotContext, ItemStack stack) {
-        inventoryTick(stack, slotContext.entity().level(), slotContext.entity(), 0, false);
-    }
+    /*
+     * public void curioTick(SlotContext slotContext, ItemStack stack) { inventoryTick(stack,
+     * slotContext.entity().level(), slotContext.entity(), 0, false); }
+     */
 }
