@@ -1,11 +1,7 @@
 package de.mari_023.ae2wtlib.reijei;
 
-import net.minecraft.world.item.crafting.RecipeType;
-
 import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
-import de.mari_023.ae2wtlib.wut.recipe.Combine;
-import de.mari_023.ae2wtlib.wut.recipe.Upgrade;
 import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
 import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
 import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
@@ -20,9 +16,9 @@ public class REIPlugin implements REIClientPlugin {
     }
 
     @Override
-    public void registerDisplays(DisplayRegistry registry) {
-        registry.registerRecipeFiller(Combine.class, RecipeType.CRAFTING, WUTDisplay::new);
-        registry.registerRecipeFiller(Upgrade.class, RecipeType.CRAFTING, WUTDisplay::new);
+    public void registerDisplays(DisplayRegistry registry) {// FIXME 1.20.2
+        // registry.registerRecipeFiller(Combine.class, RecipeType.CRAFTING, WUTDisplay::new);
+        // registry.registerRecipeFiller(Upgrade.class, RecipeType.CRAFTING, WUTDisplay::new);
     }
 
     @Override

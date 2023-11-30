@@ -17,6 +17,7 @@ plugins {
 
 val modVersion: String by project
 val modloader: String by project
+val legacyModloader: String by project
 val minecraftVersion: String by project
 val parchmentMinecraftVersion: String by project
 val parchmentVersion: String by project
@@ -63,16 +64,16 @@ dependencies {
     }
 
     compileOnly("me.shedaniel:RoughlyEnoughItems-${modloader}:${reiVersion}")
-    compileOnly("mezz.jei:jei-${jeiMinecraftVersion}-${modloader}:${jeiVersion}")
+    compileOnly("mezz.jei:jei-${jeiMinecraftVersion}-${legacyModloader}:${jeiVersion}")
 
     when (runtimeItemlistMod) {
         "rei" -> runtimeOnly("me.shedaniel:RoughlyEnoughItems-${modloader}:${reiVersion}")
 
-        "jei" -> runtimeOnly("mezz.jei:jei-${jeiMinecraftVersion}-${modloader}:${jeiVersion}")
+        "jei" -> runtimeOnly("mezz.jei:jei-${jeiMinecraftVersion}-${legacyModloader}:${jeiVersion}")
 
         "emi" -> {
-            runtimeOnly("dev.emi:emi-${modloader}:${emiVersion}+${minecraftVersion}")
-            runtimeOnly("mezz.jei:jei-${jeiMinecraftVersion}-${modloader}:${jeiVersion}")
+            runtimeOnly("dev.emi:emi-${legacyModloader}:${emiVersion}+${minecraftVersion}")
+            runtimeOnly("mezz.jei:jei-${jeiMinecraftVersion}-${legacyModloader}:${jeiVersion}")
         }
     }
 
