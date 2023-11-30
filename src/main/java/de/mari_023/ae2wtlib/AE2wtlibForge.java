@@ -20,13 +20,15 @@ import appeng.menu.locator.MenuLocators;
 @Mod.EventBusSubscriber
 public class AE2wtlibForge {
     private static boolean RAN_INIT = false;
+
     public AE2wtlibForge() {
         AE2wtlibConfig.init();
         if (Platform.trinketsPresent())
             MenuLocators.register(CurioLocator.class, CurioLocator::writeToPacket, CurioLocator::readFromPacket);
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         modEventBus.addListener((RegisterEvent event) -> {
-            if(RAN_INIT) return;
+            if (RAN_INIT)
+                return;
             RAN_INIT = true;
             AE2wtlib.registerMenus();
             AE2wtlib.createItems();

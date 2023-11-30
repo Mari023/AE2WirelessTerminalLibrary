@@ -21,7 +21,7 @@ public class UpgradeSerializer extends Serializer<Upgrade> {
 
     @Override
     public Codec<Upgrade> codec() {
-        return null;// FIXME 1.20.2 what does this?
+        return null;// FIXME 1.20.2 what does this? (returning null crashes when trying to load recipes)
     }
 
     @Override
