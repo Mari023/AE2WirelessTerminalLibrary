@@ -23,9 +23,9 @@
   "gui.ae2wtlib.whitelist": "Белый список",
   "gui.ae2wtlib.blacklist": "Чёрный список",
   "gui.ae2wtlib.pickup_filter": "Фильтр подбора: ",
-  "gui.ae2wtlib.insert_filter": "Insert Filter: ",
-  "gui.ae2wtlib.copy_pickup": "Копировать в Pickup",
-  "gui.ae2wtlib.copy_insert": "Копировать в Insert",
+  "gui.ae2wtlib.insert_filter": "Фильтр вставки: ",
+  "gui.ae2wtlib.copy_pickup": "Копировать в фильтр подбора",
+  "gui.ae2wtlib.copy_insert": "Копировать в фильтр вставки",
   "gui.ae2wtlib.switch": "Поменять фильтры местами",
 
   "item.ae2wtlib.wireless_pattern_encoding_terminal": "Беспроводной терминал кодирования шаблонов",
@@ -38,7 +38,7 @@
   "key.ae2.ae2wtlib_restock": "Переключить авто пополнение",
   "key.ae2.ae2wtlib_magnet": "Переключить магнитную карту",
 
-  "text.autoconfig.de/mari_023/ae2wtlib.title": "AE2 Wireless Terminals",
+  "text.autoconfig.de/mari_023/ae2wtlib.title": "AE2 Беспроводные терминалы",
 
   "text.autoconfig.de/mari_023/ae2wtlib.option.magnetCardRange": "Диапазон магнитной карты"
 }
