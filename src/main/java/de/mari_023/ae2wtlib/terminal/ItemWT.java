@@ -4,6 +4,7 @@ import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -16,15 +17,16 @@ import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 import appeng.api.features.Locatables;
+import appeng.api.implementations.blockentities.IWirelessAccessPoint;
 import appeng.api.implementations.menuobjects.ItemMenuHost;
 import appeng.api.networking.IGrid;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.upgrades.IUpgradeInventory;
 import appeng.api.upgrades.UpgradeInventories;
 import appeng.core.AEConfig;
-import appeng.core.localization.PlayerMessages;
 import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.menu.locator.MenuLocators;
+import appeng.util.Platform;
 import appeng.util.inv.AppEngInternalInventory;
 
 public abstract class ItemWT extends WirelessTerminalItem implements IUniversalWirelessTerminalItem {
@@ -92,27 +94,54 @@ public abstract class ItemWT extends WirelessTerminalItem implements IUniversalW
         return findQuantumBridge(level, frequency);
     }
 
-    @Nullable
-    private IGrid getLinkedGrid(ItemStack item, Level level) {
-        IGrid grid = super.getLinkedGrid(item, level, null);
-        if (grid != null)
+    private GridResult getLinkedGrid(ItemStack item, Level level) {
+        if (!(level instanceof ServerLevel serverLevel))
+            return GridResult.invalid(GridResult.GridStatus.NotServer);
+
+        GridResult grid = getAccessPointLinkedGrid(item, serverLevel);
+        if (grid.status().isValid())
             return grid;
+
         var quantumBridge = getQuantumBridge(item, level, null, null);
         if (quantumBridge == null)
-            return null;
+            return grid;
 
         if (quantumBridge.getActionableNode() == null)
-            return null;
-        return quantumBridge.getActionableNode().getGrid();
+            return GridResult.invalid(GridResult.GridStatus.NotFound);
+        if (!quantumBridge.getActionableNode().isPowered())
+            return GridResult.invalid(GridResult.GridStatus.NotPowered);
+        return GridResult.valid(quantumBridge.getActionableNode().getGrid());
+    }
+
+    private GridResult getAccessPointLinkedGrid(ItemStack item, ServerLevel level) {
+        var linkedPos = getLinkedPosition(item);
+        if (linkedPos == null)
+            return GridResult.invalid(GridResult.GridStatus.NotLinked);
+
+        var linkedLevel = level.getServer().getLevel(linkedPos.dimension());
+        if (linkedLevel == null)
+            return GridResult.invalid(GridResult.GridStatus.NotFound);
+
+        var be = Platform.getTickingBlockEntity(linkedLevel, linkedPos.pos());
+        if (!(be instanceof IWirelessAccessPoint accessPoint))
+            return GridResult.invalid(GridResult.GridStatus.NotFound);
+
+        var grid = accessPoint.getGrid();
+        if (grid == null)
+            return GridResult.invalid(GridResult.GridStatus.NotFound);
+
+        if (!grid.getEnergyService().isNetworkPowered())
+            return GridResult.invalid(GridResult.GridStatus.NotPowered);
+        return GridResult.valid(grid);
     }
 
     @Nullable
     public IGrid getLinkedGrid(ItemStack item, Level level, @Nullable Player sendMessagesTo) {
-        IGrid grid = getLinkedGrid(item, level);
-        if (grid == null && sendMessagesTo != null && level.isClientSide()) {
-            sendMessagesTo.displayClientMessage(PlayerMessages.LinkedNetworkNotFound.text(), true);
+        GridResult grid = getLinkedGrid(item, level);
+        if (grid.status().getError() != null && sendMessagesTo != null && !level.isClientSide()) {
+            sendMessagesTo.displayClientMessage(grid.status().getError(), true);
         }
-        return grid;
+        return grid.grid();
     }
 
     /**

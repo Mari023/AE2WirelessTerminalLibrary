@@ -36,6 +36,8 @@
   "key.ae2.ae2wtlib_restock": "Nachfüllen umschalten",
   "key.ae2.ae2wtlib_magnet": "Magnet Karte umschalten",
 
+  "chat.ae2wtlib.NetworkNotPowered" :  "Netzwerk hat keine Energie",
+
   "text.autoconfig.de/mari_023/ae2wtlib.title": "AE2 Wireless Terminals",
   "text.autoconfig.de/mari_023/ae2wtlib.option.magnetCardRange": "Reichweite der Magnet Karte"
 }

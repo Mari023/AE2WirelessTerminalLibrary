@@ -38,6 +38,8 @@
   "key.ae2.ae2wtlib_restock": "Toggle Restock",
   "key.ae2.ae2wtlib_magnet": "Toggle Magnet Card",
 
+  "chat.ae2wtlib.NetworkNotPowered" :  "Network Not Powered",
+
   "text.autoconfig.de/mari_023/ae2wtlib.title": "AE2 Wireless Terminals",
 
   "text.autoconfig.de/mari_023/ae2wtlib.option.magnetCardRange": "Magnet Card Range"

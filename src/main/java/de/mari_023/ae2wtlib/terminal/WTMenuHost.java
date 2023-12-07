@@ -86,7 +86,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost
     public MEStorage getInventory() {
         var node = getActionableNode();
         if (node == null)
-            return null;
+            return super.getInventory();
         return node.getGrid().getStorageService().getInventory();
     }
 
@@ -115,7 +115,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost
         }
         if (quantumBridge.getActionableNode() == null)
             return false;
-        return (quantumBridge.getActionableNode().getGrid() == targetGrid || targetGrid == null)
+        return (quantumBridge.getActionableNode().getGrid() == targetGrid && targetGrid != null)
                 && targetGrid.getEnergyService().isNetworkPowered();
     }
 
