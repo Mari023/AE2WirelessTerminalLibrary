@@ -1,34 +1,21 @@
 package de.mari_023.ae2wtlib.wut.recipe;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
 import com.mojang.serialization.Codec;
 
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.util.ExtraCodecs;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.crafting.Ingredient;
 
 public class UpgradeSerializer extends Serializer<Upgrade> {
     public static final String NAME = "upgrade";
-    private static final Codec<Upgrade> CODEC = null;/*FIXME ExtraCodecs.adaptJsonSerializer(UpgradeSerializer::fromJson,
-            UpgradeSerializer::toJson);*/
-
-    private static Upgrade fromJson(JsonElement json) {
-        UpgradeJsonFormat recipeJson = new Gson().fromJson(json, UpgradeJsonFormat.class);
-        if (recipeJson.terminal == null || validateOutput(recipeJson.terminalName))
-            throw new JsonSyntaxException("A required attribute is missing or invalid!");
-
-        return new Upgrade(Ingredient.fromJson(recipeJson.terminal, true), recipeJson.terminalName);
-    }
-
-    private static JsonElement toJson(Upgrade recipe) {
-        JsonObject json = new JsonObject();
-        //FIXME json.add("terminal", recipe.getTerminal().toJson(false));
-        json.addProperty("terminalName", recipe.getTerminalName());
-        return json;
-    }
+    private static final Codec<Upgrade> CODEC = RecordCodecBuilder.create(
+            builder -> builder.group(
+                            Ingredient.CODEC.fieldOf("terminal").forGetter(Upgrade::getTerminal),
+                            StringRepresentable.StringRepresentableCodec.STRING.fieldOf("terminalName").forGetter(Upgrade::getTerminalName)
+                    )
+                    .apply(builder, Upgrade::new)
+    );
 
     @Override
     public Codec<Upgrade> codec() {

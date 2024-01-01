@@ -1,39 +1,23 @@
 package de.mari_023.ae2wtlib.wut.recipe;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
 import com.mojang.serialization.Codec;
 
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.util.ExtraCodecs;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.crafting.Ingredient;
 
 public class CombineSerializer extends Serializer<Combine> {
     public static final String NAME = "combine";
-    private static final Codec<Combine> CODEC = null;/*FIXME ExtraCodecs.adaptJsonSerializer(CombineSerializer::fromJson,
-            CombineSerializer::toJson);*/
-
-    private static Combine fromJson(JsonElement json) {
-        CombineJsonFormat recipeJson = new Gson().fromJson(json, CombineJsonFormat.class);
-        if (recipeJson.terminalA == null || recipeJson.terminalB == null || validateOutput(recipeJson.terminalAName)
-                || validateOutput(recipeJson.terminalBName))
-            throw new JsonSyntaxException("A required attribute is missing or invalid!");
-
-        return new Combine(Ingredient.fromJson(recipeJson.terminalA, true),
-                Ingredient.fromJson(recipeJson.terminalB, true),
-                recipeJson.terminalAName, recipeJson.terminalBName);
-    }
-
-    private static JsonElement toJson(Combine recipe) {
-        JsonObject json = new JsonObject();
-        //FIXME json.add("terminalA", recipe.getTerminalA().toJson(false));
-        //FIXME json.add("terminalB", recipe.getTerminalB().toJson(false));
-        json.addProperty("terminalAName", recipe.getTerminalAName());
-        json.addProperty("terminalBName", recipe.getTerminalBName());
-        return json;
-    }
+    private static final Codec<Combine> CODEC = RecordCodecBuilder.create(
+            builder -> builder.group(
+                            Ingredient.CODEC.fieldOf("terminalA").forGetter(Combine::getTerminalA),
+                            Ingredient.CODEC.fieldOf("terminalB").forGetter(Combine::getTerminalB),
+                            StringRepresentable.StringRepresentableCodec.STRING.fieldOf("terminalNameA").forGetter(Combine::getTerminalAName),
+                            StringRepresentable.StringRepresentableCodec.STRING.fieldOf("terminalNameB").forGetter(Combine::getTerminalBName)
+                    )
+                    .apply(builder, Combine::new)
+    );
 
     @Override
     public Codec<Combine> codec() {
