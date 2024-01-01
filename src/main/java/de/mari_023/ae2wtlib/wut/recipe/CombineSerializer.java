@@ -13,9 +13,9 @@ public class CombineSerializer extends Serializer<Combine> {
             builder -> builder.group(
                     Ingredient.CODEC.fieldOf("terminalA").forGetter(Combine::getTerminalA),
                     Ingredient.CODEC.fieldOf("terminalB").forGetter(Combine::getTerminalB),
-                    StringRepresentable.StringRepresentableCodec.STRING.fieldOf("terminalNameA")
+                    StringRepresentable.StringRepresentableCodec.STRING.fieldOf("terminalAName")
                             .forGetter(Combine::getTerminalAName),
-                    StringRepresentable.StringRepresentableCodec.STRING.fieldOf("terminalNameB")
+                    StringRepresentable.StringRepresentableCodec.STRING.fieldOf("terminalBName")
                             .forGetter(Combine::getTerminalBName))
                     .apply(builder, Combine::new));
 
