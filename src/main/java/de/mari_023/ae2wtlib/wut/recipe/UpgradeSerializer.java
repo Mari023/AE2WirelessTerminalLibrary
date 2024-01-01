@@ -1,8 +1,8 @@
 package de.mari_023.ae2wtlib.wut.recipe;
 
 import com.mojang.serialization.Codec;
-
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -11,11 +11,10 @@ public class UpgradeSerializer extends Serializer<Upgrade> {
     public static final String NAME = "upgrade";
     private static final Codec<Upgrade> CODEC = RecordCodecBuilder.create(
             builder -> builder.group(
-                            Ingredient.CODEC.fieldOf("terminal").forGetter(Upgrade::getTerminal),
-                            StringRepresentable.StringRepresentableCodec.STRING.fieldOf("terminalName").forGetter(Upgrade::getTerminalName)
-                    )
-                    .apply(builder, Upgrade::new)
-    );
+                    Ingredient.CODEC.fieldOf("terminal").forGetter(Upgrade::getTerminal),
+                    StringRepresentable.StringRepresentableCodec.STRING.fieldOf("terminalName")
+                            .forGetter(Upgrade::getTerminalName))
+                    .apply(builder, Upgrade::new));
 
     @Override
     public Codec<Upgrade> codec() {
