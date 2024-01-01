@@ -12,8 +12,8 @@ import net.minecraft.world.item.crafting.Ingredient;
 
 public class UpgradeSerializer extends Serializer<Upgrade> {
     public static final String NAME = "upgrade";
-    private static final Codec<Upgrade> CODEC = ExtraCodecs.adaptJsonSerializer(UpgradeSerializer::fromJson,
-            UpgradeSerializer::toJson);
+    private static final Codec<Upgrade> CODEC = null;/*FIXME ExtraCodecs.adaptJsonSerializer(UpgradeSerializer::fromJson,
+            UpgradeSerializer::toJson);*/
 
     private static Upgrade fromJson(JsonElement json) {
         UpgradeJsonFormat recipeJson = new Gson().fromJson(json, UpgradeJsonFormat.class);
@@ -25,7 +25,7 @@ public class UpgradeSerializer extends Serializer<Upgrade> {
 
     private static JsonElement toJson(Upgrade recipe) {
         JsonObject json = new JsonObject();
-        json.add("terminal", recipe.getTerminal().toJson(false));
+        //FIXME json.add("terminal", recipe.getTerminal().toJson(false));
         json.addProperty("terminalName", recipe.getTerminalName());
         return json;
     }

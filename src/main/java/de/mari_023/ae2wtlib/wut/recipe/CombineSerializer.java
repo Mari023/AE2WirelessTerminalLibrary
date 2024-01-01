@@ -12,8 +12,8 @@ import net.minecraft.world.item.crafting.Ingredient;
 
 public class CombineSerializer extends Serializer<Combine> {
     public static final String NAME = "combine";
-    private static final Codec<Combine> CODEC = ExtraCodecs.adaptJsonSerializer(CombineSerializer::fromJson,
-            CombineSerializer::toJson);
+    private static final Codec<Combine> CODEC = null;/*FIXME ExtraCodecs.adaptJsonSerializer(CombineSerializer::fromJson,
+            CombineSerializer::toJson);*/
 
     private static Combine fromJson(JsonElement json) {
         CombineJsonFormat recipeJson = new Gson().fromJson(json, CombineJsonFormat.class);
@@ -28,8 +28,8 @@ public class CombineSerializer extends Serializer<Combine> {
 
     private static JsonElement toJson(Combine recipe) {
         JsonObject json = new JsonObject();
-        json.add("terminalA", recipe.getTerminalA().toJson(false));
-        json.add("terminalB", recipe.getTerminalB().toJson(false));
+        //FIXME json.add("terminalA", recipe.getTerminalA().toJson(false));
+        //FIXME json.add("terminalB", recipe.getTerminalB().toJson(false));
         json.addProperty("terminalAName", recipe.getTerminalAName());
         json.addProperty("terminalBName", recipe.getTerminalBName());
         return json;

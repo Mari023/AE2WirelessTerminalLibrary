@@ -18,42 +18,42 @@ config="ae2wtlib.mixins.json"
 
 [[dependencies.ae2wtlib]]
 modId = "neoforge"
-mandatory = true
+type="REQUIRED"
 versionRange = "*"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.ae2wtlib]]
 modId = "minecraft"
-mandatory = true
+type="REQUIRED"
 versionRange = "*"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.ae2wtlib]]
 modId = "ae2"
-mandatory = true
-versionRange = "[${ae2_version},17.0.0)"
+type="REQUIRED"
+versionRange = "[${ae2_version},18.0.0)"
 ordering = "AFTER"
 side = "BOTH"
 
 [[dependencies.ae2wtlib]]
 modId = "cloth_config"
-mandatory = true
+type="REQUIRED"
 versionRange = "*"
 ordering = "AFTER"
 side = "BOTH"
 
 [[dependencies.ae2wtlib]]
 modId = "architectury"
-mandatory = true
+type="REQUIRED"
 versionRange = "*"
 ordering = "AFTER"
 side = "BOTH"
 
 [[dependencies.ae2wtlib]]
 modId = "curios"
-mandatory = false
+type="REQUIRED"
 versionRange = "*"
 ordering = "AFTER"
 side = "BOTH"
