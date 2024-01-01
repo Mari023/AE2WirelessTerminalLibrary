@@ -57,7 +57,7 @@ if (tag != "") {
 dependencies {
     implementation("net.neoforged:neoforge:${neoforgeVersion}")
 
-    compileOnly("top.theillusivec4.curios:curios-neoforge:${curiosVersion}")
+    implementation("top.theillusivec4.curios:curios-neoforge:${curiosVersion}")
     implementation("me.shedaniel.cloth:cloth-config-${modloader}:${clothVersion}")
     implementation("dev.architectury:architectury-${modloader}:${architecturyVersion}")
     implementation("appeng:appliedenergistics2-neoforge:${ae2Version}") {
