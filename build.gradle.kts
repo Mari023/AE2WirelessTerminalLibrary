@@ -10,7 +10,7 @@ buildscript {
 }
 
 plugins {
-    id("net.neoforged.gradle.userdev") version "7.0.75"
+    id("net.neoforged.gradle.userdev") version "7.0.76"
     id("com.diffplug.spotless") version "6.21.0"
     id("maven-publish")
     java
