@@ -1,6 +1,7 @@
 package de.mari_023.ae2wtlib.wct;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.WeakHashMap;
 
 import org.jetbrains.annotations.Nullable;
@@ -22,7 +23,8 @@ import appeng.menu.locator.MenuLocator;
 
 public class CraftingTerminalHandler {
 
-    private static final WeakHashMap<Player, CraftingTerminalHandler> players = new WeakHashMap<>();
+    private static final WeakHashMap<Player, CraftingTerminalHandler> SERVER_PLAYERS = new WeakHashMap<>();
+    private static final WeakHashMap<Player, CraftingTerminalHandler> CLIENT_PLAYERS = new WeakHashMap<>();
     private final Player player;
     private ItemStack craftingTerminal = ItemStack.EMPTY;
     private WTMenuHost menuHost;
@@ -35,10 +37,10 @@ public class CraftingTerminalHandler {
     }
 
     public static CraftingTerminalHandler getCraftingTerminalHandler(Player player) {
+        Map<Player, CraftingTerminalHandler> players = player instanceof ServerPlayer ? SERVER_PLAYERS : CLIENT_PLAYERS;
+
         if (players.containsKey(player)) {
-            if (player == players.get(player).player ||
-                    (!(player instanceof ServerPlayer)
-                            && (players.get(player).player instanceof ServerPlayer)))
+            if (player == players.get(player).player)
                 return players.get(player);
             removePlayer(player);
         }
@@ -48,7 +50,10 @@ public class CraftingTerminalHandler {
     }
 
     public static void removePlayer(Player player) {
-        players.remove(player);
+        if (player instanceof ServerPlayer)
+            SERVER_PLAYERS.remove(player);
+        else
+            CLIENT_PLAYERS.remove(player);
     }
 
     public void invalidateCache() {
@@ -60,11 +65,10 @@ public class CraftingTerminalHandler {
     }
 
     public ItemStack getCraftingTerminal() {// TODO use Inventory#findSlotMatchingItem(), which ensures the stack is
-                                            // actually identical (unlike #contains() which only cares about the item)
+        // actually identical (unlike #contains() which only cares about the item)
         Inventory inv = player.getInventory();
         if ((!craftingTerminal.isEmpty()) && (inv.contains(craftingTerminal)
-                || (Platform.trinketsPresent()
-                        && Platform.isStillPresentTrinkets(player, craftingTerminal))))
+                || (Platform.trinketsPresent() && Platform.isStillPresentTrinkets(player, craftingTerminal))))
             return craftingTerminal;
 
         if (getMenuHost() == null)
