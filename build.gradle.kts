@@ -57,7 +57,7 @@ if (tag != "") {
 dependencies {
     implementation("net.neoforged:neoforge:${neoforgeVersion}")
 
-    implementation("top.theillusivec4.curios:curios-neoforge:${curiosVersion}")
+    compileOnly("top.theillusivec4.curios:curios-neoforge:${curiosVersion}")
     implementation("me.shedaniel.cloth:cloth-config-${modloader}:${clothVersion}")
     implementation("appeng:appliedenergistics2-neoforge:${ae2Version}") {
         exclude(group = "mezz.jei")

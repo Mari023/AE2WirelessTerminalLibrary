@@ -17,8 +17,6 @@ import de.mari_023.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
 import de.mari_023.ae2wtlib.wct.WCTMenu;
 import de.mari_023.ae2wtlib.wct.WCTMenuHost;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHandler;
-import top.theillusivec4.curios.api.SlotContext;
-import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
 import appeng.api.implementations.menuobjects.ItemMenuHost;
 import appeng.api.networking.IGrid;
@@ -28,7 +26,7 @@ import appeng.menu.locator.MenuLocators;
 
 @Mixin(value = WirelessCraftingTerminalItem.class, remap = false)
 public class CraftingTerminalItemMixin extends WirelessTerminalItem
-        implements IUniversalWirelessTerminalItem, ICurioItem {
+        implements IUniversalWirelessTerminalItem/* , ICurioItem */ {
 
     public CraftingTerminalItemMixin() {
         super(null, null);
@@ -71,7 +69,8 @@ public class CraftingTerminalItemMixin extends WirelessTerminalItem
         MagnetHandler.handle(player, itemStack);
     }
 
-    public void curioTick(SlotContext slotContext, ItemStack stack) {
-        inventoryTick(stack, slotContext.entity().level(), slotContext.entity(), 0, false);
-    }
+    /*
+     * public void curioTick(SlotContext slotContext, ItemStack stack) { inventoryTick(stack,
+     * slotContext.entity().level(), slotContext.entity(), 0, false); }
+     */
 }
