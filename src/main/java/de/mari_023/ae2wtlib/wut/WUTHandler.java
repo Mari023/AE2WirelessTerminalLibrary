@@ -12,13 +12,13 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.Platform;
 import de.mari_023.ae2wtlib.TextConstants;
 import de.mari_023.ae2wtlib.hotkeys.Ae2WTLibLocatingService;
-import de.mari_023.ae2wtlib.networking.ServerNetworkManager;
-import de.mari_023.ae2wtlib.networking.s2c.UpdateWUTPackage;
+import de.mari_023.ae2wtlib.networking.packages.UpdateWUTPackage;
 import de.mari_023.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
 import de.mari_023.ae2wtlib.terminal.WTMenuHost;
 
@@ -143,7 +143,7 @@ public class WUTHandler {
      * @param tag     The compound tag containing terminal data.
      */
     public static void updateClientTerminal(ServerPlayer player, MenuLocator locator, @Nullable CompoundTag tag) {
-        ServerNetworkManager.sendToClient(player, new UpdateWUTPackage(locator, tag));
+        PacketDistributor.PLAYER.with(player).send(new UpdateWUTPackage(locator, tag));
     }
 
     /**

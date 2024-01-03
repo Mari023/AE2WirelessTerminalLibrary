@@ -11,12 +11,12 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.AE2wtlibConfig;
 import de.mari_023.ae2wtlib.Platform;
-import de.mari_023.ae2wtlib.networking.ServerNetworkManager;
-import de.mari_023.ae2wtlib.networking.s2c.RestockAmountPacket;
+import de.mari_023.ae2wtlib.networking.packages.RestockAmountPacket;
 import de.mari_023.ae2wtlib.terminal.ItemWT;
 import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
 
@@ -72,7 +72,7 @@ public class MagnetHandler {
                 items.put(stack.getItem(), storageList.get(key));
         }
 
-        ServerNetworkManager.sendToClient(player, new RestockAmountPacket(items));
+        PacketDistributor.PLAYER.with(player).send(new RestockAmountPacket(items));
     }
 
     private static void handleMagnet(Player player, ItemStack terminal) {

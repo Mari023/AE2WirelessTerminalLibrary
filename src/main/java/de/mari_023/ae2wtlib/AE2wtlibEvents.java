@@ -5,9 +5,9 @@ import java.util.function.Consumer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.network.PacketDistributor;
 
-import de.mari_023.ae2wtlib.networking.ServerNetworkManager;
-import de.mari_023.ae2wtlib.networking.s2c.UpdateRestockPacket;
+import de.mari_023.ae2wtlib.networking.packages.UpdateRestockPacket;
 import de.mari_023.ae2wtlib.terminal.ItemWT;
 import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHandler;
@@ -52,7 +52,7 @@ public class AE2wtlibEvents {
 
         item.setCount(count + (int) changed);
         setStack.accept(item);
-        ServerNetworkManager.sendToClient(player, new UpdateRestockPacket(
+        PacketDistributor.PLAYER.with(player).send(new UpdateRestockPacket(
                 player.getInventory().findSlotMatchingUnusedItem(item), item.getCount()));
     }
 

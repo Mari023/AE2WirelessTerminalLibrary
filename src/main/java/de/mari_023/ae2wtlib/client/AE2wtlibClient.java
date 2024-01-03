@@ -1,9 +1,5 @@
 package de.mari_023.ae2wtlib.client;
 
-import de.mari_023.ae2wtlib.networking.ClientNetworkManager;
-import de.mari_023.ae2wtlib.networking.s2c.RestockAmountPacket;
-import de.mari_023.ae2wtlib.networking.s2c.UpdateRestockPacket;
-import de.mari_023.ae2wtlib.networking.s2c.UpdateWUTPackage;
 import de.mari_023.ae2wtlib.wat.WATMenu;
 import de.mari_023.ae2wtlib.wat.WATScreen;
 import de.mari_023.ae2wtlib.wct.TrashMenu;
@@ -24,9 +20,5 @@ public class AE2wtlibClient {
         InitScreens.register(WATMenu.TYPE, WATScreen::new, "/screens/wtlib/wireless_pattern_access_terminal.json");
         InitScreens.register(MagnetMenu.TYPE, MagnetScreen::new, "/screens/wtlib/magnet.json");
         InitScreens.register(TrashMenu.TYPE, TrashScreen::new, "/screens/wtlib/trash.json");
-
-        ClientNetworkManager.registerClientBoundPacket(UpdateWUTPackage.NAME, UpdateWUTPackage::new);
-        ClientNetworkManager.registerClientBoundPacket(UpdateRestockPacket.NAME, UpdateRestockPacket::new);
-        ClientNetworkManager.registerClientBoundPacket(RestockAmountPacket.NAME, RestockAmountPacket::new);
     }
 }

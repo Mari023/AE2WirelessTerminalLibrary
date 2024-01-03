@@ -1,6 +1,6 @@
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-package de.mari_023.ae2wtlib.networking.s2c;
+package de.mari_023.ae2wtlib.networking.packages;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
