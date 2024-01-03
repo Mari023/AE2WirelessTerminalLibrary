@@ -45,13 +45,6 @@ ordering = "AFTER"
 side = "BOTH"
 
 [[dependencies.ae2wtlib]]
-modId = "architectury"
-type="REQUIRED"
-versionRange = "*"
-ordering = "AFTER"
-side = "BOTH"
-
-[[dependencies.ae2wtlib]]
 modId = "curios"
 type="REQUIRED"
 versionRange = "*"

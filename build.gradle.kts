@@ -10,7 +10,7 @@ buildscript {
 }
 
 plugins {
-    id("net.neoforged.gradle.userdev") version "7.0.76"
+    id("net.neoforged.gradle.userdev") version "7.0.78"
     id("com.diffplug.spotless") version "6.21.0"
     id("maven-publish")
     java
@@ -59,7 +59,6 @@ dependencies {
 
     implementation("top.theillusivec4.curios:curios-neoforge:${curiosVersion}")
     implementation("me.shedaniel.cloth:cloth-config-${modloader}:${clothVersion}")
-    implementation("dev.architectury:architectury-${modloader}:${architecturyVersion}")
     implementation("appeng:appliedenergistics2-neoforge:${ae2Version}") {
         exclude(group = "mezz.jei")
         exclude(group = "me.shedaniel")

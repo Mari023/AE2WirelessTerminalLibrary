@@ -9,6 +9,7 @@ import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
 import net.neoforged.neoforge.event.entity.player.EntityItemPickupEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
 import de.mari_023.ae2wtlib.curio.CurioLocator;
@@ -35,6 +36,11 @@ public class AE2wtlibForge {
         });
         modEventBus.addListener((BuildCreativeModeTabContentsEvent event) -> AE2wtlib.addToCreativeTab());
     }
+
+    /*@SubscribeEvent
+    public static void register(RegisterPacketHandlerEvent event) {
+        IPayloadRegistrar registrar = event.registrar(AE2wtlib.MOD_NAME);
+    }*/
 
     @SubscribeEvent
     public static void handle(LivingEntityUseItemEvent.Finish event) {
