@@ -31,8 +31,7 @@ public class AE2wtlibForge {
 
     public AE2wtlibForge(IEventBus modEventBus) {
         AE2wtlibConfig.init();
-        if (Platform.trinketsPresent())
-            MenuLocators.register(CurioLocator.class, CurioLocator::writeToPacket, CurioLocator::readFromPacket);
+        MenuLocators.register(CurioLocator.class, CurioLocator::writeToPacket, CurioLocator::readFromPacket);
         modEventBus.addListener((RegisterEvent event) -> {
             if (RAN_INIT)
                 return;

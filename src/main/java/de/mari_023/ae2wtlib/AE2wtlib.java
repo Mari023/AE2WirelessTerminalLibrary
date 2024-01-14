@@ -1,5 +1,7 @@
 package de.mari_023.ae2wtlib;
 
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 
@@ -27,6 +29,7 @@ import de.mari_023.ae2wtlib.wut.recipe.UpgradeSerializer;
 import appeng.api.features.GridLinkables;
 import appeng.api.features.HotkeyAction;
 import appeng.api.upgrades.Upgrades;
+import appeng.core.AppEng;
 import appeng.core.definitions.AEItems;
 import appeng.hotkeys.HotkeyActions;
 import appeng.items.tools.powered.WirelessTerminalItem;
@@ -55,8 +58,10 @@ public class AE2wtlib {
         WUTHandler.addTerminal("pattern_access", PATTERN_ACCESS_TERMINAL::tryOpen, WATMenuHost::new, WATMenu.TYPE,
                 PATTERN_ACCESS_TERMINAL);
 
-        Platform.registerRecipe(UpgradeSerializer.NAME, Upgrade.serializer = new UpgradeSerializer());
-        Platform.registerRecipe(CombineSerializer.NAME, Combine.serializer = new CombineSerializer());
+        Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, makeID(UpgradeSerializer.NAME),
+                (Upgrade.serializer = new UpgradeSerializer()));
+        Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, makeID(CombineSerializer.NAME),
+                (Combine.serializer = new CombineSerializer()));
 
         HotkeyActions.register(new RestockHotkeyAction(), "ae2wtlib_restock");
         HotkeyActions.register(new MagnetHotkeyAction(), "ae2wtlib_magnet");
@@ -76,11 +81,13 @@ public class AE2wtlib {
                 .createUpgradeCardItem(new Item.Properties().stacksTo(1));
         MAGNET_CARD = Upgrades.createUpgradeCardItem(new Item.Properties().stacksTo(1));
 
-        Platform.registerItem("quantum_bridge_card", QUANTUM_BRIDGE_CARD);
-        Platform.registerItem("magnet_card", MAGNET_CARD);
-        Platform.registerItem("wireless_pattern_encoding_terminal", PATTERN_ENCODING_TERMINAL);
-        Platform.registerItem("wireless_pattern_access_terminal", PATTERN_ACCESS_TERMINAL);
-        Platform.registerItem("wireless_universal_terminal", UNIVERSAL_TERMINAL);
+        Registry.register(BuiltInRegistries.ITEM, makeID("quantum_bridge_card"), QUANTUM_BRIDGE_CARD);
+        Registry.register(BuiltInRegistries.ITEM, makeID("magnet_card"), MAGNET_CARD);
+        Registry.register(BuiltInRegistries.ITEM, makeID("wireless_pattern_encoding_terminal"),
+                PATTERN_ENCODING_TERMINAL);
+        Registry.register(BuiltInRegistries.ITEM, makeID("wireless_pattern_access_terminal"),
+                PATTERN_ACCESS_TERMINAL);
+        Registry.register(BuiltInRegistries.ITEM, makeID("wireless_universal_terminal"), UNIVERSAL_TERMINAL);
 
         GridLinkables.register(PATTERN_ENCODING_TERMINAL, WirelessTerminalItem.LINKABLE_HANDLER);
         GridLinkables.register(PATTERN_ACCESS_TERMINAL, WirelessTerminalItem.LINKABLE_HANDLER);
@@ -97,11 +104,11 @@ public class AE2wtlib {
     }
 
     static void registerMenus() {
-        Platform.registerMenuType(WCTMenu.ID, WCTMenu.TYPE);
-        Platform.registerMenuType(WATMenu.ID, WATMenu.TYPE);
-        Platform.registerMenuType(WETMenu.ID, WETMenu.TYPE);
-        Platform.registerMenuType(MagnetMenu.ID, MagnetMenu.TYPE);
-        Platform.registerMenuType(TrashMenu.ID, TrashMenu.TYPE);
+        Registry.register(BuiltInRegistries.MENU, AppEng.makeId(WCTMenu.ID), WCTMenu.TYPE);
+        Registry.register(BuiltInRegistries.MENU, AppEng.makeId(WATMenu.ID), WATMenu.TYPE);
+        Registry.register(BuiltInRegistries.MENU, AppEng.makeId(WETMenu.ID), WETMenu.TYPE);
+        Registry.register(BuiltInRegistries.MENU, AppEng.makeId(MagnetMenu.ID), MagnetMenu.TYPE);
+        Registry.register(BuiltInRegistries.MENU, AppEng.makeId(TrashMenu.ID), TrashMenu.TYPE);
     }
 
     public static ResourceLocation makeID(String name) {

@@ -12,7 +12,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
-import de.mari_023.ae2wtlib.Platform;
+import de.mari_023.ae2wtlib.curio.CurioHelper;
 import de.mari_023.ae2wtlib.terminal.WTMenuHost;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHost;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
@@ -67,8 +67,8 @@ public class CraftingTerminalHandler {
     public ItemStack getCraftingTerminal() {// TODO use Inventory#findSlotMatchingItem(), which ensures the stack is
         // actually identical (unlike #contains() which only cares about the item)
         Inventory inv = player.getInventory();
-        if ((!craftingTerminal.isEmpty()) && (inv.contains(craftingTerminal)
-                || (Platform.trinketsPresent() && Platform.isStillPresentTrinkets(player, craftingTerminal))))
+        if (!craftingTerminal.isEmpty() && (inv.contains(craftingTerminal)
+                || CurioHelper.isStillPresent(player, craftingTerminal)))
             return craftingTerminal;
 
         if (getMenuHost() == null)

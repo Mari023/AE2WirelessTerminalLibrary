@@ -10,7 +10,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 import de.mari_023.ae2wtlib.AE2wtlib;
-import de.mari_023.ae2wtlib.Platform;
+import de.mari_023.ae2wtlib.curio.CurioHelper;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 import appeng.api.config.Actionable;
@@ -177,6 +177,6 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost
     protected boolean ensureItemStillInSlot() {
         if (getSlot() != null)
             return super.ensureItemStillInSlot();
-        return Platform.isStillPresentTrinkets(getPlayer(), getItemStack());
+        return CurioHelper.isStillPresent(getPlayer(), getItemStack());
     }
 }

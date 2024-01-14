@@ -15,8 +15,8 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 import de.mari_023.ae2wtlib.AE2wtlib;
-import de.mari_023.ae2wtlib.Platform;
 import de.mari_023.ae2wtlib.TextConstants;
+import de.mari_023.ae2wtlib.curio.CurioHelper;
 import de.mari_023.ae2wtlib.hotkeys.Ae2WTLibLocatingService;
 import de.mari_023.ae2wtlib.networking.packages.UpdateWUTPackage;
 import de.mari_023.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
@@ -180,7 +180,7 @@ public class WUTHandler {
      */
     @Nullable
     public static MenuLocator findTerminal(Player player, String terminalName) {
-        MenuLocator locator = Platform.findTerminalFromAccessory(player, terminalName);
+        MenuLocator locator = CurioHelper.findTerminal(player, terminalName);
         if (locator != null)
             return locator;
 
@@ -199,7 +199,7 @@ public class WUTHandler {
      * @return The ItemStack located, or an empty stack if not found.
      */
     public static ItemStack getItemStackFromLocator(Player player, MenuLocator locator) {
-        ItemStack stack = Platform.getItemStackFromTrinketsLocator(player, locator);
+        ItemStack stack = CurioHelper.getItemStack(player, locator);
         if (!stack.isEmpty())
             return stack;
         ItemMenuHost host = locator.locate(player, WTMenuHost.class);
