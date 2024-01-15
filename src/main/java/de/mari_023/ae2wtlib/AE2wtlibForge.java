@@ -17,10 +17,10 @@ import net.neoforged.neoforge.registries.RegisterEvent;
 
 import de.mari_023.ae2wtlib.curio.CurioLocator;
 import de.mari_023.ae2wtlib.networking.AE2wtlibPacket;
-import de.mari_023.ae2wtlib.networking.packages.CycleTerminalPacket;
-import de.mari_023.ae2wtlib.networking.packages.RestockAmountPacket;
-import de.mari_023.ae2wtlib.networking.packages.UpdateRestockPacket;
-import de.mari_023.ae2wtlib.networking.packages.UpdateWUTPackage;
+import de.mari_023.ae2wtlib.networking.CycleTerminalPacket;
+import de.mari_023.ae2wtlib.networking.RestockAmountPacket;
+import de.mari_023.ae2wtlib.networking.UpdateRestockPacket;
+import de.mari_023.ae2wtlib.networking.UpdateWUTPackage;
 
 import appeng.menu.locator.MenuLocators;
 

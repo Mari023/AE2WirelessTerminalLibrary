@@ -7,7 +7,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 
-import de.mari_023.ae2wtlib.networking.packages.UpdateRestockPacket;
+import de.mari_023.ae2wtlib.networking.UpdateRestockPacket;
 import de.mari_023.ae2wtlib.terminal.ItemWT;
 import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHandler;

@@ -1,6 +1,6 @@
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-package de.mari_023.ae2wtlib.networking.packages;
+package de.mari_023.ae2wtlib.hotkeys;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 

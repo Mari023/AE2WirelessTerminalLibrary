@@ -18,7 +18,7 @@ import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.TextConstants;
 import de.mari_023.ae2wtlib.curio.CurioHelper;
 import de.mari_023.ae2wtlib.hotkeys.Ae2WTLibLocatingService;
-import de.mari_023.ae2wtlib.networking.packages.UpdateWUTPackage;
+import de.mari_023.ae2wtlib.networking.UpdateWUTPackage;
 import de.mari_023.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
 import de.mari_023.ae2wtlib.terminal.WTMenuHost;
 

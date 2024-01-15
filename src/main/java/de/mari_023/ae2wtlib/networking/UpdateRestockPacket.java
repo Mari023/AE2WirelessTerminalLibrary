@@ -1,11 +1,10 @@
-package de.mari_023.ae2wtlib.networking.packages;
+package de.mari_023.ae2wtlib.networking;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 
 import de.mari_023.ae2wtlib.AE2wtlib;
-import de.mari_023.ae2wtlib.networking.AE2wtlibPacket;
 
 public record UpdateRestockPacket(int slot, int amount) implements AE2wtlibPacket {
 

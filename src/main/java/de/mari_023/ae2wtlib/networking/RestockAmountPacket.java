@@ -1,4 +1,4 @@
-package de.mari_023.ae2wtlib.networking.packages;
+package de.mari_023.ae2wtlib.networking;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +10,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 import de.mari_023.ae2wtlib.AE2wtlib;
-import de.mari_023.ae2wtlib.networking.AE2wtlibPacket;
 import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
 
 public record RestockAmountPacket(HashMap<Item, Long> items) implements AE2wtlibPacket {

@@ -1,4 +1,4 @@
-package de.mari_023.ae2wtlib.networking.packages;
+package de.mari_023.ae2wtlib.networking;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -7,7 +7,6 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 
 import de.mari_023.ae2wtlib.AE2wtlib;
-import de.mari_023.ae2wtlib.networking.AE2wtlibPacket;
 import de.mari_023.ae2wtlib.terminal.WTMenuHost;
 import de.mari_023.ae2wtlib.wut.ItemWUT;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
