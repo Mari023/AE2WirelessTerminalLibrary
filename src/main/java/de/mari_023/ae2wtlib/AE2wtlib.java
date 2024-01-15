@@ -58,10 +58,8 @@ public class AE2wtlib {
         WUTHandler.addTerminal("pattern_access", PATTERN_ACCESS_TERMINAL::tryOpen, WATMenuHost::new, WATMenu.TYPE,
                 PATTERN_ACCESS_TERMINAL);
 
-        Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, makeID(UpgradeSerializer.NAME),
-                (Upgrade.serializer = new UpgradeSerializer()));
-        Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, makeID(CombineSerializer.NAME),
-                (Combine.serializer = new CombineSerializer()));
+        Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, makeID(UpgradeSerializer.NAME), Upgrade.serializer);
+        Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, makeID(CombineSerializer.NAME), Combine.serializer);
 
         HotkeyActions.register(new RestockHotkeyAction(), "ae2wtlib_restock");
         HotkeyActions.register(new MagnetHotkeyAction(), "ae2wtlib_magnet");

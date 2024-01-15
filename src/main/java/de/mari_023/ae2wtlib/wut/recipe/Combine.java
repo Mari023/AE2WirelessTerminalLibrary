@@ -9,15 +9,13 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 
 public class Combine extends Common {
-    public static CombineSerializer serializer;
-
+    public static final CombineSerializer serializer = new CombineSerializer();
     private final Ingredient terminalA;
     private final Ingredient terminalB;
     private final String terminalAName;
     private final String terminalBName;
 
     public Combine(Ingredient terminalA, Ingredient terminalB, String terminalAName, String TerminalBName) {
-        super();
         this.terminalA = terminalA;
         this.terminalB = terminalB;
         this.terminalAName = terminalAName;

@@ -11,12 +11,11 @@ import net.minecraft.world.level.Level;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 public class Upgrade extends Common {
-    public static UpgradeSerializer serializer;
+    public static final UpgradeSerializer serializer = new UpgradeSerializer();
     private final Ingredient terminal;
     private final String terminalName;
 
     public Upgrade(Ingredient terminal, String terminalName) {
-        super();
         this.terminal = terminal;
         this.terminalName = terminalName;
         outputStack.getOrCreateTag().putBoolean(terminalName, true);
