@@ -4,11 +4,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
 
-import de.mari_023.ae2wtlib.AE2wtlibSlotSemantics;
-import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
-import de.mari_023.ae2wtlib.wct.WCTMenuHost;
-import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHost;
-
 import appeng.api.storage.ISubMenuHost;
 import appeng.menu.AEBaseMenu;
 import appeng.menu.ISubMenu;
@@ -17,6 +12,11 @@ import appeng.menu.implementations.MenuTypeBuilder;
 import appeng.menu.slot.FakeSlot;
 import appeng.util.ConfigInventory;
 import appeng.util.ConfigMenuInventory;
+
+import de.mari_023.ae2wtlib.AE2wtlibSlotSemantics;
+import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
+import de.mari_023.ae2wtlib.wct.WCTMenuHost;
+import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHost;
 
 public class MagnetMenu extends AEBaseMenu implements ISubMenu {
     public static final String ID = "magnet";

@@ -8,14 +8,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-import de.mari_023.ae2wtlib.AE2wtlib;
-import de.mari_023.ae2wtlib.terminal.WTMenuHost;
-
 import appeng.api.implementations.blockentities.IViewCellStorage;
 import appeng.helpers.IPatternTerminalLogicHost;
 import appeng.helpers.IPatternTerminalMenuHost;
 import appeng.menu.ISubMenu;
 import appeng.parts.encoding.PatternEncodingLogic;
+
+import de.mari_023.ae2wtlib.AE2wtlib;
+import de.mari_023.ae2wtlib.terminal.WTMenuHost;
 
 public class WETMenuHost extends WTMenuHost
         implements IViewCellStorage, IPatternTerminalMenuHost, IPatternTerminalLogicHost {

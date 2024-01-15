@@ -12,17 +12,17 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-import de.mari_023.ae2wtlib.AE2wtlib;
-import de.mari_023.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
-import de.mari_023.ae2wtlib.wct.WCTMenu;
-import de.mari_023.ae2wtlib.wct.WCTMenuHost;
-import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHandler;
-
 import appeng.api.implementations.menuobjects.ItemMenuHost;
 import appeng.api.networking.IGrid;
 import appeng.items.tools.powered.WirelessCraftingTerminalItem;
 import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.menu.locator.MenuLocators;
+
+import de.mari_023.ae2wtlib.AE2wtlib;
+import de.mari_023.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
+import de.mari_023.ae2wtlib.wct.WCTMenu;
+import de.mari_023.ae2wtlib.wct.WCTMenuHost;
+import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHandler;
 
 @Mixin(value = WirelessCraftingTerminalItem.class, remap = false)
 public class CraftingTerminalItemMixin extends WirelessTerminalItem

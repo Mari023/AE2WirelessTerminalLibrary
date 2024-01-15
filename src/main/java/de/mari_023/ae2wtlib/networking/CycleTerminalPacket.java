@@ -6,13 +6,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 
+import appeng.menu.AEBaseMenu;
+import appeng.menu.locator.MenuLocator;
+
 import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.terminal.WTMenuHost;
 import de.mari_023.ae2wtlib.wut.ItemWUT;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
-
-import appeng.menu.AEBaseMenu;
-import appeng.menu.locator.MenuLocator;
 
 public record CycleTerminalPacket(boolean isRightClick) implements AE2wtlibPacket {
 

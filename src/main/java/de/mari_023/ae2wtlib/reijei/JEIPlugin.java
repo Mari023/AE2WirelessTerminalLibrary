@@ -2,13 +2,14 @@ package de.mari_023.ae2wtlib.reijei;
 
 import net.minecraft.resources.ResourceLocation;
 
-import de.mari_023.ae2wtlib.AE2wtlib;
-import de.mari_023.ae2wtlib.wut.WUTHandler;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeTransferRegistration;
+
+import de.mari_023.ae2wtlib.AE2wtlib;
+import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 @JeiPlugin
 public class JEIPlugin implements IModPlugin {

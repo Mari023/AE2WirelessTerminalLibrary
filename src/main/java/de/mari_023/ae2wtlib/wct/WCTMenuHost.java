@@ -9,15 +9,15 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-import de.mari_023.ae2wtlib.AE2wtlib;
-import de.mari_023.ae2wtlib.terminal.WTMenuHost;
-
 import appeng.api.implementations.blockentities.IViewCellStorage;
 import appeng.api.inventories.InternalInventory;
 import appeng.core.definitions.AEItems;
 import appeng.menu.ISubMenu;
 import appeng.parts.reporting.CraftingTerminalPart;
 import appeng.util.inv.AppEngInternalInventory;
+
+import de.mari_023.ae2wtlib.AE2wtlib;
+import de.mari_023.ae2wtlib.terminal.WTMenuHost;
 
 public class WCTMenuHost extends WTMenuHost implements IViewCellStorage {
     private final AppEngInternalInventory craftingGrid = new AppEngInternalInventory(this, 9);

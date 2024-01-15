@@ -3,11 +3,11 @@ package de.mari_023.ae2wtlib.wat;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 
-import de.mari_023.ae2wtlib.terminal.ItemWT;
-
 import appeng.api.config.Settings;
 import appeng.api.config.ShowPatternProviders;
 import appeng.api.util.IConfigManager;
+
+import de.mari_023.ae2wtlib.terminal.ItemWT;
 
 public class ItemWAT extends ItemWT {
     @Override

@@ -9,11 +9,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 
-import de.mari_023.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
-import de.mari_023.ae2wtlib.terminal.WTMenuHost;
-
 import appeng.menu.ISubMenu;
 import appeng.menu.locator.MenuLocator;
+
+import de.mari_023.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
+import de.mari_023.ae2wtlib.terminal.WTMenuHost;
 
 public record WTDefinition(ContainerOpener containerOpener, WTMenuHostFactory wTMenuHostFactory, MenuType<?> menuType,
         IUniversalWirelessTerminalItem item, ItemStack universalTerminal, MutableComponent terminalName) {

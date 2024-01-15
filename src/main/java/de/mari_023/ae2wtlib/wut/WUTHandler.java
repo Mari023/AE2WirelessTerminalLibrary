@@ -14,6 +14,11 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 
+import appeng.api.implementations.menuobjects.ItemMenuHost;
+import appeng.hotkeys.HotkeyActions;
+import appeng.menu.locator.MenuLocator;
+import appeng.menu.locator.MenuLocators;
+
 import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.TextConstants;
 import de.mari_023.ae2wtlib.curio.CurioHelper;
@@ -21,11 +26,6 @@ import de.mari_023.ae2wtlib.hotkeys.Ae2WTLibLocatingService;
 import de.mari_023.ae2wtlib.networking.UpdateWUTPackage;
 import de.mari_023.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
 import de.mari_023.ae2wtlib.terminal.WTMenuHost;
-
-import appeng.api.implementations.menuobjects.ItemMenuHost;
-import appeng.hotkeys.HotkeyActions;
-import appeng.menu.locator.MenuLocator;
-import appeng.menu.locator.MenuLocators;
 
 /**
  * This class handles functionalities related to the Wireless Universal Terminal (WUT). It provides methods to get and

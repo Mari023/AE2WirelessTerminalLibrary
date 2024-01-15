@@ -12,14 +12,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
+import appeng.api.networking.IGrid;
+import appeng.api.networking.IGridNode;
+import appeng.menu.locator.MenuLocator;
+
 import de.mari_023.ae2wtlib.curio.CurioHelper;
 import de.mari_023.ae2wtlib.terminal.WTMenuHost;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHost;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
-
-import appeng.api.networking.IGrid;
-import appeng.api.networking.IGridNode;
-import appeng.menu.locator.MenuLocator;
 
 public class CraftingTerminalHandler {
 

@@ -5,6 +5,17 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 
+import appeng.api.features.GridLinkables;
+import appeng.api.features.HotkeyAction;
+import appeng.api.upgrades.Upgrades;
+import appeng.core.AppEng;
+import appeng.core.definitions.AEItems;
+import appeng.hotkeys.HotkeyActions;
+import appeng.init.client.InitScreens;
+import appeng.items.tools.powered.WirelessTerminalItem;
+import appeng.server.testplots.TestPlots;
+import appeng.util.SearchInventoryEvent;
+
 import de.mari_023.ae2wtlib.curio.CurioHelper;
 import de.mari_023.ae2wtlib.hotkeys.MagnetHotkeyAction;
 import de.mari_023.ae2wtlib.hotkeys.RestockHotkeyAction;
@@ -26,17 +37,6 @@ import de.mari_023.ae2wtlib.wut.recipe.Combine;
 import de.mari_023.ae2wtlib.wut.recipe.CombineSerializer;
 import de.mari_023.ae2wtlib.wut.recipe.Upgrade;
 import de.mari_023.ae2wtlib.wut.recipe.UpgradeSerializer;
-
-import appeng.api.features.GridLinkables;
-import appeng.api.features.HotkeyAction;
-import appeng.api.upgrades.Upgrades;
-import appeng.core.AppEng;
-import appeng.core.definitions.AEItems;
-import appeng.hotkeys.HotkeyActions;
-import appeng.init.client.InitScreens;
-import appeng.items.tools.powered.WirelessTerminalItem;
-import appeng.server.testplots.TestPlots;
-import appeng.util.SearchInventoryEvent;
 
 public class AE2wtlib {
     public static final String MOD_NAME = "ae2wtlib";

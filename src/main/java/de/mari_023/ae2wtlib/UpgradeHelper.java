@@ -5,11 +5,11 @@ import java.util.Map;
 
 import net.minecraft.world.level.ItemLike;
 
-import de.mari_023.ae2wtlib.wut.WUTHandler;
-
 import appeng.api.upgrades.Upgrades;
 import appeng.core.definitions.AEItems;
 import appeng.core.localization.GuiText;
+
+import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 public class UpgradeHelper {
     private static boolean readyForUpgrades = false;

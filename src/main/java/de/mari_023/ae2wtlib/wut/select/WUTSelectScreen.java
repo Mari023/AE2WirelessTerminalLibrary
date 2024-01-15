@@ -13,8 +13,9 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 
-import de.mari_023.ae2wtlib.wut.WUTHandler;
 import me.shedaniel.math.Color;
+
+import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 public class WUTSelectScreen extends Screen {
 

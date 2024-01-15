@@ -3,10 +3,10 @@ package de.mari_023.ae2wtlib.hotkeys;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-import de.mari_023.ae2wtlib.wut.WUTHandler;
-
 import appeng.api.features.HotkeyAction;
 import appeng.menu.locator.MenuLocator;
+
+import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 public class Ae2WTLibLocatingService implements HotkeyAction {
 

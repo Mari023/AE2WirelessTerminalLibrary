@@ -5,10 +5,11 @@ import java.util.Optional;
 
 import net.minecraft.world.item.crafting.RecipeHolder;
 
-import de.mari_023.ae2wtlib.AE2wtlib;
-import de.mari_023.ae2wtlib.wut.recipe.Common;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.plugin.common.displays.crafting.DefaultCraftingDisplay;
+
+import de.mari_023.ae2wtlib.AE2wtlib;
+import de.mari_023.ae2wtlib.wut.recipe.Common;
 
 public class WUTDisplay extends DefaultCraftingDisplay<Common> {
 

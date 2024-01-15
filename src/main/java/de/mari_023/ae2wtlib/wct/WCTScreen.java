@@ -6,18 +6,18 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
+import appeng.client.gui.Icon;
+import appeng.client.gui.me.items.CraftingTermScreen;
+import appeng.client.gui.style.ScreenStyle;
+import appeng.client.gui.widgets.BackgroundPanel;
+import appeng.client.gui.widgets.IconButton;
+
 import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.TextConstants;
 import de.mari_023.ae2wtlib.terminal.ItemButton;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetMode;
 import de.mari_023.ae2wtlib.wut.CycleTerminalButton;
 import de.mari_023.ae2wtlib.wut.IUniversalTerminalCapable;
-
-import appeng.client.gui.Icon;
-import appeng.client.gui.me.items.CraftingTermScreen;
-import appeng.client.gui.style.ScreenStyle;
-import appeng.client.gui.widgets.BackgroundPanel;
-import appeng.client.gui.widgets.IconButton;
 
 public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversalTerminalCapable {
 

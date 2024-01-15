@@ -7,7 +7,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
-import de.mari_023.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.SlotResult;
@@ -15,6 +14,8 @@ import top.theillusivec4.curios.api.SlotResult;
 import appeng.api.implementations.menuobjects.ItemMenuHost;
 import appeng.core.AELog;
 import appeng.menu.locator.MenuLocator;
+
+import de.mari_023.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
 
 public record CurioLocator(String identifier, int index) implements MenuLocator {
 

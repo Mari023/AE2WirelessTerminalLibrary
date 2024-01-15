@@ -8,11 +8,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.fml.ModList;
 
-import de.mari_023.ae2wtlib.wut.WUTHandler;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotResult;
 
 import appeng.menu.locator.MenuLocator;
+
+import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 public final class CurioHelper {
     private CurioHelper() {

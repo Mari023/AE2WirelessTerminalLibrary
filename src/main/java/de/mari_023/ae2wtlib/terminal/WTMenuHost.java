@@ -9,10 +9,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-import de.mari_023.ae2wtlib.AE2wtlib;
-import de.mari_023.ae2wtlib.curio.CurioHelper;
-import de.mari_023.ae2wtlib.wut.WUTHandler;
-
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
 import appeng.api.inventories.ISegmentedInventory;
@@ -31,6 +27,10 @@ import appeng.me.cluster.implementations.QuantumCluster;
 import appeng.menu.ISubMenu;
 import appeng.util.inv.AppEngInternalInventory;
 import appeng.util.inv.InternalInventoryHost;
+
+import de.mari_023.ae2wtlib.AE2wtlib;
+import de.mari_023.ae2wtlib.curio.CurioHelper;
+import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 public abstract class WTMenuHost extends WirelessTerminalMenuHost
         implements InternalInventoryHost, ISegmentedInventory {

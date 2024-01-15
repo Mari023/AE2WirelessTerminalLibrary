@@ -7,16 +7,16 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 
+import appeng.api.config.Actionable;
+import appeng.api.stacks.AEItemKey;
+import appeng.me.helpers.PlayerSource;
+
 import de.mari_023.ae2wtlib.networking.UpdateRestockPacket;
 import de.mari_023.ae2wtlib.terminal.ItemWT;
 import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHandler;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHost;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetMode;
-
-import appeng.api.config.Actionable;
-import appeng.api.stacks.AEItemKey;
-import appeng.me.helpers.PlayerSource;
 
 public class AE2wtlibEvents {
     /**

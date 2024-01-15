@@ -12,10 +12,10 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
+import appeng.util.ReadableNumberConverter;
+
 import de.mari_023.ae2wtlib.terminal.ItemWT;
 import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
-
-import appeng.util.ReadableNumberConverter;
 
 @OnlyIn(Dist.CLIENT)
 @Mixin(value = GuiGraphics.class, remap = false)

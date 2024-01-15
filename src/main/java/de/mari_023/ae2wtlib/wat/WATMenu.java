@@ -3,10 +3,6 @@ package de.mari_023.ae2wtlib.wat;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
 
-import de.mari_023.ae2wtlib.AE2wtlibSlotSemantics;
-import de.mari_023.ae2wtlib.wct.WCTMenuHost;
-import de.mari_023.ae2wtlib.wut.ItemWUT;
-
 import appeng.api.storage.ITerminalHost;
 import appeng.api.upgrades.IUpgradeInventory;
 import appeng.menu.SlotSemantics;
@@ -14,6 +10,10 @@ import appeng.menu.ToolboxMenu;
 import appeng.menu.implementations.MenuTypeBuilder;
 import appeng.menu.implementations.PatternAccessTermMenu;
 import appeng.menu.slot.RestrictedInputSlot;
+
+import de.mari_023.ae2wtlib.AE2wtlibSlotSemantics;
+import de.mari_023.ae2wtlib.wct.WCTMenuHost;
+import de.mari_023.ae2wtlib.wut.ItemWUT;
 
 public class WATMenu extends PatternAccessTermMenu {
     public static final String ID = "wireless_pattern_access_terminal";

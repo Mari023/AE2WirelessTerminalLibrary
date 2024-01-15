@@ -4,10 +4,10 @@ import javax.annotation.Nullable;
 
 import net.minecraft.network.chat.Component;
 
-import de.mari_023.ae2wtlib.TextConstants;
-
 import appeng.api.networking.IGrid;
 import appeng.core.localization.PlayerMessages;
+
+import de.mari_023.ae2wtlib.TextConstants;
 
 public record GridResult(@Nullable IGrid grid, GridStatus status) {
 

@@ -16,14 +16,14 @@ import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
 import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
+import appeng.menu.locator.MenuLocators;
+
 import de.mari_023.ae2wtlib.curio.CurioLocator;
 import de.mari_023.ae2wtlib.networking.AE2wtlibPacket;
 import de.mari_023.ae2wtlib.networking.CycleTerminalPacket;
 import de.mari_023.ae2wtlib.networking.RestockAmountPacket;
 import de.mari_023.ae2wtlib.networking.UpdateRestockPacket;
 import de.mari_023.ae2wtlib.networking.UpdateWUTPackage;
-
-import appeng.menu.locator.MenuLocators;
 
 @Mod(AE2wtlib.MOD_NAME)
 @Mod.EventBusSubscriber

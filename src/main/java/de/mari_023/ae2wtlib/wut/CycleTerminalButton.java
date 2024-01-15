@@ -13,11 +13,11 @@ import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
-import de.mari_023.ae2wtlib.AE2wtlib;
-import de.mari_023.ae2wtlib.TextConstants;
-
 import appeng.client.gui.widgets.ITooltip;
 import appeng.core.AppEng;
+
+import de.mari_023.ae2wtlib.AE2wtlib;
+import de.mari_023.ae2wtlib.TextConstants;
 
 public class CycleTerminalButton extends Button implements ITooltip {
 

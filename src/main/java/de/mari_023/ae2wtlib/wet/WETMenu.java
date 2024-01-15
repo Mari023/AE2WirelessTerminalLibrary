@@ -3,14 +3,14 @@ package de.mari_023.ae2wtlib.wet;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
 
-import de.mari_023.ae2wtlib.AE2wtlibSlotSemantics;
-import de.mari_023.ae2wtlib.wct.WCTMenuHost;
-import de.mari_023.ae2wtlib.wut.ItemWUT;
-
 import appeng.api.networking.IGridNode;
 import appeng.menu.implementations.MenuTypeBuilder;
 import appeng.menu.me.items.PatternEncodingTermMenu;
 import appeng.menu.slot.RestrictedInputSlot;
+
+import de.mari_023.ae2wtlib.AE2wtlibSlotSemantics;
+import de.mari_023.ae2wtlib.wct.WCTMenuHost;
+import de.mari_023.ae2wtlib.wut.ItemWUT;
 
 public class WETMenu extends PatternEncodingTermMenu {
     public static final String ID = "wireless_pattern_encoding_terminal";

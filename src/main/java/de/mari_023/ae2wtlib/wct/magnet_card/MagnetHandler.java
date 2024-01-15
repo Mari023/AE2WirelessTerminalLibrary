@@ -13,15 +13,15 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 
+import appeng.api.stacks.AEItemKey;
+import appeng.api.stacks.KeyCounter;
+import appeng.api.upgrades.IUpgradeableItem;
+
 import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.AE2wtlibConfig;
 import de.mari_023.ae2wtlib.networking.RestockAmountPacket;
 import de.mari_023.ae2wtlib.terminal.ItemWT;
 import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
-
-import appeng.api.stacks.AEItemKey;
-import appeng.api.stacks.KeyCounter;
-import appeng.api.upgrades.IUpgradeableItem;
 
 public class MagnetHandler {
     private static final WeakHashMap<ServerPlayer, Integer> players = new WeakHashMap<>();

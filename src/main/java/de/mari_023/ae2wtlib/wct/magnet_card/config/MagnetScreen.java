@@ -3,14 +3,14 @@ package de.mari_023.ae2wtlib.wct.magnet_card.config;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
-import de.mari_023.ae2wtlib.TextConstants;
-
 import appeng.api.config.IncludeExclude;
 import appeng.client.gui.AEBaseScreen;
 import appeng.client.gui.Icon;
 import appeng.client.gui.implementations.AESubScreen;
 import appeng.client.gui.style.ScreenStyle;
 import appeng.client.gui.widgets.IconButton;
+
+import de.mari_023.ae2wtlib.TextConstants;
 
 public class MagnetScreen extends AEBaseScreen<MagnetMenu> {
     public MagnetScreen(MagnetMenu menu, Inventory playerInventory, Component title, ScreenStyle style) {

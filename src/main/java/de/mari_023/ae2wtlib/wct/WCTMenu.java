@@ -6,6 +6,13 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.ItemStack;
 
+import appeng.api.networking.IGridNode;
+import appeng.menu.MenuOpener;
+import appeng.menu.SlotSemantic;
+import appeng.menu.implementations.MenuTypeBuilder;
+import appeng.menu.me.items.CraftingTermMenu;
+import appeng.menu.slot.RestrictedInputSlot;
+
 import de.mari_023.ae2wtlib.AE2wtlibSlotSemantics;
 import de.mari_023.ae2wtlib.terminal.ArmorSlot;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHandler;
@@ -13,13 +20,6 @@ import de.mari_023.ae2wtlib.wct.magnet_card.MagnetMode;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetSettings;
 import de.mari_023.ae2wtlib.wct.magnet_card.config.MagnetMenu;
 import de.mari_023.ae2wtlib.wut.ItemWUT;
-
-import appeng.api.networking.IGridNode;
-import appeng.menu.MenuOpener;
-import appeng.menu.SlotSemantic;
-import appeng.menu.implementations.MenuTypeBuilder;
-import appeng.menu.me.items.CraftingTermMenu;
-import appeng.menu.slot.RestrictedInputSlot;
 
 public class WCTMenu extends CraftingTermMenu {
     public static final String ID = "wireless_crafting_terminal";

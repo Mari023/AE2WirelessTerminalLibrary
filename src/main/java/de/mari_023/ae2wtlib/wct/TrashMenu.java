@@ -3,13 +3,13 @@ package de.mari_023.ae2wtlib.wct;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
 
-import de.mari_023.ae2wtlib.AE2wtlibSlotSemantics;
-
 import appeng.api.storage.ISubMenuHost;
 import appeng.menu.AEBaseMenu;
 import appeng.menu.ISubMenu;
 import appeng.menu.implementations.MenuTypeBuilder;
 import appeng.menu.slot.AppEngSlot;
+
+import de.mari_023.ae2wtlib.AE2wtlibSlotSemantics;
 
 public class TrashMenu extends AEBaseMenu implements ISubMenu {
     public static final String ID = "trash";
