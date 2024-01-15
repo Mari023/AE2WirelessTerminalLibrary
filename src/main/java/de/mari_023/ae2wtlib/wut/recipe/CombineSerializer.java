@@ -7,7 +7,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.crafting.Ingredient;
 
-public class CombineSerializer extends Serializer<Combine> {
+public class CombineSerializer implements net.minecraft.world.item.crafting.RecipeSerializer<Combine> {
     public static final String NAME = "combine";
     private static final Codec<Combine> CODEC = RecordCodecBuilder.create(
             builder -> builder.group(

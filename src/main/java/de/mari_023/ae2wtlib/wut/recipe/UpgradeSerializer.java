@@ -7,7 +7,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.crafting.Ingredient;
 
-public class UpgradeSerializer extends Serializer<Upgrade> {
+public class UpgradeSerializer implements net.minecraft.world.item.crafting.RecipeSerializer<Upgrade> {
     public static final String NAME = "upgrade";
     private static final Codec<Upgrade> CODEC = RecordCodecBuilder.create(
             builder -> builder.group(
