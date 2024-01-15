@@ -13,7 +13,7 @@ import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
 
 public record RestockAmountPacket(HashMap<Item, Long> items) implements AE2wtlibPacket {
-    public static final ResourceLocation ID = AE2wtlib.makeID("restock_amounts");
+    public static final ResourceLocation ID = AE2wtlib.id("restock_amounts");
 
     public RestockAmountPacket(FriendlyByteBuf buf) {
         this(readMap(buf));

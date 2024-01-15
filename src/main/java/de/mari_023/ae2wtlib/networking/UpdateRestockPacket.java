@@ -8,7 +8,7 @@ import de.mari_023.ae2wtlib.AE2wtlib;
 
 public record UpdateRestockPacket(int slot, int amount) implements AE2wtlibPacket {
 
-    public static final ResourceLocation ID = AE2wtlib.makeID("update_restock");
+    public static final ResourceLocation ID = AE2wtlib.id("update_restock");
 
     public UpdateRestockPacket(FriendlyByteBuf buf) {
         this(buf.readInt(), buf.readInt());

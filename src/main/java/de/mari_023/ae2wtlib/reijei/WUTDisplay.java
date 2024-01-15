@@ -15,7 +15,7 @@ public class WUTDisplay extends DefaultCraftingDisplay<Common> {
     public WUTDisplay(Common recipe) {// FIXME 1.20.2 probably wrong
         super(EntryIngredients.ofIngredients(recipe.getIngredients()),
                 Collections.singletonList(EntryIngredients.of(recipe.getResultItem())),
-                Optional.of(new RecipeHolder<>(AE2wtlib.makeID(""), recipe)));
+                Optional.of(new RecipeHolder<>(AE2wtlib.id(""), recipe)));
     }
 
     @Override

@@ -58,8 +58,8 @@ public class AE2wtlib {
         WUTHandler.addTerminal("pattern_access", PATTERN_ACCESS_TERMINAL::tryOpen, WATMenuHost::new, WATMenu.TYPE,
                 PATTERN_ACCESS_TERMINAL);
 
-        Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, makeID(UpgradeSerializer.NAME), Upgrade.serializer);
-        Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, makeID(CombineSerializer.NAME), Combine.serializer);
+        Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, id(UpgradeSerializer.NAME), Upgrade.serializer);
+        Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, id(CombineSerializer.NAME), Combine.serializer);
 
         HotkeyActions.register(new RestockHotkeyAction(), "ae2wtlib_restock");
         HotkeyActions.register(new MagnetHotkeyAction(), "ae2wtlib_magnet");
@@ -79,13 +79,13 @@ public class AE2wtlib {
                 .createUpgradeCardItem(new Item.Properties().stacksTo(1));
         MAGNET_CARD = Upgrades.createUpgradeCardItem(new Item.Properties().stacksTo(1));
 
-        Registry.register(BuiltInRegistries.ITEM, makeID("quantum_bridge_card"), QUANTUM_BRIDGE_CARD);
-        Registry.register(BuiltInRegistries.ITEM, makeID("magnet_card"), MAGNET_CARD);
-        Registry.register(BuiltInRegistries.ITEM, makeID("wireless_pattern_encoding_terminal"),
+        Registry.register(BuiltInRegistries.ITEM, id("quantum_bridge_card"), QUANTUM_BRIDGE_CARD);
+        Registry.register(BuiltInRegistries.ITEM, id("magnet_card"), MAGNET_CARD);
+        Registry.register(BuiltInRegistries.ITEM, id("wireless_pattern_encoding_terminal"),
                 PATTERN_ENCODING_TERMINAL);
-        Registry.register(BuiltInRegistries.ITEM, makeID("wireless_pattern_access_terminal"),
+        Registry.register(BuiltInRegistries.ITEM, id("wireless_pattern_access_terminal"),
                 PATTERN_ACCESS_TERMINAL);
-        Registry.register(BuiltInRegistries.ITEM, makeID("wireless_universal_terminal"), UNIVERSAL_TERMINAL);
+        Registry.register(BuiltInRegistries.ITEM, id("wireless_universal_terminal"), UNIVERSAL_TERMINAL);
 
         GridLinkables.register(PATTERN_ENCODING_TERMINAL, WirelessTerminalItem.LINKABLE_HANDLER);
         GridLinkables.register(PATTERN_ACCESS_TERMINAL, WirelessTerminalItem.LINKABLE_HANDLER);
@@ -109,7 +109,7 @@ public class AE2wtlib {
         Registry.register(BuiltInRegistries.MENU, AppEng.makeId(TrashMenu.ID), TrashMenu.TYPE);
     }
 
-    public static ResourceLocation makeID(String name) {
+    public static ResourceLocation id(String name) {
         return new ResourceLocation(MOD_NAME, name);
     }
 }

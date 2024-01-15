@@ -21,7 +21,7 @@ public class AE2WTLibCreativeTab {
                 .icon(() -> new ItemStack(AE2wtlib.UNIVERSAL_TERMINAL))
                 .displayItems(AE2WTLibCreativeTab::buildDisplayItems)
                 .build();
-        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, AE2wtlib.makeID("main"), tab);
+        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, AE2wtlib.id("main"), tab);
     }
 
     public static synchronized void add(Item item) {

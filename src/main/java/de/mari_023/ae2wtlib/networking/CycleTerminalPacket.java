@@ -16,7 +16,7 @@ import appeng.menu.locator.MenuLocator;
 
 public record CycleTerminalPacket(boolean isRightClick) implements AE2wtlibPacket {
 
-    public static final ResourceLocation ID = AE2wtlib.makeID("cycle_terminal");
+    public static final ResourceLocation ID = AE2wtlib.id("cycle_terminal");
 
     public CycleTerminalPacket(FriendlyByteBuf buf) {
         this(buf.readBoolean());

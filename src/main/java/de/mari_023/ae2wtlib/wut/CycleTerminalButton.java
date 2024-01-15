@@ -17,6 +17,7 @@ import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.TextConstants;
 
 import appeng.client.gui.widgets.ITooltip;
+import appeng.core.AppEng;
 
 public class CycleTerminalButton extends Button implements ITooltip {
 
@@ -41,9 +42,8 @@ public class CycleTerminalButton extends Button implements ITooltip {
         return true;
     }
 
-    public static final ResourceLocation TEXTURE_STATES = new ResourceLocation("ae2", "textures/guis/states.png");
-    public static final ResourceLocation nextTerminal = new ResourceLocation(AE2wtlib.MOD_NAME,
-            "textures/item/wireless_universal_terminal.png");
+    public static final ResourceLocation TEXTURE_STATES = AppEng.makeId("textures/guis/states.png");
+    public static final ResourceLocation nextTerminal = AE2wtlib.id("textures/item/wireless_universal_terminal.png");
 
     @Override
     public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partial) {

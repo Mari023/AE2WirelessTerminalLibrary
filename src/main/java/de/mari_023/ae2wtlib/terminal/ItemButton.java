@@ -14,11 +14,12 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
 import appeng.client.gui.widgets.ITooltip;
+import appeng.core.AppEng;
 
 public class ItemButton extends Button implements ITooltip {
 
     private final ResourceLocation texture;
-    public static final ResourceLocation TEXTURE_STATES = new ResourceLocation("ae2", "textures/guis/states.png");
+    public static final ResourceLocation TEXTURE_STATES = AppEng.makeId("textures/guis/states.png");
 
     public ItemButton(OnPress onPress, ResourceLocation texture) {
         super(0, 0, 16, 16, Component.empty(), onPress, Button.DEFAULT_NARRATION);
