@@ -12,13 +12,14 @@ import de.mari_023.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
 import de.mari_023.ae2wtlib.wat.ItemWAT;
 import de.mari_023.ae2wtlib.wat.WATMenu;
 import de.mari_023.ae2wtlib.wat.WATMenuHost;
-import de.mari_023.ae2wtlib.wct.TrashMenu;
-import de.mari_023.ae2wtlib.wct.WCTMenu;
-import de.mari_023.ae2wtlib.wct.WCTMenuHost;
+import de.mari_023.ae2wtlib.wat.WATScreen;
+import de.mari_023.ae2wtlib.wct.*;
 import de.mari_023.ae2wtlib.wct.magnet_card.config.MagnetMenu;
+import de.mari_023.ae2wtlib.wct.magnet_card.config.MagnetScreen;
 import de.mari_023.ae2wtlib.wet.ItemWET;
 import de.mari_023.ae2wtlib.wet.WETMenu;
 import de.mari_023.ae2wtlib.wet.WETMenuHost;
+import de.mari_023.ae2wtlib.wet.WETScreen;
 import de.mari_023.ae2wtlib.wut.ItemWUT;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 import de.mari_023.ae2wtlib.wut.recipe.Combine;
@@ -32,6 +33,7 @@ import appeng.api.upgrades.Upgrades;
 import appeng.core.AppEng;
 import appeng.core.definitions.AEItems;
 import appeng.hotkeys.HotkeyActions;
+import appeng.init.client.InitScreens;
 import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.server.testplots.TestPlots;
 import appeng.util.SearchInventoryEvent;
@@ -107,6 +109,14 @@ public class AE2wtlib {
         Registry.register(BuiltInRegistries.MENU, AppEng.makeId(WETMenu.ID), WETMenu.TYPE);
         Registry.register(BuiltInRegistries.MENU, AppEng.makeId(MagnetMenu.ID), MagnetMenu.TYPE);
         Registry.register(BuiltInRegistries.MENU, AppEng.makeId(TrashMenu.ID), TrashMenu.TYPE);
+    }
+
+    public static void registerScreens() {
+        InitScreens.register(WCTMenu.TYPE, WCTScreen::new, "/screens/wtlib/wireless_crafting_terminal.json");
+        InitScreens.register(WETMenu.TYPE, WETScreen::new, "/screens/wtlib/wireless_pattern_encoding_terminal.json");
+        InitScreens.register(WATMenu.TYPE, WATScreen::new, "/screens/wtlib/wireless_pattern_access_terminal.json");
+        InitScreens.register(MagnetMenu.TYPE, MagnetScreen::new, "/screens/wtlib/magnet.json");
+        InitScreens.register(TrashMenu.TYPE, TrashScreen::new, "/screens/wtlib/trash.json");
     }
 
     public static ResourceLocation id(String name) {

@@ -7,6 +7,7 @@ import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
 import net.neoforged.neoforge.event.entity.player.EntityItemPickupEvent;
@@ -32,7 +33,7 @@ public class AE2wtlibForge {
     public AE2wtlibForge(IEventBus modEventBus) {
         AE2wtlibConfig.init();
         MenuLocators.register(CurioLocator.class, CurioLocator::writeToPacket, CurioLocator::readFromPacket);
-        modEventBus.addListener((RegisterEvent event) -> {
+        modEventBus.addListener((RegisterEvent e) -> {
             if (RAN_INIT)
                 return;
             RAN_INIT = true;
@@ -41,7 +42,7 @@ public class AE2wtlibForge {
             AE2wtlib.onAe2Initialized();
             AE2WTLibCreativeTab.init();
         });
-        modEventBus.addListener((BuildCreativeModeTabContentsEvent event) -> AE2wtlib.addToCreativeTab());
+        modEventBus.addListener((BuildCreativeModeTabContentsEvent e) -> AE2wtlib.addToCreativeTab());
         modEventBus.addListener((RegisterPayloadHandlerEvent event) -> {
             IPayloadRegistrar registrar = event.registrar(AE2wtlib.MOD_NAME);
             registerPacket(registrar, CycleTerminalPacket.ID, CycleTerminalPacket::new);
@@ -49,6 +50,7 @@ public class AE2wtlibForge {
             registerPacket(registrar, UpdateRestockPacket.ID, UpdateRestockPacket::new);
             registerPacket(registrar, RestockAmountPacket.ID, RestockAmountPacket::new);
         });
+        modEventBus.addListener((FMLClientSetupEvent e) -> AE2wtlib.registerScreens());
     }
 
     private static void registerPacket(IPayloadRegistrar registrar, ResourceLocation id,
