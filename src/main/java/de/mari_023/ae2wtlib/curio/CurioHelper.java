@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.fml.ModList;
 
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 import top.theillusivec4.curios.api.CuriosApi;
@@ -35,6 +36,8 @@ public final class CurioHelper {
 
     @Nullable
     public static MenuLocator findTerminal(Player player, String terminalName) {
+        if (!ModList.get().isLoaded("curios"))
+            return null;
         var slotResult = CuriosApi.getCuriosHelper().findFirstCurio(player,
                 stack -> WUTHandler.hasTerminal(stack, terminalName));
         if (slotResult.isPresent() && slotResult.get().slotContext() != null) {
