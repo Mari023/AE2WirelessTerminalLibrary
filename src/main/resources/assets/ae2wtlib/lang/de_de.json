@@ -40,7 +40,6 @@
 
   "chat.ae2wtlib.NetworkNotPowered" :  "Netzwerk hat keine Energie",
   "chat.ae2wtlib.SingularityNotPresent" : "Singularität fehlt",
-  "chat.ae2wtlib.NoSingularityFrequency" : "Ungültige Singularität. Versuche mithilfe des Rezeptes eine Neue zu erstellen",
   "chat.ae2wtlib.NoQuantumBridgeCard" : "Quantenbrückenkarte fehlt",
   "chat.ae2wtlib.NoQuantumBridge" : "Quantenbrücke nicht gefunden"
 }

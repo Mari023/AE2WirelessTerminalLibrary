@@ -24,8 +24,7 @@ public enum Status {
     NoUpgrade(TextConstants.NO_QNB_UPGRADE),
     BridgeNotFound(TextConstants.NO_QNB),
     // Singularity results
-    NoSingularity(TextConstants.SINGULARITY_NOT_PRESENT),
-    NoSingularityFrequency(TextConstants.NO_SINGULARITY_FREQUENCY);
+    NoSingularity(TextConstants.SINGULARITY_NOT_PRESENT);
 
     @Nullable
     public final Component error;

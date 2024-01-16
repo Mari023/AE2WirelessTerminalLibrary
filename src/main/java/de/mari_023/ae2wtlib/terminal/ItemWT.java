@@ -74,10 +74,9 @@ public abstract class ItemWT extends WirelessTerminalItem implements IUniversalW
             return LongResult.invalid(Status.NoSingularity);
         final CompoundTag c = is.getTag();
 
-        if (c == null || c.contains("freq"))
-            return LongResult.invalid(Status.NoSingularityFrequency);
+        if (c == null)
+            return LongResult.invalid(Status.GenericInvalid);
         return LongResult.valid(c.getLong("freq"));
-
     }
 
     private static boolean hasQuantumUpgrade(ItemStack stack, @Nullable IUpgradeInventory inventory) {

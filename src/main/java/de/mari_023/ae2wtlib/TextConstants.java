@@ -86,8 +86,6 @@ public final class TextConstants {
     public static final Component NETWORK_NOT_POWERED = Component.translatable("chat.ae2wtlib.NetworkNotPowered");
     public static final Component SINGULARITY_NOT_PRESENT = Component
             .translatable("chat.ae2wtlib.SingularityNotPresent");
-    public static final Component NO_SINGULARITY_FREQUENCY = Component
-            .translatable("chat.ae2wtlib.NoSingularityFrequency");
     public static final Component NO_QNB_UPGRADE = Component.translatable("chat.ae2wtlib.NoQuantumBridgeCard");
     public static final Component NO_QNB = Component.translatable("chat.ae2wtlib.NoQuantumBridge");
 }
