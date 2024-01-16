@@ -27,6 +27,10 @@ import appeng.util.Platform;
 import appeng.util.inv.AppEngInternalInventory;
 
 import de.mari_023.ae2wtlib.AE2wtlib;
+import de.mari_023.ae2wtlib.terminal.results.ActionHostResult;
+import de.mari_023.ae2wtlib.terminal.results.GridResult;
+import de.mari_023.ae2wtlib.terminal.results.LongResult;
+import de.mari_023.ae2wtlib.terminal.results.Status;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 public abstract class ItemWT extends WirelessTerminalItem implements IUniversalWirelessTerminalItem {
@@ -51,27 +55,29 @@ public abstract class ItemWT extends WirelessTerminalItem implements IUniversalW
                 slot, stack, (p, subMenu) -> tryOpen(player, MenuLocators.forInventorySlot(slot), stack, true));
     }
 
-    @Nullable
-    public static IActionHost findQuantumBridge(Level level, long frequency) {
+    public static ActionHostResult findQuantumBridge(Level level, long frequency) {
         IActionHost quantumBridge = Locatables.quantumNetworkBridges().get(level, frequency);
         if (quantumBridge == null)
             quantumBridge = Locatables.quantumNetworkBridges().get(level, -frequency);
-        return quantumBridge;
+        if (quantumBridge == null)
+            return ActionHostResult.invalid(Status.BridgeNotFound);
+        return ActionHostResult.valid(quantumBridge);
     }
 
-    public static long getQEFrequency(ItemStack stack, @Nullable AppEngInternalInventory inventory) {
+    public static LongResult getQEFrequency(ItemStack stack, @Nullable AppEngInternalInventory inventory) {
         if (inventory == null) {
             inventory = new AppEngInternalInventory(null, 1);
             inventory.readFromNBT(stack.getOrCreateTag(), "singularity");
         }
         final ItemStack is = inventory.getStackInSlot(0);
-        if (!is.isEmpty()) {
-            final CompoundTag c = is.getTag();
-            if (c != null) {
-                return c.getLong("freq");
-            }
-        }
-        return 0;
+        if (is.isEmpty())
+            return LongResult.invalid(Status.NoSingularity);
+        final CompoundTag c = is.getTag();
+
+        if (c == null || c.contains("freq"))
+            return LongResult.invalid(Status.NoSingularityFrequency);
+        return LongResult.valid(c.getLong("freq"));
+
     }
 
     private static boolean hasQuantumUpgrade(ItemStack stack, @Nullable IUpgradeInventory inventory) {
@@ -80,66 +86,72 @@ public abstract class ItemWT extends WirelessTerminalItem implements IUniversalW
         return inventory.isInstalled(AE2wtlib.QUANTUM_BRIDGE_CARD);
     }
 
-    @Nullable
-    public static IActionHost getQuantumBridge(ItemStack itemStack, Level level,
+    public static ActionHostResult getQuantumBridge(ItemStack itemStack, Level level,
             @Nullable AppEngInternalInventory singularityInventory, @Nullable IUpgradeInventory upgradeInventory) {
         if (level.isClientSide())
-            return null;
+            return ActionHostResult.invalid(Status.NotServer);
+
+        Status status = Status.Valid;
 
         if (!hasQuantumUpgrade(itemStack, upgradeInventory))
-            return null;
-        long frequency = getQEFrequency(itemStack, singularityInventory);
-        if (frequency == 0)
-            return null;
-        return findQuantumBridge(level, frequency);
+            status = Status.NoUpgrade;
+        LongResult frequency = getQEFrequency(itemStack, singularityInventory);
+        if (!frequency.valid()) {
+            status = status.isValid() ? frequency.status() : Status.GenericInvalid;
+        }
+        if (!status.isValid())
+            return ActionHostResult.invalid(status);
+        return findQuantumBridge(level, frequency.result());
     }
 
     private GridResult getLinkedGrid(ItemStack item, Level level) {
         if (!(level instanceof ServerLevel serverLevel))
-            return GridResult.invalid(GridResult.GridStatus.NotServer);
+            return GridResult.invalid(Status.NotServer);
 
         GridResult grid = getAccessPointLinkedGrid(item, serverLevel);
-        if (grid.status().isValid())
+        if (grid.valid())
             return grid;
 
-        var quantumBridge = getQuantumBridge(item, level, null, null);
-        if (quantumBridge == null)
-            return grid;
+        var quantumBridgeResult = getQuantumBridge(item, level, null, null);
+        if (quantumBridgeResult.invalid())
+            return grid;// TODO actually do something with the status
+        var quantumBridge = quantumBridgeResult.host();
 
+        assert quantumBridge != null;// can't happen if the result is valid
         if (quantumBridge.getActionableNode() == null)
-            return GridResult.invalid(GridResult.GridStatus.NotFound);
+            return GridResult.invalid(Status.NotFound);
         if (!quantumBridge.getActionableNode().isPowered())
-            return GridResult.invalid(GridResult.GridStatus.NotPowered);
+            return GridResult.invalid(Status.NotPowered);
         return GridResult.valid(quantumBridge.getActionableNode().getGrid());
     }
 
     private GridResult getAccessPointLinkedGrid(ItemStack item, ServerLevel level) {
         var linkedPos = getLinkedPosition(item);
         if (linkedPos == null)
-            return GridResult.invalid(GridResult.GridStatus.NotLinked);
+            return GridResult.invalid(Status.NotLinked);
 
         var linkedLevel = level.getServer().getLevel(linkedPos.dimension());
         if (linkedLevel == null)
-            return GridResult.invalid(GridResult.GridStatus.NotFound);
+            return GridResult.invalid(Status.NotFound);
 
         var be = Platform.getTickingBlockEntity(linkedLevel, linkedPos.pos());
         if (!(be instanceof IWirelessAccessPoint accessPoint))
-            return GridResult.invalid(GridResult.GridStatus.NotFound);
+            return GridResult.invalid(Status.NotFound);
 
         var grid = accessPoint.getGrid();
         if (grid == null)
-            return GridResult.invalid(GridResult.GridStatus.NotFound);
+            return GridResult.invalid(Status.NotFound);
 
         if (!grid.getEnergyService().isNetworkPowered())
-            return GridResult.invalid(GridResult.GridStatus.NotPowered);
+            return GridResult.invalid(Status.NotPowered);
         return GridResult.valid(grid);
     }
 
     @Nullable
     public IGrid getLinkedGrid(ItemStack item, Level level, @Nullable Player sendMessagesTo) {
         GridResult grid = getLinkedGrid(item, level);
-        if (grid.status().getError() != null && sendMessagesTo != null && !level.isClientSide()) {
-            sendMessagesTo.displayClientMessage(grid.status().getError(), true);
+        if (grid.status().error != null && sendMessagesTo != null && !level.isClientSide()) {
+            sendMessagesTo.displayClientMessage(grid.status().error, true);
         }
         return grid.grid();
     }

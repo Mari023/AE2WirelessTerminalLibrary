@@ -96,10 +96,10 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost
     }
 
     public boolean isQuantumLinked() {
-        long frequency = ItemWT.getQEFrequency(getItemStack(), singularityInventory);
+        long frequency = ItemWT.getQEFrequency(getItemStack(), singularityInventory).result();
         if (quantumBridge == null) {
             quantumBridge = ItemWT.getQuantumBridge(getItemStack(), getPlayer().level(), singularityInventory,
-                    upgradeInventory);
+                    upgradeInventory).host();
             if (quantumBridge == null)
                 return false;
         } else {
@@ -108,9 +108,9 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost
                     return false;
                 long frequencyOther = quantumCluster.getCenter().getQEFrequency();
                 if (!(frequencyOther == frequency || frequencyOther == -frequency))
-                    if (ItemWT.findQuantumBridge(getPlayer().level(), frequency) == null)
+                    if (ItemWT.findQuantumBridge(getPlayer().level(), frequency).invalid())
                         return false;
-            } else if (ItemWT.findQuantumBridge(getPlayer().level(), frequency) == null)
+            } else if (ItemWT.findQuantumBridge(getPlayer().level(), frequency).invalid())
                 return false;
         }
         if (quantumBridge.getActionableNode() == null)
