@@ -28,6 +28,8 @@
   "gui.ae2wtlib.copy_insert": "Zu Einfügefilter kopieren",
   "gui.ae2wtlib.switch": "Filter tauschen",
 
+  "item.ae2wtlib.wireless_pattern_encoding_terminal": "Drahtlose Schablonenkonsole",
+  "item.ae2wtlib.wireless_pattern_access_terminal": "Drahtlose Schnittstellenkonsole",
   "item.ae2wtlib.wireless_universal_terminal": "Drahtlose Universalkonsole",
   "item.ae2wtlib.wireless_universal_terminal.desc": "Installierte Konsolen:",
 
@@ -37,6 +39,10 @@
   "key.ae2.ae2wtlib_magnet": "Magnet Karte umschalten",
 
   "chat.ae2wtlib.NetworkNotPowered" :  "Netzwerk hat keine Energie",
+  "chat.ae2wtlib.SingularityNotPresent" : "Singularität fehlt",
+  "chat.ae2wtlib.NoSingularityFrequency" : "Ungültige Singularität. Versuche mithilfe des Rezeptes eine Neue zu erstellen",
+  "chat.ae2wtlib.NoQuantumBridgeCard" : "Quantenbrückenkarte fehlt",
+  "chat.ae2wtlib.NoQuantumBridge" : "Quantenbrücke nicht gefunden",
 
   "text.autoconfig.de/mari_023/ae2wtlib.title": "AE2 Wireless Terminals",
   "text.autoconfig.de/mari_023/ae2wtlib.option.magnetCardRange": "Reichweite der Magnet Karte"
