@@ -37,9 +37,7 @@ dependencies {
     implementation("net.neoforged:neoforge:${neoforgeVersion}")
 
     compileOnly("top.theillusivec4.curios:curios-neoforge:${curiosVersion}")
-    implementation("me.shedaniel.cloth:cloth-config-neoforge:${clothVersion}")
-    compileOnly("appeng:appliedenergistics2-neoforge:${ae2Version}")
-    runtimeOnly("appeng:appliedenergistics2-neoforge:${ae2Version}")
+    implementation("appeng:appliedenergistics2-neoforge:${ae2Version}")
 
     compileOnly("me.shedaniel:RoughlyEnoughItems-neoforge:${reiVersion}")
     compileOnly("mezz.jei:jei-${jeiMinecraftVersion}-forge:${jeiVersion}")

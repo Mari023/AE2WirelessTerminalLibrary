@@ -1,27 +1,24 @@
 package de.mari_023.ae2wtlib;
 
-import me.shedaniel.autoconfig.AutoConfig;
-import me.shedaniel.autoconfig.ConfigData;
-import me.shedaniel.autoconfig.annotation.ConfigEntry;
-import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
+import org.apache.commons.lang3.tuple.Pair;
 
-@SuppressWarnings({ "FieldCanBeLocal", "FieldMayBeFinal" })
-@me.shedaniel.autoconfig.annotation.Config(name = "de/mari_023/ae2wtlib")
-public class AE2wtlibConfig implements ConfigData {
+import net.neoforged.neoforge.common.ModConfigSpec;
 
-    private double magnetCardRange = 16.0;
+public record AE2wtlibConfig(ModConfigSpec.ConfigValue<Double> magnetCardRangeValue) {
+    public static final AE2wtlibConfig CONFIG;
+    public static final ModConfigSpec SPEC;
 
-    @ConfigEntry.Gui.Excluded
-    public static AE2wtlibConfig INSTANCE;
-
-    public double magnetCardRange() {
-        return magnetCardRange;
+    static {
+        Pair<AE2wtlibConfig, ModConfigSpec> pair = new ModConfigSpec.Builder().configure(AE2wtlibConfig::new);
+        CONFIG = pair.getLeft();
+        SPEC = pair.getRight();
     }
 
-    public static void init() {
-        if (INSTANCE != null)
-            return;
-        AutoConfig.register(AE2wtlibConfig.class, JanksonConfigSerializer::new);
-        INSTANCE = AutoConfig.getConfigHolder(AE2wtlibConfig.class).getConfig();
+    AE2wtlibConfig(ModConfigSpec.Builder builder) {
+        this(builder.define("magnet_card_range", 16.0));
+    }
+
+    public double magnetCardRange() {
+        return magnetCardRangeValue().get();
     }
 }

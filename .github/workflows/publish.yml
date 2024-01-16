@@ -58,11 +58,9 @@ jobs:
           loaders: neoforge
           game-versions: 1.20.1
           curseforge-dependencies: |
-            cloth-config | depends
             applied-energistics-2 | depends
             curios | depends
           modrinth-dependencies: |
-            cloth-config | depends
             ae2 | depends
             curios | depends
           java: 17

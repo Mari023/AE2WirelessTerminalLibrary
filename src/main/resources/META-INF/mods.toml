@@ -38,13 +38,6 @@ ordering = "AFTER"
 side = "BOTH"
 
 [[dependencies.ae2wtlib]]
-modId = "cloth_config"
-type="REQUIRED"
-versionRange = "*"
-ordering = "AFTER"
-side = "BOTH"
-
-[[dependencies.ae2wtlib]]
 modId = "curios"
 type="OPTIONAL"
 versionRange = "*"
