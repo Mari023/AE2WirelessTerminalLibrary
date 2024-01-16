@@ -113,8 +113,13 @@ public abstract class ItemWT extends WirelessTerminalItem implements IUniversalW
             return grid;
 
         var quantumBridgeResult = getQuantumBridge(item, level, null, null);
-        if (quantumBridgeResult.invalid())
-            return grid;// TODO actually do something with the status
+        if (quantumBridgeResult.invalid()) {
+            return switch (grid.status()) {
+                case NotFound, NotLinked -> quantumBridgeResult.status() == Status.GenericInvalid ? grid
+                        : GridResult.invalid(quantumBridgeResult);
+                default -> grid;
+            };
+        }
         var quantumBridge = quantumBridgeResult.host();
 
         assert quantumBridge != null;// can't happen if the result is valid

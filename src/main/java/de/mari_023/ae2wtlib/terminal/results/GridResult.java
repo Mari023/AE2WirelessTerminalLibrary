@@ -12,4 +12,8 @@ public record GridResult(@Nullable IGrid grid, Status status) implements Result 
     public static GridResult invalid(Status status) {
         return new GridResult(null, status);
     }
+
+    public static GridResult invalid(Result result) {
+        return new GridResult(null, result.status());
+    }
 }
