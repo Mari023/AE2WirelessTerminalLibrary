@@ -42,8 +42,5 @@
   "chat.ae2wtlib.SingularityNotPresent" : "Singularität fehlt",
   "chat.ae2wtlib.NoSingularityFrequency" : "Ungültige Singularität. Versuche mithilfe des Rezeptes eine Neue zu erstellen",
   "chat.ae2wtlib.NoQuantumBridgeCard" : "Quantenbrückenkarte fehlt",
-  "chat.ae2wtlib.NoQuantumBridge" : "Quantenbrücke nicht gefunden",
-
-  "text.autoconfig.de/mari_023/ae2wtlib.title": "AE2 Wireless Terminals",
-  "text.autoconfig.de/mari_023/ae2wtlib.option.magnetCardRange": "Reichweite der Magnet Karte"
+  "chat.ae2wtlib.NoQuantumBridge" : "Quantenbrücke nicht gefunden"
 }

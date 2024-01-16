@@ -42,9 +42,5 @@
   "chat.ae2wtlib.SingularityNotPresent" : "Missing Singularity",
   "chat.ae2wtlib.NoSingularityFrequency" : "Invalid Singularity. Try creating a new one using the recipe",
   "chat.ae2wtlib.NoQuantumBridgeCard" : "Missing Quantum Bridge Card",
-  "chat.ae2wtlib.NoQuantumBridge" : "Quantum Network Bridge not found",
-
-  "text.autoconfig.de/mari_023/ae2wtlib.title": "AE2 Wireless Terminals",
-
-  "text.autoconfig.de/mari_023/ae2wtlib.option.magnetCardRange": "Magnet Card Range"
+  "chat.ae2wtlib.NoQuantumBridge" : "Quantum Network Bridge not found"
 }

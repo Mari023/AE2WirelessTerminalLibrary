@@ -36,9 +36,5 @@
   "key.ae2.wireless_pattern_access_terminal": "Открыть беспроводной терминал шаблонов",
   "key.ae2.wireless_pattern_encoding_terminal": "Открыть беспроводной терминал интерфейса",
   "key.ae2.ae2wtlib_restock": "Переключить авто пополнение",
-  "key.ae2.ae2wtlib_magnet": "Переключить магнитную карту",
-
-  "text.autoconfig.de/mari_023/ae2wtlib.title": "AE2 Беспроводные терминалы",
-
-  "text.autoconfig.de/mari_023/ae2wtlib.option.magnetCardRange": "Диапазон магнитной карты"
+  "key.ae2.ae2wtlib_magnet": "Переключить магнитную карту"
 }

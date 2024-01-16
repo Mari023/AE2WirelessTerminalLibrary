@@ -32,9 +32,5 @@
   "key.ae2.wireless_pattern_access_terminal": "무선 패턴 터미널 열기",
   "key.ae2.wireless_pattern_encoding_terminal": "무선 인터페이스 터미널 열기",
   "key.ae2.ae2wtlib_restock": "보충 토글",
-  "key.ae2.ae2wtlib_magnet": "마그넷 카드 토글",
-
-  "text.autoconfig.de/mari_023/ae2wtlib.title": "AE2 무선 터미널",
-
-  "text.autoconfig.de/mari_023/ae2wtlib.option.magnetCardRange": "마그넷 카드 범위"
+  "key.ae2.ae2wtlib_magnet": "마그넷 카드 토글"
 }

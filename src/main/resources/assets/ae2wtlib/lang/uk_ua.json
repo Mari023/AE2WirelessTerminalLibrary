@@ -29,7 +29,5 @@
   "key.ae2.wireless_pattern_access_terminal": "Відкрити бездротовий термінал доступу до шаблонів",
   "key.ae2.wireless_pattern_encoding_terminal": "Відкрити бездротовий термінал кодування шаблонів",
   "key.ae2.ae2wtlib_restock": "Перемкнути поповнення",
-  "key.ae2.ae2wtlib_magnet": "Перемкнути магнітну картку",
-  "text.autoconfig.de/mari_023/ae2wtlib.title": "AE2 Бездротові термінали",
-  "text.autoconfig.de/mari_023/ae2wtlib.option.magnetCardRange": "Досяжність магнітної картки"
+  "key.ae2.ae2wtlib_magnet": "Перемкнути магнітну картку"
 }
