@@ -20,6 +20,8 @@ public final class CurioHelper {
     }
 
     public static boolean isStillPresent(Player player, ItemStack terminal) {
+        if (!ModList.get().isLoaded("curios"))
+            return false;
         List<SlotResult> slotResults = CuriosApi.getCuriosHelper().findCurios(player, terminal.getItem());
         for (SlotResult slotResult : slotResults) {
             if (slotResult.stack().equals(terminal)) {
