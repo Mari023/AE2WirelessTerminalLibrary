@@ -20,6 +20,8 @@ val reiVersion: String by project
 val emiVersion: String by project
 val neoforgeVersion: String by project
 val curiosVersion: String by project
+val mavenGroup: String by project
+val archivesBaseName: String by project
 
 version = "$modVersion-SNAPSHOT"
 
@@ -32,6 +34,8 @@ val tag = System.getenv("TAG") ?: ""
 if (tag != "") {
     version = tag
 }
+
+val artifactVersion = version
 
 dependencies {
     implementation("net.neoforged:neoforge:${neoforgeVersion}")
@@ -157,6 +161,18 @@ runs {
 
     create("client", config)
     create("server", config)
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("ae2wtlib") {
+            groupId = mavenGroup
+            artifactId = archivesBaseName
+            version = artifactVersion.toString()
+
+            from(components["java"])
+        }
+    }
 }
 
 configure<com.diffplug.gradle.spotless.SpotlessExtension> {
