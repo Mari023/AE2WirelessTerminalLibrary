@@ -1,7 +1,6 @@
 package de.mari_023.ae2wtlib.wut.select;
 
 public class AngleHelper {
-
     public static float getAngle(double x, double y) {
         return correctAngle((float) (Math.toDegrees(Math.atan2(y, x)) + 90));
     }

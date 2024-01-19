@@ -12,7 +12,6 @@ import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.wut.recipe.Common;
 
 public class WUTDisplay extends DefaultCraftingDisplay<Common> {
-
     public WUTDisplay(Common recipe) {// FIXME 1.20.2 probably wrong
         super(EntryIngredients.ofIngredients(recipe.getIngredients()),
                 Collections.singletonList(EntryIngredients.of(recipe.getResultItem())),

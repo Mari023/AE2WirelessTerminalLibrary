@@ -6,7 +6,6 @@ import net.minecraft.world.item.ItemStack;
 import appeng.api.inventories.InternalInventory;
 
 public class WrappedPlayerInventory implements InternalInventory {
-
     private final Inventory playerInventory;
 
     public WrappedPlayerInventory(Inventory playerInventory) {

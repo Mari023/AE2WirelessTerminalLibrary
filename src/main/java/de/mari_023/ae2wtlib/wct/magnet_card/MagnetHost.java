@@ -10,7 +10,6 @@ import appeng.util.prioritylist.IPartitionList;
 import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
 
 public class MagnetHost {
-
     public final ConfigInventory pickupConfig = ConfigInventory.configTypes(27, this::updatePickupFilter);
     public final ConfigInventory insertConfig = ConfigInventory.configTypes(27, this::updateInsertFilter);
 

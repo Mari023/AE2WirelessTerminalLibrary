@@ -9,7 +9,6 @@ import appeng.menu.locator.MenuLocator;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 public class Ae2WTLibLocatingService implements HotkeyAction {
-
     private final String terminalName;
 
     public Ae2WTLibLocatingService(String terminalName) {

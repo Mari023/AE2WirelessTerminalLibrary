@@ -18,7 +18,6 @@ import me.shedaniel.math.Color;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 public class WUTSelectScreen extends Screen {
-
     private final List<String> terminals = new ArrayList<>();
 
     public WUTSelectScreen(ItemStack terminal) {

@@ -15,7 +15,6 @@ import de.mari_023.ae2wtlib.wut.ItemWUT;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 public record CycleTerminalPacket(boolean isRightClick) implements AE2wtlibPacket {
-
     public static final ResourceLocation ID = AE2wtlib.id("cycle_terminal");
 
     public CycleTerminalPacket(FriendlyByteBuf buf) {

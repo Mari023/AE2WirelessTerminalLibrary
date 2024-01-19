@@ -19,7 +19,6 @@ import de.mari_023.ae2wtlib.terminal.WTMenuHost;
 
 public class WETMenuHost extends WTMenuHost
         implements IViewCellStorage, IPatternTerminalMenuHost, IPatternTerminalLogicHost {
-
     private final PatternEncodingLogic logic = new PatternEncodingLogic(this);
 
     public WETMenuHost(final Player ep, @Nullable Integer inventorySlot, final ItemStack is,

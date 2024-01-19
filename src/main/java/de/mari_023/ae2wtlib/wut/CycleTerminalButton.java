@@ -20,7 +20,6 @@ import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.TextConstants;
 
 public class CycleTerminalButton extends Button implements ITooltip {
-
     public CycleTerminalButton(OnPress onPress) {
         super(0, 0, 16, 16, Component.empty(), onPress, Button.DEFAULT_NARRATION);
         visible = true;

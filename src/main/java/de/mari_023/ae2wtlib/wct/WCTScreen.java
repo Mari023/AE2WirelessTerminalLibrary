@@ -20,7 +20,6 @@ import de.mari_023.ae2wtlib.wut.CycleTerminalButton;
 import de.mari_023.ae2wtlib.wut.IUniversalTerminalCapable;
 
 public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversalTerminalCapable {
-
     private final ItemButton magnetCardToggleButton;
     private final ItemButton magnetCardMenuButton;
 

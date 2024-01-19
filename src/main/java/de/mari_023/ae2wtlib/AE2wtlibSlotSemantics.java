@@ -4,7 +4,6 @@ import appeng.menu.SlotSemantic;
 import appeng.menu.SlotSemantics;
 
 public class AE2wtlibSlotSemantics {
-
     private AE2wtlibSlotSemantics() {
     }
 

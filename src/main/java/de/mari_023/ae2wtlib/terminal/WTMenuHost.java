@@ -34,7 +34,6 @@ import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 public abstract class WTMenuHost extends WirelessTerminalMenuHost
         implements InternalInventoryHost, ISegmentedInventory {
-
     private final AppEngInternalInventory singularityInventory = new AppEngInternalInventory(this, 1);
     private final AppEngInternalInventory viewCellInventory;
     private boolean rangeCheck;

@@ -17,7 +17,6 @@ import appeng.client.gui.widgets.ITooltip;
 import appeng.core.AppEng;
 
 public class ItemButton extends Button implements ITooltip {
-
     private final ResourceLocation texture;
     public static final ResourceLocation TEXTURE_STATES = AppEng.makeId("textures/guis/states.png");
 

@@ -8,7 +8,6 @@ import net.minecraft.network.chat.Style;
 import appeng.api.config.IncludeExclude;
 
 public final class TextConstants {
-
     private TextConstants() {
     }
 

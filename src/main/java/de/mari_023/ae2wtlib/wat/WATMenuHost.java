@@ -13,7 +13,6 @@ import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.terminal.WTMenuHost;
 
 public class WATMenuHost extends WTMenuHost {
-
     public WATMenuHost(final Player ep, @Nullable Integer inventorySlot, final ItemStack is,
             BiConsumer<Player, ISubMenu> returnToMainMenu) {
         super(ep, inventorySlot, is, returnToMainMenu);

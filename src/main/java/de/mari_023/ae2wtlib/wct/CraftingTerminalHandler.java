@@ -22,7 +22,6 @@ import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHost;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 public class CraftingTerminalHandler {
-
     private static final WeakHashMap<Player, CraftingTerminalHandler> SERVER_PLAYERS = new WeakHashMap<>();
     private static final WeakHashMap<Player, CraftingTerminalHandler> CLIENT_PLAYERS = new WeakHashMap<>();
     private final Player player;

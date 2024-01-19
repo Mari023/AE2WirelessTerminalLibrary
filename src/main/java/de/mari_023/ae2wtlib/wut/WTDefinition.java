@@ -17,7 +17,6 @@ import de.mari_023.ae2wtlib.terminal.WTMenuHost;
 
 public record WTDefinition(ContainerOpener containerOpener, WTMenuHostFactory wTMenuHostFactory, MenuType<?> menuType,
         IUniversalWirelessTerminalItem item, ItemStack universalTerminal, MutableComponent terminalName) {
-
     @FunctionalInterface
     public interface ContainerOpener {
         boolean tryOpen(Player player, MenuLocator locator, ItemStack stack, boolean returningFromSubmenu);

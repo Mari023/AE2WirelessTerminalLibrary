@@ -34,7 +34,6 @@ import de.mari_023.ae2wtlib.terminal.results.Status;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 public abstract class ItemWT extends WirelessTerminalItem implements IUniversalWirelessTerminalItem {
-
     public ItemWT() {
         super(AEConfig.instance().getWirelessTerminalBattery(), new Item.Properties().stacksTo(1));
     }

@@ -27,7 +27,6 @@ import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHandler;
 @Mixin(value = WirelessCraftingTerminalItem.class, remap = false)
 public class CraftingTerminalItemMixin extends WirelessTerminalItem
         implements IUniversalWirelessTerminalItem/* , ICurioItem */ {
-
     public CraftingTerminalItemMixin() {
         super(null, null);
     }
@@ -51,7 +50,6 @@ public class CraftingTerminalItemMixin extends WirelessTerminalItem
 
     @Nullable
     public ItemMenuHost getMenuHost(Player player, int slot, ItemStack stack, @Nullable BlockPos pos) {
-
         return new WCTMenuHost(player, slot, stack,
                 (p, subMenu) -> tryOpen(player, MenuLocators.forInventorySlot(slot), stack, true));
     }

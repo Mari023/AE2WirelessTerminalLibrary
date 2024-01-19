@@ -10,7 +10,6 @@ import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 public class REIPlugin implements REIClientPlugin {
-
     @Override
     public String getPluginProviderName() {
         return AE2wtlib.MOD_NAME;

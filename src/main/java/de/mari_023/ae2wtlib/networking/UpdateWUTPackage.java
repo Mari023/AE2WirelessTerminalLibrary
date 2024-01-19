@@ -17,7 +17,6 @@ import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
 public record UpdateWUTPackage(MenuLocator locator, @Nullable CompoundTag tag) implements AE2wtlibPacket {
 
     public static final ResourceLocation ID = AE2wtlib.id("update_wut");
-
     public UpdateWUTPackage(FriendlyByteBuf buf) {
         this(MenuLocators.readFromPacket(buf), buf.readNbt());
     }
