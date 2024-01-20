@@ -1,6 +1,5 @@
 package de.mari_023.ae2wtlib.wct.magnet_card.config;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
 
@@ -73,8 +72,6 @@ public class MagnetMenu extends AEBaseMenu implements ISubMenu {
     public void togglePickupMode() {
         if (isClientSide()) {
             sendClientAction(TOGGLE_PICKUP_MODE);
-            if (Minecraft.getInstance().isLocalServer())
-                return;
         }
         magnetHost.togglePickupMode();
     }
@@ -82,8 +79,6 @@ public class MagnetMenu extends AEBaseMenu implements ISubMenu {
     public void toggleInsertMode() {
         if (isClientSide()) {
             sendClientAction(TOGGLE_INSERT_MODE);
-            if (Minecraft.getInstance().isLocalServer())
-                return;
         }
         magnetHost.toggleInsertMode();
     }
@@ -91,8 +86,6 @@ public class MagnetMenu extends AEBaseMenu implements ISubMenu {
     public void copyUp() {
         if (isClientSide()) {
             sendClientAction(COPY_UP);
-            if (Minecraft.getInstance().isLocalServer())
-                return;
         }
         magnetHost.copyUp();
     }
@@ -100,8 +93,6 @@ public class MagnetMenu extends AEBaseMenu implements ISubMenu {
     public void copyDown() {
         if (isClientSide()) {
             sendClientAction(COPY_DOWN);
-            if (Minecraft.getInstance().isLocalServer())
-                return;
         }
         magnetHost.copyDown();
     }
@@ -109,8 +100,6 @@ public class MagnetMenu extends AEBaseMenu implements ISubMenu {
     public void switchInsertPickup() {
         if (isClientSide()) {
             sendClientAction(SWITCH_INSERT_PICKUP);
-            if (Minecraft.getInstance().isLocalServer())
-                return;
         }
         magnetHost.switchInsertPickup();
     }
