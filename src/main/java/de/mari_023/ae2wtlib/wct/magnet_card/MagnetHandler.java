@@ -13,6 +13,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 
+import appeng.api.config.IncludeExclude;
 import appeng.api.stacks.AEItemKey;
 import appeng.api.stacks.KeyCounter;
 import appeng.api.upgrades.IUpgradeableItem;
@@ -88,6 +89,10 @@ public class MagnetHandler {
             return;
         MagnetHost magnetHost = ctHandler.getMagnetHost();
         if (magnetHost == null)
+            return;
+
+        // if the filter is empty, it will match anything, even in whitelist mode
+        if (magnetHost.getPickupFilter().isEmpty() && magnetHost.getPickupMode() == IncludeExclude.WHITELIST)
             return;
 
         List<ItemEntity> entityItems = player.level().getEntitiesOfClass(ItemEntity.class,

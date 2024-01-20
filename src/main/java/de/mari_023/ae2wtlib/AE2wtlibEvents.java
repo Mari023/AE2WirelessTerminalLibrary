@@ -8,6 +8,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 import appeng.api.config.Actionable;
+import appeng.api.config.IncludeExclude;
 import appeng.api.stacks.AEItemKey;
 import appeng.me.helpers.PlayerSource;
 
@@ -77,6 +78,10 @@ public class AE2wtlibEvents {
 
         MagnetHost magnetHost = cTHandler.getMagnetHost();
         if (magnetHost == null)
+            return false;
+
+        // if the filter is empty, it will match anything, even in whitelist mode
+        if (magnetHost.getInsertFilter().isEmpty() && magnetHost.getInsertMode() == IncludeExclude.WHITELIST)
             return false;
         if (!magnetHost.getInsertFilter().matchesFilter(AEItemKey.of(stack), magnetHost.getInsertMode()))
             return false;
