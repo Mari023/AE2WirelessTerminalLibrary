@@ -38,13 +38,12 @@ public class UpgradeHelper {
                 addMaxUpgradesToAllTerminals(upgradeCard);
                 return;
             }
-            Upgrades.add(upgradeCard, AE2wtlib.UNIVERSAL_TERMINAL, maxSupported);
             for (var terminal : WUTHandler.wirelessTerminals.entrySet()) {
-                var terminalItem = terminal.getValue().item();
-                if (!(terminalItem instanceof ItemLike itemLike))
-                    break;
-                Upgrades.add(upgradeCard, itemLike, maxSupported, GuiText.WirelessTerminals.getTranslationKey());
+                if (!(terminal.getValue().item() instanceof ItemLike item))
+                    continue;
+                Upgrades.add(upgradeCard, item, maxSupported, GuiText.WirelessTerminals.getTranslationKey());
             }
+            Upgrades.add(upgradeCard, AE2wtlib.UNIVERSAL_TERMINAL, maxSupported);
         } else
             upgrades.put(upgradeCard, maxSupported);
     }
