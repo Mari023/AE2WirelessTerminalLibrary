@@ -81,6 +81,15 @@ public class AE2wtlibForge {
         AE2wtlibEvents.restock(player, item, item.getCount(), (stack -> player.setItemInHand(event.getHand(), stack)));
     }
 
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void handle(PlayerInteractEvent.EntityInteractSpecific event) {
+        if (!(event.getEntity() instanceof ServerPlayer player) || event.isCanceled())
+            return;
+        var item = event.getItemStack();
+
+        AE2wtlibEvents.restock(player, item, item.getCount(), (stack -> player.setItemInHand(event.getHand(), stack)));
+    }
+
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public static void handle(EntityItemPickupEvent event) {
         if (event.isCanceled()) {
