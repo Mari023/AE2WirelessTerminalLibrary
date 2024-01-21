@@ -4,7 +4,9 @@
   "package": "de.mari_023.ae2wtlib.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "CraftingTerminalItemMixin"
+    "BowItemMixin",
+    "CraftingTerminalItemMixin",
+    "CrossbowItemMixin"
   ],
   "client": [
     "RestockRender"
