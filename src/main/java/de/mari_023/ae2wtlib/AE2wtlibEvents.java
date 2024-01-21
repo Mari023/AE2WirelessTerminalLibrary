@@ -3,6 +3,7 @@ package de.mari_023.ae2wtlib;
 import java.util.function.Consumer;
 
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -53,8 +54,13 @@ public class AE2wtlibEvents {
 
         item.setCount(count + (int) changed);
         setStack.accept(item);
-        PacketDistributor.PLAYER.with(player).send(new UpdateRestockPacket(
-                player.getInventory().findSlotMatchingUnusedItem(item), item.getCount()));
+
+        int slot = player.getInventory().findSlotMatchingUnusedItem(item);
+        if (slot == -1) {
+            if (player.getInventory().offhand.contains(item))
+                slot = Inventory.INVENTORY_SIZE;
+        }
+        PacketDistributor.PLAYER.with(player).send(new UpdateRestockPacket(slot, item.getCount()));
     }
 
     /**
