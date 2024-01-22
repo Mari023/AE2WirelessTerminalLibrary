@@ -6,7 +6,8 @@
   "mixins": [
     "BowItemMixin",
     "CraftingTerminalItemMixin",
-    "CrossbowItemMixin"
+    "CrossbowItemMixin",
+    "ServerPlayerMixin"
   ],
   "client": [
     "RestockRender"
