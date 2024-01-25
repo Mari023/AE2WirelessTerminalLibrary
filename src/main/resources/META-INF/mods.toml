@@ -39,7 +39,7 @@ side = "BOTH"
 
 [[dependencies.ae2wtlib]]
 modId = "curios"
-type="OPTIONAL"
+type="REQUIRED"
 versionRange = "*"
 ordering = "AFTER"
 side = "BOTH"

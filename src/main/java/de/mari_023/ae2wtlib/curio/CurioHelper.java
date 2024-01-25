@@ -6,7 +6,6 @@ import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.fml.ModList;
 
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotResult;
@@ -25,8 +24,6 @@ public final class CurioHelper {
     }
 
     public static boolean isStillPresent(Player player, ItemStack terminal) {
-        if (!ModList.get().isLoaded("curios"))
-            return false;
         List<SlotResult> slotResults = inventory(player).findCurios(terminal.getItem());
         for (SlotResult slotResult : slotResults) {
             if (slotResult.stack().equals(terminal)) {
@@ -44,8 +41,6 @@ public final class CurioHelper {
 
     @Nullable
     public static MenuLocator findTerminal(Player player, String terminalName) {
-        if (!ModList.get().isLoaded("curios"))
-            return null;
         var slotResult = inventory(player).findFirstCurio(
                 stack -> WUTHandler.hasTerminal(stack, terminalName));
         if (slotResult.isPresent() && slotResult.get().slotContext() != null) {

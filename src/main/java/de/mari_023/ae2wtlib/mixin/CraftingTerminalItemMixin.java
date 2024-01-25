@@ -12,6 +12,9 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
+import top.theillusivec4.curios.api.SlotContext;
+import top.theillusivec4.curios.api.type.capability.ICurioItem;
+
 import appeng.api.implementations.menuobjects.ItemMenuHost;
 import appeng.api.networking.IGrid;
 import appeng.items.tools.powered.WirelessCraftingTerminalItem;
@@ -26,7 +29,7 @@ import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHandler;
 
 @Mixin(value = WirelessCraftingTerminalItem.class, remap = false)
 public class CraftingTerminalItemMixin extends WirelessTerminalItem
-        implements IUniversalWirelessTerminalItem/* , ICurioItem */ {
+        implements IUniversalWirelessTerminalItem, ICurioItem {
     public CraftingTerminalItemMixin() {
         // noinspection DataFlowIssue
         super(null, null);
@@ -68,8 +71,7 @@ public class CraftingTerminalItemMixin extends WirelessTerminalItem
         MagnetHandler.handle(player, itemStack);
     }
 
-    /*
-     * public void curioTick(SlotContext slotContext, ItemStack stack) { inventoryTick(stack,
-     * slotContext.entity().level(), slotContext.entity(), 0, false); }
-     */
+    public void curioTick(SlotContext slotContext, ItemStack stack) {
+        inventoryTick(stack, slotContext.entity().level(), slotContext.entity(), 0, false);
+    }
 }

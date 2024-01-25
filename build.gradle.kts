@@ -40,7 +40,7 @@ val artifactVersion = version
 dependencies {
     implementation("net.neoforged:neoforge:${neoforgeVersion}")
 
-    compileOnly("top.theillusivec4.curios:curios-neoforge:${curiosVersion}")
+    implementation("top.theillusivec4.curios:curios-neoforge:${curiosVersion}")
     implementation("appeng:appliedenergistics2-neoforge:${ae2Version}")
 
     compileOnly("me.shedaniel:RoughlyEnoughItems-neoforge:${reiVersion}")
