@@ -37,7 +37,9 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost
     private final AppEngInternalInventory singularityInventory = new AppEngInternalInventory(this, 1);
     private final AppEngInternalInventory viewCellInventory;
     private boolean rangeCheck;
+    @Nullable
     private final IGrid targetGrid;
+    @Nullable
     private IActionHost quantumBridge;
     private IUpgradeInventory upgradeInventory;
     public static final ResourceLocation INV_SINGULARITY = AE2wtlib.id("singularity");
@@ -75,8 +77,10 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost
     @Nullable
     @Override
     public IGridNode getActionableNode() {
-        if (isQuantumLinked() && !getPlayer().level().isClientSide())
+        if (isQuantumLinked() && !getPlayer().level().isClientSide()) {
+            assert quantumBridge != null;
             return quantumBridge.getActionableNode();
+        }
         return super.getActionableNode();
     }
 

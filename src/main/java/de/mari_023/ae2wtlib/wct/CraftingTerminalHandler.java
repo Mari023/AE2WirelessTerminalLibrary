@@ -26,9 +26,12 @@ public class CraftingTerminalHandler {
     private static final WeakHashMap<Player, CraftingTerminalHandler> CLIENT_PLAYERS = new WeakHashMap<>();
     private final Player player;
     private ItemStack craftingTerminal = ItemStack.EMPTY;
+    @Nullable
     private WTMenuHost menuHost;
+    @Nullable
     private MenuLocator locator;
     private HashMap<Item, Long> restockAbleItems = new HashMap<>();
+    @Nullable
     private MagnetHost magnetHost;
 
     private CraftingTerminalHandler(Player player) {
@@ -72,8 +75,10 @@ public class CraftingTerminalHandler {
 
         if (getMenuHost() == null)
             craftingTerminal = ItemStack.EMPTY;
-        else
+        else {
+            assert menuHost != null;
             craftingTerminal = menuHost.getItemStack();
+        }
 
         return craftingTerminal;
     }
@@ -107,6 +112,7 @@ public class CraftingTerminalHandler {
 
     @Nullable
     public IGrid getTargetGrid() {
+        if(menuHost == null) return null;
         final IGridNode n = menuHost.getActionableNode();
 
         if (n == null)

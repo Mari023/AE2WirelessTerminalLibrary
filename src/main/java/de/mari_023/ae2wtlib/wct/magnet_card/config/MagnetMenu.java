@@ -16,6 +16,7 @@ import de.mari_023.ae2wtlib.AE2wtlibSlotSemantics;
 import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
 import de.mari_023.ae2wtlib.wct.WCTMenuHost;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHost;
+import org.jetbrains.annotations.Nullable;
 
 public class MagnetMenu extends AEBaseMenu implements ISubMenu {
     public static final String ID = "magnet";
@@ -23,6 +24,7 @@ public class MagnetMenu extends AEBaseMenu implements ISubMenu {
             .build(ID);
 
     private final WCTMenuHost host;
+    @Nullable
     private final MagnetHost magnetHost;
     private final static String TOGGLE_PICKUP_MODE = "togglepickupmode";
     private final static String TOGGLE_INSERT_MODE = "toggleinsertmode";
@@ -65,6 +67,7 @@ public class MagnetMenu extends AEBaseMenu implements ISubMenu {
         return host;
     }
 
+    @Nullable
     public MagnetHost getMagnetHost() {
         return magnetHost;
     }
@@ -73,6 +76,8 @@ public class MagnetMenu extends AEBaseMenu implements ISubMenu {
         if (isClientSide()) {
             sendClientAction(TOGGLE_PICKUP_MODE);
         }
+        if (magnetHost == null)
+            return;
         magnetHost.togglePickupMode();
     }
 
@@ -80,6 +85,8 @@ public class MagnetMenu extends AEBaseMenu implements ISubMenu {
         if (isClientSide()) {
             sendClientAction(TOGGLE_INSERT_MODE);
         }
+        if (magnetHost == null)
+            return;
         magnetHost.toggleInsertMode();
     }
 
@@ -87,6 +94,8 @@ public class MagnetMenu extends AEBaseMenu implements ISubMenu {
         if (isClientSide()) {
             sendClientAction(COPY_UP);
         }
+        if (magnetHost == null)
+            return;
         magnetHost.copyUp();
     }
 
@@ -94,6 +103,8 @@ public class MagnetMenu extends AEBaseMenu implements ISubMenu {
         if (isClientSide()) {
             sendClientAction(COPY_DOWN);
         }
+        if (magnetHost == null)
+            return;
         magnetHost.copyDown();
     }
 
@@ -101,6 +112,8 @@ public class MagnetMenu extends AEBaseMenu implements ISubMenu {
         if (isClientSide()) {
             sendClientAction(SWITCH_INSERT_PICKUP);
         }
+        if (magnetHost == null)
+            return;
         magnetHost.switchInsertPickup();
     }
 }

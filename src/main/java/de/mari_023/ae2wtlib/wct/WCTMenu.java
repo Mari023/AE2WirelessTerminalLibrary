@@ -20,6 +20,7 @@ import de.mari_023.ae2wtlib.wct.magnet_card.MagnetMode;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetSettings;
 import de.mari_023.ae2wtlib.wct.magnet_card.config.MagnetMenu;
 import de.mari_023.ae2wtlib.wut.ItemWUT;
+import org.jetbrains.annotations.Nullable;
 
 public class WCTMenu extends CraftingTermMenu {
     public static final String ID = "wireless_crafting_terminal";
@@ -63,13 +64,15 @@ public class WCTMenu extends CraftingTermMenu {
         return wctMenuHost.getActionableNode();
     }
 
+    @Nullable
     private MagnetSettings magnetSettings;
 
     public MagnetSettings getMagnetSettings() {
         return magnetSettings = MagnetHandler.getMagnetSettings(wctMenuHost.getItemStack());
     }
 
-    public void saveMagnetSettings() {
+    private void saveMagnetSettings() {
+        if(magnetSettings == null) return;
         MagnetHandler.saveMagnetSettings(wctMenuHost.getItemStack(), magnetSettings);
     }
 
