@@ -4,7 +4,7 @@ import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
-import de.mari_023.ae2wtlib.AE2wtlib;
+import de.mari_023.ae2wtlib.AE2wtlibItems;
 
 public final class InputHelper {
     private InputHelper() {
@@ -25,5 +25,5 @@ public final class InputHelper {
         return count;
     }
 
-    public static final Ingredient WUT = Ingredient.of(AE2wtlib.UNIVERSAL_TERMINAL);
+    public static final Ingredient WUT = Ingredient.of(AE2wtlibItems.instance().UNIVERSAL_TERMINAL);
 }

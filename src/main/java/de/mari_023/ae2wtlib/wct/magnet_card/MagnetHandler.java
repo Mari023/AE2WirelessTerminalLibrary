@@ -18,8 +18,8 @@ import appeng.api.stacks.AEItemKey;
 import appeng.api.stacks.KeyCounter;
 import appeng.api.upgrades.IUpgradeableItem;
 
-import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.AE2wtlibConfig;
+import de.mari_023.ae2wtlib.AE2wtlibItems;
 import de.mari_023.ae2wtlib.networking.RestockAmountPacket;
 import de.mari_023.ae2wtlib.terminal.ItemWT;
 import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
@@ -112,13 +112,13 @@ public class MagnetHandler {
 
     public static void saveMagnetSettings(ItemStack terminal, MagnetSettings magnetSettings) {
         if (terminal.getItem() instanceof IUpgradeableItem upgradeableItem
-                && upgradeableItem.getUpgrades(terminal).isInstalled(AE2wtlib.MAGNET_CARD))
+                && upgradeableItem.getUpgrades(terminal).isInstalled(AE2wtlibItems.instance().MAGNET_CARD))
             terminal.getOrCreateTag().put("magnet_settings", magnetSettings.toTag());
     }
 
     public static MagnetSettings getMagnetSettings(ItemStack terminal) {
         if (terminal.getItem() instanceof IUpgradeableItem upgradeableItem
-                && upgradeableItem.getUpgrades(terminal).isInstalled(AE2wtlib.MAGNET_CARD))
+                && upgradeableItem.getUpgrades(terminal).isInstalled(AE2wtlibItems.instance().MAGNET_CARD))
             return new MagnetSettings((CompoundTag) terminal.getOrCreateTag().get("magnet_settings"));
         return new MagnetSettings();
     }

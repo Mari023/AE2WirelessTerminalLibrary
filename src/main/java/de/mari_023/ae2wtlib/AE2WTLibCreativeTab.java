@@ -18,7 +18,7 @@ public class AE2WTLibCreativeTab {
     public static void init() {
         var tab = CreativeModeTab.builder()
                 .title(TextConstants.CREATIVE_TAB)
-                .icon(() -> new ItemStack(AE2wtlib.UNIVERSAL_TERMINAL))
+                .icon(() -> new ItemStack(AE2wtlibItems.instance().UNIVERSAL_TERMINAL))
                 .displayItems(AE2WTLibCreativeTab::buildDisplayItems)
                 .build();
         Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, AE2wtlib.id("main"), tab);

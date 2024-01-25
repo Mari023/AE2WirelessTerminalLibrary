@@ -17,10 +17,10 @@ public class UpgradeHelper {
 
     static void addUpgrades() {
         addUpgradeToAllTerminals(AEItems.ENERGY_CARD, 0);
-        addUpgradeToAllTerminals(AE2wtlib.QUANTUM_BRIDGE_CARD, 1);
+        addUpgradeToAllTerminals(AE2wtlibItems.instance().QUANTUM_BRIDGE_CARD, 1);
 
-        Upgrades.add(AE2wtlib.MAGNET_CARD, AEItems.WIRELESS_CRAFTING_TERMINAL, 1);
-        Upgrades.add(AE2wtlib.MAGNET_CARD, AE2wtlib.UNIVERSAL_TERMINAL, 1);
+        Upgrades.add(AE2wtlibItems.instance().MAGNET_CARD, AEItems.WIRELESS_CRAFTING_TERMINAL, 1);
+        Upgrades.add(AE2wtlibItems.instance().MAGNET_CARD, AE2wtlibItems.instance().UNIVERSAL_TERMINAL, 1);
 
         readyForUpgrades = true;
         for (var upgrade : upgrades.entrySet()) {
@@ -43,13 +43,13 @@ public class UpgradeHelper {
                     continue;
                 Upgrades.add(upgradeCard, item, maxSupported, GuiText.WirelessTerminals.getTranslationKey());
             }
-            Upgrades.add(upgradeCard, AE2wtlib.UNIVERSAL_TERMINAL, maxSupported);
+            Upgrades.add(upgradeCard, AE2wtlibItems.instance().UNIVERSAL_TERMINAL, maxSupported);
         } else
             upgrades.put(upgradeCard, maxSupported);
     }
 
     private static void addMaxUpgradesToAllTerminals(ItemLike upgradeCard) {
-        Upgrades.add(upgradeCard, AE2wtlib.UNIVERSAL_TERMINAL, WUTHandler.getUpgradeCardCount());
+        Upgrades.add(upgradeCard, AE2wtlibItems.instance().UNIVERSAL_TERMINAL, WUTHandler.getUpgradeCardCount());
         for (var terminal : WUTHandler.wirelessTerminals.entrySet()) {
             var terminalItem = terminal.getValue().item();
             if (!(terminalItem instanceof ItemLike itemLike))

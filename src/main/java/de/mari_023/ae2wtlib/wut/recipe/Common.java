@@ -13,7 +13,7 @@ import appeng.api.upgrades.IUpgradeInventory;
 import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.items.tools.powered.powersink.AEBasePoweredItem;
 
-import de.mari_023.ae2wtlib.AE2wtlib;
+import de.mari_023.ae2wtlib.AE2wtlibItems;
 import de.mari_023.ae2wtlib.wut.ItemWUT;
 
 public abstract class Common implements CraftingRecipe {
@@ -27,7 +27,7 @@ public abstract class Common implements CraftingRecipe {
      */
     private static final String TAG_UPGRADES = "upgrades";
 
-    protected final ItemStack outputStack = new ItemStack(AE2wtlib.UNIVERSAL_TERMINAL);
+    protected final ItemStack outputStack = new ItemStack(AE2wtlibItems.instance().UNIVERSAL_TERMINAL);
 
     @Override
     public boolean canCraftInDimensions(int width, int height) {

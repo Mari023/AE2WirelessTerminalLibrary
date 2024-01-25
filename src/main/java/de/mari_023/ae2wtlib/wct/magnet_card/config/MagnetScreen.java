@@ -16,6 +16,8 @@ public class MagnetScreen extends AEBaseScreen<MagnetMenu> {
     public MagnetScreen(MagnetMenu menu, Inventory playerInventory, Component title, ScreenStyle style) {
         super(menu, playerInventory, title, style);
         AESubScreen.addBackButton(menu, "back", widgets);
+        if (menu.getMagnetHost() == null)
+            return;
 
         widgets.add("pickup_mode", new IconButton(button -> menu.togglePickupMode()) {
             @Override

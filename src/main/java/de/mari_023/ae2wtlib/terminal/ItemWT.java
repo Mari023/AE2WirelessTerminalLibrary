@@ -26,7 +26,7 @@ import appeng.menu.locator.MenuLocators;
 import appeng.util.Platform;
 import appeng.util.inv.AppEngInternalInventory;
 
-import de.mari_023.ae2wtlib.AE2wtlib;
+import de.mari_023.ae2wtlib.AE2wtlibItems;
 import de.mari_023.ae2wtlib.terminal.results.ActionHostResult;
 import de.mari_023.ae2wtlib.terminal.results.GridResult;
 import de.mari_023.ae2wtlib.terminal.results.LongResult;
@@ -81,7 +81,7 @@ public abstract class ItemWT extends WirelessTerminalItem implements IUniversalW
     private static boolean hasQuantumUpgrade(ItemStack stack, @Nullable IUpgradeInventory inventory) {
         if (inventory == null)
             inventory = UpgradeInventories.forItem(stack, WUTHandler.getUpgradeCardCount());
-        return inventory.isInstalled(AE2wtlib.QUANTUM_BRIDGE_CARD);
+        return inventory.isInstalled(AE2wtlibItems.instance().QUANTUM_BRIDGE_CARD);
     }
 
     public static ActionHostResult getQuantumBridge(ItemStack itemStack, Level level,

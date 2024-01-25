@@ -14,7 +14,7 @@ import appeng.helpers.IPatternTerminalMenuHost;
 import appeng.menu.ISubMenu;
 import appeng.parts.encoding.PatternEncodingLogic;
 
-import de.mari_023.ae2wtlib.AE2wtlib;
+import de.mari_023.ae2wtlib.AE2wtlibItems;
 import de.mari_023.ae2wtlib.terminal.WTMenuHost;
 
 public class WETMenuHost extends WTMenuHost
@@ -29,7 +29,7 @@ public class WETMenuHost extends WTMenuHost
 
     @Override
     public ItemStack getMainMenuIcon() {
-        return new ItemStack(AE2wtlib.PATTERN_ENCODING_TERMINAL);
+        return new ItemStack(AE2wtlibItems.instance().PATTERN_ENCODING_TERMINAL);
     }
 
     @Override

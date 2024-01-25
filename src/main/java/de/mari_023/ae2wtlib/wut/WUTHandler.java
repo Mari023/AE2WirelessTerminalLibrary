@@ -19,7 +19,7 @@ import appeng.hotkeys.HotkeyActions;
 import appeng.menu.locator.MenuLocator;
 import appeng.menu.locator.MenuLocators;
 
-import de.mari_023.ae2wtlib.AE2wtlib;
+import de.mari_023.ae2wtlib.AE2wtlibItems;
 import de.mari_023.ae2wtlib.TextConstants;
 import de.mari_023.ae2wtlib.curio.CurioHelper;
 import de.mari_023.ae2wtlib.hotkeys.Ae2WTLibLocatingService;
@@ -225,7 +225,7 @@ public class WUTHandler {
         if (terminalNames.contains(name))
             return;
 
-        ItemStack wut = new ItemStack(AE2wtlib.UNIVERSAL_TERMINAL);
+        ItemStack wut = new ItemStack(AE2wtlibItems.instance().UNIVERSAL_TERMINAL);
         CompoundTag tag = new CompoundTag();
         tag.putBoolean(name, true);
         wut.setTag(tag);

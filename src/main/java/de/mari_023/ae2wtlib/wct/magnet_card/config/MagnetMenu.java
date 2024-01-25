@@ -1,5 +1,8 @@
 package de.mari_023.ae2wtlib.wct.magnet_card.config;
 
+import org.jetbrains.annotations.Nullable;
+
+import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
 
@@ -16,7 +19,6 @@ import de.mari_023.ae2wtlib.AE2wtlibSlotSemantics;
 import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
 import de.mari_023.ae2wtlib.wct.WCTMenuHost;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHost;
-import org.jetbrains.annotations.Nullable;
 
 public class MagnetMenu extends AEBaseMenu implements ISubMenu {
     public static final String ID = "magnet";
@@ -75,6 +77,8 @@ public class MagnetMenu extends AEBaseMenu implements ISubMenu {
     public void togglePickupMode() {
         if (isClientSide()) {
             sendClientAction(TOGGLE_PICKUP_MODE);
+            if (Minecraft.getInstance().isLocalServer())
+                return;
         }
         if (magnetHost == null)
             return;
@@ -84,6 +88,8 @@ public class MagnetMenu extends AEBaseMenu implements ISubMenu {
     public void toggleInsertMode() {
         if (isClientSide()) {
             sendClientAction(TOGGLE_INSERT_MODE);
+            if (Minecraft.getInstance().isLocalServer())
+                return;
         }
         if (magnetHost == null)
             return;
@@ -93,6 +99,8 @@ public class MagnetMenu extends AEBaseMenu implements ISubMenu {
     public void copyUp() {
         if (isClientSide()) {
             sendClientAction(COPY_UP);
+            if (Minecraft.getInstance().isLocalServer())
+                return;
         }
         if (magnetHost == null)
             return;
@@ -102,6 +110,8 @@ public class MagnetMenu extends AEBaseMenu implements ISubMenu {
     public void copyDown() {
         if (isClientSide()) {
             sendClientAction(COPY_DOWN);
+            if (Minecraft.getInstance().isLocalServer())
+                return;
         }
         if (magnetHost == null)
             return;
@@ -111,6 +121,8 @@ public class MagnetMenu extends AEBaseMenu implements ISubMenu {
     public void switchInsertPickup() {
         if (isClientSide()) {
             sendClientAction(SWITCH_INSERT_PICKUP);
+            if (Minecraft.getInstance().isLocalServer())
+                return;
         }
         if (magnetHost == null)
             return;

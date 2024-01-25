@@ -40,8 +40,8 @@ public class AE2wtlibForge {
                 return;
             RAN_INIT = true;
             AE2wtlib.registerMenus();
-            AE2wtlib.createItems();
-            AE2wtlib.onAe2Initialized();
+            AE2wtlibItems items = new AE2wtlibItems();
+            AE2wtlib.onAe2Initialized(items);
             AE2WTLibCreativeTab.init();
         });
         modEventBus.addListener((BuildCreativeModeTabContentsEvent e) -> AE2wtlib.addToCreativeTab());

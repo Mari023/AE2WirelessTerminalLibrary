@@ -9,7 +9,7 @@ import net.minecraft.world.item.ItemStack;
 
 import appeng.menu.ISubMenu;
 
-import de.mari_023.ae2wtlib.AE2wtlib;
+import de.mari_023.ae2wtlib.AE2wtlibItems;
 import de.mari_023.ae2wtlib.terminal.WTMenuHost;
 
 public class WATMenuHost extends WTMenuHost {
@@ -21,6 +21,6 @@ public class WATMenuHost extends WTMenuHost {
 
     @Override
     public ItemStack getMainMenuIcon() {
-        return new ItemStack(AE2wtlib.PATTERN_ACCESS_TERMINAL);
+        return new ItemStack(AE2wtlibItems.instance().PATTERN_ACCESS_TERMINAL);
     }
 }

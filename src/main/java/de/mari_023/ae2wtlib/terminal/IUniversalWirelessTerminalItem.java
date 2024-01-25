@@ -15,7 +15,7 @@ import appeng.menu.MenuOpener;
 import appeng.menu.locator.MenuLocator;
 import appeng.util.ConfigManager;
 
-import de.mari_023.ae2wtlib.AE2wtlib;
+import de.mari_023.ae2wtlib.AE2wtlibItems;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 public interface IUniversalWirelessTerminalItem {
@@ -42,7 +42,8 @@ public interface IUniversalWirelessTerminalItem {
     IGrid getLinkedGrid(ItemStack item, Level level, @Nullable Player sendMessagesTo);
 
     default boolean checkUniversalPreconditions(ItemStack item, Player player) {
-        if (item.isEmpty() || (item.getItem() != this && item.getItem() != AE2wtlib.UNIVERSAL_TERMINAL)) {
+        if (item.isEmpty()
+                || (item.getItem() != this && item.getItem() != AE2wtlibItems.instance().UNIVERSAL_TERMINAL)) {
             return false;
         }
 

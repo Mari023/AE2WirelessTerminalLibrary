@@ -1,5 +1,7 @@
 package de.mari_023.ae2wtlib.wct;
 
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
@@ -20,7 +22,6 @@ import de.mari_023.ae2wtlib.wct.magnet_card.MagnetMode;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetSettings;
 import de.mari_023.ae2wtlib.wct.magnet_card.config.MagnetMenu;
 import de.mari_023.ae2wtlib.wut.ItemWUT;
-import org.jetbrains.annotations.Nullable;
 
 public class WCTMenu extends CraftingTermMenu {
     public static final String ID = "wireless_crafting_terminal";
@@ -72,7 +73,8 @@ public class WCTMenu extends CraftingTermMenu {
     }
 
     private void saveMagnetSettings() {
-        if(magnetSettings == null) return;
+        if (magnetSettings == null)
+            return;
         MagnetHandler.saveMagnetSettings(wctMenuHost.getItemStack(), magnetSettings);
     }
 
