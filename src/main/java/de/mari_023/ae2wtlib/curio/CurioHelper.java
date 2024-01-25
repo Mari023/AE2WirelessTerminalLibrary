@@ -10,6 +10,7 @@ import net.neoforged.fml.ModList;
 
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotResult;
+import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 
 import appeng.menu.locator.MenuLocator;
 
@@ -19,10 +20,14 @@ public final class CurioHelper {
     private CurioHelper() {
     }
 
+    private static ICuriosItemHandler inventory(Player player) {
+        return CuriosApi.getCuriosInventory(player).orElseThrow();
+    }
+
     public static boolean isStillPresent(Player player, ItemStack terminal) {
         if (!ModList.get().isLoaded("curios"))
             return false;
-        List<SlotResult> slotResults = CuriosApi.getCuriosHelper().findCurios(player, terminal.getItem());
+        List<SlotResult> slotResults = inventory(player).findCurios(terminal.getItem());
         for (SlotResult slotResult : slotResults) {
             if (slotResult.stack().equals(terminal)) {
                 return true;
@@ -41,7 +46,7 @@ public final class CurioHelper {
     public static MenuLocator findTerminal(Player player, String terminalName) {
         if (!ModList.get().isLoaded("curios"))
             return null;
-        var slotResult = CuriosApi.getCuriosHelper().findFirstCurio(player,
+        var slotResult = inventory(player).findFirstCurio(
                 stack -> WUTHandler.hasTerminal(stack, terminalName));
         if (slotResult.isPresent() && slotResult.get().slotContext() != null) {
             return new CurioLocator(slotResult.get().slotContext());
@@ -50,7 +55,7 @@ public final class CurioHelper {
     }
 
     public static void addAllCurios(List<ItemStack> items, Player player) {
-        var inventory = CuriosApi.getCuriosHelper().findCurios(player, (stack) -> true);
+        var inventory = inventory(player).findCurios((stack) -> true);
         for (var slotResult : inventory) {
             items.add(slotResult.stack());
         }
