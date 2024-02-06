@@ -2,7 +2,6 @@ package de.mari_023.ae2wtlib.terminal;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -12,6 +11,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
 
 import appeng.api.features.Locatables;
 import appeng.api.implementations.blockentities.IWirelessAccessPoint;
@@ -22,6 +22,7 @@ import appeng.api.upgrades.IUpgradeInventory;
 import appeng.api.upgrades.UpgradeInventories;
 import appeng.core.AEConfig;
 import appeng.items.tools.powered.WirelessTerminalItem;
+import appeng.menu.locator.ItemMenuHostLocator;
 import appeng.menu.locator.MenuLocators;
 import appeng.util.Platform;
 import appeng.util.inv.AppEngInternalInventory;
@@ -49,9 +50,11 @@ public abstract class ItemWT extends WirelessTerminalItem implements IUniversalW
     }
 
     @Nullable
-    public ItemMenuHost getMenuHost(Player player, int slot, ItemStack stack, @Nullable BlockPos pos) {
+    @Override
+    public ItemMenuHost getMenuHost(Player player, ItemMenuHostLocator locator, ItemStack stack,
+            @Nullable BlockHitResult hitResult) {
         return WUTHandler.wirelessTerminals.get(WUTHandler.getCurrentTerminal(stack)).wTMenuHostFactory().create(player,
-                slot, stack, (p, subMenu) -> tryOpen(player, MenuLocators.forInventorySlot(slot), stack, true));
+                locator, stack, (p, subMenu) -> tryOpen(player, locator, stack, true));
     }
 
     public static ActionHostResult findQuantumBridge(Level level, long frequency) {

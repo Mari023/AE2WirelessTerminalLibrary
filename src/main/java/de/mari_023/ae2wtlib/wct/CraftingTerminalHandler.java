@@ -7,16 +7,14 @@ import java.util.WeakHashMap;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridNode;
-import appeng.menu.locator.MenuLocator;
+import appeng.menu.locator.ItemMenuHostLocator;
 
-import de.mari_023.ae2wtlib.curio.CurioHelper;
 import de.mari_023.ae2wtlib.terminal.WTMenuHost;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHost;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
@@ -29,7 +27,7 @@ public class CraftingTerminalHandler {
     @Nullable
     private WTMenuHost menuHost;
     @Nullable
-    private MenuLocator locator;
+    private ItemMenuHostLocator locator;
     private HashMap<Item, Long> restockAbleItems = new HashMap<>();
     @Nullable
     private MagnetHost magnetHost;
@@ -66,11 +64,8 @@ public class CraftingTerminalHandler {
         magnetHost = null;
     }
 
-    public ItemStack getCraftingTerminal() {// TODO use Inventory#findSlotMatchingItem(), which ensures the stack is
-        // actually identical (unlike #contains() which only cares about the item)
-        Inventory inv = player.getInventory();
-        if (!craftingTerminal.isEmpty() && (inv.contains(craftingTerminal)
-                || CurioHelper.isStillPresent(player, craftingTerminal)))
+    public ItemStack getCraftingTerminal() {
+        if (!craftingTerminal.isEmpty() && locator != null && locator.locateItem(player).equals(craftingTerminal))
             return craftingTerminal;
 
         if (getMenuHost() == null)
@@ -85,7 +80,7 @@ public class CraftingTerminalHandler {
 
     @Nullable
     private WTMenuHost getMenuHost() {
-        if (menuHost != null && menuHost.rangeCheck() && menuHost.stillValid()) {
+        if (menuHost != null && menuHost.rangeCheck()/* FIXME check if menuHost is still valid */) {
             return menuHost;
         }
 
@@ -104,7 +99,7 @@ public class CraftingTerminalHandler {
     }
 
     @Nullable
-    public MenuLocator getLocator() {
+    public ItemMenuHostLocator getLocator() {
         if (getMenuHost() == null)
             return null;
         return locator;

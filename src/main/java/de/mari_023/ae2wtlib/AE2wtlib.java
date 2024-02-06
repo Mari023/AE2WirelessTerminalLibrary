@@ -5,14 +5,11 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 
 import appeng.api.features.HotkeyAction;
-import appeng.core.AppEng;
 import appeng.core.definitions.AEItems;
 import appeng.hotkeys.HotkeyActions;
 import appeng.init.client.InitScreens;
 import appeng.server.testplots.TestPlots;
-import appeng.util.SearchInventoryEvent;
 
-import de.mari_023.ae2wtlib.curio.CurioHelper;
 import de.mari_023.ae2wtlib.hotkeys.MagnetHotkeyAction;
 import de.mari_023.ae2wtlib.hotkeys.RestockHotkeyAction;
 import de.mari_023.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
@@ -53,9 +50,7 @@ public class AE2wtlib {
         HotkeyActions.register(new RestockHotkeyAction(), "ae2wtlib_restock");
         HotkeyActions.register(new MagnetHotkeyAction(), "ae2wtlib_magnet");
 
-        SearchInventoryEvent.EVENT.register(CurioHelper::addAllCurios);
         // we need something to call addon terminals here
-
         UpgradeHelper.addUpgrades();
         TestPlots.addPlotClass(AE2WTLibTestPlots.class);
     }
@@ -71,11 +66,10 @@ public class AE2wtlib {
     }
 
     static void registerMenus() {
-        Registry.register(BuiltInRegistries.MENU, AppEng.makeId(WCTMenu.ID), WCTMenu.TYPE);
-        Registry.register(BuiltInRegistries.MENU, AppEng.makeId(WATMenu.ID), WATMenu.TYPE);
-        Registry.register(BuiltInRegistries.MENU, AppEng.makeId(WETMenu.ID), WETMenu.TYPE);
-        Registry.register(BuiltInRegistries.MENU, AppEng.makeId(MagnetMenu.ID), MagnetMenu.TYPE);
-        Registry.register(BuiltInRegistries.MENU, AppEng.makeId(TrashMenu.ID), TrashMenu.TYPE);
+        // TODO find a better way to do this.
+        // classloading causes this to be registered by ae2, but I don't know how reliable this is
+        var a = MagnetMenu.TYPE;
+        var b = TrashMenu.TYPE;
     }
 
     public static void registerScreens() {

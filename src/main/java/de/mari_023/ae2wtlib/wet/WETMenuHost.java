@@ -2,8 +2,6 @@ package de.mari_023.ae2wtlib.wet;
 
 import java.util.function.BiConsumer;
 
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -12,6 +10,7 @@ import appeng.api.implementations.blockentities.IViewCellStorage;
 import appeng.helpers.IPatternTerminalLogicHost;
 import appeng.helpers.IPatternTerminalMenuHost;
 import appeng.menu.ISubMenu;
+import appeng.menu.locator.ItemMenuHostLocator;
 import appeng.parts.encoding.PatternEncodingLogic;
 
 import de.mari_023.ae2wtlib.AE2wtlibItems;
@@ -21,9 +20,9 @@ public class WETMenuHost extends WTMenuHost
         implements IViewCellStorage, IPatternTerminalMenuHost, IPatternTerminalLogicHost {
     private final PatternEncodingLogic logic = new PatternEncodingLogic(this);
 
-    public WETMenuHost(final Player ep, @Nullable Integer inventorySlot, final ItemStack is,
+    public WETMenuHost(final Player ep, ItemMenuHostLocator locator, final ItemStack is,
             BiConsumer<Player, ISubMenu> returnToMainMenu) {
-        super(ep, inventorySlot, is, returnToMainMenu);
+        super(ep, locator, is, returnToMainMenu);
         readFromNbt();
     }
 

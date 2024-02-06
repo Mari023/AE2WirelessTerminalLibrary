@@ -14,18 +14,16 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 
-import appeng.api.implementations.menuobjects.ItemMenuHost;
 import appeng.hotkeys.HotkeyActions;
-import appeng.menu.locator.MenuLocator;
+import appeng.integration.modules.curios.CuriosIntegration;
+import appeng.menu.locator.ItemMenuHostLocator;
 import appeng.menu.locator.MenuLocators;
 
 import de.mari_023.ae2wtlib.AE2wtlibItems;
 import de.mari_023.ae2wtlib.TextConstants;
-import de.mari_023.ae2wtlib.curio.CurioHelper;
 import de.mari_023.ae2wtlib.hotkeys.Ae2WTLibLocatingService;
 import de.mari_023.ae2wtlib.networking.UpdateWUTPackage;
 import de.mari_023.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
-import de.mari_023.ae2wtlib.terminal.WTMenuHost;
 
 /**
  * This class handles functionalities related to the Wireless Universal Terminal (WUT). It provides methods to get and
@@ -74,7 +72,7 @@ public class WUTHandler {
      * @param itemStack The ItemStack to update.
      * @param terminal  The terminal name to set.
      */
-    public static void setCurrentTerminal(Player player, MenuLocator locator, ItemStack itemStack,
+    public static void setCurrentTerminal(Player player, ItemMenuHostLocator locator, ItemStack itemStack,
             String terminal) {
         if (!(itemStack.getItem() instanceof ItemWUT))
             return;
@@ -113,7 +111,7 @@ public class WUTHandler {
      * @param itemStack            The terminal ItemStack to update.
      * @param isHandlingRightClick If true, cycles to the previous terminal; otherwise, cycles to the next.
      */
-    public static void cycle(Player player, MenuLocator locator, ItemStack itemStack,
+    public static void cycle(Player player, ItemMenuHostLocator locator, ItemStack itemStack,
             boolean isHandlingRightClick) {
         if (itemStack.getTag() == null)
             return;
@@ -142,7 +140,8 @@ public class WUTHandler {
      * @param locator The menu locator.
      * @param tag     The compound tag containing terminal data.
      */
-    public static void updateClientTerminal(ServerPlayer player, MenuLocator locator, @Nullable CompoundTag tag) {
+    public static void updateClientTerminal(ServerPlayer player, ItemMenuHostLocator locator,
+            @Nullable CompoundTag tag) {
         PacketDistributor.PLAYER.with(player).send(new UpdateWUTPackage(locator, tag));
     }
 
@@ -154,11 +153,8 @@ public class WUTHandler {
      * @param returningFromSubmenu Set to true when the player is returning from a submenu.
      * @return true if the terminal can be opened, false otherwise.
      */
-    public static boolean open(final Player player, final MenuLocator locator, boolean returningFromSubmenu) {
-        WTMenuHost host = locator.locate(player, WTMenuHost.class);
-        if (host == null)
-            return false;
-        ItemStack is = host.getItemStack();
+    public static boolean open(final Player player, final ItemMenuHostLocator locator, boolean returningFromSubmenu) {
+        ItemStack is = locator.locateItem(player);
 
         if (is.getTag() == null)
             return false;
@@ -179,33 +175,21 @@ public class WUTHandler {
      * @return A MenuLocator for the terminal if found; null otherwise.
      */
     @Nullable
-    public static MenuLocator findTerminal(Player player, String terminalName) {
-        MenuLocator locator = CurioHelper.findTerminal(player, terminalName);
-        if (locator != null)
-            return locator;
+    public static ItemMenuHostLocator findTerminal(Player player, String terminalName) {
+        var cap = player.getCapability(CuriosIntegration.ITEM_HANDLER);
+        if (cap != null) {
+            for (int i = 0; i < cap.getSlots(); i++) {
+                if (hasTerminal(cap.getStackInSlot(i), terminalName)) {
+                    return MenuLocators.forCurioSlot(i);
+                }
+            }
+        }
 
         for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
             if (hasTerminal(player.getInventory().getItem(i), terminalName))
                 return MenuLocators.forInventorySlot(i);
         }
         return null;
-    }
-
-    /**
-     * Gets the ItemStack from a locator for a given player.
-     *
-     * @param player  The player.
-     * @param locator The menu locator.
-     * @return The ItemStack located, or an empty stack if not found.
-     */
-    public static ItemStack getItemStackFromLocator(Player player, MenuLocator locator) {
-        ItemStack stack = CurioHelper.getItemStack(player, locator);
-        if (!stack.isEmpty())
-            return stack;
-        ItemMenuHost host = locator.locate(player, WTMenuHost.class);
-        if (host == null)
-            return ItemStack.EMPTY;
-        return host.getItemStack();
     }
 
     /**
