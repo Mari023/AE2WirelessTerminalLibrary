@@ -17,18 +17,18 @@ import appeng.util.ConfigManager;
 import de.mari_023.ae2wtlib.AE2wtlibItems;
 
 public interface IUniversalWirelessTerminalItem {
-    default boolean open(final Player player, ItemStack stack, final ItemMenuHostLocator locator,
+    default boolean open(final Player player, final ItemMenuHostLocator locator,
             boolean returningFromSubmenu) {
-        return MenuOpener.open(getMenuType(stack), player, locator, returningFromSubmenu);
+        return MenuOpener.open(getMenuType(locator, player), player, locator, returningFromSubmenu);
     }
 
-    default boolean tryOpen(Player player, ItemMenuHostLocator locator, ItemStack stack, boolean returningFromSubmenu) {
-        if (checkUniversalPreconditions(stack, player))
-            return open(player, stack, locator, returningFromSubmenu);
+    default boolean tryOpen(Player player, ItemMenuHostLocator locator, boolean returningFromSubmenu) {
+        if (checkUniversalPreconditions(locator.locateItem(player), player))
+            return open(player, locator, returningFromSubmenu);
         return false;
     }
 
-    MenuType<?> getMenuType(ItemStack stack);
+    MenuType<?> getMenuType(ItemMenuHostLocator locator, Player player);
 
     @Nullable
     IGrid getLinkedGrid(ItemStack item, Level level, @Nullable Player sendMessagesTo);

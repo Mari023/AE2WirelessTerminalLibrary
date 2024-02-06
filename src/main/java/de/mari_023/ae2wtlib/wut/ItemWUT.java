@@ -51,14 +51,14 @@ public class ItemWUT extends ItemWT implements ICurioItem {
     }
 
     @Override
-    public boolean open(final Player player, ItemStack stack, final ItemMenuHostLocator locator,
+    public boolean open(final Player player, final ItemMenuHostLocator locator,
             boolean returningFromSubmenu) {
         return WUTHandler.open(player, locator, returningFromSubmenu);
     }
 
     @Override
-    public MenuType<?> getMenuType(ItemStack stack) {
-        return WUTHandler.wirelessTerminals.get(WUTHandler.getCurrentTerminal(stack)).menuType();
+    public MenuType<?> getMenuType(ItemMenuHostLocator locator, Player player) {
+        return WUTHandler.wirelessTerminals.get(WUTHandler.getCurrentTerminal(locator.locateItem(player))).menuType();
     }
 
     @Override

@@ -43,7 +43,7 @@ public abstract class ItemWT extends WirelessTerminalItem implements IUniversalW
     public InteractionResultHolder<ItemStack> use(final Level w, final Player player, final InteractionHand hand) {
         ItemStack is = player.getItemInHand(hand);
         if (checkUniversalPreconditions(is, player)) {
-            open(player, is, MenuLocators.forHand(player, hand), false);
+            open(player, MenuLocators.forHand(player, hand), false);
             return new InteractionResultHolder<>(InteractionResult.SUCCESS, is);
         }
         return new InteractionResultHolder<>(InteractionResult.FAIL, is);
@@ -51,10 +51,11 @@ public abstract class ItemWT extends WirelessTerminalItem implements IUniversalW
 
     @Nullable
     @Override
-    public ItemMenuHost getMenuHost(Player player, ItemMenuHostLocator locator, ItemStack stack,
+    public ItemMenuHost<?> getMenuHost(Player player, ItemMenuHostLocator locator,
             @Nullable BlockHitResult hitResult) {
-        return WUTHandler.wirelessTerminals.get(WUTHandler.getCurrentTerminal(stack)).wTMenuHostFactory().create(player,
-                locator, stack, (p, subMenu) -> tryOpen(player, locator, stack, true));
+        return WUTHandler.wirelessTerminals.get(WUTHandler.getCurrentTerminal(locator.locateItem(player)))
+                .wTMenuHostFactory().create(this, player,
+                        locator, (p, subMenu) -> tryOpen(player, locator, true));
     }
 
     public static ActionHostResult findQuantumBridge(Level level, long frequency) {

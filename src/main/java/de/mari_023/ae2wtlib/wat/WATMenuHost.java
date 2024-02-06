@@ -5,6 +5,7 @@ import java.util.function.BiConsumer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
+import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.menu.ISubMenu;
 import appeng.menu.locator.ItemMenuHostLocator;
 
@@ -12,9 +13,9 @@ import de.mari_023.ae2wtlib.AE2wtlibItems;
 import de.mari_023.ae2wtlib.terminal.WTMenuHost;
 
 public class WATMenuHost extends WTMenuHost {
-    public WATMenuHost(final Player ep, ItemMenuHostLocator locator, final ItemStack is,
+    public WATMenuHost(WirelessTerminalItem item, Player player, ItemMenuHostLocator locator,
             BiConsumer<Player, ISubMenu> returnToMainMenu) {
-        super(ep, locator, is, returnToMainMenu);
+        super(item, player, locator, returnToMainMenu);
         readFromNbt();
     }
 
