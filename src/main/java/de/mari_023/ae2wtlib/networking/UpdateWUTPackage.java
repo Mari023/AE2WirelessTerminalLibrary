@@ -7,18 +7,18 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 
-import appeng.menu.locator.MenuLocator;
+import appeng.menu.locator.ItemMenuHostLocator;
 import appeng.menu.locator.MenuLocators;
 
 import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.terminal.WTMenuHost;
 import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
 
-public record UpdateWUTPackage(MenuLocator locator, @Nullable CompoundTag tag) implements AE2wtlibPacket {
+public record UpdateWUTPackage(ItemMenuHostLocator locator, @Nullable CompoundTag tag) implements AE2wtlibPacket {
 
     public static final ResourceLocation ID = AE2wtlib.id("update_wut");
     public UpdateWUTPackage(FriendlyByteBuf buf) {
-        this(MenuLocators.readFromPacket(buf), buf.readNbt());
+        this((ItemMenuHostLocator) MenuLocators.readFromPacket(buf), buf.readNbt());
     }
 
     public void processPacketData(Player player) {

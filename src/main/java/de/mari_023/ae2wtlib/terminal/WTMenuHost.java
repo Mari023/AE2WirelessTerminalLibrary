@@ -25,11 +25,11 @@ import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.items.tools.powered.powersink.AEBasePoweredItem;
 import appeng.me.cluster.implementations.QuantumCluster;
 import appeng.menu.ISubMenu;
+import appeng.menu.locator.ItemMenuHostLocator;
 import appeng.util.inv.AppEngInternalInventory;
 import appeng.util.inv.InternalInventoryHost;
 
 import de.mari_023.ae2wtlib.AE2wtlib;
-import de.mari_023.ae2wtlib.curio.CurioHelper;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 public abstract class WTMenuHost extends WirelessTerminalMenuHost
@@ -44,9 +44,9 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost
     private IUpgradeInventory upgradeInventory;
     public static final ResourceLocation INV_SINGULARITY = AE2wtlib.id("singularity");
 
-    public WTMenuHost(final Player player, @Nullable Integer inventorySlot, final ItemStack is,
+    public WTMenuHost(final Player player, ItemMenuHostLocator locator, final ItemStack is,
             BiConsumer<Player, ISubMenu> returnToMainMenu) {
-        super(player, inventorySlot, is, returnToMainMenu);
+        super(player, locator, is, returnToMainMenu);
         viewCellInventory = new AppEngInternalInventory(this, 5);
         upgradeInventory = UpgradeInventories.forItem(is, WUTHandler.getUpgradeCardCount(), this::updateUpgrades);
 
@@ -171,15 +171,5 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost
         if (id.equals(INV_SINGULARITY))
             return singularityInventory;
         return null;
-    }
-
-    public boolean stillValid() {
-        return ensureItemStillInSlot();
-    }
-
-    protected boolean ensureItemStillInSlot() {
-        if (getSlot() != null)
-            return super.ensureItemStillInSlot();
-        return CurioHelper.isStillPresent(getPlayer(), getItemStack());
     }
 }

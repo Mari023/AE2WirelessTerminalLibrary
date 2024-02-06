@@ -7,10 +7,9 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 
 import appeng.menu.AEBaseMenu;
-import appeng.menu.locator.MenuLocator;
+import appeng.menu.locator.ItemMenuHostLocator;
 
 import de.mari_023.ae2wtlib.AE2wtlib;
-import de.mari_023.ae2wtlib.terminal.WTMenuHost;
 import de.mari_023.ae2wtlib.wut.ItemWUT;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 
@@ -27,11 +26,9 @@ public record CycleTerminalPacket(boolean isRightClick) implements AE2wtlibPacke
         if (!(containerMenu instanceof AEBaseMenu aeMenu))
             return;
 
-        final MenuLocator locator = aeMenu.getLocator();
-        WTMenuHost host = locator.locate(player, WTMenuHost.class);
-        if (host == null)
+        if (!(aeMenu.getLocator() instanceof ItemMenuHostLocator locator))
             return;
-        ItemStack item = host.getItemStack();
+        ItemStack item = locator.locateItem(player);
 
         if (!(item.getItem() instanceof ItemWUT))
             return;

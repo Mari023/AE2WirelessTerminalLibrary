@@ -4,7 +4,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 import appeng.api.features.HotkeyAction;
-import appeng.menu.locator.MenuLocator;
+import appeng.menu.locator.ItemMenuHostLocator;
 
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 
@@ -17,12 +17,12 @@ public class Ae2WTLibLocatingService implements HotkeyAction {
 
     @Override
     public boolean run(Player player) {
-        MenuLocator locator = WUTHandler.findTerminal(player, terminalName);
+        ItemMenuHostLocator locator = WUTHandler.findTerminal(player, terminalName);
 
         if (locator == null)
             return false;
 
-        ItemStack terminal = WUTHandler.getItemStackFromLocator(player, locator);
+        ItemStack terminal = locator.locateItem(player);
         WUTHandler.setCurrentTerminal(player, locator, terminal, terminalName);
         return WUTHandler.wirelessTerminals.get(terminalName).item().tryOpen(player, locator, terminal, false);
     }

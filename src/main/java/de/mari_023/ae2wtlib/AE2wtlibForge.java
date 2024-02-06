@@ -18,9 +18,6 @@ import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
 import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
-import appeng.menu.locator.MenuLocators;
-
-import de.mari_023.ae2wtlib.curio.CurioLocator;
 import de.mari_023.ae2wtlib.networking.AE2wtlibPacket;
 import de.mari_023.ae2wtlib.networking.CycleTerminalPacket;
 import de.mari_023.ae2wtlib.networking.RestockAmountPacket;
@@ -34,7 +31,6 @@ public class AE2wtlibForge {
 
     public AE2wtlibForge(IEventBus modEventBus) {
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, AE2wtlibConfig.SPEC, AE2wtlib.MOD_NAME + ".toml");
-        MenuLocators.register(CurioLocator.class, CurioLocator::writeToPacket, CurioLocator::readFromPacket);
         modEventBus.addListener((RegisterEvent e) -> {
             if (RAN_INIT)
                 return;

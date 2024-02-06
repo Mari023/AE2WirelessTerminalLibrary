@@ -5,7 +5,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 import appeng.api.features.HotkeyAction;
-import appeng.menu.locator.MenuLocator;
+import appeng.menu.locator.ItemMenuHostLocator;
 
 import de.mari_023.ae2wtlib.TextConstants;
 import de.mari_023.ae2wtlib.terminal.ItemWT;
@@ -21,7 +21,7 @@ public class RestockHotkeyAction implements HotkeyAction {
         if (terminal.isEmpty())
             return false;
         ItemWT.setBoolean(terminal, !ItemWT.getBoolean(terminal, "restock"), "restock");
-        MenuLocator locator = craftingTerminalHandler.getLocator();
+        ItemMenuHostLocator locator = craftingTerminalHandler.getLocator();
         if (locator != null)
             WUTHandler.updateClientTerminal((ServerPlayer) player, locator, terminal.getTag());
 
