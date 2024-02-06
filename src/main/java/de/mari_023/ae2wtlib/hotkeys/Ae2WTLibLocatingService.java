@@ -24,6 +24,6 @@ public class Ae2WTLibLocatingService implements HotkeyAction {
 
         ItemStack terminal = locator.locateItem(player);
         WUTHandler.setCurrentTerminal(player, locator, terminal, terminalName);
-        return WUTHandler.wirelessTerminals.get(terminalName).item().tryOpen(player, locator, terminal, false);
+        return WUTHandler.wirelessTerminals.get(terminalName).item().tryOpen(player, locator, false);
     }
 }

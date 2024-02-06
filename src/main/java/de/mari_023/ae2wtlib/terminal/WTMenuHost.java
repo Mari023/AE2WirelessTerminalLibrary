@@ -17,9 +17,6 @@ import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.storage.MEStorage;
-import appeng.api.upgrades.IUpgradeInventory;
-import appeng.api.upgrades.UpgradeInventories;
-import appeng.core.localization.PlayerMessages;
 import appeng.helpers.WirelessTerminalMenuHost;
 import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.items.tools.powered.powersink.AEBasePoweredItem;
@@ -30,31 +27,19 @@ import appeng.util.inv.AppEngInternalInventory;
 import appeng.util.inv.InternalInventoryHost;
 
 import de.mari_023.ae2wtlib.AE2wtlib;
-import de.mari_023.ae2wtlib.wut.WUTHandler;
 
-public abstract class WTMenuHost extends WirelessTerminalMenuHost
+public abstract class WTMenuHost extends WirelessTerminalMenuHost<WirelessTerminalItem>
         implements InternalInventoryHost, ISegmentedInventory {
     private final AppEngInternalInventory singularityInventory = new AppEngInternalInventory(this, 1);
     private final AppEngInternalInventory viewCellInventory;
-    private boolean rangeCheck;
-    @Nullable
-    private final IGrid targetGrid;
     @Nullable
     private IActionHost quantumBridge;
-    private IUpgradeInventory upgradeInventory;
     public static final ResourceLocation INV_SINGULARITY = AE2wtlib.id("singularity");
 
-    public WTMenuHost(final Player player, ItemMenuHostLocator locator, final ItemStack is,
+    public WTMenuHost(WirelessTerminalItem item, Player player, ItemMenuHostLocator locator,
             BiConsumer<Player, ISubMenu> returnToMainMenu) {
-        super(player, locator, is, returnToMainMenu);
+        super(item, player, locator, returnToMainMenu);
         viewCellInventory = new AppEngInternalInventory(this, 5);
-        upgradeInventory = UpgradeInventories.forItem(is, WUTHandler.getUpgradeCardCount(), this::updateUpgrades);
-
-        targetGrid = ((WirelessTerminalItem) is.getItem()).getLinkedGrid(is, player.level(), null);
-    }
-
-    public void updateUpgrades(ItemStack stack, IUpgradeInventory upgrades) {
-        upgradeInventory = upgrades;
     }
 
     protected void readFromNbt() {
@@ -69,9 +54,9 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost
         singularityInventory.writeToNBT(tag, "singularity");
     }
 
-    @Override
-    public void onChangeInventory(InternalInventory inv, int slot) {
-        saveChanges();
+    @Nullable
+    private IGrid getLinkedGrid(ItemStack stack) {
+        return getItem().getLinkedGrid(stack, getPlayer().level(), null);
     }
 
     @Nullable
@@ -93,16 +78,17 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost
         return node.getGrid().getStorageService().getInventory();
     }
 
-    public boolean rangeCheck() {
-        rangeCheck = super.rangeCheck();
-        return isQuantumLinked() || rangeCheck;
+    public void rangeCheck() {// FIXME
+        // super.rangeCheck();
+        isQuantumLinked();
     }
 
     public boolean isQuantumLinked() {
+        // TODO don't close if the target network is out of energy
         long frequency = ItemWT.getQEFrequency(getItemStack(), singularityInventory).result();
         if (quantumBridge == null) {
             quantumBridge = ItemWT.getQuantumBridge(getItemStack(), getPlayer().level(), singularityInventory,
-                    upgradeInventory).host();
+                    getUpgrades()).host();
             if (quantumBridge == null)
                 return false;
         } else {
@@ -118,6 +104,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost
         }
         if (quantumBridge.getActionableNode() == null)
             return false;
+        var targetGrid = getLinkedGrid(getItemStack());
         return (quantumBridge.getActionableNode().getGrid() == targetGrid && targetGrid != null)
                 && targetGrid.getEnergyService().isNetworkPowered();
     }
@@ -127,25 +114,20 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost
     }
 
     @Override
-    protected void setPowerDrainPerTick(double powerDrainPerTick) {
-        if (rangeCheck) {
-            super.setPowerDrainPerTick(powerDrainPerTick);
-        } else {
+    protected double getPowerDrainPerTick() {
+        if (isQuantumLinked()) {// TODO don't recompute this here
             // QuantumBridgeBlockEntity: 22 ae/tick
             // AbstractReportingPart (terminal): 0.5 ae/tick
             // -> 22.5 ae/tick
-            super.setPowerDrainPerTick(22.5);
+            return 22.5;
         }
+        return super.getPowerDrainPerTick();
     }
 
-    public boolean drainPower() {
+    public void drainPower() {
         recharge();
-        if (!super.drainPower()) {
-            getPlayer().displayClientMessage(PlayerMessages.DeviceNotPowered.text(), true);
-            return false;
-        }
+        super.drainPower();
         recharge();
-        return true;
     }
 
     private void recharge() {
@@ -171,5 +153,10 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost
         if (id.equals(INV_SINGULARITY))
             return singularityInventory;
         return null;
+    }
+
+    @Override
+    public void saveChangedInventory(AppEngInternalInventory inv) {
+        // TODO
     }
 }

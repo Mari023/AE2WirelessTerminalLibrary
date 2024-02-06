@@ -12,6 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import appeng.api.implementations.blockentities.IViewCellStorage;
 import appeng.api.inventories.InternalInventory;
 import appeng.core.definitions.AEItems;
+import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.menu.ISubMenu;
 import appeng.menu.locator.ItemMenuHostLocator;
 import appeng.parts.reporting.CraftingTerminalPart;
@@ -25,9 +26,9 @@ public class WCTMenuHost extends WTMenuHost implements IViewCellStorage {
     private final AppEngInternalInventory trash = new AppEngInternalInventory(this, 27);
     public static final ResourceLocation INV_TRASH = AE2wtlib.id("wct_trash");
 
-    public WCTMenuHost(final Player ep, ItemMenuHostLocator locator, final ItemStack is,
+    public WCTMenuHost(WirelessTerminalItem item, Player player, ItemMenuHostLocator locator,
             BiConsumer<Player, ISubMenu> returnToMainMenu) {
-        super(ep, locator, is, returnToMainMenu);
+        super(item, player, locator, returnToMainMenu);
         readFromNbt();
     }
 

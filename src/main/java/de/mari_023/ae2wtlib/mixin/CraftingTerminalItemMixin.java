@@ -28,7 +28,7 @@ import de.mari_023.ae2wtlib.wct.WCTMenuHost;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHandler;
 
 @Mixin(value = WirelessCraftingTerminalItem.class, remap = false)
-public class CraftingTerminalItemMixin extends WirelessTerminalItem
+public abstract class CraftingTerminalItemMixin extends WirelessTerminalItem
         implements IUniversalWirelessTerminalItem, ICurioItem {
     public CraftingTerminalItemMixin() {
         // noinspection DataFlowIssue
@@ -44,18 +44,15 @@ public class CraftingTerminalItemMixin extends WirelessTerminalItem
         return WCTMenu.TYPE;
     }
 
-    protected boolean checkPreconditions(ItemStack item, Player player) {
-        return checkUniversalPreconditions(item, player);
-    }
-
-    public MenuType<?> getMenuType(ItemStack stack) {
+    public MenuType<?> getMenuType(ItemMenuHostLocator locator, Player player) {
         return getMenuType();
     }
 
     @Nullable
-    public ItemMenuHost getMenuHost(Player player, ItemMenuHostLocator locator, ItemStack stack,
+    public ItemMenuHost<?> getMenuHost(Player player, ItemMenuHostLocator locator,
             @Nullable BlockHitResult hitResult) {
-        return new WCTMenuHost(player, locator, stack, (p, subMenu) -> tryOpen(player, locator, stack, true));
+        return new WCTMenuHost(this, player, locator,
+                (p, subMenu) -> tryOpen(player, locator, true));
     }
 
     @Nullable

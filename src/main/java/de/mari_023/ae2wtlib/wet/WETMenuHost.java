@@ -9,6 +9,7 @@ import net.minecraft.world.level.Level;
 import appeng.api.implementations.blockentities.IViewCellStorage;
 import appeng.helpers.IPatternTerminalLogicHost;
 import appeng.helpers.IPatternTerminalMenuHost;
+import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.menu.ISubMenu;
 import appeng.menu.locator.ItemMenuHostLocator;
 import appeng.parts.encoding.PatternEncodingLogic;
@@ -20,9 +21,9 @@ public class WETMenuHost extends WTMenuHost
         implements IViewCellStorage, IPatternTerminalMenuHost, IPatternTerminalLogicHost {
     private final PatternEncodingLogic logic = new PatternEncodingLogic(this);
 
-    public WETMenuHost(final Player ep, ItemMenuHostLocator locator, final ItemStack is,
+    public WETMenuHost(WirelessTerminalItem item, Player player, ItemMenuHostLocator locator,
             BiConsumer<Player, ISubMenu> returnToMainMenu) {
-        super(ep, locator, is, returnToMainMenu);
+        super(item, player, locator, returnToMainMenu);
         readFromNbt();
     }
 

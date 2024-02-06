@@ -48,7 +48,7 @@ public class WCTMenu extends CraftingTermMenu {
         addSlot(new ArmorSlot(getPlayerInventory(), ArmorSlot.Armor.LEGS), AE2wtlibSlotSemantics.LEGGINGS);
         addSlot(new ArmorSlot(getPlayerInventory(), ArmorSlot.Armor.FEET), AE2wtlibSlotSemantics.BOOTS);
 
-        if (Integer.valueOf(Inventory.SLOT_OFFHAND).equals(wctMenuHost.getSlot()))
+        if (Integer.valueOf(Inventory.SLOT_OFFHAND).equals(wctMenuHost.getPlayerInventorySlot()))
             addSlot(new ArmorSlot.DisabledOffhandSlot(getPlayerInventory()), AE2wtlibSlotSemantics.OFFHAND);
         else
             addSlot(new ArmorSlot(getPlayerInventory(), ArmorSlot.Armor.OFFHAND), AE2wtlibSlotSemantics.OFFHAND);
