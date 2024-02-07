@@ -4,9 +4,9 @@ import java.util.function.BiConsumer;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 
 import appeng.api.config.Actionable;
@@ -16,6 +16,7 @@ import appeng.api.inventories.InternalInventory;
 import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.security.IActionHost;
+import appeng.api.storage.ILinkStatus;
 import appeng.api.storage.MEStorage;
 import appeng.helpers.WirelessTerminalMenuHost;
 import appeng.items.tools.powered.WirelessTerminalItem;
@@ -27,6 +28,7 @@ import appeng.util.inv.AppEngInternalInventory;
 import appeng.util.inv.InternalInventoryHost;
 
 import de.mari_023.ae2wtlib.AE2wtlib;
+import de.mari_023.ae2wtlib.AE2wtlibItems;
 
 public abstract class WTMenuHost extends WirelessTerminalMenuHost<WirelessTerminalItem>
         implements InternalInventoryHost, ISegmentedInventory {
@@ -35,6 +37,8 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<WirelessTermin
     @Nullable
     private IActionHost quantumBridge;
     public static final ResourceLocation INV_SINGULARITY = AE2wtlib.id("singularity");
+    private ILinkStatus linkStatus = ILinkStatus.ofDisconnected();
+    private ILinkStatus quantumStatus = ILinkStatus.ofDisconnected();
 
     public WTMenuHost(WirelessTerminalItem item, Player player, ItemMenuHostLocator locator,
             BiConsumer<Player, ISubMenu> returnToMainMenu) {
@@ -42,16 +46,12 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<WirelessTermin
         viewCellInventory = new AppEngInternalInventory(this, 5);
     }
 
+    @Deprecated
     protected void readFromNbt() {
-        CompoundTag tag = getItemStack().getOrCreateTag();
-        viewCellInventory.readFromNBT(tag, "viewcells");
-        singularityInventory.readFromNBT(tag, "singularity");
     }
 
+    @Deprecated
     public void saveChanges() {
-        CompoundTag tag = getItemStack().getOrCreateTag();
-        viewCellInventory.writeToNBT(tag, "viewcells");
-        singularityInventory.writeToNBT(tag, "singularity");
     }
 
     @Nullable
@@ -62,7 +62,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<WirelessTermin
     @Nullable
     @Override
     public IGridNode getActionableNode() {
-        if (isQuantumLinked() && !getPlayer().level().isClientSide()) {
+        if (!getPlayer().level().isClientSide() && quantumStatus.connected()) {
             assert quantumBridge != null;
             return quantumBridge.getActionableNode();
         }
@@ -78,35 +78,58 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<WirelessTermin
         return node.getGrid().getStorageService().getInventory();
     }
 
+    @Override
+    public boolean onBroadcastChanges(AbstractContainerMenu menu) {
+        if (!super.onBroadcastChanges(menu))
+            return false;
+
+        linkStatus = super.getLinkStatus();
+        quantumStatus = isQuantumLinked();
+        if (!linkStatus.connected()) {
+            if (linkStatus.equals(ILinkStatus.ofDisconnected()) || quantumStatus.connected())
+                linkStatus = quantumStatus;
+        }
+
+        return true;
+    }
+
+    @Override
+    public ILinkStatus getLinkStatus() {
+        return linkStatus;
+    }
+
     public void rangeCheck() {// FIXME
         // super.rangeCheck();
         isQuantumLinked();
     }
 
-    public boolean isQuantumLinked() {
-        // TODO don't close if the target network is out of energy
+    public ILinkStatus isQuantumLinked() {
+        if (!getUpgrades().isInstalled(AE2wtlibItems.instance().QUANTUM_BRIDGE_CARD))
+            return ILinkStatus.ofDisconnected();
         long frequency = ItemWT.getQEFrequency(getItemStack(), singularityInventory).result();
         if (quantumBridge == null) {
             quantumBridge = ItemWT.getQuantumBridge(getItemStack(), getPlayer().level(), singularityInventory,
                     getUpgrades()).host();
             if (quantumBridge == null)
-                return false;
+                return ILinkStatus.ofDisconnected();
         } else {
             if (quantumBridge instanceof QuantumCluster quantumCluster) {
                 if (quantumCluster.getCenter() == null)
-                    return false;
+                    return ILinkStatus.ofDisconnected();
                 long frequencyOther = quantumCluster.getCenter().getQEFrequency();
                 if (!(frequencyOther == frequency || frequencyOther == -frequency))
                     if (ItemWT.findQuantumBridge(getPlayer().level(), frequency).invalid())
-                        return false;
+                        return ILinkStatus.ofDisconnected();
             } else if (ItemWT.findQuantumBridge(getPlayer().level(), frequency).invalid())
-                return false;
+                return ILinkStatus.ofDisconnected();
         }
         if (quantumBridge.getActionableNode() == null)
-            return false;
+            return ILinkStatus.ofDisconnected();
         var targetGrid = getLinkedGrid(getItemStack());
-        return (quantumBridge.getActionableNode().getGrid() == targetGrid && targetGrid != null)
-                && targetGrid.getEnergyService().isNetworkPowered();
+        if ((quantumBridge.getActionableNode().getGrid() == targetGrid && targetGrid != null)
+                && targetGrid.getEnergyService().isNetworkPowered())
+            return ILinkStatus.ofConnected();
+        return ILinkStatus.ofDisconnected();
     }
 
     public AppEngInternalInventory getViewCellStorage() {
@@ -115,7 +138,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<WirelessTermin
 
     @Override
     protected double getPowerDrainPerTick() {
-        if (isQuantumLinked()) {// TODO don't recompute this here
+        if (quantumStatus.connected()) {// TODO don't recompute this here
             // QuantumBridgeBlockEntity: 22 ae/tick
             // AbstractReportingPart (terminal): 0.5 ae/tick
             // -> 22.5 ae/tick
@@ -131,7 +154,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<WirelessTermin
     }
 
     private void recharge() {
-        if (quantumBridge == null)
+        if (!quantumStatus.connected())
             return;
         if (getItemStack().getItem() instanceof AEBasePoweredItem item) {
             double missing = item.getAEMaxPower(getItemStack()) - item.getAECurrentPower(getItemStack());
@@ -157,6 +180,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<WirelessTermin
 
     @Override
     public void saveChangedInventory(AppEngInternalInventory inv) {
-        // TODO
+        viewCellInventory.writeToNBT(getItemStack().getOrCreateTag(), "viewcells");
+        singularityInventory.writeToNBT(getItemStack().getOrCreateTag(), "singularity");
     }
 }
