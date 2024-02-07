@@ -24,24 +24,12 @@ public class WETMenuHost extends WTMenuHost
     public WETMenuHost(WirelessTerminalItem item, Player player, ItemMenuHostLocator locator,
             BiConsumer<Player, ISubMenu> returnToMainMenu) {
         super(item, player, locator, returnToMainMenu);
-        readFromNbt();
+        logic.readFromNBT(getItemStack().getOrCreateTag());
     }
 
     @Override
     public ItemStack getMainMenuIcon() {
         return new ItemStack(AE2wtlibItems.instance().PATTERN_ENCODING_TERMINAL);
-    }
-
-    @Override
-    protected void readFromNbt() {
-        super.readFromNbt();
-        logic.readFromNBT(getItemStack().getOrCreateTag());
-    }
-
-    @Override
-    public void saveChanges() {
-        super.saveChanges();
-        logic.writeToNBT(getItemStack().getOrCreateTag());
     }
 
     @Override
@@ -56,6 +44,6 @@ public class WETMenuHost extends WTMenuHost
 
     @Override
     public void markForSave() {
-        saveChanges();
+        logic.writeToNBT(getItemStack().getOrCreateTag());
     }
 }
