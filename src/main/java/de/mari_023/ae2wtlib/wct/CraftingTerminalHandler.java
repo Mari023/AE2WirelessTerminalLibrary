@@ -80,7 +80,7 @@ public class CraftingTerminalHandler {
 
     @Nullable
     private WTMenuHost getMenuHost() {
-        if (menuHost != null/* FIXME check if menuHost is still valid and in range */) {
+        if (menuHost != null) {
             return menuHost;
         }
 
@@ -119,8 +119,8 @@ public class CraftingTerminalHandler {
     public boolean inRange() {
         if (getMenuHost() == null)
             return false;
-        getMenuHost().rangeCheck();
-        return getMenuHost().getLinkStatus().connected();// FIXME use this properly
+        getMenuHost().onBroadcastChanges(null);//FIXME don't call this, call the range calculation instead
+        return getMenuHost().getLinkStatus().connected();
     }
 
     public long getAccessibleAmount(ItemStack stack) {
