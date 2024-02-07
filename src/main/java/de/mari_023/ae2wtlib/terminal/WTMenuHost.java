@@ -33,7 +33,7 @@ import de.mari_023.ae2wtlib.AE2wtlibItems;
 public abstract class WTMenuHost extends WirelessTerminalMenuHost<WirelessTerminalItem>
         implements InternalInventoryHost, ISegmentedInventory {
     private final AppEngInternalInventory singularityInventory = new AppEngInternalInventory(this, 1);
-    private final AppEngInternalInventory viewCellInventory;
+    private final AppEngInternalInventory viewCellInventory = new AppEngInternalInventory(this, 5);
     @Nullable
     private IActionHost quantumBridge;
     public static final ResourceLocation INV_SINGULARITY = AE2wtlib.id("singularity");
@@ -43,15 +43,8 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<WirelessTermin
     public WTMenuHost(WirelessTerminalItem item, Player player, ItemMenuHostLocator locator,
             BiConsumer<Player, ISubMenu> returnToMainMenu) {
         super(item, player, locator, returnToMainMenu);
-        viewCellInventory = new AppEngInternalInventory(this, 5);
-    }
-
-    @Deprecated
-    protected void readFromNbt() {
-    }
-
-    @Deprecated
-    public void saveChanges() {
+        viewCellInventory.readFromNBT(getItemStack().getOrCreateTag(), "viewcells");
+        singularityInventory.readFromNBT(getItemStack().getOrCreateTag(), "singularity");
     }
 
     @Nullable

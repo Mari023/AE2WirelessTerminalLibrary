@@ -119,7 +119,7 @@ public class CraftingTerminalHandler {
     public boolean inRange() {
         if (getMenuHost() == null)
             return false;
-        getMenuHost().onBroadcastChanges(null);//FIXME don't call this, call the range calculation instead
+        getMenuHost().onBroadcastChanges(null);// FIXME don't call this, call the range calculation instead
         return getMenuHost().getLinkStatus().connected();
     }
 

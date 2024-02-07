@@ -4,7 +4,6 @@ import java.util.function.BiConsumer;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -29,7 +28,7 @@ public class WCTMenuHost extends WTMenuHost implements IViewCellStorage {
     public WCTMenuHost(WirelessTerminalItem item, Player player, ItemMenuHostLocator locator,
             BiConsumer<Player, ISubMenu> returnToMainMenu) {
         super(item, player, locator, returnToMainMenu);
-        readFromNbt();
+        craftingGrid.readFromNBT(getItemStack().getOrCreateTag(), "craftingGrid");
     }
 
     @Override
@@ -48,16 +47,8 @@ public class WCTMenuHost extends WTMenuHost implements IViewCellStorage {
     }
 
     @Override
-    protected void readFromNbt() {
-        super.readFromNbt();
-        CompoundTag tag = getItemStack().getOrCreateTag();
-        craftingGrid.readFromNBT(tag, "craftingGrid");
-    }
-
-    @Override
-    public void saveChanges() {
-        super.saveChanges();
-        CompoundTag tag = getItemStack().getOrCreateTag();
-        craftingGrid.writeToNBT(tag, "craftingGrid");
+    public void saveChangedInventory(AppEngInternalInventory inv) {
+        super.saveChangedInventory(inv);
+        craftingGrid.writeToNBT(getItemStack().getOrCreateTag(), "craftingGrid");
     }
 }

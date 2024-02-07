@@ -16,7 +16,6 @@ public class WATMenuHost extends WTMenuHost {
     public WATMenuHost(WirelessTerminalItem item, Player player, ItemMenuHostLocator locator,
             BiConsumer<Player, ISubMenu> returnToMainMenu) {
         super(item, player, locator, returnToMainMenu);
-        readFromNbt();
     }
 
     @Override
