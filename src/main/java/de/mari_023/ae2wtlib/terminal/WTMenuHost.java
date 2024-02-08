@@ -77,11 +77,12 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<WirelessTermin
             return false;
 
         linkStatus = super.getLinkStatus();
-        quantumStatus = isQuantumLinked();
-        if (!linkStatus.connected()) {
-            if (linkStatus.equals(ILinkStatus.ofDisconnected()) || quantumStatus.connected())
-                linkStatus = quantumStatus;
-        }
+        rangeCheck();
+
+        if (linkStatus.connected())
+            return true;
+        if (linkStatus.equals(ILinkStatus.ofDisconnected()) || quantumStatus.connected())
+            linkStatus = quantumStatus;
 
         return true;
     }
@@ -93,7 +94,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<WirelessTermin
 
     public void rangeCheck() {// FIXME
         // super.rangeCheck();
-        isQuantumLinked();
+        quantumStatus = isQuantumLinked();
     }
 
     public ILinkStatus isQuantumLinked() {
@@ -131,7 +132,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<WirelessTermin
 
     @Override
     protected double getPowerDrainPerTick() {
-        if (quantumStatus.connected()) {// TODO don't recompute this here
+        if (quantumStatus.connected()) {
             // QuantumBridgeBlockEntity: 22 ae/tick
             // AbstractReportingPart (terminal): 0.5 ae/tick
             // -> 22.5 ae/tick
@@ -149,19 +150,19 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<WirelessTermin
     private void recharge() {
         if (!quantumStatus.connected())
             return;
-        if (getItemStack().getItem() instanceof AEBasePoweredItem item) {
-            double missing = item.getAEMaxPower(getItemStack()) - item.getAECurrentPower(getItemStack());
-            if (getActionableNode() == null || missing <= 0)
-                return;
-            var energyService = getActionableNode().getGrid().getEnergyService();
-            // Never discharge the network below 50%
-            double safePower = energyService.getStoredPower() - energyService.getMaxStoredPower() / 2;
-            if (safePower > 0) {
-                double toMove = Math.min(missing, safePower);
-                double extracted = energyService.extractAEPower(toMove, Actionable.MODULATE, PowerMultiplier.ONE);
-                item.injectAEPower(getItemStack(), extracted, Actionable.MODULATE);
-            }
-        }
+        if (!(getItemStack().getItem() instanceof AEBasePoweredItem item))
+            return;
+        double missing = item.getAEMaxPower(getItemStack()) - item.getAECurrentPower(getItemStack());
+        if (getActionableNode() == null || missing <= 0)
+            return;
+        var energyService = getActionableNode().getGrid().getEnergyService();
+        // Never discharge the network below 50%
+        double safePower = energyService.getStoredPower() - energyService.getMaxStoredPower() / 2;
+        if (safePower <= 0)
+            return;
+        double toMove = Math.min(missing, safePower);
+        double extracted = energyService.extractAEPower(toMove, Actionable.MODULATE, PowerMultiplier.ONE);
+        item.injectAEPower(getItemStack(), extracted, Actionable.MODULATE);
     }
 
     @Nullable
