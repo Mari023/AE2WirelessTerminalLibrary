@@ -1,7 +1,10 @@
 package de.mari_023.ae2wtlib.terminal;
 
+import java.util.function.Consumer;
+
 import org.jetbrains.annotations.Nullable;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
@@ -23,7 +26,7 @@ public interface IUniversalWirelessTerminalItem {
     }
 
     default boolean tryOpen(Player player, ItemMenuHostLocator locator, boolean returningFromSubmenu) {
-        if (checkUniversalPreconditions(locator.locateItem(player), player))
+        if (checkUniversalPreconditions(locator.locateItem(player)))
             return open(player, locator, returningFromSubmenu);
         return false;
     }
@@ -31,18 +34,11 @@ public interface IUniversalWirelessTerminalItem {
     MenuType<?> getMenuType(ItemMenuHostLocator locator, Player player);
 
     @Nullable
-    IGrid getLinkedGrid(ItemStack item, Level level, @Nullable Player sendMessagesTo);
+    IGrid getLinkedGrid(ItemStack item, Level level, @Nullable Consumer<Component> errorConsumer);
 
-    default boolean checkUniversalPreconditions(ItemStack item, Player player) {
-        if (item.isEmpty()
-                || (item.getItem() != this && item.getItem() != AE2wtlibItems.instance().UNIVERSAL_TERMINAL)) {
-            return false;
-        }
-
-        if (player.level().isClientSide())
-            return false;
-
-        return getLinkedGrid(item, player.level(), player) != null;
+    default boolean checkUniversalPreconditions(ItemStack item) {
+        return !item.isEmpty()
+                && (item.getItem() == this || item.getItem() == AE2wtlibItems.instance().UNIVERSAL_TERMINAL);
     }
 
     default IConfigManager getConfigManager(ItemStack target) {

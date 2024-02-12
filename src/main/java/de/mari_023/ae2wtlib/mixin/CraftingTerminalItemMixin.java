@@ -1,9 +1,12 @@
 package de.mari_023.ae2wtlib.mixin;
 
+import java.util.function.Consumer;
+
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -56,8 +59,8 @@ public abstract class CraftingTerminalItemMixin extends WirelessTerminalItem
     }
 
     @Nullable
-    public IGrid getLinkedGrid(ItemStack item, Level level, @Nullable Player sendMessagesTo) {
-        return AE2wtlibItems.instance().UNIVERSAL_TERMINAL.getLinkedGrid(item, level, sendMessagesTo);
+    public IGrid getLinkedGrid(ItemStack item, Level level, @Nullable Consumer<Component> errorConsumer) {
+        return AE2wtlibItems.instance().UNIVERSAL_TERMINAL.getLinkedGrid(item, level, errorConsumer);
     }
 
     public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int i, boolean bl) {

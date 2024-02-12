@@ -1,8 +1,11 @@
 package de.mari_023.ae2wtlib.terminal;
 
+import java.util.function.Consumer;
+
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -42,7 +45,7 @@ public abstract class ItemWT extends WirelessTerminalItem implements IUniversalW
     @Override
     public InteractionResultHolder<ItemStack> use(final Level w, final Player player, final InteractionHand hand) {
         ItemStack is = player.getItemInHand(hand);
-        if (checkUniversalPreconditions(is, player)) {
+        if (checkUniversalPreconditions(is)) {
             open(player, MenuLocators.forHand(player, hand), false);
             return new InteractionResultHolder<>(InteractionResult.SUCCESS, is);
         }
@@ -155,10 +158,10 @@ public abstract class ItemWT extends WirelessTerminalItem implements IUniversalW
     }
 
     @Nullable
-    public IGrid getLinkedGrid(ItemStack item, Level level, @Nullable Player sendMessagesTo) {
+    public IGrid getLinkedGrid(ItemStack item, Level level, @Nullable Consumer<Component> errorConsumer) {
         GridResult grid = getLinkedGrid(item, level);
-        if (grid.status().error != null && sendMessagesTo != null && !level.isClientSide()) {
-            sendMessagesTo.displayClientMessage(grid.status().error, true);
+        if (grid.status().error != null && errorConsumer != null && !level.isClientSide()) {
+            errorConsumer.accept(grid.status().error);
         }
         return grid.grid();
     }

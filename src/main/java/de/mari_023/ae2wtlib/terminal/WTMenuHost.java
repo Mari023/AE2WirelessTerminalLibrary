@@ -6,18 +6,14 @@ import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.item.ItemStack;
 
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
 import appeng.api.inventories.ISegmentedInventory;
 import appeng.api.inventories.InternalInventory;
-import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.storage.ILinkStatus;
-import appeng.api.storage.MEStorage;
 import appeng.helpers.WirelessTerminalMenuHost;
 import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.items.tools.powered.powersink.AEBasePoweredItem;
@@ -43,13 +39,8 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<WirelessTermin
     public WTMenuHost(WirelessTerminalItem item, Player player, ItemMenuHostLocator locator,
             BiConsumer<Player, ISubMenu> returnToMainMenu) {
         super(item, player, locator, returnToMainMenu);
-        viewCellInventory.readFromNBT(getItemStack().getOrCreateTag(), "viewcells");
+        viewCellInventory.readFromNBT(getItemStack().getOrCreateTag(), "viewcells");// FIXME use supplier storage
         singularityInventory.readFromNBT(getItemStack().getOrCreateTag(), "singularity");
-    }
-
-    @Nullable
-    private IGrid getLinkedGrid(ItemStack stack) {
-        return getItem().getLinkedGrid(stack, getPlayer().level(), null);
     }
 
     @Nullable
@@ -62,29 +53,13 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<WirelessTermin
         return super.getActionableNode();
     }
 
-    @Nullable
-    @Override
-    public MEStorage getInventory() {
-        var node = getActionableNode();
-        if (node == null)
-            return super.getInventory();
-        return node.getGrid().getStorageService().getInventory();
-    }
-
-    @Override
-    public boolean onBroadcastChanges(AbstractContainerMenu menu) {
-        if (!super.onBroadcastChanges(menu))
-            return false;
-
+    public void updateLinkStatus() {
+        super.updateLinkStatus();
         linkStatus = super.getLinkStatus();
-        rangeCheck();
-
         if (linkStatus.connected())
-            return true;
+            return;
         if (linkStatus.equals(ILinkStatus.ofDisconnected()) || quantumStatus.connected())
             linkStatus = quantumStatus;
-
-        return true;
     }
 
     @Override
@@ -92,12 +67,12 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<WirelessTermin
         return linkStatus;
     }
 
-    public void rangeCheck() {// FIXME
-        // super.rangeCheck();
+    public void rangeCheck() {
+        super.rangeCheck();
         quantumStatus = isQuantumLinked();
     }
 
-    public ILinkStatus isQuantumLinked() {
+    private ILinkStatus isQuantumLinked() {// TODO add reasons when it isn't connected
         if (!getUpgrades().isInstalled(AE2wtlibItems.instance().QUANTUM_BRIDGE_CARD))
             return ILinkStatus.ofDisconnected();
         long frequency = ItemWT.getQEFrequency(getItemStack(), singularityInventory).result();
