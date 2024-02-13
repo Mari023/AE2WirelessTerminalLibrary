@@ -33,7 +33,6 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<WirelessTermin
     @Nullable
     private IActionHost quantumBridge;
     public static final ResourceLocation INV_SINGULARITY = AE2wtlib.id("singularity");
-    private ILinkStatus linkStatus = ILinkStatus.ofDisconnected();
     private ILinkStatus quantumStatus = ILinkStatus.ofDisconnected();
 
     public WTMenuHost(WirelessTerminalItem item, Player player, ItemMenuHostLocator locator,
@@ -55,16 +54,10 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<WirelessTermin
 
     public void updateLinkStatus() {
         super.updateLinkStatus();
-        linkStatus = super.getLinkStatus();
         if (linkStatus.connected())
             return;
         if (linkStatus.equals(ILinkStatus.ofDisconnected()) || quantumStatus.connected())
             linkStatus = quantumStatus;
-    }
-
-    @Override
-    public ILinkStatus getLinkStatus() {
-        return linkStatus;
     }
 
     public void rangeCheck() {
