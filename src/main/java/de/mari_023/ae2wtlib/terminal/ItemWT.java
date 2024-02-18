@@ -17,6 +17,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 
+import top.theillusivec4.curios.api.SlotContext;
+import top.theillusivec4.curios.api.type.capability.ICurioItem;
+
 import appeng.api.features.Locatables;
 import appeng.api.implementations.blockentities.IWirelessAccessPoint;
 import appeng.api.networking.IGrid;
@@ -39,7 +42,7 @@ import de.mari_023.ae2wtlib.terminal.results.LongResult;
 import de.mari_023.ae2wtlib.terminal.results.Status;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 
-public abstract class ItemWT extends WirelessTerminalItem {
+public abstract class ItemWT extends WirelessTerminalItem implements ICurioItem {
     public ItemWT() {
         super(AEConfig.instance().getWirelessTerminalBattery(), new Item.Properties().stacksTo(1));
     }
@@ -183,6 +186,10 @@ public abstract class ItemWT extends WirelessTerminalItem {
             errorConsumer.accept(grid.status().error);
         }
         return grid.grid();
+    }
+
+    public void curioTick(SlotContext slotContext, ItemStack stack) {
+        inventoryTick(stack, slotContext.entity().level(), slotContext.entity(), 0, false);
     }
 
     /**

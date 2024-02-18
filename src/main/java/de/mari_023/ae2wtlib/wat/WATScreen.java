@@ -13,7 +13,8 @@ import appeng.menu.SlotSemantics;
 import de.mari_023.ae2wtlib.wut.CycleTerminalButton;
 import de.mari_023.ae2wtlib.wut.IUniversalTerminalCapable;
 
-public class WATScreen extends PatternAccessTermScreen<WATMenu> implements IUniversalTerminalCapable {//FIXME draw reason
+public class WATScreen extends PatternAccessTermScreen<WATMenu> implements IUniversalTerminalCapable {// FIXME draw
+                                                                                                      // reason
     public WATScreen(WATMenu container, Inventory playerInventory, Component title, ScreenStyle style) {
         super(container, playerInventory, title, style);
         if (getMenu().isWUT())
