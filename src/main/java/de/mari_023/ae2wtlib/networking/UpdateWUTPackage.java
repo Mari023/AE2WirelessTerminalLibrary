@@ -12,7 +12,6 @@ import appeng.menu.locator.MenuLocators;
 
 import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.terminal.WTMenuHost;
-import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
 
 public record UpdateWUTPackage(ItemMenuHostLocator locator, @Nullable CompoundTag tag) implements AE2wtlibPacket {
 
@@ -25,7 +24,6 @@ public record UpdateWUTPackage(ItemMenuHostLocator locator, @Nullable CompoundTa
         WTMenuHost host = locator.locate(player, WTMenuHost.class);
         if (host != null)
             host.getItemStack().setTag(tag);
-        CraftingTerminalHandler.getCraftingTerminalHandler(player).invalidateCache();
     }
 
     @Override
