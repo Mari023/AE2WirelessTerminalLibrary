@@ -62,9 +62,10 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<WirelessTermin
 
     public void updateLinkStatus() {
         super.updateLinkStatus();
-        if (getLinkStatus().connected())
+        linkStatus = super.getLinkStatus();
+        if (linkStatus.connected())
             return;
-        if (getLinkStatus().equals(ILinkStatus.ofDisconnected()) || quantumStatus.connected())
+        if (linkStatus.equals(ILinkStatus.ofDisconnected()) || quantumStatus.connected())
             linkStatus = quantumStatus;
     }
 
