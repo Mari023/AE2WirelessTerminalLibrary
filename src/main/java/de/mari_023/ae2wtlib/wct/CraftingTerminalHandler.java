@@ -55,7 +55,7 @@ public class CraftingTerminalHandler {
             CLIENT_PLAYERS.remove(player);
     }
 
-    public void invalidateCache() {
+    private void invalidateCache() {
         menuHost = null;
         locator = null;
         restockAbleItems.clear();
@@ -72,6 +72,10 @@ public class CraftingTerminalHandler {
     @Nullable
     private WTMenuHost getMenuHost() {
         if (menuHost != null) {
+            if (!menuHost.isValid()) {
+                invalidateCache();
+                return getMenuHost();
+            }
             return menuHost;
         }
 
@@ -93,28 +97,33 @@ public class CraftingTerminalHandler {
     public ItemMenuHostLocator getLocator() {
         if (locator != null && WUTHandler.hasTerminal(locator.locateItem(player), "crafting"))
             return locator;
-        return locator = WUTHandler.findTerminal(player, "crafting");
+        boolean locatorWasNotNull = locator != null;
+        locator = WUTHandler.findTerminal(player, "crafting");
+
+        if (locator == null) {
+            invalidateCache();
+            if (locatorWasNotNull)
+                return getLocator();
+        }
+        return locator;
     }
 
     @Nullable
     public IGrid getTargetGrid() {
-        if (menuHost == null)
+        if (getMenuHost() == null)
             return null;
-        final IGridNode n = menuHost.getActionableNode();
+        final IGridNode n = getMenuHost().getActionableNode();
 
         if (n == null)
             return null;
-        return menuHost.getActionableNode().getGrid();
+        return n.getGrid();
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean inRange() {
         if (getMenuHost() == null)
             return false;
 
-        if (!getMenuHost().isValid()) {
-            invalidateCache();
-            return false;
-        }
         getMenuHost().updateConnectedAccessPoint();
         getMenuHost().updateLinkStatus();
         return getMenuHost().getLinkStatus().connected();
@@ -136,8 +145,8 @@ public class CraftingTerminalHandler {
     @Nullable
     public MagnetHost getMagnetHost() {
         if (magnetHost == null) {
-            if (getCraftingTerminal().isEmpty())
-                return null;
+            if (getLocator() == null)
+                return magnetHost = null;
             magnetHost = new MagnetHost(this);
         }
         return magnetHost;
