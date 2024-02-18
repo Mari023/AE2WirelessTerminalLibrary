@@ -50,14 +50,14 @@ public abstract class ItemWT extends WirelessTerminalItem {
     }
 
     public boolean tryOpen(Player player, ItemMenuHostLocator locator, boolean returningFromSubmenu) {
-        if (checkUniversalPreconditions(locator.locateItem(player)))
+        if (checkPreconditions(locator.locateItem(player)))
             return open(player, locator, returningFromSubmenu);
         return false;
     }
 
     public abstract MenuType<?> getMenuType(ItemMenuHostLocator locator, Player player);
 
-    boolean checkUniversalPreconditions(ItemStack item) {
+    protected boolean checkPreconditions(ItemStack item) {
         return !item.isEmpty()
                 && (item.getItem() == this || item.getItem() == AE2wtlibItems.instance().UNIVERSAL_TERMINAL);
     }
@@ -65,7 +65,7 @@ public abstract class ItemWT extends WirelessTerminalItem {
     @Override
     public InteractionResultHolder<ItemStack> use(final Level w, final Player player, final InteractionHand hand) {
         ItemStack is = player.getItemInHand(hand);
-        if (checkUniversalPreconditions(is)) {
+        if (!player.level().isClientSide() && checkPreconditions(is)) {
             open(player, MenuLocators.forHand(player, hand), false);
             return new InteractionResultHolder<>(InteractionResult.SUCCESS, is);
         }
