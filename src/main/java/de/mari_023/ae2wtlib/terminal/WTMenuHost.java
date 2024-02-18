@@ -6,11 +6,13 @@ import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
 import appeng.api.inventories.ISegmentedInventory;
 import appeng.api.inventories.InternalInventory;
+import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.storage.ILinkStatus;
@@ -33,6 +35,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<WirelessTermin
     @Nullable
     private IActionHost quantumBridge;
     public static final ResourceLocation INV_SINGULARITY = AE2wtlib.id("singularity");
+    private ILinkStatus linkStatus = ILinkStatus.ofDisconnected();
     private ILinkStatus quantumStatus = ILinkStatus.ofDisconnected();
 
     public WTMenuHost(WirelessTerminalItem item, Player player, ItemMenuHostLocator locator,
@@ -40,6 +43,11 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<WirelessTermin
         super(item, player, locator, returnToMainMenu);
         viewCellInventory.readFromNBT(getItemStack().getOrCreateTag(), "viewcells");// FIXME use supplier storage
         singularityInventory.readFromNBT(getItemStack().getOrCreateTag(), "singularity");
+    }
+
+    @Nullable
+    private IGrid getLinkedGrid(ItemStack stack) {// TODO use ae2 method
+        return getItem().getLinkedGrid(stack, getPlayer().level(), null);
     }
 
     @Nullable
@@ -54,14 +62,19 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<WirelessTermin
 
     public void updateLinkStatus() {
         super.updateLinkStatus();
-        if (linkStatus.connected())
+        if (getLinkStatus().connected())
             return;
-        if (linkStatus.equals(ILinkStatus.ofDisconnected()) || quantumStatus.connected())
+        if (getLinkStatus().equals(ILinkStatus.ofDisconnected()) || quantumStatus.connected())
             linkStatus = quantumStatus;
     }
 
-    public void rangeCheck() {
-        super.rangeCheck();
+    @Override
+    public ILinkStatus getLinkStatus() {
+        return linkStatus;
+    }
+
+    public void updateConnectedAccessPoint() {
+        super.updateConnectedAccessPoint();
         quantumStatus = isQuantumLinked();
     }
 
@@ -109,10 +122,13 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<WirelessTermin
         return super.getPowerDrainPerTick();
     }
 
-    public void drainPower() {
-        recharge();
-        super.drainPower();
-        recharge();
+    public boolean consumeIdlePower(Actionable action) {
+        if (action == Actionable.SIMULATE)
+            recharge();
+        boolean success = super.consumeIdlePower(action);
+        if (action == Actionable.SIMULATE)
+            recharge();
+        return success;
     }
 
     private void recharge() {

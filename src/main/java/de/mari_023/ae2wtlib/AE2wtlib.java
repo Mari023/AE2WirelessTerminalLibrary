@@ -12,7 +12,6 @@ import appeng.server.testplots.TestPlots;
 
 import de.mari_023.ae2wtlib.hotkeys.MagnetHotkeyAction;
 import de.mari_023.ae2wtlib.hotkeys.RestockHotkeyAction;
-import de.mari_023.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
 import de.mari_023.ae2wtlib.wat.WATMenu;
 import de.mari_023.ae2wtlib.wat.WATMenuHost;
 import de.mari_023.ae2wtlib.wat.WATScreen;
@@ -32,12 +31,9 @@ public class AE2wtlib {
     public static final String MOD_NAME = "ae2wtlib";
 
     public static void onAe2Initialized(AE2wtlibItems items) {
-        WUTHandler.addTerminal("crafting",
-                ((IUniversalWirelessTerminalItem) AEItems.WIRELESS_CRAFTING_TERMINAL.asItem())::tryOpen,
-                WCTMenuHost::new, WCTMenu.TYPE,
-                (IUniversalWirelessTerminalItem) AEItems.WIRELESS_CRAFTING_TERMINAL.asItem(),
-                HotkeyAction.WIRELESS_TERMINAL, "item.ae2.wireless_crafting_terminal");
-
+        WUTHandler.addTerminal("crafting", items.WIRELESS_CRAFTING_TERMINAL::tryOpen, WCTMenuHost::new, WCTMenu.TYPE,
+                items.WIRELESS_CRAFTING_TERMINAL, HotkeyAction.WIRELESS_TERMINAL,
+                "item.ae2.wireless_crafting_terminal");
         WUTHandler.addTerminal("pattern_encoding", items.PATTERN_ENCODING_TERMINAL::tryOpen, WETMenuHost::new,
                 WETMenu.TYPE,
                 items.PATTERN_ENCODING_TERMINAL);

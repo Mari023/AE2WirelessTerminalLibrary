@@ -23,7 +23,7 @@ import de.mari_023.ae2wtlib.AE2wtlibItems;
 import de.mari_023.ae2wtlib.TextConstants;
 import de.mari_023.ae2wtlib.hotkeys.Ae2WTLibLocatingService;
 import de.mari_023.ae2wtlib.networking.UpdateWUTPackage;
-import de.mari_023.ae2wtlib.terminal.IUniversalWirelessTerminalItem;
+import de.mari_023.ae2wtlib.terminal.ItemWT;
 
 /**
  * This class handles functionalities related to the Wireless Universal Terminal (WUT). It provides methods to get and
@@ -204,7 +204,7 @@ public class WUTHandler {
      */
     public static void addTerminal(String name, WTDefinition.ContainerOpener open,
             WTDefinition.WTMenuHostFactory WTMenuHostFactory,
-            MenuType<?> menuType, IUniversalWirelessTerminalItem item, String hotkeyName, String itemID) {
+            MenuType<?> menuType, ItemWT item, String hotkeyName, String itemID) {
         if (terminalNames.contains(name))
             return;
 
@@ -233,7 +233,7 @@ public class WUTHandler {
      */
     public static void addTerminal(String name, WTDefinition.ContainerOpener open,
             WTDefinition.WTMenuHostFactory WTMenuHostFactory,
-            MenuType<?> menuType, IUniversalWirelessTerminalItem item, String itemID) {
+            MenuType<?> menuType, ItemWT item, String itemID) {
         addTerminal(name, open, WTMenuHostFactory, menuType, item, "wireless_" + name + "_terminal", itemID);
     }
 
@@ -249,7 +249,7 @@ public class WUTHandler {
      */
     public static void addTerminal(String name, WTDefinition.ContainerOpener open,
             WTDefinition.WTMenuHostFactory WTMenuHostFactory,
-            MenuType<?> menuType, IUniversalWirelessTerminalItem item) {
+            MenuType<?> menuType, ItemWT item) {
         addTerminal(name, open, WTMenuHostFactory, menuType, item, "item.ae2wtlib.wireless_" + name + "_terminal");
     }
 
