@@ -1,5 +1,0 @@
-- move away from cloth config
-- more precisely tell wha opening a terminal failed
-- empty magnet settings filters in whitelist will now work correctly
-- implement restock for entity interaction and bow projectiles
-- implement restock for dropping items in the hand
