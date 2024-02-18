@@ -10,9 +10,11 @@ import net.minecraft.world.item.Item;
 
 import appeng.api.features.GridLinkables;
 import appeng.api.upgrades.Upgrades;
+import appeng.core.definitions.AEItems;
 import appeng.items.tools.powered.WirelessTerminalItem;
 
 import de.mari_023.ae2wtlib.wat.ItemWAT;
+import de.mari_023.ae2wtlib.wct.ItemWCT;
 import de.mari_023.ae2wtlib.wet.ItemWET;
 import de.mari_023.ae2wtlib.wut.ItemWUT;
 
@@ -20,6 +22,7 @@ public final class AE2wtlibItems {
     @Nullable
     private static AE2wtlibItems INSTANCE;
 
+    public final ItemWCT WIRELESS_CRAFTING_TERMINAL;
     public final ItemWET PATTERN_ENCODING_TERMINAL;
     public final ItemWAT PATTERN_ACCESS_TERMINAL;
     public final ItemWUT UNIVERSAL_TERMINAL;
@@ -32,6 +35,7 @@ public final class AE2wtlibItems {
             throw new IllegalStateException("cannot initialize twice");
         INSTANCE = this;
 
+        WIRELESS_CRAFTING_TERMINAL = (ItemWCT) AEItems.WIRELESS_CRAFTING_TERMINAL.asItem();
         PATTERN_ENCODING_TERMINAL = new ItemWET();
         PATTERN_ACCESS_TERMINAL = new ItemWAT();
         UNIVERSAL_TERMINAL = new ItemWUT();

@@ -120,7 +120,11 @@ public class CraftingTerminalHandler {
         if (getMenuHost() == null)
             return false;
 
-        getMenuHost().rangeCheck();
+        if (!getMenuHost().isValid()) {
+            invalidateCache();
+            return false;
+        }
+        getMenuHost().updateConnectedAccessPoint();
         getMenuHost().updateLinkStatus();
         return getMenuHost().getLinkStatus().connected();
     }

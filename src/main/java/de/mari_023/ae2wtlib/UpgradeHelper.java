@@ -33,28 +33,25 @@ public class UpgradeHelper {
      * @param maxSupported how many upgrades of this type a terminal can have, 0 for maximum
      */
     public static void addUpgradeToAllTerminals(ItemLike upgradeCard, int maxSupported) {
-        if (readyForUpgrades) {
-            if (maxSupported == 0) {
-                addMaxUpgradesToAllTerminals(upgradeCard);
-                return;
-            }
-            for (var terminal : WUTHandler.wirelessTerminals.entrySet()) {
-                if (!(terminal.getValue().item() instanceof ItemLike item))
-                    continue;
-                Upgrades.add(upgradeCard, item, maxSupported, GuiText.WirelessTerminals.getTranslationKey());
-            }
-            Upgrades.add(upgradeCard, AE2wtlibItems.instance().UNIVERSAL_TERMINAL, maxSupported);
-        } else
+        if (!readyForUpgrades) {
             upgrades.put(upgradeCard, maxSupported);
+            return;
+        }
+        if (maxSupported == 0) {
+            addMaxUpgradesToAllTerminals(upgradeCard);
+            return;
+        }
+        for (var terminal : WUTHandler.wirelessTerminals.entrySet()) {
+            Upgrades.add(upgradeCard, terminal.getValue().item(), maxSupported,
+                    GuiText.WirelessTerminals.getTranslationKey());
+        }
+        Upgrades.add(upgradeCard, AE2wtlibItems.instance().UNIVERSAL_TERMINAL, maxSupported);
     }
 
     private static void addMaxUpgradesToAllTerminals(ItemLike upgradeCard) {
         Upgrades.add(upgradeCard, AE2wtlibItems.instance().UNIVERSAL_TERMINAL, WUTHandler.getUpgradeCardCount());
         for (var terminal : WUTHandler.wirelessTerminals.entrySet()) {
-            var terminalItem = terminal.getValue().item();
-            if (!(terminalItem instanceof ItemLike itemLike))
-                break;
-            Upgrades.add(upgradeCard, itemLike, 2, GuiText.WirelessTerminals.getTranslationKey());
+            Upgrades.add(upgradeCard, terminal.getValue().item(), 2, GuiText.WirelessTerminals.getTranslationKey());
         }
     }
 }
