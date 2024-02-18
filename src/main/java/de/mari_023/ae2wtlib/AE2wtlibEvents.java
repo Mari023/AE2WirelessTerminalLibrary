@@ -34,10 +34,17 @@ public class AE2wtlibEvents {
             return;
         if (item.isEmpty())
             return;
+
         CraftingTerminalHandler cTHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
-        if (!cTHandler.inRange() || !ItemWT.getBoolean(cTHandler.getCraftingTerminal(), "restock")
-                || cTHandler.getTargetGrid() == null || cTHandler.getTargetGrid().getStorageService() == null)
+        if (!cTHandler.inRange())
             return;
+        if (!ItemWT.getBoolean(cTHandler.getCraftingTerminal(), "restock"))
+            return;
+        if (cTHandler.getTargetGrid() == null)
+            return;
+        if (cTHandler.getTargetGrid().getStorageService() == null)
+            return;
+
         int toAdd = Math.max(item.getMaxStackSize() / 2, 1) - count;
         if (toAdd == 0)
             return;
@@ -72,7 +79,9 @@ public class AE2wtlibEvents {
      * @return True if the entire stack is successfully inserted; false otherwise.
      */
     public static boolean insertStackInME(ItemStack stack, Player player) {
-        if (stack.isEmpty() || player.level().isClientSide())
+        if (stack.isEmpty())
+            return false;
+        if (player.level().isClientSide())
             return false;
         CraftingTerminalHandler cTHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
         ItemStack terminal = cTHandler.getCraftingTerminal();
