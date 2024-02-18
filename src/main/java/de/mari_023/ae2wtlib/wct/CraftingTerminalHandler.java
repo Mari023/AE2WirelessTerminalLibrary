@@ -23,7 +23,6 @@ public class CraftingTerminalHandler {
     private static final WeakHashMap<Player, CraftingTerminalHandler> SERVER_PLAYERS = new WeakHashMap<>();
     private static final WeakHashMap<Player, CraftingTerminalHandler> CLIENT_PLAYERS = new WeakHashMap<>();
     private final Player player;
-    private ItemStack craftingTerminal = ItemStack.EMPTY;
     @Nullable
     private WTMenuHost menuHost;
     @Nullable
@@ -57,7 +56,6 @@ public class CraftingTerminalHandler {
     }
 
     public void invalidateCache() {
-        craftingTerminal = ItemStack.EMPTY;
         menuHost = null;
         locator = null;
         restockAbleItems.clear();
@@ -65,17 +63,10 @@ public class CraftingTerminalHandler {
     }
 
     public ItemStack getCraftingTerminal() {
-        if (!craftingTerminal.isEmpty() && locator != null && locator.locateItem(player).equals(craftingTerminal))
-            return craftingTerminal;
-
-        if (getMenuHost() == null)
-            craftingTerminal = ItemStack.EMPTY;
-        else {
-            assert menuHost != null;
-            craftingTerminal = menuHost.getItemStack();
-        }
-
-        return craftingTerminal;
+        getLocator();
+        if (locator != null)
+            return locator.locateItem(player);
+        return ItemStack.EMPTY;
     }
 
     @Nullable
@@ -84,7 +75,7 @@ public class CraftingTerminalHandler {
             return menuHost;
         }
 
-        locator = WUTHandler.findTerminal(player, "crafting");
+        getLocator();
 
         if (locator == null)
             menuHost = null;
@@ -100,9 +91,9 @@ public class CraftingTerminalHandler {
 
     @Nullable
     public ItemMenuHostLocator getLocator() {
-        if (getMenuHost() == null)
-            return null;
-        return locator;
+        if (locator != null && WUTHandler.hasTerminal(locator.locateItem(player), "crafting"))
+            return locator;
+        return locator = WUTHandler.findTerminal(player, "crafting");
     }
 
     @Nullable
@@ -134,7 +125,7 @@ public class CraftingTerminalHandler {
                 + (restockAbleItems.get(stack.getItem()) == null ? 0 : restockAbleItems.get(stack.getItem()));
     }
 
-    public boolean isRestockable(ItemStack stack) {
+    public boolean isRestockAble(ItemStack stack) {
         return restockAbleItems.containsKey(stack.getItem());
     }
 
