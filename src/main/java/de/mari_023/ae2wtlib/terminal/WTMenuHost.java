@@ -17,6 +17,7 @@ import appeng.api.networking.IGridNode;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.storage.ILinkStatus;
 import appeng.helpers.WirelessTerminalMenuHost;
+import appeng.items.contents.StackDependentSupplier;
 import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.items.tools.powered.powersink.AEBasePoweredItem;
 import appeng.me.cluster.implementations.QuantumCluster;
@@ -24,14 +25,15 @@ import appeng.menu.ISubMenu;
 import appeng.menu.locator.ItemMenuHostLocator;
 import appeng.util.inv.AppEngInternalInventory;
 import appeng.util.inv.InternalInventoryHost;
+import appeng.util.inv.SupplierInternalInventory;
 
 import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.AE2wtlibItems;
 
 public abstract class WTMenuHost extends WirelessTerminalMenuHost<WirelessTerminalItem>
-        implements InternalInventoryHost, ISegmentedInventory {
-    private final AppEngInternalInventory singularityInventory = new AppEngInternalInventory(this, 1);
-    private final AppEngInternalInventory viewCellInventory = new AppEngInternalInventory(this, 5);
+        implements ISegmentedInventory {
+    private final SupplierInternalInventory<InternalInventory> singularityInventory;
+    private final SupplierInternalInventory<InternalInventory> viewCellInventory;
     @Nullable
     private IActionHost quantumBridge;
     public static final ResourceLocation INV_SINGULARITY = AE2wtlib.id("singularity");
@@ -41,8 +43,10 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<WirelessTermin
     public WTMenuHost(WirelessTerminalItem item, Player player, ItemMenuHostLocator locator,
             BiConsumer<Player, ISubMenu> returnToMainMenu) {
         super(item, player, locator, returnToMainMenu);
-        viewCellInventory.readFromNBT(getItemStack().getOrCreateTag(), "viewcells");// FIXME use supplier storage
-        singularityInventory.readFromNBT(getItemStack().getOrCreateTag(), "singularity");
+        viewCellInventory = new SupplierInternalInventory<>(
+                new StackDependentSupplier<>(this::getItemStack, stack -> createInv(player, stack, "viewcells")));
+        singularityInventory = new SupplierInternalInventory<>(
+                new StackDependentSupplier<>(this::getItemStack, stack -> createInv(player, stack, "singularity")));
     }
 
     @Nullable
@@ -108,7 +112,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<WirelessTermin
         return ILinkStatus.ofDisconnected();
     }
 
-    public AppEngInternalInventory getViewCellStorage() {
+    public InternalInventory getViewCellStorage() {
         return viewCellInventory;
     }
 
@@ -157,9 +161,21 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<WirelessTermin
         return null;
     }
 
-    @Override
-    public void saveChangedInventory(AppEngInternalInventory inv) {
-        viewCellInventory.writeToNBT(getItemStack().getOrCreateTag(), "viewcells");
-        singularityInventory.writeToNBT(getItemStack().getOrCreateTag(), "singularity");
+    protected static InternalInventory createInv(Player player, ItemStack stack, String name) {
+        var inv = new AppEngInternalInventory(new InternalInventoryHost() {
+            @Override
+            public void saveChangedInventory(AppEngInternalInventory inv) {
+                inv.writeToNBT(stack.getOrCreateTag(), name);
+            }
+
+            @Override
+            public boolean isClientSide() {
+                return player.level().isClientSide();
+            }
+        }, 9);
+        if (stack.getTag() != null) {
+            inv.readFromNBT(stack.getTag(), name);
+        }
+        return inv;
     }
 }

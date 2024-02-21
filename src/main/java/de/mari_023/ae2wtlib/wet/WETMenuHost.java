@@ -24,7 +24,7 @@ public class WETMenuHost extends WTMenuHost
     public WETMenuHost(WirelessTerminalItem item, Player player, ItemMenuHostLocator locator,
             BiConsumer<Player, ISubMenu> returnToMainMenu) {
         super(item, player, locator, returnToMainMenu);
-        logic.readFromNBT(getItemStack().getOrCreateTag());// TODO maybe use some kind of supplier to ?
+        logic.readFromNBT(getItemStack().getOrCreateTag());
     }
 
     @Override

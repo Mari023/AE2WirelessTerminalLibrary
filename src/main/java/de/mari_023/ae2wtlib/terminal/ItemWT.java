@@ -22,6 +22,7 @@ import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
 import appeng.api.features.Locatables;
 import appeng.api.implementations.blockentities.IWirelessAccessPoint;
+import appeng.api.inventories.InternalInventory;
 import appeng.api.networking.IGrid;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.upgrades.IUpgradeInventory;
@@ -92,10 +93,10 @@ public abstract class ItemWT extends WirelessTerminalItem implements ICurioItem 
         return ActionHostResult.valid(quantumBridge);
     }
 
-    public static LongResult getQEFrequency(ItemStack stack, @Nullable AppEngInternalInventory inventory) {
+    public static LongResult getQEFrequency(ItemStack stack, @Nullable InternalInventory inventory) {
         if (inventory == null) {
             inventory = new AppEngInternalInventory(null, 1);
-            inventory.readFromNBT(stack.getOrCreateTag(), "singularity");
+            ((AppEngInternalInventory) inventory).readFromNBT(stack.getOrCreateTag(), "singularity");
         }
         final ItemStack is = inventory.getStackInSlot(0);
         if (is.isEmpty())
@@ -114,7 +115,7 @@ public abstract class ItemWT extends WirelessTerminalItem implements ICurioItem 
     }
 
     public static ActionHostResult getQuantumBridge(ItemStack itemStack, Level level,
-            @Nullable AppEngInternalInventory singularityInventory, @Nullable IUpgradeInventory upgradeInventory) {
+            @Nullable InternalInventory singularityInventory, @Nullable IUpgradeInventory upgradeInventory) {
         if (level.isClientSide())
             return ActionHostResult.invalid(Status.NotServer);
 

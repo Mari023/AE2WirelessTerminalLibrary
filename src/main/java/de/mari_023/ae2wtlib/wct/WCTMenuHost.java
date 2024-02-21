@@ -17,7 +17,6 @@ import appeng.menu.ISubMenu;
 import appeng.menu.locator.ItemMenuHostLocator;
 import appeng.parts.reporting.CraftingTerminalPart;
 import appeng.util.inv.AppEngInternalInventory;
-import appeng.util.inv.InternalInventoryHost;
 import appeng.util.inv.SupplierInternalInventory;
 
 import de.mari_023.ae2wtlib.AE2wtlib;
@@ -25,7 +24,7 @@ import de.mari_023.ae2wtlib.terminal.WTMenuHost;
 
 public class WCTMenuHost extends WTMenuHost implements IViewCellStorage {
     private final SupplierInternalInventory<InternalInventory> craftingGrid;
-    private final AppEngInternalInventory trash = new AppEngInternalInventory(this, 27);
+    private final AppEngInternalInventory trash = new AppEngInternalInventory(27);
     public static final ResourceLocation INV_TRASH = AE2wtlib.id("wct_trash");
 
     public WCTMenuHost(WirelessTerminalItem item, Player player, ItemMenuHostLocator locator,
@@ -34,7 +33,7 @@ public class WCTMenuHost extends WTMenuHost implements IViewCellStorage {
         this.craftingGrid = new SupplierInternalInventory<>(
                 new StackDependentSupplier<>(
                         this::getItemStack,
-                        stack -> createCraftingInv(player, stack)));
+                        stack -> createInv(player, stack, "craftingGrid")));
     }
 
     @Override
@@ -50,23 +49,5 @@ public class WCTMenuHost extends WTMenuHost implements IViewCellStorage {
         if (id.equals(INV_TRASH))
             return trash;
         return super.getSubInventory(id);
-    }
-
-    private static InternalInventory createCraftingInv(Player player, ItemStack stack) {
-        var craftingGrid = new AppEngInternalInventory(new InternalInventoryHost() {
-            @Override
-            public void saveChangedInventory(AppEngInternalInventory inv) {
-                inv.writeToNBT(stack.getOrCreateTag(), "craftingGrid");
-            }
-
-            @Override
-            public boolean isClientSide() {
-                return player.level().isClientSide();
-            }
-        }, 9);
-        if (stack.getTag() != null) {
-            craftingGrid.readFromNBT(stack.getTag(), "craftingGrid");
-        }
-        return craftingGrid;
     }
 }
