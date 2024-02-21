@@ -33,7 +33,7 @@ public class WCTMenuHost extends WTMenuHost implements IViewCellStorage {
         this.craftingGrid = new SupplierInternalInventory<>(
                 new StackDependentSupplier<>(
                         this::getItemStack,
-                        stack -> createInv(player, stack, "craftingGrid")));
+                        stack -> createInv(player, stack, "craftingGrid", 9)));
     }
 
     @Override

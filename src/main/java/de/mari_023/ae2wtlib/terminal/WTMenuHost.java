@@ -44,9 +44,9 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<WirelessTermin
             BiConsumer<Player, ISubMenu> returnToMainMenu) {
         super(item, player, locator, returnToMainMenu);
         viewCellInventory = new SupplierInternalInventory<>(
-                new StackDependentSupplier<>(this::getItemStack, stack -> createInv(player, stack, "viewcells")));
+                new StackDependentSupplier<>(this::getItemStack, stack -> createInv(player, stack, "viewcells", 5)));
         singularityInventory = new SupplierInternalInventory<>(
-                new StackDependentSupplier<>(this::getItemStack, stack -> createInv(player, stack, "singularity")));
+                new StackDependentSupplier<>(this::getItemStack, stack -> createInv(player, stack, "singularity", 1)));
     }
 
     @Nullable
@@ -161,7 +161,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<WirelessTermin
         return null;
     }
 
-    protected static InternalInventory createInv(Player player, ItemStack stack, String name) {
+    protected static InternalInventory createInv(Player player, ItemStack stack, String name, int size) {
         var inv = new AppEngInternalInventory(new InternalInventoryHost() {
             @Override
             public void saveChangedInventory(AppEngInternalInventory inv) {
@@ -172,7 +172,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<WirelessTermin
             public boolean isClientSide() {
                 return player.level().isClientSide();
             }
-        }, 9);
+        }, size);
         if (stack.getTag() != null) {
             inv.readFromNBT(stack.getTag(), name);
         }
