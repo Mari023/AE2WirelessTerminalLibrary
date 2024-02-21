@@ -1,4 +1,4 @@
-package de.mari_023.ae2wtlib.reijei;
+package de.mari_023.ae2wtlib.recipeviewer;
 
 import java.util.Collections;
 import java.util.Optional;

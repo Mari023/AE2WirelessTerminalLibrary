@@ -1,7 +1,7 @@
 @FieldsAreNonnullByDefault
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-package de.mari_023.ae2wtlib.reijei;
+package de.mari_023.ae2wtlib.recipeviewer;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 

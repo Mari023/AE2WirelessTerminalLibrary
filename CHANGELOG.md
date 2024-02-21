@@ -1,1 +1,2 @@
 - more precisely tell why the terminal isn't connected
+- add emi recipe transfer handlers

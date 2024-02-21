@@ -1,4 +1,4 @@
-package de.mari_023.ae2wtlib.reijei;
+package de.mari_023.ae2wtlib.recipeviewer;
 
 import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
 import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;

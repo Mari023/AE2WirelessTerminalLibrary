@@ -45,6 +45,7 @@ dependencies {
 
     compileOnly("me.shedaniel:RoughlyEnoughItems-neoforge:${reiVersion}")
     compileOnly("mezz.jei:jei-${jeiMinecraftVersion}-neoforge:${jeiVersion}")
+    compileOnly("dev.emi:emi-neoforge:${emiVersion}+${minecraftVersion}:api")
 
     when (runtimeItemlistMod) {
         "rei" -> runtimeOnly("me.shedaniel:RoughlyEnoughItems-neoforge:${reiVersion}")
