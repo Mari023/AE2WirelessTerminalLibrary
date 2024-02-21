@@ -44,12 +44,12 @@ dependencies {
     implementation("appeng:appliedenergistics2-neoforge:${ae2Version}")
 
     compileOnly("me.shedaniel:RoughlyEnoughItems-neoforge:${reiVersion}")
-    compileOnly("mezz.jei:jei-${jeiMinecraftVersion}-forge:${jeiVersion}")
+    compileOnly("mezz.jei:jei-${jeiMinecraftVersion}-neoforge:${jeiVersion}")
 
     when (runtimeItemlistMod) {
         "rei" -> runtimeOnly("me.shedaniel:RoughlyEnoughItems-neoforge:${reiVersion}")
 
-        "jei" -> runtimeOnly("mezz.jei:jei-${jeiMinecraftVersion}-forge:${jeiVersion}")
+        "jei" -> runtimeOnly("mezz.jei:jei-${jeiMinecraftVersion}-neoforge:${jeiVersion}")
 
         "emi" -> {
             runtimeOnly("dev.emi:emi-neoforge:${emiVersion}+${minecraftVersion}")
