@@ -7,7 +7,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 
-import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.menu.ISubMenu;
 import appeng.menu.locator.ItemMenuHostLocator;
 
@@ -23,7 +22,7 @@ public record WTDefinition(ContainerOpener containerOpener, WTMenuHostFactory wT
 
     @FunctionalInterface
     public interface WTMenuHostFactory {
-        WTMenuHost create(WirelessTerminalItem item, Player player, ItemMenuHostLocator locator,
+        WTMenuHost create(ItemWT item, Player player, ItemMenuHostLocator locator,
                 BiConsumer<Player, ISubMenu> returnToMainMenu);
     }
 }

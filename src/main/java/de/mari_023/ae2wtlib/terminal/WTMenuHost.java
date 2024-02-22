@@ -18,7 +18,6 @@ import appeng.api.networking.security.IActionHost;
 import appeng.api.storage.ILinkStatus;
 import appeng.helpers.WirelessTerminalMenuHost;
 import appeng.items.contents.StackDependentSupplier;
-import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.items.tools.powered.powersink.AEBasePoweredItem;
 import appeng.me.cluster.implementations.QuantumCluster;
 import appeng.menu.ISubMenu;
@@ -30,7 +29,7 @@ import appeng.util.inv.SupplierInternalInventory;
 import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.AE2wtlibItems;
 
-public abstract class WTMenuHost extends WirelessTerminalMenuHost<WirelessTerminalItem>
+public abstract class WTMenuHost extends WirelessTerminalMenuHost<ItemWT>
         implements ISegmentedInventory {
     private final SupplierInternalInventory<InternalInventory> singularityInventory;
     private final SupplierInternalInventory<InternalInventory> viewCellInventory;
@@ -40,7 +39,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<WirelessTermin
     private ILinkStatus linkStatus = ILinkStatus.ofDisconnected();
     private ILinkStatus quantumStatus = ILinkStatus.ofDisconnected();
 
-    public WTMenuHost(WirelessTerminalItem item, Player player, ItemMenuHostLocator locator,
+    public WTMenuHost(ItemWT item, Player player, ItemMenuHostLocator locator,
             BiConsumer<Player, ISubMenu> returnToMainMenu) {
         super(item, player, locator, returnToMainMenu);
         viewCellInventory = new SupplierInternalInventory<>(

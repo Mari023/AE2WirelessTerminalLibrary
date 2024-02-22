@@ -12,7 +12,6 @@ import appeng.api.implementations.blockentities.IViewCellStorage;
 import appeng.api.inventories.InternalInventory;
 import appeng.core.definitions.AEItems;
 import appeng.items.contents.StackDependentSupplier;
-import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.menu.ISubMenu;
 import appeng.menu.locator.ItemMenuHostLocator;
 import appeng.parts.reporting.CraftingTerminalPart;
@@ -20,6 +19,7 @@ import appeng.util.inv.AppEngInternalInventory;
 import appeng.util.inv.SupplierInternalInventory;
 
 import de.mari_023.ae2wtlib.AE2wtlib;
+import de.mari_023.ae2wtlib.terminal.ItemWT;
 import de.mari_023.ae2wtlib.terminal.WTMenuHost;
 
 public class WCTMenuHost extends WTMenuHost implements IViewCellStorage {
@@ -27,7 +27,7 @@ public class WCTMenuHost extends WTMenuHost implements IViewCellStorage {
     private final AppEngInternalInventory trash = new AppEngInternalInventory(27);
     public static final ResourceLocation INV_TRASH = AE2wtlib.id("wct_trash");
 
-    public WCTMenuHost(WirelessTerminalItem item, Player player, ItemMenuHostLocator locator,
+    public WCTMenuHost(ItemWT item, Player player, ItemMenuHostLocator locator,
             BiConsumer<Player, ISubMenu> returnToMainMenu) {
         super(item, player, locator, returnToMainMenu);
         this.craftingGrid = new SupplierInternalInventory<>(

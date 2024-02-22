@@ -9,19 +9,19 @@ import net.minecraft.world.level.Level;
 import appeng.api.implementations.blockentities.IViewCellStorage;
 import appeng.helpers.IPatternTerminalLogicHost;
 import appeng.helpers.IPatternTerminalMenuHost;
-import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.menu.ISubMenu;
 import appeng.menu.locator.ItemMenuHostLocator;
 import appeng.parts.encoding.PatternEncodingLogic;
 
 import de.mari_023.ae2wtlib.AE2wtlibItems;
+import de.mari_023.ae2wtlib.terminal.ItemWT;
 import de.mari_023.ae2wtlib.terminal.WTMenuHost;
 
 public class WETMenuHost extends WTMenuHost
         implements IViewCellStorage, IPatternTerminalMenuHost, IPatternTerminalLogicHost {
     private final PatternEncodingLogic logic = new PatternEncodingLogic(this);
 
-    public WETMenuHost(WirelessTerminalItem item, Player player, ItemMenuHostLocator locator,
+    public WETMenuHost(ItemWT item, Player player, ItemMenuHostLocator locator,
             BiConsumer<Player, ISubMenu> returnToMainMenu) {
         super(item, player, locator, returnToMainMenu);
         logic.readFromNBT(getItemStack().getOrCreateTag());

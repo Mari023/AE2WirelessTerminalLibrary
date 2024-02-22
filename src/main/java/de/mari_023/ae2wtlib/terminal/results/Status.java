@@ -15,7 +15,7 @@ public enum Status {
     /**
      * Invalid Result where no error is displayed
      */
-    GenericInvalid(null),
+    GenericInvalid(Component.empty()),
     // Grid results
     NotLinked(PlayerMessages.DeviceNotLinked.text()),
     NotPowered(TextConstants.NETWORK_NOT_POWERED),
