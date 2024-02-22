@@ -67,6 +67,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<ItemWT>
 
     @Nullable
     private MEStorage getStorageFromStack(ItemStack stack) {
+        updateConnectedAccessPoint();
         IGridNode node = getActionableNode();
         if (node == null)
             return NullInventory.of();
