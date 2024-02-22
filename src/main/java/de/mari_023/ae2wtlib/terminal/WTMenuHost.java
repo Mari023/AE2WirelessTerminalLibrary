@@ -4,12 +4,15 @@ import java.util.function.BiConsumer;
 
 import org.jetbrains.annotations.Nullable;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
+import appeng.api.features.Locatables;
 import appeng.api.inventories.ISegmentedInventory;
 import appeng.api.inventories.InternalInventory;
 import appeng.api.networking.IGrid;
@@ -31,6 +34,7 @@ import appeng.util.inv.SupplierInternalInventory;
 
 import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.AE2wtlibItems;
+import de.mari_023.ae2wtlib.terminal.results.ActionHostResult;
 import de.mari_023.ae2wtlib.terminal.results.LongResult;
 import de.mari_023.ae2wtlib.terminal.results.Status;
 
@@ -103,11 +107,35 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<ItemWT>
         quantumStatus = isQuantumLinked();
     }
 
+    public ActionHostResult findQuantumBridge(Level level, long frequency) {
+        IActionHost quantumBridge = Locatables.quantumNetworkBridges().get(level, frequency);
+        if (quantumBridge == null)
+            quantumBridge = Locatables.quantumNetworkBridges().get(level, -frequency);
+        if (quantumBridge == null)
+            return ActionHostResult.invalid(Status.BridgeNotFound);
+        return ActionHostResult.valid(quantumBridge);
+    }
+
+    public LongResult getQEFrequency(@Nullable InternalInventory inventory) {
+        if (inventory == null) {
+            inventory = new AppEngInternalInventory(null, 1);
+            ((AppEngInternalInventory) inventory).readFromNBT(getItemStack().getOrCreateTag(), "singularity");
+        }
+        ItemStack is = inventory.getStackInSlot(0);
+        if (is.isEmpty())
+            return LongResult.invalid(Status.NoSingularity);
+        CompoundTag c = is.getTag();
+
+        if (c == null)
+            return LongResult.invalid(Status.GenericInvalid);
+        return LongResult.valid(c.getLong("freq"));
+    }
+
     private ILinkStatus isQuantumLinked() {
         Status status = Status.Valid;
         if (!getUpgrades().isInstalled(AE2wtlibItems.instance().QUANTUM_BRIDGE_CARD))
             status = Status.NoUpgrade;
-        LongResult f = ItemWT.getQEFrequency(getItemStack(), singularityInventory);
+        LongResult f = getQEFrequency(singularityInventory);
         if (!f.valid()) {
             status = status.isValid() ? f.status() : Status.GenericInvalid;
         }
@@ -115,7 +143,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<ItemWT>
             return status.toILinkStatus();
         long frequency = f.result();
         if (quantumBridge == null) {
-            var qb = ItemWT.findQuantumBridge(getPlayer().level(), frequency);
+            var qb = findQuantumBridge(getPlayer().level(), frequency);
             quantumBridge = qb.host();
             if (qb.invalid())
                 return qb.status().toILinkStatus();
@@ -125,10 +153,10 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<ItemWT>
                 return Status.BridgeNotFound.toILinkStatus();
             long frequencyOther = quantumCluster.getCenter().getQEFrequency();
             if (!(frequencyOther == frequency || frequencyOther == -frequency))
-                if (ItemWT.findQuantumBridge(getPlayer().level(), frequency).invalid())
+                if (findQuantumBridge(getPlayer().level(), frequency).invalid())
                     return Status.BridgeNotFound.toILinkStatus();
         } else {
-            var qb = ItemWT.findQuantumBridge(getPlayer().level(), frequency);
+            var qb = findQuantumBridge(getPlayer().level(), frequency);
             quantumBridge = qb.host();
             if (qb.invalid())
                 return qb.status().toILinkStatus();

@@ -29,18 +29,19 @@ import de.mari_023.ae2wtlib.terminal.ItemWT;
 
 public class ItemWUT extends ItemWT {
     @Override
-    public InteractionResultHolder<ItemStack> use(final Level w, final Player player, final InteractionHand hand) {
+    public InteractionResultHolder<ItemStack> use(final Level level, final Player player, final InteractionHand hand) {
         if (WUTHandler.getCurrentTerminal(player.getItemInHand(hand)).isEmpty()) {
-            if (!w.isClientSide())
+            if (!level.isClientSide())
                 player.sendSystemMessage(TextConstants.TERMINAL_EMPTY);
-            return new InteractionResultHolder<>(InteractionResult.FAIL, player.getItemInHand(hand));
+            return new InteractionResultHolder<>(InteractionResult.sidedSuccess(level.isClientSide()),
+                    player.getItemInHand(hand));
         }
         /*
          * if(player.isShiftKeyDown()) { if(w.isClientSide()) Minecraft.getInstance().setScreen(new
          * WUTSelectScreen(player.getItemInHand(hand))); return new InteractionResultHolder<>(InteractionResult.SUCCESS,
          * player.getItemInHand(hand)); } else
          */
-        return super.use(w, player, hand);
+        return super.use(level, player, hand);
     }
 
     @Override

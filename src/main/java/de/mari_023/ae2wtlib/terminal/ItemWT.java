@@ -2,7 +2,6 @@ package de.mari_023.ae2wtlib.terminal;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -16,21 +15,14 @@ import net.minecraft.world.phys.BlockHitResult;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
-import appeng.api.features.Locatables;
-import appeng.api.inventories.InternalInventory;
-import appeng.api.networking.security.IActionHost;
 import appeng.core.AEConfig;
 import appeng.helpers.WirelessTerminalMenuHost;
 import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.menu.MenuOpener;
 import appeng.menu.locator.ItemMenuHostLocator;
 import appeng.menu.locator.MenuLocators;
-import appeng.util.inv.AppEngInternalInventory;
 
 import de.mari_023.ae2wtlib.AE2wtlibItems;
-import de.mari_023.ae2wtlib.terminal.results.ActionHostResult;
-import de.mari_023.ae2wtlib.terminal.results.LongResult;
-import de.mari_023.ae2wtlib.terminal.results.Status;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 public abstract class ItemWT extends WirelessTerminalItem implements ICurioItem {
@@ -57,11 +49,11 @@ public abstract class ItemWT extends WirelessTerminalItem implements ICurioItem 
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(final Level w, final Player player, final InteractionHand hand) {
+    public InteractionResultHolder<ItemStack> use(final Level level, final Player player, final InteractionHand hand) {
         ItemStack is = player.getItemInHand(hand);
-        if (!player.level().isClientSide() && checkPreconditions(is)) {
+        if (!level.isClientSide() && checkPreconditions(is)) {
             open(player, MenuLocators.forHand(player, hand), false);
-            return new InteractionResultHolder<>(InteractionResult.SUCCESS, is);
+            return new InteractionResultHolder<>(InteractionResult.sidedSuccess(level.isClientSide()), is);
         }
         return new InteractionResultHolder<>(InteractionResult.FAIL, is);
     }
@@ -72,30 +64,6 @@ public abstract class ItemWT extends WirelessTerminalItem implements ICurioItem 
         return WUTHandler.wirelessTerminals.get(WUTHandler.getCurrentTerminal(locator.locateItem(player)))
                 .wTMenuHostFactory().create(this, player,
                         locator, (p, subMenu) -> tryOpen(player, locator, true));
-    }
-
-    public static ActionHostResult findQuantumBridge(Level level, long frequency) {
-        IActionHost quantumBridge = Locatables.quantumNetworkBridges().get(level, frequency);
-        if (quantumBridge == null)
-            quantumBridge = Locatables.quantumNetworkBridges().get(level, -frequency);
-        if (quantumBridge == null)
-            return ActionHostResult.invalid(Status.BridgeNotFound);
-        return ActionHostResult.valid(quantumBridge);
-    }
-
-    public static LongResult getQEFrequency(ItemStack stack, @Nullable InternalInventory inventory) {
-        if (inventory == null) {
-            inventory = new AppEngInternalInventory(null, 1);
-            ((AppEngInternalInventory) inventory).readFromNBT(stack.getOrCreateTag(), "singularity");
-        }
-        final ItemStack is = inventory.getStackInSlot(0);
-        if (is.isEmpty())
-            return LongResult.invalid(Status.NoSingularity);
-        final CompoundTag c = is.getTag();
-
-        if (c == null)
-            return LongResult.invalid(Status.GenericInvalid);
-        return LongResult.valid(c.getLong("freq"));
     }
 
     public void curioTick(SlotContext slotContext, ItemStack stack) {
