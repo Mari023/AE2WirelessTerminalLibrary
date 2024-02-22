@@ -1,0 +1,1 @@
+- add updateJSONURL, so neoforge can check if there is a new version available
