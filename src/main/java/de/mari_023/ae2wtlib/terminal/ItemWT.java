@@ -181,7 +181,9 @@ public abstract class ItemWT extends WirelessTerminalItem implements ICurioItem 
     }
 
     @Nullable
-    public IGrid getLinkedGrid(ItemStack item, Level level, @Nullable Consumer<Component> errorConsumer) {
+    public IGrid getLinkedGrid(ItemStack item, Level level, @Nullable Consumer<Component> errorConsumer) {// TODO don't
+                                                                                                          // overwrite
+                                                                                                          // this
         GridResult grid = getLinkedGrid(item, level);
         if (grid.status().error != null && errorConsumer != null && !level.isClientSide()) {
             errorConsumer.accept(grid.status().error);

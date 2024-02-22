@@ -1,0 +1,1 @@
+- more precisely tell why the terminal isn't connected

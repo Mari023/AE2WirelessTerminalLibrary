@@ -87,4 +87,5 @@ public final class TextConstants {
             .translatable("chat.ae2wtlib.SingularityNotPresent");
     public static final Component NO_QNB_UPGRADE = Component.translatable("chat.ae2wtlib.NoQuantumBridgeCard");
     public static final Component NO_QNB = Component.translatable("chat.ae2wtlib.NoQuantumBridge");
+    public static final Component DIFFERENT_NETWORKS = Component.translatable("chat.ae2wtlib.NetworkMismatch");
 }

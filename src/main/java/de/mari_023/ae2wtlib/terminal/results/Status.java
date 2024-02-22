@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.network.chat.Component;
 
+import appeng.api.storage.ILinkStatus;
 import appeng.core.localization.PlayerMessages;
 
 import de.mari_023.ae2wtlib.TextConstants;
@@ -15,7 +16,7 @@ public enum Status {
     /**
      * Invalid Result where no error is displayed
      */
-    GenericInvalid(Component.empty()),
+    GenericInvalid(null),
     // Grid results
     NotLinked(PlayerMessages.DeviceNotLinked.text()),
     NotPowered(TextConstants.NETWORK_NOT_POWERED),
@@ -23,6 +24,7 @@ public enum Status {
     // Quantum Bridge results
     NoUpgrade(TextConstants.NO_QNB_UPGRADE),
     BridgeNotFound(TextConstants.NO_QNB),
+    DifferentNetworks(TextConstants.DIFFERENT_NETWORKS),
     // Singularity results
     NoSingularity(TextConstants.SINGULARITY_NOT_PRESENT);
 
@@ -35,5 +37,15 @@ public enum Status {
 
     public boolean isValid() {
         return this == Valid;
+    }
+
+    public ILinkStatus toILinkStatus() {
+        if (isValid())
+            return ILinkStatus.ofConnected();
+        return ILinkStatus.ofDisconnected(error);
+    }
+
+    public boolean is(ILinkStatus status) {
+        return status.statusDescription() == error;
     }
 }

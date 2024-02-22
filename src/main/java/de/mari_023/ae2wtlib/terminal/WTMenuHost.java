@@ -12,7 +12,6 @@ import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
 import appeng.api.inventories.ISegmentedInventory;
 import appeng.api.inventories.InternalInventory;
-import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.storage.ILinkStatus;
@@ -28,6 +27,8 @@ import appeng.util.inv.SupplierInternalInventory;
 
 import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.AE2wtlibItems;
+import de.mari_023.ae2wtlib.terminal.results.LongResult;
+import de.mari_023.ae2wtlib.terminal.results.Status;
 
 public abstract class WTMenuHost extends WirelessTerminalMenuHost<ItemWT>
         implements ISegmentedInventory {
@@ -49,11 +50,6 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<ItemWT>
     }
 
     @Nullable
-    private IGrid getLinkedGrid(ItemStack stack) {// TODO use ae2 method
-        return getItem().getLinkedGrid(stack, getPlayer().level(), null);
-    }
-
-    @Nullable
     @Override
     public IGridNode getActionableNode() {
         if (!getPlayer().level().isClientSide() && quantumStatus.connected()) {
@@ -68,8 +64,9 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<ItemWT>
         linkStatus = super.getLinkStatus();
         if (linkStatus.connected())
             return;
-        if (linkStatus.equals(ILinkStatus.ofDisconnected()) || quantumStatus.connected())
-            linkStatus = quantumStatus;
+        if (quantumStatus.equals(ILinkStatus.ofDisconnected()))
+            return;
+        linkStatus = quantumStatus;
     }
 
     @Override
@@ -82,33 +79,46 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<ItemWT>
         quantumStatus = isQuantumLinked();
     }
 
-    private ILinkStatus isQuantumLinked() {// TODO add reasons when it isn't connected
+    private ILinkStatus isQuantumLinked() {
+        Status status = Status.Valid;
         if (!getUpgrades().isInstalled(AE2wtlibItems.instance().QUANTUM_BRIDGE_CARD))
-            return ILinkStatus.ofDisconnected();
-        long frequency = ItemWT.getQEFrequency(getItemStack(), singularityInventory).result();
-        if (quantumBridge == null) {
-            quantumBridge = ItemWT.getQuantumBridge(getItemStack(), getPlayer().level(), singularityInventory,
-                    getUpgrades()).host();
-            if (quantumBridge == null)
-                return ILinkStatus.ofDisconnected();
-        } else {
-            if (quantumBridge instanceof QuantumCluster quantumCluster) {
-                if (quantumCluster.getCenter() == null)
-                    return ILinkStatus.ofDisconnected();
-                long frequencyOther = quantumCluster.getCenter().getQEFrequency();
-                if (!(frequencyOther == frequency || frequencyOther == -frequency))
-                    if (ItemWT.findQuantumBridge(getPlayer().level(), frequency).invalid())
-                        return ILinkStatus.ofDisconnected();
-            } else if (ItemWT.findQuantumBridge(getPlayer().level(), frequency).invalid())
-                return ILinkStatus.ofDisconnected();
+            status = Status.NoUpgrade;
+        LongResult f = ItemWT.getQEFrequency(getItemStack(), singularityInventory);
+        if (!f.valid()) {
+            status = status.isValid() ? f.status() : Status.GenericInvalid;
         }
-        if (quantumBridge.getActionableNode() == null)
-            return ILinkStatus.ofDisconnected();
-        var targetGrid = getLinkedGrid(getItemStack());
-        if ((quantumBridge.getActionableNode().getGrid() == targetGrid && targetGrid != null)
-                && targetGrid.getEnergyService().isNetworkPowered())
-            return ILinkStatus.ofConnected();
-        return ILinkStatus.ofDisconnected();
+        if (!status.isValid())
+            return status.toILinkStatus();
+        long frequency = f.result();
+        if (quantumBridge == null) {
+            var qb = ItemWT.findQuantumBridge(getPlayer().level(), frequency);
+            quantumBridge = qb.host();
+            if (qb.invalid())
+                return qb.status().toILinkStatus();
+            assert quantumBridge != null;
+        } else if (quantumBridge instanceof QuantumCluster quantumCluster) {
+            if (quantumCluster.getCenter() == null)
+                return Status.BridgeNotFound.toILinkStatus();
+            long frequencyOther = quantumCluster.getCenter().getQEFrequency();
+            if (!(frequencyOther == frequency || frequencyOther == -frequency))
+                if (ItemWT.findQuantumBridge(getPlayer().level(), frequency).invalid())
+                    return Status.BridgeNotFound.toILinkStatus();
+        } else {
+            var qb = ItemWT.findQuantumBridge(getPlayer().level(), frequency);
+            quantumBridge = qb.host();
+            if (qb.invalid())
+                return qb.status().toILinkStatus();
+            assert quantumBridge != null;
+        }
+
+        if (quantumBridge.getActionableNode() == null || quantumBridge.getActionableNode().getGrid() == null)
+            return Status.BridgeNotFound.toILinkStatus();
+        var targetGrid = getItem().getLinkedGrid(getItemStack(), getPlayer().level(), null);
+        if (quantumBridge.getActionableNode().getGrid() != targetGrid && targetGrid != null)
+            return Status.DifferentNetworks.toILinkStatus();
+        if (!quantumBridge.getActionableNode().getGrid().getEnergyService().isNetworkPowered())
+            return Status.NotPowered.toILinkStatus();
+        return ILinkStatus.ofConnected();
     }
 
     public InternalInventory getViewCellStorage() {
@@ -117,7 +127,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<ItemWT>
 
     @Override
     protected double getPowerDrainPerTick() {
-        if (quantumStatus.connected()) {
+        if (quantumStatus.connected() || Status.NotPowered.is(quantumStatus)) {
             // QuantumBridgeBlockEntity: 22 ae/tick
             // AbstractReportingPart (terminal): 0.5 ae/tick
             // -> 22.5 ae/tick
@@ -136,7 +146,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<ItemWT>
     }
 
     private void recharge() {
-        if (!quantumStatus.connected())
+        if (!quantumStatus.connected() && !Status.NotPowered.is(quantumStatus))
             return;
         if (!(getItemStack().getItem() instanceof AEBasePoweredItem item))
             return;
