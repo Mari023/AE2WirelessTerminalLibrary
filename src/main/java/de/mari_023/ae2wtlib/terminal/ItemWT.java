@@ -1,12 +1,8 @@
 package de.mari_023.ae2wtlib.terminal;
 
-import java.util.function.Consumer;
-
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -21,24 +17,18 @@ import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
 
 import appeng.api.features.Locatables;
-import appeng.api.implementations.blockentities.IWirelessAccessPoint;
 import appeng.api.inventories.InternalInventory;
-import appeng.api.networking.IGrid;
 import appeng.api.networking.security.IActionHost;
-import appeng.api.upgrades.IUpgradeInventory;
-import appeng.api.upgrades.UpgradeInventories;
 import appeng.core.AEConfig;
 import appeng.helpers.WirelessTerminalMenuHost;
 import appeng.items.tools.powered.WirelessTerminalItem;
 import appeng.menu.MenuOpener;
 import appeng.menu.locator.ItemMenuHostLocator;
 import appeng.menu.locator.MenuLocators;
-import appeng.util.Platform;
 import appeng.util.inv.AppEngInternalInventory;
 
 import de.mari_023.ae2wtlib.AE2wtlibItems;
 import de.mari_023.ae2wtlib.terminal.results.ActionHostResult;
-import de.mari_023.ae2wtlib.terminal.results.GridResult;
 import de.mari_023.ae2wtlib.terminal.results.LongResult;
 import de.mari_023.ae2wtlib.terminal.results.Status;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
@@ -106,89 +96,6 @@ public abstract class ItemWT extends WirelessTerminalItem implements ICurioItem 
         if (c == null)
             return LongResult.invalid(Status.GenericInvalid);
         return LongResult.valid(c.getLong("freq"));
-    }
-
-    private static boolean hasQuantumUpgrade(ItemStack stack, @Nullable IUpgradeInventory inventory) {
-        if (inventory == null)
-            inventory = UpgradeInventories.forItem(stack, WUTHandler.getUpgradeCardCount());
-        return inventory.isInstalled(AE2wtlibItems.instance().QUANTUM_BRIDGE_CARD);
-    }
-
-    public static ActionHostResult getQuantumBridge(ItemStack itemStack, Level level,
-            @Nullable InternalInventory singularityInventory, @Nullable IUpgradeInventory upgradeInventory) {
-        if (level.isClientSide())
-            return ActionHostResult.invalid(Status.NotServer);
-
-        Status status = Status.Valid;
-
-        if (!hasQuantumUpgrade(itemStack, upgradeInventory))
-            status = Status.NoUpgrade;
-        LongResult frequency = getQEFrequency(itemStack, singularityInventory);
-        if (!frequency.valid()) {
-            status = status.isValid() ? frequency.status() : Status.GenericInvalid;
-        }
-        if (!status.isValid())
-            return ActionHostResult.invalid(status);
-        return findQuantumBridge(level, frequency.result());
-    }
-
-    private GridResult getLinkedGrid(ItemStack item, Level level) {
-        if (!(level instanceof ServerLevel serverLevel))
-            return GridResult.invalid(Status.NotServer);
-
-        GridResult grid = getAccessPointLinkedGrid(item, serverLevel);
-        if (grid.valid())
-            return grid;
-
-        var quantumBridgeResult = getQuantumBridge(item, level, null, null);
-        if (quantumBridgeResult.invalid()) {
-            return switch (grid.status()) {
-                case NotFound, NotLinked -> quantumBridgeResult.status() == Status.GenericInvalid ? grid
-                        : GridResult.invalid(quantumBridgeResult);
-                default -> grid;
-            };
-        }
-        var quantumBridge = quantumBridgeResult.host();
-
-        assert quantumBridge != null;// can't happen if the result is valid
-        if (quantumBridge.getActionableNode() == null)
-            return GridResult.invalid(Status.NotFound);
-        if (!quantumBridge.getActionableNode().isPowered())
-            return GridResult.invalid(Status.NotPowered);
-        return GridResult.valid(quantumBridge.getActionableNode().getGrid());
-    }
-
-    private GridResult getAccessPointLinkedGrid(ItemStack item, ServerLevel level) {
-        var linkedPos = getLinkedPosition(item);
-        if (linkedPos == null)
-            return GridResult.invalid(Status.NotLinked);
-
-        var linkedLevel = level.getServer().getLevel(linkedPos.dimension());
-        if (linkedLevel == null)
-            return GridResult.invalid(Status.NotFound);
-
-        var be = Platform.getTickingBlockEntity(linkedLevel, linkedPos.pos());
-        if (!(be instanceof IWirelessAccessPoint accessPoint))
-            return GridResult.invalid(Status.NotFound);
-
-        var grid = accessPoint.getGrid();
-        if (grid == null)
-            return GridResult.invalid(Status.NotFound);
-
-        if (!grid.getEnergyService().isNetworkPowered())
-            return GridResult.invalid(Status.NotPowered);
-        return GridResult.valid(grid);
-    }
-
-    @Nullable
-    public IGrid getLinkedGrid(ItemStack item, Level level, @Nullable Consumer<Component> errorConsumer) {// TODO don't
-                                                                                                          // overwrite
-                                                                                                          // this
-        GridResult grid = getLinkedGrid(item, level);
-        if (grid.status().error != null && errorConsumer != null && !level.isClientSide()) {
-            errorConsumer.accept(grid.status().error);
-        }
-        return grid.grid();
     }
 
     public void curioTick(SlotContext slotContext, ItemStack stack) {

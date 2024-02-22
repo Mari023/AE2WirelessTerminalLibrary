@@ -12,13 +12,17 @@ import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
 import appeng.api.inventories.ISegmentedInventory;
 import appeng.api.inventories.InternalInventory;
+import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridNode;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.storage.ILinkStatus;
+import appeng.api.storage.MEStorage;
 import appeng.helpers.WirelessTerminalMenuHost;
 import appeng.items.contents.StackDependentSupplier;
 import appeng.items.tools.powered.powersink.AEBasePoweredItem;
 import appeng.me.cluster.implementations.QuantumCluster;
+import appeng.me.storage.NullInventory;
+import appeng.me.storage.SupplierStorage;
 import appeng.menu.ISubMenu;
 import appeng.menu.locator.ItemMenuHostLocator;
 import appeng.util.inv.AppEngInternalInventory;
@@ -37,16 +41,36 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<ItemWT>
     @Nullable
     private IActionHost quantumBridge;
     public static final ResourceLocation INV_SINGULARITY = AE2wtlib.id("singularity");
+    private final MEStorage storage;
     private ILinkStatus linkStatus = ILinkStatus.ofDisconnected();
     private ILinkStatus quantumStatus = ILinkStatus.ofDisconnected();
 
     public WTMenuHost(ItemWT item, Player player, ItemMenuHostLocator locator,
             BiConsumer<Player, ISubMenu> returnToMainMenu) {
         super(item, player, locator, returnToMainMenu);
+        this.storage = new SupplierStorage(new StackDependentSupplier<>(
+                this::getItemStack, this::getStorageFromStack));
         viewCellInventory = new SupplierInternalInventory<>(
                 new StackDependentSupplier<>(this::getItemStack, stack -> createInv(player, stack, "viewcells", 5)));
         singularityInventory = new SupplierInternalInventory<>(
                 new StackDependentSupplier<>(this::getItemStack, stack -> createInv(player, stack, "singularity", 1)));
+    }
+
+    @Override
+    public MEStorage getInventory() {
+        return this.storage;
+    }
+
+    @Nullable
+    private MEStorage getStorageFromStack(ItemStack stack) {
+        IGridNode node = getActionableNode();
+        if (node == null)
+            return NullInventory.of();
+        IGrid targetGrid = node.getGrid();
+        if (targetGrid != null) {
+            return targetGrid.getStorageService().getInventory();
+        }
+        return NullInventory.of();
     }
 
     @Nullable
