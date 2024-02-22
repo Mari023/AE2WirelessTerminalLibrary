@@ -103,38 +103,6 @@ public abstract class ItemWT extends WirelessTerminalItem implements ICurioItem 
     }
 
     /**
-     * get a previously stored {@link ItemStack} from a WirelessTerminal
-     *
-     * @param hostItem the Terminal to load from
-     * @param slot     the location where the item is stored
-     * @return the stored Item or {@link ItemStack}.EMPTY if it wasn't found
-     */
-    @Deprecated
-    public static ItemStack getSavedSlot(ItemStack hostItem, String slot) {
-        if (!(hostItem.getItem() instanceof ItemWT))
-            return ItemStack.EMPTY;
-        return ItemStack.of(hostItem.getOrCreateTag().getCompound(slot));
-    }
-
-    /**
-     * store an {@link ItemStack} in a WirelessTerminal this will overwrite any previously existing tags in slot
-     *
-     * @param hostItem  the Terminal to store in
-     * @param savedItem the item to store
-     * @param slot      the location where the stored item will be
-     */
-    @Deprecated
-    public static void setSavedSlot(ItemStack hostItem, ItemStack savedItem, String slot) {
-        if (!(hostItem.getItem() instanceof ItemWT))
-            return;
-        CompoundTag wctTag = hostItem.getOrCreateTag();
-        if (savedItem.isEmpty())
-            wctTag.remove(slot);
-        else
-            wctTag.put(slot, savedItem.save(new CompoundTag()));
-    }
-
-    /**
      * get a previously stored boolean from a WirelessTerminal
      *
      * @param hostItem the Terminal to load from
