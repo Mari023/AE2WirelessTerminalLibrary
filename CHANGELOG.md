@@ -1,2 +1,0 @@
-- add updateJSONURL, so neoforge can check if there is a new version available
-- update to latest ae2 version
