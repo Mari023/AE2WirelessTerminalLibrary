@@ -2,7 +2,6 @@ package de.mari_023.ae2wtlib.terminal;
 
 import java.util.function.BiConsumer;
 
-import appeng.api.storage.SupplierStorage;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.nbt.CompoundTag;
@@ -21,6 +20,7 @@ import appeng.api.networking.IGridNode;
 import appeng.api.networking.security.IActionHost;
 import appeng.api.storage.ILinkStatus;
 import appeng.api.storage.MEStorage;
+import appeng.api.storage.SupplierStorage;
 import appeng.helpers.WirelessTerminalMenuHost;
 import appeng.items.contents.StackDependentSupplier;
 import appeng.items.tools.powered.powersink.AEBasePoweredItem;
