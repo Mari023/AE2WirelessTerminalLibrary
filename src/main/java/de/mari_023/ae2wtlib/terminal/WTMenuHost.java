@@ -2,6 +2,7 @@ package de.mari_023.ae2wtlib.terminal;
 
 import java.util.function.BiConsumer;
 
+import appeng.api.storage.SupplierStorage;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.nbt.CompoundTag;
@@ -25,7 +26,6 @@ import appeng.items.contents.StackDependentSupplier;
 import appeng.items.tools.powered.powersink.AEBasePoweredItem;
 import appeng.me.cluster.implementations.QuantumCluster;
 import appeng.me.storage.NullInventory;
-import appeng.me.storage.SupplierStorage;
 import appeng.menu.ISubMenu;
 import appeng.menu.locator.ItemMenuHostLocator;
 import appeng.util.inv.AppEngInternalInventory;
