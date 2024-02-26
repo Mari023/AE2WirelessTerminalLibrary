@@ -1,5 +1,6 @@
 package de.mari_023.ae2wtlib;
 
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -27,14 +28,11 @@ import de.mari_023.ae2wtlib.networking.UpdateWUTPackage;
 @Mod(AE2wtlib.MOD_NAME)
 @Mod.EventBusSubscriber
 public class AE2wtlibForge {
-    private static boolean RAN_INIT = false;
-
     public AE2wtlibForge(IEventBus modEventBus) {
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, AE2wtlibConfig.SPEC, AE2wtlib.MOD_NAME + ".toml");
         modEventBus.addListener((RegisterEvent e) -> {
-            if (RAN_INIT)
+            if (!e.getRegistryKey().equals(Registries.BLOCK))
                 return;
-            RAN_INIT = true;
             AE2wtlib.registerMenus();
             AE2wtlibItems items = new AE2wtlibItems();
             AE2wtlib.onAe2Initialized(items);
