@@ -1,1 +1,0 @@
-- fix wireless crafting terminal opening wireless (non crafting) terminal gui when using the keybinding
