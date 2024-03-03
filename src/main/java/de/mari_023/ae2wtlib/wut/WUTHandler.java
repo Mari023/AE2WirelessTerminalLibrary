@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import appeng.api.config.Actionable;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.nbt.CompoundTag;
@@ -212,6 +213,7 @@ public class WUTHandler {
         CompoundTag tag = new CompoundTag();
         tag.putBoolean(name, true);
         wut.setTag(tag);
+        AE2wtlibItems.instance().UNIVERSAL_TERMINAL.injectAEPower(wut, AE2wtlibItems.instance().UNIVERSAL_TERMINAL.getAEMaxPower(wut), Actionable.MODULATE);
 
         HotkeyActions.register(new Ae2WTLibLocatingService(name), hotkeyName);
 
