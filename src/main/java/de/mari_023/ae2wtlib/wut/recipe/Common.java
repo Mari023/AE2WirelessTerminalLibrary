@@ -34,11 +34,6 @@ public abstract class Common implements CraftingRecipe {
         return width > 1 || height > 1;
     }
 
-    // FIXME 1.19.4 REI check if this is still necessary
-    public ItemStack getResultItem() {
-        return outputStack;
-    }
-
     @Override
     public ItemStack getResultItem(RegistryAccess registryAccess) {
         return outputStack;
