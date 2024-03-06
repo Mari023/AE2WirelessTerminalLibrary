@@ -140,6 +140,10 @@ java {
 
 tasks {
     processResources {
+        // Ensure the resources get re-evaluate when the version changes
+        inputs.property("version", version)
+        inputs.property("ae2_version", ae2Version)
+
         val resourceTargets = "META-INF/mods.toml"
 
         val replaceProperties = mapOf(
