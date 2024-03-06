@@ -53,7 +53,6 @@ public class CraftingTerminalItemMixin extends WirelessTerminalItem
 
     @Nullable
     public ItemMenuHost getMenuHost(Player player, int slot, ItemStack stack, @Nullable BlockPos pos) {
-
         return new WCTMenuHost(player, slot, stack,
                 (p, subMenu) -> tryOpen(player, MenuLocators.forInventorySlot(slot), stack, true));
     }
@@ -63,7 +62,10 @@ public class CraftingTerminalItemMixin extends WirelessTerminalItem
         return AE2wtlib.UNIVERSAL_TERMINAL.getLinkedGrid(item, level, sendMessagesTo);
     }
 
-    public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int i, boolean bl) {
+    @Override
+    public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int slotId, boolean isSelected) {
+        super.inventoryTick(itemStack, level, entity, slotId, isSelected);
+
         if (level.isClientSide())
             return;
         if (!(entity instanceof ServerPlayer player))
