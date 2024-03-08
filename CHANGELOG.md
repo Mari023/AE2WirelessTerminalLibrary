@@ -1,0 +1,1 @@
+- properly consume action when using a wireless terminal (see https://github.com/AppliedEnergistics/Applied-Energistics-2/issues/7721)

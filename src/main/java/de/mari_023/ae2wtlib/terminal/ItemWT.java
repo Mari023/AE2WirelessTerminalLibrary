@@ -51,8 +51,9 @@ public abstract class ItemWT extends WirelessTerminalItem implements ICurioItem 
     @Override
     public InteractionResultHolder<ItemStack> use(final Level level, final Player player, final InteractionHand hand) {
         ItemStack is = player.getItemInHand(hand);
-        if (!level.isClientSide() && checkPreconditions(is)) {
-            open(player, MenuLocators.forHand(player, hand), false);
+        if (checkPreconditions(is)) {
+            if(!level.isClientSide())
+                open(player, MenuLocators.forHand(player, hand), false);
             return new InteractionResultHolder<>(InteractionResult.sidedSuccess(level.isClientSide()), is);
         }
         return new InteractionResultHolder<>(InteractionResult.FAIL, is);
