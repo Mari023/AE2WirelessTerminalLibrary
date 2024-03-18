@@ -29,11 +29,11 @@ import de.mari_023.ae2wtlib.networking.UpdateWUTPackage;
 @Mod.EventBusSubscriber
 public class AE2wtlibForge {
     public AE2wtlibForge(IEventBus modEventBus) {
+        AE2wtlib.registerMenus();
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, AE2wtlibConfig.SPEC, AE2wtlib.MOD_NAME + ".toml");
         modEventBus.addListener((RegisterEvent e) -> {
             if (!e.getRegistryKey().equals(Registries.BLOCK))
                 return;
-            AE2wtlib.registerMenus();
             AE2wtlibItems items = new AE2wtlibItems();
             AE2wtlib.onAe2Initialized(items);
             AE2WTLibCreativeTab.init();
