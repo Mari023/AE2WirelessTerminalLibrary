@@ -4,14 +4,17 @@ import net.minecraft.nbt.CompoundTag;
 
 import appeng.api.config.FuzzyMode;
 import appeng.api.config.IncludeExclude;
+import appeng.api.stacks.AEKeyType;
 import appeng.util.ConfigInventory;
 import appeng.util.prioritylist.IPartitionList;
 
 import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
 
 public class MagnetHost {
-    public final ConfigInventory pickupConfig = ConfigInventory.configTypes(27, this::updatePickupFilter);
-    public final ConfigInventory insertConfig = ConfigInventory.configTypes(27, this::updateInsertFilter);
+    public final ConfigInventory pickupConfig = ConfigInventory.configTypes(27).changeListener(this::updatePickupFilter)
+            .supportedTypes(AEKeyType.items()).build();
+    public final ConfigInventory insertConfig = ConfigInventory.configTypes(27).changeListener(this::updateInsertFilter)
+            .supportedTypes(AEKeyType.items()).build();
 
     private IPartitionList pickupFilter = createFilter(pickupConfig);
     private IPartitionList insertFilter = createFilter(insertConfig);
