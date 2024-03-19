@@ -1,1 +1,0 @@
-- add energy capability to terminal, to allow them being charged by other mods (fix #251)
