@@ -11,6 +11,8 @@ import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
 import net.neoforged.neoforge.event.entity.player.EntityItemPickupEvent;
@@ -19,11 +21,14 @@ import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
 import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
+import appeng.items.tools.powered.powersink.PoweredItemCapabilities;
+
 import de.mari_023.ae2wtlib.networking.AE2wtlibPacket;
 import de.mari_023.ae2wtlib.networking.CycleTerminalPacket;
 import de.mari_023.ae2wtlib.networking.RestockAmountPacket;
 import de.mari_023.ae2wtlib.networking.UpdateRestockPacket;
 import de.mari_023.ae2wtlib.networking.UpdateWUTPackage;
+import de.mari_023.ae2wtlib.terminal.ItemWT;
 
 @Mod(AE2wtlib.MOD_NAME)
 @Mod.EventBusSubscriber
@@ -47,6 +52,11 @@ public class AE2wtlibForge {
             registerPacket(registrar, RestockAmountPacket.ID, RestockAmountPacket::new);
         });
         modEventBus.addListener((FMLClientSetupEvent e) -> AE2wtlib.registerScreens());
+        modEventBus.addListener((RegisterCapabilitiesEvent event) -> {
+            registerPowerStorageItem(event, AE2wtlibItems.instance().UNIVERSAL_TERMINAL);
+            registerPowerStorageItem(event, AE2wtlibItems.instance().PATTERN_ACCESS_TERMINAL);
+            registerPowerStorageItem(event, AE2wtlibItems.instance().PATTERN_ENCODING_TERMINAL);
+        });
     }
 
     private static void registerPacket(IPayloadRegistrar registrar, ResourceLocation id,
@@ -56,6 +66,11 @@ public class AE2wtlibForge {
                     if (context.player().isPresent())
                         packet.processPacketData(context.player().get());
                 }));
+    }
+
+    private static void registerPowerStorageItem(RegisterCapabilitiesEvent event, ItemWT item) {
+        event.registerItem(Capabilities.EnergyStorage.ITEM,
+                (object, context) -> new PoweredItemCapabilities(object, item), item);
     }
 
     @SubscribeEvent
