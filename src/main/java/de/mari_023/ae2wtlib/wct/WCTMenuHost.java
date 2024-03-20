@@ -6,11 +6,9 @@ import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 
 import appeng.api.implementations.blockentities.IViewCellStorage;
 import appeng.api.inventories.InternalInventory;
-import appeng.core.definitions.AEItems;
 import appeng.items.contents.StackDependentSupplier;
 import appeng.menu.ISubMenu;
 import appeng.menu.locator.ItemMenuHostLocator;
@@ -34,11 +32,6 @@ public class WCTMenuHost extends WTMenuHost implements IViewCellStorage {
                 new StackDependentSupplier<>(
                         this::getItemStack,
                         stack -> createInv(player, stack, "craftingGrid", 9)));
-    }
-
-    @Override
-    public ItemStack getMainMenuIcon() {
-        return new ItemStack(AEItems.WIRELESS_CRAFTING_TERMINAL);
     }
 
     @Nullable

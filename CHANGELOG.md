@@ -1,0 +1,1 @@
+- show actual ItemStack of the terminal as icon instead of a new ItemStack with te same Item
