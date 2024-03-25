@@ -3,6 +3,7 @@ package de.mari_023.ae2wtlib.terminal;
 import java.util.function.BiConsumer;
 
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.UnknownNullability;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -46,8 +47,10 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<ItemWT>
     private IActionHost quantumBridge;
     public static final ResourceLocation INV_SINGULARITY = AE2wtlib.id("singularity");
     private final MEStorage storage;
-    private ILinkStatus linkStatus = ILinkStatus.ofDisconnected();
-    private ILinkStatus quantumStatus = ILinkStatus.ofDisconnected();
+    @UnknownNullability
+    private ILinkStatus linkStatus;
+    @UnknownNullability
+    private ILinkStatus quantumStatus;
 
     public WTMenuHost(ItemWT item, Player player, ItemMenuHostLocator locator,
             BiConsumer<Player, ISubMenu> returnToMainMenu) {
@@ -58,8 +61,6 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<ItemWT>
                 new StackDependentSupplier<>(this::getItemStack, stack -> createInv(player, stack, "viewcells", 5)));
         singularityInventory = new SupplierInternalInventory<>(
                 new StackDependentSupplier<>(this::getItemStack, stack -> createInv(player, stack, "singularity", 1)));
-        updateConnectedAccessPoint();
-        updateLinkStatus();
     }
 
     @Override
