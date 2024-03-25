@@ -58,6 +58,8 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<ItemWT>
                 new StackDependentSupplier<>(this::getItemStack, stack -> createInv(player, stack, "viewcells", 5)));
         singularityInventory = new SupplierInternalInventory<>(
                 new StackDependentSupplier<>(this::getItemStack, stack -> createInv(player, stack, "singularity", 1)));
+        updateConnectedAccessPoint();
+        updateLinkStatus();
     }
 
     @Override

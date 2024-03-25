@@ -1,1 +1,2 @@
 - show actual ItemStack of the terminal as icon instead of a new ItemStack with the same Item
+- fix #252 Unable to autocraft from wireless terminal over quantum bridge
