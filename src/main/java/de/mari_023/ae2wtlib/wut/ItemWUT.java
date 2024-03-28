@@ -93,7 +93,7 @@ public class ItemWUT extends ItemWT implements ICurioItem {
     public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int i, boolean bl) {
         for (var terminal : WUTHandler.wirelessTerminals.entrySet()) {
             if (!WUTHandler.hasTerminal(itemStack, terminal.getKey()))
-                return;
+                continue;
             terminal.getValue().item().inventoryTick(itemStack,
                     level, entity, i, bl);
         }
