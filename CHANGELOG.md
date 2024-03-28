@@ -1,4 +1,1 @@
-- remove reverse charging, it seemed caused more issues than it fixed (fix #230)
-- change energy usage when quantum linked to be more like an ae2 quantum bridges energy usage (22.5 ae / tick) (fix #222)
-- update russian translations
-- fix "Linked Network cannot be found" message appearing even if the terminal clearly works (#221)
+- fix magnet card not working in a wireless universal terminal when there is no pattern encoding terminal installed
