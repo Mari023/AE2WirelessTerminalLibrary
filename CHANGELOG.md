@@ -1,2 +1,1 @@
-- show actual ItemStack of the terminal as icon instead of a new ItemStack with the same Item
-- fix #252 Unable to autocraft from wireless terminal over quantum bridge
+- fix magnet card not working in a wireless universal terminal when there is no pattern encoding terminal installed
