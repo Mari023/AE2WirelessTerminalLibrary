@@ -18,6 +18,7 @@ val jeiMinecraftVersion: String by project
 val jeiVersion: String by project
 val reiVersion: String by project
 val emiVersion: String by project
+val emiMinecraftVersion: String by project
 val neoforgeVersion: String by project
 val curiosVersion: String by project
 val mavenGroup: String by project
@@ -45,7 +46,7 @@ dependencies {
 
     compileOnly("me.shedaniel:RoughlyEnoughItems-neoforge:${reiVersion}")
     compileOnly("mezz.jei:jei-${jeiMinecraftVersion}-neoforge:${jeiVersion}")
-    compileOnly("dev.emi:emi-neoforge:${emiVersion}+${minecraftVersion}:api")
+    compileOnly("dev.emi:emi-neoforge:${emiVersion}+${emiMinecraftVersion}:api")
 
     when (runtimeItemlistMod) {
         "rei" -> {
@@ -56,7 +57,7 @@ dependencies {
         "jei" -> runtimeOnly("mezz.jei:jei-${jeiMinecraftVersion}-neoforge:${jeiVersion}")
 
         "emi" -> {
-            runtimeOnly("dev.emi:emi-neoforge:${emiVersion}+${minecraftVersion}")
+            runtimeOnly("dev.emi:emi-neoforge:${emiVersion}+${emiMinecraftVersion}")
             runtimeOnly("mezz.jei:jei-${jeiMinecraftVersion}-neoforge:${jeiVersion}")
         }
     }
