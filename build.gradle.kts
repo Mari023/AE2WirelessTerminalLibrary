@@ -1,8 +1,8 @@
 import net.neoforged.gradle.dsl.common.runs.run.Run
 
 plugins {
-    id("net.neoforged.gradle.userdev") version "7.0.94"
-    id("com.diffplug.spotless") version "6.21.0"
+    id("net.neoforged.gradle.userdev") version "7.0.105"
+    id("com.diffplug.spotless") version "6.25.0"
     id("maven-publish")
     java
     idea
@@ -134,7 +134,7 @@ repositories {
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion = JavaLanguageVersion.of(21)
     }
 }
 
@@ -144,7 +144,7 @@ tasks {
         inputs.property("version", version)
         inputs.property("ae2_version", ae2Version)
 
-        val resourceTargets = "META-INF/mods.toml"
+        val resourceTargets = "META-INF/neoforge.mods.toml"
 
         val replaceProperties = mapOf(
             "version" to version as String, "ae2_version" to ae2Version
@@ -157,7 +157,7 @@ tasks {
     }
     withType<JavaCompile> {
         options.encoding = "UTF-8"
-        options.release.set(17)
+        options.release.set(21)
     }
 }
 
