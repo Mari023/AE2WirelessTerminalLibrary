@@ -2,7 +2,7 @@ package de.mari_023.ae2wtlib.wut.recipe;
 
 import java.util.Iterator;
 
-import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
@@ -35,7 +35,7 @@ public abstract class Common implements CraftingRecipe {
     }
 
     @Override
-    public ItemStack getResultItem(RegistryAccess registryAccess) {
+    public ItemStack getResultItem(HolderLookup.Provider provider) {
         return outputStack;
     }
 

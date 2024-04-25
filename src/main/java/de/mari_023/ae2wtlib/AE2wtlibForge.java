@@ -1,13 +1,15 @@
 package de.mari_023.ae2wtlib;
 
 import net.minecraft.core.registries.Registries;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
@@ -17,8 +19,8 @@ import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
 import net.neoforged.neoforge.event.entity.player.EntityItemPickupEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
-import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
-import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
 import appeng.items.tools.powered.powersink.PoweredItemCapabilities;
@@ -31,11 +33,12 @@ import de.mari_023.ae2wtlib.networking.UpdateWUTPackage;
 import de.mari_023.ae2wtlib.terminal.ItemWT;
 
 @Mod(AE2wtlib.MOD_NAME)
-@Mod.EventBusSubscriber
+@EventBusSubscriber
 public class AE2wtlibForge {
     public AE2wtlibForge(IEventBus modEventBus) {
         AE2wtlib.registerMenus();
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, AE2wtlibConfig.SPEC, AE2wtlib.MOD_NAME + ".toml");
+        ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.COMMON, AE2wtlibConfig.SPEC,
+                AE2wtlib.MOD_NAME + ".toml");
         modEventBus.addListener((RegisterEvent e) -> {
             if (!e.getRegistryKey().equals(Registries.BLOCK))
                 return;
@@ -44,12 +47,12 @@ public class AE2wtlibForge {
             AE2WTLibCreativeTab.init();
         });
         modEventBus.addListener((BuildCreativeModeTabContentsEvent e) -> AE2wtlib.addToCreativeTab());
-        modEventBus.addListener((RegisterPayloadHandlerEvent event) -> {
-            IPayloadRegistrar registrar = event.registrar(AE2wtlib.MOD_NAME);
-            registerPacket(registrar, CycleTerminalPacket.ID, CycleTerminalPacket::new);
-            registerPacket(registrar, UpdateWUTPackage.ID, UpdateWUTPackage::new);
-            registerPacket(registrar, UpdateRestockPacket.ID, UpdateRestockPacket::new);
-            registerPacket(registrar, RestockAmountPacket.ID, RestockAmountPacket::new);
+        modEventBus.addListener((RegisterPayloadHandlersEvent event) -> {
+            PayloadRegistrar registrar = event.registrar(AE2wtlib.MOD_NAME);
+            registerPacket(registrar, CycleTerminalPacket.ID, CycleTerminalPacket.STREAM_CODEC);
+            registerPacket(registrar, UpdateWUTPackage.ID, UpdateWUTPackage.STREAM_CODEC);
+            registerPacket(registrar, UpdateRestockPacket.ID, UpdateRestockPacket.STREAM_CODEC);
+            registerPacket(registrar, RestockAmountPacket.ID, RestockAmountPacket.STREAM_CODEC);
         });
         modEventBus.addListener((FMLClientSetupEvent e) -> AE2wtlib.registerScreens());
         modEventBus.addListener((RegisterCapabilitiesEvent event) -> {
@@ -59,13 +62,10 @@ public class AE2wtlibForge {
         });
     }
 
-    private static void registerPacket(IPayloadRegistrar registrar, ResourceLocation id,
-            FriendlyByteBuf.Reader<AE2wtlibPacket> reader) {
-        registrar.play(id, reader,
-                (packet, context) -> context.workHandler().submitAsync(() -> {
-                    if (context.player().isPresent())
-                        packet.processPacketData(context.player().get());
-                }));
+    private static <T extends AE2wtlibPacket> void registerPacket(PayloadRegistrar registrar,
+            CustomPacketPayload.Type<T> id, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec) {
+        registrar.playBidirectional(id, streamCodec,
+                (packet, context) -> context.enqueueWork(() -> packet.processPacketData(context.player())));
     }
 
     private static void registerPowerStorageItem(RegisterCapabilitiesEvent event, ItemWT item) {

@@ -7,7 +7,7 @@ import de.mari_023.ae2wtlib.networking.CycleTerminalPacket;
 public interface IUniversalTerminalCapable {
     default void cycleTerminal() {
         storeState();
-        PacketDistributor.SERVER.noArg().send(new CycleTerminalPacket(isHandlingRightClick()));
+        PacketDistributor.sendToServer(new CycleTerminalPacket(isHandlingRightClick()));
     }
 
     boolean isHandlingRightClick();

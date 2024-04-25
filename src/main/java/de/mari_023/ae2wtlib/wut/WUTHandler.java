@@ -143,7 +143,7 @@ public class WUTHandler {
      */
     public static void updateClientTerminal(ServerPlayer player, ItemMenuHostLocator locator,
             @Nullable CompoundTag tag) {
-        PacketDistributor.PLAYER.with(player).send(new UpdateWUTPackage(locator, tag));
+        PacketDistributor.sendToPlayer(player, new UpdateWUTPackage(locator, tag));
     }
 
     /**

@@ -4,7 +4,9 @@ import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.player.Player;
 
 import appeng.menu.locator.ItemMenuHostLocator;
@@ -14,8 +16,11 @@ import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.terminal.WTMenuHost;
 
 public record UpdateWUTPackage(ItemMenuHostLocator locator, @Nullable CompoundTag tag) implements AE2wtlibPacket {
+    public static final Type<UpdateWUTPackage> ID = new Type<>(AE2wtlib.id("update_wut"));
+    public static final StreamCodec<RegistryFriendlyByteBuf, UpdateWUTPackage> STREAM_CODEC = StreamCodec
+            .ofMember(UpdateWUTPackage::write,
+                    UpdateWUTPackage::new);
 
-    public static final ResourceLocation ID = AE2wtlib.id("update_wut");
     public UpdateWUTPackage(FriendlyByteBuf buf) {
         this((ItemMenuHostLocator) MenuLocators.readFromPacket(buf), buf.readNbt());
     }
@@ -26,14 +31,13 @@ public record UpdateWUTPackage(ItemMenuHostLocator locator, @Nullable CompoundTa
             host.getItemStack().setTag(tag);
     }
 
-    @Override
     public void write(FriendlyByteBuf buf) {
         MenuLocators.writeToPacket(buf, locator);
         buf.writeNbt(tag);
     }
 
     @Override
-    public ResourceLocation id() {
+    public Type<? extends CustomPacketPayload> type() {
         return ID;
     }
 }

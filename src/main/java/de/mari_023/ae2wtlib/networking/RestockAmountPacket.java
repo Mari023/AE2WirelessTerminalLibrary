@@ -4,7 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -13,7 +14,10 @@ import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
 
 public record RestockAmountPacket(HashMap<Item, Long> items) implements AE2wtlibPacket {
-    public static final ResourceLocation ID = AE2wtlib.id("restock_amounts");
+    public static final Type<RestockAmountPacket> ID = new Type<>(AE2wtlib.id("restock_amounts"));
+    public static final StreamCodec<FriendlyByteBuf, RestockAmountPacket> STREAM_CODEC = StreamCodec.ofMember(
+            RestockAmountPacket::write,
+            RestockAmountPacket::new);
 
     public RestockAmountPacket(FriendlyByteBuf buf) {
         this(readMap(buf));
@@ -32,7 +36,6 @@ public record RestockAmountPacket(HashMap<Item, Long> items) implements AE2wtlib
         ctHandler.setRestockAbleItems(items);
     }
 
-    @Override
     public void write(FriendlyByteBuf buf) {
         for (Map.Entry<Item, Long> entry : items.entrySet()) {
             buf.writeItem(new ItemStack(entry.getKey()));
@@ -41,7 +44,7 @@ public record RestockAmountPacket(HashMap<Item, Long> items) implements AE2wtlib
     }
 
     @Override
-    public ResourceLocation id() {
+    public Type<? extends CustomPacketPayload> type() {
         return ID;
     }
 }

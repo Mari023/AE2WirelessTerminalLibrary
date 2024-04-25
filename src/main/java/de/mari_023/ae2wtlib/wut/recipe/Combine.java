@@ -1,7 +1,7 @@
 package de.mari_023.ae2wtlib.wut.recipe;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -47,7 +47,7 @@ public class Combine extends Common {
     }
 
     @Override
-    public ItemStack assemble(CraftingContainer inv, RegistryAccess registryAccess) {
+    public ItemStack assemble(CraftingContainer inv, HolderLookup.Provider provider) {
         ItemStack wut = mergeTerminal(outputStack.copy(), InputHelper.getInputStack(inv, terminalA), terminalAName);
         wut = mergeTerminal(wut, InputHelper.getInputStack(inv, terminalB), terminalBName);
 
