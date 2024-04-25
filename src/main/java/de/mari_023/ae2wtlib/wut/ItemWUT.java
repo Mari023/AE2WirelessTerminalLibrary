@@ -1,6 +1,7 @@
 package de.mari_023.ae2wtlib.wut;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -63,14 +64,14 @@ public class ItemWUT extends ItemWT {
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public void appendHoverText(final ItemStack stack, final Level world, final List<Component> lines,
+    public void appendHoverText(final ItemStack stack, final TooltipContext context, final List<Component> lines,
             final TooltipFlag advancedTooltips) {
         lines.add(TextConstants.UNIVERSAL);
         for (var terminal : WUTHandler.wirelessTerminals.entrySet()) {
             if (WUTHandler.hasTerminal(stack, terminal.getKey()))
                 lines.add(terminal.getValue().terminalName());
         }
-        super.appendHoverText(stack, world, lines, advancedTooltips);
+        super.appendHoverText(stack, context, lines, advancedTooltips);
     }
 
     @Override
@@ -101,8 +102,9 @@ public class ItemWUT extends ItemWT {
         }
     }
 
-    public IConfigManager getConfigManager(ItemStack target) {
-        return WUTHandler.wirelessTerminals.get(WUTHandler.getCurrentTerminal(target)).item().getConfigManager(target);
+    public IConfigManager getConfigManager(Supplier<ItemStack> target) {// FIXME potentially reuse the config manager?
+        return WUTHandler.wirelessTerminals.get(WUTHandler.getCurrentTerminal(target.get())).item()
+                .getConfigManager(target);
     }
 
     public void curioTick(SlotContext slotContext, ItemStack stack) {

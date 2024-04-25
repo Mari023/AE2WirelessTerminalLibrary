@@ -72,7 +72,7 @@ public class MagnetHandler {
                 items.put(stack.getItem(), storageList.get(key));
         }
 
-        PacketDistributor.PLAYER.with(player).send(new RestockAmountPacket(items));
+        PacketDistributor.sendToPlayer(player, new RestockAmountPacket(items));
     }
 
     private static void handleMagnet(Player player, ItemStack terminal) {

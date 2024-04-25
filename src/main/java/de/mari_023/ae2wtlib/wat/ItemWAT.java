@@ -1,5 +1,7 @@
 package de.mari_023.ae2wtlib.wat;
 
+import java.util.function.Supplier;
+
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
@@ -17,10 +19,9 @@ public class ItemWAT extends ItemWT {
         return WATMenu.TYPE;
     }
 
-    public IConfigManager getConfigManager(ItemStack target) {
-        var configManager = super.getConfigManager(target);
-        configManager.registerSetting(Settings.TERMINAL_SHOW_PATTERN_PROVIDERS, ShowPatternProviders.VISIBLE);
-        configManager.readFromNBT(target.getOrCreateTag().copy());
-        return configManager;
+    public IConfigManager getConfigManager(Supplier<ItemStack> target) {
+        return IConfigManager.builder(target)
+                .registerSetting(Settings.TERMINAL_SHOW_PATTERN_PROVIDERS, ShowPatternProviders.VISIBLE)
+                .build();
     }
 }

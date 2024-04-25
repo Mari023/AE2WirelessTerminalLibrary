@@ -9,6 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
+import appeng.blockentity.qnb.QuantumBridgeBlockEntity;
 import appeng.core.definitions.AEBlocks;
 import appeng.core.definitions.AEItems;
 import appeng.server.testplots.CraftingPatternHelper;
@@ -35,9 +36,7 @@ public class AE2WTLibTestPlots {
         plot.block("[2,4] [0,2] 1", AEBlocks.QUANTUM_RING);
         plot.blockEntity(o.above().east(3).south(), AEBlocks.QUANTUM_LINK, (quantumBridge) -> {
             var singularity = AEItems.QUANTUM_ENTANGLED_SINGULARITY.stack();
-            var tag = singularity.getOrCreateTag();
-            tag.putLong("freq", 1);
-            singularity.setTag(tag);
+            QuantumBridgeBlockEntity.assignFrequency(singularity);
             quantumBridge.getInternalInventory().addItems(singularity, false);
         });
     }

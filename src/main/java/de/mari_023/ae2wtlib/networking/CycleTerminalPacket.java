@@ -1,7 +1,10 @@
 package de.mari_023.ae2wtlib.networking;
 
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import io.netty.buffer.ByteBuf;
+
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
@@ -14,11 +17,10 @@ import de.mari_023.ae2wtlib.wut.ItemWUT;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 public record CycleTerminalPacket(boolean isRightClick) implements AE2wtlibPacket {
-    public static final ResourceLocation ID = AE2wtlib.id("cycle_terminal");
-
-    public CycleTerminalPacket(FriendlyByteBuf buf) {
-        this(buf.readBoolean());
-    }
+    public static final Type<CycleTerminalPacket> ID = new Type<>(AE2wtlib.id("cycle_terminal"));
+    public static final StreamCodec<ByteBuf, CycleTerminalPacket> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.BOOL, CycleTerminalPacket::isRightClick,
+            CycleTerminalPacket::new);
 
     public void processPacketData(Player player) {
         final AbstractContainerMenu containerMenu = player.containerMenu;
@@ -39,12 +41,7 @@ public record CycleTerminalPacket(boolean isRightClick) implements AE2wtlibPacke
     }
 
     @Override
-    public void write(FriendlyByteBuf buf) {
-        buf.writeBoolean(isRightClick());
-    }
-
-    @Override
-    public ResourceLocation id() {
+    public Type<? extends CustomPacketPayload> type() {
         return ID;
     }
 }
