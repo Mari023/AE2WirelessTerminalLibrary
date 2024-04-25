@@ -1,34 +1,34 @@
 package de.mari_023.ae2wtlib.wut.recipe;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.crafting.Ingredient;
 
 public class UpgradeSerializer implements net.minecraft.world.item.crafting.RecipeSerializer<Upgrade> {
     public static final String NAME = "upgrade";
-    private static final Codec<Upgrade> CODEC = RecordCodecBuilder.create(
+    private static final MapCodec<Upgrade> MAP_CODEC = RecordCodecBuilder.mapCodec(
             builder -> builder.group(
                     Ingredient.CODEC.fieldOf("terminal").forGetter(Upgrade::getTerminal),
                     StringRepresentable.StringRepresentableCodec.STRING.fieldOf("terminalName")
                             .forGetter(Upgrade::getTerminalName))
                     .apply(builder, Upgrade::new));
+    private static final StreamCodec<RegistryFriendlyByteBuf, Upgrade> STREAM_CODEC = StreamCodec.composite(
+            Ingredient.CONTENTS_STREAM_CODEC, Upgrade::getTerminal,
+            ByteBufCodecs.STRING_UTF8, Upgrade::getTerminalName,
+            Upgrade::new);
 
     @Override
-    public Codec<Upgrade> codec() {
-        return CODEC;
+    public MapCodec<Upgrade> codec() {
+        return MAP_CODEC;
     }
 
     @Override
-    public void toNetwork(FriendlyByteBuf packetData, Upgrade recipe) {
-        recipe.getTerminal().toNetwork(packetData);
-        packetData.writeUtf(recipe.getTerminalName());
-    }
-
-    @Override
-    public Upgrade fromNetwork(FriendlyByteBuf packetData) {
-        return new Upgrade(Ingredient.fromNetwork(packetData), packetData.readUtf(32767));
+    public StreamCodec<RegistryFriendlyByteBuf, Upgrade> streamCodec() {
+        return STREAM_CODEC;
     }
 }
