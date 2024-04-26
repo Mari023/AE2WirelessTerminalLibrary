@@ -1,5 +1,7 @@
 package de.mari_023.ae2wtlib.wut.recipe;
 
+import java.util.List;
+
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.inventory.CraftingContainer;
@@ -8,6 +10,8 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 
+import de.mari_023.ae2wtlib.AE2WTLibComponents;
+
 public class Combine extends Common {
     public static final CombineSerializer serializer = new CombineSerializer();
     private final Ingredient terminalA;
@@ -15,13 +19,13 @@ public class Combine extends Common {
     private final String terminalAName;
     private final String terminalBName;
 
-    public Combine(Ingredient terminalA, Ingredient terminalB, String terminalAName, String TerminalBName) {
+    public Combine(Ingredient terminalA, Ingredient terminalB, String terminalAName, String terminalBName) {
         this.terminalA = terminalA;
         this.terminalB = terminalB;
         this.terminalAName = terminalAName;
-        this.terminalBName = TerminalBName;
-        outputStack.getOrCreateTag().putBoolean(terminalAName, true);
-        outputStack.getOrCreateTag().putBoolean(TerminalBName, true);
+        this.terminalBName = terminalBName;
+        outputStack.set(AE2WTLibComponents.INSTALLED_TERMINALS, List.of(terminalAName));
+        outputStack.set(AE2WTLibComponents.INSTALLED_TERMINALS, List.of(terminalBName));
     }
 
     public Ingredient getTerminalA() {

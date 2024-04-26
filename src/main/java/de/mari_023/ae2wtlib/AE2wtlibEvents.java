@@ -14,7 +14,6 @@ import appeng.api.stacks.AEItemKey;
 import appeng.me.helpers.PlayerSource;
 
 import de.mari_023.ae2wtlib.networking.UpdateRestockPacket;
-import de.mari_023.ae2wtlib.terminal.ItemWT;
 import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHandler;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHost;
@@ -38,7 +37,8 @@ public class AE2wtlibEvents {
         CraftingTerminalHandler cTHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
         if (!cTHandler.inRange())
             return;
-        if (!ItemWT.getBoolean(cTHandler.getCraftingTerminal(), "restock"))
+        ItemStack hostItem = cTHandler.getCraftingTerminal();
+        if (!(boolean) hostItem.getOrDefault(AE2WTLibComponents.RESTOCK, false))
             return;
         if (cTHandler.getTargetGrid() == null)
             return;

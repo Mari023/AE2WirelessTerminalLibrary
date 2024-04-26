@@ -14,7 +14,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 
 import appeng.util.ReadableNumberConverter;
 
-import de.mari_023.ae2wtlib.terminal.ItemWT;
+import de.mari_023.ae2wtlib.AE2WTLibComponents;
 import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
 
 @OnlyIn(Dist.CLIENT)
@@ -26,8 +26,9 @@ public class RestockRender {
             return;
         CraftingTerminalHandler handler = CraftingTerminalHandler
                 .getCraftingTerminalHandler(Minecraft.getInstance().player);
+        ItemStack hostItem = handler.getCraftingTerminal();
         if (stack.getCount() == 1 || !handler.isRestockAble(stack)
-                || !ItemWT.getBoolean(handler.getCraftingTerminal(), "restock"))
+                || !hostItem.getOrDefault(AE2WTLibComponents.RESTOCK, false))
             return;
         ((GuiGraphics) (Object) this).renderItemDecorations(font, stack, x, y,
                 ReadableNumberConverter.format(handler.getAccessibleAmount(stack), 3));

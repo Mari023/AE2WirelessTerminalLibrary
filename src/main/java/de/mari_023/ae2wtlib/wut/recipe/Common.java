@@ -1,32 +1,23 @@
 package de.mari_023.ae2wtlib.wut.recipe;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 
 import appeng.api.config.Actionable;
+import appeng.api.ids.AEComponents;
 import appeng.api.upgrades.IUpgradeInventory;
 import appeng.items.tools.powered.WirelessTerminalItem;
-import appeng.items.tools.powered.powersink.AEBasePoweredItem;
 
+import de.mari_023.ae2wtlib.AE2WTLibComponents;
 import de.mari_023.ae2wtlib.AE2wtlibItems;
 import de.mari_023.ae2wtlib.wut.ItemWUT;
 
 public abstract class Common implements CraftingRecipe {
-    /**
-     * NBT keys from {@link AEBasePoweredItem}
-     */
-    private static final String CURRENT_POWER_NBT_KEY = "internalCurrentPower";
-    private static final String MAX_POWER_NBT_KEY = "internalMaxPower";
-    /**
-     * NBT key used for {@link IUpgradeInventory}
-     */
-    private static final String TAG_UPGRADES = "upgrades";
-
     protected final ItemStack outputStack = new ItemStack(AE2wtlibItems.instance().UNIVERSAL_TERMINAL);
 
     @Override
@@ -59,9 +50,10 @@ public abstract class Common implements CraftingRecipe {
             return ItemStack.EMPTY;
 
         // add upgrades to nbt
-        CompoundTag wutTag = wut.getOrCreateTag();
-        wutTag.putBoolean(terminalName, true);
-        wut.setTag(wutTag);
+        var installedTerminals = new ArrayList<>(
+                wut.getOrDefault(AE2WTLibComponents.INSTALLED_TERMINALS, new ArrayList<>()));
+        installedTerminals.add(terminalName);
+        wut.set(AE2WTLibComponents.INSTALLED_TERMINALS, installedTerminals);
 
         // merge upgrades, this also updates max energy
         Iterator<ItemStack> iterator = itemWT.getUpgrades(toMerge).iterator();
@@ -77,14 +69,12 @@ public abstract class Common implements CraftingRecipe {
         itemWUT.injectAEPower(wut, itemWT.getAECurrentPower(toMerge), Actionable.MODULATE);
 
         // merge nbt
-        wutTag = wut.getOrCreateTag();
-        CompoundTag toMergeTag = toMerge.getOrCreateTag().copy();
+        var componentsPatch = toMerge.getComponentsPatch();
         // remove the keys that are already handled
-        toMergeTag.remove(CURRENT_POWER_NBT_KEY);
-        toMergeTag.remove(MAX_POWER_NBT_KEY);
-        toMergeTag.remove(TAG_UPGRADES);
-        wutTag.merge(toMergeTag);
-        wut.setTag(wutTag);
+        componentsPatch.forget(AEComponents.STORED_ENERGY::equals);
+        componentsPatch.forget(AEComponents.ENERGY_CAPACITY::equals);
+        componentsPatch.forget(AEComponents.UPGRADES::equals);
+        wut.applyComponents(componentsPatch);
 
         return wut;
     }
