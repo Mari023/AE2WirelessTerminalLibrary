@@ -22,7 +22,7 @@ import de.mari_023.ae2wtlib.wut.WUTHandler;
 public class CraftingTerminalHandler {
     private static final WeakHashMap<Player, CraftingTerminalHandler> SERVER_PLAYERS = new WeakHashMap<>();
     private static final WeakHashMap<Player, CraftingTerminalHandler> CLIENT_PLAYERS = new WeakHashMap<>();
-    private final Player player;
+    public final Player player;
     @Nullable
     private WTMenuHost menuHost;
     @Nullable

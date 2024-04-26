@@ -86,7 +86,7 @@ public class AE2wtlibEvents {
         CraftingTerminalHandler cTHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
         ItemStack terminal = cTHandler.getCraftingTerminal();
 
-        if (!(MagnetHandler.getMagnetSettings(terminal).magnetMode == MagnetMode.PICKUP_ME))
+        if (!(MagnetHandler.getMagnetMode(terminal) == MagnetMode.PICKUP_ME))
             return false;
         if (!cTHandler.inRange())
             return false;

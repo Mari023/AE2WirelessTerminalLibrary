@@ -5,7 +5,6 @@ import java.util.function.BiConsumer;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnknownNullability;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -14,6 +13,7 @@ import net.minecraft.world.level.Level;
 import appeng.api.config.Actionable;
 import appeng.api.config.PowerMultiplier;
 import appeng.api.features.Locatables;
+import appeng.api.ids.AEComponents;
 import appeng.api.inventories.ISegmentedInventory;
 import appeng.api.inventories.InternalInventory;
 import appeng.api.networking.IGrid;
@@ -128,11 +128,10 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<ItemWT>
         ItemStack is = inventory.getStackInSlot(0);
         if (is.isEmpty())
             return LongResult.invalid(Status.NoSingularity);
-        CompoundTag c = is.getTag();
-
-        if (c == null)
+        Long singularityID = is.get(AEComponents.ENTANGLED_SINGULARITY_ID);
+        if (singularityID == null)
             return LongResult.invalid(Status.GenericInvalid);
-        return LongResult.valid(c.getLong("freq"));
+        return LongResult.valid(singularityID);
     }
 
     private ILinkStatus isQuantumLinked() {

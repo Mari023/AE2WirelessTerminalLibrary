@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
@@ -20,6 +19,7 @@ import appeng.integration.modules.curios.CuriosIntegration;
 import appeng.menu.locator.ItemMenuHostLocator;
 import appeng.menu.locator.MenuLocators;
 
+import de.mari_023.ae2wtlib.AE2WTLibComponents;
 import de.mari_023.ae2wtlib.AE2wtlibItems;
 import de.mari_023.ae2wtlib.TextConstants;
 import de.mari_023.ae2wtlib.hotkeys.Ae2WTLibLocatingService;
@@ -46,14 +46,14 @@ public class WUTHandler {
      */
     public static String getCurrentTerminal(ItemStack terminal) {
         if (terminal.getItem() instanceof ItemWUT) {
-            String currentTerminal = terminal.getOrCreateTag().getString("currentTerminal");
+            String currentTerminal = terminal.getOrDefault(AE2WTLibComponents.CURRENT_TERMINAL, "");
 
             if (wirelessTerminals.containsKey(currentTerminal))
                 return currentTerminal;
             for (String term : terminalNames)
-                if (terminal.getOrCreateTag().getBoolean(term)) {
+                if (terminal.getOrDefault(AE2WTLibComponents.INSTALLED_TERMINALS, List.of()).contains(term)) {
                     currentTerminal = term;
-                    terminal.getOrCreateTag().putString("currentTerminal", currentTerminal);
+                    terminal.set(AE2WTLibComponents.CURRENT_TERMINAL, currentTerminal);
                     break;
                 }
             return currentTerminal;
@@ -79,9 +79,8 @@ public class WUTHandler {
             return;
         if (!hasTerminal(itemStack, terminal))
             return;
-        assert itemStack.getTag() != null;
-        itemStack.getTag().putString("currentTerminal", terminal);
-        updateClientTerminal((ServerPlayer) player, locator, itemStack.getTag());
+        itemStack.set(AE2WTLibComponents.CURRENT_TERMINAL, terminal);
+        updateClientTerminal((ServerPlayer) player, locator, itemStack);
     }
 
     /**
@@ -97,9 +96,7 @@ public class WUTHandler {
         if (terminal.getItem() instanceof ItemWUT) {
             if (!terminalNames.contains(terminalName))
                 return false;
-            if (terminal.getTag() == null)
-                return false;
-            return terminal.getTag().getBoolean(terminalName);
+            return terminal.getOrDefault(AE2WTLibComponents.INSTALLED_TERMINALS, List.of()).contains(terminalName);
         }
         return terminal.getItem().equals(wirelessTerminals.get(terminalName).item());
     }
@@ -114,8 +111,6 @@ public class WUTHandler {
      */
     public static void cycle(Player player, ItemMenuHostLocator locator, ItemStack itemStack,
             boolean isHandlingRightClick) {
-        if (itemStack.getTag() == null)
-            return;
         String nextTerminal = getCurrentTerminal(itemStack);
         do {
             int i;
@@ -129,9 +124,9 @@ public class WUTHandler {
                     i = 0;
             }
             nextTerminal = terminalNames.get(i);
-        } while (!itemStack.getTag().getBoolean(nextTerminal));
-        itemStack.getTag().putString("currentTerminal", nextTerminal);
-        updateClientTerminal((ServerPlayer) player, locator, itemStack.getTag());
+        } while (!itemStack.getOrDefault(AE2WTLibComponents.INSTALLED_TERMINALS, List.of()).contains(nextTerminal));
+        itemStack.set(AE2WTLibComponents.CURRENT_TERMINAL, nextTerminal);
+        updateClientTerminal((ServerPlayer) player, locator, itemStack);
     }
 
     /**
@@ -139,11 +134,10 @@ public class WUTHandler {
      *
      * @param player  The server player.
      * @param locator The menu locator.
-     * @param tag     The compound tag containing terminal data.
+     * @param stack   The compound tag containing terminal data.
      */
-    public static void updateClientTerminal(ServerPlayer player, ItemMenuHostLocator locator,
-            @Nullable CompoundTag tag) {
-        PacketDistributor.sendToPlayer(player, new UpdateWUTPackage(locator, tag));
+    public static void updateClientTerminal(ServerPlayer player, ItemMenuHostLocator locator, ItemStack stack) {
+        PacketDistributor.sendToPlayer(player, new UpdateWUTPackage(locator, stack));
     }
 
     /**
@@ -157,8 +151,6 @@ public class WUTHandler {
     public static boolean open(final Player player, final ItemMenuHostLocator locator, boolean returningFromSubmenu) {
         ItemStack is = locator.locateItem(player);
 
-        if (is.getTag() == null)
-            return false;
         String currentTerminal = getCurrentTerminal(is);
         if (!wirelessTerminals.containsKey(currentTerminal)) {
             player.displayClientMessage(TextConstants.TERMINAL_EMPTY, false);
@@ -210,9 +202,7 @@ public class WUTHandler {
             return;
 
         ItemStack wut = new ItemStack(AE2wtlibItems.instance().UNIVERSAL_TERMINAL);
-        CompoundTag tag = new CompoundTag();
-        tag.putBoolean(name, true);
-        wut.setTag(tag);
+        wut.set(AE2WTLibComponents.INSTALLED_TERMINALS, List.of(name));
         AE2wtlibItems.instance().UNIVERSAL_TERMINAL.injectAEPower(wut,
                 AE2wtlibItems.instance().UNIVERSAL_TERMINAL.getAEMaxPower(wut), Actionable.MODULATE);
 

@@ -2,6 +2,7 @@ package de.mari_023.ae2wtlib.wet;
 
 import java.util.function.BiConsumer;
 
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
@@ -12,6 +13,7 @@ import appeng.menu.ISubMenu;
 import appeng.menu.locator.ItemMenuHostLocator;
 import appeng.parts.encoding.PatternEncodingLogic;
 
+import de.mari_023.ae2wtlib.AE2WTLibComponents;
 import de.mari_023.ae2wtlib.terminal.ItemWT;
 import de.mari_023.ae2wtlib.terminal.WTMenuHost;
 
@@ -22,7 +24,8 @@ public class WETMenuHost extends WTMenuHost
     public WETMenuHost(ItemWT item, Player player, ItemMenuHostLocator locator,
             BiConsumer<Player, ISubMenu> returnToMainMenu) {
         super(item, player, locator, returnToMainMenu);
-        logic.readFromNBT(getItemStack().getOrCreateTag());
+        logic.readFromNBT(getItemStack().getOrDefault(AE2WTLibComponents.PATTERN_ENCODING_LOGIC, new CompoundTag()),
+                player.registryAccess());
     }
 
     @Override
@@ -37,6 +40,8 @@ public class WETMenuHost extends WTMenuHost
 
     @Override
     public void markForSave() {
-        logic.writeToNBT(getItemStack().getOrCreateTag());
+        CompoundTag tag = getItemStack().getOrDefault(AE2WTLibComponents.PATTERN_ENCODING_LOGIC, new CompoundTag());
+        logic.writeToNBT(tag, getPlayer().registryAccess());
+        getItemStack().set(AE2WTLibComponents.PATTERN_ENCODING_LOGIC, tag);
     }
 }

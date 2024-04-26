@@ -1,6 +1,7 @@
 package de.mari_023.ae2wtlib.wct.magnet_card;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.ItemStack;
 
 import appeng.api.config.FuzzyMode;
 import appeng.api.config.IncludeExclude;
@@ -8,6 +9,7 @@ import appeng.api.stacks.AEKeyType;
 import appeng.util.ConfigInventory;
 import appeng.util.prioritylist.IPartitionList;
 
+import de.mari_023.ae2wtlib.AE2WTLibComponents;
 import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
 
 public class MagnetHost {
@@ -19,18 +21,14 @@ public class MagnetHost {
     private IPartitionList pickupFilter = createFilter(pickupConfig);
     private IPartitionList insertFilter = createFilter(insertConfig);
 
-    private IncludeExclude pickupMode;
-    private IncludeExclude insertMode;
-
     private final CraftingTerminalHandler ctHandler;
 
     public MagnetHost(CraftingTerminalHandler ctHandler) {
         this.ctHandler = ctHandler;
-        CompoundTag tag = getTag();
-        pickupConfig.readFromChildTag(tag, "pickupConfig");
-        insertConfig.readFromChildTag(tag, "insertConfig");
-        pickupMode = booleanToIncludeExclude(tag.getBoolean("pickupMode"));
-        insertMode = booleanToIncludeExclude(tag.getBoolean("insertMode"));
+        pickupConfig.readFromChildTag(getStack().getOrDefault(AE2WTLibComponents.PICKUP_CONFIG, new CompoundTag()), "",
+                ctHandler.player.registryAccess());
+        insertConfig.readFromChildTag(getStack().getOrDefault(AE2WTLibComponents.INSERT_CONFIG, new CompoundTag()), "",
+                ctHandler.player.registryAccess());
     }
 
     private IPartitionList createFilter(ConfigInventory config) {
@@ -44,12 +42,16 @@ public class MagnetHost {
 
     private void updatePickupFilter() {
         pickupFilter = createFilter(pickupConfig);
-        pickupConfig.writeToChildTag(ctHandler.getCraftingTerminal().getOrCreateTag(), "pickupConfig");
+        CompoundTag tag = getStack().getOrDefault(AE2WTLibComponents.PICKUP_CONFIG, new CompoundTag());
+        pickupConfig.writeToChildTag(tag, "", ctHandler.player.registryAccess());
+        getStack().set(AE2WTLibComponents.PICKUP_CONFIG, tag);
     }
 
     private void updateInsertFilter() {
         insertFilter = createFilter(insertConfig);
-        insertConfig.writeToChildTag(ctHandler.getCraftingTerminal().getOrCreateTag(), "insertConfig");
+        CompoundTag tag = getStack().getOrDefault(AE2WTLibComponents.INSERT_CONFIG, new CompoundTag());
+        insertConfig.writeToChildTag(tag, "", ctHandler.player.registryAccess());
+        getStack().set(AE2WTLibComponents.INSERT_CONFIG, tag);
     }
 
     public IPartitionList getPickupFilter() {
@@ -57,12 +59,12 @@ public class MagnetHost {
     }
 
     public IncludeExclude getPickupMode() {
-        return pickupMode;
+        return getStack().getOrDefault(AE2WTLibComponents.PICKUP_MODE, IncludeExclude.BLACKLIST);
     }
 
     public void togglePickupMode() {
-        pickupMode = toggle(pickupMode);
-        getTag().putBoolean("pickupMode", includeExcludeToBoolean(pickupMode));
+        getStack().set(AE2WTLibComponents.PICKUP_MODE,
+                toggle(getStack().getOrDefault(AE2WTLibComponents.PICKUP_MODE, IncludeExclude.BLACKLIST)));
     }
 
     public IPartitionList getInsertFilter() {
@@ -70,16 +72,16 @@ public class MagnetHost {
     }
 
     public IncludeExclude getInsertMode() {
-        return insertMode;
+        return getStack().getOrDefault(AE2WTLibComponents.INSERT_MODE, IncludeExclude.BLACKLIST);
     }
 
     public void toggleInsertMode() {
-        insertMode = toggle(insertMode);
-        getTag().putBoolean("insertMode", includeExcludeToBoolean(insertMode));
+        getStack().set(AE2WTLibComponents.INSERT_MODE,
+                toggle(getStack().getOrDefault(AE2WTLibComponents.INSERT_MODE, IncludeExclude.BLACKLIST)));
     }
 
-    public CompoundTag getTag() {
-        return ctHandler.getCraftingTerminal().getOrCreateTag();
+    private ItemStack getStack() {
+        return ctHandler.getCraftingTerminal();
     }
 
     public IncludeExclude toggle(IncludeExclude includeExclude) {
@@ -89,30 +91,27 @@ public class MagnetHost {
         };
     }
 
-    public boolean includeExcludeToBoolean(IncludeExclude includeExclude) {
-        return switch (includeExclude) {
-            case WHITELIST -> true;
-            case BLACKLIST -> false;
-        };
-    }
-
-    public IncludeExclude booleanToIncludeExclude(boolean b) {
-        return b ? IncludeExclude.WHITELIST : IncludeExclude.BLACKLIST;
-    }
-
     public void copyUp() {
-        pickupConfig.readFromChildTag(getTag(), "insertConfig");
+        pickupConfig.readFromChildTag(getStack().getOrDefault(AE2WTLibComponents.INSERT_CONFIG, new CompoundTag()), "",
+                ctHandler.player.registryAccess());
     }
 
     public void copyDown() {
-        insertConfig.readFromChildTag(getTag(), "pickupConfig");
+        insertConfig.readFromChildTag(getStack().getOrDefault(AE2WTLibComponents.PICKUP_CONFIG, new CompoundTag()), "",
+                ctHandler.player.registryAccess());
     }
 
     public void switchInsertPickup() {
-        pickupConfig.writeToChildTag(ctHandler.getCraftingTerminal().getOrCreateTag(), "insertConfig");
-        insertConfig.writeToChildTag(ctHandler.getCraftingTerminal().getOrCreateTag(), "pickupConfig");
+        CompoundTag tag = getStack().getOrDefault(AE2WTLibComponents.PICKUP_CONFIG, new CompoundTag());
+        pickupConfig.writeToChildTag(tag, "", ctHandler.player.registryAccess());
+        getStack().set(AE2WTLibComponents.INSERT_CONFIG, tag);
+        tag = getStack().getOrDefault(AE2WTLibComponents.INSERT_CONFIG, new CompoundTag());
+        insertConfig.writeToChildTag(tag, "", ctHandler.player.registryAccess());
+        getStack().set(AE2WTLibComponents.PICKUP_CONFIG, tag);
 
-        pickupConfig.readFromChildTag(getTag(), "pickupConfig");
-        insertConfig.readFromChildTag(getTag(), "insertConfig");
+        pickupConfig.readFromChildTag(getStack().getOrDefault(AE2WTLibComponents.PICKUP_CONFIG, new CompoundTag()), "",
+                ctHandler.player.registryAccess());
+        insertConfig.readFromChildTag(getStack().getOrDefault(AE2WTLibComponents.INSERT_CONFIG, new CompoundTag()), "",
+                ctHandler.player.registryAccess());
     }
 }

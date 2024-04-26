@@ -1,9 +1,23 @@
 package de.mari_023.ae2wtlib.wct.magnet_card;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+
 public enum MagnetMode {
     INVALID((byte) -2), NO_CARD((byte) -1), OFF((byte) 0), PICKUP_INVENTORY((byte) 1), PICKUP_ME((byte) 2);
 
-    public static final MagnetMode DEFAULT = OFF;
+    public static final Codec<MagnetMode> CODEC = RecordCodecBuilder.<MagnetMode>mapCodec(
+            builder -> builder
+                    .group(Codec.BYTE.fieldOf("").forGetter(MagnetMode::getId))
+                    .apply(builder, MagnetMode::fromByte))
+            .codec();
+    public static final StreamCodec<FriendlyByteBuf, MagnetMode> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.BYTE, MagnetMode::getId,
+            MagnetMode::fromByte);
 
     private final byte id;
 
@@ -13,6 +27,10 @@ public enum MagnetMode {
 
     public byte getId() {
         return id;
+    }
+
+    public boolean isDisabled() {
+        return this != MagnetMode.PICKUP_INVENTORY && this != MagnetMode.PICKUP_ME;
     }
 
     public static MagnetMode fromByte(byte b) {

@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.WeakHashMap;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -18,6 +17,7 @@ import appeng.api.stacks.AEItemKey;
 import appeng.api.stacks.KeyCounter;
 import appeng.api.upgrades.IUpgradeableItem;
 
+import de.mari_023.ae2wtlib.AE2WTLibComponents;
 import de.mari_023.ae2wtlib.AE2wtlibConfig;
 import de.mari_023.ae2wtlib.AE2wtlibItems;
 import de.mari_023.ae2wtlib.networking.RestockAmountPacket;
@@ -78,14 +78,14 @@ public class MagnetHandler {
     private static void handleMagnet(Player player, ItemStack terminal) {
         if (player.isShiftKeyDown())
             return;
-        if (getMagnetSettings(terminal).isDisabled())
+        if (getMagnetMode(terminal).isDisabled())
             return;
         handleMagnet(player);
     }
 
     private static void handleMagnet(Player player) {
         CraftingTerminalHandler ctHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
-        if (getMagnetSettings(ctHandler.getCraftingTerminal()).isDisabled())
+        if (getMagnetMode(ctHandler.getCraftingTerminal()).isDisabled())
             return;
         MagnetHost magnetHost = ctHandler.getMagnetHost();
         if (magnetHost == null)
@@ -110,16 +110,16 @@ public class MagnetHandler {
         }
     }
 
-    public static void saveMagnetSettings(ItemStack terminal, MagnetSettings magnetSettings) {
+    public static void saveMagnetMode(ItemStack terminal, MagnetMode magnetSettings) {
         if (terminal.getItem() instanceof IUpgradeableItem upgradeableItem
                 && upgradeableItem.getUpgrades(terminal).isInstalled(AE2wtlibItems.instance().MAGNET_CARD))
-            terminal.getOrCreateTag().put("magnet_settings", magnetSettings.toTag());
+            terminal.set(AE2WTLibComponents.MAGNET_SETTINGS, magnetSettings);
     }
 
-    public static MagnetSettings getMagnetSettings(ItemStack terminal) {
+    public static MagnetMode getMagnetMode(ItemStack terminal) {
         if (terminal.getItem() instanceof IUpgradeableItem upgradeableItem
                 && upgradeableItem.getUpgrades(terminal).isInstalled(AE2wtlibItems.instance().MAGNET_CARD))
-            return new MagnetSettings((CompoundTag) terminal.getOrCreateTag().get("magnet_settings"));
-        return new MagnetSettings();
+            return terminal.getOrDefault(AE2WTLibComponents.MAGNET_SETTINGS, MagnetMode.OFF);
+        return MagnetMode.OFF;
     }
 }
