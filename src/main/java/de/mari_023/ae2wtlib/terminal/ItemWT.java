@@ -77,6 +77,7 @@ public abstract class ItemWT extends WirelessTerminalItem implements ICurioItem 
      * @param hostItem the Terminal to load from
      * @return the boolean or false if it wasn't found
      */
+    @Deprecated
     public static boolean getBoolean(ItemStack hostItem, String key) {
         if (!(hostItem.getItem() instanceof ItemWT))
             return false;
@@ -90,6 +91,7 @@ public abstract class ItemWT extends WirelessTerminalItem implements ICurioItem 
      * @param b        the boolean to store
      * @param key      the location where the stored item will be
      */
+    @Deprecated
     public static void setBoolean(ItemStack hostItem, boolean b, String key) {
         if (!(hostItem.getItem() instanceof ItemWT))
             return;

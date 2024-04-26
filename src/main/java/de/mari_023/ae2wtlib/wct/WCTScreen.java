@@ -51,14 +51,14 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
 
     private void setMagnetMode() {
         if (isHandlingRightClick()) {
-            switch (getMenu().getMagnetSettings().magnetMode) {
+            switch (getMenu().getMagnetMode()) {
                 case OFF -> getMenu().setMagnetMode(MagnetMode.PICKUP_ME);
                 case PICKUP_INVENTORY -> getMenu().setMagnetMode(MagnetMode.OFF);
                 case PICKUP_ME -> getMenu().setMagnetMode(MagnetMode.PICKUP_INVENTORY);
             }
             return;
         }
-        switch (getMenu().getMagnetSettings().magnetMode) {
+        switch (getMenu().getMagnetMode()) {
             case OFF -> getMenu().setMagnetMode(MagnetMode.PICKUP_INVENTORY);
             case PICKUP_INVENTORY -> getMenu().setMagnetMode(MagnetMode.PICKUP_ME);
             case PICKUP_ME -> getMenu().setMagnetMode(MagnetMode.OFF);
@@ -66,7 +66,7 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
     }
 
     private void setMagnetModeText() {
-        switch (getMenu().getMagnetSettings().magnetMode) {
+        switch (getMenu().getMagnetMode()) {
             case INVALID, NO_CARD -> {
                 magnetCardToggleButton.setVisibility(false);
                 magnetCardMenuButton.setVisibility(false);

@@ -1,7 +1,5 @@
 package de.mari_023.ae2wtlib.wct;
 
-import org.jetbrains.annotations.Nullable;
-
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
@@ -19,7 +17,6 @@ import de.mari_023.ae2wtlib.AE2wtlibSlotSemantics;
 import de.mari_023.ae2wtlib.terminal.ArmorSlot;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHandler;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetMode;
-import de.mari_023.ae2wtlib.wct.magnet_card.MagnetSettings;
 import de.mari_023.ae2wtlib.wct.magnet_card.config.MagnetMenu;
 import de.mari_023.ae2wtlib.wut.ItemWUT;
 
@@ -65,24 +62,21 @@ public class WCTMenu extends CraftingTermMenu {
         return wctMenuHost.getActionableNode();
     }
 
-    @Nullable
-    private MagnetSettings magnetSettings;
+    private MagnetMode magnetMode = MagnetMode.OFF;
 
-    public MagnetSettings getMagnetSettings() {
-        return magnetSettings = MagnetHandler.getMagnetSettings(wctMenuHost.getItemStack());
+    public MagnetMode getMagnetMode() {
+        return magnetMode = MagnetHandler.getMagnetMode(wctMenuHost.getItemStack());
     }
 
-    private void saveMagnetSettings() {
-        if (magnetSettings == null)
-            return;
-        MagnetHandler.saveMagnetSettings(wctMenuHost.getItemStack(), magnetSettings);
+    private void saveMagnetMode() {
+        MagnetHandler.saveMagnetMode(wctMenuHost.getItemStack(), magnetMode);
     }
 
     public void setMagnetMode(MagnetMode mode) {
         if (isClientSide())
             sendClientAction(MAGNET_MODE, mode);
-        getMagnetSettings().magnetMode = mode;
-        saveMagnetSettings();
+        magnetMode = mode;
+        saveMagnetMode();
     }
 
     public void openMagnetMenu() {

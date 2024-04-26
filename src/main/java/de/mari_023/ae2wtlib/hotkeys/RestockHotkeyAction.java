@@ -23,7 +23,7 @@ public class RestockHotkeyAction implements HotkeyAction {
         ItemWT.setBoolean(terminal, !ItemWT.getBoolean(terminal, "restock"), "restock");
         ItemMenuHostLocator locator = craftingTerminalHandler.getLocator();
         if (locator != null)
-            WUTHandler.updateClientTerminal((ServerPlayer) player, locator, terminal.getTag());
+            WUTHandler.updateClientTerminal((ServerPlayer) player, locator, terminal);
 
         if (ItemWT.getBoolean(terminal, "restock"))
             player.displayClientMessage(TextConstants.RESTOCK_ON, true);
