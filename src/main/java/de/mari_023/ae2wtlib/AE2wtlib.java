@@ -8,7 +8,6 @@ import appeng.api.features.HotkeyAction;
 import appeng.core.definitions.AEItems;
 import appeng.hotkeys.HotkeyActions;
 import appeng.init.client.InitScreens;
-import appeng.server.testplots.TestPlots;
 
 import de.mari_023.ae2wtlib.hotkeys.MagnetHotkeyAction;
 import de.mari_023.ae2wtlib.hotkeys.RestockHotkeyAction;
@@ -48,7 +47,6 @@ public class AE2wtlib {
 
         // we need something to call addon terminals here
         UpgradeHelper.addUpgrades();
-        TestPlots.addPlotClass(AE2WTLibTestPlots.class);
     }
 
     static void addToCreativeTab() {

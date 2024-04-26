@@ -14,11 +14,13 @@ import appeng.core.definitions.AEBlocks;
 import appeng.core.definitions.AEItems;
 import appeng.server.testplots.CraftingPatternHelper;
 import appeng.server.testplots.TestPlot;
+import appeng.server.testplots.TestPlotClass;
 import appeng.server.testworld.PlotBuilder;
 
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 import de.mari_023.ae2wtlib.wut.recipe.Common;
 
+@TestPlotClass
 public class AE2WTLibTestPlots {
     @TestPlot("wireless_terminal")
     public static void wireless_terminal(PlotBuilder plot) {
