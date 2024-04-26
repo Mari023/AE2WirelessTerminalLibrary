@@ -47,6 +47,8 @@ public class AE2WTLibComponents {
     public static final DataComponentType<CompoundTag> INSERT_CONFIG = register("insertConfig", COMPOUND_TAG_CODECS);
     public static final DataComponentType<IncludeExclude> PICKUP_MODE = register("pickupMode", INCLUDE_EXCLUDE_CODECS);
     public static final DataComponentType<IncludeExclude> INSERT_MODE = register("insertMode", INCLUDE_EXCLUDE_CODECS);
+    public static final DataComponentType<Boolean> RESTOCK = register("restock", builder -> builder
+            .persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL));
 
     public static final DataComponentType<CompoundTag> PATTERN_ENCODING_LOGIC = register("PatternEncodingLogic",
             COMPOUND_TAG_CODECS);

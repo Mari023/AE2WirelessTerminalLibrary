@@ -70,31 +70,4 @@ public abstract class ItemWT extends WirelessTerminalItem implements ICurioItem 
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         inventoryTick(stack, slotContext.entity().level(), slotContext.entity(), 0, false);
     }
-
-    /**
-     * get a previously stored boolean from a WirelessTerminal
-     *
-     * @param hostItem the Terminal to load from
-     * @return the boolean or false if it wasn't found
-     */
-    @Deprecated
-    public static boolean getBoolean(ItemStack hostItem, String key) {
-        if (!(hostItem.getItem() instanceof ItemWT))
-            return false;
-        return hostItem.getOrCreateTag().getBoolean(key);
-    }
-
-    /**
-     * store a boolean in a WirelessTerminal this will overwrite any previously existing tags in slot
-     *
-     * @param hostItem the Terminal to store in
-     * @param b        the boolean to store
-     * @param key      the location where the stored item will be
-     */
-    @Deprecated
-    public static void setBoolean(ItemStack hostItem, boolean b, String key) {
-        if (!(hostItem.getItem() instanceof ItemWT))
-            return;
-        hostItem.getOrCreateTag().putBoolean(key, b);
-    }
 }
