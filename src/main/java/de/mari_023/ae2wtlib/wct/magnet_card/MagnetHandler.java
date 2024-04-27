@@ -20,7 +20,7 @@ import appeng.api.stacks.AEItemKey;
 import appeng.api.stacks.KeyCounter;
 import appeng.api.upgrades.IUpgradeableItem;
 
-import de.mari_023.ae2wtlib.AE2WTLibComponents;
+import de.mari_023.ae2wtlib.AE2wtlibComponents;
 import de.mari_023.ae2wtlib.AE2wtlibConfig;
 import de.mari_023.ae2wtlib.AE2wtlibItems;
 import de.mari_023.ae2wtlib.networking.RestockAmountPacket;
@@ -46,7 +46,7 @@ public class MagnetHandler {
     private static void sendRestockAble(ServerPlayer player, ItemStack terminal) {
         if (player.isCreative())
             return;
-        if (!terminal.getOrDefault(AE2WTLibComponents.RESTOCK, false))
+        if (!terminal.getOrDefault(AE2wtlibComponents.RESTOCK, false))
             return;
         sendRestockAble(player);
     }
@@ -54,7 +54,7 @@ public class MagnetHandler {
     private static void sendRestockAble(ServerPlayer player) {
         CraftingTerminalHandler handler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
         ItemStack hostItem = handler.getCraftingTerminal();
-        if (!hostItem.getOrDefault(AE2WTLibComponents.RESTOCK, false) || !handler.inRange())
+        if (!hostItem.getOrDefault(AE2wtlibComponents.RESTOCK, false) || !handler.inRange())
             return;
         HashMap<Item, Long> items = new HashMap<>();
 
@@ -119,13 +119,13 @@ public class MagnetHandler {
     public static void saveMagnetMode(ItemStack terminal, MagnetMode magnetSettings) {
         if (terminal.getItem() instanceof IUpgradeableItem upgradeableItem
                 && upgradeableItem.getUpgrades(terminal).isInstalled(AE2wtlibItems.instance().MAGNET_CARD))
-            terminal.set(AE2WTLibComponents.MAGNET_SETTINGS, magnetSettings);
+            terminal.set(AE2wtlibComponents.MAGNET_SETTINGS, magnetSettings);
     }
 
     public static MagnetMode getMagnetMode(ItemStack terminal) {
         if (terminal.getItem() instanceof IUpgradeableItem upgradeableItem
                 && upgradeableItem.getUpgrades(terminal).isInstalled(AE2wtlibItems.instance().MAGNET_CARD))
-            return terminal.getOrDefault(AE2WTLibComponents.MAGNET_SETTINGS, MagnetMode.OFF);
+            return terminal.getOrDefault(AE2wtlibComponents.MAGNET_SETTINGS, MagnetMode.OFF);
         return MagnetMode.OFF;
     }
 }

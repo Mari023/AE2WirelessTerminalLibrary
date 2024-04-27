@@ -39,13 +39,13 @@ public class AE2wtlibForge {
         AE2wtlib.registerMenus();
         ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.COMMON, AE2wtlibConfig.SPEC,
                 AE2wtlib.MOD_NAME + ".toml");
-        AE2WTLibComponents.DR.register(modEventBus);
+        AE2wtlibComponents.DR.register(modEventBus);
         modEventBus.addListener((RegisterEvent e) -> {
             if (!e.getRegistryKey().equals(Registries.BLOCK))
                 return;
             AE2wtlibItems items = new AE2wtlibItems();
             AE2wtlib.onAe2Initialized(items);
-            AE2WTLibCreativeTab.init();
+            AE2wtlibCreativeTab.init();
         });
         modEventBus.addListener((BuildCreativeModeTabContentsEvent e) -> AE2wtlib.addToCreativeTab());
         modEventBus.addListener((RegisterPayloadHandlersEvent event) -> {

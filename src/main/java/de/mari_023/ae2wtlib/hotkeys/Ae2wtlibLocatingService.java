@@ -8,10 +8,10 @@ import appeng.menu.locator.ItemMenuHostLocator;
 
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 
-public class Ae2WTLibLocatingService implements HotkeyAction {
+public class Ae2wtlibLocatingService implements HotkeyAction {
     private final String terminalName;
 
-    public Ae2WTLibLocatingService(String terminalName) {
+    public Ae2wtlibLocatingService(String terminalName) {
         this.terminalName = terminalName;
     }
 

@@ -51,12 +51,12 @@ public class AE2wtlib {
 
     static void addToCreativeTab() {
         AE2wtlibItems items = AE2wtlibItems.instance();
-        AE2WTLibCreativeTab.addTerminal(AEItems.WIRELESS_CRAFTING_TERMINAL.asItem());
-        AE2WTLibCreativeTab.addTerminal(items.PATTERN_ENCODING_TERMINAL);
-        AE2WTLibCreativeTab.addTerminal(items.PATTERN_ACCESS_TERMINAL);
-        AE2WTLibCreativeTab.addTerminal(items.UNIVERSAL_TERMINAL);
-        AE2WTLibCreativeTab.add(items.QUANTUM_BRIDGE_CARD);
-        AE2WTLibCreativeTab.add(items.MAGNET_CARD);
+        AE2wtlibCreativeTab.addTerminal(AEItems.WIRELESS_CRAFTING_TERMINAL.asItem());
+        AE2wtlibCreativeTab.addTerminal(items.PATTERN_ENCODING_TERMINAL);
+        AE2wtlibCreativeTab.addTerminal(items.PATTERN_ACCESS_TERMINAL);
+        AE2wtlibCreativeTab.addTerminal(items.UNIVERSAL_TERMINAL);
+        AE2wtlibCreativeTab.add(items.QUANTUM_BRIDGE_CARD);
+        AE2wtlibCreativeTab.add(items.MAGNET_CARD);
     }
 
     @SuppressWarnings("unused")
