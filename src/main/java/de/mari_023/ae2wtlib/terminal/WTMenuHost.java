@@ -125,7 +125,10 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<ItemWT>
     }
 
     public LongResult getQEFrequency() {
-        ItemStack singularity = getItemStack().getOrDefault(AE2WTLibComponents.SINGULARITY, ItemStack.EMPTY);
+        ItemStack singularity = ItemStack.EMPTY;/*
+                                                 * getItemStack().getOrDefault(AE2WTLibComponents.SINGULARITY,
+                                                 * ItemStack.EMPTY); //FIXME
+                                                 */
 
         if (singularity.isEmpty())
             return LongResult.invalid(Status.NoSingularity);
@@ -248,7 +251,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<ItemWT>
         var inv = new AppEngInternalInventory(new InternalInventoryHost() {
             @Override
             public void saveChangedInventory(AppEngInternalInventory inv) {
-                stack.set(AE2WTLibComponents.SINGULARITY, inv.getStackInSlot(0));
+                // stack.set(AE2WTLibComponents.SINGULARITY, inv.getStackInSlot(0));
             }
 
             @Override
@@ -256,7 +259,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<ItemWT>
                 return player.level().isClientSide();
             }
         }, 1);
-        inv.setItemDirect(0, stack.getOrDefault(AE2WTLibComponents.SINGULARITY, ItemStack.EMPTY));
+        // inv.setItemDirect(0, stack.getOrDefault(AE2WTLibComponents.SINGULARITY, ItemStack.EMPTY));
         return inv;
     }
 }
