@@ -45,9 +45,9 @@ public class AE2WTLibComponents {
     public static final DeferredRegister<DataComponentType<?>> DR = DeferredRegister
             .create(Registries.DATA_COMPONENT_TYPE, AE2wtlib.MOD_NAME);
 
-    public static final DataComponentType<String> CURRENT_TERMINAL = register("currentTerminal",
+    public static final DataComponentType<String> CURRENT_TERMINAL = register("current_terminal",
             builder -> builder.persistent(Codec.STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8));
-    public static final DataComponentType<List<String>> INSTALLED_TERMINALS = register("installedTerminals",
+    public static final DataComponentType<List<String>> INSTALLED_TERMINALS = register("installed_terminals",
             builder -> builder.persistent(Codec.STRING.listOf())
                     .networkSynchronized(ByteBufCodecs.STRING_UTF8.apply(ByteBufCodecs.list())));
 
@@ -57,16 +57,16 @@ public class AE2WTLibComponents {
             builder -> builder.persistent(ItemContainerContents.CODEC)
                     .networkSynchronized(ItemContainerContents.STREAM_CODEC));
 
-    public static final DataComponentType<MagnetMode> MAGNET_SETTINGS = register("magnetSettings",
+    public static final DataComponentType<MagnetMode> MAGNET_SETTINGS = register("magnet_settings",
             builder -> builder.persistent(MagnetMode.CODEC).networkSynchronized(MagnetMode.STREAM_CODEC));
-    public static final DataComponentType<CompoundTag> PICKUP_CONFIG = register("pickupConfig", COMPOUND_TAG_CODECS);
-    public static final DataComponentType<CompoundTag> INSERT_CONFIG = register("insertConfig", COMPOUND_TAG_CODECS);
-    public static final DataComponentType<IncludeExclude> PICKUP_MODE = register("pickupMode", INCLUDE_EXCLUDE_CODECS);
-    public static final DataComponentType<IncludeExclude> INSERT_MODE = register("insertMode", INCLUDE_EXCLUDE_CODECS);
+    public static final DataComponentType<CompoundTag> PICKUP_CONFIG = register("pickup_config", COMPOUND_TAG_CODECS);
+    public static final DataComponentType<CompoundTag> INSERT_CONFIG = register("insert_config", COMPOUND_TAG_CODECS);
+    public static final DataComponentType<IncludeExclude> PICKUP_MODE = register("pickup_mode", INCLUDE_EXCLUDE_CODECS);
+    public static final DataComponentType<IncludeExclude> INSERT_MODE = register("insert_mode", INCLUDE_EXCLUDE_CODECS);
     public static final DataComponentType<Boolean> RESTOCK = register("restock", builder -> builder
             .persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL));
 
-    public static final DataComponentType<CompoundTag> PATTERN_ENCODING_LOGIC = register("PatternEncodingLogic",
+    public static final DataComponentType<CompoundTag> PATTERN_ENCODING_LOGIC = register("pattern_encoding_logic",
             COMPOUND_TAG_CODECS);
 
     private static <T> DataComponentType<T> register(String name, Consumer<DataComponentType.Builder<T>> customizer) {
