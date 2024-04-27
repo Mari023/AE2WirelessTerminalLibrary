@@ -5,13 +5,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.mojang.datafixers.util.Unit;
+import com.mojang.serialization.Codec;
+
 import org.jetbrains.annotations.Nullable;
 
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs;
 
 import appeng.api.config.Actionable;
 import appeng.hotkeys.HotkeyActions;
@@ -50,9 +55,9 @@ public class WUTHandler {
 
             if (wirelessTerminals.containsKey(currentTerminal))
                 return currentTerminal;
-            for (String term : terminalNames)
-                if (terminal.getOrDefault(AE2wtlibComponents.INSTALLED_TERMINALS, List.of()).contains(term)) {
-                    currentTerminal = term;
+            for (var term : wirelessTerminals.entrySet())
+                if (terminal.get(term.getValue().componentType()) != null) {
+                    currentTerminal = term.getKey();
                     terminal.set(AE2wtlibComponents.CURRENT_TERMINAL, currentTerminal);
                     break;
                 }
@@ -96,7 +101,7 @@ public class WUTHandler {
         if (terminal.getItem() instanceof ItemWUT) {
             if (!terminalNames.contains(terminalName))
                 return false;
-            return terminal.getOrDefault(AE2wtlibComponents.INSTALLED_TERMINALS, List.of()).contains(terminalName);
+            return terminal.get(wirelessTerminals.get(terminalName).componentType()) != null;
         }
         return terminal.getItem().equals(wirelessTerminals.get(terminalName).item());
     }
@@ -124,7 +129,7 @@ public class WUTHandler {
                     i = 0;
             }
             nextTerminal = terminalNames.get(i);
-        } while (!itemStack.getOrDefault(AE2wtlibComponents.INSTALLED_TERMINALS, List.of()).contains(nextTerminal));
+        } while (itemStack.get(wirelessTerminals.get(nextTerminal).componentType()) == null);
         itemStack.set(AE2wtlibComponents.CURRENT_TERMINAL, nextTerminal);
         updateClientTerminal((ServerPlayer) player, locator, itemStack);
     }
@@ -202,14 +207,16 @@ public class WUTHandler {
             return;
 
         ItemStack wut = new ItemStack(AE2wtlibItems.instance().UNIVERSAL_TERMINAL);
-        wut.set(AE2wtlibComponents.INSTALLED_TERMINALS, List.of(name));
+        DataComponentType<Unit> component = AE2wtlibComponents.register("has_" + name + "_terminal", builder -> builder
+                .persistent(Codec.EMPTY.codec()).networkSynchronized(NeoForgeStreamCodecs.enumCodec(Unit.class)));
+        wut.set(component, Unit.INSTANCE);
         AE2wtlibItems.instance().UNIVERSAL_TERMINAL.injectAEPower(wut,
                 AE2wtlibItems.instance().UNIVERSAL_TERMINAL.getAEMaxPower(wut), Actionable.MODULATE);
 
         HotkeyActions.register(new Ae2wtlibLocatingService(name), hotkeyName);
 
         wirelessTerminals.put(name, new WTDefinition(open, WTMenuHostFactory, menuType, item, wut,
-                TextConstants.formatTerminalName(itemID)));
+                TextConstants.formatTerminalName(itemID), component));
         terminalNames.add(name);
     }
 

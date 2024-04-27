@@ -1,5 +1,7 @@
 package de.mari_023.ae2wtlib;
 
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -39,13 +41,15 @@ public class AE2wtlibForge {
         AE2wtlib.registerMenus();
         ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.COMMON, AE2wtlibConfig.SPEC,
                 AE2wtlib.MOD_NAME + ".toml");
-        AE2wtlibComponents.DR.register(modEventBus);
         modEventBus.addListener((RegisterEvent e) -> {
             if (!e.getRegistryKey().equals(Registries.BLOCK))
                 return;
             AE2wtlibItems items = new AE2wtlibItems();
             AE2wtlib.onAe2Initialized(items);
             AE2wtlibCreativeTab.init();
+
+            for (var entry : AE2wtlibComponents.DR.entrySet())
+                Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, entry.getKey(), entry.getValue());
         });
         modEventBus.addListener((BuildCreativeModeTabContentsEvent e) -> AE2wtlib.addToCreativeTab());
         modEventBus.addListener((RegisterPayloadHandlersEvent event) -> {
