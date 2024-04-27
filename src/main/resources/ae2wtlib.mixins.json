@@ -5,8 +5,7 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "AEItemsMixin",
-    "BowItemMixin",
-    "CrossbowItemMixin",
+    "ProjectileWeaponItemMixin",
     "ServerPlayerMixin"
   ],
   "client": [
