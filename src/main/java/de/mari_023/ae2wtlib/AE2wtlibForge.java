@@ -39,6 +39,7 @@ public class AE2wtlibForge {
         AE2wtlib.registerMenus();
         ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.COMMON, AE2wtlibConfig.SPEC,
                 AE2wtlib.MOD_NAME + ".toml");
+        AE2WTLibComponents.DR.register(modEventBus);
         modEventBus.addListener((RegisterEvent e) -> {
             if (!e.getRegistryKey().equals(Registries.BLOCK))
                 return;
