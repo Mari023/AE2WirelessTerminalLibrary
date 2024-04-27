@@ -102,12 +102,14 @@ public class MagnetHost {
     }
 
     public void switchInsertPickup() {
-        CompoundTag tag = getStack().getOrDefault(AE2WTLibComponents.PICKUP_CONFIG, new CompoundTag());
-        pickupConfig.writeToChildTag(tag, "", ctHandler.player.registryAccess());
-        getStack().set(AE2WTLibComponents.INSERT_CONFIG, tag);
-        tag = getStack().getOrDefault(AE2WTLibComponents.INSERT_CONFIG, new CompoundTag());
-        insertConfig.writeToChildTag(tag, "", ctHandler.player.registryAccess());
-        getStack().set(AE2WTLibComponents.PICKUP_CONFIG, tag);
+        CompoundTag pickupTag = getStack().getOrDefault(AE2WTLibComponents.PICKUP_CONFIG, new CompoundTag());
+        CompoundTag insertTag = getStack().getOrDefault(AE2WTLibComponents.INSERT_CONFIG, new CompoundTag());
+
+        pickupConfig.writeToChildTag(pickupTag, "", ctHandler.player.registryAccess());
+        getStack().set(AE2WTLibComponents.INSERT_CONFIG, pickupTag);
+
+        insertConfig.writeToChildTag(insertTag, "", ctHandler.player.registryAccess());
+        getStack().set(AE2WTLibComponents.PICKUP_CONFIG, insertTag);
 
         pickupConfig.readFromChildTag(getStack().getOrDefault(AE2WTLibComponents.PICKUP_CONFIG, new CompoundTag()), "",
                 ctHandler.player.registryAccess());
