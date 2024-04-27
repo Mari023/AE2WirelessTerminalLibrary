@@ -12,9 +12,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 
-import top.theillusivec4.curios.api.SlotContext;
-import top.theillusivec4.curios.api.type.capability.ICurioItem;
-
 import appeng.core.AEConfig;
 import appeng.helpers.WirelessTerminalMenuHost;
 import appeng.items.tools.powered.WirelessTerminalItem;
@@ -25,7 +22,7 @@ import appeng.menu.locator.MenuLocators;
 import de.mari_023.ae2wtlib.AE2wtlibItems;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 
-public abstract class ItemWT extends WirelessTerminalItem implements ICurioItem {
+public abstract class ItemWT extends WirelessTerminalItem {
     public ItemWT() {
         super(AEConfig.instance().getWirelessTerminalBattery(), new Item.Properties().stacksTo(1));
     }
@@ -65,9 +62,5 @@ public abstract class ItemWT extends WirelessTerminalItem implements ICurioItem 
         return WUTHandler.wirelessTerminals.get(WUTHandler.getCurrentTerminal(locator.locateItem(player)))
                 .wTMenuHostFactory().create(this, player,
                         locator, (p, subMenu) -> tryOpen(player, locator, true));
-    }
-
-    public void curioTick(SlotContext slotContext, ItemStack stack) {
-        inventoryTick(stack, slotContext.entity().level(), slotContext.entity(), 0, false);
     }
 }
