@@ -18,9 +18,8 @@ import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 public record CycleTerminalPacket(boolean isRightClick) implements AE2wtlibPacket {
     public static final Type<CycleTerminalPacket> ID = new Type<>(AE2wtlib.id("cycle_terminal"));
-    public static final StreamCodec<ByteBuf, CycleTerminalPacket> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.BOOL, CycleTerminalPacket::isRightClick,
-            CycleTerminalPacket::new);
+    public static final StreamCodec<ByteBuf, CycleTerminalPacket> STREAM_CODEC = ByteBufCodecs.BOOL
+            .map(CycleTerminalPacket::new, CycleTerminalPacket::isRightClick);
 
     public void processPacketData(Player player) {
         final AbstractContainerMenu containerMenu = player.containerMenu;

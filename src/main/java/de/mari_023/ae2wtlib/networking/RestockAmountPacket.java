@@ -18,13 +18,10 @@ import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
 
 public record RestockAmountPacket(HashMap<Holder<Item>, Long> items) implements AE2wtlibPacket {
     public static final Type<RestockAmountPacket> ID = new Type<>(AE2wtlib.id("restock_amounts"));
-    public static final StreamCodec<RegistryFriendlyByteBuf, RestockAmountPacket> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.map(
-                    Maps::newHashMapWithExpectedSize,
-                    ByteBufCodecs.holderRegistry(Registries.ITEM),
-                    ByteBufCodecs.VAR_LONG),
-            RestockAmountPacket::items,
-            RestockAmountPacket::new);
+    public static final StreamCodec<RegistryFriendlyByteBuf, RestockAmountPacket> STREAM_CODEC = ByteBufCodecs
+            .map(Maps::newHashMapWithExpectedSize, ByteBufCodecs.holderRegistry(Registries.ITEM),
+                    ByteBufCodecs.VAR_LONG)
+            .map(RestockAmountPacket::new, RestockAmountPacket::items);
 
     @Override
     public void processPacketData(Player player) {
