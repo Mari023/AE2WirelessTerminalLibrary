@@ -43,7 +43,7 @@ public class AE2WTLibComponents {
                     (buf) -> (ItemMenuHostLocator) MenuLocators.readFromPacket(buf));
 
     public static final DeferredRegister<DataComponentType<?>> DR = DeferredRegister
-            .create(Registries.DATA_COMPONENT_TYPE, AE2wtlib.MOD_NAME);// TODO actually register this
+            .create(Registries.DATA_COMPONENT_TYPE, AE2wtlib.MOD_NAME);
 
     public static final DataComponentType<String> CURRENT_TERMINAL = register("currentTerminal",
             builder -> builder.persistent(Codec.STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8));
