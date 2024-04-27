@@ -33,8 +33,7 @@ public class AE2WTLibComponents {
             .networkSynchronized(NeoForgeStreamCodecs.enumCodec(IncludeExclude.class));
 
     public static final StreamCodec<FriendlyByteBuf, ItemMenuHostLocator> MENU_HOST_LOCATOR_STREAM_CODEC = StreamCodec
-            .ofMember(
-                    (locator, buf) -> MenuLocators.writeToPacket(buf, locator),
+            .ofMember((locator, buf) -> MenuLocators.writeToPacket(buf, locator),
                     (buf) -> (ItemMenuHostLocator) MenuLocators.readFromPacket(buf));
 
     public static final DeferredRegister<DataComponentType<?>> DR = DeferredRegister
