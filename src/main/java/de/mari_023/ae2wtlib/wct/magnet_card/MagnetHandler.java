@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.WeakHashMap;
 
+import com.google.common.collect.Maps;
+
+import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -72,7 +75,9 @@ public class MagnetHandler {
                 items.put(stack.getItem(), storageList.get(key));
         }
 
-        PacketDistributor.sendToPlayer(player, new RestockAmountPacket(items));
+        HashMap<Holder<Item>, Long> map = Maps.newHashMapWithExpectedSize(items.size());
+        items.forEach((item, count) -> map.put(item.builtInRegistryHolder(), count));
+        PacketDistributor.sendToPlayer(player, new RestockAmountPacket(map));
     }
 
     private static void handleMagnet(Player player, ItemStack terminal) {

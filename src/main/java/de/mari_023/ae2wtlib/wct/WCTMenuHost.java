@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 
+import appeng.api.ids.AEComponents;
 import appeng.api.implementations.blockentities.IViewCellStorage;
 import appeng.api.inventories.InternalInventory;
 import appeng.items.contents.StackDependentSupplier;
@@ -31,7 +32,7 @@ public class WCTMenuHost extends WTMenuHost implements IViewCellStorage {
         this.craftingGrid = new SupplierInternalInventory<>(
                 new StackDependentSupplier<>(
                         this::getItemStack,
-                        stack -> createInv(player, stack, "craftingGrid", 9)));
+                        stack -> createInv(player, stack, AEComponents.CRAFTING_INV, 9)));
     }
 
     @Nullable
