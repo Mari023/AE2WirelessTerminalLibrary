@@ -21,7 +21,7 @@ import de.mari_023.ae2wtlib.wut.WUTHandler;
 import de.mari_023.ae2wtlib.wut.recipe.Common;
 
 @TestPlotClass
-public class AE2WTLibTestPlots {
+public class AE2wtlibTestPlots {
     @TestPlot("wireless_terminal")
     public static void wireless_terminal(PlotBuilder plot) {
         var o = BlockPos.ZERO;

@@ -19,10 +19,10 @@ import appeng.integration.modules.curios.CuriosIntegration;
 import appeng.menu.locator.ItemMenuHostLocator;
 import appeng.menu.locator.MenuLocators;
 
-import de.mari_023.ae2wtlib.AE2WTLibComponents;
+import de.mari_023.ae2wtlib.AE2wtlibComponents;
 import de.mari_023.ae2wtlib.AE2wtlibItems;
 import de.mari_023.ae2wtlib.TextConstants;
-import de.mari_023.ae2wtlib.hotkeys.Ae2WTLibLocatingService;
+import de.mari_023.ae2wtlib.hotkeys.Ae2wtlibLocatingService;
 import de.mari_023.ae2wtlib.networking.UpdateWUTPackage;
 import de.mari_023.ae2wtlib.terminal.ItemWT;
 
@@ -46,14 +46,14 @@ public class WUTHandler {
      */
     public static String getCurrentTerminal(ItemStack terminal) {
         if (terminal.getItem() instanceof ItemWUT) {
-            String currentTerminal = terminal.getOrDefault(AE2WTLibComponents.CURRENT_TERMINAL, "");
+            String currentTerminal = terminal.getOrDefault(AE2wtlibComponents.CURRENT_TERMINAL, "");
 
             if (wirelessTerminals.containsKey(currentTerminal))
                 return currentTerminal;
             for (String term : terminalNames)
-                if (terminal.getOrDefault(AE2WTLibComponents.INSTALLED_TERMINALS, List.of()).contains(term)) {
+                if (terminal.getOrDefault(AE2wtlibComponents.INSTALLED_TERMINALS, List.of()).contains(term)) {
                     currentTerminal = term;
-                    terminal.set(AE2WTLibComponents.CURRENT_TERMINAL, currentTerminal);
+                    terminal.set(AE2wtlibComponents.CURRENT_TERMINAL, currentTerminal);
                     break;
                 }
             return currentTerminal;
@@ -79,7 +79,7 @@ public class WUTHandler {
             return;
         if (!hasTerminal(itemStack, terminal))
             return;
-        itemStack.set(AE2WTLibComponents.CURRENT_TERMINAL, terminal);
+        itemStack.set(AE2wtlibComponents.CURRENT_TERMINAL, terminal);
         updateClientTerminal((ServerPlayer) player, locator, itemStack);
     }
 
@@ -96,7 +96,7 @@ public class WUTHandler {
         if (terminal.getItem() instanceof ItemWUT) {
             if (!terminalNames.contains(terminalName))
                 return false;
-            return terminal.getOrDefault(AE2WTLibComponents.INSTALLED_TERMINALS, List.of()).contains(terminalName);
+            return terminal.getOrDefault(AE2wtlibComponents.INSTALLED_TERMINALS, List.of()).contains(terminalName);
         }
         return terminal.getItem().equals(wirelessTerminals.get(terminalName).item());
     }
@@ -124,8 +124,8 @@ public class WUTHandler {
                     i = 0;
             }
             nextTerminal = terminalNames.get(i);
-        } while (!itemStack.getOrDefault(AE2WTLibComponents.INSTALLED_TERMINALS, List.of()).contains(nextTerminal));
-        itemStack.set(AE2WTLibComponents.CURRENT_TERMINAL, nextTerminal);
+        } while (!itemStack.getOrDefault(AE2wtlibComponents.INSTALLED_TERMINALS, List.of()).contains(nextTerminal));
+        itemStack.set(AE2wtlibComponents.CURRENT_TERMINAL, nextTerminal);
         updateClientTerminal((ServerPlayer) player, locator, itemStack);
     }
 
@@ -202,11 +202,11 @@ public class WUTHandler {
             return;
 
         ItemStack wut = new ItemStack(AE2wtlibItems.instance().UNIVERSAL_TERMINAL);
-        wut.set(AE2WTLibComponents.INSTALLED_TERMINALS, List.of(name));
+        wut.set(AE2wtlibComponents.INSTALLED_TERMINALS, List.of(name));
         AE2wtlibItems.instance().UNIVERSAL_TERMINAL.injectAEPower(wut,
                 AE2wtlibItems.instance().UNIVERSAL_TERMINAL.getAEMaxPower(wut), Actionable.MODULATE);
 
-        HotkeyActions.register(new Ae2WTLibLocatingService(name), hotkeyName);
+        HotkeyActions.register(new Ae2wtlibLocatingService(name), hotkeyName);
 
         wirelessTerminals.put(name, new WTDefinition(open, WTMenuHostFactory, menuType, item, wut,
                 TextConstants.formatTerminalName(itemID)));

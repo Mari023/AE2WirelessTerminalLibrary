@@ -35,8 +35,8 @@ import appeng.util.inv.AppEngInternalInventory;
 import appeng.util.inv.InternalInventoryHost;
 import appeng.util.inv.SupplierInternalInventory;
 
-import de.mari_023.ae2wtlib.AE2WTLibComponents;
 import de.mari_023.ae2wtlib.AE2wtlib;
+import de.mari_023.ae2wtlib.AE2wtlibComponents;
 import de.mari_023.ae2wtlib.AE2wtlibItems;
 import de.mari_023.ae2wtlib.terminal.results.ActionHostResult;
 import de.mari_023.ae2wtlib.terminal.results.LongResult;
@@ -62,7 +62,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<ItemWT>
                 this::getItemStack, this::getStorageFromStack));
         viewCellInventory = new SupplierInternalInventory<>(
                 new StackDependentSupplier<>(this::getItemStack,
-                        stack -> createInv(player, stack, AE2WTLibComponents.VIEW_CELL_INVENTORY, 5)));
+                        stack -> createInv(player, stack, AE2wtlibComponents.VIEW_CELL_INVENTORY, 5)));
         singularityInventory = new SupplierInternalInventory<>(
                 new StackDependentSupplier<>(this::getItemStack, stack -> createSingularityInv(player, stack)));
     }

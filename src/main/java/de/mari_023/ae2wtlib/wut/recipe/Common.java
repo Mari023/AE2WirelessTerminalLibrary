@@ -13,7 +13,7 @@ import appeng.api.ids.AEComponents;
 import appeng.api.upgrades.IUpgradeInventory;
 import appeng.items.tools.powered.WirelessTerminalItem;
 
-import de.mari_023.ae2wtlib.AE2WTLibComponents;
+import de.mari_023.ae2wtlib.AE2wtlibComponents;
 import de.mari_023.ae2wtlib.AE2wtlibItems;
 import de.mari_023.ae2wtlib.wut.ItemWUT;
 
@@ -51,9 +51,9 @@ public abstract class Common implements CraftingRecipe {
 
         // add upgrades to nbt
         var installedTerminals = new ArrayList<>(
-                wut.getOrDefault(AE2WTLibComponents.INSTALLED_TERMINALS, new ArrayList<>()));
+                wut.getOrDefault(AE2wtlibComponents.INSTALLED_TERMINALS, new ArrayList<>()));
         installedTerminals.add(terminalName);
-        wut.set(AE2WTLibComponents.INSTALLED_TERMINALS, installedTerminals);
+        wut.set(AE2wtlibComponents.INSTALLED_TERMINALS, installedTerminals);
 
         // merge upgrades, this also updates max energy
         Iterator<ItemStack> iterator = itemWT.getUpgrades(toMerge).iterator();

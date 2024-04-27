@@ -23,13 +23,13 @@ import appeng.menu.locator.MenuLocators;
 
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetMode;
 
-public class AE2WTLibComponents {
+public class AE2wtlibComponents {
     private static final Consumer<DataComponentType.Builder<CompoundTag>> COMPOUND_TAG_CODECS = builder -> builder
             .persistent(CompoundTag.CODEC).networkSynchronized(ByteBufCodecs.COMPOUND_TAG);
     private static final Consumer<DataComponentType.Builder<IncludeExclude>> INCLUDE_EXCLUDE_CODECS = builder -> builder
             .persistent(RecordCodecBuilder.<IncludeExclude>mapCodec(codecBuilder -> codecBuilder
-                    .group(Codec.BOOL.fieldOf("").forGetter(AE2WTLibComponents::includeExcludeToBoolean))
-                    .apply(codecBuilder, AE2WTLibComponents::booleanToIncludeExclude)).codec())
+                    .group(Codec.BOOL.fieldOf("").forGetter(AE2wtlibComponents::includeExcludeToBoolean))
+                    .apply(codecBuilder, AE2wtlibComponents::booleanToIncludeExclude)).codec())
             .networkSynchronized(NeoForgeStreamCodecs.enumCodec(IncludeExclude.class));
 
     public static final StreamCodec<FriendlyByteBuf, ItemMenuHostLocator> MENU_HOST_LOCATOR_STREAM_CODEC = StreamCodec

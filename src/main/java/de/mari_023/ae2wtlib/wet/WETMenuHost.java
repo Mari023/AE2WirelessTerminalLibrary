@@ -13,7 +13,7 @@ import appeng.menu.ISubMenu;
 import appeng.menu.locator.ItemMenuHostLocator;
 import appeng.parts.encoding.PatternEncodingLogic;
 
-import de.mari_023.ae2wtlib.AE2WTLibComponents;
+import de.mari_023.ae2wtlib.AE2wtlibComponents;
 import de.mari_023.ae2wtlib.terminal.ItemWT;
 import de.mari_023.ae2wtlib.terminal.WTMenuHost;
 
@@ -24,7 +24,7 @@ public class WETMenuHost extends WTMenuHost
     public WETMenuHost(ItemWT item, Player player, ItemMenuHostLocator locator,
             BiConsumer<Player, ISubMenu> returnToMainMenu) {
         super(item, player, locator, returnToMainMenu);
-        logic.readFromNBT(getItemStack().getOrDefault(AE2WTLibComponents.PATTERN_ENCODING_LOGIC, new CompoundTag()),
+        logic.readFromNBT(getItemStack().getOrDefault(AE2wtlibComponents.PATTERN_ENCODING_LOGIC, new CompoundTag()),
                 player.registryAccess());
     }
 
@@ -40,8 +40,8 @@ public class WETMenuHost extends WTMenuHost
 
     @Override
     public void markForSave() {
-        CompoundTag tag = getItemStack().getOrDefault(AE2WTLibComponents.PATTERN_ENCODING_LOGIC, new CompoundTag());
+        CompoundTag tag = getItemStack().getOrDefault(AE2wtlibComponents.PATTERN_ENCODING_LOGIC, new CompoundTag());
         logic.writeToNBT(tag, getPlayer().registryAccess());
-        getItemStack().set(AE2WTLibComponents.PATTERN_ENCODING_LOGIC, tag);
+        getItemStack().set(AE2wtlibComponents.PATTERN_ENCODING_LOGIC, tag);
     }
 }

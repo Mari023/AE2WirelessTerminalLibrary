@@ -12,14 +12,14 @@ import net.minecraft.world.item.ItemStack;
 import appeng.api.config.Actionable;
 import appeng.items.tools.powered.WirelessTerminalItem;
 
-public class AE2WTLibCreativeTab {
+public class AE2wtlibCreativeTab {
     private static final List<ItemStack> items = new ArrayList<>();
 
     public static void init() {
         var tab = CreativeModeTab.builder()
                 .title(TextConstants.CREATIVE_TAB)
                 .icon(() -> new ItemStack(AE2wtlibItems.instance().UNIVERSAL_TERMINAL))
-                .displayItems(AE2WTLibCreativeTab::buildDisplayItems)
+                .displayItems(AE2wtlibCreativeTab::buildDisplayItems)
                 .build();
         Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, AE2wtlib.id("main"), tab);
     }

@@ -38,7 +38,7 @@ public class AE2wtlibEvents {
         if (!cTHandler.inRange())
             return;
         ItemStack hostItem = cTHandler.getCraftingTerminal();
-        if (!(boolean) hostItem.getOrDefault(AE2WTLibComponents.RESTOCK, false))
+        if (!(boolean) hostItem.getOrDefault(AE2wtlibComponents.RESTOCK, false))
             return;
         if (cTHandler.getTargetGrid() == null)
             return;

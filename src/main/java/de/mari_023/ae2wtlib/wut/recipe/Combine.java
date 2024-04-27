@@ -10,7 +10,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 
-import de.mari_023.ae2wtlib.AE2WTLibComponents;
+import de.mari_023.ae2wtlib.AE2wtlibComponents;
 
 public class Combine extends Common {
     public static final CombineSerializer serializer = new CombineSerializer();
@@ -24,8 +24,8 @@ public class Combine extends Common {
         this.terminalB = terminalB;
         this.terminalAName = terminalAName;
         this.terminalBName = terminalBName;
-        outputStack.set(AE2WTLibComponents.INSTALLED_TERMINALS, List.of(terminalAName));
-        outputStack.set(AE2WTLibComponents.INSTALLED_TERMINALS, List.of(terminalBName));
+        outputStack.set(AE2wtlibComponents.INSTALLED_TERMINALS, List.of(terminalAName));
+        outputStack.set(AE2wtlibComponents.INSTALLED_TERMINALS, List.of(terminalBName));
     }
 
     public Ingredient getTerminalA() {
