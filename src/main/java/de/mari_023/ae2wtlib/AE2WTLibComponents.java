@@ -14,6 +14,7 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemContainerContents;
+import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 import appeng.api.config.IncludeExclude;
@@ -26,16 +27,10 @@ public class AE2WTLibComponents {
     private static final Consumer<DataComponentType.Builder<CompoundTag>> COMPOUND_TAG_CODECS = builder -> builder
             .persistent(CompoundTag.CODEC).networkSynchronized(ByteBufCodecs.COMPOUND_TAG);
     private static final Consumer<DataComponentType.Builder<IncludeExclude>> INCLUDE_EXCLUDE_CODECS = builder -> builder
-            .persistent(
-                    RecordCodecBuilder.<IncludeExclude>mapCodec(
-                            codecBuilder -> codecBuilder
-                                    .group(Codec.BOOL.fieldOf("")
-                                            .forGetter(AE2WTLibComponents::includeExcludeToBoolean))
-                                    .apply(codecBuilder, AE2WTLibComponents::booleanToIncludeExclude))
-                            .codec())
-            .networkSynchronized(StreamCodec.composite(
-                    ByteBufCodecs.BOOL, AE2WTLibComponents::includeExcludeToBoolean,
-                    AE2WTLibComponents::booleanToIncludeExclude));
+            .persistent(RecordCodecBuilder.<IncludeExclude>mapCodec(codecBuilder -> codecBuilder
+                    .group(Codec.BOOL.fieldOf("").forGetter(AE2WTLibComponents::includeExcludeToBoolean))
+                    .apply(codecBuilder, AE2WTLibComponents::booleanToIncludeExclude)).codec())
+            .networkSynchronized(NeoForgeStreamCodecs.enumCodec(IncludeExclude.class));
 
     public static final StreamCodec<FriendlyByteBuf, ItemMenuHostLocator> MENU_HOST_LOCATOR_STREAM_CODEC = StreamCodec
             .ofMember(
@@ -58,7 +53,8 @@ public class AE2WTLibComponents {
                     .networkSynchronized(ItemContainerContents.STREAM_CODEC));
 
     public static final DataComponentType<MagnetMode> MAGNET_SETTINGS = register("magnet_settings",
-            builder -> builder.persistent(MagnetMode.CODEC).networkSynchronized(MagnetMode.STREAM_CODEC));
+            builder -> builder.persistent(MagnetMode.CODEC)
+                    .networkSynchronized(NeoForgeStreamCodecs.enumCodec(MagnetMode.class)));
     public static final DataComponentType<CompoundTag> PICKUP_CONFIG = register("pickup_config", COMPOUND_TAG_CODECS);
     public static final DataComponentType<CompoundTag> INSERT_CONFIG = register("insert_config", COMPOUND_TAG_CODECS);
     public static final DataComponentType<IncludeExclude> PICKUP_MODE = register("pickup_mode", INCLUDE_EXCLUDE_CODECS);
