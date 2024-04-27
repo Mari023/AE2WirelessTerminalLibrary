@@ -1,6 +1,6 @@
 package de.mari_023.ae2wtlib.wut.recipe;
 
-import java.util.List;
+import com.mojang.datafixers.util.Unit;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
@@ -10,7 +10,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 
-import de.mari_023.ae2wtlib.AE2wtlibComponents;
+import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 public class Combine extends Common {
     public static final CombineSerializer serializer = new CombineSerializer();
@@ -24,8 +24,8 @@ public class Combine extends Common {
         this.terminalB = terminalB;
         this.terminalAName = terminalAName;
         this.terminalBName = terminalBName;
-        outputStack.set(AE2wtlibComponents.INSTALLED_TERMINALS, List.of(terminalAName));
-        outputStack.set(AE2wtlibComponents.INSTALLED_TERMINALS, List.of(terminalBName));
+        outputStack.set(WUTHandler.wirelessTerminals.get(terminalAName).componentType(), Unit.INSTANCE);
+        outputStack.set(WUTHandler.wirelessTerminals.get(terminalBName).componentType(), Unit.INSTANCE);
     }
 
     public Ingredient getTerminalA() {

@@ -1,7 +1,8 @@
 package de.mari_023.ae2wtlib.wut.recipe;
 
-import java.util.ArrayList;
 import java.util.Iterator;
+
+import com.mojang.datafixers.util.Unit;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.ItemStack;
@@ -13,9 +14,9 @@ import appeng.api.ids.AEComponents;
 import appeng.api.upgrades.IUpgradeInventory;
 import appeng.items.tools.powered.WirelessTerminalItem;
 
-import de.mari_023.ae2wtlib.AE2wtlibComponents;
 import de.mari_023.ae2wtlib.AE2wtlibItems;
 import de.mari_023.ae2wtlib.wut.ItemWUT;
+import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 public abstract class Common implements CraftingRecipe {
     protected final ItemStack outputStack = new ItemStack(AE2wtlibItems.instance().UNIVERSAL_TERMINAL);
@@ -49,11 +50,7 @@ public abstract class Common implements CraftingRecipe {
         if (!(toMerge.getItem() instanceof WirelessTerminalItem itemWT))
             return ItemStack.EMPTY;
 
-        // add upgrades to nbt
-        var installedTerminals = new ArrayList<>(
-                wut.getOrDefault(AE2wtlibComponents.INSTALLED_TERMINALS, new ArrayList<>()));
-        installedTerminals.add(terminalName);
-        wut.set(AE2wtlibComponents.INSTALLED_TERMINALS, installedTerminals);
+        wut.set(WUTHandler.wirelessTerminals.get(terminalName).componentType(), Unit.INSTANCE);
 
         // merge upgrades, this also updates max energy
         Iterator<ItemStack> iterator = itemWT.getUpgrades(toMerge).iterator();

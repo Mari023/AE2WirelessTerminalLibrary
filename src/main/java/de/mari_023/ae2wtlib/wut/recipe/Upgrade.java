@@ -1,6 +1,6 @@
 package de.mari_023.ae2wtlib.wut.recipe;
 
-import java.util.List;
+import com.mojang.datafixers.util.Unit;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
@@ -10,7 +10,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 
-import de.mari_023.ae2wtlib.AE2wtlibComponents;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 public class Upgrade extends Common {
@@ -21,7 +20,7 @@ public class Upgrade extends Common {
     public Upgrade(Ingredient terminal, String terminalName) {
         this.terminal = terminal;
         this.terminalName = terminalName;
-        outputStack.set(AE2wtlibComponents.INSTALLED_TERMINALS, List.of(terminalName));
+        outputStack.set(WUTHandler.wirelessTerminals.get(terminalName).componentType(), Unit.INSTANCE);
     }
 
     public Ingredient getTerminal() {
