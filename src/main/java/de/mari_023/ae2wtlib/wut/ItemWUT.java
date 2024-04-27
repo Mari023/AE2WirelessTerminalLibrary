@@ -16,8 +16,6 @@ import net.minecraft.world.level.Level;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
-import top.theillusivec4.curios.api.SlotContext;
-
 import appeng.api.upgrades.IUpgradeInventory;
 import appeng.api.upgrades.UpgradeInventories;
 import appeng.api.upgrades.Upgrades;
@@ -105,9 +103,5 @@ public class ItemWUT extends ItemWT {
     public IConfigManager getConfigManager(Supplier<ItemStack> target) {// FIXME potentially reuse the config manager?
         return WUTHandler.wirelessTerminals.get(WUTHandler.getCurrentTerminal(target.get())).item()
                 .getConfigManager(target);
-    }
-
-    public void curioTick(SlotContext slotContext, ItemStack stack) {
-        inventoryTick(stack, slotContext.entity().level(), slotContext.entity(), 0, false);
     }
 }
