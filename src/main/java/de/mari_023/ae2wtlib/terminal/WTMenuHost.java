@@ -5,9 +5,11 @@ import java.util.function.BiConsumer;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnknownNullability;
 
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.Level;
 
 import appeng.api.config.Actionable;
@@ -33,6 +35,7 @@ import appeng.util.inv.AppEngInternalInventory;
 import appeng.util.inv.InternalInventoryHost;
 import appeng.util.inv.SupplierInternalInventory;
 
+import de.mari_023.ae2wtlib.AE2WTLibComponents;
 import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.AE2wtlibItems;
 import de.mari_023.ae2wtlib.terminal.results.ActionHostResult;
@@ -58,9 +61,10 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<ItemWT>
         this.storage = new SupplierStorage(new StackDependentSupplier<>(
                 this::getItemStack, this::getStorageFromStack));
         viewCellInventory = new SupplierInternalInventory<>(
-                new StackDependentSupplier<>(this::getItemStack, stack -> createInv(player, stack, "viewcells", 5)));
+                new StackDependentSupplier<>(this::getItemStack,
+                        stack -> createInv(player, stack, AE2WTLibComponents.VIEW_CELL_INVENTORY, 5)));
         singularityInventory = new SupplierInternalInventory<>(
-                new StackDependentSupplier<>(this::getItemStack, stack -> createInv(player, stack, "singularity", 1)));
+                new StackDependentSupplier<>(this::getItemStack, stack -> createSingularityInv(player, stack)));
     }
 
     @Override
@@ -121,14 +125,15 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<ItemWT>
     }
 
     public LongResult getQEFrequency(@Nullable InternalInventory inventory) {
+        ItemStack singularity;
         if (inventory == null) {
-            inventory = new AppEngInternalInventory(null, 1);
-            ((AppEngInternalInventory) inventory).readFromNBT(getItemStack().getOrCreateTag(), "singularity");
+            singularity = getItemStack().getOrDefault(AE2WTLibComponents.SINGULARITY, ItemStack.EMPTY);
+        } else {
+            singularity = inventory.getStackInSlot(0);
         }
-        ItemStack is = inventory.getStackInSlot(0);
-        if (is.isEmpty())
+        if (singularity.isEmpty())
             return LongResult.invalid(Status.NoSingularity);
-        Long singularityID = is.get(AEComponents.ENTANGLED_SINGULARITY_ID);
+        Long singularityID = singularity.get(AEComponents.ENTANGLED_SINGULARITY_ID);
         if (singularityID == null)
             return LongResult.invalid(Status.GenericInvalid);
         return LongResult.valid(singularityID);
@@ -225,11 +230,12 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<ItemWT>
         return null;
     }
 
-    protected static InternalInventory createInv(Player player, ItemStack stack, String name, int size) {
-        var inv = new AppEngInternalInventory(new InternalInventoryHost() {
+    protected static InternalInventory createInv(Player player, ItemStack stack,
+            DataComponentType<ItemContainerContents> componentType, int size) {
+        var craftingGrid = new AppEngInternalInventory(new InternalInventoryHost() {
             @Override
             public void saveChangedInventory(AppEngInternalInventory inv) {
-                inv.writeToNBT(stack.getOrCreateTag(), name);
+                stack.set(componentType, inv.toItemContainerContents());
             }
 
             @Override
@@ -237,9 +243,24 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<ItemWT>
                 return player.level().isClientSide();
             }
         }, size);
-        if (stack.getTag() != null) {
-            inv.readFromNBT(stack.getTag(), name);
-        }
+        craftingGrid
+                .fromItemContainerContents(stack.getOrDefault(componentType, ItemContainerContents.EMPTY));
+        return craftingGrid;
+    }
+
+    private static InternalInventory createSingularityInv(Player player, ItemStack stack) {
+        var inv = new AppEngInternalInventory(new InternalInventoryHost() {
+            @Override
+            public void saveChangedInventory(AppEngInternalInventory inv) {
+                stack.set(AE2WTLibComponents.SINGULARITY, inv.getStackInSlot(0));
+            }
+
+            @Override
+            public boolean isClientSide() {
+                return player.level().isClientSide();
+            }
+        }, 1);
+        inv.setItemDirect(0, stack.getOrDefault(AE2WTLibComponents.SINGULARITY, ItemStack.EMPTY));
         return inv;
     }
 }
