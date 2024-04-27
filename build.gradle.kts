@@ -1,7 +1,7 @@
 import net.neoforged.gradle.dsl.common.runs.run.Run
 
 plugins {
-    id("net.neoforged.gradle.userdev") version "7.0.105"
+    id("net.neoforged.gradle.userdev") version "7.0.106"
     id("com.diffplug.spotless") version "6.25.0"
     id("maven-publish")
     java
