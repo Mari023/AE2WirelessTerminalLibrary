@@ -124,13 +124,9 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<ItemWT>
         return ActionHostResult.valid(quantumBridge);
     }
 
-    public LongResult getQEFrequency(@Nullable InternalInventory inventory) {
-        ItemStack singularity;
-        if (inventory == null) {
-            singularity = getItemStack().getOrDefault(AE2WTLibComponents.SINGULARITY, ItemStack.EMPTY);
-        } else {
-            singularity = inventory.getStackInSlot(0);
-        }
+    public LongResult getQEFrequency() {
+        ItemStack singularity = getItemStack().getOrDefault(AE2WTLibComponents.SINGULARITY, ItemStack.EMPTY);
+
         if (singularity.isEmpty())
             return LongResult.invalid(Status.NoSingularity);
         Long singularityID = singularity.get(AEComponents.ENTANGLED_SINGULARITY_ID);
@@ -143,7 +139,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<ItemWT>
         Status status = Status.Valid;
         if (!getUpgrades().isInstalled(AE2wtlibItems.instance().QUANTUM_BRIDGE_CARD))
             status = Status.NoUpgrade;
-        LongResult f = getQEFrequency(singularityInventory);
+        LongResult f = getQEFrequency();
         if (!f.valid()) {
             status = status.isValid() ? f.status() : Status.GenericInvalid;
         }
