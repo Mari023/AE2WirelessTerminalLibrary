@@ -76,7 +76,7 @@ public class MagnetHandler {
         }
 
         HashMap<Holder<Item>, Long> map = Maps.newHashMapWithExpectedSize(items.size());
-        //noinspection deprecation
+        // noinspection deprecation
         items.forEach((item, count) -> map.put(item.builtInRegistryHolder(), count));
         PacketDistributor.sendToPlayer(player, new RestockAmountPacket(map));
     }
