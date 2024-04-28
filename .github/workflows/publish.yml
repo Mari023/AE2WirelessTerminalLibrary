@@ -45,7 +45,7 @@ jobs:
           name: neoforge
           path: download
 
-      - uses: Kir-Antipov/mc-publish@v3.3
+      - uses: Kir-Antipov/mc-publish@995edadc13559a8b28d0b7e6571229f067ec7659
         with:
           modrinth-id: pNabrMMw
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
