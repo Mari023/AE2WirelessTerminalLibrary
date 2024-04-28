@@ -27,7 +27,7 @@ side = "BOTH"
 [[dependencies.ae2wtlib]]
 modId = "minecraft"
 type="REQUIRED"
-versionRange = "*"
+versionRange = "0.0.0,[${ae2_version},18.0.0)"
 ordering = "NONE"
 side = "BOTH"
 
