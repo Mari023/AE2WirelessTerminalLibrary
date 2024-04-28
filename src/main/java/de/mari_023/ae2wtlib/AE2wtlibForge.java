@@ -18,6 +18,7 @@ import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.common.CommonHooks;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
 import net.neoforged.neoforge.event.entity.player.ArrowLooseEvent;
@@ -41,6 +42,7 @@ import de.mari_023.ae2wtlib.terminal.ItemWT;
 @EventBusSubscriber
 public class AE2wtlibForge {
     public AE2wtlibForge(IEventBus modEventBus) {
+        CommonHooks.markComponentClassAsValid(ItemWT.class);//TODO figure out if there is a better way
         AE2wtlib.registerMenus();
         ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.COMMON, AE2wtlibConfig.SPEC,
                 AE2wtlib.MOD_NAME + ".toml");
