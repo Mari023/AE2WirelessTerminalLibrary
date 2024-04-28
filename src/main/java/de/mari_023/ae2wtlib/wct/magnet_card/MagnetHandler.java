@@ -125,7 +125,7 @@ public class MagnetHandler {
     public static MagnetMode getMagnetMode(ItemStack terminal) {
         if (terminal.getItem() instanceof IUpgradeableItem upgradeableItem
                 && upgradeableItem.getUpgrades(terminal).isInstalled(AE2wtlibItems.instance().MAGNET_CARD))
-            return terminal.getOrDefault(AE2wtlibComponents.MAGNET_SETTINGS, MagnetMode.OFF);
-        return MagnetMode.OFF;
+            return terminal.getOrDefault(AE2wtlibComponents.MAGNET_SETTINGS, MagnetMode.INVALID);
+        return MagnetMode.INVALID;
     }
 }
