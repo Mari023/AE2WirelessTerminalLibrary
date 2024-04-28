@@ -7,6 +7,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -19,6 +20,8 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
+import net.neoforged.neoforge.event.entity.player.ArrowLooseEvent;
+import net.neoforged.neoforge.event.entity.player.ArrowNockEvent;
 import net.neoforged.neoforge.event.entity.player.EntityItemPickupEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
@@ -111,5 +114,27 @@ public class AE2wtlibForge {
         }
 
         event.setCanceled(AE2wtlibEvents.insertStackInME(event.getItem().getItem(), event.getEntity()));
+    }
+
+    @SubscribeEvent
+    public static void handle(ArrowNockEvent event) {
+        if (!event.hasAmmo())
+            return;
+        if (!(event.getEntity() instanceof ServerPlayer player))
+            return;
+        ItemStack projectile = player.getProjectile(event.getBow());
+        AE2wtlibEvents.restock(player, projectile, projectile.getCount(), (itemStack) -> {
+        });
+    }
+
+    @SubscribeEvent
+    public static void handle(ArrowLooseEvent event) {
+        if (!event.hasAmmo())
+            return;
+        if (!(event.getEntity() instanceof ServerPlayer player))
+            return;
+        ItemStack projectile = player.getProjectile(event.getBow());
+        AE2wtlibEvents.restock(player, projectile, projectile.getCount(), (itemStack) -> {
+        });
     }
 }
