@@ -1,4 +1,5 @@
 - update to 1.20.5
+  - components might still change, this might lead to item loss when upgrading
   - currently without curio support due to lack of curio
   - EMI / REI / JEI integration is untested and unchanged from 1.20.4, it may or may not work
 - fix magnet card not working in a wireless universal terminal when there is no pattern encoding terminal installed
