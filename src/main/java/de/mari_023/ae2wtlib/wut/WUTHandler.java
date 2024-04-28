@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import com.mojang.datafixers.util.Unit;
 import com.mojang.serialization.Codec;
@@ -15,7 +16,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.bus.api.Event;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs;
 
@@ -199,7 +199,19 @@ public class WUTHandler {
         return terminalNames.size() * 2;
     }
 
-    public static class AddTerminalEvent extends Event {
+    public static class AddTerminalEvent {
+        private static final List<Consumer<AddTerminalEvent>> HANDLERS = new ArrayList<>();
+
+        public static synchronized void register(Consumer<AddTerminalEvent> handler) {
+            HANDLERS.add(handler);
+        }
+
+        public static synchronized void run() {
+            var event = new AddTerminalEvent();
+            HANDLERS.forEach(c -> c.accept(event));
+            HANDLERS.clear();
+        }
+
         /**
          * Registers a new terminal.
          *
@@ -211,7 +223,7 @@ public class WUTHandler {
          * @param hotkeyName        The hotkey name for the terminal.
          * @param itemID            The item ID for the terminal.
          */
-        public void addTerminal(String name, WTDefinition.ContainerOpener open,
+        public synchronized void addTerminal(String name, WTDefinition.ContainerOpener open,
                 WTDefinition.WTMenuHostFactory WTMenuHostFactory,
                 MenuType<?> menuType, ItemWT item, String hotkeyName, String itemID) {
             if (terminalNames.contains(name))

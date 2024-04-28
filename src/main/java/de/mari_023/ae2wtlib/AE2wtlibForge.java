@@ -36,7 +36,6 @@ import de.mari_023.ae2wtlib.networking.RestockAmountPacket;
 import de.mari_023.ae2wtlib.networking.UpdateRestockPacket;
 import de.mari_023.ae2wtlib.networking.UpdateWUTPackage;
 import de.mari_023.ae2wtlib.terminal.ItemWT;
-import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 @Mod(AE2wtlib.MOD_NAME)
 @EventBusSubscriber
@@ -48,8 +47,8 @@ public class AE2wtlibForge {
         modEventBus.addListener((RegisterEvent e) -> {
             if (!e.getRegistryKey().equals(Registries.BLOCK))
                 return;
-            new AE2wtlibItems();
-            AE2wtlib.onAe2Initialized();
+            AE2wtlibItems items = new AE2wtlibItems();
+            AE2wtlib.onAe2Initialized(items);
             AE2wtlibCreativeTab.init();
 
             for (var entry : AE2wtlibComponents.DR.entrySet())
@@ -80,11 +79,6 @@ public class AE2wtlibForge {
     private static void registerPowerStorageItem(RegisterCapabilitiesEvent event, ItemWT item) {
         event.registerItem(Capabilities.EnergyStorage.ITEM,
                 (object, context) -> new PoweredItemCapabilities(object, item), item);
-    }
-
-    @SubscribeEvent
-    public static void handle(WUTHandler.AddTerminalEvent event) {
-        AE2wtlib.registerTerminals(event);
     }
 
     @SubscribeEvent
