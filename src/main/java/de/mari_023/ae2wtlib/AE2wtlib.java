@@ -3,6 +3,7 @@ package de.mari_023.ae2wtlib;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.common.NeoForge;
 
 import appeng.api.features.HotkeyAction;
 import appeng.core.definitions.AEItems;
@@ -29,15 +30,8 @@ import de.mari_023.ae2wtlib.wut.recipe.UpgradeSerializer;
 public class AE2wtlib {
     public static final String MOD_NAME = "ae2wtlib";
 
-    public static void onAe2Initialized(AE2wtlibItems items) {
-        WUTHandler.addTerminal("crafting", items.WIRELESS_CRAFTING_TERMINAL::tryOpen, WCTMenuHost::new, WCTMenu.TYPE,
-                items.WIRELESS_CRAFTING_TERMINAL, HotkeyAction.WIRELESS_TERMINAL,
-                "item.ae2.wireless_crafting_terminal");
-        WUTHandler.addTerminal("pattern_encoding", items.PATTERN_ENCODING_TERMINAL::tryOpen, WETMenuHost::new,
-                WETMenu.TYPE,
-                items.PATTERN_ENCODING_TERMINAL);
-        WUTHandler.addTerminal("pattern_access", items.PATTERN_ACCESS_TERMINAL::tryOpen, WATMenuHost::new, WATMenu.TYPE,
-                items.PATTERN_ACCESS_TERMINAL);
+    public static void onAe2Initialized() {
+        NeoForge.EVENT_BUS.post(new WUTHandler.AddTerminalEvent());
 
         Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, id(UpgradeSerializer.NAME), Upgrade.serializer);
         Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, id(CombineSerializer.NAME), Combine.serializer);
@@ -45,8 +39,19 @@ public class AE2wtlib {
         HotkeyActions.register(new RestockHotkeyAction(), "ae2wtlib_restock");
         HotkeyActions.register(new MagnetHotkeyAction(), "ae2wtlib_magnet");
 
-        // we need something to call addon terminals here
         UpgradeHelper.addUpgrades();
+    }
+
+    public static void registerTerminals(WUTHandler.AddTerminalEvent event) {
+        AE2wtlibItems items = AE2wtlibItems.instance();
+        event.addTerminal("crafting", items.WIRELESS_CRAFTING_TERMINAL::tryOpen, WCTMenuHost::new, WCTMenu.TYPE,
+                items.WIRELESS_CRAFTING_TERMINAL, HotkeyAction.WIRELESS_TERMINAL,
+                "item.ae2.wireless_crafting_terminal");
+        event.addTerminal("pattern_encoding", items.PATTERN_ENCODING_TERMINAL::tryOpen, WETMenuHost::new,
+                WETMenu.TYPE,
+                items.PATTERN_ENCODING_TERMINAL);
+        event.addTerminal("pattern_access", items.PATTERN_ACCESS_TERMINAL::tryOpen, WATMenuHost::new, WATMenu.TYPE,
+                items.PATTERN_ACCESS_TERMINAL);
     }
 
     static void addToCreativeTab() {
