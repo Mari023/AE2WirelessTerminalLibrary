@@ -1,5 +1,3 @@
-import net.neoforged.gradle.dsl.common.runs.run.Run
-
 plugins {
     id("net.neoforged.gradle.userdev") version "7.0.106"
     id("com.diffplug.spotless") version "6.25.0"
@@ -8,7 +6,6 @@ plugins {
     idea
 }
 
-val modVersion: String by project
 val minecraftVersion: String by project
 val clothVersion: String by project
 val ae2Version: String by project
@@ -24,11 +21,11 @@ val curiosVersion: String by project
 val mavenGroup: String by project
 val archivesBaseName: String by project
 
-version = "$modVersion-SNAPSHOT"
+version = "0.0.0-SNAPSHOT"
 
 val pr = System.getenv("PR_NUMBER") ?: ""
 if (pr != "") {
-    version = "$modVersion+pr$pr"
+    version = "0.0.0-pr$pr"
 }
 
 val tag = System.getenv("TAG") ?: ""
@@ -37,6 +34,8 @@ if (tag != "") {
 }
 
 val artifactVersion = version
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 dependencies {
     implementation("net.neoforged:neoforge:${neoforgeVersion}")
@@ -133,32 +132,23 @@ repositories {
     }
 }
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
-}
-
 tasks {
     processResources {
         // Ensure the resources get re-evaluate when the version changes
         inputs.property("version", version)
         inputs.property("ae2_version", ae2Version)
 
-        val resourceTargets = "META-INF/neoforge.mods.toml"
-
         val replaceProperties = mapOf(
             "version" to version as String, "ae2_version" to ae2Version
         )
 
         inputs.properties(replaceProperties)
-        filesMatching(resourceTargets) {
+        filesMatching("META-INF/neoforge.mods.toml") {
             expand(replaceProperties)
         }
     }
     withType<JavaCompile> {
         options.encoding = "UTF-8"
-        options.release.set(21)
     }
 }
 
@@ -186,9 +176,9 @@ publishing {
     }
 }
 
-configure<com.diffplug.gradle.spotless.SpotlessExtension> {
+spotless {
     java {
-        target("/src/*/java/**/*.java")
+        target("/src/**/java/**/*.java")
 
         endWithNewline()
         indentWithSpaces()
