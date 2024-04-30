@@ -163,13 +163,15 @@ tasks {
 }
 
 runs {
-    val config = Action<Run> {
-        workingDirectory = project.file("run")
-        modSource(project.sourceSets.main.get())
+    configureEach {
+        workingDirectory(file("run"))
+        systemProperty("forge.logging.console.level", "info")
+
+        modSource(sourceSets.main.get())
     }
 
-    create("client", config)
-    create("server", config)
+    create("client")
+    create("server")
 }
 
 publishing {
