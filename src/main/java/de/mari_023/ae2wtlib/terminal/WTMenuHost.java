@@ -41,6 +41,7 @@ import de.mari_023.ae2wtlib.AE2wtlibItems;
 import de.mari_023.ae2wtlib.terminal.results.ActionHostResult;
 import de.mari_023.ae2wtlib.terminal.results.LongResult;
 import de.mari_023.ae2wtlib.terminal.results.Status;
+import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 public abstract class WTMenuHost extends WirelessTerminalMenuHost<ItemWT>
         implements ISegmentedInventory {
@@ -54,6 +55,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<ItemWT>
     private ILinkStatus linkStatus;
     @UnknownNullability
     private ILinkStatus quantumStatus;
+    private final String closeHotkey;
 
     public WTMenuHost(ItemWT item, Player player, ItemMenuHostLocator locator,
             BiConsumer<Player, ISubMenu> returnToMainMenu) {
@@ -65,6 +67,21 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<ItemWT>
                         stack -> createInv(player, stack, AE2wtlibComponents.VIEW_CELL_INVENTORY, 5)));
         singularityInventory = new SupplierInternalInventory<>(
                 new StackDependentSupplier<>(this::getItemStack, stack -> createSingularityInv(player, stack)));
+        String terminalName = WUTHandler.getCurrentTerminal(getItemStack());
+
+        String close = super.getCloseHotkey();
+        for (var entry : WUTHandler.wirelessTerminals.entrySet()) {
+            if (terminalName.equals(entry.getKey())) {
+                close = entry.getValue().hotkeyName();
+                break;
+            }
+        }
+        assert close != null;
+        closeHotkey = close;
+    }
+
+    public String getCloseHotkey() {
+        return closeHotkey;
     }
 
     @Override

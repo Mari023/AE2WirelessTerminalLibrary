@@ -17,4 +17,12 @@ public class WETScreen extends PatternEncodingTermScreen<WETMenu> implements IUn
             addToLeftToolbar(new CycleTerminalButton(btn -> cycleTerminal()));
         widgets.add("singularityBackground", new BackgroundPanel(style.getImage("singularityBackground")));
     }
+
+    @Override
+    public boolean keyPressed(int keyCode, int scanCode, int keyPressed) {
+        boolean value = super.keyPressed(keyCode, scanCode, keyPressed);
+        if (!value)
+            return checkForTerminalKeys(keyCode, scanCode);
+        return true;
+    }
 }

@@ -241,7 +241,7 @@ public class WUTHandler {
             HotkeyActions.register(new Ae2wtlibLocatingService(name), hotkeyName);
 
             wirelessTerminals.put(name, new WTDefinition(open, WTMenuHostFactory, menuType, item, wut,
-                    TextConstants.formatTerminalName(itemID), component));
+                    TextConstants.formatTerminalName(itemID), hotkeyName, component));
             terminalNames.add(name);
         }
 
