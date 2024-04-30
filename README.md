@@ -3,9 +3,6 @@
 [![Modrinth downloads](https://img.shields.io/modrinth/dt/pNabrMMw?color=modrinth&label=modrinth&logo=modrinth)](https://modrinth.com/mod/applied-energistics-2-wireless-terminals)
 [![Modrinth Versions](https://img.shields.io/badge/dynamic/json?color=modrinth&label=modrinth&prefix=Available%20for:%20&query=game_versions&url=https://api.modrinth.com/v2/project/pNabrMMw&style=flat&logo=modrinth)](https://modrinth.com/mod/applied-energistics-2-wireless-terminals/versions)
 
-Read this in other languages:
-- [Русский](/README.ru.md)
-
 Applied Energistics 2 Wireless Terminals
 ========================================
 This is a Neoforge port
