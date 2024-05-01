@@ -3,6 +3,7 @@ package de.mari_023.ae2wtlib;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 
 import appeng.api.features.HotkeyAction;
 import appeng.core.definitions.AEItems;
@@ -74,12 +75,14 @@ public class AE2wtlib {
         var f = TrashMenu.TYPE;
     }
 
-    public static void registerScreens() {
-        InitScreens.register(WCTMenu.TYPE, WCTScreen::new, "/screens/wtlib/wireless_crafting_terminal.json");
-        InitScreens.register(WETMenu.TYPE, WETScreen::new, "/screens/wtlib/wireless_pattern_encoding_terminal.json");
-        InitScreens.register(WATMenu.TYPE, WATScreen::new, "/screens/wtlib/wireless_pattern_access_terminal.json");
-        InitScreens.register(MagnetMenu.TYPE, MagnetScreen::new, "/screens/wtlib/magnet.json");
-        InitScreens.register(TrashMenu.TYPE, TrashScreen::new, "/screens/wtlib/trash.json");
+    public static void registerScreens(RegisterMenuScreensEvent event) {
+        InitScreens.register(event, WCTMenu.TYPE, WCTScreen::new, "/screens/wtlib/wireless_crafting_terminal.json");
+        InitScreens.register(event, WETMenu.TYPE, WETScreen::new,
+                "/screens/wtlib/wireless_pattern_encoding_terminal.json");
+        InitScreens.register(event, WATMenu.TYPE, WATScreen::new,
+                "/screens/wtlib/wireless_pattern_access_terminal.json");
+        InitScreens.register(event, MagnetMenu.TYPE, MagnetScreen::new, "/screens/wtlib/magnet.json");
+        InitScreens.register(event, TrashMenu.TYPE, TrashScreen::new, "/screens/wtlib/trash.json");
     }
 
     public static ResourceLocation id(String name) {

@@ -15,7 +15,6 @@ import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.CommonHooks;
@@ -64,7 +63,7 @@ public class AE2wtlibForge {
             registerPacket(registrar, UpdateRestockPacket.ID, UpdateRestockPacket.STREAM_CODEC);
             registerPacket(registrar, RestockAmountPacket.ID, RestockAmountPacket.STREAM_CODEC);
         });
-        modEventBus.addListener((FMLClientSetupEvent e) -> AE2wtlib.registerScreens());
+        modEventBus.addListener(AE2wtlib::registerScreens);
         modEventBus.addListener((RegisterCapabilitiesEvent event) -> {
             registerPowerStorageItem(event, AE2wtlibItems.instance().UNIVERSAL_TERMINAL);
             registerPowerStorageItem(event, AE2wtlibItems.instance().PATTERN_ACCESS_TERMINAL);
