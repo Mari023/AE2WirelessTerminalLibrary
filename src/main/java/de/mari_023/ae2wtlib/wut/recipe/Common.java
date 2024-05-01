@@ -12,9 +12,9 @@ import net.minecraft.world.item.crafting.CraftingRecipe;
 import appeng.api.config.Actionable;
 import appeng.api.ids.AEComponents;
 import appeng.api.upgrades.IUpgradeInventory;
-import appeng.items.tools.powered.WirelessTerminalItem;
 
 import de.mari_023.ae2wtlib.AE2wtlibItems;
+import de.mari_023.ae2wtlib.terminal.ItemWT;
 import de.mari_023.ae2wtlib.wut.ItemWUT;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 
@@ -47,7 +47,7 @@ public abstract class Common implements CraftingRecipe {
     public static ItemStack mergeTerminal(ItemStack wut, ItemStack toMerge, String terminalName) {
         if (!(wut.getItem() instanceof ItemWUT itemWUT))
             return ItemStack.EMPTY;
-        if (!(toMerge.getItem() instanceof WirelessTerminalItem itemWT))
+        if (!(toMerge.getItem() instanceof ItemWT itemWT))
             return ItemStack.EMPTY;
 
         wut.set(WUTHandler.wirelessTerminals.get(terminalName).componentType(), Unit.INSTANCE);
@@ -68,9 +68,9 @@ public abstract class Common implements CraftingRecipe {
         // merge nbt
         var componentsPatch = toMerge.getComponentsPatch();
         // remove the keys that are already handled
-        componentsPatch.forget(AEComponents.STORED_ENERGY::equals);
-        componentsPatch.forget(AEComponents.ENERGY_CAPACITY::equals);
-        componentsPatch.forget(AEComponents.UPGRADES::equals);
+        componentsPatch = componentsPatch.forget(AEComponents.STORED_ENERGY::equals);
+        componentsPatch = componentsPatch.forget(AEComponents.ENERGY_CAPACITY::equals);
+        componentsPatch = componentsPatch.forget(AEComponents.UPGRADES::equals);
         wut.applyComponents(componentsPatch);
 
         return wut;
