@@ -200,16 +200,22 @@ public class WUTHandler {
     }
 
     public static class AddTerminalEvent {
-        private static final List<Consumer<AddTerminalEvent>> HANDLERS = new ArrayList<>();
+        @Nullable
+        private static List<Consumer<AddTerminalEvent>> HANDLERS = new ArrayList<>();
 
         public static synchronized void register(Consumer<AddTerminalEvent> handler) {
+            if (HANDLERS == null)
+                throw new IllegalStateException(
+                        "Cannot register terminal registration handler after terminal registration already happened");
             HANDLERS.add(handler);
         }
 
         public static synchronized void run() {
+            if (HANDLERS == null)
+                throw new IllegalStateException("Cannot run terminal registration handler twice");
             var event = new AddTerminalEvent();
             HANDLERS.forEach(c -> c.accept(event));
-            HANDLERS.clear();
+            HANDLERS = null;
         }
 
         /**
