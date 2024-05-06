@@ -4,33 +4,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
-
-import com.mojang.datafixers.util.Unit;
-import com.mojang.serialization.Codec;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.core.component.DataComponentType;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs;
 
-import appeng.api.config.Actionable;
-import appeng.hotkeys.HotkeyActions;
 import appeng.integration.modules.curios.CuriosIntegration;
 import appeng.menu.locator.ItemMenuHostLocator;
 import appeng.menu.locator.MenuLocators;
 
 import de.mari_023.ae2wtlib.AE2wtlibComponents;
-import de.mari_023.ae2wtlib.AE2wtlibItems;
 import de.mari_023.ae2wtlib.TextConstants;
-import de.mari_023.ae2wtlib.hotkeys.Ae2wtlibLocatingService;
 import de.mari_023.ae2wtlib.networking.UpdateWUTPackage;
-import de.mari_023.ae2wtlib.terminal.ItemWT;
 
 /**
  * This class handles functionalities related to the Wireless Universal Terminal (WUT). It provides methods to get and

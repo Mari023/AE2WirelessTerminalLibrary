@@ -9,7 +9,7 @@ import appeng.menu.me.items.PatternEncodingTermMenu;
 import appeng.menu.slot.RestrictedInputSlot;
 
 import de.mari_023.ae2wtlib.AE2wtlibSlotSemantics;
-import de.mari_023.ae2wtlib.wct.WCTMenuHost;
+import de.mari_023.ae2wtlib.terminal.WTMenuHost;
 import de.mari_023.ae2wtlib.wut.ItemWUT;
 
 public class WETMenu extends PatternEncodingTermMenu {
@@ -22,7 +22,7 @@ public class WETMenu extends PatternEncodingTermMenu {
         super(TYPE, id, ip, gui, true);
         wetMenuHost = gui;
         addSlot(new RestrictedInputSlot(RestrictedInputSlot.PlacableItemType.QE_SINGULARITY,
-                wetMenuHost.getSubInventory(WCTMenuHost.INV_SINGULARITY), 0), AE2wtlibSlotSemantics.SINGULARITY);
+                wetMenuHost.getSubInventory(WTMenuHost.INV_SINGULARITY), 0), AE2wtlibSlotSemantics.SINGULARITY);
     }
 
     @Override

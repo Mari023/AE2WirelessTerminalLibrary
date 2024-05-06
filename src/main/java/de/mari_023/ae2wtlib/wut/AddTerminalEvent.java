@@ -1,27 +1,32 @@
 package de.mari_023.ae2wtlib.wut;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+
+import com.mojang.datafixers.util.Unit;
+import com.mojang.serialization.Codec;
+
+import org.jetbrains.annotations.Nullable;
+
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs;
 
 import appeng.api.config.Actionable;
 import appeng.hotkeys.HotkeyActions;
-import com.mojang.datafixers.util.Unit;
-import com.mojang.serialization.Codec;
+
 import de.mari_023.ae2wtlib.AE2wtlibComponents;
 import de.mari_023.ae2wtlib.AE2wtlibItems;
 import de.mari_023.ae2wtlib.TextConstants;
 import de.mari_023.ae2wtlib.hotkeys.Ae2wtlibLocatingService;
 import de.mari_023.ae2wtlib.terminal.ItemWT;
-import net.minecraft.core.component.DataComponentType;
-import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Consumer;
 
 public final class AddTerminalEvent {
-    private AddTerminalEvent() {}
+    private AddTerminalEvent() {
+    }
+
     @Nullable
     private static List<Consumer<AddTerminalEvent>> HANDLERS = new ArrayList<>();
 
@@ -52,8 +57,8 @@ public final class AddTerminalEvent {
      * @param itemID            The item ID for the terminal.
      */
     public synchronized void addTerminal(String name, WTDefinition.ContainerOpener open,
-                                         WTDefinition.WTMenuHostFactory WTMenuHostFactory,
-                                         MenuType<?> menuType, ItemWT item, String hotkeyName, String itemID) {
+            WTDefinition.WTMenuHostFactory WTMenuHostFactory,
+            MenuType<?> menuType, ItemWT item, String hotkeyName, String itemID) {
         if (WUTHandler.terminalNames.contains(name))
             return;
 
@@ -85,15 +90,14 @@ public final class AddTerminalEvent {
      * @param itemID            The item ID for the terminal.
      */
     public void addTerminal(String name, WTDefinition.ContainerOpener open,
-                            WTDefinition.WTMenuHostFactory WTMenuHostFactory,
-                            MenuType<?> menuType, ItemWT item, String itemID) {
+            WTDefinition.WTMenuHostFactory WTMenuHostFactory,
+            MenuType<?> menuType, ItemWT item, String itemID) {
         addTerminal(name, open, WTMenuHostFactory, menuType, item, "wireless_" + name + "_terminal", itemID);
     }
 
     /**
-     * Registers a new terminal with the handler. Helper for terminals which follow the "wireless_" + name +
-     * "_terminal" scheme for hotkeyName and the "item.ae2wtlib.wireless_" + name + "_terminal" scheme for the
-     * itemID
+     * Registers a new terminal with the handler. Helper for terminals which follow the "wireless_" + name + "_terminal"
+     * scheme for hotkeyName and the "item.ae2wtlib.wireless_" + name + "_terminal" scheme for the itemID
      *
      * @param name              Terminal's name.
      * @param open              Container opener for the terminal.
@@ -102,8 +106,8 @@ public final class AddTerminalEvent {
      * @param item              The item representing the terminal.
      */
     public void addTerminal(String name, WTDefinition.ContainerOpener open,
-                            WTDefinition.WTMenuHostFactory WTMenuHostFactory,
-                            MenuType<?> menuType, ItemWT item) {
+            WTDefinition.WTMenuHostFactory WTMenuHostFactory,
+            MenuType<?> menuType, ItemWT item) {
         addTerminal(name, open, WTMenuHostFactory, menuType, item, "item.ae2wtlib.wireless_" + name + "_terminal");
     }
 }

@@ -12,7 +12,7 @@ import appeng.menu.implementations.PatternAccessTermMenu;
 import appeng.menu.slot.RestrictedInputSlot;
 
 import de.mari_023.ae2wtlib.AE2wtlibSlotSemantics;
-import de.mari_023.ae2wtlib.wct.WCTMenuHost;
+import de.mari_023.ae2wtlib.terminal.WTMenuHost;
 import de.mari_023.ae2wtlib.wut.ItemWUT;
 
 public class WATMenu extends PatternAccessTermMenu {
@@ -34,7 +34,7 @@ public class WATMenu extends PatternAccessTermMenu {
             addSlot(slot, SlotSemantics.UPGRADE);
         }
         addSlot(new RestrictedInputSlot(RestrictedInputSlot.PlacableItemType.QE_SINGULARITY,
-                watMenuHost.getSubInventory(WCTMenuHost.INV_SINGULARITY), 0), AE2wtlibSlotSemantics.SINGULARITY);
+                watMenuHost.getSubInventory(WTMenuHost.INV_SINGULARITY), 0), AE2wtlibSlotSemantics.SINGULARITY);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package de.mari_023.ae2wtlib;
 
-import de.mari_023.ae2wtlib.wut.AddTerminalEvent;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -22,7 +21,7 @@ import de.mari_023.ae2wtlib.wct.magnet_card.config.MagnetScreen;
 import de.mari_023.ae2wtlib.wet.WETMenu;
 import de.mari_023.ae2wtlib.wet.WETMenuHost;
 import de.mari_023.ae2wtlib.wet.WETScreen;
-import de.mari_023.ae2wtlib.wut.WUTHandler;
+import de.mari_023.ae2wtlib.wut.AddTerminalEvent;
 import de.mari_023.ae2wtlib.wut.recipe.Combine;
 import de.mari_023.ae2wtlib.wut.recipe.CombineSerializer;
 import de.mari_023.ae2wtlib.wut.recipe.Upgrade;
