@@ -1,5 +1,6 @@
 package de.mari_023.ae2wtlib;
 
+import de.mari_023.ae2wtlib.wut.AddTerminalEvent;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -31,7 +32,7 @@ public class AE2wtlib {
     public static final String MOD_NAME = "ae2wtlib";
 
     public static void onAe2Initialized() {
-        WUTHandler.AddTerminalEvent.register((event -> {
+        AddTerminalEvent.register((event -> {
             event.addTerminal("crafting", AE2wtlibItems.WIRELESS_CRAFTING_TERMINAL::tryOpen, WCTMenuHost::new,
                     WCTMenu.TYPE,
                     AE2wtlibItems.WIRELESS_CRAFTING_TERMINAL, HotkeyAction.WIRELESS_TERMINAL,
@@ -44,7 +45,7 @@ public class AE2wtlib {
                     AE2wtlibItems.PATTERN_ACCESS_TERMINAL);
         }));
 
-        WUTHandler.AddTerminalEvent.run();
+        AddTerminalEvent.run();
 
         Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, id(UpgradeSerializer.NAME), Upgrade.serializer);
         Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, id(CombineSerializer.NAME), Combine.serializer);
