@@ -1,5 +1,6 @@
 package de.mari_023.ae2wtlib;
 
+import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -15,6 +16,7 @@ import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.CommonHooks;
@@ -28,6 +30,7 @@ import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
+import appeng.api.util.AEColor;
 import appeng.items.tools.powered.powersink.PoweredItemCapabilities;
 
 import de.mari_023.ae2wtlib.networking.AE2wtlibPacket;
@@ -69,6 +72,9 @@ public class AE2wtlibForge {
             registerPowerStorageItem(event, AE2wtlibItems.PATTERN_ACCESS_TERMINAL);
             registerPowerStorageItem(event, AE2wtlibItems.PATTERN_ENCODING_TERMINAL);
         });
+        modEventBus.addListener((FMLClientSetupEvent event) -> ItemProperties.register(AE2wtlibItems.UNIVERSAL_TERMINAL,
+                AE2wtlib.id("color"), (stack, level, entity, seed) -> stack
+                        .getOrDefault(AE2wtlibComponents.COLOR, AEColor.TRANSPARENT).ordinal()));
     }
 
     private static <T extends AE2wtlibPacket> void registerPacket(PayloadRegistrar registrar,
