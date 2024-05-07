@@ -1,6 +1,9 @@
 package de.mari_023.ae2wtlib.mixin;
 
+import javax.annotation.Nullable;
+
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -19,7 +22,10 @@ import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
 
 @OnlyIn(Dist.CLIENT)
 @Mixin(value = GuiGraphics.class, remap = false)
-public class RestockRender {
+public abstract class RestockRender {
+    @Shadow
+    public abstract void renderItemDecorations(Font pFont, ItemStack pStack, int pX, int pY, @Nullable String pText);
+
     @Inject(method = "renderItemDecorations(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;II)V", at = @At(value = "HEAD"), cancellable = true)
     public void renderGuiItemOverlay(Font font, ItemStack stack, int x, int y, CallbackInfo ci) {
         if (Minecraft.getInstance().player == null || Minecraft.getInstance().player.isCreative())
@@ -30,8 +36,7 @@ public class RestockRender {
         if (stack.getCount() == 1 || !handler.isRestockAble(stack)
                 || !hostItem.getOrDefault(AE2wtlibComponents.RESTOCK, false))
             return;
-        ((GuiGraphics) (Object) this).renderItemDecorations(font, stack, x, y,
-                ReadableNumberConverter.format(handler.getAccessibleAmount(stack), 3));
+        renderItemDecorations(font, stack, x, y, ReadableNumberConverter.format(handler.getAccessibleAmount(stack), 3));
         ci.cancel();
     }
 }
