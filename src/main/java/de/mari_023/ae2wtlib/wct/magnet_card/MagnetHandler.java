@@ -118,13 +118,13 @@ public class MagnetHandler {
 
     public static void saveMagnetMode(ItemStack terminal, MagnetMode magnetSettings) {
         if (terminal.getItem() instanceof IUpgradeableItem upgradeableItem
-                && upgradeableItem.getUpgrades(terminal).isInstalled(AE2wtlibItems.instance().MAGNET_CARD))
+                && upgradeableItem.getUpgrades(terminal).isInstalled(AE2wtlibItems.MAGNET_CARD))
             terminal.set(AE2wtlibComponents.MAGNET_SETTINGS, magnetSettings);
     }
 
     public static MagnetMode getMagnetMode(ItemStack terminal) {
         if (terminal.getItem() instanceof IUpgradeableItem upgradeableItem
-                && upgradeableItem.getUpgrades(terminal).isInstalled(AE2wtlibItems.instance().MAGNET_CARD))
+                && upgradeableItem.getUpgrades(terminal).isInstalled(AE2wtlibItems.MAGNET_CARD))
             return terminal.getOrDefault(AE2wtlibComponents.MAGNET_SETTINGS, MagnetMode.INVALID);
         return MagnetMode.INVALID;
     }

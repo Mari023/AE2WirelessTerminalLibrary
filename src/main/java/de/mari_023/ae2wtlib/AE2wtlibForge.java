@@ -48,8 +48,8 @@ public class AE2wtlibForge {
         modEventBus.addListener((RegisterEvent e) -> {
             if (!e.getRegistryKey().equals(Registries.BLOCK))
                 return;
-            AE2wtlibItems items = new AE2wtlibItems();
-            AE2wtlib.onAe2Initialized(items);
+            AE2wtlibItems.init();
+            AE2wtlib.onAe2Initialized();
             AE2wtlibCreativeTab.init();
 
             for (var entry : AE2wtlibComponents.DR.entrySet())
@@ -65,9 +65,9 @@ public class AE2wtlibForge {
         });
         modEventBus.addListener(AE2wtlib::registerScreens);
         modEventBus.addListener((RegisterCapabilitiesEvent event) -> {
-            registerPowerStorageItem(event, AE2wtlibItems.instance().UNIVERSAL_TERMINAL);
-            registerPowerStorageItem(event, AE2wtlibItems.instance().PATTERN_ACCESS_TERMINAL);
-            registerPowerStorageItem(event, AE2wtlibItems.instance().PATTERN_ENCODING_TERMINAL);
+            registerPowerStorageItem(event, AE2wtlibItems.UNIVERSAL_TERMINAL);
+            registerPowerStorageItem(event, AE2wtlibItems.PATTERN_ACCESS_TERMINAL);
+            registerPowerStorageItem(event, AE2wtlibItems.PATTERN_ENCODING_TERMINAL);
         });
     }
 

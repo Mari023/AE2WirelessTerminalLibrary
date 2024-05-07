@@ -46,10 +46,10 @@ public class AE2wtlibTestPlots {
     @TestPlot("universal_terminal")
     public static void universal_terminal(PlotBuilder plot) {
         var stack1 = AEItems.WIRELESS_CRAFTING_TERMINAL.stack();
-        var stack2 = new ItemStack(AE2wtlibItems.instance().PATTERN_ACCESS_TERMINAL);
-        var stack3 = new ItemStack(AE2wtlibItems.instance().PATTERN_ENCODING_TERMINAL);
+        var stack2 = new ItemStack(AE2wtlibItems.PATTERN_ACCESS_TERMINAL);
+        var stack3 = new ItemStack(AE2wtlibItems.PATTERN_ENCODING_TERMINAL);
         var universalStack = Common.mergeTerminal(
-                Common.mergeTerminal(new ItemStack(AE2wtlibItems.instance().UNIVERSAL_TERMINAL), stack1,
+                Common.mergeTerminal(new ItemStack(AE2wtlibItems.UNIVERSAL_TERMINAL), stack1,
                         WUTHandler.getCurrentTerminal(stack1)),
                 stack2, WUTHandler.getCurrentTerminal(stack2));
 

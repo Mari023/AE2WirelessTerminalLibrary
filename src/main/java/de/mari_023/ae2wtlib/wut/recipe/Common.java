@@ -19,7 +19,7 @@ import de.mari_023.ae2wtlib.wut.ItemWUT;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 public abstract class Common implements CraftingRecipe {
-    protected final ItemStack outputStack = new ItemStack(AE2wtlibItems.instance().UNIVERSAL_TERMINAL);
+    protected final ItemStack outputStack = new ItemStack(AE2wtlibItems.UNIVERSAL_TERMINAL);
 
     @Override
     public boolean canCraftInDimensions(int width, int height) {

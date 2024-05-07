@@ -30,16 +30,18 @@ import de.mari_023.ae2wtlib.wut.recipe.UpgradeSerializer;
 public class AE2wtlib {
     public static final String MOD_NAME = "ae2wtlib";
 
-    public static void onAe2Initialized(AE2wtlibItems items) {
+    public static void onAe2Initialized() {
         WUTHandler.AddTerminalEvent.register((event -> {
-            event.addTerminal("crafting", items.WIRELESS_CRAFTING_TERMINAL::tryOpen, WCTMenuHost::new, WCTMenu.TYPE,
-                    items.WIRELESS_CRAFTING_TERMINAL, HotkeyAction.WIRELESS_TERMINAL,
+            event.addTerminal("crafting", AE2wtlibItems.WIRELESS_CRAFTING_TERMINAL::tryOpen, WCTMenuHost::new,
+                    WCTMenu.TYPE,
+                    AE2wtlibItems.WIRELESS_CRAFTING_TERMINAL, HotkeyAction.WIRELESS_TERMINAL,
                     "item.ae2.wireless_crafting_terminal");
-            event.addTerminal("pattern_encoding", items.PATTERN_ENCODING_TERMINAL::tryOpen, WETMenuHost::new,
+            event.addTerminal("pattern_encoding", AE2wtlibItems.PATTERN_ENCODING_TERMINAL::tryOpen, WETMenuHost::new,
                     WETMenu.TYPE,
-                    items.PATTERN_ENCODING_TERMINAL);
-            event.addTerminal("pattern_access", items.PATTERN_ACCESS_TERMINAL::tryOpen, WATMenuHost::new, WATMenu.TYPE,
-                    items.PATTERN_ACCESS_TERMINAL);
+                    AE2wtlibItems.PATTERN_ENCODING_TERMINAL);
+            event.addTerminal("pattern_access", AE2wtlibItems.PATTERN_ACCESS_TERMINAL::tryOpen, WATMenuHost::new,
+                    WATMenu.TYPE,
+                    AE2wtlibItems.PATTERN_ACCESS_TERMINAL);
         }));
 
         WUTHandler.AddTerminalEvent.run();
@@ -54,13 +56,12 @@ public class AE2wtlib {
     }
 
     static void addToCreativeTab() {
-        AE2wtlibItems items = AE2wtlibItems.instance();
         AE2wtlibCreativeTab.addTerminal(AEItems.WIRELESS_CRAFTING_TERMINAL.asItem());
-        AE2wtlibCreativeTab.addTerminal(items.PATTERN_ENCODING_TERMINAL);
-        AE2wtlibCreativeTab.addTerminal(items.PATTERN_ACCESS_TERMINAL);
-        AE2wtlibCreativeTab.addTerminal(items.UNIVERSAL_TERMINAL);
-        AE2wtlibCreativeTab.add(items.QUANTUM_BRIDGE_CARD);
-        AE2wtlibCreativeTab.add(items.MAGNET_CARD);
+        AE2wtlibCreativeTab.addTerminal(AE2wtlibItems.PATTERN_ENCODING_TERMINAL);
+        AE2wtlibCreativeTab.addTerminal(AE2wtlibItems.PATTERN_ACCESS_TERMINAL);
+        AE2wtlibCreativeTab.addTerminal(AE2wtlibItems.UNIVERSAL_TERMINAL);
+        AE2wtlibCreativeTab.add(AE2wtlibItems.QUANTUM_BRIDGE_CARD);
+        AE2wtlibCreativeTab.add(AE2wtlibItems.MAGNET_CARD);
     }
 
     @SuppressWarnings("unused")
