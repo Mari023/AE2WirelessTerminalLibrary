@@ -62,14 +62,14 @@ public final class AddTerminalEvent {
         if (WUTHandler.terminalNames.contains(name))
             return;
 
-        ItemStack wut = new ItemStack(AE2wtlibItems.instance().UNIVERSAL_TERMINAL);
+        ItemStack wut = new ItemStack(AE2wtlibItems.UNIVERSAL_TERMINAL);
         DataComponentType<Unit> component = AE2wtlibComponents.register("has_" + name + "_terminal",
                 builder -> builder
                         .persistent(Codec.EMPTY.codec())
                         .networkSynchronized(NeoForgeStreamCodecs.enumCodec(Unit.class)));
         wut.set(component, Unit.INSTANCE);
-        AE2wtlibItems.instance().UNIVERSAL_TERMINAL.injectAEPower(wut,
-                AE2wtlibItems.instance().UNIVERSAL_TERMINAL.getAEMaxPower(wut), Actionable.MODULATE);
+        AE2wtlibItems.UNIVERSAL_TERMINAL.injectAEPower(wut,
+                AE2wtlibItems.UNIVERSAL_TERMINAL.getAEMaxPower(wut), Actionable.MODULATE);
 
         HotkeyActions.register(new Ae2wtlibLocatingService(name), hotkeyName);
 
