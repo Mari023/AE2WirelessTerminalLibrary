@@ -162,6 +162,14 @@ runs {
 
     create("client")
     create("server")
+    create("data") {
+        programArguments.addAll(
+            "--mod", "ae2wtlib",
+            "--all",
+            "--output", file("src/generated/resources/").absolutePath,
+            "--existing", file("src/main/resources/").absolutePath
+        )
+    }
 }
 
 publishing {
