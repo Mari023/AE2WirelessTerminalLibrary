@@ -10,49 +10,61 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import appeng.api.util.AEColor;
 import appeng.core.definitions.AEItems;
+import appeng.items.tools.powered.WirelessTerminalItem;
 
 import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.AE2wtlibItems;
-import de.mari_023.ae2wtlib.terminal.ItemWT;
+import de.mari_023.ae2wtlib.TextConstants;
 
 public class ItemModelProvider extends net.neoforged.neoforge.client.model.generators.ItemModelProvider {
-    private static final ResourceLocation COLOR = AE2wtlib.id("color");
-
     public ItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
         super(output, AE2wtlib.MOD_NAME, existingFileHelper);
     }
 
     @Override
     protected void registerModels() {
-        terminal((ItemWT) AEItems.WIRELESS_CRAFTING_TERMINAL.asItem(), "crafting");
-        terminal(AE2wtlibItems.PATTERN_ACCESS_TERMINAL, "pattern_access");
-        terminal(AE2wtlibItems.PATTERN_ENCODING_TERMINAL, "pattern_encoding");
-        terminal(AE2wtlibItems.UNIVERSAL_TERMINAL, "universal");
+        ResourceLocation housing = AE2wtlib.id("item/terminal_housing");
+        terminal(AEItems.WIRELESS_CRAFTING_TERMINAL.asItem(), housing, "crafting");
+        terminal(AE2wtlibItems.PATTERN_ACCESS_TERMINAL, housing, "pattern_access");
+        terminal(AE2wtlibItems.PATTERN_ENCODING_TERMINAL, housing, "pattern_encoding");
+        terminal(AE2wtlibItems.UNIVERSAL_TERMINAL, housing, "universal");
+        terminal(AEItems.WIRELESS_TERMINAL.asItem(), housing, "");
     }
 
-    private void terminal(ItemWT item, String terminalName) {
+    private void terminal(WirelessTerminalItem item, ResourceLocation housing, String terminalName) {
         ResourceLocation registryName = Objects.requireNonNull(item.getRegistryName());
         String registryNameNamespace = registryName.getNamespace();
         String registryNamePath = registryName.getPath();
 
-        ItemModelBuilder builder = terminal(registryNamePath, terminalName, AEColor.TRANSPARENT);
+        ItemModelBuilder builder = terminal(registryNamePath, housing, terminalName, AEColor.TRANSPARENT, "lit");
 
         for (AEColor color : AEColor.values()) {
-            terminal(registryNamePath + "_%s", terminalName, color);
+            terminal(registryNamePath + "_%s_%s", housing, terminalName, color, "lit");
+            terminal(registryNamePath + "_%s_%s", housing, terminalName, color, "unlit");
 
-            builder = builder.override().predicate(COLOR, color.ordinal()).model(new ModelFile.ExistingModelFile(
-                    new ResourceLocation(registryNameNamespace, registryNamePath + "_" + color.registryPrefix),
-                    existingFileHelper)).end();
+            builder = builder.override().predicate(TextConstants.COLOR, color.ordinal()).predicate(TextConstants.LED_STATUS, 0)
+                    .model(new ModelFile.ExistingModelFile(
+                            new ResourceLocation(registryNameNamespace, registryNamePath + "_" + color.registryPrefix+"_unlit"),
+                            existingFileHelper))
+                    .end();
+            builder = builder.override().predicate(TextConstants.COLOR, color.ordinal()).predicate(TextConstants.LED_STATUS, 1)
+                    .model(new ModelFile.ExistingModelFile(
+                            new ResourceLocation(registryNameNamespace, registryNamePath + "_" + color.registryPrefix+"_lit"),
+                            existingFileHelper))
+                    .end();
         }
     }
 
-    private ItemModelBuilder terminal(String path, String terminalName, AEColor color) {
+    private ItemModelBuilder terminal(String path, ResourceLocation housing, String terminalName, AEColor color,
+            String ledStatus) {
+        if (!terminalName.isEmpty())
+            terminalName = "_" + terminalName;
         String c = color.registryPrefix;
         return singleTexture(
-                path.formatted(c),
+                path.formatted(c, ledStatus),
                 mcLoc("item/generated"),
-                "layer0", AE2wtlib.id("item/terminal_housing"))
-                .texture("layer1", "item/wireless_%s_terminal_%s".formatted(terminalName, c))
-                .texture("layer2", "item/wireless_terminal_led_%s".formatted(c));
+                "layer0", housing)
+                .texture("layer1", "item/wireless%s_terminal_%s".formatted(terminalName, c))
+                .texture("layer2", "item/wireless_terminal_led_%s_%s".formatted(c, ledStatus));
     }
 }

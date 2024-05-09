@@ -31,6 +31,7 @@ import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
 import appeng.api.util.AEColor;
+import appeng.core.definitions.AEItems;
 import appeng.items.tools.powered.powersink.PoweredItemCapabilities;
 
 import de.mari_023.ae2wtlib.networking.AE2wtlibPacket;
@@ -39,6 +40,7 @@ import de.mari_023.ae2wtlib.networking.RestockAmountPacket;
 import de.mari_023.ae2wtlib.networking.UpdateRestockPacket;
 import de.mari_023.ae2wtlib.networking.UpdateWUTPackage;
 import de.mari_023.ae2wtlib.terminal.ItemWT;
+import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 @Mod(AE2wtlib.MOD_NAME)
 @EventBusSubscriber
@@ -72,9 +74,28 @@ public class AE2wtlibForge {
             registerPowerStorageItem(event, AE2wtlibItems.PATTERN_ACCESS_TERMINAL);
             registerPowerStorageItem(event, AE2wtlibItems.PATTERN_ENCODING_TERMINAL);
         });
-        modEventBus.addListener((FMLClientSetupEvent event) -> ItemProperties.register(AE2wtlibItems.UNIVERSAL_TERMINAL,
-                AE2wtlib.id("color"), (stack, level, entity, seed) -> stack
-                        .getOrDefault(AE2wtlibComponents.COLOR, AEColor.TRANSPARENT).ordinal()));
+        modEventBus.addListener((FMLClientSetupEvent event) -> {
+            ItemProperties.register(AE2wtlibItems.UNIVERSAL_TERMINAL,
+                    TextConstants.COLOR, (stack, level, entity, seed) -> stack
+                            .getOrDefault(AE2wtlibComponents.COLOR, AEColor.TRANSPARENT).ordinal());
+            ItemProperties.register(AE2wtlibItems.UNIVERSAL_TERMINAL,
+                    TextConstants.LED_STATUS, (stack, level, entity, seed) -> stack
+                            .getOrDefault(AE2wtlibComponents.LED_STATUS, true) ? 1 : 0);
+            ItemProperties.register(AEItems.WIRELESS_TERMINAL.asItem(),
+                    TextConstants.COLOR, (stack, level, entity, seed) -> stack
+                            .getOrDefault(AE2wtlibComponents.COLOR, AEColor.TRANSPARENT).ordinal());
+            ItemProperties.register(AEItems.WIRELESS_TERMINAL.asItem(),
+                    TextConstants.LED_STATUS, (stack, level, entity, seed) -> stack
+                            .getOrDefault(AE2wtlibComponents.LED_STATUS, true) ? 1 : 0);
+            for (var terminal : WUTHandler.wirelessTerminals.values()) {
+                ItemProperties.register(terminal.item(),
+                        TextConstants.COLOR, (stack, level, entity, seed) -> stack
+                                .getOrDefault(AE2wtlibComponents.COLOR, AEColor.TRANSPARENT).ordinal());
+                ItemProperties.register(terminal.item(),
+                        TextConstants.LED_STATUS, (stack, level, entity, seed) -> stack
+                                .getOrDefault(AE2wtlibComponents.LED_STATUS, true) ? 1 : 0);
+            }
+        });
     }
 
     private static <T extends AE2wtlibPacket> void registerPacket(PayloadRegistrar registrar,
