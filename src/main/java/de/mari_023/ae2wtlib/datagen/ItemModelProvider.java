@@ -5,7 +5,6 @@ import java.util.Objects;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
-import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 import appeng.api.util.AEColor;
@@ -32,29 +31,21 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
     }
 
     private void terminal(WirelessTerminalItem item, ResourceLocation housing, String terminalName) {
-        ResourceLocation registryName = Objects.requireNonNull(item.getRegistryName());
-        String registryNameNamespace = registryName.getNamespace();
-        String registryNamePath = registryName.getPath();
+        String registryNamePath = Objects.requireNonNull(item.getRegistryName()).getPath();
 
         ItemModelBuilder builder = terminal(registryNamePath, housing, terminalName, AEColor.TRANSPARENT, "lit");
 
         for (AEColor color : AEColor.values()) {
-            terminal(registryNamePath + "_%s_%s", housing, terminalName, color, "lit");
-            terminal(registryNamePath + "_%s_%s", housing, terminalName, color, "unlit");
+            var lit = terminal(registryNamePath + "_%s_%s", housing, terminalName, color, "lit");
+            var unlit = terminal(registryNamePath + "_%s_%s", housing, terminalName, color, "unlit");
 
             builder = builder.override().predicate(TextConstants.COLOR, color.ordinal())
-                    .predicate(TextConstants.LED_STATUS, 0)
-                    .model(new ModelFile.ExistingModelFile(
-                            new ResourceLocation(registryNameNamespace,
-                                    registryNamePath + "_" + color.registryPrefix + "_unlit"),
-                            existingFileHelper))
+                    .predicate(TextConstants.LED_STATUS, 1)
+                    .model(lit)
                     .end();
             builder = builder.override().predicate(TextConstants.COLOR, color.ordinal())
-                    .predicate(TextConstants.LED_STATUS, 1)
-                    .model(new ModelFile.ExistingModelFile(
-                            new ResourceLocation(registryNameNamespace,
-                                    registryNamePath + "_" + color.registryPrefix + "_lit"),
-                            existingFileHelper))
+                    .predicate(TextConstants.LED_STATUS, 0)
+                    .model(unlit)
                     .end();
         }
     }
