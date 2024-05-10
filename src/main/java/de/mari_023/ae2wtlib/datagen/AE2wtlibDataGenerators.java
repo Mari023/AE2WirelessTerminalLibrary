@@ -15,6 +15,7 @@ public class AE2wtlibDataGenerators {
         var pack = generator.getVanillaPack(true);
         var existingFileHelper = event.getExistingFileHelper();
 
+        pack.addProvider(packOutput -> new TexturesProvider(packOutput, existingFileHelper));
         pack.addProvider(packOutput -> new ItemModelProvider(packOutput, existingFileHelper));
     }
 }

@@ -42,14 +42,18 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
             terminal(registryNamePath + "_%s_%s", housing, terminalName, color, "lit");
             terminal(registryNamePath + "_%s_%s", housing, terminalName, color, "unlit");
 
-            builder = builder.override().predicate(TextConstants.COLOR, color.ordinal()).predicate(TextConstants.LED_STATUS, 0)
+            builder = builder.override().predicate(TextConstants.COLOR, color.ordinal())
+                    .predicate(TextConstants.LED_STATUS, 0)
                     .model(new ModelFile.ExistingModelFile(
-                            new ResourceLocation(registryNameNamespace, registryNamePath + "_" + color.registryPrefix+"_unlit"),
+                            new ResourceLocation(registryNameNamespace,
+                                    registryNamePath + "_" + color.registryPrefix + "_unlit"),
                             existingFileHelper))
                     .end();
-            builder = builder.override().predicate(TextConstants.COLOR, color.ordinal()).predicate(TextConstants.LED_STATUS, 1)
+            builder = builder.override().predicate(TextConstants.COLOR, color.ordinal())
+                    .predicate(TextConstants.LED_STATUS, 1)
                     .model(new ModelFile.ExistingModelFile(
-                            new ResourceLocation(registryNameNamespace, registryNamePath + "_" + color.registryPrefix+"_lit"),
+                            new ResourceLocation(registryNameNamespace,
+                                    registryNamePath + "_" + color.registryPrefix + "_lit"),
                             existingFileHelper))
                     .end();
         }

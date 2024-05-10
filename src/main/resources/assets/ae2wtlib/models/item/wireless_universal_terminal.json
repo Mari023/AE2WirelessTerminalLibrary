@@ -2,5 +2,19 @@
   "parent": "item/generated",
   "textures": {
     "layer0": "ae2wtlib:item/wireless_universal_terminal"
-  }
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "ae2wtlib:color": 1
+      },
+      "model": "item/fishing_rod_cast"
+    },
+    {
+      "predicate": {
+        "ae2wtlib:color": 16
+      },
+      "model": "ae2wtlib:item/wireless_universal_terminal"
+    }
+  ]
 }
