@@ -1,0 +1,248 @@
+{
+  "parent": "minecraft:item/generated",
+  "overrides": [
+    {
+      "model": "ae2wtlib:item/wireless_pattern_access_terminal_white_lit",
+      "predicate": {
+        "ae2wtlib:color": 0.0,
+        "ae2wtlib:led_status": 1.0
+      }
+    },
+    {
+      "model": "ae2wtlib:item/wireless_pattern_access_terminal_white_unlit",
+      "predicate": {
+        "ae2wtlib:color": 0.0,
+        "ae2wtlib:led_status": 0.0
+      }
+    },
+    {
+      "model": "ae2wtlib:item/wireless_pattern_access_terminal_orange_lit",
+      "predicate": {
+        "ae2wtlib:color": 1.0,
+        "ae2wtlib:led_status": 1.0
+      }
+    },
+    {
+      "model": "ae2wtlib:item/wireless_pattern_access_terminal_orange_unlit",
+      "predicate": {
+        "ae2wtlib:color": 1.0,
+        "ae2wtlib:led_status": 0.0
+      }
+    },
+    {
+      "model": "ae2wtlib:item/wireless_pattern_access_terminal_magenta_lit",
+      "predicate": {
+        "ae2wtlib:color": 2.0,
+        "ae2wtlib:led_status": 1.0
+      }
+    },
+    {
+      "model": "ae2wtlib:item/wireless_pattern_access_terminal_magenta_unlit",
+      "predicate": {
+        "ae2wtlib:color": 2.0,
+        "ae2wtlib:led_status": 0.0
+      }
+    },
+    {
+      "model": "ae2wtlib:item/wireless_pattern_access_terminal_light_blue_lit",
+      "predicate": {
+        "ae2wtlib:color": 3.0,
+        "ae2wtlib:led_status": 1.0
+      }
+    },
+    {
+      "model": "ae2wtlib:item/wireless_pattern_access_terminal_light_blue_unlit",
+      "predicate": {
+        "ae2wtlib:color": 3.0,
+        "ae2wtlib:led_status": 0.0
+      }
+    },
+    {
+      "model": "ae2wtlib:item/wireless_pattern_access_terminal_yellow_lit",
+      "predicate": {
+        "ae2wtlib:color": 4.0,
+        "ae2wtlib:led_status": 1.0
+      }
+    },
+    {
+      "model": "ae2wtlib:item/wireless_pattern_access_terminal_yellow_unlit",
+      "predicate": {
+        "ae2wtlib:color": 4.0,
+        "ae2wtlib:led_status": 0.0
+      }
+    },
+    {
+      "model": "ae2wtlib:item/wireless_pattern_access_terminal_lime_lit",
+      "predicate": {
+        "ae2wtlib:color": 5.0,
+        "ae2wtlib:led_status": 1.0
+      }
+    },
+    {
+      "model": "ae2wtlib:item/wireless_pattern_access_terminal_lime_unlit",
+      "predicate": {
+        "ae2wtlib:color": 5.0,
+        "ae2wtlib:led_status": 0.0
+      }
+    },
+    {
+      "model": "ae2wtlib:item/wireless_pattern_access_terminal_pink_lit",
+      "predicate": {
+        "ae2wtlib:color": 6.0,
+        "ae2wtlib:led_status": 1.0
+      }
+    },
+    {
+      "model": "ae2wtlib:item/wireless_pattern_access_terminal_pink_unlit",
+      "predicate": {
+        "ae2wtlib:color": 6.0,
+        "ae2wtlib:led_status": 0.0
+      }
+    },
+    {
+      "model": "ae2wtlib:item/wireless_pattern_access_terminal_gray_lit",
+      "predicate": {
+        "ae2wtlib:color": 7.0,
+        "ae2wtlib:led_status": 1.0
+      }
+    },
+    {
+      "model": "ae2wtlib:item/wireless_pattern_access_terminal_gray_unlit",
+      "predicate": {
+        "ae2wtlib:color": 7.0,
+        "ae2wtlib:led_status": 0.0
+      }
+    },
+    {
+      "model": "ae2wtlib:item/wireless_pattern_access_terminal_light_gray_lit",
+      "predicate": {
+        "ae2wtlib:color": 8.0,
+        "ae2wtlib:led_status": 1.0
+      }
+    },
+    {
+      "model": "ae2wtlib:item/wireless_pattern_access_terminal_light_gray_unlit",
+      "predicate": {
+        "ae2wtlib:color": 8.0,
+        "ae2wtlib:led_status": 0.0
+      }
+    },
+    {
+      "model": "ae2wtlib:item/wireless_pattern_access_terminal_cyan_lit",
+      "predicate": {
+        "ae2wtlib:color": 9.0,
+        "ae2wtlib:led_status": 1.0
+      }
+    },
+    {
+      "model": "ae2wtlib:item/wireless_pattern_access_terminal_cyan_unlit",
+      "predicate": {
+        "ae2wtlib:color": 9.0,
+        "ae2wtlib:led_status": 0.0
+      }
+    },
+    {
+      "model": "ae2wtlib:item/wireless_pattern_access_terminal_purple_lit",
+      "predicate": {
+        "ae2wtlib:color": 10.0,
+        "ae2wtlib:led_status": 1.0
+      }
+    },
+    {
+      "model": "ae2wtlib:item/wireless_pattern_access_terminal_purple_unlit",
+      "predicate": {
+        "ae2wtlib:color": 10.0,
+        "ae2wtlib:led_status": 0.0
+      }
+    },
+    {
+      "model": "ae2wtlib:item/wireless_pattern_access_terminal_blue_lit",
+      "predicate": {
+        "ae2wtlib:color": 11.0,
+        "ae2wtlib:led_status": 1.0
+      }
+    },
+    {
+      "model": "ae2wtlib:item/wireless_pattern_access_terminal_blue_unlit",
+      "predicate": {
+        "ae2wtlib:color": 11.0,
+        "ae2wtlib:led_status": 0.0
+      }
+    },
+    {
+      "model": "ae2wtlib:item/wireless_pattern_access_terminal_brown_lit",
+      "predicate": {
+        "ae2wtlib:color": 12.0,
+        "ae2wtlib:led_status": 1.0
+      }
+    },
+    {
+      "model": "ae2wtlib:item/wireless_pattern_access_terminal_brown_unlit",
+      "predicate": {
+        "ae2wtlib:color": 12.0,
+        "ae2wtlib:led_status": 0.0
+      }
+    },
+    {
+      "model": "ae2wtlib:item/wireless_pattern_access_terminal_green_lit",
+      "predicate": {
+        "ae2wtlib:color": 13.0,
+        "ae2wtlib:led_status": 1.0
+      }
+    },
+    {
+      "model": "ae2wtlib:item/wireless_pattern_access_terminal_green_unlit",
+      "predicate": {
+        "ae2wtlib:color": 13.0,
+        "ae2wtlib:led_status": 0.0
+      }
+    },
+    {
+      "model": "ae2wtlib:item/wireless_pattern_access_terminal_red_lit",
+      "predicate": {
+        "ae2wtlib:color": 14.0,
+        "ae2wtlib:led_status": 1.0
+      }
+    },
+    {
+      "model": "ae2wtlib:item/wireless_pattern_access_terminal_red_unlit",
+      "predicate": {
+        "ae2wtlib:color": 14.0,
+        "ae2wtlib:led_status": 0.0
+      }
+    },
+    {
+      "model": "ae2wtlib:item/wireless_pattern_access_terminal_black_lit",
+      "predicate": {
+        "ae2wtlib:color": 15.0,
+        "ae2wtlib:led_status": 1.0
+      }
+    },
+    {
+      "model": "ae2wtlib:item/wireless_pattern_access_terminal_black_unlit",
+      "predicate": {
+        "ae2wtlib:color": 15.0,
+        "ae2wtlib:led_status": 0.0
+      }
+    },
+    {
+      "model": "ae2wtlib:item/wireless_pattern_access_terminal_fluix_lit",
+      "predicate": {
+        "ae2wtlib:color": 16.0,
+        "ae2wtlib:led_status": 1.0
+      }
+    },
+    {
+      "model": "ae2wtlib:item/wireless_pattern_access_terminal_fluix_unlit",
+      "predicate": {
+        "ae2wtlib:color": 16.0,
+        "ae2wtlib:led_status": 0.0
+      }
+    }
+  ],
+  "textures": {
+    "layer0": "ae2wtlib:item/terminal_housing",
+    "layer1": "ae2wtlib:item/wireless_pattern_access_terminal_fluix",
+    "layer2": "ae2wtlib:item/wireless_terminal_led_fluix_lit"
+  }
+}

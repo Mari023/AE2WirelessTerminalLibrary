@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "ae2wtlib:item/terminal_housing",
+    "layer1": "ae2wtlib:item/wireless_terminal_white",
+    "layer2": "ae2wtlib:item/wireless_terminal_led_white_lit"
+  }
+}
