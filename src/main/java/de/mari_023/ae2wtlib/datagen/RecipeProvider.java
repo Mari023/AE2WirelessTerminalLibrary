@@ -3,9 +3,12 @@ package de.mari_023.ae2wtlib.datagen;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
+import appeng.datagen.providers.tags.ConventionTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
@@ -34,10 +37,15 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider {
     }
 
     private static void color(RecipeOutput consumer, WirelessTerminalItem terminal, AEColor color) {
+        TagKey<Item> dye ;
+        if (color == AEColor.TRANSPARENT) {
+            dye = ConventionTags.CAN_REMOVE_COLOR;
+        } else
+            dye = color.dye.getTag();
         consumer.accept(
                 AE2wtlib.id("color_" + Objects.requireNonNull(terminal.getRegistryName()).getPath() + "_"
                         + color.registryPrefix),
-                new Color(Ingredient.of(terminal), Ingredient.of(color.dye.getTag()), color.registryPrefix,
+                new Color(Ingredient.of(terminal), Ingredient.of(dye), color.registryPrefix,
                         new ItemStack(terminal)),
                 null);
     }
