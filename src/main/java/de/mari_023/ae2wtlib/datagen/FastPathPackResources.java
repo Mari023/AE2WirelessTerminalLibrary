@@ -25,7 +25,7 @@ import net.minecraft.server.packs.resources.IoSupplier;
 public class FastPathPackResources extends PathPackResources {
     private final Path root;
 
-    public FastPathPackResources(String name, Path root) {// FIXME
+    public FastPathPackResources(String name, Path root) {
         super(new PackLocationInfo(name, Component.empty(), PackSource.BUILT_IN, Optional.empty()), root);
         this.root = root;
     }

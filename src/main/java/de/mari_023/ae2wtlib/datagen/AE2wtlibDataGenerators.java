@@ -11,7 +11,6 @@ public class AE2wtlibDataGenerators {
     @SubscribeEvent
     public static void onGatherData(GatherDataEvent event) {
         var generator = event.getGenerator();
-        var registries = event.getLookupProvider();
         var pack = generator.getVanillaPack(true);
         var existingFileHelper = event.getExistingFileHelper();
 

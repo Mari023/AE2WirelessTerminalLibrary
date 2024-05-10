@@ -52,7 +52,7 @@ public record TexturesProvider(PackOutput packOutput, ExistingFileHelper existin
     private void writeTexture(CachedOutput cache, NativeImage image, String textureId) {
         try {
             var path = packOutput.getOutputFolder().resolve("assets").resolve(textureId.replace(':', '/'));
-            cache.writeIfNeeded(path, image.asByteArray(), Hashing.sha1().hashBytes(image.asByteArray()));
+            cache.writeIfNeeded(path, image.asByteArray(), Hashing.sha256().hashBytes(image.asByteArray()));
         } catch (IOException ex) {
             throw new RuntimeException("Failed to write texture " + textureId, ex);
         }

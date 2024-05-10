@@ -23,14 +23,6 @@ public final class AE2wtlibTextures {
             ResourceProvider manager, ExistingFileHelper fileHelper) {
         TextureManager mtm = new TextureManager(manager, textureWriter);
 
-        // Texture generation runs in two phases:
-        // 1. all textures that don't depend on other generated textures are submitted to {@code defer.accept} and
-        // generated in parallel.
-        // 2. textures that depend on other generated textures are submitted to {@code mtm.runAtEnd} are generated in
-        // parallel once phase 1. is
-        // complete.
-
-        // Futures for the first work phase
         List<CompletableFuture<?>> futures = new ArrayList<>();
         Consumer<IORunnable> defer = r -> futures
                 .add(CompletableFuture.runAsync(r::safeRun, Util.backgroundExecutor()));
@@ -48,10 +40,6 @@ public final class AE2wtlibTextures {
         }
 
         return CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
-                .thenComposeAsync(v -> {
-                    // Do second phase work
-                    return mtm.doEndWork();
-                }, Util.backgroundExecutor())
                 .thenRun(() -> mtm.markTexturesAsGenerated(fileHelper));
     }
 

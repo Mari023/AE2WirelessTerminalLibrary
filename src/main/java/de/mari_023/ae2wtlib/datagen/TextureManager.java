@@ -2,16 +2,12 @@ package de.mari_023.ae2wtlib.datagen;
 
 import java.io.IOException;
 import java.util.Optional;
-import java.util.Queue;
 import java.util.Set;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.function.BiConsumer;
 
 import com.mojang.blaze3d.platform.NativeImage;
 
-import net.minecraft.Util;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.Resource;
@@ -21,7 +17,6 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
 public class TextureManager {
     private final ResourceProvider rm;
     private final BiConsumer<NativeImage, String> textureWriter;
-    private final Queue<IORunnable> endRunnables = new ConcurrentLinkedQueue<>();
     private final Set<String> generatedTextures = ConcurrentHashMap.newKeySet();
 
     public TextureManager(ResourceProvider rm, BiConsumer<NativeImage, String> textureWriter) {
@@ -79,18 +74,6 @@ public class TextureManager {
         if (closeImage) {
             image.close();
         }
-    }
-
-    public void runAtEnd(IORunnable runnable) {
-        endRunnables.add(runnable);
-    }
-
-    public CompletableFuture<?> doEndWork() {
-        var ret = CompletableFuture.allOf(
-                endRunnables.stream().map(r -> CompletableFuture.runAsync(r::safeRun, Util.backgroundExecutor()))
-                        .toArray(CompletableFuture[]::new));
-        endRunnables.clear();
-        return ret;
     }
 
     public void markTexturesAsGenerated(ExistingFileHelper helper) {
