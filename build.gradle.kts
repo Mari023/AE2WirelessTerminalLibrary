@@ -152,6 +152,12 @@ tasks {
     }
 }
 
+sourceSets {
+    main {
+        resources.srcDir(file("src/generated/resources"))
+    }
+}
+
 runs {
     configureEach {
         workingDirectory(file("run"))
