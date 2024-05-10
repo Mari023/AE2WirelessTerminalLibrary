@@ -35,6 +35,7 @@ import java.util.concurrent.CompletableFuture;
 import com.google.common.hash.Hashing;
 import com.mojang.blaze3d.platform.NativeImage;
 
+import de.mari_023.ae2wtlib.AE2wtlib;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
@@ -86,6 +87,6 @@ public record TexturesProvider(PackOutput packOutput, ExistingFileHelper existin
 
     @Override
     public String getName() {
-        return "Textures";
+        return "Textures: "+ AE2wtlib.MOD_NAME;
     }
 }
