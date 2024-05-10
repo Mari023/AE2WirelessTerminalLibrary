@@ -3,8 +3,8 @@ package de.mari_023.ae2wtlib.datagen;
 import appeng.api.util.AEColor;
 
 public record ColorMap(AEColor color) {
-    private static final int BLACK_VARIANT = 0xFF000000;
-    private static final int MEDIUM_VARIANT = 0xFF888888;
+    private static final int BLACK_VARIANT = 0xFF333334;//TODO convert images to 000000
+    private static final int MEDIUM_VARIANT = 0xFF6E6E6E;//TODO convert images to 888888
     private static final int WHITE_VARIANT = 0xFFFFFFFF;
 
     public int map(int argb) {
