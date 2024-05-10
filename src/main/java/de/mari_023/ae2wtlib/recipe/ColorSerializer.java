@@ -3,7 +3,6 @@ package de.mari_023.ae2wtlib.recipe;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -19,14 +18,14 @@ public class ColorSerializer implements net.minecraft.world.item.crafting.Recipe
                     Ingredient.CODEC.fieldOf("dye").forGetter(Color::dye),
                     StringRepresentable.StringRepresentableCodec.STRING.fieldOf("color")
                             .forGetter(Color::color),
-                    ItemStack.ITEM_NON_AIR_CODEC.fieldOf("output")
+                    ItemStack.STRICT_SINGLE_ITEM_CODEC.fieldOf("output")
                             .forGetter(Color::output))
                     .apply(builder, Color::new));
     private static final StreamCodec<RegistryFriendlyByteBuf, Color> STREAM_CODEC = StreamCodec.composite(
             Ingredient.CONTENTS_STREAM_CODEC, Color::terminal,
             Ingredient.CONTENTS_STREAM_CODEC, Color::dye,
             ByteBufCodecs.STRING_UTF8, Color::color,
-            ByteBufCodecs.holderRegistry(Registries.ITEM), Color::output,
+            ItemStack.STREAM_CODEC, Color::output,
             Color::new);
 
     @Override

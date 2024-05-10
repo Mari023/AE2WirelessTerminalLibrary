@@ -3,10 +3,10 @@ package de.mari_023.ae2wtlib.datagen;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
-import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
 import appeng.api.util.AEColor;
@@ -38,7 +38,7 @@ public class RecipeProvider extends net.minecraft.data.recipes.RecipeProvider {
                 AE2wtlib.id("color_" + Objects.requireNonNull(terminal.getRegistryName()).getPath() + "_"
                         + color.registryPrefix),
                 new Color(Ingredient.of(terminal), Ingredient.of(color.dye.getTag()), color.registryPrefix,
-                        Holder.direct(terminal.asItem())),
+                        new ItemStack(terminal)),
                 null);
     }
 }
