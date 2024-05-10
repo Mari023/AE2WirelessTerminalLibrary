@@ -17,8 +17,8 @@ import appeng.server.testplots.TestPlot;
 import appeng.server.testplots.TestPlotClass;
 import appeng.server.testworld.PlotBuilder;
 
+import de.mari_023.ae2wtlib.recipe.Common;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
-import de.mari_023.ae2wtlib.wut.recipe.Common;
 
 @TestPlotClass
 public class AE2wtlibTestPlots {

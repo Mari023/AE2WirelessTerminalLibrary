@@ -1,7 +1,7 @@
 @FieldsAreNonnullByDefault
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
-package de.mari_023.ae2wtlib.wut.recipe;
+package de.mari_023.ae2wtlib.recipe;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 

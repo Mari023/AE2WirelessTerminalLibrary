@@ -12,6 +12,10 @@ import appeng.init.client.InitScreens;
 
 import de.mari_023.ae2wtlib.hotkeys.MagnetHotkeyAction;
 import de.mari_023.ae2wtlib.hotkeys.RestockHotkeyAction;
+import de.mari_023.ae2wtlib.recipe.Combine;
+import de.mari_023.ae2wtlib.recipe.CombineSerializer;
+import de.mari_023.ae2wtlib.recipe.Upgrade;
+import de.mari_023.ae2wtlib.recipe.UpgradeSerializer;
 import de.mari_023.ae2wtlib.wat.WATMenu;
 import de.mari_023.ae2wtlib.wat.WATMenuHost;
 import de.mari_023.ae2wtlib.wat.WATScreen;
@@ -22,10 +26,6 @@ import de.mari_023.ae2wtlib.wet.WETMenu;
 import de.mari_023.ae2wtlib.wet.WETMenuHost;
 import de.mari_023.ae2wtlib.wet.WETScreen;
 import de.mari_023.ae2wtlib.wut.AddTerminalEvent;
-import de.mari_023.ae2wtlib.wut.recipe.Combine;
-import de.mari_023.ae2wtlib.wut.recipe.CombineSerializer;
-import de.mari_023.ae2wtlib.wut.recipe.Upgrade;
-import de.mari_023.ae2wtlib.wut.recipe.UpgradeSerializer;
 
 public class AE2wtlib {
     public static final String MOD_NAME = "ae2wtlib";
