@@ -36,7 +36,7 @@ public final class AE2wtlibTextures {
                 .add(CompletableFuture.runAsync(r::safeRun, Util.backgroundExecutor()));
 
         for (AEColor color : AEColor.values()) {
-            var colorAmp = new Coloramp(mtm, 0, "");
+            var colorAmp = new ColorMap(color);
             defer.accept(() -> generateTerminalTexture(mtm, "", color, colorAmp));
             defer.accept(() -> generateTerminalTexture(mtm, "universal", color, colorAmp));
             defer.accept(() -> generateTerminalTexture(mtm, "crafting", color, colorAmp));
@@ -59,13 +59,9 @@ public final class AE2wtlibTextures {
         return String.format("ae2wtlib:textures/item/wireless_terminal_base/%s.png", name);
     }
 
-    private static void colorizeLayer(NativeImage image, IColoramp coloramp) {
-        TextureHelper.colorize(image, coloramp);
-    }
-
-    public static void generateTerminalTexture(TextureManager mtm, String terminal, AEColor color, IColoramp coloramp) {
+    public static void generateTerminalTexture(TextureManager mtm, String terminal, AEColor color, ColorMap colorMap) {
         try {
-            NativeImage texture = generateTexture(mtm, terminal, coloramp);
+            NativeImage texture = generateTexture(mtm, terminal, colorMap);
 
             if (!terminal.isEmpty())
                 terminal = "_" + terminal;
@@ -75,9 +71,9 @@ public final class AE2wtlibTextures {
         }
     }
 
-    public static void generateLEDTexture(TextureManager mtm, String status, AEColor color, IColoramp coloramp) {
+    public static void generateLEDTexture(TextureManager mtm, String status, AEColor color, ColorMap colorMap) {
         try {
-            NativeImage texture = generateTexture(mtm, "led_" + status, coloramp);
+            NativeImage texture = generateTexture(mtm, "led_" + status, colorMap);
 
             appendTexture(mtm, texture, "wireless_terminal_led_%s_%s".formatted(color.registryPrefix, status));
             texture.close();
@@ -85,17 +81,25 @@ public final class AE2wtlibTextures {
         }
     }
 
-    public static NativeImage generateTexture(TextureManager mtm, String name, IColoramp coloramp) throws IOException {
+    public static NativeImage generateTexture(TextureManager mtm, String name, ColorMap colorMap) throws IOException {
         NativeImage image = null;
         String template = getTemplate(name);
 
         if (mtm.hasAsset(template)) {
             image = mtm.getAssetAsTexture(template);
-            colorizeLayer(image, coloramp);
+            colorize(image, colorMap);
         }
         if (image == null)
             throw new RuntimeException("Failed to generate texture for " + name);
         return image;
+    }
+
+    public static void colorize(NativeImage image, ColorMap colorramp) {
+        for (int i = 0; i < image.getWidth(); ++i) {
+            for (int j = 0; j < image.getHeight(); ++j) {
+                image.setPixelRGBA(i, j, colorramp.map(image.getPixelRGBA(i, j)));
+            }
+        }
     }
 
     public static void appendTexture(TextureManager mtm, NativeImage texture, String path)
