@@ -11,10 +11,12 @@ public class AE2wtlibDataGenerators {
     @SubscribeEvent
     public static void onGatherData(GatherDataEvent event) {
         var generator = event.getGenerator();
+        var registries = event.getLookupProvider();
         var pack = generator.getVanillaPack(true);
         var existingFileHelper = event.getExistingFileHelper();
 
         pack.addProvider(packOutput -> new TexturesProvider(packOutput, existingFileHelper));
         pack.addProvider(packOutput -> new ItemModelProvider(packOutput, existingFileHelper));
+        pack.addProvider(packOutput -> new RecipeProvider(packOutput, registries));
     }
 }
