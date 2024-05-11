@@ -70,9 +70,12 @@ public abstract class ItemWT extends WirelessTerminalItem {
     }
 
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int i, boolean bl) {
+        super.inventoryTick(stack, level, entity, i, bl);
         if (level.isClientSide())
             return;
         if (!(entity instanceof ServerPlayer player))
+            return;
+        if(this != stack.getItem())
             return;
         stack.set(AE2wtlibComponents.LED_STATUS, getAECurrentPower(stack) > 0
                 && getMenuHost(player, MenuLocators.forStack(stack), null).getLinkStatus().connected());
