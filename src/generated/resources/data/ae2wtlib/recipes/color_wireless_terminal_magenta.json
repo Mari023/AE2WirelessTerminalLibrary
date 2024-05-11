@@ -1,0 +1,13 @@
+{
+  "type": "ae2wtlib:color",
+  "color": "magenta",
+  "dye": {
+    "tag": "c:dyes/magenta"
+  },
+  "output": {
+    "id": "ae2:wireless_terminal"
+  },
+  "terminal": {
+    "item": "ae2:wireless_terminal"
+  }
+}

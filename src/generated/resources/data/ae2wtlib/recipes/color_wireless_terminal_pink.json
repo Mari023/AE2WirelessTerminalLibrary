@@ -1,0 +1,13 @@
+{
+  "type": "ae2wtlib:color",
+  "color": "pink",
+  "dye": {
+    "tag": "c:dyes/pink"
+  },
+  "output": {
+    "id": "ae2:wireless_terminal"
+  },
+  "terminal": {
+    "item": "ae2:wireless_terminal"
+  }
+}

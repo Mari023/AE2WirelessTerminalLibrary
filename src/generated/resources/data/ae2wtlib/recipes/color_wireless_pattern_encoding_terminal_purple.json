@@ -1,0 +1,13 @@
+{
+  "type": "ae2wtlib:color",
+  "color": "purple",
+  "dye": {
+    "tag": "c:dyes/purple"
+  },
+  "output": {
+    "id": "ae2wtlib:wireless_pattern_encoding_terminal"
+  },
+  "terminal": {
+    "item": "ae2wtlib:wireless_pattern_encoding_terminal"
+  }
+}

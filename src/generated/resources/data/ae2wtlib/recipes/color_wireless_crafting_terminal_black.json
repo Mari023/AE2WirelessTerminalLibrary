@@ -1,0 +1,13 @@
+{
+  "type": "ae2wtlib:color",
+  "color": "black",
+  "dye": {
+    "tag": "c:dyes/black"
+  },
+  "output": {
+    "id": "ae2:wireless_crafting_terminal"
+  },
+  "terminal": {
+    "item": "ae2:wireless_crafting_terminal"
+  }
+}

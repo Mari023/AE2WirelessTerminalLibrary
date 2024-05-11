@@ -1,0 +1,13 @@
+{
+  "type": "ae2wtlib:color",
+  "color": "orange",
+  "dye": {
+    "tag": "c:dyes/orange"
+  },
+  "output": {
+    "id": "ae2:wireless_crafting_terminal"
+  },
+  "terminal": {
+    "item": "ae2:wireless_crafting_terminal"
+  }
+}

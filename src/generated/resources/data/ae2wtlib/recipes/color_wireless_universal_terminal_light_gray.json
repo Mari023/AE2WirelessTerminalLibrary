@@ -1,0 +1,13 @@
+{
+  "type": "ae2wtlib:color",
+  "color": "light_gray",
+  "dye": {
+    "tag": "c:dyes/light_gray"
+  },
+  "output": {
+    "id": "ae2wtlib:wireless_universal_terminal"
+  },
+  "terminal": {
+    "item": "ae2wtlib:wireless_universal_terminal"
+  }
+}
