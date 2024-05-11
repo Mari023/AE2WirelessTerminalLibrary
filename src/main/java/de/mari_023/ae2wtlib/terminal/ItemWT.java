@@ -75,7 +75,7 @@ public abstract class ItemWT extends WirelessTerminalItem {
             return;
         if (!(entity instanceof ServerPlayer player))
             return;
-        if(this != stack.getItem())
+        if (this != stack.getItem())
             return;
         stack.set(AE2wtlibComponents.LED_STATUS, getAECurrentPower(stack) > 0
                 && getMenuHost(player, MenuLocators.forStack(stack), null).getLinkStatus().connected());
