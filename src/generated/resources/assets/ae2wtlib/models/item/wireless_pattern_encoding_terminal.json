@@ -241,7 +241,7 @@
     }
   ],
   "textures": {
-    "layer0": "ae2wtlib:item/terminal_housing",
+    "layer0": "ae2wtlib:item/common_terminal_housing",
     "layer1": "ae2wtlib:item/wireless_pattern_encoding_terminal_fluix",
     "layer2": "ae2wtlib:item/wireless_terminal_led_fluix_lit"
   }

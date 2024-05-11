@@ -22,12 +22,12 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
 
     @Override
     protected void registerModels() {
-        ResourceLocation housing = AE2wtlib.id("item/terminal_housing");
+        ResourceLocation housing = AE2wtlib.id("item/common_terminal_housing");
         terminal(AEItems.WIRELESS_CRAFTING_TERMINAL.asItem(), housing, "crafting");
         terminal(AE2wtlibItems.PATTERN_ACCESS_TERMINAL, housing, "pattern_access");
         terminal(AE2wtlibItems.PATTERN_ENCODING_TERMINAL, housing, "pattern_encoding");
         terminal(AE2wtlibItems.UNIVERSAL_TERMINAL, housing, "universal");
-        terminal(AEItems.WIRELESS_TERMINAL.asItem(), housing, "");
+        terminal(AEItems.WIRELESS_TERMINAL.asItem(), AE2wtlib.id("item/wireless_terminal_housing"), "");
     }
 
     private void terminal(WirelessTerminalItem item, ResourceLocation housing, String terminalName) {
