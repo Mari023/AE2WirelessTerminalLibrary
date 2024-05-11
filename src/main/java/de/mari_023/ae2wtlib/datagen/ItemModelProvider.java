@@ -36,16 +36,16 @@ public class ItemModelProvider extends net.neoforged.neoforge.client.model.gener
         ItemModelBuilder builder = terminal(registryNamePath, housing, terminalName, AEColor.TRANSPARENT, "lit");
 
         for (AEColor color : AEColor.values()) {
-            var lit = terminal(registryNamePath + "_%s_%s", housing, terminalName, color, "lit");
             var unlit = terminal(registryNamePath + "_%s_%s", housing, terminalName, color, "unlit");
+            var lit = terminal(registryNamePath + "_%s_%s", housing, terminalName, color, "lit");
 
-            builder = builder.override().predicate(TextConstants.COLOR, color.ordinal())
-                    .predicate(TextConstants.LED_STATUS, 1)
-                    .model(lit)
-                    .end();
             builder = builder.override().predicate(TextConstants.COLOR, color.ordinal())
                     .predicate(TextConstants.LED_STATUS, 0)
                     .model(unlit)
+                    .end();
+            builder = builder.override().predicate(TextConstants.COLOR, color.ordinal())
+                    .predicate(TextConstants.LED_STATUS, 1)
+                    .model(lit)
                     .end();
         }
     }
