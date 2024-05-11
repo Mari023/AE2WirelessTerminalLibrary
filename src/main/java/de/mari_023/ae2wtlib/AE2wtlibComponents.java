@@ -50,7 +50,7 @@ public class AE2wtlibComponents {
     public static final DataComponentType<AEColor> COLOR = register("color",
             builder -> builder.persistent(AEColor.CODEC).networkSynchronized(AEColor.STREAM_CODEC));
     public static final DataComponentType<Boolean> LED_STATUS = register("led_status",
-            builder -> builder.persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL));
+            builder -> builder.networkSynchronized(ByteBufCodecs.BOOL));
 
     public static final DataComponentType<MagnetMode> MAGNET_SETTINGS = register("magnet_settings",
             builder -> builder.persistent(MagnetMode.CODEC)
