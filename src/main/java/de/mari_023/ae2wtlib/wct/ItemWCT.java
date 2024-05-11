@@ -19,6 +19,7 @@ public class ItemWCT extends ItemWT {
     }
 
     public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int i, boolean bl) {
+        super.inventoryTick(itemStack, level, entity, i, bl);
         if (level.isClientSide())
             return;
         if (!(entity instanceof ServerPlayer player))
