@@ -54,15 +54,15 @@ public final class AE2wtlibTextures {
                 .add(CompletableFuture.runAsync(r::safeRun, Util.backgroundExecutor()));
 
         for (AEColor color : AEColor.values()) {
-            var colorAmp = new ColorMap(color);
-            defer.accept(() -> generateTerminalTexture(mtm, "", color, colorAmp));
-            defer.accept(() -> generateTerminalTexture(mtm, "universal", color, colorAmp));
-            defer.accept(() -> generateTerminalTexture(mtm, "crafting", color, colorAmp));
-            defer.accept(() -> generateTerminalTexture(mtm, "pattern_access", color, colorAmp));
-            defer.accept(() -> generateTerminalTexture(mtm, "pattern_encoding", color, colorAmp));
+            var colorMap = new ColorMap(color);
+            defer.accept(() -> generateTerminalTexture(mtm, "", color, colorMap));
+            defer.accept(() -> generateTerminalTexture(mtm, "universal", color, colorMap));
+            defer.accept(() -> generateTerminalTexture(mtm, "crafting", color, colorMap));
+            defer.accept(() -> generateTerminalTexture(mtm, "pattern_access", color, colorMap));
+            defer.accept(() -> generateTerminalTexture(mtm, "pattern_encoding", color, colorMap));
 
-            defer.accept(() -> generateLEDTexture(mtm, "lit", color, colorAmp));
-            defer.accept(() -> generateLEDTexture(mtm, "unlit", color, colorAmp));
+            defer.accept(() -> generateLEDTexture(mtm, "lit", color, colorMap));
+            defer.accept(() -> generateLEDTexture(mtm, "unlit", color, colorMap));
         }
 
         return CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
