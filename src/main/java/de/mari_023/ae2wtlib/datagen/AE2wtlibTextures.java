@@ -1,8 +1,6 @@
-package de.mari_023.ae2wtlib.datagen;
 /*
-    Copied from Modern Industrialisation (https://github.com/AztechMC/Modern-Industrialization/blob/1.20.x/src/client/java/aztech/modern_industrialization/textures/MITextures.java) and adapted for ae2wtlib
+ * Copied from Modern Industrialisation (https://github.com/AztechMC/Modern-Industrialization/blob/d537c128c9af90699ff55942da8b6da159222c80/src/client/java/aztech/modern_industrialization/textures/MITextures.java) and adapted for ae2wtlib
  */
-
 /*
  * MIT License
  *
@@ -26,6 +24,7 @@ package de.mari_023.ae2wtlib.datagen;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package de.mari_023.ae2wtlib.datagen;
 
 import java.io.IOException;
 import java.util.ArrayList;
