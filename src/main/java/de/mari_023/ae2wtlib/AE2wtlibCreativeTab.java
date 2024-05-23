@@ -18,7 +18,12 @@ public class AE2wtlibCreativeTab {
     public static void init() {
         var tab = CreativeModeTab.builder()
                 .title(TextConstants.CREATIVE_TAB)
-                .icon(() -> new ItemStack(AE2wtlibItems.UNIVERSAL_TERMINAL))
+                .icon(() -> {
+                    var terminal  = AE2wtlibItems.UNIVERSAL_TERMINAL;
+                    var stack = new ItemStack(terminal);
+                    terminal.injectAEPower(stack, terminal.getAEMaxPower(stack), Actionable.MODULATE);
+                    return stack;
+                })
                 .displayItems(AE2wtlibCreativeTab::buildDisplayItems)
                 .build();
         Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, AE2wtlib.id("main"), tab);
