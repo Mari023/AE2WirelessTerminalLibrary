@@ -50,6 +50,8 @@ public class AE2wtlibCreativeTab {
         for (var terminal : WUTHandler.wirelessTerminals.entrySet()) {
             Common.mergeTerminal(stack, new ItemStack(terminal.getValue().item()), terminal.getKey());
         }
+        wut.injectAEPower(stack, wut.getAEMaxPower(stack), Actionable.MODULATE);
+        items.add(stack.copy());
     }
 
     private static synchronized void buildDisplayItems(CreativeModeTab.ItemDisplayParameters itemDisplayParameters,
