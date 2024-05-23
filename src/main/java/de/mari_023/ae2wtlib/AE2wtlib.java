@@ -59,7 +59,7 @@ public class AE2wtlib {
         AE2wtlibCreativeTab.addTerminal(AEItems.WIRELESS_CRAFTING_TERMINAL.asItem());
         AE2wtlibCreativeTab.addTerminal(AE2wtlibItems.PATTERN_ENCODING_TERMINAL);
         AE2wtlibCreativeTab.addTerminal(AE2wtlibItems.PATTERN_ACCESS_TERMINAL);
-        AE2wtlibCreativeTab.addTerminal(AE2wtlibItems.UNIVERSAL_TERMINAL);
+        AE2wtlibCreativeTab.addUniversalTerminal(AE2wtlibItems.UNIVERSAL_TERMINAL);
         AE2wtlibCreativeTab.add(AE2wtlibItems.QUANTUM_BRIDGE_CARD);
         AE2wtlibCreativeTab.add(AE2wtlibItems.MAGNET_CARD);
     }

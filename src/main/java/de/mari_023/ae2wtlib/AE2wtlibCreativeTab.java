@@ -12,6 +12,10 @@ import net.minecraft.world.item.ItemStack;
 import appeng.api.config.Actionable;
 import appeng.items.tools.powered.WirelessTerminalItem;
 
+import de.mari_023.ae2wtlib.wut.ItemWUT;
+import de.mari_023.ae2wtlib.wut.WUTHandler;
+import de.mari_023.ae2wtlib.wut.recipe.Common;
+
 public class AE2wtlibCreativeTab {
     private static final List<ItemStack> items = new ArrayList<>();
 
@@ -19,7 +23,7 @@ public class AE2wtlibCreativeTab {
         var tab = CreativeModeTab.builder()
                 .title(TextConstants.CREATIVE_TAB)
                 .icon(() -> {
-                    var terminal  = AE2wtlibItems.UNIVERSAL_TERMINAL;
+                    var terminal = AE2wtlibItems.UNIVERSAL_TERMINAL;
                     var stack = new ItemStack(terminal);
                     terminal.injectAEPower(stack, terminal.getAEMaxPower(stack), Actionable.MODULATE);
                     return stack;
@@ -38,6 +42,14 @@ public class AE2wtlibCreativeTab {
         items.add(stack.copy());
         terminal.injectAEPower(stack, terminal.getAEMaxPower(stack), Actionable.MODULATE);
         items.add(stack);
+    }
+
+    public static synchronized void addUniversalTerminal(ItemWUT wut) {
+        var stack = new ItemStack(wut);
+        items.add(stack.copy());
+        for (var terminal : WUTHandler.wirelessTerminals.entrySet()) {
+            Common.mergeTerminal(stack, new ItemStack(terminal.getValue().item()), terminal.getKey());
+        }
     }
 
     private static synchronized void buildDisplayItems(CreativeModeTab.ItemDisplayParameters itemDisplayParameters,
