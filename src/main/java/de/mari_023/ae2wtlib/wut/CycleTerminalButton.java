@@ -3,25 +3,33 @@ package de.mari_023.ae2wtlib.wut;
 import java.util.Collections;
 import java.util.List;
 
+import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import org.jetbrains.annotations.NotNull;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.Rect2i;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.item.ItemStack;
 
 import appeng.client.gui.widgets.ITooltip;
 import appeng.core.AppEng;
 
-import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.TextConstants;
 
 public class CycleTerminalButton extends Button implements ITooltip {
-    public CycleTerminalButton(OnPress onPress) {
-        super(0, 0, 16, 16, Component.empty(), onPress, Button.DEFAULT_NARRATION);
+    private final ItemStack nextTerminal;
+
+    public CycleTerminalButton(IUniversalTerminalCapable terminalScreen) {
+        super(0, 0, 16, 16, Component.empty(), btn -> terminalScreen.cycleTerminal(), Button.DEFAULT_NARRATION);
+        this.nextTerminal = terminalScreen.nextTerminal();
         visible = true;
         active = true;
     }
@@ -42,7 +50,6 @@ public class CycleTerminalButton extends Button implements ITooltip {
     }
 
     public static final ResourceLocation TEXTURE_STATES = AppEng.makeId("textures/guis/states.png");
-    public static final ResourceLocation nextTerminal = AE2wtlib.id("textures/item/wireless_universal_terminal.png");
 
     @Override
     public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partial) {
@@ -62,7 +69,29 @@ public class CycleTerminalButton extends Button implements ITooltip {
         else
             RenderSystem.setShaderColor(0.5f, 0.5f, 0.5f, 1.0f);
 
-        guiGraphics.blit(nextTerminal, getX() + 1, getY() + 1, 14, 14, 0, 0, 512, 512, 512, 512);
+        renderScaledItem(guiGraphics, nextTerminal, getX(), getY());
+
+        guiGraphics.pose().popPose();
+    }
+
+    private void renderScaledItem(GuiGraphics guiGraphics, ItemStack stack, int x, int y) {
+        guiGraphics.pose().pushPose();
+
+        var mc = Minecraft.getInstance();
+
+        BakedModel bakedmodel = mc.getItemRenderer().getModel(stack, null, null, 0);
+        guiGraphics.pose().translate((float) (x + 8), (float) (y + 8), (float) (150));
+        guiGraphics.pose().scale(16.0F * (14F / 16F), -16.0F * (14F / 16F), 16.0F * (14F / 16F));
+        boolean flag = !bakedmodel.usesBlockLight();
+        if (flag) {
+            Lighting.setupForFlatItems();
+        }
+        mc.getItemRenderer().render(stack, ItemDisplayContext.GUI, false, guiGraphics.pose(),
+                guiGraphics.bufferSource(), 15728880, OverlayTexture.NO_OVERLAY, bakedmodel);
+        guiGraphics.flush();
+        if (flag) {
+            Lighting.setupFor3DItems();
+        }
 
         guiGraphics.pose().popPose();
     }

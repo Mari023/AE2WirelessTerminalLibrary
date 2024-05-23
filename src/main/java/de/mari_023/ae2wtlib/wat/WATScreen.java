@@ -10,6 +10,7 @@ import appeng.client.gui.widgets.ToolboxPanel;
 import appeng.client.gui.widgets.UpgradesPanel;
 import appeng.menu.SlotSemantics;
 
+import de.mari_023.ae2wtlib.terminal.WTMenuHost;
 import de.mari_023.ae2wtlib.wut.CycleTerminalButton;
 import de.mari_023.ae2wtlib.wut.IUniversalTerminalCapable;
 
@@ -17,12 +18,17 @@ public class WATScreen extends PatternAccessTermScreen<WATMenu> implements IUniv
     public WATScreen(WATMenu container, Inventory playerInventory, Component title, ScreenStyle style) {
         super(container, playerInventory, title, style);
         if (getMenu().isWUT())
-            addToLeftToolbar(new CycleTerminalButton(btn -> cycleTerminal()));
+            addToLeftToolbar(new CycleTerminalButton(this));
 
         widgets.add("upgrades", new UpgradesPanel(getMenu().getSlots(SlotSemantics.UPGRADE), getMenu().getHost()));
         if (getMenu().getToolbox().isPresent())
             widgets.add("toolbox", new ToolboxPanel(style, getMenu().getToolbox().getName()));
         widgets.add("singularityBackground", new BackgroundPanel(style.getImage("singularityBackground")));
+    }
+
+    @Override
+    public WTMenuHost getHost() {
+        return (WTMenuHost) getMenu().getHost();
     }
 
     @Override

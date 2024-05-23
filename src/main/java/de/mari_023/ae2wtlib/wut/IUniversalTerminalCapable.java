@@ -1,17 +1,26 @@
 package de.mari_023.ae2wtlib.wut;
 
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 import appeng.client.Hotkeys;
 import appeng.core.network.serverbound.HotkeyPacket;
 
 import de.mari_023.ae2wtlib.networking.CycleTerminalPacket;
+import de.mari_023.ae2wtlib.terminal.WTMenuHost;
 
 public interface IUniversalTerminalCapable {
     default void cycleTerminal() {
         storeState();
         PacketDistributor.sendToServer(new CycleTerminalPacket(isHandlingRightClick()));
     }
+
+    default ItemStack nextTerminal() {
+        return new ItemStack(
+                WUTHandler.wirelessTerminals.get(WUTHandler.nextTerminal(getHost().getItemStack(), false)).item());
+    }
+
+    WTMenuHost getHost();
 
     boolean isHandlingRightClick();
 

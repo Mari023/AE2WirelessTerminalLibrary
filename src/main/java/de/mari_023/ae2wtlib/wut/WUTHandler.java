@@ -105,10 +105,16 @@ public class WUTHandler {
      */
     public static void cycle(Player player, ItemMenuHostLocator locator, ItemStack itemStack,
             boolean isHandlingRightClick) {
+        String nextTerminal = nextTerminal(itemStack, isHandlingRightClick);
+        itemStack.set(AE2wtlibComponents.CURRENT_TERMINAL, nextTerminal);
+        updateClientTerminal((ServerPlayer) player, locator, itemStack);
+    }
+
+    public static String nextTerminal(ItemStack itemStack, boolean reverse) {
         String nextTerminal = getCurrentTerminal(itemStack);
         do {
             int i;
-            if (isHandlingRightClick) {
+            if (reverse) {
                 i = terminalNames.indexOf(nextTerminal) - 1;
                 if (i == -1)
                     i = terminalNames.size() - 1;
@@ -119,8 +125,7 @@ public class WUTHandler {
             }
             nextTerminal = terminalNames.get(i);
         } while (itemStack.get(wirelessTerminals.get(nextTerminal).componentType()) == null);
-        itemStack.set(AE2wtlibComponents.CURRENT_TERMINAL, nextTerminal);
-        updateClientTerminal((ServerPlayer) player, locator, itemStack);
+        return nextTerminal;
     }
 
     /**

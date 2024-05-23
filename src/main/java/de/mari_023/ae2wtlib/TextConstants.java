@@ -44,7 +44,8 @@ public final class TextConstants {
 
     public static final Component TERMINAL_EMPTY = Component
             .literal("This terminal does not contain any other Terminals");
-    public static final Component CYCLE_TOOLTIP = Component.translatable("gui.ae2wtlib.cycle_terminal.desc");
+    public static final Component CYCLE_TOOLTIP = Component.translatable("gui.ae2wtlib.cycle_terminal.desc")
+            .append("\n").append(Component.translatable("gui.ae2wtlib.cycle_terminal.desc1"));
 
     public static final MutableComponent TRASH = Component.translatable("gui.ae2wtlib.trash");
 

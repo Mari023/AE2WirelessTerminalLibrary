@@ -15,6 +15,7 @@ import appeng.client.gui.widgets.IconButton;
 import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.TextConstants;
 import de.mari_023.ae2wtlib.terminal.ItemButton;
+import de.mari_023.ae2wtlib.terminal.WTMenuHost;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetMode;
 import de.mari_023.ae2wtlib.wut.CycleTerminalButton;
 import de.mari_023.ae2wtlib.wut.IUniversalTerminalCapable;
@@ -26,7 +27,7 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
     public WCTScreen(WCTMenu container, Inventory playerInventory, Component title, ScreenStyle style) {
         super(container, playerInventory, title, style);
         if (getMenu().isWUT())
-            addToLeftToolbar(new CycleTerminalButton(btn -> cycleTerminal()));
+            addToLeftToolbar(new CycleTerminalButton(this));
 
         magnetCardToggleButton = new ItemButton(btn -> setMagnetMode(),
                 AE2wtlib.id("textures/item/magnet_card.png"));
@@ -100,5 +101,10 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
         if (!value)
             return checkForTerminalKeys(keyCode, scanCode);
         return true;
+    }
+
+    @Override
+    public WTMenuHost getHost() {
+        return (WTMenuHost) getMenu().getHost();
     }
 }
