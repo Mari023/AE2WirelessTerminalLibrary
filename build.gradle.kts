@@ -152,6 +152,12 @@ tasks {
     }
 }
 
+sourceSets {
+    main {
+        resources.srcDir(file("src/generated/resources"))
+    }
+}
+
 runs {
     configureEach {
         workingDirectory(file("run"))
@@ -162,6 +168,14 @@ runs {
 
     create("client")
     create("server")
+    create("data") {
+        programArguments.addAll(
+            "--mod", "ae2wtlib",
+            "--all",
+            "--output", file("src/generated/resources/").absolutePath,
+            "--existing", file("src/main/resources/").absolutePath
+        )
+    }
 }
 
 publishing {

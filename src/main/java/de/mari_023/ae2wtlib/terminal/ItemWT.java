@@ -1,10 +1,13 @@
 package de.mari_023.ae2wtlib.terminal;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
@@ -19,6 +22,7 @@ import appeng.menu.MenuOpener;
 import appeng.menu.locator.ItemMenuHostLocator;
 import appeng.menu.locator.MenuLocators;
 
+import de.mari_023.ae2wtlib.AE2wtlibComponents;
 import de.mari_023.ae2wtlib.AE2wtlibItems;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 
@@ -56,11 +60,24 @@ public abstract class ItemWT extends WirelessTerminalItem {
         return new InteractionResultHolder<>(InteractionResult.FAIL, is);
     }
 
+    @NotNull
     @Override
     public WirelessTerminalMenuHost<?> getMenuHost(Player player, ItemMenuHostLocator locator,
             @Nullable BlockHitResult hitResult) {
         return WUTHandler.wirelessTerminals.get(WUTHandler.getCurrentTerminal(locator.locateItem(player)))
                 .wTMenuHostFactory().create(this, player,
                         locator, (p, subMenu) -> tryOpen(player, locator, true));
+    }
+
+    public void inventoryTick(ItemStack stack, Level level, Entity entity, int i, boolean bl) {
+        super.inventoryTick(stack, level, entity, i, bl);
+        if (level.isClientSide())
+            return;
+        if (!(entity instanceof ServerPlayer player))
+            return;
+        if (this != stack.getItem())
+            return;
+        stack.set(AE2wtlibComponents.LED_STATUS, getAECurrentPower(stack) > 0
+                && getMenuHost(player, MenuLocators.forStack(stack), null).getLinkStatus().connected());
     }
 }

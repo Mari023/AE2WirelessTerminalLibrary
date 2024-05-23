@@ -1,6 +1,0 @@
-{
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "ae2wtlib:item/wireless_pattern_access_terminal"
-  }
-}

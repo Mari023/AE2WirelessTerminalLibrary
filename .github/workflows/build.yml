@@ -37,6 +37,15 @@ jobs:
         with:
           path: ~/.gradle/wrapper
           key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('**/gradle/wrapper/gradle-wrapper.properties') }}
+      - name: Generate assets
+        run: ./gradlew runData
+      - name: Check that datagen ran
+        run: test -d ./src/generated/resources/.cache
+      - name: Make sure that datagened files in the repo are up-to-date
+        run: |
+          # Print status for easier debugging
+          git status
+          if [ -n "$(git status --porcelain)" ]; then exit 1; fi
       - name: Build with Gradle
         run: ./gradlew build
         env:

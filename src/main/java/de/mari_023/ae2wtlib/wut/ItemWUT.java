@@ -92,6 +92,7 @@ public class ItemWUT extends ItemWT {
     }
 
     public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int i, boolean bl) {
+        super.inventoryTick(itemStack, level, entity, i, bl);
         for (var terminal : WUTHandler.wirelessTerminals.entrySet()) {
             if (!WUTHandler.hasTerminal(itemStack, terminal.getKey()))
                 continue;

@@ -22,6 +22,11 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+      - name: Generate assets
+        run: ./gradlew runData
+      - name: Check that datagen ran
+        run: test -d ./src/generated/resources/.cache
+
       - name: Build with Gradle
         run: ./gradlew build
         env:

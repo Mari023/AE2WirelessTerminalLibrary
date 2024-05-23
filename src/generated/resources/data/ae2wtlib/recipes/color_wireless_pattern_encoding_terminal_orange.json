@@ -1,0 +1,13 @@
+{
+  "type": "ae2wtlib:color",
+  "color": "orange",
+  "dye": {
+    "tag": "c:dyes/orange"
+  },
+  "output": {
+    "id": "ae2wtlib:wireless_pattern_encoding_terminal"
+  },
+  "terminal": {
+    "item": "ae2wtlib:wireless_pattern_encoding_terminal"
+  }
+}

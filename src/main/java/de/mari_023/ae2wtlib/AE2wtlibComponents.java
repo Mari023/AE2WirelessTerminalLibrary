@@ -18,6 +18,7 @@ import net.minecraft.world.item.component.ItemContainerContents;
 import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs;
 
 import appeng.api.config.IncludeExclude;
+import appeng.api.util.AEColor;
 import appeng.menu.locator.ItemMenuHostLocator;
 import appeng.menu.locator.MenuLocators;
 
@@ -46,6 +47,10 @@ public class AE2wtlibComponents {
     public static final DataComponentType<ItemContainerContents> VIEW_CELL_INVENTORY = register("view_cell_inv",
             builder -> builder.persistent(ItemContainerContents.CODEC)
                     .networkSynchronized(ItemContainerContents.STREAM_CODEC));
+    public static final DataComponentType<AEColor> COLOR = register("color",
+            builder -> builder.persistent(AEColor.CODEC).networkSynchronized(AEColor.STREAM_CODEC));
+    public static final DataComponentType<Boolean> LED_STATUS = register("led_status",
+            builder -> builder.networkSynchronized(ByteBufCodecs.BOOL));
 
     public static final DataComponentType<MagnetMode> MAGNET_SETTINGS = register("magnet_settings",
             builder -> builder.persistent(MagnetMode.CODEC)

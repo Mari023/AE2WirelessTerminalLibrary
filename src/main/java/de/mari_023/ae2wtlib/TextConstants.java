@@ -4,6 +4,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
+import net.minecraft.resources.ResourceLocation;
 
 import appeng.api.config.IncludeExclude;
 
@@ -89,4 +90,7 @@ public final class TextConstants {
     public static final Component NO_QNB_UPGRADE = Component.translatable("chat.ae2wtlib.NoQuantumBridgeCard");
     public static final Component NO_QNB = Component.translatable("chat.ae2wtlib.NoQuantumBridge");
     public static final Component DIFFERENT_NETWORKS = Component.translatable("chat.ae2wtlib.NetworkMismatch");
+
+    public static final ResourceLocation COLOR = AE2wtlib.id("color");
+    public static final ResourceLocation LED_STATUS = AE2wtlib.id("led_status");
 }

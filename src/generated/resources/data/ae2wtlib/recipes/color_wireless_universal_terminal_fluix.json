@@ -1,0 +1,13 @@
+{
+  "type": "ae2wtlib:color",
+  "color": "fluix",
+  "dye": {
+    "tag": "ae2:can_remove_color"
+  },
+  "output": {
+    "id": "ae2wtlib:wireless_universal_terminal"
+  },
+  "terminal": {
+    "item": "ae2wtlib:wireless_universal_terminal"
+  }
+}

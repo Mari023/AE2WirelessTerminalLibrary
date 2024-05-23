@@ -1,0 +1,13 @@
+{
+  "type": "ae2wtlib:color",
+  "color": "brown",
+  "dye": {
+    "tag": "c:dyes/brown"
+  },
+  "output": {
+    "id": "ae2wtlib:wireless_pattern_access_terminal"
+  },
+  "terminal": {
+    "item": "ae2wtlib:wireless_pattern_access_terminal"
+  }
+}
