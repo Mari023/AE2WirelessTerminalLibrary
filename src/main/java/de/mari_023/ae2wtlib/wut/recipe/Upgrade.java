@@ -11,7 +11,6 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 
 import de.mari_023.ae2wtlib.wut.WTDefinition;
-import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 public class Upgrade extends Common {
     public static final UpgradeSerializer serializer = new UpgradeSerializer();
@@ -36,7 +35,8 @@ public class Upgrade extends Common {
     public boolean matches(CraftingContainer inv, Level world) {
         ItemStack wut = InputHelper.getInputStack(inv, InputHelper.WUT);
         return !InputHelper.getInputStack(inv, terminal).isEmpty() && !wut.isEmpty()
-                && InputHelper.getInputCount(inv) == 2 && !WUTHandler.hasTerminal(wut, terminalName);
+                && InputHelper.getInputCount(inv) == 2
+                && wut.get(WTDefinition.of(terminalName).componentType()) != null;
     }
 
     @Override

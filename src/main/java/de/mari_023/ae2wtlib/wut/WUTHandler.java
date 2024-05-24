@@ -45,7 +45,7 @@ public class WUTHandler {
      * @param terminalName The terminal name to check.
      * @return true if the terminal contains the specified terminal name, false otherwise.
      */
-    public static boolean hasTerminal(ItemStack terminal, String terminalName) {// TODO check if this should be changed
+    public static boolean hasTerminal(ItemStack terminal, String terminalName) {
         if (terminal.isEmpty())
             return false;
         if (terminal.getItem() instanceof ItemWUT) {
