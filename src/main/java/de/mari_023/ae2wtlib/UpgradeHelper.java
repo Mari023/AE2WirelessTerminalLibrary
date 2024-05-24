@@ -42,11 +42,11 @@ public class UpgradeHelper {
             addMaxUpgradesToAllTerminals(upgradeCard);
             return;
         }
-        for (var terminal : WTDefinition.wirelessTerminals().entrySet()) {
-            int max = terminal.getValue().upgradeCount();
+        for (var terminal : WTDefinition.wirelessTerminals().values()) {
+            int max = terminal.upgradeCount();
             if (max == 0)
                 continue;
-            Upgrades.add(upgradeCard, terminal.getValue().item(), Math.min(maxSupported, max),
+            Upgrades.add(upgradeCard, terminal.item(), Math.min(maxSupported, max),
                     GuiText.WirelessTerminals.getTranslationKey());
         }
         Upgrades.add(upgradeCard, AE2wtlibItems.UNIVERSAL_TERMINAL, maxSupported);
@@ -54,11 +54,11 @@ public class UpgradeHelper {
 
     private static void addMaxUpgradesToAllTerminals(ItemLike upgradeCard) {
         Upgrades.add(upgradeCard, AE2wtlibItems.UNIVERSAL_TERMINAL, WUTHandler.getUpgradeCardCount());
-        for (var terminal : WTDefinition.wirelessTerminals().entrySet()) {
-            int max = terminal.getValue().upgradeCount();
+        for (var terminal : WTDefinition.wirelessTerminals().values()) {
+            int max = terminal.upgradeCount();
             if (max == 0)
                 continue;
-            Upgrades.add(upgradeCard, terminal.getValue().item(), max, GuiText.WirelessTerminals.getTranslationKey());
+            Upgrades.add(upgradeCard, terminal.item(), max, GuiText.WirelessTerminals.getTranslationKey());
         }
     }
 }

@@ -26,8 +26,8 @@ public interface IUniversalTerminalCapable {
     void storeState();
 
     default boolean checkForTerminalKeys(int keyCode, int scanCode) {
-        for (var wtDefinition : WTDefinition.wirelessTerminals().values()) {
-            var hotkey = Hotkeys.getHotkeyMapping(wtDefinition.hotkeyName());
+        for (var terminal : WTDefinition.wirelessTerminals().values()) {
+            var hotkey = Hotkeys.getHotkeyMapping(terminal.hotkeyName());
             if (hotkey == null)
                 continue;
             if (hotkey.mapping().matches(keyCode, scanCode)) {

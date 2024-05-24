@@ -89,7 +89,7 @@ public class WUTHandler {
                     i = 0;
             }
             nextTerminal = terminalNames.get(i);
-        } while (itemStack.get(WTDefinition.wirelessTerminals().get(nextTerminal).componentType()) == null);
+        } while (itemStack.get(WTDefinition.of(nextTerminal).componentType()) == null);
         return nextTerminal;
     }
 
@@ -113,9 +113,7 @@ public class WUTHandler {
      * @return true if the terminal can be opened, false otherwise.
      */
     public static boolean open(final Player player, final ItemMenuHostLocator locator, boolean returningFromSubmenu) {
-        ItemStack is = locator.locateItem(player);
-
-        var currentTerminal = WTDefinition.ofOrNull(is);
+        var currentTerminal = WTDefinition.ofOrNull(locator.locateItem(player));
         if (currentTerminal == null) {
             player.displayClientMessage(TextConstants.TERMINAL_EMPTY, false);
             return false;
