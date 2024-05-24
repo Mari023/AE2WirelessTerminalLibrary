@@ -16,16 +16,16 @@ public class Combine extends Common {
     public static final CombineSerializer serializer = new CombineSerializer();
     private final Ingredient terminalA;
     private final Ingredient terminalB;
-    private final String terminalAName;
-    private final String terminalBName;
+    private final WTDefinition terminalADefinition;
+    private final WTDefinition terminalBDefinition;
 
     public Combine(Ingredient terminalA, Ingredient terminalB, String terminalAName, String terminalBName) {
         this.terminalA = terminalA;
         this.terminalB = terminalB;
-        this.terminalAName = terminalAName;
-        this.terminalBName = terminalBName;
-        outputStack.set(WTDefinition.of(terminalAName).componentType(), Unit.INSTANCE);
-        outputStack.set(WTDefinition.of(terminalBName).componentType(), Unit.INSTANCE);
+        this.terminalADefinition = WTDefinition.of(terminalAName);
+        this.terminalBDefinition = WTDefinition.of(terminalBName);
+        outputStack.set(terminalADefinition.componentType(), Unit.INSTANCE);
+        outputStack.set(terminalBDefinition.componentType(), Unit.INSTANCE);
     }
 
     public Ingredient getTerminalA() {
@@ -37,11 +37,11 @@ public class Combine extends Common {
     }
 
     public String getTerminalAName() {
-        return terminalAName;
+        return terminalADefinition.terminalName();
     }
 
     public String getTerminalBName() {
-        return terminalBName;
+        return terminalBDefinition.terminalName();
     }
 
     @Override
@@ -52,8 +52,9 @@ public class Combine extends Common {
 
     @Override
     public ItemStack assemble(CraftingContainer inv, HolderLookup.Provider provider) {
-        ItemStack wut = mergeTerminal(outputStack.copy(), InputHelper.getInputStack(inv, terminalA), terminalAName);
-        wut = mergeTerminal(wut, InputHelper.getInputStack(inv, terminalB), terminalBName);
+        ItemStack wut = mergeTerminal(outputStack.copy(), InputHelper.getInputStack(inv, terminalA),
+                terminalADefinition);
+        wut = mergeTerminal(wut, InputHelper.getInputStack(inv, terminalB), terminalBDefinition);
 
         return wut;
     }

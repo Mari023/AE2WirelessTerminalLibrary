@@ -39,18 +39,18 @@ public abstract class Common implements CraftingRecipe {
     /**
      * merge a terminal into a wireless universal terminal
      *
-     * @param wut          the wireless universal terminal a terminal should be added to
-     * @param toMerge      the terminal to add
-     * @param terminalName the name of the terminal to add
+     * @param wut      the wireless universal terminal a terminal should be added to
+     * @param toMerge  the terminal to add
+     * @param terminal the terminal to add
      * @return the upgraded wireless universal terminal
      */
-    public static ItemStack mergeTerminal(ItemStack wut, ItemStack toMerge, String terminalName) {
+    public static ItemStack mergeTerminal(ItemStack wut, ItemStack toMerge, WTDefinition terminal) {
         if (!(wut.getItem() instanceof ItemWUT itemWUT))
             return ItemStack.EMPTY;
         if (!(toMerge.getItem() instanceof ItemWT itemWT))
             return ItemStack.EMPTY;
 
-        wut.set(WTDefinition.of(terminalName).componentType(), Unit.INSTANCE);
+        wut.set(terminal.componentType(), Unit.INSTANCE);
 
         // merge upgrades, this also updates max energy
         Iterator<ItemStack> iterator = itemWT.getUpgrades(toMerge).iterator();

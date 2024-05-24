@@ -34,6 +34,7 @@ public record WTDefinition(String terminalName, ContainerOpener containerOpener,
                 BiConsumer<Player, ISubMenu> returnToMainMenu);
     }
 
+    // TODO codecs
     private static final Map<String, WTDefinition> wirelessTerminals = new HashMap<>();
 
     public static Map<String, WTDefinition> wirelessTerminals() {
@@ -63,9 +64,9 @@ public record WTDefinition(String terminalName, ContainerOpener containerOpener,
             case ItemWUT ignored -> {
                 String currentTerminal = stack.getOrDefault(AE2wtlibComponents.CURRENT_TERMINAL, "");
 
-                if (WTDefinition.wirelessTerminals().containsKey(currentTerminal))
+                if (WTDefinition.wirelessTerminals.containsKey(currentTerminal))
                     yield of(currentTerminal);
-                for (var term : WTDefinition.wirelessTerminals().entrySet())
+                for (var term : WTDefinition.wirelessTerminals.entrySet())
                     if (stack.get(term.getValue().componentType()) != null) {
                         currentTerminal = term.getKey();
                         stack.set(AE2wtlibComponents.CURRENT_TERMINAL, currentTerminal);
@@ -84,7 +85,7 @@ public record WTDefinition(String terminalName, ContainerOpener containerOpener,
 
     @Nullable
     public static WTDefinition ofOrNull(ItemWT item) {
-        for (Map.Entry<String, WTDefinition> entry : WTDefinition.wirelessTerminals().entrySet()) {
+        for (Map.Entry<String, WTDefinition> entry : WTDefinition.wirelessTerminals.entrySet()) {
             if (item.equals(entry.getValue().item()))
                 return entry.getValue();
         }

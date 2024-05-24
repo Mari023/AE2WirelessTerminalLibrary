@@ -15,12 +15,12 @@ import de.mari_023.ae2wtlib.wut.WTDefinition;
 public class Upgrade extends Common {
     public static final UpgradeSerializer serializer = new UpgradeSerializer();
     private final Ingredient terminal;
-    private final String terminalName;
+    private final WTDefinition terminalDefinition;
 
     public Upgrade(Ingredient terminal, String terminalName) {
         this.terminal = terminal;
-        this.terminalName = terminalName;
-        outputStack.set(WTDefinition.of(terminalName).componentType(), Unit.INSTANCE);
+        this.terminalDefinition = WTDefinition.of(terminalName);
+        outputStack.set(terminalDefinition.componentType(), Unit.INSTANCE);
     }
 
     public Ingredient getTerminal() {
@@ -28,7 +28,7 @@ public class Upgrade extends Common {
     }
 
     public String getTerminalName() {
-        return terminalName;
+        return terminalDefinition.terminalName();
     }
 
     @Override
@@ -36,13 +36,13 @@ public class Upgrade extends Common {
         ItemStack wut = InputHelper.getInputStack(inv, InputHelper.WUT);
         return !InputHelper.getInputStack(inv, terminal).isEmpty() && !wut.isEmpty()
                 && InputHelper.getInputCount(inv) == 2
-                && wut.get(WTDefinition.of(terminalName).componentType()) != null;
+                && wut.get(terminalDefinition.componentType()) != null;
     }
 
     @Override
     public ItemStack assemble(CraftingContainer inv, HolderLookup.Provider provider) {
         return mergeTerminal(InputHelper.getInputStack(inv, InputHelper.WUT).copy(),
-                InputHelper.getInputStack(inv, terminal).copy(), terminalName);
+                InputHelper.getInputStack(inv, terminal).copy(), terminalDefinition);
     }
 
     @Override

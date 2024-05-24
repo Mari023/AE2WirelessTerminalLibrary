@@ -47,8 +47,8 @@ public class AE2wtlibCreativeTab {
     public static synchronized void addUniversalTerminal(ItemWUT wut) {
         var stack = new ItemStack(wut);
         items.add(stack.copy());
-        for (var terminal : WTDefinition.wirelessTerminals().entrySet()) {
-            Common.mergeTerminal(stack, new ItemStack(terminal.getValue().item()), terminal.getKey());
+        for (var terminal : WTDefinition.wirelessTerminals().values()) {
+            Common.mergeTerminal(stack, new ItemStack(terminal.item()), terminal);
         }
         wut.injectAEPower(stack, wut.getAEMaxPower(stack), Actionable.MODULATE);
         items.add(stack.copy());
