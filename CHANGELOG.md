@@ -1,7 +1,4 @@
-- update to 1.20.5
-  - components might still change, this might lead to item loss when upgrading
-  - currently without curio support due to lack of curio
-  - EMI / REI / JEI integration is untested and unchanged from 1.20.4, it may or may not work
-- fix magnet card not working in a wireless universal terminal when there is no pattern encoding terminal installed
-- fix close hotkeys not working for wat and wet (and addon terminals)
-- allow terminal keybindings to work while in terminal (closes #215)
+- charge the terminal in the creative tab icon (fix #267)
+- add all terminals to the universal terminal in the creative tab (fix #266)
+- show the next terminal on the next terminal button (fix #265)
+- change how addon terminals are registered
