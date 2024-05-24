@@ -32,16 +32,13 @@ public class AE2wtlib {
 
     public static void onAe2Initialized() {
         AddTerminalEvent.register((event -> {
-            event.addTerminal("crafting", AE2wtlibItems.WIRELESS_CRAFTING_TERMINAL::tryOpen, WCTMenuHost::new,
-                    WCTMenu.TYPE,
-                    AE2wtlibItems.WIRELESS_CRAFTING_TERMINAL, HotkeyAction.WIRELESS_TERMINAL,
-                    "item.ae2.wireless_crafting_terminal");
-            event.addTerminal("pattern_encoding", AE2wtlibItems.PATTERN_ENCODING_TERMINAL::tryOpen, WETMenuHost::new,
-                    WETMenu.TYPE,
-                    AE2wtlibItems.PATTERN_ENCODING_TERMINAL);
-            event.addTerminal("pattern_access", AE2wtlibItems.PATTERN_ACCESS_TERMINAL::tryOpen, WATMenuHost::new,
-                    WATMenu.TYPE,
-                    AE2wtlibItems.PATTERN_ACCESS_TERMINAL);
+            event.builder("crafting", WCTMenuHost::new, WCTMenu.TYPE, AE2wtlibItems.WIRELESS_CRAFTING_TERMINAL)
+                    .hotkeyName(HotkeyAction.WIRELESS_TERMINAL)
+                    .translationKey("item.ae2.wireless_crafting_terminal").addTerminal();
+            event.builder("pattern_encoding", WETMenuHost::new, WETMenu.TYPE, AE2wtlibItems.PATTERN_ENCODING_TERMINAL)
+                    .addTerminal();
+            event.builder("pattern_access", WATMenuHost::new, WATMenu.TYPE, AE2wtlibItems.PATTERN_ACCESS_TERMINAL)
+                    .addTerminal();
         }));
 
         AddTerminalEvent.run();
