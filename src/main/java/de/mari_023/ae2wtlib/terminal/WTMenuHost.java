@@ -41,7 +41,7 @@ import de.mari_023.ae2wtlib.AE2wtlibItems;
 import de.mari_023.ae2wtlib.terminal.results.ActionHostResult;
 import de.mari_023.ae2wtlib.terminal.results.LongResult;
 import de.mari_023.ae2wtlib.terminal.results.Status;
-import de.mari_023.ae2wtlib.wut.WUTHandler;
+import de.mari_023.ae2wtlib.wut.WTDefinition;
 
 public abstract class WTMenuHost extends WirelessTerminalMenuHost<ItemWT>
         implements ISegmentedInventory {
@@ -67,15 +67,11 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<ItemWT>
                         stack -> createInv(player, stack, AE2wtlibComponents.VIEW_CELL_INVENTORY, 5)));
         singularityInventory = new SupplierInternalInventory<>(
                 new StackDependentSupplier<>(this::getItemStack, stack -> createSingularityInv(player, stack)));
-        String terminalName = WUTHandler.getCurrentTerminal(getItemStack());
 
         String close = super.getCloseHotkey();
-        for (var entry : WUTHandler.wirelessTerminals.entrySet()) {
-            if (terminalName.equals(entry.getKey())) {
-                close = entry.getValue().hotkeyName();
-                break;
-            }
-        }
+        var wtDefinition = WTDefinition.ofOrNull(getItemStack());
+        if (wtDefinition != null)
+            close = wtDefinition.hotkeyName();
         assert close != null;
         closeHotkey = close;
     }

@@ -16,7 +16,7 @@ import appeng.api.upgrades.IUpgradeInventory;
 import de.mari_023.ae2wtlib.AE2wtlibItems;
 import de.mari_023.ae2wtlib.terminal.ItemWT;
 import de.mari_023.ae2wtlib.wut.ItemWUT;
-import de.mari_023.ae2wtlib.wut.WUTHandler;
+import de.mari_023.ae2wtlib.wut.WTDefinition;
 
 public abstract class Common implements CraftingRecipe {
     protected final ItemStack outputStack = new ItemStack(AE2wtlibItems.UNIVERSAL_TERMINAL);
@@ -50,7 +50,7 @@ public abstract class Common implements CraftingRecipe {
         if (!(toMerge.getItem() instanceof ItemWT itemWT))
             return ItemStack.EMPTY;
 
-        wut.set(WUTHandler.wirelessTerminals.get(terminalName).componentType(), Unit.INSTANCE);
+        wut.set(WTDefinition.of(terminalName).componentType(), Unit.INSTANCE);
 
         // merge upgrades, this also updates max energy
         Iterator<ItemStack> iterator = itemWT.getUpgrades(toMerge).iterator();

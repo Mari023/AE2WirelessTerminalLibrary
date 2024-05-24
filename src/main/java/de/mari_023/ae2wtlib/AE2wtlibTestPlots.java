@@ -17,7 +17,7 @@ import appeng.server.testplots.TestPlot;
 import appeng.server.testplots.TestPlotClass;
 import appeng.server.testworld.PlotBuilder;
 
-import de.mari_023.ae2wtlib.wut.WUTHandler;
+import de.mari_023.ae2wtlib.wut.WTDefinition;
 import de.mari_023.ae2wtlib.wut.recipe.Common;
 
 @TestPlotClass
@@ -50,8 +50,8 @@ public class AE2wtlibTestPlots {
         var stack3 = new ItemStack(AE2wtlibItems.PATTERN_ENCODING_TERMINAL);
         var universalStack = Common.mergeTerminal(
                 Common.mergeTerminal(new ItemStack(AE2wtlibItems.UNIVERSAL_TERMINAL), stack1,
-                        WUTHandler.getCurrentTerminal(stack1)),
-                stack2, WUTHandler.getCurrentTerminal(stack2));
+                        WTDefinition.of(stack1).terminalName()),
+                stack2, WTDefinition.of(stack2).terminalName());
 
         plot.hopper("2 2 0", Direction.WEST, stack2);
 

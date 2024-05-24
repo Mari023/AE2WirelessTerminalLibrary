@@ -6,6 +6,7 @@ import net.minecraft.world.item.ItemStack;
 import appeng.api.features.HotkeyAction;
 import appeng.menu.locator.ItemMenuHostLocator;
 
+import de.mari_023.ae2wtlib.wut.WTDefinition;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 public class Ae2wtlibLocatingService implements HotkeyAction {
@@ -24,6 +25,6 @@ public class Ae2wtlibLocatingService implements HotkeyAction {
 
         ItemStack terminal = locator.locateItem(player);
         WUTHandler.setCurrentTerminal(player, locator, terminal, terminalName);
-        return WUTHandler.wirelessTerminals.get(terminalName).item().tryOpen(player, locator, false);
+        return WTDefinition.of(terminalName).item().tryOpen(player, locator, false);
     }
 }

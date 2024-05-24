@@ -15,6 +15,7 @@ import net.minecraft.world.item.ItemStack;
 
 import me.shedaniel.math.Color;
 
+import de.mari_023.ae2wtlib.wut.WTDefinition;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 public class WUTSelectScreen extends Screen {
@@ -22,7 +23,7 @@ public class WUTSelectScreen extends Screen {
 
     public WUTSelectScreen(ItemStack terminal) {
         super(Component.translatable("gui.ae2wtlib.wireless_universal_terminal"));
-        for (String currentTerminal : WUTHandler.terminalNames) {
+        for (String currentTerminal : WTDefinition.wirelessTerminals().keySet()) {
             if (WUTHandler.hasTerminal(terminal, currentTerminal))
                 terminals.add(currentTerminal);
         }

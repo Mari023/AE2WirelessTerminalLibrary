@@ -10,7 +10,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 
-import de.mari_023.ae2wtlib.wut.WUTHandler;
+import de.mari_023.ae2wtlib.wut.WTDefinition;
 
 public class Combine extends Common {
     public static final CombineSerializer serializer = new CombineSerializer();
@@ -24,8 +24,8 @@ public class Combine extends Common {
         this.terminalB = terminalB;
         this.terminalAName = terminalAName;
         this.terminalBName = terminalBName;
-        outputStack.set(WUTHandler.wirelessTerminals.get(terminalAName).componentType(), Unit.INSTANCE);
-        outputStack.set(WUTHandler.wirelessTerminals.get(terminalBName).componentType(), Unit.INSTANCE);
+        outputStack.set(WTDefinition.of(terminalAName).componentType(), Unit.INSTANCE);
+        outputStack.set(WTDefinition.of(terminalBName).componentType(), Unit.INSTANCE);
     }
 
     public Ingredient getTerminalA() {

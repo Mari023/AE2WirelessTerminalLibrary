@@ -16,8 +16,7 @@ public interface IUniversalTerminalCapable {
     }
 
     default ItemStack nextTerminal() {
-        return new ItemStack(
-                WUTHandler.wirelessTerminals.get(WUTHandler.nextTerminal(getHost().getItemStack(), false)).item());
+        return new ItemStack(WTDefinition.of(WUTHandler.nextTerminal(getHost().getItemStack(), false)).item());
     }
 
     WTMenuHost getHost();
@@ -27,7 +26,7 @@ public interface IUniversalTerminalCapable {
     void storeState();
 
     default boolean checkForTerminalKeys(int keyCode, int scanCode) {
-        for (var wtDefinition : WUTHandler.wirelessTerminals.values()) {
+        for (var wtDefinition : WTDefinition.wirelessTerminals().values()) {
             var hotkey = Hotkeys.getHotkeyMapping(wtDefinition.hotkeyName());
             if (hotkey == null)
                 continue;

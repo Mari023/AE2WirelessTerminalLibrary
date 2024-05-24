@@ -1,10 +1,5 @@
 package de.mari_023.ae2wtlib.wut;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.server.level.ServerPlayer;
@@ -22,43 +17,9 @@ import de.mari_023.ae2wtlib.networking.UpdateWUTPackage;
 
 /**
  * This class handles functionalities related to the Wireless Universal Terminal (WUT). It provides methods to get and
- * set the current terminal, check for a specific terminal, cycle through terminals, update client terminals, and
- * register new terminals.
+ * set the current terminal, check for a specific terminal, cycle through terminals and update client terminals
  */
 public class WUTHandler {
-    /**
-     * Definitions for all wireless terminals.
-     */
-    public static final Map<String, WTDefinition> wirelessTerminals = new HashMap<>();
-    public static final List<String> terminalNames = new ArrayList<>();
-
-    /**
-     * Get the current terminal from the provided item stack.
-     *
-     * @param terminal The ItemStack which represents the terminal.
-     * @return The current terminal name if found, or an empty string.
-     */
-    public static String getCurrentTerminal(ItemStack terminal) {
-        if (terminal.getItem() instanceof ItemWUT) {
-            String currentTerminal = terminal.getOrDefault(AE2wtlibComponents.CURRENT_TERMINAL, "");
-
-            if (wirelessTerminals.containsKey(currentTerminal))
-                return currentTerminal;
-            for (var term : wirelessTerminals.entrySet())
-                if (terminal.get(term.getValue().componentType()) != null) {
-                    currentTerminal = term.getKey();
-                    terminal.set(AE2wtlibComponents.CURRENT_TERMINAL, currentTerminal);
-                    break;
-                }
-            return currentTerminal;
-        }
-        for (Map.Entry<String, WTDefinition> entry : wirelessTerminals.entrySet()) {
-            if (terminal.getItem().equals(entry.getValue().item()))
-                return entry.getKey();
-        }
-        return "";
-    }
-
     /**
      * Set the current terminal of a given item stack.
      *
@@ -84,15 +45,15 @@ public class WUTHandler {
      * @param terminalName The terminal name to check.
      * @return true if the terminal contains the specified terminal name, false otherwise.
      */
-    public static boolean hasTerminal(ItemStack terminal, String terminalName) {
+    public static boolean hasTerminal(ItemStack terminal, String terminalName) {// TODO check if this should be changed
         if (terminal.isEmpty())
             return false;
         if (terminal.getItem() instanceof ItemWUT) {
-            if (!terminalNames.contains(terminalName))
+            if (WTDefinition.ofOrNull(terminalName) == null)
                 return false;
-            return terminal.get(wirelessTerminals.get(terminalName).componentType()) != null;
+            return terminal.get(WTDefinition.of(terminalName).componentType()) != null;
         }
-        return terminal.getItem().equals(wirelessTerminals.get(terminalName).item());
+        return terminal.getItem().equals(WTDefinition.of(terminalName).item());
     }
 
     /**
@@ -111,7 +72,11 @@ public class WUTHandler {
     }
 
     public static String nextTerminal(ItemStack itemStack, boolean reverse) {
-        String nextTerminal = getCurrentTerminal(itemStack);
+        var currentTerminal = WTDefinition.ofOrNull(itemStack);
+        if (currentTerminal == null)
+            return "";
+        String nextTerminal = currentTerminal.terminalName();
+        var terminalNames = WTDefinition.terminalNames();
         do {
             int i;
             if (reverse) {
@@ -124,7 +89,7 @@ public class WUTHandler {
                     i = 0;
             }
             nextTerminal = terminalNames.get(i);
-        } while (itemStack.get(wirelessTerminals.get(nextTerminal).componentType()) == null);
+        } while (itemStack.get(WTDefinition.wirelessTerminals().get(nextTerminal).componentType()) == null);
         return nextTerminal;
     }
 
@@ -150,12 +115,12 @@ public class WUTHandler {
     public static boolean open(final Player player, final ItemMenuHostLocator locator, boolean returningFromSubmenu) {
         ItemStack is = locator.locateItem(player);
 
-        String currentTerminal = getCurrentTerminal(is);
-        if (!wirelessTerminals.containsKey(currentTerminal)) {
+        var currentTerminal = WTDefinition.ofOrNull(is);
+        if (currentTerminal == null) {
             player.displayClientMessage(TextConstants.TERMINAL_EMPTY, false);
             return false;
         }
-        return wirelessTerminals.get(currentTerminal).containerOpener().tryOpen(player, locator, returningFromSubmenu);
+        return currentTerminal.containerOpener().tryOpen(player, locator, returningFromSubmenu);
     }
 
     /**
@@ -189,6 +154,10 @@ public class WUTHandler {
      * @return The maximum amount of upgrades a Universal Terminal can have
      */
     public static int getUpgradeCardCount() {
-        return terminalNames.size() * 2;
+        int upgradeCards = 0;
+        for (var terminal : WTDefinition.wirelessTerminals().values()) {
+            upgradeCards += terminal.upgradeCount();
+        }
+        return upgradeCards;
     }
 }

@@ -29,7 +29,7 @@ import de.mari_023.ae2wtlib.terminal.ItemWT;
 public class ItemWUT extends ItemWT {
     @Override
     public InteractionResultHolder<ItemStack> use(final Level level, final Player player, final InteractionHand hand) {
-        if (WUTHandler.getCurrentTerminal(player.getItemInHand(hand)).isEmpty()) {
+        if (WTDefinition.ofOrNull(player.getItemInHand(hand)) == null) {
             if (!level.isClientSide())
                 player.sendSystemMessage(TextConstants.TERMINAL_EMPTY);
             return new InteractionResultHolder<>(InteractionResult.sidedSuccess(level.isClientSide()),
@@ -57,7 +57,7 @@ public class ItemWUT extends ItemWT {
 
     @Override
     public MenuType<?> getMenuType(ItemMenuHostLocator locator, Player player) {
-        return WUTHandler.wirelessTerminals.get(WUTHandler.getCurrentTerminal(locator.locateItem(player))).menuType();
+        return WTDefinition.of(locator.locateItem(player)).menuType();
     }
 
     @Override
@@ -65,9 +65,9 @@ public class ItemWUT extends ItemWT {
     public void appendHoverText(final ItemStack stack, final TooltipContext context, final List<Component> lines,
             final TooltipFlag advancedTooltips) {
         lines.add(TextConstants.UNIVERSAL);
-        for (var terminal : WUTHandler.wirelessTerminals.entrySet()) {
+        for (var terminal : WTDefinition.wirelessTerminals().entrySet()) {
             if (WUTHandler.hasTerminal(stack, terminal.getKey()))
-                lines.add(terminal.getValue().terminalName());
+                lines.add(terminal.getValue().formattedName());
         }
         super.appendHoverText(stack, context, lines, advancedTooltips);
     }
@@ -84,7 +84,7 @@ public class ItemWUT extends ItemWT {
 
     public int countInstalledTerminals(ItemStack stack) {
         int terminals = 0;
-        for (String s : WUTHandler.terminalNames) {
+        for (String s : WTDefinition.wirelessTerminals().keySet()) {
             if (WUTHandler.hasTerminal(stack, s))
                 terminals++;
         }
@@ -92,7 +92,7 @@ public class ItemWUT extends ItemWT {
     }
 
     public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int i, boolean bl) {
-        for (var terminal : WUTHandler.wirelessTerminals.entrySet()) {
+        for (var terminal : WTDefinition.wirelessTerminals().entrySet()) {
             if (!WUTHandler.hasTerminal(itemStack, terminal.getKey()))
                 continue;
             terminal.getValue().item().inventoryTick(itemStack,
@@ -101,7 +101,6 @@ public class ItemWUT extends ItemWT {
     }
 
     public IConfigManager getConfigManager(Supplier<ItemStack> target) {// FIXME potentially reuse the config manager?
-        return WUTHandler.wirelessTerminals.get(WUTHandler.getCurrentTerminal(target.get())).item()
-                .getConfigManager(target);
+        return WTDefinition.of(target.get()).item().getConfigManager(target);
     }
 }

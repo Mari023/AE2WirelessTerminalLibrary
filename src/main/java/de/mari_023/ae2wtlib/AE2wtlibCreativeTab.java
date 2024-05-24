@@ -13,7 +13,7 @@ import appeng.api.config.Actionable;
 import appeng.items.tools.powered.WirelessTerminalItem;
 
 import de.mari_023.ae2wtlib.wut.ItemWUT;
-import de.mari_023.ae2wtlib.wut.WUTHandler;
+import de.mari_023.ae2wtlib.wut.WTDefinition;
 import de.mari_023.ae2wtlib.wut.recipe.Common;
 
 public class AE2wtlibCreativeTab {
@@ -47,7 +47,7 @@ public class AE2wtlibCreativeTab {
     public static synchronized void addUniversalTerminal(ItemWUT wut) {
         var stack = new ItemStack(wut);
         items.add(stack.copy());
-        for (var terminal : WUTHandler.wirelessTerminals.entrySet()) {
+        for (var terminal : WTDefinition.wirelessTerminals().entrySet()) {
             Common.mergeTerminal(stack, new ItemStack(terminal.getValue().item()), terminal.getKey());
         }
         wut.injectAEPower(stack, wut.getAEMaxPower(stack), Actionable.MODULATE);

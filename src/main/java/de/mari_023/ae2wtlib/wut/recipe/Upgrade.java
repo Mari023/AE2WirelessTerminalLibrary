@@ -10,6 +10,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 
+import de.mari_023.ae2wtlib.wut.WTDefinition;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 public class Upgrade extends Common {
@@ -20,7 +21,7 @@ public class Upgrade extends Common {
     public Upgrade(Ingredient terminal, String terminalName) {
         this.terminal = terminal;
         this.terminalName = terminalName;
-        outputStack.set(WUTHandler.wirelessTerminals.get(terminalName).componentType(), Unit.INSTANCE);
+        outputStack.set(WTDefinition.of(terminalName).componentType(), Unit.INSTANCE);
     }
 
     public Ingredient getTerminal() {

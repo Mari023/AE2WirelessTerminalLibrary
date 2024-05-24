@@ -20,7 +20,7 @@ import appeng.menu.locator.ItemMenuHostLocator;
 import appeng.menu.locator.MenuLocators;
 
 import de.mari_023.ae2wtlib.AE2wtlibItems;
-import de.mari_023.ae2wtlib.wut.WUTHandler;
+import de.mari_023.ae2wtlib.wut.WTDefinition;
 
 public abstract class ItemWT extends WirelessTerminalItem {
     public ItemWT() {
@@ -59,8 +59,7 @@ public abstract class ItemWT extends WirelessTerminalItem {
     @Override
     public WirelessTerminalMenuHost<?> getMenuHost(Player player, ItemMenuHostLocator locator,
             @Nullable BlockHitResult hitResult) {
-        return WUTHandler.wirelessTerminals.get(WUTHandler.getCurrentTerminal(locator.locateItem(player)))
-                .wTMenuHostFactory().create(this, player,
-                        locator, (p, subMenu) -> tryOpen(player, locator, true));
+        return WTDefinition.of(locator.locateItem(player)).wTMenuHostFactory().create(this, player, locator,
+                (p, subMenu) -> tryOpen(player, locator, true));
     }
 }
