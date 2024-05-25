@@ -63,21 +63,14 @@ public class WCTMenu extends CraftingTermMenu {
         return wctMenuHost.getActionableNode();
     }
 
-    private MagnetMode magnetMode = MagnetMode.OFF;
-
     public MagnetMode getMagnetMode() {
-        return magnetMode = MagnetHandler.getMagnetMode(wctMenuHost.getItemStack());
-    }
-
-    private void saveMagnetMode() {
-        MagnetHandler.saveMagnetMode(wctMenuHost.getItemStack(), magnetMode);
+        return MagnetHandler.getMagnetMode(wctMenuHost.getItemStack());
     }
 
     public void setMagnetMode(MagnetMode mode) {
         if (isClientSide())
             sendClientAction(MAGNET_MODE, mode);
-        magnetMode = mode;
-        saveMagnetMode();
+        MagnetHandler.saveMagnetMode(wctMenuHost.getItemStack(), mode);
     }
 
     public void openMagnetMenu() {
