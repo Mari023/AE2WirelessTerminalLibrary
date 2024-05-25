@@ -19,11 +19,12 @@ public class Combine extends Common {
     private final WTDefinition terminalADefinition;
     private final WTDefinition terminalBDefinition;
 
-    public Combine(Ingredient terminalA, Ingredient terminalB, String terminalAName, String terminalBName) {
+    public Combine(Ingredient terminalA, Ingredient terminalB, WTDefinition terminalADefinition,
+            WTDefinition terminalBDefinition) {
         this.terminalA = terminalA;
         this.terminalB = terminalB;
-        this.terminalADefinition = WTDefinition.of(terminalAName);
-        this.terminalBDefinition = WTDefinition.of(terminalBName);
+        this.terminalADefinition = terminalADefinition;
+        this.terminalBDefinition = terminalBDefinition;
         outputStack.set(terminalADefinition.componentType(), Unit.INSTANCE);
         outputStack.set(terminalBDefinition.componentType(), Unit.INSTANCE);
     }
@@ -36,12 +37,12 @@ public class Combine extends Common {
         return terminalB;
     }
 
-    public String getTerminalAName() {
-        return terminalADefinition.terminalName();
+    public WTDefinition getTerminalADefinition() {
+        return terminalADefinition;
     }
 
-    public String getTerminalBName() {
-        return terminalBDefinition.terminalName();
+    public WTDefinition getTerminalBDefinition() {
+        return terminalBDefinition;
     }
 
     @Override

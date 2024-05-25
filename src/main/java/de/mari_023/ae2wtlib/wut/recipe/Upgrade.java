@@ -17,9 +17,9 @@ public class Upgrade extends Common {
     private final Ingredient terminal;
     private final WTDefinition terminalDefinition;
 
-    public Upgrade(Ingredient terminal, String terminalName) {
+    public Upgrade(Ingredient terminal, WTDefinition terminalDefinition) {
         this.terminal = terminal;
-        this.terminalDefinition = WTDefinition.of(terminalName);
+        this.terminalDefinition = terminalDefinition;
         outputStack.set(terminalDefinition.componentType(), Unit.INSTANCE);
     }
 
@@ -27,8 +27,8 @@ public class Upgrade extends Common {
         return terminal;
     }
 
-    public String getTerminalName() {
-        return terminalDefinition.terminalName();
+    public WTDefinition getTerminalDefinition() {
+        return terminalDefinition;
     }
 
     @Override
