@@ -68,23 +68,23 @@ public class WUTHandler {
         updateClientTerminal((ServerPlayer) player, locator, itemStack);
     }
 
-    public static WTDefinition nextTerminal(ItemStack itemStack, boolean reverse) {
-        String nextTerminal = WTDefinition.of(itemStack).terminalName();
-        var terminalNames = WTDefinition.terminalNames();
+    public static WTDefinition nextTerminal(ItemStack stack, boolean reverse) {
+        WTDefinition nextTerminal = WTDefinition.of(stack);
+        var terminals = WTDefinition.wirelessTerminalList;
         do {
             int i;
             if (reverse) {
-                i = terminalNames.indexOf(nextTerminal) - 1;
+                i = terminals.indexOf(nextTerminal) - 1;
                 if (i == -1)
-                    i = terminalNames.size() - 1;
+                    i = terminals.size() - 1;
             } else {
-                i = terminalNames.indexOf(nextTerminal) + 1;
-                if (i == terminalNames.size())
+                i = terminals.indexOf(nextTerminal) + 1;
+                if (i == terminals.size())
                     i = 0;
             }
-            nextTerminal = terminalNames.get(i);
-        } while (itemStack.get(WTDefinition.of(nextTerminal).componentType()) == null);
-        return WTDefinition.of(nextTerminal);
+            nextTerminal = terminals.get(i);
+        } while (stack.get(nextTerminal.componentType()) == null);
+        return nextTerminal;
     }
 
     /**

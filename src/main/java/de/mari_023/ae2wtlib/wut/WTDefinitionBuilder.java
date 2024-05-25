@@ -63,8 +63,8 @@ public class WTDefinitionBuilder {
                     .networkSynchronized(NeoForgeStreamCodecs.enumCodec(Unit.class)));
         }
 
-        if (WTDefinition.map().containsKey(name))
-            throw new IllegalStateException();
+        if (WTDefinition.exists(name))
+            throw new IllegalStateException("Trying to register terminal with name " + name + " but it already exists");
 
         ItemStack wut = new ItemStack(AE2wtlibItems.UNIVERSAL_TERMINAL);
 
@@ -78,7 +78,7 @@ public class WTDefinitionBuilder {
         HotkeyActions.register(new Ae2wtlibLocatingService(wtDefinition), hotkeyName);
 
         synchronized (event) {
-            WTDefinition.map().put(name, wtDefinition);
+            WTDefinition.add(name, wtDefinition);
         }
     }
 

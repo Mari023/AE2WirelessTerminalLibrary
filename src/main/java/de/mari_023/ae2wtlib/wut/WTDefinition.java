@@ -48,17 +48,19 @@ public record WTDefinition(String terminalName, ContainerOpener containerOpener,
             WTDefinition::of);
 
     private static final Map<String, WTDefinition> wirelessTerminals = new HashMap<>();
+    static final List<WTDefinition> wirelessTerminalList = new ArrayList<>();
 
-    static Map<String, WTDefinition> map() {
-        return wirelessTerminals;
+    static void add(String terminalName, WTDefinition definition) {
+        wirelessTerminals.put(terminalName, definition);
+        wirelessTerminalList.add(definition);
+    }
+
+    public static boolean exists(String terminalName) {
+        return wirelessTerminals.containsKey(terminalName);
     }
 
     public static Collection<WTDefinition> wirelessTerminals() {
         return wirelessTerminals.values();
-    }
-
-    public static List<String> terminalNames() {
-        return List.copyOf(wirelessTerminals.keySet());
     }
 
     public static WTDefinition of(String name) {
