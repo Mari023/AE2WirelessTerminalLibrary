@@ -63,7 +63,7 @@ public class WTDefinitionBuilder {
                     .networkSynchronized(NeoForgeStreamCodecs.enumCodec(Unit.class)));
         }
 
-        if (WTDefinition.wirelessTerminals().containsKey(name))
+        if (WTDefinition.map().containsKey(name))
             throw new IllegalStateException();
 
         ItemStack wut = new ItemStack(AE2wtlibItems.UNIVERSAL_TERMINAL);
@@ -75,7 +75,7 @@ public class WTDefinitionBuilder {
         HotkeyActions.register(new Ae2wtlibLocatingService(name), hotkeyName);
 
         synchronized (event) {
-            WTDefinition.wirelessTerminals().put(name,
+            WTDefinition.map().put(name,
                     new WTDefinition(name, item::tryOpen, wTMenuHostFactory, menuType, item, wut,
                             TextConstants.formatTerminalName(translationKey), hotkeyName, componentType, upgradeCount));
         }

@@ -153,7 +153,7 @@ public class WUTHandler {
      */
     public static int getUpgradeCardCount() {
         int upgradeCards = 0;
-        for (var terminal : WTDefinition.wirelessTerminals().values()) {
+        for (var terminal : WTDefinition.wirelessTerminals()) {
             upgradeCards += terminal.upgradeCount();
         }
         return upgradeCards;

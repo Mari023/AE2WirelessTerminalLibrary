@@ -65,7 +65,7 @@ public class ItemWUT extends ItemWT {
     public void appendHoverText(final ItemStack stack, final TooltipContext context, final List<Component> lines,
             final TooltipFlag advancedTooltips) {
         lines.add(TextConstants.UNIVERSAL);
-        for (var terminal : WTDefinition.wirelessTerminals().values()) {
+        for (var terminal : WTDefinition.wirelessTerminals()) {
             if (stack.get(terminal.componentType()) != null)
                 lines.add(terminal.formattedName());
         }
@@ -84,7 +84,7 @@ public class ItemWUT extends ItemWT {
 
     public int countInstalledTerminals(ItemStack stack) {
         int terminals = 0;
-        for (var terminal : WTDefinition.wirelessTerminals().values()) {
+        for (var terminal : WTDefinition.wirelessTerminals()) {
             if (stack.get(terminal.componentType()) != null)
                 terminals++;
         }
@@ -92,7 +92,7 @@ public class ItemWUT extends ItemWT {
     }
 
     public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int i, boolean bl) {
-        for (var terminal : WTDefinition.wirelessTerminals().values()) {
+        for (var terminal : WTDefinition.wirelessTerminals()) {
             if (itemStack.get(terminal.componentType()) == null)
                 continue;
             terminal.item().inventoryTick(itemStack,

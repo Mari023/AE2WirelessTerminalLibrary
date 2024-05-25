@@ -37,8 +37,12 @@ public record WTDefinition(String terminalName, ContainerOpener containerOpener,
     // TODO codecs
     private static final Map<String, WTDefinition> wirelessTerminals = new HashMap<>();
 
-    public static Map<String, WTDefinition> wirelessTerminals() {
+    static Map<String, WTDefinition> map() {
         return wirelessTerminals;
+    }
+
+    public static Collection<WTDefinition> wirelessTerminals() {
+        return wirelessTerminals.values();
     }
 
     public static List<String> terminalNames() {

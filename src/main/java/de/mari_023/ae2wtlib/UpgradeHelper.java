@@ -42,7 +42,7 @@ public class UpgradeHelper {
             addMaxUpgradesToAllTerminals(upgradeCard);
             return;
         }
-        for (var terminal : WTDefinition.wirelessTerminals().values()) {
+        for (var terminal : WTDefinition.wirelessTerminals()) {
             int max = terminal.upgradeCount();
             if (max == 0)
                 continue;
@@ -54,7 +54,7 @@ public class UpgradeHelper {
 
     private static void addMaxUpgradesToAllTerminals(ItemLike upgradeCard) {
         Upgrades.add(upgradeCard, AE2wtlibItems.UNIVERSAL_TERMINAL, WUTHandler.getUpgradeCardCount());
-        for (var terminal : WTDefinition.wirelessTerminals().values()) {
+        for (var terminal : WTDefinition.wirelessTerminals()) {
             int max = terminal.upgradeCount();
             if (max == 0)
                 continue;

@@ -22,7 +22,7 @@ public class WUTSelectScreen extends Screen {
 
     public WUTSelectScreen(ItemStack terminal) {
         super(Component.translatable("gui.ae2wtlib.wireless_universal_terminal"));
-        for (var currentTerminal : WTDefinition.wirelessTerminals().values()) {
+        for (var currentTerminal : WTDefinition.wirelessTerminals()) {
             if (terminal.get(currentTerminal.componentType()) != null)
                 terminals.add(currentTerminal.terminalName());
         }
