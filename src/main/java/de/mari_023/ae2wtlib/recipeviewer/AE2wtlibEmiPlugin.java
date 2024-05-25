@@ -11,7 +11,7 @@ import appeng.integration.modules.emi.EmiUseCraftingRecipeHandler;
 
 import de.mari_023.ae2wtlib.wct.WCTMenu;
 import de.mari_023.ae2wtlib.wet.WETMenu;
-import de.mari_023.ae2wtlib.wut.WTDefinition;
+import de.mari_023.ae2wtlib.wut.WTDefinitions;
 
 @EmiEntrypoint
 public class AE2wtlibEmiPlugin implements EmiPlugin {
@@ -22,6 +22,6 @@ public class AE2wtlibEmiPlugin implements EmiPlugin {
         registry.addRecipeHandler(WCTMenu.TYPE, new EmiUseCraftingRecipeHandler<>(WCTMenu.class));
 
         registry.addWorkstation(VanillaEmiRecipeCategories.CRAFTING,
-                EmiStack.of(WTDefinition.of("crafting").universalTerminal()));
+                EmiStack.of(WTDefinitions.CRAFTING.universalTerminal()));
     }
 }

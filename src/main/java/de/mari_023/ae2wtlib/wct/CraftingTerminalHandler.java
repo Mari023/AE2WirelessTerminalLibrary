@@ -17,7 +17,7 @@ import appeng.menu.locator.ItemMenuHostLocator;
 
 import de.mari_023.ae2wtlib.terminal.WTMenuHost;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHost;
-import de.mari_023.ae2wtlib.wut.WTDefinition;
+import de.mari_023.ae2wtlib.wut.WTDefinitions;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 public class CraftingTerminalHandler {
@@ -96,10 +96,10 @@ public class CraftingTerminalHandler {
 
     @Nullable
     public ItemMenuHostLocator getLocator() {
-        if (locator != null && WUTHandler.hasTerminal(locator.locateItem(player), WTDefinition.of("crafting")))
+        if (locator != null && WUTHandler.hasTerminal(locator.locateItem(player), WTDefinitions.CRAFTING))
             return locator;
         boolean locatorWasNotNull = locator != null;
-        locator = WUTHandler.findTerminal(player, WTDefinition.of("crafting"));
+        locator = WUTHandler.findTerminal(player, WTDefinitions.CRAFTING);
 
         if (locator == null) {
             invalidateCache();

@@ -9,7 +9,7 @@ import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeTransferRegistration;
 
 import de.mari_023.ae2wtlib.AE2wtlib;
-import de.mari_023.ae2wtlib.wut.WTDefinition;
+import de.mari_023.ae2wtlib.wut.WTDefinitions;
 
 @JeiPlugin
 public class JEIPlugin implements IModPlugin {
@@ -27,7 +27,7 @@ public class JEIPlugin implements IModPlugin {
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registry) {
-        registry.addRecipeCatalyst(WTDefinition.of("crafting").universalTerminal(),
+        registry.addRecipeCatalyst(WTDefinitions.CRAFTING.universalTerminal(),
                 RecipeTypes.CRAFTING);
     }
 }

@@ -40,17 +40,17 @@ public record WTDefinition(String terminalName, ContainerOpener containerOpener,
                 BiConsumer<Player, ISubMenu> returnToMainMenu);
     }
 
+    private static final Map<String, WTDefinition> wirelessTerminals = new HashMap<>();
+    static final List<WTDefinition> wirelessTerminalList = new ArrayList<>();
+
     public static final Codec<WTDefinition> CODEC = Codec.STRING.comapFlatMap(s -> {
-        var terminal = ofOrNull(s);
+        var terminal = wirelessTerminals.get(s);
         if (terminal == null)
             return DataResult.error(() -> "WTDefinition " + s + " does not exist");
         return DataResult.success(terminal);
     }, WTDefinition::terminalName);
     public static final StreamCodec<ByteBuf, WTDefinition> STREAM_CODEC = ByteBufCodecs.STRING_UTF8
             .map(WTDefinition::of, WTDefinition::terminalName);
-
-    private static final Map<String, WTDefinition> wirelessTerminals = new HashMap<>();
-    static final List<WTDefinition> wirelessTerminalList = new ArrayList<>();
 
     static void add(String terminalName, WTDefinition definition) {
         wirelessTerminals.put(terminalName, definition);
@@ -65,13 +65,8 @@ public record WTDefinition(String terminalName, ContainerOpener containerOpener,
         return wirelessTerminals.values();
     }
 
-    public static WTDefinition of(String name) {
-        return Objects.requireNonNull(ofOrNull(name));
-    }
-
-    @Nullable
-    public static WTDefinition ofOrNull(String name) {
-        return wirelessTerminals.get(name);
+    static WTDefinition of(String name) {
+        return Objects.requireNonNull(wirelessTerminals.get(name));
     }
 
     public static WTDefinition of(ItemStack stack) {
