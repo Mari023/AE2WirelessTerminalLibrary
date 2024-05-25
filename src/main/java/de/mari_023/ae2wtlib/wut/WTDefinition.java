@@ -3,9 +3,11 @@ package de.mari_023.ae2wtlib.wut;
 import java.util.*;
 import java.util.function.BiConsumer;
 
+import com.mojang.datafixers.util.Pair;
 import com.mojang.datafixers.util.Unit;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.DynamicOps;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -39,10 +41,22 @@ public record WTDefinition(String terminalName, ContainerOpener containerOpener,
                 BiConsumer<Player, ISubMenu> returnToMainMenu);
     }
 
-    public static final Codec<WTDefinition> CODEC = RecordCodecBuilder.<WTDefinition>mapCodec(
-            builder -> builder.group(Codec.STRING.fieldOf("").forGetter(WTDefinition::terminalName))
-                    .apply(builder, WTDefinition::of))
-            .codec();
+    public static final Codec<WTDefinition> CODEC = new Codec<>() {
+        @Override
+        public <T> DataResult<Pair<WTDefinition, T>> decode(final DynamicOps<T> ops, final T input) {
+            return ops.getStringValue(input).map(r -> Pair.of(of(r), ops.empty()));
+        }
+
+        @Override
+        public <T> DataResult<T> encode(WTDefinition input, DynamicOps<T> ops, T prefix) {
+            return ops.mergeToPrimitive(prefix, ops.createString(input.terminalName));
+        }
+
+        @Override
+        public String toString() {
+            return "WTDefinition";
+        }
+    };
     public static final StreamCodec<RegistryFriendlyByteBuf, WTDefinition> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.STRING_UTF8, WTDefinition::terminalName,
             WTDefinition::of);
