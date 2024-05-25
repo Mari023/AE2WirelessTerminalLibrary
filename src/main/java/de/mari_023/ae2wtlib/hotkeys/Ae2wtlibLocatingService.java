@@ -9,22 +9,16 @@ import appeng.menu.locator.ItemMenuHostLocator;
 import de.mari_023.ae2wtlib.wut.WTDefinition;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 
-public class Ae2wtlibLocatingService implements HotkeyAction {
-    private final String terminalName;
-
-    public Ae2wtlibLocatingService(String terminalName) {
-        this.terminalName = terminalName;
-    }
-
+public record Ae2wtlibLocatingService(WTDefinition terminal) implements HotkeyAction {
     @Override
     public boolean run(Player player) {
-        ItemMenuHostLocator locator = WUTHandler.findTerminal(player, terminalName);
+        ItemMenuHostLocator locator = WUTHandler.findTerminal(player, terminal);
 
         if (locator == null)
             return false;
 
-        ItemStack terminal = locator.locateItem(player);
-        WUTHandler.setCurrentTerminal(player, locator, terminal, terminalName);
-        return WTDefinition.of(terminalName).item().tryOpen(player, locator, false);
+        ItemStack stack = locator.locateItem(player);
+        WUTHandler.setCurrentTerminal(player, locator, stack, terminal);
+        return terminal.item().tryOpen(player, locator, false);
     }
 }

@@ -72,12 +72,13 @@ public class WTDefinitionBuilder {
         AE2wtlibItems.UNIVERSAL_TERMINAL.injectAEPower(wut,
                 AE2wtlibItems.UNIVERSAL_TERMINAL.getAEMaxPower(wut), Actionable.MODULATE);
 
-        HotkeyActions.register(new Ae2wtlibLocatingService(name), hotkeyName);
+        WTDefinition wtDefinition = new WTDefinition(name, item::tryOpen, wTMenuHostFactory, menuType, item, wut,
+                TextConstants.formatTerminalName(translationKey), hotkeyName, componentType, upgradeCount);
+
+        HotkeyActions.register(new Ae2wtlibLocatingService(wtDefinition), hotkeyName);
 
         synchronized (event) {
-            WTDefinition.map().put(name,
-                    new WTDefinition(name, item::tryOpen, wTMenuHostFactory, menuType, item, wut,
-                            TextConstants.formatTerminalName(translationKey), hotkeyName, componentType, upgradeCount));
+            WTDefinition.map().put(name, wtDefinition);
         }
     }
 

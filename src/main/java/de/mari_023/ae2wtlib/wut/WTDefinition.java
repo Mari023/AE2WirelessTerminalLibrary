@@ -4,11 +4,16 @@ import java.util.*;
 import java.util.function.BiConsumer;
 
 import com.mojang.datafixers.util.Unit;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.component.DataComponentType;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
@@ -34,7 +39,14 @@ public record WTDefinition(String terminalName, ContainerOpener containerOpener,
                 BiConsumer<Player, ISubMenu> returnToMainMenu);
     }
 
-    // TODO codecs
+    public static final Codec<WTDefinition> CODEC = RecordCodecBuilder.<WTDefinition>mapCodec(
+            builder -> builder.group(Codec.STRING.fieldOf("").forGetter(WTDefinition::terminalName))
+                    .apply(builder, WTDefinition::of))
+            .codec();
+    public static final StreamCodec<RegistryFriendlyByteBuf, WTDefinition> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.STRING_UTF8, WTDefinition::terminalName,
+            WTDefinition::of);
+
     private static final Map<String, WTDefinition> wirelessTerminals = new HashMap<>();
 
     static Map<String, WTDefinition> map() {
@@ -66,15 +78,15 @@ public record WTDefinition(String terminalName, ContainerOpener containerOpener,
     public static WTDefinition ofOrNull(ItemStack stack) {
         return switch (stack.getItem()) {
             case ItemWUT ignored -> {
-                String currentTerminal = stack.getOrDefault(AE2wtlibComponents.CURRENT_TERMINAL, "");
+                WTDefinition currentTerminal = stack.get(AE2wtlibComponents.CURRENT_TERMINAL);
 
-                if (WTDefinition.wirelessTerminals.containsKey(currentTerminal))
-                    yield of(currentTerminal);
+                if (currentTerminal != null)
+                    yield currentTerminal;
                 for (var term : WTDefinition.wirelessTerminals.entrySet())
                     if (stack.get(term.getValue().componentType()) != null) {
-                        currentTerminal = term.getKey();
+                        currentTerminal = term.getValue();
                         stack.set(AE2wtlibComponents.CURRENT_TERMINAL, currentTerminal);
-                        yield term.getValue();
+                        yield currentTerminal;
                     }
                 yield null;
             }

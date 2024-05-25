@@ -16,7 +16,7 @@ public interface IUniversalTerminalCapable {
     }
 
     default ItemStack nextTerminal() {
-        return new ItemStack(WTDefinition.of(WUTHandler.nextTerminal(getHost().getItemStack(), false)).item());
+        return new ItemStack(WUTHandler.nextTerminal(getHost().getItemStack(), false).item());
     }
 
     WTMenuHost getHost();

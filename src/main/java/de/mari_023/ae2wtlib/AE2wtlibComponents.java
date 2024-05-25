@@ -22,6 +22,7 @@ import appeng.menu.locator.ItemMenuHostLocator;
 import appeng.menu.locator.MenuLocators;
 
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetMode;
+import de.mari_023.ae2wtlib.wut.WTDefinition;
 
 public class AE2wtlibComponents {
     private static final Consumer<DataComponentType.Builder<CompoundTag>> COMPOUND_TAG_CODECS = builder -> builder
@@ -38,8 +39,8 @@ public class AE2wtlibComponents {
 
     public static final Map<ResourceLocation, DataComponentType<?>> DR = new HashMap<>();
 
-    public static final DataComponentType<String> CURRENT_TERMINAL = register("current_terminal",
-            builder -> builder.persistent(Codec.STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8));
+    public static final DataComponentType<WTDefinition> CURRENT_TERMINAL = register("current_terminal",
+            builder -> builder.persistent(WTDefinition.CODEC).networkSynchronized(WTDefinition.STREAM_CODEC));
 
     public static final DataComponentType<ItemStack> SINGULARITY = register("singularity", builder -> builder
             .persistent(ItemStack.OPTIONAL_CODEC).networkSynchronized(ItemStack.OPTIONAL_STREAM_CODEC));

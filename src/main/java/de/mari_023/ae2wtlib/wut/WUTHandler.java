@@ -29,7 +29,7 @@ public class WUTHandler {
      * @param terminal  The terminal name to set.
      */
     public static void setCurrentTerminal(Player player, ItemMenuHostLocator locator, ItemStack itemStack,
-            String terminal) {
+            WTDefinition terminal) {
         if (!(itemStack.getItem() instanceof ItemWUT))
             return;
         if (!hasTerminal(itemStack, terminal))
@@ -41,19 +41,17 @@ public class WUTHandler {
     /**
      * Checks if the given terminal item stack contains the specified terminal name.
      *
-     * @param terminal     The terminal ItemStack.
-     * @param terminalName The terminal name to check.
+     * @param stack    The terminal ItemStack.
+     * @param terminal The terminal name to check.
      * @return true if the terminal contains the specified terminal name, false otherwise.
      */
-    public static boolean hasTerminal(ItemStack terminal, String terminalName) {
-        if (terminal.isEmpty())
+    public static boolean hasTerminal(ItemStack stack, WTDefinition terminal) {
+        if (stack.isEmpty())
             return false;
-        if (terminal.getItem() instanceof ItemWUT) {
-            if (WTDefinition.ofOrNull(terminalName) == null)
-                return false;
-            return terminal.get(WTDefinition.of(terminalName).componentType()) != null;
+        if (stack.getItem() instanceof ItemWUT) {
+            return stack.get(terminal.componentType()) != null;
         }
-        return terminal.getItem().equals(WTDefinition.of(terminalName).item());
+        return stack.getItem().equals(terminal.item());
     }
 
     /**
@@ -66,16 +64,12 @@ public class WUTHandler {
      */
     public static void cycle(Player player, ItemMenuHostLocator locator, ItemStack itemStack,
             boolean isHandlingRightClick) {
-        String nextTerminal = nextTerminal(itemStack, isHandlingRightClick);
-        itemStack.set(AE2wtlibComponents.CURRENT_TERMINAL, nextTerminal);
+        itemStack.set(AE2wtlibComponents.CURRENT_TERMINAL, nextTerminal(itemStack, isHandlingRightClick));
         updateClientTerminal((ServerPlayer) player, locator, itemStack);
     }
 
-    public static String nextTerminal(ItemStack itemStack, boolean reverse) {
-        var currentTerminal = WTDefinition.ofOrNull(itemStack);
-        if (currentTerminal == null)
-            return "";
-        String nextTerminal = currentTerminal.terminalName();
+    public static WTDefinition nextTerminal(ItemStack itemStack, boolean reverse) {
+        String nextTerminal = WTDefinition.of(itemStack).terminalName();
         var terminalNames = WTDefinition.terminalNames();
         do {
             int i;
@@ -90,7 +84,7 @@ public class WUTHandler {
             }
             nextTerminal = terminalNames.get(i);
         } while (itemStack.get(WTDefinition.of(nextTerminal).componentType()) == null);
-        return nextTerminal;
+        return WTDefinition.of(nextTerminal);
     }
 
     /**
@@ -124,23 +118,23 @@ public class WUTHandler {
     /**
      * Finds a specific terminal for a player.
      *
-     * @param player       The player.
-     * @param terminalName The name of the terminal to find.
+     * @param player   The player.
+     * @param terminal The name of the terminal to find.
      * @return A MenuLocator for the terminal if found; null otherwise.
      */
     @Nullable
-    public static ItemMenuHostLocator findTerminal(Player player, String terminalName) {
+    public static ItemMenuHostLocator findTerminal(Player player, WTDefinition terminal) {
         var cap = player.getCapability(CuriosIntegration.ITEM_HANDLER);
         if (cap != null) {
             for (int i = 0; i < cap.getSlots(); i++) {
-                if (hasTerminal(cap.getStackInSlot(i), terminalName)) {
+                if (hasTerminal(cap.getStackInSlot(i), terminal)) {
                     return MenuLocators.forCurioSlot(i);
                 }
             }
         }
 
         for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
-            if (hasTerminal(player.getInventory().getItem(i), terminalName))
+            if (hasTerminal(player.getInventory().getItem(i), terminal))
                 return MenuLocators.forInventorySlot(i);
         }
         return null;
