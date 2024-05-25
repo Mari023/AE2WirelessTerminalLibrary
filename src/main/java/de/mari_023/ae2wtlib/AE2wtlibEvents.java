@@ -3,6 +3,8 @@ package de.mari_023.ae2wtlib;
 import java.util.function.Consumer;
 
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.stats.Stats;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -74,43 +76,45 @@ public class AE2wtlibEvents {
      * Attempts to insert an item stack from a player's inventory into an ME system linked to a terminal the player
      * carries.
      *
-     * @param stack  The item stack being inserted
+     * @param entity The item stack entity being inserted
      * @param player The player attempting the insertion
-     * @return True if the entire stack is successfully inserted; false otherwise.
      */
-    public static boolean insertStackInME(ItemStack stack, Player player) {
+    public static void insertStackInME(ItemEntity entity, Player player) {
+        ItemStack stack = entity.getItem();
         if (stack.isEmpty())
-            return false;
+            return;
         if (player.level().isClientSide())
-            return false;
+            return;
         CraftingTerminalHandler cTHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
         ItemStack terminal = cTHandler.getCraftingTerminal();
 
         if (!(MagnetHandler.getMagnetMode(terminal) == MagnetMode.PICKUP_ME))
-            return false;
+            return;
         if (!cTHandler.inRange())
-            return false;
+            return;
 
         MagnetHost magnetHost = cTHandler.getMagnetHost();
         if (magnetHost == null)
-            return false;
+            return;
 
         // if the filter is empty, it will match anything, even in whitelist mode
         if (magnetHost.getInsertFilter().isEmpty() && magnetHost.getInsertMode() == IncludeExclude.WHITELIST)
-            return false;
+            return;
         if (!magnetHost.getInsertFilter().matchesFilter(AEItemKey.of(stack), magnetHost.getInsertMode()))
-            return false;
+            return;
 
         if (cTHandler.getTargetGrid() == null)
-            return false;
+            return;
         if (cTHandler.getTargetGrid().getStorageService() == null)
-            return false;
+            return;
 
         long inserted = cTHandler.getTargetGrid().getStorageService().getInventory().insert(AEItemKey.of(stack),
                 stack.getCount(), Actionable.MODULATE, new PlayerSource(player, null));
         int leftover = (int) (stack.getCount() - inserted);
 
         stack.setCount(leftover);
-        return leftover == 0;
+
+        player.awardStat(Stats.ITEM_PICKED_UP.get(stack.getItem()), (int) inserted);
+        player.onItemPickup(entity);
     }
 }

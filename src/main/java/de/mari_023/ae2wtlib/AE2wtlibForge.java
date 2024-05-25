@@ -22,7 +22,7 @@ import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
 import net.neoforged.neoforge.event.entity.player.ArrowLooseEvent;
 import net.neoforged.neoforge.event.entity.player.ArrowNockEvent;
-import net.neoforged.neoforge.event.entity.player.EntityItemPickupEvent;
+import net.neoforged.neoforge.event.entity.player.ItemEntityPickupEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
@@ -108,13 +108,20 @@ public class AE2wtlibForge {
         AE2wtlibEvents.restock(player, item, item.getCount(), (stack -> player.setItemInHand(event.getHand(), stack)));
     }
 
-    @SubscribeEvent(priority = EventPriority.NORMAL)
-    public static void handle(EntityItemPickupEvent event) {
-        if (event.isCanceled()) {
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void handle(ItemEntityPickupEvent.Pre event) {
+        if (event.canPickup().isFalse())
             return;
+        var entity = event.getItemEntity();
+        var player = event.getPlayer();
+        if (event.canPickup().isDefault()) {
+            if (entity.hasPickUpDelay())
+                return;
+            if (entity.target != null && !entity.target.equals(player.getUUID()))
+                return;
         }
 
-        event.setCanceled(AE2wtlibEvents.insertStackInME(event.getItem().getItem(), event.getEntity()));
+        AE2wtlibEvents.insertStackInME(entity, player);
     }
 
     @SubscribeEvent

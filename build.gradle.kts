@@ -132,6 +132,12 @@ repositories {
     }
 }
 
+minecraft {
+    accessTransformers {
+        file("src/main/resources/META-INF/accesstransformer.cfg")
+    }
+}
+
 tasks {
     processResources {
         // Ensure the resources get re-evaluate when the version changes
