@@ -19,6 +19,7 @@ import appeng.api.config.IncludeExclude;
 import appeng.api.stacks.AEItemKey;
 import appeng.api.stacks.KeyCounter;
 import appeng.api.upgrades.IUpgradeableItem;
+import appeng.api.upgrades.Upgrades;
 
 import de.mari_023.ae2wtlib.AE2wtlibComponents;
 import de.mari_023.ae2wtlib.AE2wtlibConfig;
@@ -117,15 +118,22 @@ public class MagnetHandler {
     }
 
     public static void saveMagnetMode(ItemStack terminal, MagnetMode magnetSettings) {
-        if (terminal.getItem() instanceof IUpgradeableItem upgradeableItem
-                && upgradeableItem.getUpgrades(terminal).isInstalled(AE2wtlibItems.MAGNET_CARD))
-            terminal.set(AE2wtlibComponents.MAGNET_SETTINGS, magnetSettings);
+        if (magnetSettings == MagnetMode.INVALID || magnetSettings == MagnetMode.NO_CARD)
+            return;
+        if (!(terminal.getItem() instanceof IUpgradeableItem upgradeableItem))
+            return;
+        if (!upgradeableItem.getUpgrades(terminal).isInstalled(AE2wtlibItems.MAGNET_CARD))
+            return;
+        terminal.set(AE2wtlibComponents.MAGNET_SETTINGS, magnetSettings);
     }
 
     public static MagnetMode getMagnetMode(ItemStack terminal) {
         if (terminal.getItem() instanceof IUpgradeableItem upgradeableItem
-                && upgradeableItem.getUpgrades(terminal).isInstalled(AE2wtlibItems.MAGNET_CARD))
-            return terminal.getOrDefault(AE2wtlibComponents.MAGNET_SETTINGS, MagnetMode.INVALID);
+                && Upgrades.getMaxInstallable(AE2wtlibItems.MAGNET_CARD, upgradeableItem) != 0) {
+            if (upgradeableItem.getUpgrades(terminal).isInstalled(AE2wtlibItems.MAGNET_CARD))
+                return terminal.getOrDefault(AE2wtlibComponents.MAGNET_SETTINGS, MagnetMode.OFF);
+            return MagnetMode.NO_CARD;
+        }
         return MagnetMode.INVALID;
     }
 }
