@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.mojang.serialization.DataResult;
 
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.nbt.CompoundTag;
@@ -28,9 +28,8 @@ public class AE2wtlibComponents {
     private static final Consumer<DataComponentType.Builder<CompoundTag>> COMPOUND_TAG_CODECS = builder -> builder
             .persistent(CompoundTag.CODEC).networkSynchronized(ByteBufCodecs.COMPOUND_TAG);
     private static final Consumer<DataComponentType.Builder<IncludeExclude>> INCLUDE_EXCLUDE_CODECS = builder -> builder
-            .persistent(RecordCodecBuilder.<IncludeExclude>mapCodec(codecBuilder -> codecBuilder
-                    .group(Codec.BOOL.fieldOf("").forGetter(AE2wtlibComponents::includeExcludeToBoolean))
-                    .apply(codecBuilder, AE2wtlibComponents::booleanToIncludeExclude)).codec())
+            .persistent(Codec.BOOL.xmap(AE2wtlibComponents::booleanToIncludeExclude,
+                    AE2wtlibComponents::includeExcludeToBoolean))
             .networkSynchronized(NeoForgeStreamCodecs.enumCodec(IncludeExclude.class));
 
     public static final StreamCodec<FriendlyByteBuf, ItemMenuHostLocator> MENU_HOST_LOCATOR_STREAM_CODEC = StreamCodec
@@ -49,7 +48,8 @@ public class AE2wtlibComponents {
                     .networkSynchronized(ItemContainerContents.STREAM_CODEC));
 
     public static final DataComponentType<MagnetMode> MAGNET_SETTINGS = register("magnet_settings",
-            builder -> builder.persistent(MagnetMode.CODEC)
+            builder -> builder.persistent(Codec.BYTE.comapFlatMap(b -> DataResult.success(MagnetMode.fromByte(b)),
+                    MagnetMode::getId))
                     .networkSynchronized(NeoForgeStreamCodecs.enumCodec(MagnetMode.class)));
     public static final DataComponentType<CompoundTag> PICKUP_CONFIG = register("pickup_config", COMPOUND_TAG_CODECS);
     public static final DataComponentType<CompoundTag> INSERT_CONFIG = register("insert_config", COMPOUND_TAG_CODECS);

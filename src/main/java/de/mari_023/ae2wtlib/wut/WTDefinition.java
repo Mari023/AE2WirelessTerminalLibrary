@@ -3,16 +3,15 @@ package de.mari_023.ae2wtlib.wut;
 import java.util.*;
 import java.util.function.BiConsumer;
 
-import com.mojang.datafixers.util.Pair;
 import com.mojang.datafixers.util.Unit;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
-import com.mojang.serialization.DynamicOps;
 
 import org.jetbrains.annotations.Nullable;
 
+import io.netty.buffer.ByteBuf;
+
 import net.minecraft.core.component.DataComponentType;
-import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -41,25 +40,14 @@ public record WTDefinition(String terminalName, ContainerOpener containerOpener,
                 BiConsumer<Player, ISubMenu> returnToMainMenu);
     }
 
-    public static final Codec<WTDefinition> CODEC = new Codec<>() {
-        @Override
-        public <T> DataResult<Pair<WTDefinition, T>> decode(final DynamicOps<T> ops, final T input) {
-            return ops.getStringValue(input).map(r -> Pair.of(of(r), ops.empty()));
-        }
-
-        @Override
-        public <T> DataResult<T> encode(WTDefinition input, DynamicOps<T> ops, T prefix) {
-            return ops.mergeToPrimitive(prefix, ops.createString(input.terminalName));
-        }
-
-        @Override
-        public String toString() {
-            return "WTDefinition";
-        }
-    };
-    public static final StreamCodec<RegistryFriendlyByteBuf, WTDefinition> STREAM_CODEC = StreamCodec.composite(
-            ByteBufCodecs.STRING_UTF8, WTDefinition::terminalName,
-            WTDefinition::of);
+    public static final Codec<WTDefinition> CODEC = Codec.STRING.comapFlatMap(s -> {
+        var terminal = ofOrNull(s);
+        if (terminal == null)
+            return DataResult.error(() -> "WTDefinition " + s + " does not exist");
+        return DataResult.success(terminal);
+    }, WTDefinition::terminalName);
+    public static final StreamCodec<ByteBuf, WTDefinition> STREAM_CODEC = ByteBufCodecs.STRING_UTF8
+            .map(WTDefinition::of, WTDefinition::terminalName);
 
     private static final Map<String, WTDefinition> wirelessTerminals = new HashMap<>();
     static final List<WTDefinition> wirelessTerminalList = new ArrayList<>();

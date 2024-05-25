@@ -1,16 +1,7 @@
 package de.mari_023.ae2wtlib.wct.magnet_card;
 
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-
 public enum MagnetMode {
     INVALID((byte) -2), NO_CARD((byte) -1), OFF((byte) 0), PICKUP_INVENTORY((byte) 1), PICKUP_ME((byte) 2);
-
-    public static final Codec<MagnetMode> CODEC = RecordCodecBuilder.<MagnetMode>mapCodec(
-            builder -> builder
-                    .group(Codec.BYTE.fieldOf("").forGetter(MagnetMode::getId))
-                    .apply(builder, MagnetMode::fromByte))
-            .codec();
 
     private final byte id;
 
