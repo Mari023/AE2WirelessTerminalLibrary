@@ -57,6 +57,10 @@ dependencies {
 
         "emi" -> {
             runtimeOnly("dev.emi:emi-neoforge:${emiVersion}+${emiMinecraftVersion}")
+        }
+
+        "jemi" -> {
+            runtimeOnly("dev.emi:emi-neoforge:${emiVersion}+${emiMinecraftVersion}")
             runtimeOnly("mezz.jei:jei-${jeiMinecraftVersion}-neoforge:${jeiVersion}")
         }
     }
