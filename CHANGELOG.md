@@ -2,3 +2,4 @@
 - add all terminals to the universal terminal in the creative tab (fix #266)
 - show the next terminal on the next terminal button (fix #265)
 - change how addon terminals are registered
+- add ae2-style-crafting-terminal as a builtin texture pack (close #262)
