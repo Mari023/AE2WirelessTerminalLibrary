@@ -32,6 +32,10 @@ public final class AddTerminalEvent {
         HANDLERS = null;
     }
 
+    public static synchronized boolean hasRun() {
+        return HANDLERS == null;
+    }
+
     /**
      * Creates a builder to register a new terminal.
      *
