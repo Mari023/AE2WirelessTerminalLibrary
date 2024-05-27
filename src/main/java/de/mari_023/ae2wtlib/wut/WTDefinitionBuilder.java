@@ -32,15 +32,7 @@ public class WTDefinitionBuilder {
     private String translationKey;
     private int upgradeCount;
 
-    /**
-     * internal, use {@link AddTerminalEvent#builder} Creates a builder to register a new terminal.
-     *
-     * @param terminalName      Terminal's name.
-     * @param WTMenuHostFactory The factory for creating WTMenuHost.
-     * @param menuType          The menu type for the terminal.
-     * @param item              The item representing the terminal.
-     */
-    protected WTDefinitionBuilder(AddTerminalEvent event, String terminalName,
+    WTDefinitionBuilder(AddTerminalEvent event, String terminalName,
             WTDefinition.WTMenuHostFactory WTMenuHostFactory, MenuType<?> menuType, ItemWT item) {
         this.event = event;
         this.name = terminalName;
@@ -54,7 +46,7 @@ public class WTDefinitionBuilder {
     }
 
     /**
-     * add the terminal.
+     * Add the terminal.
      */
     public void addTerminal() {
         if (componentType == null) {

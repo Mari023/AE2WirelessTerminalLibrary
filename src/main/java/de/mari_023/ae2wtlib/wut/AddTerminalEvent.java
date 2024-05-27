@@ -32,7 +32,7 @@ public final class AddTerminalEvent {
         HANDLERS = null;
     }
 
-    public static synchronized boolean hasRun() {
+    public static synchronized boolean didRun() {
         return HANDLERS == null;
     }
 

@@ -61,6 +61,11 @@ public record WTDefinition(String terminalName, ContainerOpener containerOpener,
         return wirelessTerminals.containsKey(terminalName);
     }
 
+    /**
+     * Gets all terminal definitions.
+     * 
+     * @return a collection containing all terminal definitions
+     */
     public static Collection<WTDefinition> wirelessTerminals() {
         return wirelessTerminals.values();
     }
@@ -69,10 +74,22 @@ public record WTDefinition(String terminalName, ContainerOpener containerOpener,
         return Objects.requireNonNull(wirelessTerminals.get(name));
     }
 
+    /**
+     * Get the terminal definition of an ItemStack.
+     * 
+     * @param stack stack to get the terminal definition of.
+     * @return the terminal definition, or throws a {@link NullPointerException} if none was found
+     */
     public static WTDefinition of(ItemStack stack) {
         return Objects.requireNonNull(ofOrNull(stack));
     }
 
+    /**
+     * Get the terminal definition of an ItemStack.
+     * 
+     * @param stack stack to get the terminal definition of.
+     * @return the terminal definition, or null if none was found
+     */
     @Nullable
     public static WTDefinition ofOrNull(ItemStack stack) {
         return switch (stack.getItem()) {
@@ -89,17 +106,13 @@ public record WTDefinition(String terminalName, ContainerOpener containerOpener,
                     }
                 yield null;
             }
-            case ItemWT item -> of(item);
+            case ItemWT item -> ofOrNull(item);
             default -> null;
         };
     }
 
-    public static WTDefinition of(ItemWT item) {
-        return Objects.requireNonNull(ofOrNull(item));
-    }
-
     @Nullable
-    public static WTDefinition ofOrNull(ItemWT item) {
+    private static WTDefinition ofOrNull(ItemWT item) {
         for (Map.Entry<String, WTDefinition> entry : WTDefinition.wirelessTerminals.entrySet()) {
             if (item.equals(entry.getValue().item()))
                 return entry.getValue();
