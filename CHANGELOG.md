@@ -1,3 +1,4 @@
+- update to latest neoforge (fix #276)
 - charge the terminal in the creative tab icon (fix #267)
 - add all terminals to the universal terminal in the creative tab (fix #266)
 - show the next terminal on the next terminal button (fix #265)
