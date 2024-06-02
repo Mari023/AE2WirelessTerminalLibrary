@@ -1,5 +1,5 @@
 plugins {
-    id("net.neoforged.gradle.userdev") version "7.0.106"
+    id("net.neoforged.gradle.userdev") version "7.0.138"
     id("com.diffplug.spotless") version "6.25.0"
     id("maven-publish")
     java
@@ -169,9 +169,6 @@ runs {
 
         modSource(sourceSets.main.get())
     }
-
-    create("client")
-    create("server")
 }
 
 publishing {
