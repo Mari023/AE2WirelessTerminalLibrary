@@ -53,6 +53,8 @@ public class AE2wtlib {
     }
 
     static void addToCreativeTab() {
+        if (AE2wtlibCreativeTab.registrationHappened())
+            return;
         AE2wtlibCreativeTab.addTerminal(AEItems.WIRELESS_CRAFTING_TERMINAL.asItem());
         AE2wtlibCreativeTab.addTerminal(AE2wtlibItems.PATTERN_ENCODING_TERMINAL);
         AE2wtlibCreativeTab.addTerminal(AE2wtlibItems.PATTERN_ACCESS_TERMINAL);

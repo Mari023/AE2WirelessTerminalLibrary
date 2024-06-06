@@ -33,6 +33,10 @@ public class AE2wtlibCreativeTab {
         Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, AE2wtlib.id("main"), tab);
     }
 
+    public static boolean registrationHappened() {
+        return !items.isEmpty();
+    }
+
     public static synchronized void add(Item item) {
         items.add(new ItemStack(item));
     }
@@ -41,7 +45,7 @@ public class AE2wtlibCreativeTab {
         var stack = new ItemStack(terminal);
         items.add(stack.copy());
         terminal.injectAEPower(stack, terminal.getAEMaxPower(stack), Actionable.MODULATE);
-        items.add(stack);
+        items.add(stack.copy());
     }
 
     public static synchronized void addUniversalTerminal(ItemWUT wut) {

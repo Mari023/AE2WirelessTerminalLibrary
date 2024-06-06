@@ -1,2 +1,3 @@
 - don't send items to me when sneaking (fix #275)
 - fix bug where picking up to me wouldn't reward the statistics, and not trigger the advancement criterion
+- fix a bug where all modded creative tabs were broken
