@@ -1,5 +1,5 @@
 plugins {
-    id("net.neoforged.gradle.userdev") version "7.0.138"
+    id("net.neoforged.moddev") version "0.1.52-pr-1-pr-publish"
     id("com.diffplug.spotless") version "6.25.0"
     id("maven-publish")
     java
@@ -19,7 +19,7 @@ val emiMinecraftVersion: String by project
 val neoforgeVersion: String by project
 val curiosVersion: String by project
 val mavenGroup: String by project
-val archivesBaseName: String by project
+val modID: String by project
 
 version = "0.0.0-SNAPSHOT"
 
@@ -38,7 +38,8 @@ val artifactVersion = version
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 dependencies {
-    implementation("net.neoforged:neoforge:${neoforgeVersion}")
+    //temporarily explicitly depend on mixinextras, since moddev seems to not include it
+    runtimeOnly("io.github.llamalad7:mixinextras-neoforge:0.3.6")
 
     //implementation("top.theillusivec4.curios:curios-neoforge:${curiosVersion}")
     implementation("appeng:appliedenergistics2-neoforge:${ae2Version}")
@@ -136,12 +137,6 @@ repositories {
     }
 }
 
-minecraft {
-    accessTransformers {
-        file("src/main/resources/META-INF/accesstransformer.cfg")
-    }
-}
-
 tasks {
     processResources {
         // Ensure the resources get re-evaluate when the version changes
@@ -162,20 +157,33 @@ tasks {
     }
 }
 
-runs {
-    configureEach {
-        workingDirectory(file("run"))
-        systemProperty("forge.logging.console.level", "info")
+neoForge {
+    version = neoforgeVersion
+    mods {
+        create(modID) {
+            sourceSet(sourceSets.main.get())
+        }
+    }
+    runs {
+        configureEach {
+            gameDirectory.file("run")
+            systemProperty("forge.logging.console.level", "debug")
+        }
 
-        modSource(sourceSets.main.get())
+        create("client") {
+            client()
+        }
+        create("server") {
+            server()
+        }
     }
 }
 
 publishing {
     publications {
-        create<MavenPublication>("ae2wtlib") {
+        create<MavenPublication>(modID) {
             groupId = mavenGroup
-            artifactId = archivesBaseName
+            artifactId = modID
             version = artifactVersion.toString()
 
             from(components["java"])
