@@ -1,0 +1,1 @@
+- don't send items to me when sneaking (fix #275)

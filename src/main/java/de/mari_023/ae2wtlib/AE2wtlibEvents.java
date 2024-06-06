@@ -85,6 +85,8 @@ public class AE2wtlibEvents {
             return;
         if (player.level().isClientSide())
             return;
+        if (player.isShiftKeyDown())
+            return;
         CraftingTerminalHandler cTHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
         ItemStack terminal = cTHandler.getCraftingTerminal();
 
