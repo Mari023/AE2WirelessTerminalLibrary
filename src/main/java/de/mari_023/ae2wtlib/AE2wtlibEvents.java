@@ -114,9 +114,9 @@ public class AE2wtlibEvents {
                 stack.getCount(), Actionable.MODULATE, new PlayerSource(player, null));
         int leftover = (int) (stack.getCount() - inserted);
 
-        stack.setCount(leftover);
-
         player.awardStat(Stats.ITEM_PICKED_UP.get(stack.getItem()), (int) inserted);
         player.onItemPickup(entity);
+
+        stack.setCount(leftover);
     }
 }
