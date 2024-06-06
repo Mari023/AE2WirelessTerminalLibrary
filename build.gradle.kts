@@ -1,5 +1,5 @@
 plugins {
-    id("net.neoforged.moddev") version "0.1.52-pr-1-pr-publish"
+    id("net.neoforged.moddev") version "0.1.59-pr-1-pr-publish"
     id("com.diffplug.spotless") version "6.25.0"
     id("maven-publish")
     java
@@ -38,9 +38,6 @@ val artifactVersion = version
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 dependencies {
-    //temporarily explicitly depend on mixinextras, since moddev seems to not include it
-    runtimeOnly("io.github.llamalad7:mixinextras-neoforge:0.3.6")
-
     //implementation("top.theillusivec4.curios:curios-neoforge:${curiosVersion}")
     implementation("appeng:appliedenergistics2-neoforge:${ae2Version}")
 
