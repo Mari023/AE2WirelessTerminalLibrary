@@ -1,28 +1,29 @@
 package de.mari_023.ae2wtlib.wct;
 
 import java.util.HashMap;
-import java.util.Map;
-import java.util.WeakHashMap;
+import java.util.function.Supplier;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.attachment.AttachmentType;
 
 import appeng.api.networking.IGrid;
 import appeng.api.networking.IGridNode;
 import appeng.menu.locator.ItemMenuHostLocator;
 
+import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.terminal.WTMenuHost;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHost;
 import de.mari_023.ae2wtlib.wut.WTDefinitions;
 import de.mari_023.ae2wtlib.wut.WUTHandler;
 
 public class CraftingTerminalHandler {
-    private static final WeakHashMap<Player, CraftingTerminalHandler> SERVER_PLAYERS = new WeakHashMap<>();
-    private static final WeakHashMap<Player, CraftingTerminalHandler> CLIENT_PLAYERS = new WeakHashMap<>();
+    public static final Supplier<AttachmentType<CraftingTerminalHandler>> CT_HANDLER = AE2wtlib.ATTACHMENT_TYPES
+            .register("ct_handler",
+                    () -> AttachmentType.builder((player) -> new CraftingTerminalHandler((Player) player)).build());
     public final Player player;
     @Nullable
     private WTMenuHost menuHost;
@@ -37,23 +38,7 @@ public class CraftingTerminalHandler {
     }
 
     public static CraftingTerminalHandler getCraftingTerminalHandler(Player player) {
-        Map<Player, CraftingTerminalHandler> players = player instanceof ServerPlayer ? SERVER_PLAYERS : CLIENT_PLAYERS;
-
-        if (players.containsKey(player)) {
-            if (player == players.get(player).player)
-                return players.get(player);
-            removePlayer(player);
-        }
-        CraftingTerminalHandler handler = new CraftingTerminalHandler(player);
-        players.put(player, handler);
-        return handler;
-    }
-
-    public static void removePlayer(Player player) {
-        if (player instanceof ServerPlayer)
-            SERVER_PLAYERS.remove(player);
-        else
-            CLIENT_PLAYERS.remove(player);
+        return player.getData(CT_HANDLER);
     }
 
     private void invalidateCache() {

@@ -82,6 +82,7 @@ public class AE2wtlibForge {
                 PackSource.BUILT_IN,
                 false,
                 Pack.Position.TOP));
+        AE2wtlib.ATTACHMENT_TYPES.register(modEventBus);
     }
 
     private static <T extends AE2wtlibPacket> void registerPacket(PayloadRegistrar registrar,

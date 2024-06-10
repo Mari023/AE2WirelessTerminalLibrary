@@ -3,7 +3,10 @@ package de.mari_023.ae2wtlib;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 import appeng.api.features.HotkeyAction;
 import appeng.core.definitions.AEItems;
@@ -29,6 +32,8 @@ import de.mari_023.ae2wtlib.wut.recipe.UpgradeSerializer;
 
 public class AE2wtlib {
     public static final String MOD_NAME = "ae2wtlib";
+    public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister
+            .create(NeoForgeRegistries.ATTACHMENT_TYPES, MOD_NAME);
 
     public static void onAe2Initialized() {
         AddTerminalEvent.register((event -> {
