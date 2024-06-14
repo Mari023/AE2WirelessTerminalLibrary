@@ -53,25 +53,24 @@ public class WUTSelectScreen extends Screen {
         poseStack.pushPose();
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
-        BufferBuilder bufferBuilder = Tesselator.getInstance().getBuilder();
         Matrix4f modelMatrix = poseStack.last().pose();
-        bufferBuilder.begin(VertexFormat.Mode.TRIANGLE_FAN, DefaultVertexFormat.POSITION_COLOR);// TODO use quads and
-        // segment it
+        BufferBuilder bufferBuilder = Tesselator.getInstance().begin(VertexFormat.Mode.TRIANGLE_FAN,
+                DefaultVertexFormat.POSITION_COLOR);// TODO use quads and segment it
 
         for (int i = endingAngle; i >= startingAngle; i--) {
             float x = AngleHelper.getX(i, outerRadius);
             float y = AngleHelper.getY(i, outerRadius);
-            bufferBuilder.vertex(modelMatrix, centerX + x, centerY - y, 0)
-                    .color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()).endVertex();
+            bufferBuilder.addVertex(modelMatrix, centerX + x, centerY - y, 0)
+                    .setColor(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
         }
         for (int i = startingAngle; i <= endingAngle; i++) {
             float x = AngleHelper.getX(i, innerRadius);
             float y = AngleHelper.getY(i, innerRadius);
-            bufferBuilder.vertex(modelMatrix, centerX + x, centerY - y, 0)
-                    .color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha()).endVertex();
+            bufferBuilder.addVertex(modelMatrix, centerX + x, centerY - y, 0)
+                    .setColor(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha());
         }
 
-        BufferUploader.drawWithShader(bufferBuilder.end());
+        BufferUploader.drawWithShader(bufferBuilder.buildOrThrow());
         RenderSystem.disableBlend();
         poseStack.popPose();
     }

@@ -91,6 +91,6 @@ public class AE2wtlib {
     }
 
     public static ResourceLocation id(String name) {
-        return new ResourceLocation(MOD_NAME, name);
+        return ResourceLocation.fromNamespaceAndPath(MOD_NAME, name);
     }
 }

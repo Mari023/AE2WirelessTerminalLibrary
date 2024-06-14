@@ -7,7 +7,6 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
@@ -76,7 +75,7 @@ public class AE2wtlibForge {
             registerPowerStorageItem(event, AE2wtlibItems.PATTERN_ENCODING_TERMINAL);
         });
         modEventBus.addListener((AddPackFindersEvent event) -> event.addPackFinders(
-                new ResourceLocation(AE2wtlib.MOD_NAME, "ae2_style_wireless_crafting_terminal"),
+                AE2wtlib.id("ae2_style_wireless_crafting_terminal"),
                 PackType.CLIENT_RESOURCES,
                 Component.literal("AE2 style wireless crafting terminal"),
                 PackSource.BUILT_IN,

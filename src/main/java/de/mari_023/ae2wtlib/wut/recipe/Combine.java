@@ -4,8 +4,8 @@ import com.mojang.datafixers.util.Unit;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
@@ -46,13 +46,13 @@ public class Combine extends Common {
     }
 
     @Override
-    public boolean matches(CraftingContainer inv, Level world) {
+    public boolean matches(CraftingInput inv, Level world) {
         return !InputHelper.getInputStack(inv, terminalA).isEmpty()
-                && !InputHelper.getInputStack(inv, terminalB).isEmpty() && InputHelper.getInputCount(inv) == 2;
+                && !InputHelper.getInputStack(inv, terminalB).isEmpty() && inv.ingredientCount() == 2;
     }
 
     @Override
-    public ItemStack assemble(CraftingContainer inv, HolderLookup.Provider provider) {
+    public ItemStack assemble(CraftingInput inv, HolderLookup.Provider provider) {
         ItemStack wut = mergeTerminal(outputStack.copy(), InputHelper.getInputStack(inv, terminalA),
                 terminalADefinition);
         wut = mergeTerminal(wut, InputHelper.getInputStack(inv, terminalB), terminalBDefinition);

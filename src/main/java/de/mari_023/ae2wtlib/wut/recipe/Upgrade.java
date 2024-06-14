@@ -4,8 +4,8 @@ import com.mojang.datafixers.util.Unit;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
@@ -32,15 +32,14 @@ public class Upgrade extends Common {
     }
 
     @Override
-    public boolean matches(CraftingContainer inv, Level world) {
+    public boolean matches(CraftingInput inv, Level world) {
         ItemStack wut = InputHelper.getInputStack(inv, InputHelper.WUT);
-        return !InputHelper.getInputStack(inv, terminal).isEmpty() && !wut.isEmpty()
-                && InputHelper.getInputCount(inv) == 2
+        return !InputHelper.getInputStack(inv, terminal).isEmpty() && !wut.isEmpty() && inv.ingredientCount() == 2
                 && wut.get(terminalDefinition.componentType()) != null;
     }
 
     @Override
-    public ItemStack assemble(CraftingContainer inv, HolderLookup.Provider provider) {
+    public ItemStack assemble(CraftingInput inv, HolderLookup.Provider provider) {
         return mergeTerminal(InputHelper.getInputStack(inv, InputHelper.WUT).copy(),
                 InputHelper.getInputStack(inv, terminal).copy(), terminalDefinition);
     }

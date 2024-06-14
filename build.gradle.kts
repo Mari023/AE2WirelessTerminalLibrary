@@ -1,5 +1,5 @@
 plugins {
-    id("net.neoforged.moddev") version "0.1.59-pr-1-pr-publish"
+    id("net.neoforged.moddev") version "0.1.74"
     id("com.diffplug.spotless") version "6.25.0"
     id("maven-publish")
     java
