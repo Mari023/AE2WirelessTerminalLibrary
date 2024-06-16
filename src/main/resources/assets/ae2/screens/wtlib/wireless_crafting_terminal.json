@@ -33,6 +33,16 @@
     "AE2WTLIB_OFFHAND": {
       "left": 80,
       "bottom": 111
+    },
+    "PLAYER_INVENTORY": {
+      "left": 8,
+      "bottom": 82,
+      "grid": "BREAK_AFTER_9COLS"
+    },
+    "PLAYER_HOTBAR": {
+      "left": 8,
+      "bottom": 24,
+      "grid": "HORIZONTAL"
     }
   },
   "text": {
@@ -58,7 +68,7 @@
   "terminalStyle": {
     "bottom": {
       "texture": "wtlib/guis/extras.png",
-      "srcRect": [0, 0, 200, 177]
+      "srcRect": [0, 0, 195, 177]
     }
   },
   "widgets": {

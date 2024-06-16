@@ -2,8 +2,8 @@
   "$schema": "schema.json",
   "slots": {
     "AE2WTLIB_SINGULARITY": {
-      "right": -10,
-      "top": 8
+      "right": 2,
+      "top": 7
     },
     "TOOLBOX": {
       "$comment": "Only relevant if the toolbox is present (i.e. network tool)",
@@ -27,12 +27,12 @@
   },
   "widgets": {
     "singularityBackground": {
-      "right": -2,
+      "right": 2,
       "top": 0
     },
     "upgrades": {
       "$comment": "The upgrade panel found on some screens",
-      "right": -2,
+      "right": 2,
       "top": 33
     },
     "toolbox": {
