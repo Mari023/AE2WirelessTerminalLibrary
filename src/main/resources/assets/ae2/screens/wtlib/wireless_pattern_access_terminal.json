@@ -3,6 +3,21 @@
   "includes": [
     "../terminals/pattern_access_terminal.json",
     "../common/toolbox.json",
-    "universal_terminal_no_viewcells.json"
-  ]
+    "universal_terminal.json"
+  ],
+  "slots": {
+    "TOOLBOX": {
+      "bottom": 84,
+      "right": 20,
+      "grid": "BREAK_AFTER_3COLS"
+    }
+  },
+  "widgets": {
+    "toolbox": {
+      "right": 21,
+      "bottom": 90,
+      "width": 59,
+      "height": 66
+    }
+  }
 }

@@ -2,7 +2,7 @@
   "$schema": "schema.json",
   "includes": [
     "../terminals/crafting_terminal.json",
-    "universal_terminal_with_viewcells.json"
+    "universal_terminal.json"
   ],
   "slots": {
     "CRAFTING_GRID": {
