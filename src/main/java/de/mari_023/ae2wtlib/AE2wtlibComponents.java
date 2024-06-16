@@ -3,6 +3,7 @@ package de.mari_023.ae2wtlib;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
@@ -13,14 +14,17 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemContainerContents;
+import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs;
 
 import appeng.api.config.IncludeExclude;
 import appeng.menu.locator.ItemMenuHostLocator;
 import appeng.menu.locator.MenuLocators;
 
+import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetMode;
 import de.mari_023.ae2wtlib.wut.WTDefinition;
 
@@ -60,6 +64,10 @@ public class AE2wtlibComponents {
 
     public static final DataComponentType<CompoundTag> PATTERN_ENCODING_LOGIC = register("pattern_encoding_logic",
             COMPOUND_TAG_CODECS);
+
+    public static final Supplier<AttachmentType<CraftingTerminalHandler>> CT_HANDLER = AE2wtlib.ATTACHMENT_TYPES
+            .register("ct_handler",
+                    () -> AttachmentType.builder((player) -> new CraftingTerminalHandler((Player) player)).build());
 
     public static <T> DataComponentType<T> register(String name, Consumer<DataComponentType.Builder<T>> customizer) {
         var builder = DataComponentType.<T>builder();
