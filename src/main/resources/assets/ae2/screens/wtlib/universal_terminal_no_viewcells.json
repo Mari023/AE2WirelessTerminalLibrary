@@ -2,7 +2,7 @@
   "$schema": "schema.json",
   "slots": {
     "AE2WTLIB_SINGULARITY": {
-      "right": 2,
+      "right": 1,
       "top": 7
     },
     "TOOLBOX": {
