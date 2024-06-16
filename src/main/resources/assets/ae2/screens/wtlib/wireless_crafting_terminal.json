@@ -7,42 +7,32 @@
   "slots": {
     "CRAFTING_GRID": {
       "left": 80,
-      "bottom": 165,
+      "bottom": 160,
       "grid": "BREAK_AFTER_3COLS"
     },
     "CRAFTING_RESULT": {
-      "left": 174,
-      "bottom": 147
+      "left": 165,
+      "bottom": 142
     },
     "AE2WTLIB_HELMET": {
       "left": 8,
-      "bottom": 165
+      "bottom": 169
     },
     "AE2WTLIB_CHESTPLATE": {
       "left": 8,
-      "bottom": 147
+      "bottom": 151
     },
     "AE2WTLIB_LEGGINGS": {
       "left": 8,
-      "bottom": 129
+      "bottom": 133
     },
     "AE2WTLIB_BOOTS": {
       "left": 8,
-      "bottom": 111
+      "bottom": 115
     },
     "AE2WTLIB_OFFHAND": {
-      "left": 80,
-      "bottom": 111
-    },
-    "PLAYER_INVENTORY": {
-      "left": 8,
-      "bottom": 82,
-      "grid": "BREAK_AFTER_9COLS"
-    },
-    "PLAYER_HOTBAR": {
-      "left": 8,
-      "bottom": 24,
-      "grid": "HORIZONTAL"
+      "left": 152,
+      "bottom": 115
     }
   },
   "text": {
@@ -52,7 +42,7 @@
       },
       "position": {
         "left": 8,
-        "bottom": 175
+        "bottom": 181
       }
     },
     "player_inventory_title": {
@@ -61,26 +51,27 @@
       },
       "position": {
         "left": 8,
-        "bottom": 92
+        "bottom": 95
       }
     }
   },
   "terminalStyle": {
     "bottom": {
-      "texture": "wtlib/guis/extras.png",
-      "srcRect": [0, 0, 195, 177]
+      "texture": "wtlib/guis/crafting.png",
+      "srcRect": [0, 0, 195, 184]
     }
   },
   "widgets": {
     "clearCraftingGrid": {
       "left": 135,
-      "bottom": 167
+      "bottom": 161
     },
     "clearToPlayerInv": {
       "left": 145,
-      "bottom": 167
+      "bottom": 161
     },
     "player": {
+      "$comment": "player is now 5 pixels smaller in left - right direction",
       "left": 26,
       "bottom": 165
     }
