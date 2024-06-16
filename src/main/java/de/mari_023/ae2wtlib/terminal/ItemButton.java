@@ -13,12 +13,11 @@ import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
+import appeng.client.gui.Icon;
 import appeng.client.gui.widgets.ITooltip;
-import appeng.core.AppEng;
 
 public class ItemButton extends Button implements ITooltip {
     private final ResourceLocation texture;
-    public static final ResourceLocation TEXTURE_STATES = AppEng.makeId("textures/guis/states.png");
 
     public ItemButton(OnPress onPress, ResourceLocation texture) {
         super(0, 0, 16, 16, Component.empty(), onPress, Button.DEFAULT_NARRATION);
@@ -40,14 +39,17 @@ public class ItemButton extends Button implements ITooltip {
         if (isFocused()) {
             guiGraphics.fill(getX() - 1, getY() - 1, getX() + 17, getY() + 17, 0xFFFFFFFF);
         }
-        guiGraphics.blit(TEXTURE_STATES, getX(), getY(), 16, 16, 240, 240, 16, 16, 256, 256);
-        if (active)
-            RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-        else
-            RenderSystem.setShaderColor(0.5f, 0.5f, 0.5f, 1.0f);
-        guiGraphics.blit(texture, getX(), getY(), 16, 16, 0, 0, 512, 512, 512, 512);
+
+        if (!isHovered()) {
+            Icon.TOOLBAR_BUTTON_BACKGROUND.getBlitter().dest(getX() - 1, getY(), 18, 20).blit(guiGraphics);
+            guiGraphics.blit(texture, getX(), getY() + 1, 16, 16, 0, 0, 512, 512, 512, 512);
+        } else {
+            Icon.TOOLBAR_BUTTON_BACKGROUND_HOVER.getBlitter().dest(getX() - 1, getY() + 1, 18, 20)
+                    .blit(guiGraphics);
+            guiGraphics.blit(texture, getX(), getY() + 2, 16, 16, 0, 0, 512, 512, 512, 512);
+        }
+
         RenderSystem.enableDepthTest();
-        RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
         guiGraphics.pose().popPose();
     }
 

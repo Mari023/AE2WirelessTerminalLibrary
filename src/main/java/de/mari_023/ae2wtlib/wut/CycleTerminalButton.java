@@ -15,12 +15,11 @@ import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
+import appeng.client.gui.Icon;
 import appeng.client.gui.widgets.ITooltip;
-import appeng.core.AppEng;
 
 import de.mari_023.ae2wtlib.TextConstants;
 
@@ -49,8 +48,6 @@ public class CycleTerminalButton extends Button implements ITooltip {
         return true;
     }
 
-    public static final ResourceLocation TEXTURE_STATES = AppEng.makeId("textures/guis/states.png");
-
     @Override
     public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partial) {
         if (!visible)
@@ -58,18 +55,15 @@ public class CycleTerminalButton extends Button implements ITooltip {
         guiGraphics.pose().pushPose();
         RenderSystem.disableDepthTest();
         RenderSystem.enableBlend();
-        if (isFocused()) {
-            guiGraphics.fill(getX() - 1, getY() - 1, getX() + width + 1, getY() + height + 1, 0xFFFFFFFF);
+
+        if (!isHovered()) {
+            Icon.TOOLBAR_BUTTON_BACKGROUND.getBlitter().dest(getX() - 1, getY(), 18, 20).blit(guiGraphics);
+            renderScaledItem(guiGraphics, nextTerminal, getX(), getY() + 1);
+        } else {
+            Icon.TOOLBAR_BUTTON_BACKGROUND_HOVER.getBlitter().dest(getX() - 1, getY() + 1, 18, 20)
+                    .blit(guiGraphics);
+            renderScaledItem(guiGraphics, nextTerminal, getX(), getY() + 2);
         }
-
-        guiGraphics.blit(TEXTURE_STATES, getX(), getY(), 240, 240, 16, 16);
-
-        if (active)
-            RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-        else
-            RenderSystem.setShaderColor(0.5f, 0.5f, 0.5f, 1.0f);
-
-        renderScaledItem(guiGraphics, nextTerminal, getX(), getY());
 
         guiGraphics.pose().popPose();
     }
@@ -80,8 +74,8 @@ public class CycleTerminalButton extends Button implements ITooltip {
         var mc = Minecraft.getInstance();
 
         BakedModel bakedmodel = mc.getItemRenderer().getModel(stack, null, null, 0);
-        guiGraphics.pose().translate((float) (x + 8), (float) (y + 8), (float) (150));
-        guiGraphics.pose().scale(16.0F * (14F / 16F), -16.0F * (14F / 16F), 16.0F * (14F / 16F));
+        guiGraphics.pose().translate((float) (x + 8), (float) (y + 8), (float) (250));
+        guiGraphics.pose().scale(16.0F, -16.0F, 16.0F);
         boolean flag = !bakedmodel.usesBlockLight();
         if (flag) {
             Lighting.setupForFlatItems();
