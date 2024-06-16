@@ -16,12 +16,12 @@
     },
     "PLAYER_INVENTORY": {
       "left": 8,
-      "bottom": 112,
+      "bottom": 110,
       "grid": "BREAK_AFTER_9COLS"
     },
     "PLAYER_HOTBAR": {
       "left": 8,
-      "bottom": 54,
+      "bottom": 52,
       "grid": "HORIZONTAL"
     }
   },
@@ -41,15 +41,16 @@
       },
       "position": {
         "left": 8,
-        "bottom": 122
+        "bottom": 121
       }
     }
   },
   "widgets": {
     "back": {
-      "left": 151,
-      "top": -4,
-      "hideEdge": true
+      "left": 152,
+      "top": -5,
+      "width": 20,
+      "height": 20
     }
   }
 }
