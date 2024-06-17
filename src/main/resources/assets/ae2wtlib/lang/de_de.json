@@ -21,8 +21,8 @@
   "gui.ae2wtlib.slot.magnetcard.desc": "Magnet Karte",
 
   "gui.ae2wtlib.Magnet": "Magnet Filter",
-  "gui.ae2wtlib.whitelist": "Whitelist",
-  "gui.ae2wtlib.blacklist": "Blacklist",
+  "gui.ae2wtlib.whitelist": "Erlaubt",
+  "gui.ae2wtlib.blacklist": "Blockiert",
   "gui.ae2wtlib.pickup_filter": "Aufsammelfilter: ",
   "gui.ae2wtlib.insert_filter": "Einfügefilter: ",
   "gui.ae2wtlib.copy_pickup": "Zu Aufsammelfilter kopieren",

@@ -51,31 +51,31 @@ public final class TextConstants {
 
     public static final Component MAGNET_FILTER = Component.translatable("gui.ae2wtlib.Magnet");
 
-    private static final Component WHITELIST = Component.translatable("gui.ae2wtlib.whitelist");
-    private static final Component BLACKLIST = Component.translatable("gui.ae2wtlib.blacklist");
+    private static final Component ALLOW = Component.translatable("gui.ae2wtlib.whitelist");
+    private static final Component DENY = Component.translatable("gui.ae2wtlib.blacklist");
 
     private static final Component PICKUP_FILTER = Component.translatable("gui.ae2wtlib.pickup_filter");
     private static final Component INSERT_FILTER = Component.translatable("gui.ae2wtlib.insert_filter");
 
-    public static final MutableComponent PICKUP_WHITELIST = PICKUP_FILTER.copy().append(WHITELIST);
-    public static final MutableComponent PICKUP_BLACKLIST = PICKUP_FILTER.copy().append(BLACKLIST);
-    public static final MutableComponent INSERT_WHITELIST = INSERT_FILTER.copy().append(WHITELIST);
-    public static final MutableComponent INSERT_BLACKLIST = INSERT_FILTER.copy().append(BLACKLIST);
+    public static final MutableComponent PICKUP_ALLOW = PICKUP_FILTER.copy().append(ALLOW);
+    public static final MutableComponent PICKUP_DENY = PICKUP_FILTER.copy().append(DENY);
+    public static final MutableComponent INSERT_ALLOW = INSERT_FILTER.copy().append(ALLOW);
+    public static final MutableComponent INSERT_DENY = INSERT_FILTER.copy().append(DENY);
 
     public static final MutableComponent COPY_PICKUP = Component.translatable("gui.ae2wtlib.copy_pickup");
     public static final MutableComponent COPY_INSERT = Component.translatable("gui.ae2wtlib.copy_insert");
 
     public static MutableComponent getPickupMode(IncludeExclude includeExclude) {
         return switch (includeExclude) {
-            case WHITELIST -> PICKUP_WHITELIST;
-            case BLACKLIST -> PICKUP_BLACKLIST;
+            case WHITELIST -> PICKUP_ALLOW;
+            case BLACKLIST -> PICKUP_DENY;
         };
     }
 
     public static MutableComponent getInsertMode(IncludeExclude includeExclude) {
         return switch (includeExclude) {
-            case WHITELIST -> INSERT_WHITELIST;
-            case BLACKLIST -> INSERT_BLACKLIST;
+            case WHITELIST -> INSERT_ALLOW;
+            case BLACKLIST -> INSERT_DENY;
         };
     }
 
