@@ -56,12 +56,12 @@ jobs:
           changelog-file: CHANGELOG.md
           github-token: ${{ secrets.GITHUB_TOKEN }}
           loaders: neoforge
-          game-versions: 1.20.6
+          game-versions: 1.21
           curseforge-dependencies: |
             applied-energistics-2 | depends
           modrinth-dependencies: |
             ae2 | depends
-          java: 17
+          java: 21
           version: ${{ env.version_name }}
           name: ${{ env.version_name }}
           files: download/!(*-@(dev|dev-shadow|sources)).jar
