@@ -49,29 +49,30 @@
   },
   "widgets": {
     "back": {
-      "left": 151,
-      "top": -4,
-      "hideEdge": true
+      "left": 152,
+      "top": -5,
+      "width": 20,
+      "height": 20
     },
     "pickup_mode": {
       "left": 62,
-      "top": 73
+      "top": 71
     },
     "insert_mode": {
       "left": 62,
-      "top": 91
+      "top": 89
     },
     "copy_down": {
       "left": 80,
-      "top": 73
+      "top": 71
     },
     "copy_up": {
       "left": 80,
-      "top": 91
+      "top": 89
     },
     "switch": {
       "left": 98,
-      "top": 82
+      "top": 79
     }
   }
 }
