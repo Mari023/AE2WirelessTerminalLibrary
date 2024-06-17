@@ -15,10 +15,10 @@ public final class TextConstants {
     public static final Style STYLE_GREEN = Style.EMPTY.withColor(ChatFormatting.GREEN);
     public static final Style STYLE_GRAY = Style.EMPTY.withColor(ChatFormatting.GRAY);
 
-    public static final MutableComponent RESTOCK_ON = Component.translatable("gui.ae2wtlib.restock")
-            .append(Component.translatable("gui.ae2wtlib.on").setStyle(STYLE_GREEN));
-    public static final MutableComponent RESTOCK_OFF = Component.translatable("gui.ae2wtlib.restock")
-            .append(Component.translatable("gui.ae2wtlib.off").setStyle(STYLE_RED));
+    public static final MutableComponent RESTOCK_ON = Component.translatable("gui.ae2wtlib.restock",
+            Component.translatable("gui.ae2wtlib.on").setStyle(STYLE_GREEN));
+    public static final MutableComponent RESTOCK_OFF = Component.translatable("gui.ae2wtlib.restock",
+            Component.translatable("gui.ae2wtlib.off").setStyle(STYLE_RED));
 
     public static final MutableComponent HOTKEY_MAGNETCARD_INVENTORY = Component.translatable(
             "gui.ae2wtlib.magnetcard.hotkey",
