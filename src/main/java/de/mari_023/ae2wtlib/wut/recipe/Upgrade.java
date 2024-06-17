@@ -35,7 +35,7 @@ public class Upgrade extends Common {
     public boolean matches(CraftingInput inv, Level world) {
         ItemStack wut = InputHelper.getInputStack(inv, InputHelper.WUT);
         return !InputHelper.getInputStack(inv, terminal).isEmpty() && !wut.isEmpty() && inv.ingredientCount() == 2
-                && wut.get(terminalDefinition.componentType()) != null;
+                && wut.get(terminalDefinition.componentType()) == null;
     }
 
     @Override

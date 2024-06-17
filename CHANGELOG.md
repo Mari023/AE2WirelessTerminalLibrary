@@ -1,0 +1,1 @@
+- fix a bug where you could only add terminals to the wut that already existed in the wut
