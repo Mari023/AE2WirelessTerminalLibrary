@@ -1,3 +1,0 @@
-- update to 1.21
-- adjust the GUI textures to be more in line with ae2's new textures
-- ae2wtlibs textures are still very much WIP, and some parts of the GUI may still be broken 
