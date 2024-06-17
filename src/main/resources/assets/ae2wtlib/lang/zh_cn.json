@@ -20,8 +20,8 @@
   "gui.ae2wtlib.slot.magnetcard.desc": "磁卡",
 
   "gui.ae2wtlib.Magnet": "磁铁过滤器",
-  "gui.ae2wtlib.pickup_filter": "捡起 筛选：",
-  "gui.ae2wtlib.insert_filter": "插入 筛选：",
+  "gui.ae2wtlib.pickup_filter": "捡起 筛选：%s",
+  "gui.ae2wtlib.insert_filter": "插入 筛选：%s",
   "gui.ae2wtlib.copy_pickup": "复制到捡起",
   "gui.ae2wtlib.copy_insert": "复制到插入",
   "gui.ae2wtlib.switch": "切换过滤器",

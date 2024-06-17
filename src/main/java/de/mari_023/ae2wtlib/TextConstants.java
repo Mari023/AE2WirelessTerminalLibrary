@@ -54,25 +54,22 @@ public final class TextConstants {
     private static final Component ALLOW = Component.translatable("gui.ae2wtlib.allow");
     private static final Component DENY = Component.translatable("gui.ae2wtlib.deny");
 
-    private static final Component PICKUP_FILTER = Component.translatable("gui.ae2wtlib.pickup_filter");
-    private static final Component INSERT_FILTER = Component.translatable("gui.ae2wtlib.insert_filter");
-
-    public static final MutableComponent PICKUP_ALLOW = PICKUP_FILTER.copy().append(ALLOW);
-    public static final MutableComponent PICKUP_DENY = PICKUP_FILTER.copy().append(DENY);
-    public static final MutableComponent INSERT_ALLOW = INSERT_FILTER.copy().append(ALLOW);
-    public static final MutableComponent INSERT_DENY = INSERT_FILTER.copy().append(DENY);
+    public static final Component PICKUP_ALLOW = Component.translatable("gui.ae2wtlib.pickup_filter", ALLOW);
+    public static final Component PICKUP_DENY = Component.translatable("gui.ae2wtlib.pickup_filter", DENY);
+    public static final Component INSERT_ALLOW = Component.translatable("gui.ae2wtlib.insert_filter", ALLOW);
+    public static final Component INSERT_DENY = Component.translatable("gui.ae2wtlib.insert_filter", DENY);
 
     public static final MutableComponent COPY_PICKUP = Component.translatable("gui.ae2wtlib.copy_pickup");
     public static final MutableComponent COPY_INSERT = Component.translatable("gui.ae2wtlib.copy_insert");
 
-    public static MutableComponent getPickupMode(IncludeExclude includeExclude) {
+    public static Component getPickupMode(IncludeExclude includeExclude) {
         return switch (includeExclude) {
             case WHITELIST -> PICKUP_ALLOW;
             case BLACKLIST -> PICKUP_DENY;
         };
     }
 
-    public static MutableComponent getInsertMode(IncludeExclude includeExclude) {
+    public static Component getInsertMode(IncludeExclude includeExclude) {
         return switch (includeExclude) {
             case WHITELIST -> INSERT_ALLOW;
             case BLACKLIST -> INSERT_DENY;

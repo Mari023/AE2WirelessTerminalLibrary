@@ -20,8 +20,8 @@
   "gui.ae2wtlib.slot.magnetcard.desc": "Магнитная карта",
 
   "gui.ae2wtlib.Magnet": "Магнитный Фильтр",
-  "gui.ae2wtlib.pickup_filter": "Фильтр подбора: ",
-  "gui.ae2wtlib.insert_filter": "Фильтр вставки: ",
+  "gui.ae2wtlib.pickup_filter": "Фильтр подбора: %s",
+  "gui.ae2wtlib.insert_filter": "Фильтр вставки: %s",
   "gui.ae2wtlib.copy_pickup": "Копировать в фильтр подбора",
   "gui.ae2wtlib.copy_insert": "Копировать в фильтр вставки",
   "gui.ae2wtlib.switch": "Поменять фильтры местами",
