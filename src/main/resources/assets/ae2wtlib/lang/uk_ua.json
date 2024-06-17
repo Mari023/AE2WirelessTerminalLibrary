@@ -9,7 +9,7 @@
   "gui.ae2wtlib.magnetcard.desc.inv": "Підібрати до інвентарю",
   "gui.ae2wtlib.magnetcard.desc.me": "Підібрати до МЕ",
   "gui.ae2wtlib.cycle_terminal.desc": "Відкрити наступний термінал",
-  "gui.ae2wtlib.magnetcard.hotkey": "Магнітна картка: ",
+  "gui.ae2wtlib.magnetcard.hotkey": "Магнітна картка: %s",
   "gui.ae2wtlib.restock": "Поповнити: ",
   "gui.ae2wtlib.off": "Вимкнути",
   "gui.ae2wtlib.on": "Увімкнути",

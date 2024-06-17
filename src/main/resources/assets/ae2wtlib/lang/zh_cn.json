@@ -13,7 +13,7 @@
   "gui.ae2wtlib.magnetcard.desc.inv": "捡起到库存",
   "gui.ae2wtlib.magnetcard.desc.me": "捡起到 ME 网路",
   "gui.ae2wtlib.cycle_terminal.desc": "打开下一个终端",
-  "gui.ae2wtlib.magnetcard.hotkey": "磁卡：",
+  "gui.ae2wtlib.magnetcard.hotkey": "磁卡：%s",
   "gui.ae2wtlib.restock": "补货：",
   "gui.ae2wtlib.off": "关",
   "gui.ae2wtlib.on": "开",

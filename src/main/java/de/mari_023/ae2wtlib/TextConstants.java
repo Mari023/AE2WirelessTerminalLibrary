@@ -20,14 +20,14 @@ public final class TextConstants {
     public static final MutableComponent RESTOCK_OFF = Component.translatable("gui.ae2wtlib.restock")
             .append(Component.translatable("gui.ae2wtlib.off").setStyle(STYLE_RED));
 
-    public static final MutableComponent HOTKEY_MAGNETCARD_INVENTORY = Component
-            .translatable("gui.ae2wtlib.magnetcard.hotkey")
-            .append(Component.translatable("gui.ae2wtlib.magnetcard.desc.inv").setStyle(STYLE_GREEN));
-    public static final MutableComponent HOTKEY_MAGNETCARD_ME = Component.translatable("gui.ae2wtlib.magnetcard.hotkey")
-            .append(Component.translatable("gui.ae2wtlib.magnetcard.desc.me").setStyle(STYLE_GREEN));
-    public static final MutableComponent HOTKEY_MAGNETCARD_OFF = Component
-            .translatable("gui.ae2wtlib.magnetcard.hotkey")
-            .append(Component.translatable("gui.ae2wtlib.magnetcard.desc.off").setStyle(STYLE_RED));
+    public static final MutableComponent HOTKEY_MAGNETCARD_INVENTORY = Component.translatable(
+            "gui.ae2wtlib.magnetcard.hotkey",
+            Component.translatable("gui.ae2wtlib.magnetcard.desc.inv").setStyle(STYLE_GREEN));
+    public static final MutableComponent HOTKEY_MAGNETCARD_ME = Component.translatable("gui.ae2wtlib.magnetcard.hotkey",
+            Component.translatable("gui.ae2wtlib.magnetcard.desc.me").setStyle(STYLE_GREEN));
+    public static final MutableComponent HOTKEY_MAGNETCARD_OFF = Component.translatable(
+            "gui.ae2wtlib.magnetcard.hotkey",
+            Component.translatable("gui.ae2wtlib.magnetcard.desc.off").setStyle(STYLE_RED));
     public static final MutableComponent MAGNETCARD_OFF = Component.translatable("gui.ae2wtlib.magnetcard").append("\n")
             .append(Component.translatable("gui.ae2wtlib.magnetcard.desc.off"));
     public static final MutableComponent MAGNETCARD_INVENTORY = Component.translatable("gui.ae2wtlib.magnetcard")

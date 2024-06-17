@@ -14,7 +14,7 @@
   "gui.ae2wtlib.magnetcard.desc.me": "Items werden in das Inventar eingesammelt",
   "gui.ae2wtlib.cycle_terminal.desc": "nächste Konsole Öffnen",
   "gui.ae2wtlib.cycle_terminal.desc1": "Rechtsklick um die vorherige Konsole zu Öffnen",
-  "gui.ae2wtlib.magnetcard.hotkey": "Magnet Karte: ",
+  "gui.ae2wtlib.magnetcard.hotkey": "Magnet Karte: %s",
   "gui.ae2wtlib.restock": "Nachfüllen: ",
   "gui.ae2wtlib.off": "Aus",
   "gui.ae2wtlib.on": "An",

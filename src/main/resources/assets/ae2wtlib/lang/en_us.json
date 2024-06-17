@@ -14,7 +14,7 @@
   "gui.ae2wtlib.magnetcard.desc.me": "Pickup to ME",
   "gui.ae2wtlib.cycle_terminal.desc": "Open next Terminal",
   "gui.ae2wtlib.cycle_terminal.desc1": "Right click to open previous terminal",
-  "gui.ae2wtlib.magnetcard.hotkey": "Magnet Card: ",
+  "gui.ae2wtlib.magnetcard.hotkey": "Magnet Card: %s",
   "gui.ae2wtlib.restock": "Restock: ",
   "gui.ae2wtlib.off": "Off",
   "gui.ae2wtlib.on": "On",
