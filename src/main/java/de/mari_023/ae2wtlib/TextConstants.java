@@ -51,8 +51,8 @@ public final class TextConstants {
 
     public static final Component MAGNET_FILTER = Component.translatable("gui.ae2wtlib.Magnet");
 
-    private static final Component ALLOW = Component.translatable("gui.ae2wtlib.whitelist");
-    private static final Component DENY = Component.translatable("gui.ae2wtlib.blacklist");
+    private static final Component ALLOW = Component.translatable("gui.ae2wtlib.allow");
+    private static final Component DENY = Component.translatable("gui.ae2wtlib.deny");
 
     private static final Component PICKUP_FILTER = Component.translatable("gui.ae2wtlib.pickup_filter");
     private static final Component INSERT_FILTER = Component.translatable("gui.ae2wtlib.insert_filter");

@@ -21,8 +21,8 @@
   "gui.ae2wtlib.slot.magnetcard.desc": "pɹɐƆ ʇǝuƃɐW",
 
   "gui.ae2wtlib.Magnet": "ɹǝʇlᴉℲ ʇǝuƃɐW",
-  "gui.ae2wtlib.whitelist": "ʍoll∀",
-  "gui.ae2wtlib.blacklist": "ʎuǝp",
+  "gui.ae2wtlib.allow": "ʍoll∀",
+  "gui.ae2wtlib.deny": "ʎuǝp",
   "gui.ae2wtlib.pickup_filter": " :ɹǝʇlᴉℲ dnʞɔᴉԀ",
   "gui.ae2wtlib.insert_filter": " :ɹǝʇlᴉℲ ʇɹǝsuI",
   "gui.ae2wtlib.copy_pickup": "dnʞɔᴉԀ oʇ ʎdoƆ",

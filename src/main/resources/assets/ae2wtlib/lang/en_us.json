@@ -21,8 +21,8 @@
   "gui.ae2wtlib.slot.magnetcard.desc": "Magnet Card",
 
   "gui.ae2wtlib.Magnet": "Magnet Filter",
-  "gui.ae2wtlib.whitelist": "Allow",
-  "gui.ae2wtlib.blacklist": "Deny",
+  "gui.ae2wtlib.allow": "Allow",
+  "gui.ae2wtlib.deny": "Deny",
   "gui.ae2wtlib.pickup_filter": "Pickup Filter: ",
   "gui.ae2wtlib.insert_filter": "Insert Filter: ",
   "gui.ae2wtlib.copy_pickup": "Copy to Pickup",

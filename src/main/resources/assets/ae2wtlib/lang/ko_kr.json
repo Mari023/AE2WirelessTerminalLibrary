@@ -16,8 +16,6 @@
   "gui.ae2wtlib.slot.magnetcard.desc": "마그넷 카드",
 
   "gui.ae2wtlib.Magnet": "마그넷 필터",
-  "gui.ae2wtlib.whitelist": "화이트리스트",
-  "gui.ae2wtlib.blacklist": "블랙리스트",
   "gui.ae2wtlib.pickup_filter": "집기 필터: ",
   "gui.ae2wtlib.insert_filter": "삽입 필터: ",
   "gui.ae2wtlib.copy_pickup": "집기 복사",
