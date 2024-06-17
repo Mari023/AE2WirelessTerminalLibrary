@@ -36,9 +36,6 @@ public class ItemButton extends Button implements ITooltip {
         guiGraphics.pose().pushPose();
         RenderSystem.disableDepthTest();
         RenderSystem.enableBlend();
-        if (isFocused()) {
-            guiGraphics.fill(getX() - 1, getY() - 1, getX() + 17, getY() + 17, 0xFFFFFFFF);
-        }
 
         if (!isHovered()) {
             Icon.TOOLBAR_BUTTON_BACKGROUND.getBlitter().dest(getX() - 1, getY(), 18, 20).blit(guiGraphics);
