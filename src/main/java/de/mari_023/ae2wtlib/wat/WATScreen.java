@@ -11,14 +11,13 @@ import appeng.client.gui.widgets.UpgradesPanel;
 import appeng.menu.SlotSemantics;
 
 import de.mari_023.ae2wtlib.terminal.WTMenuHost;
-import de.mari_023.ae2wtlib.wut.CycleTerminalButton;
 import de.mari_023.ae2wtlib.wut.IUniversalTerminalCapable;
 
 public class WATScreen extends PatternAccessTermScreen<WATMenu> implements IUniversalTerminalCapable {
     public WATScreen(WATMenu container, Inventory playerInventory, Component title, ScreenStyle style) {
         super(container, playerInventory, title, style);
         if (getMenu().isWUT())
-            addToLeftToolbar(new CycleTerminalButton(this));
+            addToLeftToolbar(cycleTerminalButton());
 
         widgets.add("upgrades", new UpgradesPanel(getMenu().getSlots(SlotSemantics.UPGRADE), getMenu().getHost()));
         if (getMenu().getToolbox().isPresent())

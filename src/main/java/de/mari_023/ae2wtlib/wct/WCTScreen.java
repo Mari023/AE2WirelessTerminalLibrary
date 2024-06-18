@@ -12,12 +12,11 @@ import appeng.client.gui.style.ScreenStyle;
 import appeng.client.gui.widgets.BackgroundPanel;
 import appeng.client.gui.widgets.IconButton;
 
-import de.mari_023.ae2wtlib.AE2wtlib;
+import de.mari_023.ae2wtlib.AE2wtlibItems;
 import de.mari_023.ae2wtlib.TextConstants;
 import de.mari_023.ae2wtlib.terminal.ItemButton;
 import de.mari_023.ae2wtlib.terminal.WTMenuHost;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetMode;
-import de.mari_023.ae2wtlib.wut.CycleTerminalButton;
 import de.mari_023.ae2wtlib.wut.IUniversalTerminalCapable;
 
 public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversalTerminalCapable {
@@ -27,14 +26,12 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
     public WCTScreen(WCTMenu container, Inventory playerInventory, Component title, ScreenStyle style) {
         super(container, playerInventory, title, style);
         if (getMenu().isWUT())
-            addToLeftToolbar(new CycleTerminalButton(this));
+            addToLeftToolbar(cycleTerminalButton());
 
-        magnetCardToggleButton = new ItemButton(btn -> setMagnetMode(),
-                AE2wtlib.id("textures/item/magnet_card.png"));
+        magnetCardToggleButton = new ItemButton(btn -> setMagnetMode(), AE2wtlibItems.MAGNET_CARD);
         addToLeftToolbar(magnetCardToggleButton);
 
-        magnetCardMenuButton = new ItemButton(btn -> getMenu().openMagnetMenu(),
-                AE2wtlib.id("textures/item/magnet_card.png"));
+        magnetCardMenuButton = new ItemButton(btn -> getMenu().openMagnetMenu(), AE2wtlibItems.MAGNET_CARD);
         addToLeftToolbar(magnetCardMenuButton);
         magnetCardMenuButton.setMessage(TextConstants.MAGNET_FILTER);
         IconButton deleteButton = new IconButton(btn -> getMenu().openTrashMenu()) {

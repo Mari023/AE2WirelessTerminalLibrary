@@ -1,12 +1,13 @@
 package de.mari_023.ae2wtlib.wut;
 
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 import appeng.client.Hotkeys;
 import appeng.core.network.serverbound.HotkeyPacket;
 
 import de.mari_023.ae2wtlib.networking.CycleTerminalPacket;
+import de.mari_023.ae2wtlib.terminal.ItemButton;
 import de.mari_023.ae2wtlib.terminal.WTMenuHost;
 
 public interface IUniversalTerminalCapable {
@@ -15,8 +16,8 @@ public interface IUniversalTerminalCapable {
         PacketDistributor.sendToServer(new CycleTerminalPacket(isHandlingRightClick()));
     }
 
-    default ItemStack nextTerminal() {
-        return new ItemStack(WUTHandler.nextTerminal(getHost().getItemStack(), false).item());
+    default Item nextTerminal() {
+        return WUTHandler.nextTerminal(getHost().getItemStack(), false).item();
     }
 
     WTMenuHost getHost();
@@ -36,5 +37,15 @@ public interface IUniversalTerminalCapable {
             }
         }
         return false;
+    }
+
+    /**
+     * creates the button that switches to the next terminal. you are responsible for adding this to the leftToolbar
+     * when appropriate
+     * 
+     * @return CycleTerminalButton
+     */
+    default ItemButton cycleTerminalButton() {
+        return new ItemButton(btn -> cycleTerminal(), nextTerminal());
     }
 }
