@@ -1,2 +1,1 @@
-- fix a bug where you could only add terminals to the wut that already existed in the wut
-- fix highlighting for switch terminal button and magnet card buttons
+
