@@ -15,12 +15,13 @@ import appeng.init.client.InitScreens;
 
 import de.mari_023.ae2wtlib.hotkeys.MagnetHotkeyAction;
 import de.mari_023.ae2wtlib.hotkeys.RestockHotkeyAction;
+import de.mari_023.ae2wtlib.terminal.Icon;
 import de.mari_023.ae2wtlib.wat.WATMenu;
 import de.mari_023.ae2wtlib.wat.WATMenuHost;
 import de.mari_023.ae2wtlib.wat.WATScreen;
 import de.mari_023.ae2wtlib.wct.*;
-import de.mari_023.ae2wtlib.wct.magnet_card.config.MagnetMenu;
-import de.mari_023.ae2wtlib.wct.magnet_card.config.MagnetScreen;
+import de.mari_023.ae2wtlib.wct.magnet_card.MagnetMenu;
+import de.mari_023.ae2wtlib.wct.magnet_card.MagnetScreen;
 import de.mari_023.ae2wtlib.wet.WETMenu;
 import de.mari_023.ae2wtlib.wet.WETMenuHost;
 import de.mari_023.ae2wtlib.wet.WETScreen;
@@ -37,12 +38,15 @@ public class AE2wtlib {
 
     public static void onAe2Initialized() {
         AddTerminalEvent.register((event -> {
-            event.builder("crafting", WCTMenuHost::new, WCTMenu.TYPE, AE2wtlibItems.WIRELESS_CRAFTING_TERMINAL)
+            event.builder("crafting", WCTMenuHost::new, WCTMenu.TYPE, AE2wtlibItems.WIRELESS_CRAFTING_TERMINAL,
+                    Icon.CRAFTING)
                     .hotkeyName(HotkeyAction.WIRELESS_TERMINAL)
                     .translationKey("item.ae2.wireless_crafting_terminal").addTerminal();
-            event.builder("pattern_encoding", WETMenuHost::new, WETMenu.TYPE, AE2wtlibItems.PATTERN_ENCODING_TERMINAL)
+            event.builder("pattern_encoding", WETMenuHost::new, WETMenu.TYPE, AE2wtlibItems.PATTERN_ENCODING_TERMINAL,
+                    Icon.PATTERN_ENCODING)
                     .addTerminal();
-            event.builder("pattern_access", WATMenuHost::new, WATMenu.TYPE, AE2wtlibItems.PATTERN_ACCESS_TERMINAL)
+            event.builder("pattern_access", WATMenuHost::new, WATMenu.TYPE, AE2wtlibItems.PATTERN_ACCESS_TERMINAL,
+                    Icon.PATTERN_ACCESS)
                     .addTerminal();
         }));
 

@@ -18,6 +18,7 @@ import de.mari_023.ae2wtlib.AE2wtlibComponents;
 import de.mari_023.ae2wtlib.AE2wtlibItems;
 import de.mari_023.ae2wtlib.TextConstants;
 import de.mari_023.ae2wtlib.hotkeys.Ae2wtlibLocatingService;
+import de.mari_023.ae2wtlib.terminal.Icon;
 import de.mari_023.ae2wtlib.terminal.ItemWT;
 
 public class WTDefinitionBuilder {
@@ -26,6 +27,7 @@ public class WTDefinitionBuilder {
     private final WTDefinition.WTMenuHostFactory wTMenuHostFactory;
     private final MenuType<?> menuType;
     private final ItemWT item;
+    private final Icon icon;
     private String hotkeyName;
     @Nullable
     private DataComponentType<Unit> componentType;
@@ -33,7 +35,7 @@ public class WTDefinitionBuilder {
     private int upgradeCount;
 
     WTDefinitionBuilder(AddTerminalEvent event, String terminalName,
-            WTDefinition.WTMenuHostFactory WTMenuHostFactory, MenuType<?> menuType, ItemWT item) {
+            WTDefinition.WTMenuHostFactory WTMenuHostFactory, MenuType<?> menuType, ItemWT item, Icon icon) {
         this.event = event;
         this.name = terminalName;
         this.wTMenuHostFactory = WTMenuHostFactory;
@@ -43,6 +45,7 @@ public class WTDefinitionBuilder {
         this.hotkeyName = "wireless_" + terminalName + "_terminal";
         this.translationKey = "item.ae2wtlib.wireless_" + terminalName + "_terminal";
         this.upgradeCount = 2;
+        this.icon = icon;
     }
 
     /**
@@ -65,7 +68,7 @@ public class WTDefinitionBuilder {
                 AE2wtlibItems.UNIVERSAL_TERMINAL.getAEMaxPower(wut), Actionable.MODULATE);
 
         WTDefinition wtDefinition = new WTDefinition(name, item::tryOpen, wTMenuHostFactory, menuType, item, wut,
-                TextConstants.formatTerminalName(translationKey), hotkeyName, componentType, upgradeCount);
+                TextConstants.formatTerminalName(translationKey), hotkeyName, componentType, upgradeCount, icon);
 
         HotkeyActions.register(new Ae2wtlibLocatingService(wtDefinition), hotkeyName);
 

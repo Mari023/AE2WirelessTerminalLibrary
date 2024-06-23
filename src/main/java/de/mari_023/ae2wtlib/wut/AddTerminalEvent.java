@@ -8,6 +8,7 @@ import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.inventory.MenuType;
 
+import de.mari_023.ae2wtlib.terminal.Icon;
 import de.mari_023.ae2wtlib.terminal.ItemWT;
 
 public final class AddTerminalEvent {
@@ -45,7 +46,7 @@ public final class AddTerminalEvent {
      * @param item              The item representing the terminal.
      */
     public WTDefinitionBuilder builder(String terminalName, WTDefinition.WTMenuHostFactory WTMenuHostFactory,
-            MenuType<?> menuType, ItemWT item) {
-        return new WTDefinitionBuilder(this, terminalName, WTMenuHostFactory, menuType, item);
+            MenuType<?> menuType, ItemWT item, Icon icon) {
+        return new WTDefinitionBuilder(this, terminalName, WTMenuHostFactory, menuType, item, icon);
     }
 }
