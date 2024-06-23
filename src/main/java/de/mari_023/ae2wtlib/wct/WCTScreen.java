@@ -3,14 +3,17 @@ package de.mari_023.ae2wtlib.wct;
 import java.util.Objects;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.Slot;
 
 import appeng.client.gui.me.items.CraftingTermScreen;
 import appeng.client.gui.style.ScreenStyle;
 import appeng.client.gui.widgets.BackgroundPanel;
 
 import de.mari_023.ae2wtlib.TextConstants;
+import de.mari_023.ae2wtlib.terminal.ArmorSlot;
 import de.mari_023.ae2wtlib.terminal.Icon;
 import de.mari_023.ae2wtlib.terminal.IconButton;
 import de.mari_023.ae2wtlib.terminal.WTMenuHost;
@@ -97,5 +100,30 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
     @Override
     public WTMenuHost getHost() {
         return (WTMenuHost) getMenu().getHost();
+    }
+
+    /**
+     * This overrides the base-class method through some access transformer hackery...
+     */
+    @Override
+    public void renderSlot(GuiGraphics guiGraphics, Slot s) {
+        if (s instanceof ArmorSlot armorSlot) {
+            renderArmorSlot(guiGraphics, armorSlot);
+        } else {
+            super.renderSlot(guiGraphics, s);
+        }
+    }
+
+    private void renderArmorSlot(GuiGraphics guiGraphics, ArmorSlot s) {
+        var is = s.getItem();
+
+        if (is.isEmpty() && s.isSlotEnabled()) {
+            s.icon().getBlitter()
+                    .dest(s.x, s.y)
+                    .opacity(s.getOpacityOfIcon())
+                    .blit(guiGraphics);
+        }
+
+        super.renderSlot(guiGraphics, s);
     }
 }

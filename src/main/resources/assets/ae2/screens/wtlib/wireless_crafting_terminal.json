@@ -72,15 +72,15 @@
     },
     "magnetCardToggleButton": {
       "left": 74,
-      "bottom": 169
+      "bottom": 170
     },
     "magnetCardMenuButton": {
       "left": 74,
-      "bottom": 151
+      "bottom": 152
     },
     "trashButton": {
       "left": 74,
-      "bottom": 133
+      "bottom": 134
     },
     "player": {
       "$comment": "player is now 5 pixels smaller in left - right direction",

@@ -33,6 +33,12 @@ public class Icon {
     public static final Icon DOWN = new Icon(32, 48);
     public static final Icon SWITCH = new Icon(32, 64);
 
+    public static final Icon EMPTY_ARMOR_SLOT_HELMET = new Icon(112, 0);
+    public static final Icon EMPTY_ARMOR_SLOT_CHESTPLATE = new Icon(112, 16);
+    public static final Icon EMPTY_ARMOR_SLOT_LEGGINGS = new Icon(112, 32);
+    public static final Icon EMPTY_ARMOR_SLOT_BOOTS = new Icon(112, 48);
+    public static final Icon EMPTY_ARMOR_SLOT_SHIELD = new Icon(112, 64);
+
     public final Texture texture;
     public final int x;
     public final int y;
