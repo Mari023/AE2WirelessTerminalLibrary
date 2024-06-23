@@ -12,4 +12,10 @@ public class TrashScreen extends AEBaseScreen<TrashMenu> {
         super(menu, playerInventory, title, style);
         AESubScreen.addBackButton(menu, "back", widgets);
     }
+
+    // Added to remove the VerticalButtonBar for this Screen - Rid
+    @Override
+    protected boolean shouldAddToolbar() {
+        return false;
+    }
 }

@@ -6,7 +6,7 @@
   ],
   "slots": {
     "CRAFTING_GRID": {
-      "left": 80,
+      "left": 96,
       "bottom": 160,
       "grid": "BREAK_AFTER_3COLS"
     },
@@ -31,7 +31,7 @@
       "bottom": 115
     },
     "AE2WTLIB_OFFHAND": {
-      "left": 152,
+      "left": 73,
       "bottom": 115
     }
   },
@@ -63,17 +63,17 @@
   },
   "widgets": {
     "clearCraftingGrid": {
-      "left": 135,
+      "left": 151,
       "bottom": 161
     },
     "clearToPlayerInv": {
-      "left": 145,
+      "left": 161,
       "bottom": 161
     },
     "player": {
       "$comment": "player is now 5 pixels smaller in left - right direction",
       "left": 26,
-      "bottom": 165
+      "bottom": 168
     }
   }
 }

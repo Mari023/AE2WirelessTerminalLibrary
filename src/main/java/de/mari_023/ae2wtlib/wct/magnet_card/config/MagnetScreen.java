@@ -86,4 +86,10 @@ public class MagnetScreen extends AEBaseScreen<MagnetMenu> {
             case BLACKLIST -> Icon.BLACKLIST;
         };
     }
+
+    // Added to remove the VerticalButtonBar for this Screen - Rid
+    @Override
+    protected boolean shouldAddToolbar() {
+        return false;
+    }
 }
