@@ -5,6 +5,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import appeng.client.Hotkeys;
 import appeng.core.network.serverbound.HotkeyPacket;
 
+import de.mari_023.ae2wtlib.TextConstants;
 import de.mari_023.ae2wtlib.networking.CycleTerminalPacket;
 import de.mari_023.ae2wtlib.terminal.Icon;
 import de.mari_023.ae2wtlib.terminal.IconButton;
@@ -46,6 +47,7 @@ public interface IUniversalTerminalCapable {
      * @return CycleTerminalButton
      */
     default IconButton cycleTerminalButton() {
-        return IconButton.withAE2Background(btn -> cycleTerminal(), nextTerminal());
+        return IconButton.withAE2Background(btn -> cycleTerminal(), nextTerminal())
+                .withMessage(TextConstants.CYCLE_TOOLTIP);
     }
 }
