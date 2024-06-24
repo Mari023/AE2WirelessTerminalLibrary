@@ -3,45 +3,42 @@ package de.mari_023.ae2wtlib.wct;
 import java.util.Objects;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.Slot;
 
-import appeng.client.gui.Icon;
 import appeng.client.gui.me.items.CraftingTermScreen;
 import appeng.client.gui.style.ScreenStyle;
 import appeng.client.gui.widgets.BackgroundPanel;
-import appeng.client.gui.widgets.IconButton;
 
-import de.mari_023.ae2wtlib.AE2wtlibItems;
 import de.mari_023.ae2wtlib.TextConstants;
-import de.mari_023.ae2wtlib.terminal.ItemButton;
+import de.mari_023.ae2wtlib.terminal.ArmorSlot;
+import de.mari_023.ae2wtlib.terminal.Icon;
+import de.mari_023.ae2wtlib.terminal.IconButton;
 import de.mari_023.ae2wtlib.terminal.WTMenuHost;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetMode;
 import de.mari_023.ae2wtlib.wut.IUniversalTerminalCapable;
 
 public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversalTerminalCapable {
-    private final ItemButton magnetCardToggleButton;
-    private final ItemButton magnetCardMenuButton;
+    private final IconButton magnetCardToggleButton;
+    private final IconButton magnetCardMenuButton;
 
     public WCTScreen(WCTMenu container, Inventory playerInventory, Component title, ScreenStyle style) {
         super(container, playerInventory, title, style);
         if (getMenu().isWUT())
             addToLeftToolbar(cycleTerminalButton());
 
-        magnetCardToggleButton = new ItemButton(btn -> setMagnetMode(), AE2wtlibItems.MAGNET_CARD);
-        addToLeftToolbar(magnetCardToggleButton);
+        magnetCardToggleButton = new IconButton(btn -> setMagnetMode(), Icon.MAGNET);
+        widgets.add("magnetCardToggleButton", magnetCardToggleButton);
 
-        magnetCardMenuButton = new ItemButton(btn -> getMenu().openMagnetMenu(), AE2wtlibItems.MAGNET_CARD);
-        addToLeftToolbar(magnetCardMenuButton);
+        magnetCardMenuButton = new IconButton(btn -> getMenu().openMagnetMenu(), Icon.MAGNET_FILTER);
+        widgets.add("magnetCardMenuButton", magnetCardMenuButton);
         magnetCardMenuButton.setMessage(TextConstants.MAGNET_FILTER);
-        IconButton deleteButton = new IconButton(btn -> getMenu().openTrashMenu()) {
-            @Override
-            protected Icon getIcon() {
-                return Icon.CONDENSER_OUTPUT_TRASH;
-            }
-        };
-        addToLeftToolbar(deleteButton);
-        deleteButton.setMessage(TextConstants.TRASH);
+
+        IconButton trashButton = new IconButton(btn -> getMenu().openTrashMenu(), Icon.TRASH);
+        widgets.add("trashButton", trashButton);
+        trashButton.setMessage(TextConstants.TRASH);
 
         widgets.add("player", new PlayerEntityWidget(Objects.requireNonNull(Minecraft.getInstance().player)));
         widgets.add("singularityBackground", new BackgroundPanel(style.getImage("singularityBackground")));
@@ -103,5 +100,30 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
     @Override
     public WTMenuHost getHost() {
         return (WTMenuHost) getMenu().getHost();
+    }
+
+    /**
+     * This overrides the base-class method through some access transformer hackery...
+     */
+    @Override
+    public void renderSlot(GuiGraphics guiGraphics, Slot s) {
+        if (s instanceof ArmorSlot armorSlot) {
+            renderArmorSlot(guiGraphics, armorSlot);
+        } else {
+            super.renderSlot(guiGraphics, s);
+        }
+    }
+
+    private void renderArmorSlot(GuiGraphics guiGraphics, ArmorSlot s) {
+        var is = s.getItem();
+
+        if (is.isEmpty() && s.isSlotEnabled()) {
+            s.icon().getBlitter()
+                    .dest(s.x, s.y)
+                    .opacity(s.getOpacityOfIcon())
+                    .blit(guiGraphics);
+        }
+
+        super.renderSlot(guiGraphics, s);
     }
 }

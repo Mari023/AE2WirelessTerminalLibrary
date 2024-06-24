@@ -7,6 +7,8 @@ import net.minecraft.network.chat.Style;
 
 import appeng.api.config.IncludeExclude;
 
+import de.mari_023.ae2wtlib.wut.WTDefinition;
+
 public final class TextConstants {
     private TextConstants() {
     }
@@ -44,8 +46,16 @@ public final class TextConstants {
 
     public static final Component TERMINAL_EMPTY = Component
             .literal("This terminal does not contain any other Terminals");
-    public static final Component CYCLE_TOOLTIP = Component.translatable("gui.ae2wtlib.cycle_terminal.desc")
-            .append("\n").append(Component.translatable("gui.ae2wtlib.cycle_terminal.desc1"));
+
+    public static Component cycleNext(WTDefinition terminal) {
+        return Component.translatable("gui.ae2wtlib.cycle_terminal.desc",
+                Component.translatable(terminal.translationKey()));
+    }
+
+    public static Component cyclePrevious(WTDefinition terminal) {
+        return Component.translatable("gui.ae2wtlib.cycle_terminal.desc1",
+                Component.translatable(terminal.translationKey()));
+    }
 
     public static final MutableComponent TRASH = Component.translatable("gui.ae2wtlib.trash");
 

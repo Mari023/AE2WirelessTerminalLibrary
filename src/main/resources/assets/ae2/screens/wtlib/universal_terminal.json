@@ -20,14 +20,14 @@
     }
   },
   "widgets": {
-    "singularityBackground": {
-      "right": 2,
-      "top": 0
-    },
     "upgrades": {
       "$comment": "The upgrade panel found on some screens",
       "right": 2,
-      "top": 30
+      "top": 28
+    },
+    "singularityBackground": {
+      "right": 2,
+      "top": 0
     }
   }
 }

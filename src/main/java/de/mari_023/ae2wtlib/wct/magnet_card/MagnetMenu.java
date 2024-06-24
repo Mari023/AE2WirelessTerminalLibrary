@@ -1,4 +1,4 @@
-package de.mari_023.ae2wtlib.wct.magnet_card.config;
+package de.mari_023.ae2wtlib.wct.magnet_card;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -17,7 +17,6 @@ import appeng.util.ConfigMenuInventory;
 import de.mari_023.ae2wtlib.AE2wtlibSlotSemantics;
 import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
 import de.mari_023.ae2wtlib.wct.WCTMenuHost;
-import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHost;
 
 public class MagnetMenu extends AEBaseMenu implements ISubMenu {
     public static final String ID = "magnet";

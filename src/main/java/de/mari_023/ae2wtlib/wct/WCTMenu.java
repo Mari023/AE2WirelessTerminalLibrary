@@ -17,8 +17,8 @@ import de.mari_023.ae2wtlib.AE2wtlibSlotSemantics;
 import de.mari_023.ae2wtlib.terminal.ArmorSlot;
 import de.mari_023.ae2wtlib.terminal.WTMenuHost;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHandler;
+import de.mari_023.ae2wtlib.wct.magnet_card.MagnetMenu;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetMode;
-import de.mari_023.ae2wtlib.wct.magnet_card.config.MagnetMenu;
 import de.mari_023.ae2wtlib.wut.ItemWUT;
 
 public class WCTMenu extends CraftingTermMenu {

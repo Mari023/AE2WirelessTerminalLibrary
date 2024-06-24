@@ -1,16 +1,16 @@
-package de.mari_023.ae2wtlib.wct.magnet_card.config;
+package de.mari_023.ae2wtlib.wct.magnet_card;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
 import appeng.api.config.IncludeExclude;
 import appeng.client.gui.AEBaseScreen;
-import appeng.client.gui.Icon;
 import appeng.client.gui.implementations.AESubScreen;
 import appeng.client.gui.style.ScreenStyle;
-import appeng.client.gui.widgets.IconButton;
 
 import de.mari_023.ae2wtlib.TextConstants;
+import de.mari_023.ae2wtlib.terminal.Icon;
+import de.mari_023.ae2wtlib.terminal.IconButton;
 
 public class MagnetScreen extends AEBaseScreen<MagnetMenu> {
     public MagnetScreen(MagnetMenu menu, Inventory playerInventory, Component title, ScreenStyle style) {
@@ -19,7 +19,7 @@ public class MagnetScreen extends AEBaseScreen<MagnetMenu> {
         if (menu.getMagnetHost() == null)
             return;
 
-        widgets.add("pickup_mode", new IconButton(button -> menu.togglePickupMode()) {
+        widgets.add("pickup_mode", new IconButton(button -> menu.togglePickupMode(), Icon.YES) {
             @Override
             protected Icon getIcon() {
                 return icon(menu.getMagnetHost().getPickupMode());
@@ -31,7 +31,7 @@ public class MagnetScreen extends AEBaseScreen<MagnetMenu> {
             }
         });
 
-        widgets.add("insert_mode", new IconButton(button -> menu.toggleInsertMode()) {
+        widgets.add("insert_mode", new IconButton(button -> menu.toggleInsertMode(), Icon.YES) {
             @Override
             protected Icon getIcon() {
                 return icon(menu.getMagnetHost().getInsertMode());
@@ -43,47 +43,25 @@ public class MagnetScreen extends AEBaseScreen<MagnetMenu> {
             }
         });
 
-        widgets.add("copy_up", new IconButton(button -> menu.copyUp()) {
-            @Override
-            protected Icon getIcon() {
-                return Icon.ARROW_UP;
-            }
+        widgets.add("copy_up", new IconButton(button -> menu.copyUp(), Icon.UP).withTooltip(TextConstants.COPY_PICKUP));
 
-            @Override
-            public Component getMessage() {
-                return TextConstants.COPY_PICKUP;
-            }
-        });
+        widgets.add("copy_down",
+                new IconButton(button -> menu.copyDown(), Icon.DOWN).withTooltip(TextConstants.COPY_INSERT));
 
-        widgets.add("copy_down", new IconButton(button -> menu.copyDown()) {
-            @Override
-            protected Icon getIcon() {
-                return Icon.ARROW_DOWN;
-            }
-
-            @Override
-            public Component getMessage() {
-                return TextConstants.COPY_INSERT;
-            }
-        });
-
-        widgets.add("switch", new IconButton(button -> menu.switchInsertPickup()) {
-            @Override
-            protected Icon getIcon() {
-                return Icon.SCHEDULING_ROUND_ROBIN;
-            }
-
-            @Override
-            public Component getMessage() {
-                return TextConstants.SWITCH;
-            }
-        });
+        widgets.add("switch",
+                new IconButton(button -> menu.switchInsertPickup(), Icon.SWITCH).withTooltip(TextConstants.SWITCH));
     }
 
     private Icon icon(IncludeExclude includeExclude) {
         return switch (includeExclude) {
-            case WHITELIST -> Icon.WHITELIST;
-            case BLACKLIST -> Icon.BLACKLIST;
+            case WHITELIST -> Icon.YES;
+            case BLACKLIST -> Icon.NO;
         };
+    }
+
+    // Added to remove the VerticalButtonBar for this Screen - Rid
+    @Override
+    protected boolean shouldAddToolbar() {
+        return false;
     }
 }

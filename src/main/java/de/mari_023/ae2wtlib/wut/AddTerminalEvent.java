@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.inventory.MenuType;
 
+import de.mari_023.ae2wtlib.terminal.Icon;
 import de.mari_023.ae2wtlib.terminal.ItemWT;
 
 public final class AddTerminalEvent {
@@ -32,6 +34,7 @@ public final class AddTerminalEvent {
         HANDLERS = null;
     }
 
+    @Contract(pure = true)
     public static synchronized boolean didRun() {
         return HANDLERS == null;
     }
@@ -44,8 +47,9 @@ public final class AddTerminalEvent {
      * @param menuType          The menu type for the terminal.
      * @param item              The item representing the terminal.
      */
+    @Contract(value = "_, _, _, _, _ -> new", pure = true)
     public WTDefinitionBuilder builder(String terminalName, WTDefinition.WTMenuHostFactory WTMenuHostFactory,
-            MenuType<?> menuType, ItemWT item) {
-        return new WTDefinitionBuilder(this, terminalName, WTMenuHostFactory, menuType, item);
+            MenuType<?> menuType, ItemWT item, Icon icon) {
+        return new WTDefinitionBuilder(this, terminalName, WTMenuHostFactory, menuType, item, icon);
     }
 }

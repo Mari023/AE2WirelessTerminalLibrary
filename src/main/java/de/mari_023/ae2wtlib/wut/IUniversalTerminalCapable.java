@@ -1,23 +1,23 @@
 package de.mari_023.ae2wtlib.wut;
 
-import net.minecraft.world.item.Item;
+import java.util.List;
+
+import org.jetbrains.annotations.Contract;
+
 import net.neoforged.neoforge.network.PacketDistributor;
 
 import appeng.client.Hotkeys;
 import appeng.core.network.serverbound.HotkeyPacket;
 
+import de.mari_023.ae2wtlib.TextConstants;
 import de.mari_023.ae2wtlib.networking.CycleTerminalPacket;
-import de.mari_023.ae2wtlib.terminal.ItemButton;
+import de.mari_023.ae2wtlib.terminal.IconButton;
 import de.mari_023.ae2wtlib.terminal.WTMenuHost;
 
 public interface IUniversalTerminalCapable {
     default void cycleTerminal() {
         storeState();
         PacketDistributor.sendToServer(new CycleTerminalPacket(isHandlingRightClick()));
-    }
-
-    default Item nextTerminal() {
-        return WUTHandler.nextTerminal(getHost().getItemStack(), false).item();
     }
 
     WTMenuHost getHost();
@@ -45,7 +45,11 @@ public interface IUniversalTerminalCapable {
      * 
      * @return CycleTerminalButton
      */
-    default ItemButton cycleTerminalButton() {
-        return new ItemButton(btn -> cycleTerminal(), nextTerminal());
+    @Contract(value = "-> new", pure = true)
+    default IconButton cycleTerminalButton() {
+        var next = WUTHandler.nextTerminal(getHost().getItemStack(), false);
+        var previous = WUTHandler.nextTerminal(getHost().getItemStack(), true);
+        return IconButton.withAE2Background(btn -> cycleTerminal(), next.icon())
+                .withTooltip(List.of(TextConstants.cycleNext(next), TextConstants.cyclePrevious(previous)));
     }
 }

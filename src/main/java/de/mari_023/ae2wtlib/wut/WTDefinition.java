@@ -23,12 +23,14 @@ import appeng.menu.ISubMenu;
 import appeng.menu.locator.ItemMenuHostLocator;
 
 import de.mari_023.ae2wtlib.AE2wtlibComponents;
+import de.mari_023.ae2wtlib.terminal.Icon;
 import de.mari_023.ae2wtlib.terminal.ItemWT;
 import de.mari_023.ae2wtlib.terminal.WTMenuHost;
 
 public record WTDefinition(String terminalName, ContainerOpener containerOpener, WTMenuHostFactory wTMenuHostFactory,
         MenuType<?> menuType, ItemWT item, ItemStack universalTerminal, MutableComponent formattedName,
-        String hotkeyName, DataComponentType<Unit> componentType, int upgradeCount) {
+        String translationKey,
+        String hotkeyName, DataComponentType<Unit> componentType, int upgradeCount, Icon icon) {
     @FunctionalInterface
     public interface ContainerOpener {
         boolean tryOpen(Player player, ItemMenuHostLocator locator, boolean returningFromSubmenu);
