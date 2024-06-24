@@ -6,7 +6,6 @@ plugins {
     idea
 }
 
-val minecraftVersion: String by project
 val clothVersion: String by project
 val ae2Version: String by project
 val architecturyVersion: String by project
@@ -39,7 +38,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 dependencies {
     //implementation("top.theillusivec4.curios:curios-neoforge:${curiosVersion}")
-    implementation("appeng:appliedenergistics2-neoforge:${ae2Version}")
+    implementation("appeng:appliedenergistics2:${ae2Version}")
 
     compileOnly("me.shedaniel:RoughlyEnoughItems-neoforge:${reiVersion}")
     compileOnly("mezz.jei:jei-${jeiMinecraftVersion}-neoforge:${jeiVersion}")
@@ -75,16 +74,8 @@ repositories {
     maven {
         url = uri("https://modmaven.dev/")
         content {
-            includeGroup("net.fabricmc.fabric-api")
             includeGroup("appeng")
             includeGroup("mezz.jei")
-        }
-    }
-    maven {
-        url = uri("https://maven.bai.lol")
-        content {
-            includeGroup("mcp.mobius.waila")
-            includeGroup("lol.bai")
         }
     }
     maven {
@@ -98,32 +89,13 @@ repositories {
     maven {
         url = uri("https://maven.terraformersmc.com/")
         content {
-            includeGroup("com.terraformersmc")
             includeGroup("dev.emi")
-        }
-    }
-    maven {
-        url = uri("https://maven.ladysnake.org/releases")
-        content {
-            includeGroup("dev.onyxstudios.cardinal-components-api")
-        }
-    }
-    maven {
-        url = uri("https://maven.parchmentmc.net/")
-        content {
-            includeGroup("org.parchmentmc.data")
         }
     }
     maven {
         url = uri("https://maven.theillusivec4.top/")
         content {
             includeGroup("top.theillusivec4.curios")
-        }
-    }
-    maven {
-        url = uri("https://repo.spongepowered.org/maven")
-        content {
-            includeGroup("org.spongepowered")
         }
     }
     maven {
