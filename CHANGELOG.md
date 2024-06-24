@@ -1,0 +1,2 @@
+- Fix incompatibility with AE2 Import Export Card (#247)
+- Textures Update by [Ridanisaurus](https://github.com/Ridanisaurus)
