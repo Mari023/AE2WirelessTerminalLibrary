@@ -29,6 +29,7 @@ import de.mari_023.ae2wtlib.terminal.WTMenuHost;
 
 public record WTDefinition(String terminalName, ContainerOpener containerOpener, WTMenuHostFactory wTMenuHostFactory,
         MenuType<?> menuType, ItemWT item, ItemStack universalTerminal, MutableComponent formattedName,
+        String translationKey,
         String hotkeyName, DataComponentType<Unit> componentType, int upgradeCount, Icon icon) {
     @FunctionalInterface
     public interface ContainerOpener {

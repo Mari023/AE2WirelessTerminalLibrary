@@ -3,6 +3,9 @@ package de.mari_023.ae2wtlib.terminal;
 import java.util.Collections;
 import java.util.List;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.Rect2i;
@@ -14,6 +17,8 @@ public class IconButton extends Button implements ITooltip {
     private final Icon icon;
     private final Icon bg;
     private final Icon bg_hovered;
+    @Nullable
+    private List<Component> tooltip;
 
     public IconButton(OnPress onPress, Icon icon) {
         this(onPress, icon, Icon.BUTTON_BACKGROUND, Icon.BUTTON_BACKGROUND_HOVER);
@@ -62,7 +67,9 @@ public class IconButton extends Button implements ITooltip {
 
     @Override
     public List<Component> getTooltipMessage() {
-        return Collections.singletonList(getMessage());
+        if (tooltip == null)
+            return Collections.singletonList(getMessage());
+        return tooltip;
     }
 
     @Override
@@ -79,8 +86,15 @@ public class IconButton extends Button implements ITooltip {
         return visible;
     }
 
-    public IconButton withMessage(Component message) {
+    @Contract("_ -> this")
+    public IconButton withTooltip(Component message) {
         super.setMessage(message);
+        return this;
+    }
+
+    @Contract("_ -> this")
+    public IconButton withTooltip(List<Component> tooltip) {
+        this.tooltip = tooltip;
         return this;
     }
 }

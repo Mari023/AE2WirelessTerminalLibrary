@@ -12,7 +12,6 @@
   "gui.ae2wtlib.magnetcard.desc.off": "Выключить",
   "gui.ae2wtlib.magnetcard.desc.inv": "Подбирать в инвентарь",
   "gui.ae2wtlib.magnetcard.desc.me": "Подбирать в МЭ",
-  "gui.ae2wtlib.cycle_terminal.desc": "Открыть следующий терминал",
   "gui.ae2wtlib.magnetcard.hotkey": "Магнитная карта: %s",
   "gui.ae2wtlib.restock": "Авто пополнение: %s",
   "gui.ae2wtlib.off": "Выключить",

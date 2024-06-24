@@ -35,10 +35,10 @@ public class WTDefinitionBuilder {
     private int upgradeCount;
 
     WTDefinitionBuilder(AddTerminalEvent event, String terminalName,
-            WTDefinition.WTMenuHostFactory WTMenuHostFactory, MenuType<?> menuType, ItemWT item, Icon icon) {
+            WTDefinition.WTMenuHostFactory wTMenuHostFactory, MenuType<?> menuType, ItemWT item, Icon icon) {
         this.event = event;
         this.name = terminalName;
-        this.wTMenuHostFactory = WTMenuHostFactory;
+        this.wTMenuHostFactory = wTMenuHostFactory;
         this.menuType = menuType;
         this.item = item;
 
@@ -68,7 +68,8 @@ public class WTDefinitionBuilder {
                 AE2wtlibItems.UNIVERSAL_TERMINAL.getAEMaxPower(wut), Actionable.MODULATE);
 
         WTDefinition wtDefinition = new WTDefinition(name, item::tryOpen, wTMenuHostFactory, menuType, item, wut,
-                TextConstants.formatTerminalName(translationKey), hotkeyName, componentType, upgradeCount, icon);
+                TextConstants.formatTerminalName(translationKey), translationKey, hotkeyName, componentType,
+                upgradeCount, icon);
 
         HotkeyActions.register(new Ae2wtlibLocatingService(wtDefinition), hotkeyName);
 

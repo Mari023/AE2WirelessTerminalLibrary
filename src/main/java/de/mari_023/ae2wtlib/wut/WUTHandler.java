@@ -1,5 +1,6 @@
 package de.mari_023.ae2wtlib.wut;
 
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.server.level.ServerPlayer;
@@ -45,6 +46,7 @@ public class WUTHandler {
      * @param terminal The terminal name to check.
      * @return true if the terminal contains the specified terminal name, false otherwise.
      */
+    @Contract(pure = true)
     public static boolean hasTerminal(ItemStack stack, WTDefinition terminal) {
         if (stack.isEmpty())
             return false;
@@ -68,6 +70,7 @@ public class WUTHandler {
         updateClientTerminal((ServerPlayer) player, locator, itemStack);
     }
 
+    @Contract(pure = true)
     public static WTDefinition nextTerminal(ItemStack stack, boolean reverse) {
         WTDefinition nextTerminal = WTDefinition.of(stack);
         var terminals = WTDefinition.wirelessTerminalList;
@@ -145,6 +148,7 @@ public class WUTHandler {
      *
      * @return The maximum amount of upgrades a Universal Terminal can have
      */
+    @Contract(pure = true)
     public static int getUpgradeCardCount() {
         int upgradeCards = 0;
         for (var terminal : WTDefinition.wirelessTerminals()) {

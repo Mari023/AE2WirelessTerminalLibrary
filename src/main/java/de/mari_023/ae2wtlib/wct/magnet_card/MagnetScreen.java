@@ -43,13 +43,13 @@ public class MagnetScreen extends AEBaseScreen<MagnetMenu> {
             }
         });
 
-        widgets.add("copy_up", new IconButton(button -> menu.copyUp(), Icon.UP).withMessage(TextConstants.COPY_PICKUP));
+        widgets.add("copy_up", new IconButton(button -> menu.copyUp(), Icon.UP).withTooltip(TextConstants.COPY_PICKUP));
 
         widgets.add("copy_down",
-                new IconButton(button -> menu.copyDown(), Icon.DOWN).withMessage(TextConstants.COPY_INSERT));
+                new IconButton(button -> menu.copyDown(), Icon.DOWN).withTooltip(TextConstants.COPY_INSERT));
 
         widgets.add("switch",
-                new IconButton(button -> menu.switchInsertPickup(), Icon.SWITCH).withMessage(TextConstants.SWITCH));
+                new IconButton(button -> menu.switchInsertPickup(), Icon.SWITCH).withTooltip(TextConstants.SWITCH));
     }
 
     private Icon icon(IncludeExclude includeExclude) {
