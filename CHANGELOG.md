@@ -1,1 +1,2 @@
 - fix curio tags being in the wrong place (fix #285)
+- add hint that the quantum bridge should be in loaded chunks when displaying that it can't be found (fix #283)
