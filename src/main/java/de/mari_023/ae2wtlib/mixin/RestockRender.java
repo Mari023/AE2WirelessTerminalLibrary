@@ -12,15 +12,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
 import appeng.util.ReadableNumberConverter;
 
 import de.mari_023.ae2wtlib.AE2wtlibComponents;
 import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
 
-@OnlyIn(Dist.CLIENT)
 @Mixin(value = GuiGraphics.class, remap = false)
 public abstract class RestockRender {
     @Shadow
