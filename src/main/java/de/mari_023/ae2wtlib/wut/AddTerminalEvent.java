@@ -13,8 +13,7 @@ import de.mari_023.ae2wtlib.terminal.Icon;
 import de.mari_023.ae2wtlib.terminal.ItemWT;
 
 public final class AddTerminalEvent {
-    private AddTerminalEvent() {
-    }
+    private AddTerminalEvent() {}
 
     @Nullable
     private static List<Consumer<AddTerminalEvent>> HANDLERS = new ArrayList<>();

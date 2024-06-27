@@ -6,8 +6,7 @@ package de.mari_023.ae2wtlib.wut;
  * Don't access until terminal registration happened, or it WILL crash.
  */
 public class WTDefinitions {
-    private WTDefinitions() {
-    }
+    private WTDefinitions() {}
 
     static {
         if (!AddTerminalEvent.didRun())

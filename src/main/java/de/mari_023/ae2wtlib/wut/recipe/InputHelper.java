@@ -7,8 +7,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import de.mari_023.ae2wtlib.AE2wtlibItems;
 
 public final class InputHelper {
-    private InputHelper() {
-    }
+    private InputHelper() {}
 
     public static ItemStack getInputStack(CraftingInput input, Ingredient ingredient) {
         for (var stack : input.items()) {

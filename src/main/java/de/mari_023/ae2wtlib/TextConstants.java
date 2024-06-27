@@ -10,8 +10,7 @@ import appeng.api.config.IncludeExclude;
 import de.mari_023.ae2wtlib.wut.WTDefinition;
 
 public final class TextConstants {
-    private TextConstants() {
-    }
+    private TextConstants() {}
 
     public static final Style STYLE_RED = Style.EMPTY.withColor(ChatFormatting.RED);
     public static final Style STYLE_GREEN = Style.EMPTY.withColor(ChatFormatting.GREEN);

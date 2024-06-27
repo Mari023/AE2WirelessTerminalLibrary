@@ -31,8 +31,7 @@ public class WATScreen extends PatternAccessTermScreen<WATMenu> implements IUniv
     }
 
     @Override
-    public void storeState() {
-    }
+    public void storeState() {}
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int keyPressed) {

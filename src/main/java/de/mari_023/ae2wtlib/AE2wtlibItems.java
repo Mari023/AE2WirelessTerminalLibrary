@@ -17,8 +17,7 @@ import de.mari_023.ae2wtlib.wet.ItemWET;
 import de.mari_023.ae2wtlib.wut.ItemWUT;
 
 public final class AE2wtlibItems {
-    private AE2wtlibItems() {
-    }
+    private AE2wtlibItems() {}
 
     public static final ItemWCT WIRELESS_CRAFTING_TERMINAL = (ItemWCT) AEItems.WIRELESS_CRAFTING_TERMINAL.asItem();
     public static final ItemWET PATTERN_ENCODING_TERMINAL = new ItemWET();
