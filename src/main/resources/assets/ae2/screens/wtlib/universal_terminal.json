@@ -20,10 +20,14 @@
     }
   },
   "widgets": {
-    "upgrades": {
-      "$comment": "The upgrade panel found on some screens",
+    "scrollingUpgrades": {
       "right": 2,
-      "top": 28
+      "top": 28,
+      "height": 46
+    },
+    "upgrades": {
+      "left": -9999,
+      "top": -9999
     },
     "singularityBackground": {
       "right": 2,

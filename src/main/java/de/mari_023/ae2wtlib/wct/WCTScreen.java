@@ -11,12 +11,10 @@ import net.minecraft.world.inventory.Slot;
 import appeng.client.gui.me.items.CraftingTermScreen;
 import appeng.client.gui.style.ScreenStyle;
 import appeng.client.gui.widgets.BackgroundPanel;
+import appeng.menu.SlotSemantics;
 
 import de.mari_023.ae2wtlib.TextConstants;
-import de.mari_023.ae2wtlib.terminal.ArmorSlot;
-import de.mari_023.ae2wtlib.terminal.Icon;
-import de.mari_023.ae2wtlib.terminal.IconButton;
-import de.mari_023.ae2wtlib.terminal.WTMenuHost;
+import de.mari_023.ae2wtlib.terminal.*;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetMode;
 import de.mari_023.ae2wtlib.wut.IUniversalTerminalCapable;
 
@@ -42,6 +40,9 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
 
         widgets.add("player", new PlayerEntityWidget(Objects.requireNonNull(Minecraft.getInstance().player)));
         widgets.add("singularityBackground", new BackgroundPanel(style.getImage("singularityBackground")));
+
+        widgets.add("scrollingUpgrades",
+                new ScrollingUpgradesPanel(menu.getSlots(SlotSemantics.UPGRADE), menu.getHost()));
     }
 
     private void setMagnetMode() {
