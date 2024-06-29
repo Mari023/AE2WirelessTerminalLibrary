@@ -14,13 +14,13 @@ public record Icon(int x, int y, int width, int height, Texture texture) {
     public static final Texture AE2TEXTURE = new Texture(appeng.client.gui.Icon.TEXTURE,
             appeng.client.gui.Icon.TEXTURE_WIDTH, appeng.client.gui.Icon.TEXTURE_HEIGHT);
 
-    public static final Icon BUTTON_BACKGROUND = new Icon(79, 0, 16, 17);
-    public static final Icon BUTTON_BACKGROUND_HOVER = new Icon(95, 1, 16, 16);
-    public static final Icon BUTTON_BACKGROUND_SELECT = new Icon(95, 1, 16, 16);
+    public static final Icon BUTTON_BACKGROUND = new Icon(63, 0, 16, 17);
+    public static final Icon BUTTON_BACKGROUND_HOVERED = new Icon(95, 1, 16, 16);
+    public static final Icon BUTTON_BACKGROUND_FOCUSED = new Icon(79, 0, 16, 17);
 
     public static final Icon TOOLBAR_BUTTON_BACKGROUND = new Icon(176, 128, 18, 20, AE2TEXTURE);
-    public static final Icon TOOLBAR_BUTTON_BACKGROUND_HOVER = new Icon(194, 128, 18, 20, AE2TEXTURE);
-    public static final Icon TOOLBAR_BUTTON_BACKGROUND_SELECT = new Icon(212, 128, 18, 19, AE2TEXTURE);
+    public static final Icon TOOLBAR_BUTTON_BACKGROUND_HOVERED = new Icon(212, 128, 18, 19, AE2TEXTURE);
+    public static final Icon TOOLBAR_BUTTON_BACKGROUND_FOCUSED = new Icon(194, 128, 18, 20, AE2TEXTURE);
 
     public static final Icon MAGNET = new Icon(0, 0);
     public static final Icon MAGNET_FILTER = new Icon(0, 16);

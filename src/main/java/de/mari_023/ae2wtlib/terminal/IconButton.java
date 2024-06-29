@@ -17,22 +17,25 @@ public class IconButton extends Button implements ITooltip {
     private final Icon icon;
     private final Icon bg;
     private final Icon bg_hovered;
+    private final Icon bg_focused;
     @Nullable
     private List<Component> tooltip;
 
     public IconButton(OnPress onPress, Icon icon) {
-        this(onPress, icon, Icon.BUTTON_BACKGROUND, Icon.BUTTON_BACKGROUND_HOVER);
+        this(onPress, icon, Icon.BUTTON_BACKGROUND, Icon.BUTTON_BACKGROUND_HOVERED, Icon.BUTTON_BACKGROUND_FOCUSED);
     }
 
-    public IconButton(OnPress onPress, Icon icon, Icon bg, Icon bg_hovered) {
+    public IconButton(OnPress onPress, Icon icon, Icon bg, Icon bg_hovered, Icon bg_focused) {
         super(0, 0, 16, 16, Component.empty(), onPress, Button.DEFAULT_NARRATION);
         this.icon = icon;
         this.bg = bg;
         this.bg_hovered = bg_hovered;
+        this.bg_focused = bg_focused;
     }
 
     public static IconButton withAE2Background(OnPress onPress, Icon icon) {
-        return new IconButton(onPress, icon, Icon.TOOLBAR_BUTTON_BACKGROUND, Icon.TOOLBAR_BUTTON_BACKGROUND_HOVER);
+        return new IconButton(onPress, icon, Icon.TOOLBAR_BUTTON_BACKGROUND, Icon.TOOLBAR_BUTTON_BACKGROUND_HOVERED,
+                Icon.TOOLBAR_BUTTON_BACKGROUND_FOCUSED);
     }
 
     public void setVisibility(boolean vis) {
@@ -45,7 +48,7 @@ public class IconButton extends Button implements ITooltip {
         if (!visible)
             return;
 
-        var yOffset = isHoveredOrFocused() ? 1 : 0;
+        var yOffset = isHovered() ? 1 : 0;
         var bg = getBG();
         var bgSizeOffset = bg.width() > 16 ? 1 : 0;
 
@@ -62,7 +65,7 @@ public class IconButton extends Button implements ITooltip {
     }
 
     private Icon getBG() {
-        return isHoveredOrFocused() ? bg_hovered : bg;
+        return isHovered() ? bg_hovered : isFocused() ? bg_focused : bg;
     }
 
     @Override

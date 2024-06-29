@@ -1,3 +1,5 @@
 - fix curio tags being in the wrong place (fix #285)
 - add hint that the quantum bridge should be in loaded chunks when displaying that it can't be found (fix #283)
 - remove builtin ae2 style wireless crafting terminal resource pack
+- make upgrade panel scrollable
+- fix slot hover and focus textures
