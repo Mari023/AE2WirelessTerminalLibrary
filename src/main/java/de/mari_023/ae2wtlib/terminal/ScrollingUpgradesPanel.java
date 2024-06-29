@@ -2,7 +2,6 @@ package de.mari_023.ae2wtlib.terminal;
 
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -17,6 +16,7 @@ import appeng.api.upgrades.Upgrades;
 import appeng.client.Point;
 import appeng.client.gui.*;
 import appeng.client.gui.widgets.Scrollbar;
+import appeng.core.localization.GuiText;
 import appeng.menu.slot.AppEngSlot;
 
 public class ScrollingUpgradesPanel implements ICompositeWidget {
@@ -37,21 +37,16 @@ public class ScrollingUpgradesPanel implements ICompositeWidget {
     private int maxRows = MAX_ROWS;
     private final Scrollbar scrollbar;
 
-    private final Supplier<List<Component>> tooltipSupplier;
+    private final List<Component> tooltips;
 
     public ScrollingUpgradesPanel(List<Slot> slots, IUpgradeableObject upgradeableObject, WidgetContainer widgets) {
-        this(slots, () -> Upgrades.getTooltipLinesForMachine(upgradeableObject.getUpgrades().getUpgradableItem()),
-                widgets);
-    }
-
-    public ScrollingUpgradesPanel(List<Slot> slots, Supplier<List<Component>> tooltipSupplier,
-            WidgetContainer widgets) {
         this.slots = slots;
-        this.tooltipSupplier = tooltipSupplier;
+        tooltips = Upgrades.getTooltipLinesForMachine(upgradeableObject.getUpgrades().getUpgradableItem());
+        tooltips.addFirst(GuiText.CompatibleUpgrades.text());
 
         scrollbar = widgets.addScrollBar("upgradeScrollbar", Scrollbar.SMALL);
         // The scrollbar ranges from 0 to the number of rows not visible
-        scrollbar.setRange(0, getUpgradeSlotCount() - getVisibleSlotCount(), getVisibleSlotCount());
+        scrollbar.setRange(0, getUpgradeSlotCount() - getVisibleSlotCount(), 1);
         scrollbar.setCaptureMouseWheel(false);
     }
 
@@ -67,7 +62,7 @@ public class ScrollingUpgradesPanel implements ICompositeWidget {
     @Override
     public void setSize(int width, int height) {
         maxRows = (height - PADDING * 2) / SLOT_SIZE;
-        scrollbar.setRange(0, getUpgradeSlotCount() - getVisibleSlotCount(), getVisibleSlotCount());
+        scrollbar.setRange(0, getUpgradeSlotCount() - getVisibleSlotCount(), 1);
         scrollbar.setVisible(scrolling());
     }
 
@@ -126,11 +121,13 @@ public class ScrollingUpgradesPanel implements ICompositeWidget {
         // This is the absolute x,y coord of the first slot within the panel
         int slotOriginX = screenOrigin.getX() + x;
         int slotOriginY = screenOrigin.getY() + y + PADDING;
-        boolean scrolling = scrolling();
+        UpgradeBackground bg = UpgradeBackground.get(scrolling());
 
-        for (int i = 0; i < slotCount; i++) {
-            drawSlot(guiGraphics, slotOriginX, slotOriginY + i * SLOT_SIZE, i == 0, i == slotCount - 1, scrolling);
+        bg.top().getBlitter().dest(slotOriginX, slotOriginY - PADDING).blit(guiGraphics);
+        for (int i = 1; i < slotCount - 1; i++) {
+            bg.middle().getBlitter().dest(slotOriginX, slotOriginY + i * SLOT_SIZE).blit(guiGraphics);
         }
+        bg.bottom().getBlitter().dest(slotOriginX, slotOriginY + (slotCount - 1) * SLOT_SIZE).blit(guiGraphics);
     }
 
     @Override
@@ -161,36 +158,7 @@ public class ScrollingUpgradesPanel implements ICompositeWidget {
             return null;
         }
 
-        List<Component> tooltip = this.tooltipSupplier.get();
-        if (tooltip.isEmpty()) {
-            return null;
-        }
-
-        return new Tooltip(tooltip);
-    }
-
-    private void drawSlot(GuiGraphics guiGraphics, int x, int y, boolean borderTop, boolean borderBottom,
-            boolean scrolling) {
-        if (borderTop) {
-            y -= PADDING;
-            if (scrolling) {
-                Icon.UPGRADE_BACKGROUND_SCROLLING_TOP.getBlitter().dest(x, y).blit(guiGraphics);
-            } else {
-                Icon.UPGRADE_BACKGROUND_TOP.getBlitter().dest(x, y).blit(guiGraphics);
-            }
-        } else if (borderBottom) {
-            if (scrolling) {
-                Icon.UPGRADE_BACKGROUND_SCROLLING_BOTTOM.getBlitter().dest(x, y).blit(guiGraphics);
-            } else {
-                Icon.UPGRADE_BACKGROUND_BOTTOM.getBlitter().dest(x, y).blit(guiGraphics);
-            }
-        } else {
-            if (scrolling) {
-                Icon.UPGRADE_BACKGROUND_SCROLLING_MIDDLE.getBlitter().dest(x, y).blit(guiGraphics);
-            } else {
-                Icon.UPGRADE_BACKGROUND_MIDDLE.getBlitter().dest(x, y).blit(guiGraphics);
-            }
-        }
+        return new Tooltip(tooltips);
     }
 
     /**
