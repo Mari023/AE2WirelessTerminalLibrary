@@ -70,6 +70,7 @@ public class ScrollingUpgradesPanel implements ICompositeWidget {
     public void setSize(int width, int height) {
         maxRows = (height - PADDING * 2) / SLOT_SIZE;
         scrollbar.setRange(0, getUpgradeSlotCount() - getVisibleSlotCount(), getVisibleSlotCount());
+        scrollbar.setVisible(scrolling());
     }
 
     /**
