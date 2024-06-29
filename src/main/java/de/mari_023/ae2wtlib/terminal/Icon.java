@@ -8,7 +8,8 @@ import appeng.core.AppEng;
 /**
  * Edit in {@code assets/ae2/textures/wtlib/guis/icons.png}.
  */
-public class Icon {
+public record Icon(int x, int y, int width, int height, Texture texture) {
+
     public static final Texture TEXTURE = new Texture(AppEng.makeId("textures/wtlib/guis/icons.png"), 128, 128);
     public static final Texture AE2TEXTURE = new Texture(appeng.client.gui.Icon.TEXTURE,
             appeng.client.gui.Icon.TEXTURE_WIDTH, appeng.client.gui.Icon.TEXTURE_HEIGHT);
@@ -48,12 +49,6 @@ public class Icon {
     public static final Icon UPGRADE_BACKGROUND_SCROLLING_MIDDLE = new Icon(53, 85, 29, 18);
     public static final Icon UPGRADE_BACKGROUND_SCROLLING_BOTTOM = new Icon(53, 103, 29, 25);
 
-    public final Texture texture;
-    public final int x;
-    public final int y;
-    public final int width;
-    public final int height;
-
     private Icon(int x, int y) {
         this(x, y, 16, 16);
     }
@@ -62,19 +57,10 @@ public class Icon {
         this(x, y, width, height, TEXTURE);
     }
 
-    public Icon(int x, int y, int width, int height, Texture texture) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-        this.texture = texture;
-    }
-
     public Blitter getBlitter() {
         return Blitter.texture(texture.location(), texture.width(), texture.height())
                 .src(x, y, width, height);
     }
-
     public record Texture(ResourceLocation location, int width, int height) {
     }
 }

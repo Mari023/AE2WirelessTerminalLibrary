@@ -47,10 +47,10 @@ public class IconButton extends Button implements ITooltip {
 
         var yOffset = isHoveredOrFocused() ? 1 : 0;
         var bg = getBG();
-        var bgSizeOffset = bg.width > 16 ? 1 : 0;
+        var bgSizeOffset = bg.width() > 16 ? 1 : 0;
 
         bg.getBlitter()
-                .dest(getX() - 1, getY() + yOffset, bg.width, bg.height)
+                .dest(getX() - 1, getY() + yOffset, bg.width(), bg.height())
                 .zOffset(2)
                 .blit(guiGraphics);
         getIcon().getBlitter().dest(getX() - 1 + bgSizeOffset, getY() + bgSizeOffset + yOffset).zOffset(3)
@@ -77,8 +77,8 @@ public class IconButton extends Button implements ITooltip {
         return new Rect2i(
                 getX(),
                 getY(),
-                getBG().width,
-                getBG().height);
+                getBG().width(),
+                getBG().height());
     }
 
     @Override
