@@ -8,26 +8,26 @@
   },
   "images": {
     "singularityBackground": {
-      "texture": "wtlib/guis/singularity.png",
-      "textureWidth": 256,
-      "textureHeight": 256,
+      "texture": "wtlib/guis/icons.png",
+      "textureWidth": 128,
+      "textureHeight": 128,
       "srcRect": [
-        0,
-        0,
+        105,
+        98,
         23,
-        31
+        30
       ]
     }
   },
   "widgets": {
     "scrollingUpgrades": {
       "right": 2,
-      "top": 28,
+      "top": 31,
       "height": 46
     },
     "upgradeScrollbar": {
       "right": -17,
-      "top": 33,
+      "top": 36,
       "height": 36
     },
     "upgrades": {

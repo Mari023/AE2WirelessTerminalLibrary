@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import appeng.client.gui.*;
-import appeng.client.gui.widgets.Scrollbar;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.client.gui.GuiGraphics;
@@ -17,7 +15,8 @@ import net.minecraft.world.inventory.Slot;
 import appeng.api.upgrades.IUpgradeableObject;
 import appeng.api.upgrades.Upgrades;
 import appeng.client.Point;
-import appeng.client.gui.style.Blitter;
+import appeng.client.gui.*;
+import appeng.client.gui.widgets.Scrollbar;
 import appeng.menu.slot.AppEngSlot;
 
 public class ScrollingUpgradesPanel implements ICompositeWidget {
@@ -25,9 +24,6 @@ public class ScrollingUpgradesPanel implements ICompositeWidget {
     private static final int PADDING = 5;
     private static final int MAX_ROWS = 8;
     private static final int SCROLLBAR_WIDTH = 5;
-
-    @Deprecated
-    private static final Blitter BACKGROUND = Blitter.texture("guis/extra_panels.png", 128, 128);
 
     private final List<Slot> slots;
 
@@ -44,10 +40,12 @@ public class ScrollingUpgradesPanel implements ICompositeWidget {
     private final Supplier<List<Component>> tooltipSupplier;
 
     public ScrollingUpgradesPanel(List<Slot> slots, IUpgradeableObject upgradeableObject, WidgetContainer widgets) {
-        this(slots, () -> Upgrades.getTooltipLinesForMachine(upgradeableObject.getUpgrades().getUpgradableItem()), widgets);
+        this(slots, () -> Upgrades.getTooltipLinesForMachine(upgradeableObject.getUpgrades().getUpgradableItem()),
+                widgets);
     }
 
-    public ScrollingUpgradesPanel(List<Slot> slots, Supplier<List<Component>> tooltipSupplier, WidgetContainer widgets) {
+    public ScrollingUpgradesPanel(List<Slot> slots, Supplier<List<Component>> tooltipSupplier,
+            WidgetContainer widgets) {
         this.slots = slots;
         this.tooltipSupplier = tooltipSupplier;
 
@@ -98,7 +96,8 @@ public class ScrollingUpgradesPanel implements ICompositeWidget {
 
         for (int i = 0; i < slots.size(); i++) {
             Slot s = slots.get(i);
-            if (!(s instanceof AppEngSlot slot)) continue;
+            if (!(s instanceof AppEngSlot slot))
+                continue;
 
             if (currentFirstSlot <= i && currentFirstSlot + maxRows > i) {
                 slot.setSlotEnabled(true);
@@ -118,24 +117,20 @@ public class ScrollingUpgradesPanel implements ICompositeWidget {
     }
 
     @Override
-    public void drawBackgroundLayer(GuiGraphics guiGraphics, Rect2i bounds, Point mouse) {//TODO
+    public void drawBackgroundLayer(GuiGraphics guiGraphics, Rect2i bounds, Point mouse) {
         int slotCount = getVisibleSlotCount();
         if (slotCount <= 0) {
             return;
         }
 
         // This is the absolute x,y coord of the first slot within the panel
-        int slotOriginX = screenOrigin.getX() + x + PADDING;
+        int slotOriginX = screenOrigin.getX() + x;
         int slotOriginY = screenOrigin.getY() + y + PADDING;
+        boolean scrolling = scrolling();
 
         for (int i = 0; i < slotCount; i++) {
-            drawSlot(guiGraphics, slotOriginX, slotOriginY + i * SLOT_SIZE, i == 0, i == slotCount - 1);
+            drawSlot(guiGraphics, slotOriginX, slotOriginY + i * SLOT_SIZE, i == 0, i == slotCount - 1, scrolling);
         }
-        // Added border to match the rest of the GUI style - RID
-        guiGraphics.hLine(slotOriginX - 4, slotOriginX + 11, slotOriginY, 0XFFf2f2f2);
-        guiGraphics.hLine(slotOriginX - 4, slotOriginX + 11, slotOriginY + (SLOT_SIZE * slotCount) - 1, 0XFFf2f2f2);
-        guiGraphics.vLine(slotOriginX - 5, slotOriginY - 1, slotOriginY + (SLOT_SIZE * slotCount), 0XFFf2f2f2);
-        guiGraphics.vLine(slotOriginX + 12, slotOriginY - 1, slotOriginY + (SLOT_SIZE * slotCount), 0XFFf2f2f2);
     }
 
     @Override
@@ -174,23 +169,28 @@ public class ScrollingUpgradesPanel implements ICompositeWidget {
         return new Tooltip(tooltip);
     }
 
-    private void drawSlot(GuiGraphics guiGraphics, int x, int y, boolean borderTop, boolean borderBottom) {
-        int srcX = 0;
-        int srcY = PADDING;
-        int srcWidth = SLOT_SIZE + 2 * PADDING;
-        int srcHeight = SLOT_SIZE;
-
-        x -= PADDING;
+    private void drawSlot(GuiGraphics guiGraphics, int x, int y, boolean borderTop, boolean borderBottom,
+            boolean scrolling) {
         if (borderTop) {
             y -= PADDING;
-            srcY = 0;
-            srcHeight += PADDING;
+            if (scrolling) {
+                Icon.UPGRADE_BACKGROUND_SCROLLING_TOP.getBlitter().dest(x, y).blit(guiGraphics);
+            } else {
+                Icon.UPGRADE_BACKGROUND_TOP.getBlitter().dest(x, y).blit(guiGraphics);
+            }
+        } else if (borderBottom) {
+            if (scrolling) {
+                Icon.UPGRADE_BACKGROUND_SCROLLING_BOTTOM.getBlitter().dest(x, y).blit(guiGraphics);
+            } else {
+                Icon.UPGRADE_BACKGROUND_BOTTOM.getBlitter().dest(x, y).blit(guiGraphics);
+            }
+        } else {
+            if (scrolling) {
+                Icon.UPGRADE_BACKGROUND_SCROLLING_MIDDLE.getBlitter().dest(x, y).blit(guiGraphics);
+            } else {
+                Icon.UPGRADE_BACKGROUND_MIDDLE.getBlitter().dest(x, y).blit(guiGraphics);
+            }
         }
-        if (borderBottom) {
-            srcHeight += PADDING + 2;
-        }
-
-        BACKGROUND.src(srcX, srcY, srcWidth, srcHeight).dest(x, y).blit(guiGraphics);
     }
 
     /**
@@ -200,7 +200,7 @@ public class ScrollingUpgradesPanel implements ICompositeWidget {
     private int getUpgradeSlotCount() {
         int count = 0;
         for (Slot slot : slots) {
-            if (slot instanceof AppEngSlot && ((AppEngSlot) slot).isSlotEnabled()) {
+            if (slot instanceof AppEngSlot) {
                 count++;
             }
         }

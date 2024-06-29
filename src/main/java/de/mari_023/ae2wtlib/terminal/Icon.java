@@ -41,6 +41,13 @@ public class Icon {
     public static final Icon EMPTY_ARMOR_SLOT_BOOTS = new Icon(112, 48);
     public static final Icon EMPTY_ARMOR_SLOT_SHIELD = new Icon(112, 64);
 
+    public static final Icon UPGRADE_BACKGROUND_TOP = new Icon(82, 62, 23, 23);
+    public static final Icon UPGRADE_BACKGROUND_MIDDLE = new Icon(82, 85, 23, 18);
+    public static final Icon UPGRADE_BACKGROUND_BOTTOM = new Icon(82, 103, 23, 25);
+    public static final Icon UPGRADE_BACKGROUND_SCROLLING_TOP = new Icon(53, 62, 29, 23);
+    public static final Icon UPGRADE_BACKGROUND_SCROLLING_MIDDLE = new Icon(53, 85, 29, 18);
+    public static final Icon UPGRADE_BACKGROUND_SCROLLING_BOTTOM = new Icon(53, 103, 29, 25);
+
     public final Texture texture;
     public final int x;
     public final int y;
