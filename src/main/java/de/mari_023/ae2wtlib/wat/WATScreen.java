@@ -20,7 +20,7 @@ public class WATScreen extends PatternAccessTermScreen<WATMenu> implements IUniv
             addToLeftToolbar(cycleTerminalButton());
 
         widgets.add("scrollingUpgrades",
-                new ScrollingUpgradesPanel(menu.getSlots(SlotSemantics.UPGRADE), menu.getHost()));
+                new ScrollingUpgradesPanel(menu.getSlots(SlotSemantics.UPGRADE), menu.getHost(), widgets));
         if (getMenu().getToolbox().isPresent())
             widgets.add("toolbox", new ToolboxPanel(style, getMenu().getToolbox().getName()));
         widgets.add("singularityBackground", new BackgroundPanel(style.getImage("singularityBackground")));

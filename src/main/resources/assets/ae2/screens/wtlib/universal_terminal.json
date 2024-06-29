@@ -25,6 +25,11 @@
       "top": 28,
       "height": 46
     },
+    "upgradeScrollbar": {
+      "right": -17,
+      "top": 33,
+      "height": 36
+    },
     "upgrades": {
       "left": -9999,
       "top": -9999

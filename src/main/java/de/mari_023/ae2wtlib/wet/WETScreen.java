@@ -19,7 +19,7 @@ public class WETScreen extends PatternEncodingTermScreen<WETMenu> implements IUn
             addToLeftToolbar(cycleTerminalButton());
         widgets.add("singularityBackground", new BackgroundPanel(style.getImage("singularityBackground")));
         widgets.add("scrollingUpgrades",
-                new ScrollingUpgradesPanel(menu.getSlots(SlotSemantics.UPGRADE), menu.getHost()));
+                new ScrollingUpgradesPanel(menu.getSlots(SlotSemantics.UPGRADE), menu.getHost(), widgets));
     }
 
     @Override

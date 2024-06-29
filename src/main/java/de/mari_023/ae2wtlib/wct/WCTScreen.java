@@ -42,7 +42,7 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
         widgets.add("singularityBackground", new BackgroundPanel(style.getImage("singularityBackground")));
 
         widgets.add("scrollingUpgrades",
-                new ScrollingUpgradesPanel(menu.getSlots(SlotSemantics.UPGRADE), menu.getHost()));
+                new ScrollingUpgradesPanel(menu.getSlots(SlotSemantics.UPGRADE), menu.getHost(), widgets));
     }
 
     private void setMagnetMode() {
