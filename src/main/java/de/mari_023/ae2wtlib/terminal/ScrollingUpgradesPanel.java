@@ -71,9 +71,7 @@ public class ScrollingUpgradesPanel implements ICompositeWidget {
      */
     @Override
     public Rect2i getBounds() {
-        int slotCount = getUpgradeSlotCount();
-
-        int height = 2 * PADDING + Math.min(MAX_ROWS, slotCount) * SLOT_SIZE;
+        int height = 2 * PADDING + getVisibleSlotCount() * SLOT_SIZE;
         int width = 2 * PADDING + SLOT_SIZE + (scrolling() ? SCROLLBAR_WIDTH : 0);
         return new Rect2i(x, y, width, height);
     }
@@ -132,23 +130,8 @@ public class ScrollingUpgradesPanel implements ICompositeWidget {
 
     @Override
     public void addExclusionZones(List<Rect2i> exclusionZones, Rect2i screenBounds) {
-        int offsetX = screenBounds.getX();
-        int offsetY = screenBounds.getY();
-
-        int slotCount = getVisibleSlotCount();
-
         // Use a bit of a margin around the zone to avoid things looking too cramped
-        final int margin = 2;
-
-        // Add a single bounding rectangle for as many columns as are fully populated
-        int rightEdge = offsetX + x;
-        if (slotCount > 0) {
-            exclusionZones.add(Rects.expand(new Rect2i(
-                    rightEdge,
-                    offsetY + y,
-                    PADDING * 2 + SLOT_SIZE + (scrolling() ? SCROLLBAR_WIDTH : 0),
-                    PADDING * 2 + slotCount * SLOT_SIZE), margin));
-        }
+        exclusionZones.add(Rects.expand(Rects.move(getBounds(), screenBounds.getX(), screenBounds.getY()), 2));
     }
 
     @Nullable
