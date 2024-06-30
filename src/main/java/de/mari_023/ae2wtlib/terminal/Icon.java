@@ -10,7 +10,7 @@ import appeng.core.AppEng;
  */
 public record Icon(int x, int y, int width, int height, Texture texture) {
 
-    public static final Texture TEXTURE = new Texture(AppEng.makeId("textures/wtlib/guis/icons.png"), 128, 128);
+    public static final Texture TEXTURE = new Texture(AppEng.makeId("textures/wtlib/guis/icons.png"), 256, 256);
     public static final Texture AE2TEXTURE = new Texture(appeng.client.gui.Icon.TEXTURE,
             appeng.client.gui.Icon.TEXTURE_WIDTH, appeng.client.gui.Icon.TEXTURE_HEIGHT);
 
@@ -42,12 +42,12 @@ public record Icon(int x, int y, int width, int height, Texture texture) {
     public static final Icon EMPTY_ARMOR_SLOT_BOOTS = new Icon(112, 48);
     public static final Icon EMPTY_ARMOR_SLOT_SHIELD = new Icon(112, 64);
 
-    public static final Icon UPGRADE_BACKGROUND_TOP = new Icon(82, 62, 23, 23);
-    public static final Icon UPGRADE_BACKGROUND_MIDDLE = new Icon(82, 85, 23, 18);
-    public static final Icon UPGRADE_BACKGROUND_BOTTOM = new Icon(82, 103, 23, 25);
-    public static final Icon UPGRADE_BACKGROUND_SCROLLING_TOP = new Icon(53, 62, 29, 23);
-    public static final Icon UPGRADE_BACKGROUND_SCROLLING_MIDDLE = new Icon(53, 85, 29, 18);
-    public static final Icon UPGRADE_BACKGROUND_SCROLLING_BOTTOM = new Icon(53, 103, 29, 25);
+    public static final Icon UPGRADE_BACKGROUND_TOP = new Icon(162, 0, 28, 23);
+    public static final Icon UPGRADE_BACKGROUND_MIDDLE = new Icon(162, 23, 28, 18);
+    public static final Icon UPGRADE_BACKGROUND_BOTTOM = new Icon(162, 41, 28, 25);
+    public static final Icon UPGRADE_BACKGROUND_SCROLLING_TOP = new Icon(128, 0, 34, 23);
+    public static final Icon UPGRADE_BACKGROUND_SCROLLING_MIDDLE = new Icon(128, 23, 34, 18);
+    public static final Icon UPGRADE_BACKGROUND_SCROLLING_BOTTOM = new Icon(128, 41, 34, 25);
 
     private Icon(int x, int y) {
         this(x, y, 16, 16);

@@ -9,8 +9,8 @@
   "images": {
     "singularityBackground": {
       "texture": "wtlib/guis/icons.png",
-      "textureWidth": 128,
-      "textureHeight": 128,
+      "textureWidth": 256,
+      "textureHeight": 256,
       "srcRect": [
         105,
         98,
@@ -21,12 +21,12 @@
   },
   "widgets": {
     "scrollingUpgrades": {
-      "right": 2,
+      "right": -1,
       "top": 31,
       "height": 46
     },
     "upgradeScrollbar": {
-      "right": -17,
+      "right": -25,
       "top": 36,
       "height": 36
     },
