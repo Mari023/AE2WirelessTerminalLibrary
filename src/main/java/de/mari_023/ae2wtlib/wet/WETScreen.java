@@ -5,7 +5,6 @@ import net.minecraft.world.entity.player.Inventory;
 
 import appeng.client.gui.me.items.PatternEncodingTermScreen;
 import appeng.client.gui.style.ScreenStyle;
-import appeng.client.gui.widgets.BackgroundPanel;
 import appeng.menu.SlotSemantics;
 
 import de.mari_023.ae2wtlib.terminal.ScrollingUpgradesPanel;
@@ -17,7 +16,7 @@ public class WETScreen extends PatternEncodingTermScreen<WETMenu> implements IUn
         super(container, playerInventory, title, style);
         if (getMenu().isWUT())
             addToLeftToolbar(cycleTerminalButton());
-        widgets.add("singularityBackground", new BackgroundPanel(style.getImage("singularityBackground")));
+        addSingularityPanel(widgets, getMenu());
         widgets.add("scrollingUpgrades",
                 new ScrollingUpgradesPanel(menu.getSlots(SlotSemantics.UPGRADE), menu.getHost(), widgets));
     }

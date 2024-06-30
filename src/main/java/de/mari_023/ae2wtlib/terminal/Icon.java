@@ -49,6 +49,8 @@ public record Icon(int x, int y, int width, int height, Texture texture) {
     public static final Icon UPGRADE_BACKGROUND_SCROLLING_MIDDLE = new Icon(128, 23, 34, 18);
     public static final Icon UPGRADE_BACKGROUND_SCROLLING_BOTTOM = new Icon(128, 41, 34, 25);
 
+    public static final Icon SINGULARITY_BACKGROUND = new Icon(105, 98, 23, 30);
+
     private Icon(int x, int y) {
         this(x, y, 16, 16);
     }

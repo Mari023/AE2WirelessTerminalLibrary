@@ -10,7 +10,6 @@ import net.minecraft.world.inventory.Slot;
 
 import appeng.client.gui.me.items.CraftingTermScreen;
 import appeng.client.gui.style.ScreenStyle;
-import appeng.client.gui.widgets.BackgroundPanel;
 import appeng.menu.SlotSemantics;
 
 import de.mari_023.ae2wtlib.TextConstants;
@@ -39,7 +38,7 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
         trashButton.setMessage(TextConstants.TRASH);
 
         widgets.add("player", new PlayerEntityWidget(Objects.requireNonNull(Minecraft.getInstance().player)));
-        widgets.add("singularityBackground", new BackgroundPanel(style.getImage("singularityBackground")));
+        addSingularityPanel(widgets, getMenu());
 
         widgets.add("scrollingUpgrades",
                 new ScrollingUpgradesPanel(menu.getSlots(SlotSemantics.UPGRADE), menu.getHost(), widgets));

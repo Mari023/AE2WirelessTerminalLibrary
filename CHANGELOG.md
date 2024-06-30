@@ -3,3 +3,4 @@
 - remove builtin ae2 style wireless crafting terminal resource pack
 - make upgrade panel scrollable
 - fix slot hover and focus textures
+- disable SingularitySlot when there is no Quantum Bridge Card installed

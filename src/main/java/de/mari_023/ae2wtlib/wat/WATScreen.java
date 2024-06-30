@@ -5,7 +5,6 @@ import net.minecraft.world.entity.player.Inventory;
 
 import appeng.client.gui.me.patternaccess.PatternAccessTermScreen;
 import appeng.client.gui.style.ScreenStyle;
-import appeng.client.gui.widgets.BackgroundPanel;
 import appeng.client.gui.widgets.ToolboxPanel;
 import appeng.menu.SlotSemantics;
 
@@ -23,7 +22,7 @@ public class WATScreen extends PatternAccessTermScreen<WATMenu> implements IUniv
                 new ScrollingUpgradesPanel(menu.getSlots(SlotSemantics.UPGRADE), menu.getHost(), widgets));
         if (getMenu().getToolbox().isPresent())
             widgets.add("toolbox", new ToolboxPanel(style, getMenu().getToolbox().getName()));
-        widgets.add("singularityBackground", new BackgroundPanel(style.getImage("singularityBackground")));
+        addSingularityPanel(widgets, getMenu());
     }
 
     @Override
