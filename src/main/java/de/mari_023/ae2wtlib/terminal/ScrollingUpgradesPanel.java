@@ -83,7 +83,7 @@ public class ScrollingUpgradesPanel implements ICompositeWidget {
 
     @Override
     public void updateBeforeRender() {
-        int slotOriginX = x + PADDING;
+        int slotOriginX = x;
         int slotOriginY = y + PADDING;
         int currentFirstSlot = scrollbar.getCurrentScroll();
 

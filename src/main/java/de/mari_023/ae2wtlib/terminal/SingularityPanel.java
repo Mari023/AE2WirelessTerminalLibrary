@@ -37,7 +37,7 @@ public class SingularityPanel implements ICompositeWidget {
     public void setPosition(Point position) {
         x = position.getX();
         y = position.getY();
-        singularity.x = x + 1;
+        singularity.x = x + 6;
         singularity.y = y + 6;
     }
 

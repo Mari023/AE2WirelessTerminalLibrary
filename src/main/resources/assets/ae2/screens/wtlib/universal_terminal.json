@@ -2,13 +2,13 @@
   "$schema": "schema.json",
   "widgets": {
     "scrollingUpgrades": {
-      "right": -1,
-      "top": 31,
+      "right": 2,
+      "top": 0,
       "height": 46
     },
     "upgradeScrollbar": {
-      "right": -25,
-      "top": 37,
+      "right": -17,
+      "top": 5,
       "height": 34
     },
     "upgrades": {
@@ -16,8 +16,8 @@
       "top": -9999
     },
     "singularity": {
-      "right": 2,
-      "top": 0
+      "left": 2,
+      "top": -21
     }
   }
 }
