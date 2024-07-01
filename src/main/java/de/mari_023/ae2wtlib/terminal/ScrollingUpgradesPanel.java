@@ -2,6 +2,7 @@ package de.mari_023.ae2wtlib.terminal;
 
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -10,7 +11,9 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
 
+import appeng.api.upgrades.IUpgradeInventory;
 import appeng.api.upgrades.IUpgradeableObject;
 import appeng.api.upgrades.Upgrades;
 import appeng.client.Point;
@@ -19,6 +22,8 @@ import appeng.client.gui.widgets.Scrollbar;
 import appeng.core.localization.GuiText;
 import appeng.menu.slot.AppEngSlot;
 
+import de.mari_023.ae2wtlib.AE2wtlibItems;
+
 public class ScrollingUpgradesPanel implements ICompositeWidget {
     private static final int SLOT_SIZE = 18;
     private static final int PADDING = 5;
@@ -26,6 +31,7 @@ public class ScrollingUpgradesPanel implements ICompositeWidget {
     private static final int SCROLLBAR_WIDTH = 5;
 
     private final List<Slot> slots;
+    private final Supplier<IUpgradeInventory> upgrades;
 
     // The screen origin in window space (used to layout slots)
     private Point screenOrigin = Point.ZERO;
@@ -39,15 +45,29 @@ public class ScrollingUpgradesPanel implements ICompositeWidget {
 
     private final List<Component> tooltips;
 
-    public ScrollingUpgradesPanel(List<Slot> slots, IUpgradeableObject upgradeableObject, WidgetContainer widgets) {
+    public ScrollingUpgradesPanel(List<Slot> slots, IUpgradeableObject upgradeableObject, WidgetContainer widgets,
+            Supplier<IUpgradeInventory> upgrades) {
         this.slots = slots;
+        this.upgrades = upgrades;
         tooltips = Upgrades.getTooltipLinesForMachine(upgradeableObject.getUpgrades().getUpgradableItem());
         tooltips.addFirst(GuiText.CompatibleUpgrades.text());
 
         scrollbar = widgets.addScrollBar("upgradeScrollbar", Scrollbar.SMALL);
-        // The scrollbar ranges from 0 to the number of rows not visible
-        scrollbar.setRange(0, getUpgradeSlotCount() - getVisibleSlotCount(), 1);
         scrollbar.setCaptureMouseWheel(false);
+        setScrollbarRange();
+    }
+
+    private boolean singularitySlotHidden() {
+        return isDisabledSlotEmpty((AppEngSlot) slots.getFirst())
+                && !upgrades.get().isInstalled(AE2wtlibItems.QUANTUM_BRIDGE_CARD);
+    }
+
+    private boolean isDisabledSlotEmpty(AppEngSlot slot) {
+        boolean enabled = slot.isSlotEnabled();
+        slot.setSlotEnabled(true);
+        ItemStack stack = slot.getItem();
+        slot.setSlotEnabled(enabled);
+        return stack.isEmpty();
     }
 
     @Override
@@ -62,7 +82,7 @@ public class ScrollingUpgradesPanel implements ICompositeWidget {
     @Override
     public void setSize(int width, int height) {
         maxRows = (height - PADDING * 2) / SLOT_SIZE;
-        scrollbar.setRange(0, getUpgradeSlotCount() - getVisibleSlotCount(), 1);
+        setScrollbarRange();
         scrollbar.setVisible(scrolling());
     }
 
@@ -86,18 +106,21 @@ public class ScrollingUpgradesPanel implements ICompositeWidget {
         int slotOriginX = x;
         int slotOriginY = y + PADDING;
         int currentFirstSlot = scrollbar.getCurrentScroll();
+        setScrollbarRange();
 
-        for (int i = 0; i < slots.size(); i++) {
-            Slot s = slots.get(i);
+        int i = 0;
+        for (Slot s : slots) {
             if (!(s instanceof AppEngSlot slot))
                 continue;
 
-            if (currentFirstSlot <= i && currentFirstSlot + maxRows > i) {
-                slot.setSlotEnabled(true);
-            } else {
-                slot.setSlotEnabled(false);
+            if (s == slots.getFirst() && singularitySlotHidden()) {
+                ((AppEngSlot) slots.getFirst()).setSlotEnabled(false);
                 continue;
             }
+
+            slot.setSlotEnabled(currentFirstSlot <= i && currentFirstSlot + maxRows > i);
+
+            i++;
 
             if (!slot.isActive()) {
                 continue;
@@ -144,10 +167,6 @@ public class ScrollingUpgradesPanel implements ICompositeWidget {
         return new Tooltip(tooltips);
     }
 
-    /**
-     * We need this function since the cell workbench can dynamically change how many upgrade slots are active based on
-     * the cell in the workbench.
-     */
     private int getUpgradeSlotCount() {
         int count = 0;
         for (Slot slot : slots) {
@@ -155,7 +174,14 @@ public class ScrollingUpgradesPanel implements ICompositeWidget {
                 count++;
             }
         }
+        if (singularitySlotHidden())
+            count--;
         return count;
+    }
+
+    private void setScrollbarRange() {
+        // The scrollbar ranges from 0 to the number of rows not visible
+        scrollbar.setRange(0, getUpgradeSlotCount() - getVisibleSlotCount(), 1);
     }
 
     private int getVisibleSlotCount() {

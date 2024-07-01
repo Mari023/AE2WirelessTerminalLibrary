@@ -8,16 +8,12 @@
     },
     "upgradeScrollbar": {
       "right": -17,
-      "top": 5,
+      "top": 6,
       "height": 34
     },
     "upgrades": {
       "left": -9999,
       "top": -9999
-    },
-    "singularity": {
-      "left": 2,
-      "top": -21
     }
   }
 }

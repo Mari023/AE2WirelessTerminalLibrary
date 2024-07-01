@@ -1,1 +1,2 @@
 - fix upgrade panel tooltip being larger than the panel
+- move singularity into the upgrade panel 
