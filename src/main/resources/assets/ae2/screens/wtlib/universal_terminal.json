@@ -3,8 +3,7 @@
   "widgets": {
     "scrollingUpgrades": {
       "right": 2,
-      "top": 0,
-      "height": 46
+      "top": 0
     },
     "upgradeScrollbar": {
       "right": -17,

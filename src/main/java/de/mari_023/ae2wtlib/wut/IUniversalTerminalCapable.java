@@ -2,13 +2,18 @@ package de.mari_023.ae2wtlib.wut;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.UnknownNullability;
 
+import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 import appeng.client.Hotkeys;
 import appeng.client.gui.WidgetContainer;
+import appeng.client.gui.style.ScreenStyle;
+import appeng.core.AEConfig;
 import appeng.core.network.serverbound.HotkeyPacket;
 import appeng.menu.AEBaseMenu;
 import appeng.menu.SlotSemantics;
@@ -65,10 +70,22 @@ public interface IUniversalTerminalCapable {
      * @param widgets the WidgetContainer where the widget will be added
      * @param menu    the menu corresponding to this screen
      */
-    default void addUpgradePanel(WidgetContainer widgets, AEBaseMenu menu) {
+    default ScrollingUpgradesPanel addUpgradePanel(WidgetContainer widgets, AEBaseMenu menu) {
         var upgrades = new ArrayList<>(menu.getSlots(AE2wtlibSlotSemantics.SINGULARITY));
         upgrades.addAll(menu.getSlots(SlotSemantics.UPGRADE));
-        widgets.add("scrollingUpgrades",
-                new ScrollingUpgradesPanel(upgrades, getHost(), widgets, () -> getHost().getUpgrades()));
+        var panel = new ScrollingUpgradesPanel(upgrades, getHost(), widgets, () -> getHost().getUpgrades());
+        widgets.add("scrollingUpgrades", panel);
+        return panel;
     }
+
+    default int getVisibleRows() {
+        int availableHeight = getRectangle().height() - 2 * AEConfig.instance().getTerminalMargin();
+        var style = Objects.requireNonNull(getStyle().getTerminalStyle());
+        return AEConfig.instance().getTerminalStyle().getRows(style.getPossibleRows(availableHeight));
+    }
+
+    @UnknownNullability
+    ScreenStyle getStyle();
+
+    ScreenRectangle getRectangle();
 }

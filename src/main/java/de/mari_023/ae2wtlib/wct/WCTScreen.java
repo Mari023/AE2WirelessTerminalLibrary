@@ -19,6 +19,7 @@ import de.mari_023.ae2wtlib.wut.IUniversalTerminalCapable;
 public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversalTerminalCapable {
     private final IconButton magnetCardToggleButton;
     private final IconButton magnetCardMenuButton;
+    private final ScrollingUpgradesPanel upgradesPanel;
 
     public WCTScreen(WCTMenu container, Inventory playerInventory, Component title, ScreenStyle style) {
         super(container, playerInventory, title, style);
@@ -37,7 +38,13 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
         trashButton.setMessage(TextConstants.TRASH);
 
         widgets.add("player", new PlayerEntityWidget(Objects.requireNonNull(Minecraft.getInstance().player)));
-        addUpgradePanel(widgets, getMenu());
+        upgradesPanel = addUpgradePanel(widgets, getMenu());
+    }
+
+    @Override
+    public void init() {
+        super.init();
+        upgradesPanel.setMaxRows(Math.max(2, getVisibleRows()));
     }
 
     private void setMagnetMode() {

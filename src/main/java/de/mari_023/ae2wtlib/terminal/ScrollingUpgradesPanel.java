@@ -27,7 +27,6 @@ import de.mari_023.ae2wtlib.AE2wtlibItems;
 public class ScrollingUpgradesPanel implements ICompositeWidget {
     private static final int SLOT_SIZE = 18;
     private static final int PADDING = 5;
-    private static final int MAX_ROWS = 8;
     private static final int SCROLLBAR_WIDTH = 5;
 
     private final List<Slot> slots;
@@ -40,7 +39,7 @@ public class ScrollingUpgradesPanel implements ICompositeWidget {
     private int x;
     private int y;
 
-    private int maxRows = MAX_ROWS;
+    private int maxRows = 2;
     private final Scrollbar scrollbar;
 
     private final List<Component> tooltips;
@@ -70,6 +69,11 @@ public class ScrollingUpgradesPanel implements ICompositeWidget {
         return stack.isEmpty();
     }
 
+    public void setMaxRows(int rows) {
+        maxRows = rows;
+        setScrollbarRange();
+    }
+
     @Override
     public void setPosition(Point position) {
         x = position.getX();
@@ -80,11 +84,7 @@ public class ScrollingUpgradesPanel implements ICompositeWidget {
      * Changes where the panel is positioned. Coordinates are relative to the current screen's origin.
      */
     @Override
-    public void setSize(int width, int height) {
-        maxRows = (height - PADDING * 2) / SLOT_SIZE;
-        setScrollbarRange();
-        scrollbar.setVisible(scrolling());
-    }
+    public void setSize(int width, int height) {}
 
     /**
      * The overall bounding box in screen coordinates.
@@ -98,7 +98,7 @@ public class ScrollingUpgradesPanel implements ICompositeWidget {
 
     @Override
     public void populateScreen(Consumer<AbstractWidget> addWidget, Rect2i bounds, AEBaseScreen<?> screen) {
-        this.screenOrigin = Point.fromTopLeft(bounds);
+        screenOrigin = Point.fromTopLeft(bounds);
     }
 
     @Override
@@ -182,6 +182,7 @@ public class ScrollingUpgradesPanel implements ICompositeWidget {
     private void setScrollbarRange() {
         // The scrollbar ranges from 0 to the number of rows not visible
         scrollbar.setRange(0, getUpgradeSlotCount() - getVisibleSlotCount(), 1);
+        scrollbar.setVisible(scrolling());
     }
 
     private int getVisibleSlotCount() {
