@@ -140,10 +140,10 @@ neoForge {
             systemProperty("forge.logging.console.level", "debug")
         }
 
-        create("client") {
+        create("api_client") {
             client()
         }
-        create("server") {
+        create("api_server") {
             server()
         }
     }
