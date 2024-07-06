@@ -72,6 +72,7 @@ public class AE2wtlibForge {
             registerPowerStorageItem(event, AE2wtlibItems.PATTERN_ACCESS_TERMINAL);
             registerPowerStorageItem(event, AE2wtlibItems.PATTERN_ENCODING_TERMINAL);
         });
+        AE2wtlibAdditionalComponents.init();
         AE2wtlib.ATTACHMENT_TYPES.register(modEventBus);
     }
 

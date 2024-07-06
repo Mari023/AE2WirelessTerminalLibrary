@@ -23,4 +23,6 @@ public class AE2wtlibAdditionalComponents {
     public static final Supplier<AttachmentType<CraftingTerminalHandler>> CT_HANDLER = AE2wtlib.ATTACHMENT_TYPES
             .register("ct_handler",
                     () -> AttachmentType.builder((player) -> new CraftingTerminalHandler((Player) player)).build());
+
+    public static void init() {}
 }
