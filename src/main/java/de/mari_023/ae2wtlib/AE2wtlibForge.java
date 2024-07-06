@@ -11,7 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
@@ -42,11 +42,11 @@ import de.mari_023.ae2wtlib.networking.UpdateWUTPackage;
 @Mod(AE2wtlibAPI.MOD_NAME)
 @EventBusSubscriber
 public class AE2wtlibForge {
-    public AE2wtlibForge(IEventBus modEventBus) {
+    public AE2wtlibForge(IEventBus modEventBus, ModContainer modContainer) {
         new AE2wtlibAPIImplementation();
         CommonHooks.markComponentClassAsValid(ItemStack.class);// TODO figure out if there is a better way
         AE2wtlib.registerMenus();
-        ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.COMMON, AE2wtlibConfig.SPEC,
+        modContainer.registerConfig(ModConfig.Type.COMMON, AE2wtlibConfig.SPEC,
                 AE2wtlibAPI.MOD_NAME + ".toml");
         modEventBus.addListener((RegisterEvent e) -> {
             if (!e.getRegistryKey().equals(Registries.ITEM))
