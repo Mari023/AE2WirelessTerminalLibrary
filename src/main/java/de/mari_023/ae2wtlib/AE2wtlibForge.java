@@ -43,6 +43,7 @@ import de.mari_023.ae2wtlib.networking.UpdateWUTPackage;
 @EventBusSubscriber
 public class AE2wtlibForge {
     public AE2wtlibForge(IEventBus modEventBus) {
+        new AE2wtlibAPIImplementation();
         CommonHooks.markComponentClassAsValid(ItemStack.class);// TODO figure out if there is a better way
         AE2wtlib.registerMenus();
         ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.COMMON, AE2wtlibConfig.SPEC,
