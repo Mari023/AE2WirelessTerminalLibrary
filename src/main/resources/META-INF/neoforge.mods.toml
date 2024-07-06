@@ -23,3 +23,10 @@ type="REQUIRED"
 versionRange = "${version}"
 ordering = "AFTER"
 side = "BOTH"
+
+[[dependencies.ae2wtlib]]
+modId = "ae2"
+type="REQUIRED"
+versionRange = "[${ae2_version},20.0.0)"
+ordering = "AFTER"
+side = "BOTH"
