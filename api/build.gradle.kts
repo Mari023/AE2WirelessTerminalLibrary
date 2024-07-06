@@ -1,5 +1,5 @@
 plugins {
-    id("net.neoforged.moddev") version "1.0.7"
+    id("net.neoforged.moddev") version "0.1.114"
     id("com.diffplug.spotless") version "7.0.0.BETA1"
     id("maven-publish")
     java
@@ -20,6 +20,7 @@ val curiosVersion: String by project
 val mavenGroup: String by project
 val modID: String by project
 
+
 version = "0.0.0-SNAPSHOT"
 
 val pr = System.getenv("PR_NUMBER") ?: ""
@@ -39,8 +40,6 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 dependencies {
     //implementation("top.theillusivec4.curios:curios-neoforge:${curiosVersion}")
     implementation("appeng:appliedenergistics2:${ae2Version}")
-    implementation(project(path = ":api"))
-    jarJar(project(path = ":api"))
 
     compileOnly("me.shedaniel:RoughlyEnoughItems-neoforge:${reiVersion}")
     compileOnly("mezz.jei:jei-${jeiMinecraftVersion}-neoforge:${jeiVersion}")
@@ -73,13 +72,6 @@ dependencies {
 repositories {
     mavenLocal()
     mavenCentral()
-    maven {
-        url = uri("https://prmaven.neoforged.net/NeoForge/pr1199")
-        content {
-            includeModule("net.neoforged", "testframework")
-            includeModule("net.neoforged", "neoforge")
-        }
-    }
     maven {
         url = uri("https://modmaven.dev/")
         content {
@@ -177,7 +169,7 @@ spotless {
         indentWithSpaces()
         removeUnusedImports()
         toggleOffOn()
-        eclipse().configFile("codeformat/codeformat.xml")
-        importOrderFile("codeformat/ae2wtlib.importorder")
+        eclipse().configFile("../codeformat/codeformat.xml")
+        importOrderFile("../codeformat/ae2wtlib.importorder")
     }
 }
