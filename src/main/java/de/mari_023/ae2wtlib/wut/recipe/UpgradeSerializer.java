@@ -7,7 +7,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.crafting.Ingredient;
 
-import de.mari_023.ae2wtlib.wut.WTDefinition;
+import de.mari_023.ae2wtlib.api.registration.WTDefinition;
 
 public class UpgradeSerializer implements net.minecraft.world.item.crafting.RecipeSerializer<Upgrade> {
     public static final String NAME = "upgrade";

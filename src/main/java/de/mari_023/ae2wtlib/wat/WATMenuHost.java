@@ -11,8 +11,8 @@ import appeng.api.storage.IPatternAccessTermMenuHost;
 import appeng.menu.ISubMenu;
 import appeng.menu.locator.ItemMenuHostLocator;
 
-import de.mari_023.ae2wtlib.terminal.ItemWT;
-import de.mari_023.ae2wtlib.terminal.WTMenuHost;
+import de.mari_023.ae2wtlib.api.terminal.ItemWT;
+import de.mari_023.ae2wtlib.api.terminal.WTMenuHost;
 
 public class WATMenuHost extends WTMenuHost implements IPatternAccessTermMenuHost {
     public WATMenuHost(ItemWT item, Player player, ItemMenuHostLocator locator,

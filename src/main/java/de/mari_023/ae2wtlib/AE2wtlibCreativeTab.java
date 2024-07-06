@@ -12,8 +12,10 @@ import net.minecraft.world.item.ItemStack;
 import appeng.api.config.Actionable;
 import appeng.items.tools.powered.WirelessTerminalItem;
 
-import de.mari_023.ae2wtlib.wut.ItemWUT;
-import de.mari_023.ae2wtlib.wut.WTDefinition;
+import de.mari_023.ae2wtlib.api.AE2wtlibAPI;
+import de.mari_023.ae2wtlib.api.TextConstants;
+import de.mari_023.ae2wtlib.api.registration.WTDefinition;
+import de.mari_023.ae2wtlib.api.terminal.ItemWUT;
 import de.mari_023.ae2wtlib.wut.recipe.Common;
 
 public class AE2wtlibCreativeTab {
@@ -30,7 +32,7 @@ public class AE2wtlibCreativeTab {
                 })
                 .displayItems(AE2wtlibCreativeTab::buildDisplayItems)
                 .build();
-        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, AE2wtlib.id("main"), tab);
+        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, AE2wtlibAPI.id("main"), tab);
     }
 
     public static boolean registrationHappened() {

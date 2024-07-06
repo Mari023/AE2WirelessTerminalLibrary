@@ -17,14 +17,14 @@ import appeng.parts.reporting.CraftingTerminalPart;
 import appeng.util.inv.AppEngInternalInventory;
 import appeng.util.inv.SupplierInternalInventory;
 
-import de.mari_023.ae2wtlib.AE2wtlib;
-import de.mari_023.ae2wtlib.terminal.ItemWT;
-import de.mari_023.ae2wtlib.terminal.WTMenuHost;
+import de.mari_023.ae2wtlib.api.AE2wtlibAPI;
+import de.mari_023.ae2wtlib.api.terminal.ItemWT;
+import de.mari_023.ae2wtlib.api.terminal.WTMenuHost;
 
 public class WCTMenuHost extends WTMenuHost implements IViewCellStorage {
     private final SupplierInternalInventory<InternalInventory> craftingGrid;
     private final AppEngInternalInventory trash = new AppEngInternalInventory(27);
-    public static final ResourceLocation INV_TRASH = AE2wtlib.id("wct_trash");
+    public static final ResourceLocation INV_TRASH = AE2wtlibAPI.id("wct_trash");
 
     public WCTMenuHost(ItemWT item, Player player, ItemMenuHostLocator locator,
             BiConsumer<Player, ISubMenu> returnToMainMenu) {

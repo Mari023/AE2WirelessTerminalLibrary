@@ -13,9 +13,9 @@ import appeng.menu.ISubMenu;
 import appeng.menu.locator.ItemMenuHostLocator;
 import appeng.parts.encoding.PatternEncodingLogic;
 
-import de.mari_023.ae2wtlib.AE2wtlibComponents;
-import de.mari_023.ae2wtlib.terminal.ItemWT;
-import de.mari_023.ae2wtlib.terminal.WTMenuHost;
+import de.mari_023.ae2wtlib.api.AE2wtlibComponents;
+import de.mari_023.ae2wtlib.api.terminal.ItemWT;
+import de.mari_023.ae2wtlib.api.terminal.WTMenuHost;
 
 public class WETMenuHost extends WTMenuHost
         implements IViewCellStorage, IPatternTerminalMenuHost, IPatternTerminalLogicHost {

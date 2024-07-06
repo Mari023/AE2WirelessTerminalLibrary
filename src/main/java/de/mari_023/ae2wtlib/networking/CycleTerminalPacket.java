@@ -12,12 +12,12 @@ import net.minecraft.world.item.ItemStack;
 import appeng.menu.AEBaseMenu;
 import appeng.menu.locator.ItemMenuHostLocator;
 
-import de.mari_023.ae2wtlib.AE2wtlib;
-import de.mari_023.ae2wtlib.wut.ItemWUT;
-import de.mari_023.ae2wtlib.wut.WUTHandler;
+import de.mari_023.ae2wtlib.api.AE2wtlibAPI;
+import de.mari_023.ae2wtlib.api.terminal.ItemWUT;
+import de.mari_023.ae2wtlib.api.terminal.WUTHandler;
 
 public record CycleTerminalPacket(boolean isRightClick) implements AE2wtlibPacket {
-    public static final Type<CycleTerminalPacket> ID = new Type<>(AE2wtlib.id("cycle_terminal"));
+    public static final Type<CycleTerminalPacket> ID = new Type<>(AE2wtlibAPI.id("cycle_terminal"));
     public static final StreamCodec<ByteBuf, CycleTerminalPacket> STREAM_CODEC = ByteBufCodecs.BOOL
             .map(CycleTerminalPacket::new, CycleTerminalPacket::isRightClick);
 

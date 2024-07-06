@@ -11,13 +11,13 @@ import mezz.jei.api.registration.IRecipeTransferRegistration;
 
 import appeng.api.config.Actionable;
 
-import de.mari_023.ae2wtlib.AE2wtlib;
+import de.mari_023.ae2wtlib.api.AE2wtlibAPI;
 import de.mari_023.ae2wtlib.AE2wtlibItems;
 import de.mari_023.ae2wtlib.wut.WTDefinitions;
 
 @JeiPlugin
 public class JEIPlugin implements IModPlugin {
-    private static final ResourceLocation ID = AE2wtlib.id("core");
+    private static final ResourceLocation ID = AE2wtlibAPI.id("core");
 
     @Override
     public ResourceLocation getPluginUid() {

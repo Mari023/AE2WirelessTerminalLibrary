@@ -17,7 +17,7 @@ import appeng.server.testplots.TestPlot;
 import appeng.server.testplots.TestPlotClass;
 import appeng.server.testworld.PlotBuilder;
 
-import de.mari_023.ae2wtlib.wut.WTDefinition;
+import de.mari_023.ae2wtlib.api.registration.WTDefinition;
 import de.mari_023.ae2wtlib.wut.recipe.Common;
 
 @TestPlotClass

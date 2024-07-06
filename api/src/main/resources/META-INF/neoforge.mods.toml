@@ -1,0 +1,42 @@
+modLoader = "javafml"
+loaderVersion = "[1,)"
+issueTrackerURL = "https://github.com/Mari023/AE2WirelessTerminalLibrary/issues"
+license = "MIT"
+
+[[mods]]
+modId = "ae2wtlib_api"
+version = "${version}"
+displayName = "AE2WTLib API"
+authors = "mari_023, Ridanisaurus"
+description = '''
+API for adding wireless terminals with easy integration with AE2wtlib.
+'''
+logoFile = "icon.png"
+
+[[dependencies.ae2wtlib]]
+modId = "neoforge"
+type="REQUIRED"
+versionRange = "*"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.ae2wtlib]]
+modId = "minecraft"
+type="REQUIRED"
+versionRange = "*"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.ae2wtlib]]
+modId = "ae2"
+type="REQUIRED"
+versionRange = "[${ae2_version},20.0.0)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.ae2wtlib]]
+modId = "curios"
+type="OPTIONAL"
+versionRange = "*"
+ordering = "AFTER"
+side = "BOTH"

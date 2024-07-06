@@ -1,6 +1,6 @@
 package de.mari_023.ae2wtlib;
 
-import static de.mari_023.ae2wtlib.AE2wtlib.id;
+import static de.mari_023.ae2wtlib.api.AE2wtlibAPI.id;
 
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -11,10 +11,10 @@ import appeng.api.upgrades.Upgrades;
 import appeng.core.definitions.AEItems;
 import appeng.items.tools.powered.WirelessTerminalItem;
 
+import de.mari_023.ae2wtlib.api.terminal.ItemWUT;
 import de.mari_023.ae2wtlib.wat.ItemWAT;
 import de.mari_023.ae2wtlib.wct.ItemWCT;
 import de.mari_023.ae2wtlib.wet.ItemWET;
-import de.mari_023.ae2wtlib.wut.ItemWUT;
 
 public final class AE2wtlibItems {
     private AE2wtlibItems() {}

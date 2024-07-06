@@ -9,7 +9,7 @@ import appeng.api.stacks.AEKeyType;
 import appeng.util.ConfigInventory;
 import appeng.util.prioritylist.IPartitionList;
 
-import de.mari_023.ae2wtlib.AE2wtlibComponents;
+import de.mari_023.ae2wtlib.api.AE2wtlibComponents;
 import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
 
 public class MagnetHost {

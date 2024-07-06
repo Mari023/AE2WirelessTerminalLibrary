@@ -1,5 +1,8 @@
 package de.mari_023.ae2wtlib.wut;
 
+import de.mari_023.ae2wtlib.api.registration.AddTerminalEvent;
+import de.mari_023.ae2wtlib.api.registration.WTDefinition;
+
 /**
  * Holds links to AE2wtlib wireless terminal definition.
  * <p>

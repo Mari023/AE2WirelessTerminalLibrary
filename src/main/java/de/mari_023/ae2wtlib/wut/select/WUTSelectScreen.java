@@ -15,7 +15,7 @@ import net.minecraft.world.item.ItemStack;
 
 import me.shedaniel.math.Color;
 
-import de.mari_023.ae2wtlib.wut.WTDefinition;
+import de.mari_023.ae2wtlib.api.registration.WTDefinition;
 
 public class WUTSelectScreen extends Screen {
     private final List<String> terminals = new ArrayList<>();

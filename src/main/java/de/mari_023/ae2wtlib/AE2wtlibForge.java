@@ -30,21 +30,23 @@ import net.neoforged.neoforge.registries.RegisterEvent;
 
 import appeng.items.tools.powered.powersink.PoweredItemCapabilities;
 
+import de.mari_023.ae2wtlib.api.AE2wtlibAPI;
+import de.mari_023.ae2wtlib.api.AE2wtlibComponents;
+import de.mari_023.ae2wtlib.api.terminal.ItemWT;
 import de.mari_023.ae2wtlib.networking.AE2wtlibPacket;
 import de.mari_023.ae2wtlib.networking.CycleTerminalPacket;
 import de.mari_023.ae2wtlib.networking.RestockAmountPacket;
 import de.mari_023.ae2wtlib.networking.UpdateRestockPacket;
 import de.mari_023.ae2wtlib.networking.UpdateWUTPackage;
-import de.mari_023.ae2wtlib.terminal.ItemWT;
 
-@Mod(AE2wtlib.MOD_NAME)
+@Mod(AE2wtlibAPI.MOD_NAME)
 @EventBusSubscriber
 public class AE2wtlibForge {
     public AE2wtlibForge(IEventBus modEventBus) {
         CommonHooks.markComponentClassAsValid(ItemStack.class);// TODO figure out if there is a better way
         AE2wtlib.registerMenus();
         ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.COMMON, AE2wtlibConfig.SPEC,
-                AE2wtlib.MOD_NAME + ".toml");
+                AE2wtlibAPI.MOD_NAME + ".toml");
         modEventBus.addListener((RegisterEvent e) -> {
             if (!e.getRegistryKey().equals(Registries.ITEM))
                 return;
@@ -57,7 +59,7 @@ public class AE2wtlibForge {
         });
         modEventBus.addListener((BuildCreativeModeTabContentsEvent e) -> AE2wtlib.addToCreativeTab());
         modEventBus.addListener((RegisterPayloadHandlersEvent event) -> {
-            PayloadRegistrar registrar = event.registrar(AE2wtlib.MOD_NAME);
+            PayloadRegistrar registrar = event.registrar(AE2wtlibAPI.MOD_NAME);
             registerPacket(registrar, CycleTerminalPacket.ID, CycleTerminalPacket.STREAM_CODEC);
             registerPacket(registrar, UpdateWUTPackage.ID, UpdateWUTPackage.STREAM_CODEC);
             registerPacket(registrar, UpdateRestockPacket.ID, UpdateRestockPacket.STREAM_CODEC);

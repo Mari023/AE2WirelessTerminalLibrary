@@ -18,29 +18,8 @@ logoFile = "icon.png"
 config="ae2wtlib.mixins.json"
 
 [[dependencies.ae2wtlib]]
-modId = "neoforge"
+modId = "ae2wtlib_api"
 type="REQUIRED"
-versionRange = "*"
+versionRange = "${version}"
 ordering = "NONE"
-side = "BOTH"
-
-[[dependencies.ae2wtlib]]
-modId = "minecraft"
-type="REQUIRED"
-versionRange = "*"
-ordering = "NONE"
-side = "BOTH"
-
-[[dependencies.ae2wtlib]]
-modId = "ae2"
-type="REQUIRED"
-versionRange = "[${ae2_version},20.0.0)"
-ordering = "AFTER"
-side = "BOTH"
-
-[[dependencies.ae2wtlib]]
-modId = "curios"
-type="OPTIONAL"
-versionRange = "*"
-ordering = "AFTER"
 side = "BOTH"

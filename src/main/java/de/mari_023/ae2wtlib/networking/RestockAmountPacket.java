@@ -13,11 +13,11 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 
-import de.mari_023.ae2wtlib.AE2wtlib;
+import de.mari_023.ae2wtlib.api.AE2wtlibAPI;
 import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
 
 public record RestockAmountPacket(HashMap<Holder<Item>, Long> items) implements AE2wtlibPacket {
-    public static final Type<RestockAmountPacket> ID = new Type<>(AE2wtlib.id("restock_amounts"));
+    public static final Type<RestockAmountPacket> ID = new Type<>(AE2wtlibAPI.id("restock_amounts"));
     public static final StreamCodec<RegistryFriendlyByteBuf, RestockAmountPacket> STREAM_CODEC = ByteBufCodecs
             .map(Maps::newHashMapWithExpectedSize, ByteBufCodecs.holderRegistry(Registries.ITEM),
                     ByteBufCodecs.VAR_LONG)

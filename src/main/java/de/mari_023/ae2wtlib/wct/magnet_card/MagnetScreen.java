@@ -8,9 +8,9 @@ import appeng.client.gui.AEBaseScreen;
 import appeng.client.gui.implementations.AESubScreen;
 import appeng.client.gui.style.ScreenStyle;
 
-import de.mari_023.ae2wtlib.TextConstants;
-import de.mari_023.ae2wtlib.terminal.Icon;
-import de.mari_023.ae2wtlib.terminal.IconButton;
+import de.mari_023.ae2wtlib.api.TextConstants;
+import de.mari_023.ae2wtlib.api.gui.Icon;
+import de.mari_023.ae2wtlib.api.gui.IconButton;
 
 public class MagnetScreen extends AEBaseScreen<MagnetMenu> {
     public MagnetScreen(MagnetMenu menu, Inventory playerInventory, Component title, ScreenStyle style) {

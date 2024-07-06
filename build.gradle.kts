@@ -39,8 +39,8 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 dependencies {
     //implementation("top.theillusivec4.curios:curios-neoforge:${curiosVersion}")
     implementation("appeng:appliedenergistics2:${ae2Version}")
-    implementation(project(path = ":api"))
     jarJar(project(path = ":api"))
+    implementation(project(path = ":api"))
 
     compileOnly("me.shedaniel:RoughlyEnoughItems-neoforge:${reiVersion}")
     compileOnly("mezz.jei:jei-${jeiMinecraftVersion}-neoforge:${jeiVersion}")

@@ -10,7 +10,7 @@ import me.shedaniel.rei.plugin.common.BuiltinPlugin;
 
 import appeng.api.config.Actionable;
 
-import de.mari_023.ae2wtlib.AE2wtlib;
+import de.mari_023.ae2wtlib.api.AE2wtlibAPI;
 import de.mari_023.ae2wtlib.AE2wtlibItems;
 import de.mari_023.ae2wtlib.wut.WTDefinitions;
 
@@ -18,7 +18,7 @@ import de.mari_023.ae2wtlib.wut.WTDefinitions;
 public class REIPlugin implements REIClientPlugin {
     @Override
     public String getPluginProviderName() {
-        return AE2wtlib.MOD_NAME;
+        return AE2wtlibAPI.MOD_NAME;
     }
 
     @Override

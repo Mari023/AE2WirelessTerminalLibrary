@@ -8,9 +8,9 @@ import appeng.menu.implementations.MenuTypeBuilder;
 import appeng.menu.me.items.PatternEncodingTermMenu;
 import appeng.menu.slot.RestrictedInputSlot;
 
-import de.mari_023.ae2wtlib.AE2wtlibSlotSemantics;
-import de.mari_023.ae2wtlib.terminal.WTMenuHost;
-import de.mari_023.ae2wtlib.wut.ItemWUT;
+import de.mari_023.ae2wtlib.api.gui.AE2wtlibSlotSemantics;
+import de.mari_023.ae2wtlib.api.terminal.ItemWUT;
+import de.mari_023.ae2wtlib.api.terminal.WTMenuHost;
 
 public class WETMenu extends PatternEncodingTermMenu {
     public static final String ID = "wireless_pattern_encoding_terminal";

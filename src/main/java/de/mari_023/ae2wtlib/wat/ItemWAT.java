@@ -11,7 +11,7 @@ import appeng.api.config.ShowPatternProviders;
 import appeng.api.util.IConfigManager;
 import appeng.menu.locator.ItemMenuHostLocator;
 
-import de.mari_023.ae2wtlib.terminal.ItemWT;
+import de.mari_023.ae2wtlib.api.terminal.ItemWT;
 
 public class ItemWAT extends ItemWT {
     @Override

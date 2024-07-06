@@ -2,7 +2,6 @@ package de.mari_023.ae2wtlib;
 
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -13,9 +12,12 @@ import appeng.core.definitions.AEItems;
 import appeng.hotkeys.HotkeyActions;
 import appeng.init.client.InitScreens;
 
+import de.mari_023.ae2wtlib.api.AE2wtlibAPI;
+import de.mari_023.ae2wtlib.api.gui.Icon;
+import de.mari_023.ae2wtlib.api.registration.AddTerminalEvent;
+import de.mari_023.ae2wtlib.api.registration.UpgradeHelper;
 import de.mari_023.ae2wtlib.hotkeys.MagnetHotkeyAction;
 import de.mari_023.ae2wtlib.hotkeys.RestockHotkeyAction;
-import de.mari_023.ae2wtlib.terminal.Icon;
 import de.mari_023.ae2wtlib.wat.WATMenu;
 import de.mari_023.ae2wtlib.wat.WATMenuHost;
 import de.mari_023.ae2wtlib.wat.WATScreen;
@@ -25,16 +27,14 @@ import de.mari_023.ae2wtlib.wct.magnet_card.MagnetScreen;
 import de.mari_023.ae2wtlib.wet.WETMenu;
 import de.mari_023.ae2wtlib.wet.WETMenuHost;
 import de.mari_023.ae2wtlib.wet.WETScreen;
-import de.mari_023.ae2wtlib.wut.AddTerminalEvent;
 import de.mari_023.ae2wtlib.wut.recipe.Combine;
 import de.mari_023.ae2wtlib.wut.recipe.CombineSerializer;
 import de.mari_023.ae2wtlib.wut.recipe.Upgrade;
 import de.mari_023.ae2wtlib.wut.recipe.UpgradeSerializer;
 
 public class AE2wtlib {
-    public static final String MOD_NAME = "ae2wtlib";
     public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister
-            .create(NeoForgeRegistries.ATTACHMENT_TYPES, MOD_NAME);
+            .create(NeoForgeRegistries.ATTACHMENT_TYPES, AE2wtlibAPI.MOD_NAME);
 
     public static void onAe2Initialized() {
         AddTerminalEvent.register((event -> {
@@ -52,8 +52,10 @@ public class AE2wtlib {
 
         AddTerminalEvent.run();
 
-        Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, id(UpgradeSerializer.NAME), Upgrade.serializer);
-        Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, id(CombineSerializer.NAME), Combine.serializer);
+        Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, AE2wtlibAPI.id(UpgradeSerializer.NAME),
+                Upgrade.serializer);
+        Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, AE2wtlibAPI.id(CombineSerializer.NAME),
+                Combine.serializer);
 
         HotkeyActions.register(new RestockHotkeyAction(), "ae2wtlib_restock");
         HotkeyActions.register(new MagnetHotkeyAction(), "ae2wtlib_magnet");
@@ -92,9 +94,5 @@ public class AE2wtlib {
                 "/screens/wtlib/wireless_pattern_access_terminal.json");
         InitScreens.register(event, MagnetMenu.TYPE, MagnetScreen::new, "/screens/wtlib/magnet.json");
         InitScreens.register(event, TrashMenu.TYPE, TrashScreen::new, "/screens/wtlib/trash.json");
-    }
-
-    public static ResourceLocation id(String name) {
-        return ResourceLocation.fromNamespaceAndPath(MOD_NAME, name);
     }
 }
