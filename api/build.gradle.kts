@@ -6,17 +6,8 @@ plugins {
     idea
 }
 
-val clothVersion: String by project
 val ae2Version: String by project
-val architecturyVersion: String by project
-val runtimeItemlistMod: String by project
-val jeiMinecraftVersion: String by project
-val jeiVersion: String by project
-val reiVersion: String by project
-val emiVersion: String by project
-val emiMinecraftVersion: String by project
 val neoforgeVersion: String by project
-val curiosVersion: String by project
 val mavenGroup: String by project
 val modID: String by project
 
@@ -38,73 +29,8 @@ val artifactVersion = version
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 dependencies {
-    //implementation("top.theillusivec4.curios:curios-neoforge:${curiosVersion}")
     implementation("appeng:appliedenergistics2:${ae2Version}")
-
-    compileOnly("me.shedaniel:RoughlyEnoughItems-neoforge:${reiVersion}")
-    compileOnly("mezz.jei:jei-${jeiMinecraftVersion}-neoforge:${jeiVersion}")
-    compileOnly("dev.emi:emi-neoforge:${emiVersion}+${emiMinecraftVersion}:api")
-
-    when (runtimeItemlistMod) {
-        "rei" -> {
-            runtimeOnly("me.shedaniel:RoughlyEnoughItems-neoforge:${reiVersion}")
-            runtimeOnly("dev.architectury:architectury-neoforge:${architecturyVersion}")
-        }
-
-        "jei" -> runtimeOnly("mezz.jei:jei-${jeiMinecraftVersion}-neoforge:${jeiVersion}")
-
-        "emi" -> {
-            runtimeOnly("dev.emi:emi-neoforge:${emiVersion}+${emiMinecraftVersion}")
-        }
-
-        "jemi" -> {
-            runtimeOnly("dev.emi:emi-neoforge:${emiVersion}+${emiMinecraftVersion}")
-            runtimeOnly("mezz.jei:jei-${jeiMinecraftVersion}-neoforge:${jeiVersion}")
-        }
-    }
-
     implementation("com.google.code.findbugs:jsr305:3.0.2")
-
-    //testing
-    //runtimeOnly(fg.deobf("maven.modrinth:aeinfinitybooster:1.20.1-1.0.0+20"))
-}
-
-repositories {
-    mavenLocal()
-    mavenCentral()
-    maven {
-        url = uri("https://modmaven.dev/")
-        content {
-            includeGroup("appeng")
-            includeGroup("mezz.jei")
-        }
-    }
-    maven {
-        url = uri("https://maven.shedaniel.me/")
-        content {
-            includeGroup("me.shedaniel")
-            includeGroup("me.shedaniel.cloth")
-            includeGroup("dev.architectury")
-        }
-    }
-    maven {
-        url = uri("https://maven.terraformersmc.com/")
-        content {
-            includeGroup("dev.emi")
-        }
-    }
-    maven {
-        url = uri("https://maven.theillusivec4.top/")
-        content {
-            includeGroup("top.theillusivec4.curios")
-        }
-    }
-    maven {
-        url = uri("https://api.modrinth.com/maven")
-        content {
-            includeGroup("maven.modrinth")
-        }
-    }
 }
 
 tasks {

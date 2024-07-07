@@ -1,5 +1,6 @@
 package de.mari_023.ae2wtlib.wut.select;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,8 +13,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
-
-import me.shedaniel.math.Color;
 
 import de.mari_023.ae2wtlib.api.registration.WTDefinition;
 
@@ -37,7 +36,7 @@ public class WUTSelectScreen extends Screen {
 
         for (int i = 0; i < terminals.size(); i++)
             drawSegment(guiGraphics.pose(), i * angle, (i + 1) * angle, hWidth, hHeight, 100, 50,
-                    Color.ofRGB(125, 125, 125),
+                    new Color(125, 125, 125),
                     i == selected);
 
         super.render(guiGraphics, mouseX, mouseY, partialTicks);
@@ -47,7 +46,7 @@ public class WUTSelectScreen extends Screen {
             float centerY, int outerRadius, int innerRadius, Color color, boolean selected) {
         if (selected) {
             outerRadius += 10;
-            color = color.darker(2);
+            color = color.darker();
         }
 
         poseStack.pushPose();

@@ -20,7 +20,7 @@ config="ae2wtlib.mixins.json"
 [[dependencies.ae2wtlib]]
 modId = "ae2wtlib_api"
 type="REQUIRED"
-versionRange = "${version}"
+versionRange = "[${version}]"
 ordering = "AFTER"
 side = "BOTH"
 
@@ -28,5 +28,12 @@ side = "BOTH"
 modId = "ae2"
 type="REQUIRED"
 versionRange = "[${ae2_version},20.0.0)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.ae2wtlib]]
+modId = "curios"
+type="OPTIONAL"
+versionRange = "*"
 ordering = "AFTER"
 side = "BOTH"

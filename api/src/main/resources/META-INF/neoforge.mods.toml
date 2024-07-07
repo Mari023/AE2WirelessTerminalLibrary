@@ -13,30 +13,23 @@ API for adding wireless terminals with easy integration with AE2wtlib.
 '''
 logoFile = "icon.png"
 
-[[dependencies.ae2wtlib]]
+[[dependencies.ae2wtlib_api]]
 modId = "neoforge"
 type="REQUIRED"
 versionRange = "*"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.ae2wtlib]]
+[[dependencies.ae2wtlib_api]]
 modId = "minecraft"
 type="REQUIRED"
 versionRange = "*"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.ae2wtlib]]
+[[dependencies.ae2wtlib_api]]
 modId = "ae2"
 type="REQUIRED"
 versionRange = "[${ae2_version},20.0.0)"
-ordering = "AFTER"
-side = "BOTH"
-
-[[dependencies.ae2wtlib]]
-modId = "curios"
-type="OPTIONAL"
-versionRange = "*"
 ordering = "AFTER"
 side = "BOTH"

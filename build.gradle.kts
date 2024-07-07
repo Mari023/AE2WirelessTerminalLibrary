@@ -6,7 +6,6 @@ plugins {
     idea
 }
 
-val clothVersion: String by project
 val ae2Version: String by project
 val architecturyVersion: String by project
 val runtimeItemlistMod: String by project
