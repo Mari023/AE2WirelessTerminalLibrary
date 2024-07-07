@@ -8,6 +8,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 import appeng.api.features.HotkeyAction;
+import appeng.api.upgrades.Upgrades;
 import appeng.core.definitions.AEItems;
 import appeng.hotkeys.HotkeyActions;
 import appeng.init.client.InitScreens;
@@ -16,6 +17,7 @@ import de.mari_023.ae2wtlib.api.AE2wtlibAPI;
 import de.mari_023.ae2wtlib.api.gui.Icon;
 import de.mari_023.ae2wtlib.api.registration.AddTerminalEvent;
 import de.mari_023.ae2wtlib.api.registration.UpgradeHelper;
+import de.mari_023.ae2wtlib.api.registration.WTDefinition;
 import de.mari_023.ae2wtlib.hotkeys.MagnetHotkeyAction;
 import de.mari_023.ae2wtlib.hotkeys.RestockHotkeyAction;
 import de.mari_023.ae2wtlib.wat.WATMenu;
@@ -50,7 +52,9 @@ public class AE2wtlib {
                     .addTerminal();
         }));
 
-        AddTerminalEvent.run();
+        UpgradeHelper.addUpgradeToAllTerminals(AE2wtlibItems.QUANTUM_BRIDGE_CARD, 1);
+        Upgrades.add(AE2wtlibItems.MAGNET_CARD, AEItems.WIRELESS_CRAFTING_TERMINAL, 1);
+        Upgrades.add(AE2wtlibItems.MAGNET_CARD, AE2wtlibItems.UNIVERSAL_TERMINAL, 1);
 
         Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, AE2wtlibAPI.id(UpgradeSerializer.NAME),
                 Upgrade.serializer);
@@ -59,16 +63,13 @@ public class AE2wtlib {
 
         HotkeyActions.register(new RestockHotkeyAction(), "ae2wtlib_restock");
         HotkeyActions.register(new MagnetHotkeyAction(), "ae2wtlib_magnet");
-
-        UpgradeHelper.addUpgrades();
     }
 
     static void addToCreativeTab() {
         if (AE2wtlibCreativeTab.registrationHappened())
             return;
-        AE2wtlibCreativeTab.addTerminal(AEItems.WIRELESS_CRAFTING_TERMINAL.asItem());
-        AE2wtlibCreativeTab.addTerminal(AE2wtlibItems.PATTERN_ENCODING_TERMINAL);
-        AE2wtlibCreativeTab.addTerminal(AE2wtlibItems.PATTERN_ACCESS_TERMINAL);
+        for (var t : WTDefinition.wirelessTerminals())
+            AE2wtlibCreativeTab.addTerminal(t.item());
         AE2wtlibCreativeTab.addUniversalTerminal(AE2wtlibItems.UNIVERSAL_TERMINAL);
         AE2wtlibCreativeTab.add(AE2wtlibItems.QUANTUM_BRIDGE_CARD);
         AE2wtlibCreativeTab.add(AE2wtlibItems.MAGNET_CARD);

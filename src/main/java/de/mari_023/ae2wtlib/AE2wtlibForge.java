@@ -1,7 +1,5 @@
 package de.mari_023.ae2wtlib;
 
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -31,7 +29,6 @@ import net.neoforged.neoforge.registries.RegisterEvent;
 import appeng.items.tools.powered.powersink.PoweredItemCapabilities;
 
 import de.mari_023.ae2wtlib.api.AE2wtlibAPI;
-import de.mari_023.ae2wtlib.api.AE2wtlibComponents;
 import de.mari_023.ae2wtlib.api.terminal.ItemWT;
 import de.mari_023.ae2wtlib.networking.AE2wtlibPacket;
 import de.mari_023.ae2wtlib.networking.CycleTerminalPacket;
@@ -54,9 +51,6 @@ public class AE2wtlibForge {
             AE2wtlibItems.init();
             AE2wtlib.onAe2Initialized();
             AE2wtlibCreativeTab.init();
-
-            for (var entry : AE2wtlibComponents.DR.entrySet())
-                Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, entry.getKey(), entry.getValue());
         });
         modEventBus.addListener((BuildCreativeModeTabContentsEvent e) -> AE2wtlib.addToCreativeTab());
         modEventBus.addListener((RegisterPayloadHandlersEvent event) -> {

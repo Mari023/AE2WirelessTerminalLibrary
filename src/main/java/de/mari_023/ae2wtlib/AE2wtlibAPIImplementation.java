@@ -2,15 +2,11 @@ package de.mari_023.ae2wtlib;
 
 import java.util.function.Supplier;
 
-import com.mojang.datafixers.util.Unit;
-
-import net.minecraft.core.component.DataComponentType;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.PacketDistributor;
 
-import appeng.api.config.Actionable;
 import appeng.api.upgrades.IUpgradeInventory;
 import appeng.menu.locator.ItemMenuHostLocator;
 
@@ -40,12 +36,7 @@ public class AE2wtlibAPIImplementation extends AE2wtlibAPI {
     }
 
     @Override
-    public ItemStack makeWUT(DataComponentType<Unit> componentType) {
-        ItemStack wut = new ItemStack(AE2wtlibItems.UNIVERSAL_TERMINAL);
-
-        wut.set(componentType, Unit.INSTANCE);
-        AE2wtlibItems.UNIVERSAL_TERMINAL.injectAEPower(wut,
-                AE2wtlibItems.UNIVERSAL_TERMINAL.getAEMaxPower(wut), Actionable.MODULATE);
-        return wut;
+    public Item getWUT() {
+        return AE2wtlibItems.UNIVERSAL_TERMINAL;
     }
 }

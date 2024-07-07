@@ -7,6 +7,7 @@ import com.mojang.datafixers.util.Unit;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
 import io.netty.buffer.ByteBuf;
@@ -44,6 +45,7 @@ public record WTDefinition(String terminalName, ContainerOpener containerOpener,
     }
 
     private static final Map<String, WTDefinition> wirelessTerminals = new HashMap<>();
+    @ApiStatus.Internal
     public static final List<WTDefinition> wirelessTerminalList = new ArrayList<>();
 
     public static final Codec<WTDefinition> CODEC = Codec.STRING.comapFlatMap(s -> {

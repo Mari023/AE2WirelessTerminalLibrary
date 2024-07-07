@@ -21,17 +21,17 @@ public class WTDefinitions {
      * <p>
      * Don't access until terminal registration happened, or it WILL crash.
      */
-    public static WTDefinition CRAFTING = WTDefinition.of("crafting");
+    public static final WTDefinition CRAFTING = WTDefinition.of("crafting");
     /**
      * Wireless Pattern Encoding Terminal
      * <p>
      * Don't access until terminal registration happened, or it WILL crash.
      */
-    public static WTDefinition PATTERN_ENCODING = WTDefinition.of("pattern_encoding");
+    public static final WTDefinition PATTERN_ENCODING = WTDefinition.of("pattern_encoding");
     /**
      * Wireless Pattern Access Terminal
      * <p>
      * Don't access until terminal registration happened, or it WILL crash.
      */
-    public static WTDefinition PATTERN_ACCESS = WTDefinition.of("pattern_access");
+    public static final WTDefinition PATTERN_ACCESS = WTDefinition.of("pattern_access");
 }

@@ -13,10 +13,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.neoforged.fml.ModList;
 
+import appeng.api.config.Actionable;
 import appeng.api.upgrades.IUpgradeInventory;
 import appeng.menu.locator.ItemMenuHostLocator;
+
+import de.mari_023.ae2wtlib.api.terminal.ItemWUT;
 
 public class AE2wtlibAPI {
     @Nullable
@@ -57,7 +61,18 @@ public class AE2wtlibAPI {
     }
 
     public ItemStack makeWUT(DataComponentType<Unit> componentType) {
-        return ItemStack.EMPTY;
+        if (!(getWUT() instanceof ItemWUT wutItem))
+            return ItemStack.EMPTY;
+        ItemStack wut = new ItemStack(wutItem);
+
+        wut.set(componentType, Unit.INSTANCE);
+        wutItem.injectAEPower(wut,
+                wutItem.getAEMaxPower(wut), Actionable.MODULATE);
+        return wut;
+    }
+
+    public Item getWUT() {
+        return Items.AIR;
     }
 
     @ApiStatus.Internal
