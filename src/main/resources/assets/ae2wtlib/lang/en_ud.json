@@ -37,11 +37,5 @@
   "key.ae2.wireless_pattern_access_terminal": "lɐuᴉɯɹǝ⟘ ssǝɔɔ∀ uɹǝʇʇɐԀ ssǝlǝɹᴉM uǝdO",
   "key.ae2.wireless_pattern_encoding_terminal": "lɐuᴉɯɹǝ⟘ ƃuᴉpoɔuƎ uɹǝʇʇɐԀ ssǝlǝɹᴉM uǝdO",
   "key.ae2.ae2wtlib_restock": "ʞɔoʇsǝᴚ ǝlƃƃo⟘",
-  "key.ae2.ae2wtlib_magnet": "pɹɐƆ ʇǝuƃɐW ǝlƃƃo⟘",
-
-  "chat.ae2wtlib.NetworkNotPowered" :  "pǝɹǝʍoԀ ʇoN ʞɹoʍʇǝN",
-  "chat.ae2wtlib.SingularityNotPresent" : "ʎʇᴉɹɐlnƃuᴉS ƃuᴉssᴉW",
-  "chat.ae2wtlib.NoQuantumBridgeCard" : "pɹɐƆ ǝƃpᴉɹq ɯnʇuɐnꝹ ƃuᴉssᴉW",
-  "chat.ae2wtlib.NoQuantumBridge" : "¿sʞunɥɔ pǝpɐol uᴉ ʇᴉ sI .punoɟ ʇou ǝƃpᴉɹq ʞɹoʍʇǝN ɯnʇuɐnꝹ",
-  "chat.ae2wtlib.NetworkMismatch": "sʞɹoʍʇǝN ʇuǝɹǝɟɟᴉp oʇ pǝʇɔǝuuoɔ ǝɹɐ ʇuᴉoԀ ssǝɔɔ∀ ssǝlǝɹᴉM puɐ ǝƃpᴉɹq ɯnʇuɐnꝹ"
+  "key.ae2.ae2wtlib_magnet": "pɹɐƆ ʇǝuƃɐW ǝlƃƃo⟘"
 }

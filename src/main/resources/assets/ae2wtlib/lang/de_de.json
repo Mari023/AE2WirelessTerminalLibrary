@@ -37,11 +37,5 @@
   "key.ae2.wireless_pattern_access_terminal": "Drahtlose Schablonenkonsole Öffnen",
   "key.ae2.wireless_pattern_encoding_terminal": "Drahtlose Schnittstellenkonsole Öffnen",
   "key.ae2.ae2wtlib_restock": "Nachfüllen umschalten",
-  "key.ae2.ae2wtlib_magnet": "Magnet Karte umschalten",
-
-  "chat.ae2wtlib.NetworkNotPowered" :  "Netzwerk hat keine Energie",
-  "chat.ae2wtlib.SingularityNotPresent" : "Singularität fehlt",
-  "chat.ae2wtlib.NoQuantumBridgeCard" : "Quantenbrückenkarte fehlt",
-  "chat.ae2wtlib.NoQuantumBridge" : "Quantenbrücke nicht gefunden. Ist sie in geladenen chunks?",
-  "chat.ae2wtlib.NetworkMismatch": "Quantenbrücke und Drahtloser Zugangspunkt sind mit verschiedenen Netzwerken verbunden"
+  "key.ae2.ae2wtlib_magnet": "Magnet Karte umschalten"
 }
