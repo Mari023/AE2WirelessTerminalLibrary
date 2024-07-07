@@ -10,11 +10,11 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import appeng.api.upgrades.IUpgradeInventory;
 import appeng.menu.locator.ItemMenuHostLocator;
 
-import de.mari_023.ae2wtlib.api.AE2wtlibAPI;
+import de.mari_023.ae2wtlib.api.AE2wtlibAPIImpl;
 import de.mari_023.ae2wtlib.networking.CycleTerminalPacket;
 import de.mari_023.ae2wtlib.networking.UpdateWUTPackage;
 
-public class AE2wtlibAPIImplementation extends AE2wtlibAPI {
+public class AE2wtlibAPIImplementation extends AE2wtlibAPIImpl {
     @Override
     public boolean hasQuantumBridgeCard(Supplier<IUpgradeInventory> upgrades) {
         return upgrades.get().isInstalled(AE2wtlibItems.QUANTUM_BRIDGE_CARD);

@@ -23,7 +23,7 @@ import de.mari_023.ae2wtlib.api.registration.WTDefinition;
 public interface IUniversalTerminalCapable {
     default void cycleTerminal() {
         storeState();
-        AE2wtlibAPI.instance().cycleTerminal(isHandlingRightClick());
+        AE2wtlibAPI.cycleTerminal(isHandlingRightClick());
     }
 
     WTMenuHost getHost();

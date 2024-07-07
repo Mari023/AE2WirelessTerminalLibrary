@@ -149,7 +149,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<ItemWT>
 
     private ILinkStatus isQuantumLinked() {
         Status status = Status.Valid;
-        if (!AE2wtlibAPI.instance().hasQuantumBridgeCard(this::getUpgrades))
+        if (!AE2wtlibAPI.hasQuantumBridgeCard(this::getUpgrades))
             status = Status.NoUpgrade;
         LongResult f = getQEFrequency();
         if (!f.valid()) {

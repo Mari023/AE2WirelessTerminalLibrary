@@ -98,7 +98,7 @@ public class WUTHandler {
      * @param stack   The compound tag containing terminal data.
      */
     public static void updateClientTerminal(ServerPlayer player, ItemMenuHostLocator locator, ItemStack stack) {
-        AE2wtlibAPI.instance().updateClientTerminal(player, locator, stack);
+        AE2wtlibAPI.updateClientTerminal(player, locator, stack);
     }
 
     /**

@@ -42,7 +42,7 @@ public abstract class ItemWT extends WirelessTerminalItem {
 
     protected boolean checkPreconditions(ItemStack item) {
         return !item.isEmpty()
-                && (item.getItem() == this || AE2wtlibAPI.instance().isUniversalTerminal(item.getItem()));
+                && (item.getItem() == this || AE2wtlibAPI.isUniversalTerminal(item.getItem()));
     }
 
     @Override

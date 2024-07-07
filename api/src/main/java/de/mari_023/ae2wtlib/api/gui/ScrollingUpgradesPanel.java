@@ -58,7 +58,7 @@ public class ScrollingUpgradesPanel implements ICompositeWidget {
 
     private boolean singularitySlotHidden() {
         return isDisabledSlotEmpty((AppEngSlot) slots.getFirst())
-                && !AE2wtlibAPI.instance().hasQuantumBridgeCard(upgrades);
+                && !AE2wtlibAPI.hasQuantumBridgeCard(upgrades);
     }
 
     private boolean isDisabledSlotEmpty(AppEngSlot slot) {

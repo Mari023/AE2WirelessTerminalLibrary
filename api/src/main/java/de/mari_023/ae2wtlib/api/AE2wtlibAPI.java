@@ -1,19 +1,16 @@
 package de.mari_023.ae2wtlib.api;
 
-import java.util.Objects;
 import java.util.function.Supplier;
 
 import com.mojang.datafixers.util.Unit;
 
 import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.neoforged.fml.ModList;
 
 import appeng.api.config.Actionable;
@@ -23,44 +20,28 @@ import appeng.menu.locator.ItemMenuHostLocator;
 import de.mari_023.ae2wtlib.api.terminal.ItemWUT;
 
 public class AE2wtlibAPI {
-    @Nullable
-    private static AE2wtlibAPI instance;
+    public static final String MOD_NAME = "ae2wtlib";
+    public static final String API_MOD_NAME = "ae2wtlib_api";
 
-    protected AE2wtlibAPI() {
-        if (instance != null)
-            throw new IllegalStateException("Already initialized");
-        instance = this;
-    }
+    private AE2wtlibAPI() {}
 
-    public static AE2wtlibAPI instance() {
-        return Objects.requireNonNull(instance);
-    }
-
-    static {
-        if (!isModPresent("ae2wtlib"))
-            new AE2wtlibAPI();
+    public static ResourceLocation id(String name) {
+        return ResourceLocation.fromNamespaceAndPath(MOD_NAME, name);
     }
 
     public static boolean isModPresent(String mod) {
         return ModList.get().isLoaded(mod);
     }
 
-    public static final String MOD_NAME = "ae2wtlib";
-    public static final String API_MOD_NAME = "ae2wtlib_api";
-
-    public static ResourceLocation id(String name) {
-        return ResourceLocation.fromNamespaceAndPath(MOD_NAME, name);
+    public static boolean hasQuantumBridgeCard(Supplier<IUpgradeInventory> upgrades) {
+        return AE2wtlibAPIImpl.instance().hasQuantumBridgeCard(upgrades);
     }
 
-    public boolean hasQuantumBridgeCard(Supplier<IUpgradeInventory> upgrades) {
-        return false;
+    public static boolean isUniversalTerminal(Item item) {
+        return AE2wtlibAPIImpl.instance().isUniversalTerminal(item);
     }
 
-    public boolean isUniversalTerminal(Item item) {
-        return false;
-    }
-
-    public ItemStack makeWUT(DataComponentType<Unit> componentType) {
+    public static ItemStack makeWUT(DataComponentType<Unit> componentType) {
         if (!(getWUT() instanceof ItemWUT wutItem))
             return ItemStack.EMPTY;
         ItemStack wut = new ItemStack(wutItem);
@@ -71,12 +52,14 @@ public class AE2wtlibAPI {
         return wut;
     }
 
-    public Item getWUT() {
-        return Items.AIR;
+    public static Item getWUT() {
+        return AE2wtlibAPIImpl.instance().getWUT();
     }
 
     @ApiStatus.Internal
-    public void cycleTerminal(boolean isHandlingRightClick) {}
+    public static void cycleTerminal(boolean isHandlingRightClick) {
+        AE2wtlibAPIImpl.instance().cycleTerminal(isHandlingRightClick);
+    }
 
     /**
      * Sends an update to the client about the current terminal. This is only relevant for Universal Terminals, and only
@@ -86,5 +69,7 @@ public class AE2wtlibAPI {
      * @param locator The menu locator.
      * @param stack   The compound tag containing terminal data.
      */
-    public void updateClientTerminal(ServerPlayer player, ItemMenuHostLocator locator, ItemStack stack) {}
+    public static void updateClientTerminal(ServerPlayer player, ItemMenuHostLocator locator, ItemStack stack) {
+        AE2wtlibAPIImpl.instance().updateClientTerminal(player, locator, stack);
+    }
 }

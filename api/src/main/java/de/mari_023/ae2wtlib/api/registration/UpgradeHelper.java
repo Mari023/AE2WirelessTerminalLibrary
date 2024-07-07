@@ -61,7 +61,7 @@ public class UpgradeHelper {
     }
 
     private static void addUpgradesToUniversalTerminal(ItemLike upgradeCard, int maxSupported) {
-        Item wut = AE2wtlibAPI.instance().getWUT();
+        Item wut = AE2wtlibAPI.getWUT();
         if (wut != Items.AIR)
             Upgrades.add(upgradeCard, wut, maxSupported);
     }
