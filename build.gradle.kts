@@ -1,5 +1,5 @@
 plugins {
-    id("net.neoforged.moddev") version "0.1.114"
+    id("net.neoforged.moddev") version "1.0.7"
     id("com.diffplug.spotless") version "7.0.0.BETA1"
     id("maven-publish")
     java
@@ -71,6 +71,13 @@ dependencies {
 repositories {
     mavenLocal()
     mavenCentral()
+    maven {
+        url = uri("https://prmaven.neoforged.net/NeoForge/pr1199")
+        content {
+            includeModule("net.neoforged", "testframework")
+            includeModule("net.neoforged", "neoforge")
+        }
+    }
     maven {
         url = uri("https://modmaven.dev/")
         content {

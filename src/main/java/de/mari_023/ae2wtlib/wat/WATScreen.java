@@ -31,11 +31,6 @@ public class WATScreen extends PatternAccessTermScreen<WATMenu> implements IUniv
     }
 
     @Override
-    public int getVisibleRows() {
-        return 2;
-    }
-
-    @Override
     public WTMenuHost getHost() {
         return (WTMenuHost) getMenu().getHost();
     }

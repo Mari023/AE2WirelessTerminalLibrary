@@ -46,7 +46,7 @@ public class AE2wtlibForge {
         ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.COMMON, AE2wtlibConfig.SPEC,
                 AE2wtlib.MOD_NAME + ".toml");
         modEventBus.addListener((RegisterEvent e) -> {
-            if (!e.getRegistryKey().equals(Registries.BLOCK))
+            if (!e.getRegistryKey().equals(Registries.ITEM))
                 return;
             AE2wtlibItems.init();
             AE2wtlib.onAe2Initialized();
