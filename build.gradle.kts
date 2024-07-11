@@ -35,22 +35,11 @@ val artifactVersion = version
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
-sourceSets {
-    create("api")
-}
-
-configurations {
-    get("apiCompileOnly").extendsFrom(compileOnly.get())
-    get("apiImplementation").extendsFrom(implementation.get())
-    get("apiRuntimeOnly").extendsFrom(runtimeOnly.get())
-    compileClasspath.get().extendsFrom(create("localCompileOnly"))
-}
-
 dependencies {
     //implementation("top.theillusivec4.curios:curios-neoforge:${curiosVersion}")
     implementation("appeng:appliedenergistics2:${ae2Version}")
-    configurations["localCompileOnly"].invoke(sourceSets["api"].output)
-    jarJar(sourceSets["api"].output)
+    jarJar(project(path = ":api"))
+    implementation(project(path = ":api"))
 
     compileOnly("me.shedaniel:RoughlyEnoughItems-neoforge:${reiVersion}")
     compileOnly("mezz.jei:jei-${jeiMinecraftVersion}-neoforge:${jeiVersion}")
@@ -80,52 +69,54 @@ dependencies {
     //runtimeOnly(fg.deobf("maven.modrinth:aeinfinitybooster:1.20.1-1.0.0+20"))
 }
 
-repositories {
-    mavenLocal()
-    mavenCentral()
-    maven {
-        url = uri("https://prmaven.neoforged.net/NeoForge/pr1199")
+allprojects {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven {
+            url = uri("https://prmaven.neoforged.net/NeoForge/pr1199")
         content {
             includeModule("net.neoforged", "testframework")
             includeModule("net.neoforged", "neoforge")
         }
     }maven {
         url = uri("https://modmaven.dev/")
-        content {
-            includeGroup("appeng")
-            includeGroup("mezz.jei")
+            content {
+                includeGroup("appeng")
+                includeGroup("mezz.jei")
+            }
         }
-    }
-    maven {
-        url = uri("https://maven.shedaniel.me/")
-        content {
-            includeGroup("me.shedaniel")
-            includeGroup("me.shedaniel.cloth")
-            includeGroup("dev.architectury")
+        maven {
+            url = uri("https://maven.shedaniel.me/")
+            content {
+                includeGroup("me.shedaniel")
+                includeGroup("me.shedaniel.cloth")
+                includeGroup("dev.architectury")
+            }
         }
-    }
-    maven {
-        url = uri("https://maven.terraformersmc.com/")
-        content {
-            includeGroup("dev.emi")
+        maven {
+            url = uri("https://maven.terraformersmc.com/")
+            content {
+                includeGroup("dev.emi")
+            }
         }
-    }
-    maven {
-        url = uri("https://maven.theillusivec4.top/")
-        content {
-            includeGroup("top.theillusivec4.curios")
+        maven {
+            url = uri("https://maven.theillusivec4.top/")
+            content {
+                includeGroup("top.theillusivec4.curios")
+            }
         }
-    }
-    maven {
-        url = uri("https://api.modrinth.com/maven")
-        content {
-            includeGroup("maven.modrinth")
+        maven {
+            url = uri("https://api.modrinth.com/maven")
+            content {
+                includeGroup("maven.modrinth")
+            }
         }
     }
 }
 
 tasks {
-    withType<ProcessResources> {
+    processResources {
         // Ensure the resources get re-evaluate when the version changes
         inputs.property("version", version)
         inputs.property("ae2_version", ae2Version)
@@ -142,9 +133,6 @@ tasks {
     withType<JavaCompile> {
         options.encoding = "UTF-8"
     }
-    register("apiJar", Jar::class) {
-        from(sourceSets["api"].output)
-    }
 }
 
 neoForge {
@@ -152,9 +140,6 @@ neoForge {
     mods {
         create(modID) {
             sourceSet(sourceSets.main.get())
-        }
-        create(modID + "_api") {
-            sourceSet(sourceSets["api"])
         }
     }
     runs {
@@ -181,15 +166,6 @@ publishing {
 
             from(components["java"])
         }
-        create<MavenPublication>(modID + "_api") {
-            groupId = mavenGroup
-            artifactId = modID + "_api"
-            version = artifactVersion.toString()
-
-            artifact(tasks["apiJar"])
-        }
-        tasks["publishAe2wtlib_apiPublicationToMavenLocal"].dependsOn(tasks["jar"])
-        tasks["generateMetadataFileForAe2wtlibPublication"].dependsOn(tasks["apiJar"])
     }
 }
 
