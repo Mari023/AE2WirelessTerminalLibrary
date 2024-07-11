@@ -1,0 +1,1 @@
+- new API for addons
