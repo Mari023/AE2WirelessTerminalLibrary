@@ -37,3 +37,11 @@ type="OPTIONAL"
 versionRange = "*"
 ordering = "AFTER"
 side = "BOTH"
+
+[[dependencies.ae2wtlib]]
+modId = "extendedae"
+type="INCOMPATIBLE"
+versionRange = "(,1.21-1.0.1-neoforge]"
+ordering = "NONE"
+side = "BOTH"
+reason = "breaking changes in the ae2wtlib api"
