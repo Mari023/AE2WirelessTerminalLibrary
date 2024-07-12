@@ -59,7 +59,7 @@ public class WCTMenu extends CraftingTermMenu {
     }
 
     @Override
-    public IGridNode getNetworkNode() {
+    public IGridNode getGridNode() {
         return wctMenuHost.getActionableNode();
     }
 
