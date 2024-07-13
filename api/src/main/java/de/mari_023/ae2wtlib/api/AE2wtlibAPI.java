@@ -13,7 +13,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.fml.ModList;
 
-import appeng.api.config.Actionable;
 import appeng.api.upgrades.IUpgradeInventory;
 import appeng.menu.locator.ItemMenuHostLocator;
 
@@ -47,8 +46,6 @@ public class AE2wtlibAPI {
         ItemStack wut = new ItemStack(wutItem);
 
         wut.set(componentType, Unit.INSTANCE);
-        wutItem.injectAEPower(wut,
-                wutItem.getAEMaxPower(wut), Actionable.MODULATE);
         return wut;
     }
 

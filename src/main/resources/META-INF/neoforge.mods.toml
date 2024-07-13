@@ -21,7 +21,7 @@ config="ae2wtlib.mixins.json"
 modId = "ae2wtlib_api"
 type="REQUIRED"
 versionRange = "[${version}]"
-ordering = "AFTER"
+ordering = "BEFORE"
 side = "BOTH"
 
 [[dependencies.ae2wtlib]]

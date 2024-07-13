@@ -11,8 +11,8 @@ import mezz.jei.api.registration.IRecipeTransferRegistration;
 
 import appeng.api.config.Actionable;
 
-import de.mari_023.ae2wtlib.api.AE2wtlibAPI;
 import de.mari_023.ae2wtlib.AE2wtlibItems;
+import de.mari_023.ae2wtlib.api.AE2wtlibAPI;
 import de.mari_023.ae2wtlib.wut.WTDefinitions;
 
 @JeiPlugin
