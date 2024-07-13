@@ -1,2 +1,0 @@
-- resize the scrollbar with the upgrade panel
-- update ae2
