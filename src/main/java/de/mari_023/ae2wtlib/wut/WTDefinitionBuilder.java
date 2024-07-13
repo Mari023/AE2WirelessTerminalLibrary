@@ -11,7 +11,6 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs;
 
-import appeng.api.config.Actionable;
 import appeng.hotkeys.HotkeyActions;
 
 import de.mari_023.ae2wtlib.AE2wtlibComponents;
@@ -64,8 +63,6 @@ public class WTDefinitionBuilder {
         ItemStack wut = new ItemStack(AE2wtlibItems.UNIVERSAL_TERMINAL);
 
         wut.set(componentType, Unit.INSTANCE);
-        AE2wtlibItems.UNIVERSAL_TERMINAL.injectAEPower(wut,
-                AE2wtlibItems.UNIVERSAL_TERMINAL.getAEMaxPower(wut), Actionable.MODULATE);
 
         WTDefinition wtDefinition = new WTDefinition(name, item::tryOpen, wTMenuHostFactory, menuType, item, wut,
                 TextConstants.formatTerminalName(translationKey), translationKey, hotkeyName, componentType,

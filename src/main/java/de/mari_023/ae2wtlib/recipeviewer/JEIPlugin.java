@@ -1,6 +1,7 @@
 package de.mari_023.ae2wtlib.recipeviewer;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -8,7 +9,10 @@ import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeTransferRegistration;
 
+import appeng.api.config.Actionable;
+
 import de.mari_023.ae2wtlib.AE2wtlib;
+import de.mari_023.ae2wtlib.AE2wtlibItems;
 import de.mari_023.ae2wtlib.wut.WTDefinitions;
 
 @JeiPlugin
@@ -27,7 +31,11 @@ public class JEIPlugin implements IModPlugin {
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registry) {
-        registry.addRecipeCatalyst(WTDefinitions.CRAFTING.universalTerminal(),
+        ItemStack wut = WTDefinitions.CRAFTING.universalTerminal();
+        AE2wtlibItems.UNIVERSAL_TERMINAL.injectAEPower(wut,
+                AE2wtlibItems.UNIVERSAL_TERMINAL.getAEMaxPower(wut), Actionable.MODULATE);
+
+        registry.addRecipeCatalyst(wut,
                 RecipeTypes.CRAFTING);
     }
 }

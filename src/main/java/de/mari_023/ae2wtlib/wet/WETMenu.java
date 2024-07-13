@@ -26,7 +26,7 @@ public class WETMenu extends PatternEncodingTermMenu {
     }
 
     @Override
-    public IGridNode getNetworkNode() {
+    public IGridNode getGridNode() {
         return wetMenuHost.getActionableNode();
     }
 
