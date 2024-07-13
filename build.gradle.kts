@@ -79,7 +79,8 @@ allprojects {
             includeModule("net.neoforged", "testframework")
             includeModule("net.neoforged", "neoforge")
         }
-    }maven {
+        }
+        maven {
         url = uri("https://modmaven.dev/")
             content {
                 includeGroup("appeng")
