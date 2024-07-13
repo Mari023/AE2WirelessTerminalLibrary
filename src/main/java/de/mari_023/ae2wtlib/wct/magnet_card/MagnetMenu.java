@@ -1,5 +1,6 @@
 package de.mari_023.ae2wtlib.wct.magnet_card;
 
+import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.entity.player.Inventory;
@@ -18,8 +19,10 @@ import de.mari_023.ae2wtlib.api.gui.AE2wtlibSlotSemantics;
 import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
 import de.mari_023.ae2wtlib.wct.WCTMenuHost;
 
+import static de.mari_023.ae2wtlib.api.AE2wtlibAPI.id;
+
 public class MagnetMenu extends AEBaseMenu implements ISubMenu {
-    public static final String ID = "magnet";
+    public static final ResourceLocation ID = id("magnet");
     public static final MenuType<MagnetMenu> TYPE = MenuTypeBuilder.create(MagnetMenu::new, WCTMenuHost.class)
             .build(ID);
 

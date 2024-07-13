@@ -79,12 +79,11 @@ public class AE2wtlib {
     static void registerMenus() {
         // TODO find a better way to do this.
         // classloading causes this to be registered by ae2, but I don't know how reliable this is
-        var a = MagnetMenu.TYPE;
-        var b = WCTMenu.TYPE;
-        var c = WETMenu.TYPE;
-        var d = WATMenu.TYPE;
-        var e = MagnetMenu.TYPE;
-        var f = TrashMenu.TYPE;
+        var a = WCTMenu.TYPE;
+        var b = WETMenu.TYPE;
+        var c = WATMenu.TYPE;
+        var d = MagnetMenu.TYPE;
+        var e = TrashMenu.TYPE;
     }
 
     public static void registerScreens(RegisterMenuScreensEvent event) {

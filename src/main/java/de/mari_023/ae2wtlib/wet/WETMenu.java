@@ -1,5 +1,6 @@
 package de.mari_023.ae2wtlib.wet;
 
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
 
@@ -12,8 +13,10 @@ import de.mari_023.ae2wtlib.api.gui.AE2wtlibSlotSemantics;
 import de.mari_023.ae2wtlib.api.terminal.ItemWUT;
 import de.mari_023.ae2wtlib.api.terminal.WTMenuHost;
 
+import static de.mari_023.ae2wtlib.api.AE2wtlibAPI.id;
+
 public class WETMenu extends PatternEncodingTermMenu {
-    public static final String ID = "wireless_pattern_encoding_terminal";
+    public static final ResourceLocation ID = id("wireless_pattern_encoding_terminal");
     public static final MenuType<WETMenu> TYPE = MenuTypeBuilder.create(WETMenu::new, WETMenuHost.class).build(ID);
 
     private final WETMenuHost wetMenuHost;
