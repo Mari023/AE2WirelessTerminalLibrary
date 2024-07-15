@@ -127,20 +127,35 @@ public class WUTHandler {
      */
     @Nullable
     public static ItemMenuHostLocator findTerminal(Player player, WTDefinition terminal) {
+        ItemMenuHostLocator locator = null;
+
         var cap = player.getCapability(CuriosIntegration.ITEM_HANDLER);
         if (cap != null) {
             for (int i = 0; i < cap.getSlots(); i++) {
-                if (hasTerminal(cap.getStackInSlot(i), terminal)) {
+                var stack = cap.getStackInSlot(i);
+                if (!hasTerminal(stack, terminal))
+                    continue;
+
+                if (AE2wtlibAPI.isUniversalTerminal(stack)) {
                     return MenuLocators.forCurioSlot(i);
+                } else if (locator == null) {
+                    locator = MenuLocators.forCurioSlot(i);
                 }
             }
         }
 
         for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
-            if (hasTerminal(player.getInventory().getItem(i), terminal))
+            var stack = player.getInventory().getItem(i);
+            if (!hasTerminal(stack, terminal))
+                continue;
+
+            if (AE2wtlibAPI.isUniversalTerminal(stack)) {
                 return MenuLocators.forInventorySlot(i);
+            } else if (locator == null) {
+                locator = MenuLocators.forInventorySlot(i);
+            }
         }
-        return null;
+        return locator;
     }
 
     /**

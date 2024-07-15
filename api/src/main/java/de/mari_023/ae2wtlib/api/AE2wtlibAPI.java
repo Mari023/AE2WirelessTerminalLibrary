@@ -40,6 +40,10 @@ public class AE2wtlibAPI {
         return AE2wtlibAPIImpl.instance().isUniversalTerminal(item);
     }
 
+    public static boolean isUniversalTerminal(ItemStack stack) {
+        return isUniversalTerminal(stack.getItem());
+    }
+
     public static ItemStack makeWUT(DataComponentType<Unit> componentType) {
         if (!(getWUT() instanceof ItemWUT wutItem))
             return ItemStack.EMPTY;
