@@ -45,3 +45,11 @@ versionRange = "(,1.21-1.0.1-neoforge]"
 ordering = "NONE"
 side = "BOTH"
 reason = "breaking changes in the ae2wtlib api"
+
+[[dependencies.ae2wtlib]]
+modId = "megacells"
+type="INCOMPATIBLE"
+versionRange = "(,4.0.0-alpha]"
+ordering = "NONE"
+side = "BOTH"
+reason = "breaking changes in the ae2wtlib api"
