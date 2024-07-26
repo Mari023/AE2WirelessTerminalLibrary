@@ -85,6 +85,16 @@ publishing {
             from(components["java"])
         }
     }
+    repositories {
+        maven {
+            credentials {
+                username = System.getenv("MODMAVEN_USER")
+                password = System.getenv("MODMAVEN_PASSWORD")
+            }
+            name = "modmaven"
+            url = uri("https://modmaven.dev/")
+        }
+    }
 }
 
 spotless {
