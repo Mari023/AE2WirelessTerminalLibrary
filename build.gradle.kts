@@ -39,7 +39,7 @@ dependencies {
     //implementation("top.theillusivec4.curios:curios-neoforge:${curiosVersion}")
     implementation("appeng:appliedenergistics2:${ae2Version}")
     jarJar(project(path = ":api"))
-    implementation(project(path = ":api"))
+    api(project(path = ":api"))
 
     compileOnly("me.shedaniel:RoughlyEnoughItems-neoforge:${reiVersion}")
     compileOnly("mezz.jei:jei-${jeiMinecraftVersion}-neoforge:${jeiVersion}")
@@ -63,7 +63,7 @@ dependencies {
         }
     }
 
-    implementation("com.google.code.findbugs:jsr305:3.0.2")
+    compileOnly("com.google.code.findbugs:jsr305:3.0.2")
 
     //testing
     //runtimeOnly(fg.deobf("maven.modrinth:aeinfinitybooster:1.20.1-1.0.0+20"))

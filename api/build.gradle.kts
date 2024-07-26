@@ -30,7 +30,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 dependencies {
     implementation("appeng:appliedenergistics2:${ae2Version}")
-    implementation("com.google.code.findbugs:jsr305:3.0.2")
+    compileOnly("com.google.code.findbugs:jsr305:3.0.2")
 }
 
 tasks {
