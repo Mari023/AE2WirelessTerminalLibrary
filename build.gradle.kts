@@ -74,13 +74,6 @@ allprojects {
         mavenLocal()
         mavenCentral()
         maven {
-            url = uri("https://prmaven.neoforged.net/NeoForge/pr1199")
-        content {
-            includeModule("net.neoforged", "testframework")
-            includeModule("net.neoforged", "neoforge")
-        }
-        }
-        maven {
         url = uri("https://modmaven.dev/")
             content {
                 includeGroup("appeng")
