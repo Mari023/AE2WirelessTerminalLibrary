@@ -12,6 +12,7 @@ description = '''
 API for adding wireless terminals with easy integration with AE2wtlib.
 '''
 logoFile = "icon.png"
+logoBlur=false
 
 [[dependencies.ae2wtlib_api]]
 modId = "neoforge"

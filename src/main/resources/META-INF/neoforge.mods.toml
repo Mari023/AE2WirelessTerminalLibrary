@@ -13,6 +13,7 @@ Adds Wireless versions of ae2 Terminals with infinite range capabilities.
 '''
 updateJSONURL = "https://api.modrinth.com/updates/applied-energistics-2-wireless-terminals/forge_updates.json?neoforge=only"
 logoFile = "icon.png"
+logoBlur=false
 
 [[mixins]]
 config="ae2wtlib.mixins.json"
