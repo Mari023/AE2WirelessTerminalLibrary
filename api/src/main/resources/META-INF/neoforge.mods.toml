@@ -34,3 +34,12 @@ type="REQUIRED"
 versionRange = "[${ae2_version},20.0.0)"
 ordering = "AFTER"
 side = "BOTH"
+
+
+[[dependencies.ae2wtlib]]
+modId = "ae2wtlib"
+type="INCOMPATIBLE"
+versionRange = "(,19.1.0-alpha)"
+ordering = "NONE"
+side = "BOTH"
+reason = "breaking changes in the ae2wtlib api"
