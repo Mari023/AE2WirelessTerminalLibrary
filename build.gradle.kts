@@ -168,7 +168,7 @@ publishing {
                 password = System.getenv("MODMAVEN_PASSWORD")
             }
             name = "modmaven"
-            url = uri("https://modmaven.dev/")
+            url = uri("https://modmaven.dev/artifactory/local-releases/")
         }
     }
 }
