@@ -1,5 +1,7 @@
 package de.mari_023.ae2wtlib.wat;
 
+import static de.mari_023.ae2wtlib.api.AE2wtlibAPI.id;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
@@ -15,8 +17,6 @@ import appeng.menu.slot.RestrictedInputSlot;
 import de.mari_023.ae2wtlib.api.gui.AE2wtlibSlotSemantics;
 import de.mari_023.ae2wtlib.api.terminal.ItemWUT;
 import de.mari_023.ae2wtlib.api.terminal.WTMenuHost;
-
-import static de.mari_023.ae2wtlib.api.AE2wtlibAPI.id;
 
 public class WATMenu extends PatternAccessTermMenu {
     public static final ResourceLocation ID = id("wireless_pattern_access_terminal");

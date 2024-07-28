@@ -1,5 +1,7 @@
 package de.mari_023.ae2wtlib.wct;
 
+import static de.mari_023.ae2wtlib.api.AE2wtlibAPI.id;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
@@ -11,8 +13,6 @@ import appeng.menu.implementations.MenuTypeBuilder;
 import appeng.menu.slot.AppEngSlot;
 
 import de.mari_023.ae2wtlib.api.gui.AE2wtlibSlotSemantics;
-
-import static de.mari_023.ae2wtlib.api.AE2wtlibAPI.id;
 
 public class TrashMenu extends AEBaseMenu implements ISubMenu {
     public static final ResourceLocation ID = id("trash");

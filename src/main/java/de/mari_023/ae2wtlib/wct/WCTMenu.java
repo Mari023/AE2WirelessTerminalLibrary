@@ -1,5 +1,7 @@
 package de.mari_023.ae2wtlib.wct;
 
+import static de.mari_023.ae2wtlib.api.AE2wtlibAPI.id;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
@@ -20,8 +22,6 @@ import de.mari_023.ae2wtlib.api.terminal.WTMenuHost;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHandler;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetMenu;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetMode;
-
-import static de.mari_023.ae2wtlib.api.AE2wtlibAPI.id;
 
 public class WCTMenu extends CraftingTermMenu {
     public static final ResourceLocation ID = id("wireless_crafting_terminal");
