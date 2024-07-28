@@ -25,6 +25,7 @@ jobs:
         run: gradle assemble
         env:
           HASH: $(git rev-parse --short "$GITHUB_SHA")
+          ORG_GRADLE_PROJECT_runtimeItemlistMod: none
 
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v4
@@ -49,3 +50,5 @@ jobs:
 
       - name: format
         run: gradle spotlessCheck
+        env:
+          ORG_GRADLE_PROJECT_runtimeItemlistMod: none
