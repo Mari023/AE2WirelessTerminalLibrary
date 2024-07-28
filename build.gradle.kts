@@ -74,7 +74,7 @@ allprojects {
         mavenLocal()
         mavenCentral()
         maven {
-        url = uri("https://modmaven.dev/")
+            url = uri("https://modmaven.dev/")
             content {
                 includeGroup("appeng")
                 includeGroup("mezz.jei")
