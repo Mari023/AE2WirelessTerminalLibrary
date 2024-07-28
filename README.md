@@ -36,3 +36,55 @@ It also adds a wireless universal terminal which has all wireless terminals in o
 
 * Text and Translations
   - [![License](https://img.shields.io/badge/License-No%20Restriction-green.svg?style=flat-square)](https://creativecommons.org/publicdomain/zero/1.0/)
+
+## API
+
+Like ae2, ae2wtlib is available on modmaven
+```
+repositories {
+    maven {
+        url = uri("https://modmaven.dev/")
+        content {
+            includeGroup "appeng"
+            includeGroup "de.mari_023"
+        }
+    }
+}
+```
+
+ae2wtlib has an api, which is what you should compile against when making integrations with ae2wtlib
+```
+dependencies {
+    implementation("de.mari_023:ae2wtlib_api:VERSION")
+    runtimeOnly("de.mari_023:ae2wtlib:VERSION")
+}
+```
+
+If you want to add your own terminals, you should jar-in-jar ae2wtlib_api
+```
+dependencies {
+    jarJar(implementation("de.mari_023:ae2wtlib_api:VERSION"))
+    runtimeOnly("de.mari_023:ae2wtlib:VERSION")
+}
+```
+
+If you want to add upgrades to ae2wtlib terminals, you can use `UpgradeHelper#addUpgradeToAllTerminals`
+```java
+addUpgradeToAllTerminals(upgradeCard, maxSupported);
+// use 0 to add the maximum amount of upgrades the terminal can fit
+addUpgradeToAllTerminals(upgradeCard, 0);
+```
+
+### Adding terminals
+
+For a simple example of a wireless terminal, you can look at the Wireless Pattern Access Terminal.
+The related classes are `ItemWAT`, `WATMenu`, `WATMenuHost` and `WATScreen`
+
+For registration, you need to listen to the `AddTerminalEvent` (it isn't actually an EventBus event)
+```java
+AddTerminalEvent.register(event -> event.builder(
+        ...
+).addTerminal())
+```
+
+The builder has some additional methods for overriding properties that are inferred from other attributes, like `WTDefinitionBuilder#translationKey` 
