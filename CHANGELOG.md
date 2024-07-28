@@ -1,0 +1,2 @@
+- new API for addons
+- updated the mod icon

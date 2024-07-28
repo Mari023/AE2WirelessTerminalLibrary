@@ -9,7 +9,7 @@ import net.minecraft.world.level.Level;
 
 import appeng.menu.locator.ItemMenuHostLocator;
 
-import de.mari_023.ae2wtlib.terminal.ItemWT;
+import de.mari_023.ae2wtlib.api.terminal.ItemWT;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHandler;
 
 public class ItemWCT extends ItemWT {

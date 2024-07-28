@@ -37,11 +37,5 @@
   "key.ae2.wireless_pattern_access_terminal": "Open Wireless Pattern Access Terminal",
   "key.ae2.wireless_pattern_encoding_terminal": "Open Wireless Pattern Encoding Terminal",
   "key.ae2.ae2wtlib_restock": "Toggle Restock",
-  "key.ae2.ae2wtlib_magnet": "Toggle Magnet Card",
-
-  "chat.ae2wtlib.NetworkNotPowered" :  "Network Not Powered",
-  "chat.ae2wtlib.SingularityNotPresent" : "Missing Singularity",
-  "chat.ae2wtlib.NoQuantumBridgeCard" : "Missing Quantum Bridge Card",
-  "chat.ae2wtlib.NoQuantumBridge" : "Quantum Network Bridge not found. Is it in loaded chunks?",
-  "chat.ae2wtlib.NetworkMismatch": "Quantum Bridge and Wireless Access Point are connected to Different Networks"
+  "key.ae2.ae2wtlib_magnet": "Toggle Magnet Card"
 }

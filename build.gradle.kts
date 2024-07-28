@@ -6,7 +6,6 @@ plugins {
     idea
 }
 
-val clothVersion: String by project
 val ae2Version: String by project
 val architecturyVersion: String by project
 val runtimeItemlistMod: String by project
@@ -39,6 +38,8 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 dependencies {
     //implementation("top.theillusivec4.curios:curios-neoforge:${curiosVersion}")
     implementation("appeng:appliedenergistics2:${ae2Version}")
+    jarJar(project(path = ":api"))
+    api(project(path = ":api"))
 
     compileOnly("me.shedaniel:RoughlyEnoughItems-neoforge:${reiVersion}")
     compileOnly("mezz.jei:jei-${jeiMinecraftVersion}-neoforge:${jeiVersion}")
@@ -62,53 +63,48 @@ dependencies {
         }
     }
 
-    implementation("com.google.code.findbugs:jsr305:3.0.2")
+    compileOnly("com.google.code.findbugs:jsr305:3.0.2")
 
     //testing
     //runtimeOnly(fg.deobf("maven.modrinth:aeinfinitybooster:1.20.1-1.0.0+20"))
 }
 
-repositories {
-    mavenLocal()
-    mavenCentral()
-    maven {
-        url = uri("https://prmaven.neoforged.net/NeoForge/pr1199")
-        content {
-            includeModule("net.neoforged", "testframework")
-            includeModule("net.neoforged", "neoforge")
+allprojects {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven {
+            url = uri("https://modmaven.dev/")
+            content {
+                includeGroup("appeng")
+                includeGroup("mezz.jei")
+            }
         }
-    }
-    maven {
-        url = uri("https://modmaven.dev/")
-        content {
-            includeGroup("appeng")
-            includeGroup("mezz.jei")
+        maven {
+            url = uri("https://maven.shedaniel.me/")
+            content {
+                includeGroup("me.shedaniel")
+                includeGroup("me.shedaniel.cloth")
+                includeGroup("dev.architectury")
+            }
         }
-    }
-    maven {
-        url = uri("https://maven.shedaniel.me/")
-        content {
-            includeGroup("me.shedaniel")
-            includeGroup("me.shedaniel.cloth")
-            includeGroup("dev.architectury")
+        maven {
+            url = uri("https://maven.terraformersmc.com/")
+            content {
+                includeGroup("dev.emi")
+            }
         }
-    }
-    maven {
-        url = uri("https://maven.terraformersmc.com/")
-        content {
-            includeGroup("dev.emi")
+        maven {
+            url = uri("https://maven.theillusivec4.top/")
+            content {
+                includeGroup("top.theillusivec4.curios")
+            }
         }
-    }
-    maven {
-        url = uri("https://maven.theillusivec4.top/")
-        content {
-            includeGroup("top.theillusivec4.curios")
-        }
-    }
-    maven {
-        url = uri("https://api.modrinth.com/maven")
-        content {
-            includeGroup("maven.modrinth")
+        maven {
+            url = uri("https://api.modrinth.com/maven")
+            content {
+                includeGroup("maven.modrinth")
+            }
         }
     }
 }
@@ -163,6 +159,16 @@ publishing {
             version = artifactVersion.toString()
 
             from(components["java"])
+        }
+    }
+    repositories {
+        maven {
+            credentials {
+                username = System.getenv("MODMAVEN_USER")
+                password = System.getenv("MODMAVEN_PASSWORD")
+            }
+            name = "modmaven"
+            url = uri("https://modmaven.dev/artifactory/local-releases/")
         }
     }
 }

@@ -21,10 +21,13 @@ jobs:
         with:
           cache-read-only: true
 
-      - name: Build with Gradle
-        run: gradle build
+      - name: Build and publish with Gradle
+        run: gradle build publishAllPublicationsToModmavenRepository
         env:
           TAG: ${{ github.event.release.tag_name }}
+          MODMAVEN_USER: ${{ secrets.MODMAVEN_USER }}
+          MODMAVEN_PASSWORD: ${{ secrets.MODMAVEN_PASSWORD }}
+          ORG_GRADLE_PROJECT_runtimeItemlistMod: none
 
       - name: Upload a neoforge build
         uses: actions/upload-artifact@v4

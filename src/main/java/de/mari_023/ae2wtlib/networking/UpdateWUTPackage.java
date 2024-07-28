@@ -9,12 +9,12 @@ import net.minecraft.world.item.ItemStack;
 
 import appeng.menu.locator.ItemMenuHostLocator;
 
-import de.mari_023.ae2wtlib.AE2wtlib;
-import de.mari_023.ae2wtlib.AE2wtlibComponents;
-import de.mari_023.ae2wtlib.terminal.WTMenuHost;
+import de.mari_023.ae2wtlib.api.AE2wtlibAPI;
+import de.mari_023.ae2wtlib.api.AE2wtlibComponents;
+import de.mari_023.ae2wtlib.api.terminal.WTMenuHost;
 
 public record UpdateWUTPackage(ItemMenuHostLocator locator, DataComponentPatch patch) implements AE2wtlibPacket {
-    public static final Type<UpdateWUTPackage> ID = new Type<>(AE2wtlib.id("update_wut"));
+    public static final Type<UpdateWUTPackage> ID = new Type<>(AE2wtlibAPI.id("update_wut"));
     public static final StreamCodec<RegistryFriendlyByteBuf, UpdateWUTPackage> STREAM_CODEC = StreamCodec
             .composite(AE2wtlibComponents.MENU_HOST_LOCATOR_STREAM_CODEC, UpdateWUTPackage::locator,
                     DataComponentPatch.STREAM_CODEC, UpdateWUTPackage::patch,

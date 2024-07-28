@@ -5,7 +5,7 @@ import net.minecraft.world.item.ItemStack;
 
 import appeng.api.features.HotkeyAction;
 
-import de.mari_023.ae2wtlib.TextConstants;
+import de.mari_023.ae2wtlib.api.TextConstants;
 import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHandler;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetMode;

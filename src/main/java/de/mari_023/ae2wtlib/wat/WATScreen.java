@@ -7,9 +7,9 @@ import appeng.client.gui.me.patternaccess.PatternAccessTermScreen;
 import appeng.client.gui.style.ScreenStyle;
 import appeng.client.gui.widgets.ToolboxPanel;
 
-import de.mari_023.ae2wtlib.terminal.ScrollingUpgradesPanel;
-import de.mari_023.ae2wtlib.terminal.WTMenuHost;
-import de.mari_023.ae2wtlib.wut.IUniversalTerminalCapable;
+import de.mari_023.ae2wtlib.api.gui.ScrollingUpgradesPanel;
+import de.mari_023.ae2wtlib.api.terminal.IUniversalTerminalCapable;
+import de.mari_023.ae2wtlib.api.terminal.WTMenuHost;
 
 public class WATScreen extends PatternAccessTermScreen<WATMenu> implements IUniversalTerminalCapable {
     private final ScrollingUpgradesPanel upgradesPanel;

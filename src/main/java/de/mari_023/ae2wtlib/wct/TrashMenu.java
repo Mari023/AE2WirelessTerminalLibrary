@@ -9,7 +9,7 @@ import appeng.menu.ISubMenu;
 import appeng.menu.implementations.MenuTypeBuilder;
 import appeng.menu.slot.AppEngSlot;
 
-import de.mari_023.ae2wtlib.AE2wtlibSlotSemantics;
+import de.mari_023.ae2wtlib.api.gui.AE2wtlibSlotSemantics;
 
 public class TrashMenu extends AEBaseMenu implements ISubMenu {
     public static final String ID = "trash";

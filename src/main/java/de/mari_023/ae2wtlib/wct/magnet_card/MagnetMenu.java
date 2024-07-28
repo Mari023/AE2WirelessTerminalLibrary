@@ -14,7 +14,7 @@ import appeng.menu.slot.FakeSlot;
 import appeng.util.ConfigInventory;
 import appeng.util.ConfigMenuInventory;
 
-import de.mari_023.ae2wtlib.AE2wtlibSlotSemantics;
+import de.mari_023.ae2wtlib.api.gui.AE2wtlibSlotSemantics;
 import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
 import de.mari_023.ae2wtlib.wct.WCTMenuHost;
 

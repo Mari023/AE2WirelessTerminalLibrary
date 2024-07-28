@@ -11,10 +11,13 @@ import net.minecraft.world.inventory.Slot;
 import appeng.client.gui.me.items.CraftingTermScreen;
 import appeng.client.gui.style.ScreenStyle;
 
-import de.mari_023.ae2wtlib.TextConstants;
-import de.mari_023.ae2wtlib.terminal.*;
+import de.mari_023.ae2wtlib.api.TextConstants;
+import de.mari_023.ae2wtlib.api.gui.Icon;
+import de.mari_023.ae2wtlib.api.gui.IconButton;
+import de.mari_023.ae2wtlib.api.gui.ScrollingUpgradesPanel;
+import de.mari_023.ae2wtlib.api.terminal.IUniversalTerminalCapable;
+import de.mari_023.ae2wtlib.api.terminal.WTMenuHost;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetMode;
-import de.mari_023.ae2wtlib.wut.IUniversalTerminalCapable;
 
 public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversalTerminalCapable {
     private final IconButton magnetCardToggleButton;

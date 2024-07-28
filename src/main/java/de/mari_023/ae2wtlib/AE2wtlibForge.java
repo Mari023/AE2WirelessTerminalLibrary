@@ -1,7 +1,5 @@
 package de.mari_023.ae2wtlib;
 
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -11,7 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
@@ -30,34 +28,33 @@ import net.neoforged.neoforge.registries.RegisterEvent;
 
 import appeng.items.tools.powered.powersink.PoweredItemCapabilities;
 
+import de.mari_023.ae2wtlib.api.AE2wtlibAPI;
+import de.mari_023.ae2wtlib.api.terminal.ItemWT;
 import de.mari_023.ae2wtlib.networking.AE2wtlibPacket;
 import de.mari_023.ae2wtlib.networking.CycleTerminalPacket;
 import de.mari_023.ae2wtlib.networking.RestockAmountPacket;
 import de.mari_023.ae2wtlib.networking.UpdateRestockPacket;
 import de.mari_023.ae2wtlib.networking.UpdateWUTPackage;
-import de.mari_023.ae2wtlib.terminal.ItemWT;
 
-@Mod(AE2wtlib.MOD_NAME)
+@Mod(AE2wtlibAPI.MOD_NAME)
 @EventBusSubscriber
 public class AE2wtlibForge {
-    public AE2wtlibForge(IEventBus modEventBus) {
+    public AE2wtlibForge(IEventBus modEventBus, ModContainer modContainer) {
+        new AE2wtlibAPIImplementation();
         CommonHooks.markComponentClassAsValid(ItemStack.class);// TODO figure out if there is a better way
         AE2wtlib.registerMenus();
-        ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.COMMON, AE2wtlibConfig.SPEC,
-                AE2wtlib.MOD_NAME + ".toml");
+        modContainer.registerConfig(ModConfig.Type.COMMON, AE2wtlibConfig.SPEC,
+                AE2wtlibAPI.MOD_NAME + ".toml");
         modEventBus.addListener((RegisterEvent e) -> {
             if (!e.getRegistryKey().equals(Registries.ITEM))
                 return;
             AE2wtlibItems.init();
             AE2wtlib.onAe2Initialized();
             AE2wtlibCreativeTab.init();
-
-            for (var entry : AE2wtlibComponents.DR.entrySet())
-                Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, entry.getKey(), entry.getValue());
         });
         modEventBus.addListener((BuildCreativeModeTabContentsEvent e) -> AE2wtlib.addToCreativeTab());
         modEventBus.addListener((RegisterPayloadHandlersEvent event) -> {
-            PayloadRegistrar registrar = event.registrar(AE2wtlib.MOD_NAME);
+            PayloadRegistrar registrar = event.registrar(AE2wtlibAPI.MOD_NAME);
             registerPacket(registrar, CycleTerminalPacket.ID, CycleTerminalPacket.STREAM_CODEC);
             registerPacket(registrar, UpdateWUTPackage.ID, UpdateWUTPackage.STREAM_CODEC);
             registerPacket(registrar, UpdateRestockPacket.ID, UpdateRestockPacket.STREAM_CODEC);
@@ -69,6 +66,7 @@ public class AE2wtlibForge {
             registerPowerStorageItem(event, AE2wtlibItems.PATTERN_ACCESS_TERMINAL);
             registerPowerStorageItem(event, AE2wtlibItems.PATTERN_ENCODING_TERMINAL);
         });
+        AE2wtlibAdditionalComponents.init();
         AE2wtlib.ATTACHMENT_TYPES.register(modEventBus);
     }
 

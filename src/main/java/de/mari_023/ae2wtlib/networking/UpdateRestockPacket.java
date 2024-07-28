@@ -8,10 +8,10 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 
-import de.mari_023.ae2wtlib.AE2wtlib;
+import de.mari_023.ae2wtlib.api.AE2wtlibAPI;
 
 public record UpdateRestockPacket(int slot, int amount) implements AE2wtlibPacket {
-    public static final Type<UpdateRestockPacket> ID = new Type<>(AE2wtlib.id("update_restock"));
+    public static final Type<UpdateRestockPacket> ID = new Type<>(AE2wtlibAPI.id("update_restock"));
     public static final StreamCodec<ByteBuf, UpdateRestockPacket> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.INT, UpdateRestockPacket::slot,
             ByteBufCodecs.INT, UpdateRestockPacket::amount,

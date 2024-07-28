@@ -13,22 +13,16 @@ Adds Wireless versions of ae2 Terminals with infinite range capabilities.
 '''
 updateJSONURL = "https://api.modrinth.com/updates/applied-energistics-2-wireless-terminals/forge_updates.json?neoforge=only"
 logoFile = "icon.png"
+logoBlur=false
 
 [[mixins]]
 config="ae2wtlib.mixins.json"
 
 [[dependencies.ae2wtlib]]
-modId = "neoforge"
+modId = "ae2wtlib_api"
 type="REQUIRED"
-versionRange = "*"
-ordering = "NONE"
-side = "BOTH"
-
-[[dependencies.ae2wtlib]]
-modId = "minecraft"
-type="REQUIRED"
-versionRange = "*"
-ordering = "NONE"
+versionRange = "[${version}]"
+ordering = "BEFORE"
 side = "BOTH"
 
 [[dependencies.ae2wtlib]]
@@ -42,5 +36,21 @@ side = "BOTH"
 modId = "curios"
 type="OPTIONAL"
 versionRange = "*"
-ordering = "AFTER"
+ordering = "NONE"
 side = "BOTH"
+
+[[dependencies.ae2wtlib]]
+modId = "extendedae"
+type="INCOMPATIBLE"
+versionRange = "(,1.21-1.1.4-neoforge]"
+ordering = "NONE"
+side = "BOTH"
+reason = "breaking changes in the ae2wtlib api"
+
+[[dependencies.ae2wtlib]]
+modId = "megacells"
+type="INCOMPATIBLE"
+versionRange = "(0.0.0,4.0.0-alpha]"
+ordering = "NONE"
+side = "BOTH"
+reason = "breaking changes in the ae2wtlib api"

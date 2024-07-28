@@ -14,9 +14,9 @@ import appeng.api.ids.AEComponents;
 import appeng.api.upgrades.IUpgradeInventory;
 
 import de.mari_023.ae2wtlib.AE2wtlibItems;
-import de.mari_023.ae2wtlib.terminal.ItemWT;
-import de.mari_023.ae2wtlib.wut.ItemWUT;
-import de.mari_023.ae2wtlib.wut.WTDefinition;
+import de.mari_023.ae2wtlib.api.registration.WTDefinition;
+import de.mari_023.ae2wtlib.api.terminal.ItemWT;
+import de.mari_023.ae2wtlib.api.terminal.ItemWUT;
 
 public abstract class Common implements CraftingRecipe {
     protected final ItemStack outputStack = new ItemStack(AE2wtlibItems.UNIVERSAL_TERMINAL);
