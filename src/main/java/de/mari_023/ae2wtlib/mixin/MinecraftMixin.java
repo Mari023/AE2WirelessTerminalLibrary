@@ -21,8 +21,10 @@ public abstract class MinecraftMixin {
 
     @Inject(method = "pickBlock", at = {
             @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/world/entity/player/Inventory;findSlotMatchingItem(Lnet/minecraft/world/item/ItemStack;)I") })
-    public void pickBlock(CallbackInfo ci, @Local ItemStack itemstack, @Local(ordinal = 1) int i) {
+    public void pickBlock(CallbackInfo ci, @Local ItemStack itemstack, @Local int i) {
         if (player.getAbilities().instabuild)
+            return;
+        if (player.isSpectator())
             return;
         if (i != -1)
             return;

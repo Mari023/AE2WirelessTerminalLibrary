@@ -51,6 +51,8 @@ public class AE2wtlibComponents {
     public static final DataComponentType<IncludeExclude> INSERT_MODE = register("insert_mode", INCLUDE_EXCLUDE_CODECS);
     public static final DataComponentType<Boolean> RESTOCK = register("restock", builder -> builder
             .persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL));
+    public static final DataComponentType<Boolean> PICK_BLOCK = register("pick_block", builder -> builder
+            .persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL));
 
     public static final DataComponentType<CompoundTag> PATTERN_ENCODING_LOGIC = register("pattern_encoding_logic",
             COMPOUND_TAG_CODECS);
