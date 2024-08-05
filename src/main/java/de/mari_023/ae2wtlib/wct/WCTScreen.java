@@ -17,10 +17,8 @@ import de.mari_023.ae2wtlib.api.gui.IconButton;
 import de.mari_023.ae2wtlib.api.gui.ScrollingUpgradesPanel;
 import de.mari_023.ae2wtlib.api.terminal.IUniversalTerminalCapable;
 import de.mari_023.ae2wtlib.api.terminal.WTMenuHost;
-import de.mari_023.ae2wtlib.wct.magnet_card.MagnetMode;
 
 public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversalTerminalCapable {
-    private final IconButton magnetCardToggleButton;
     private final IconButton magnetCardMenuButton;
     private final ScrollingUpgradesPanel upgradesPanel;
 
@@ -29,8 +27,9 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
         if (getMenu().isWUT())
             addToLeftToolbar(cycleTerminalButton());
 
-        magnetCardToggleButton = new IconButton(btn -> setMagnetMode(), Icon.MAGNET);
-        widgets.add("magnetCardToggleButton", magnetCardToggleButton);
+        IconButton wirelessTerminalSettingsButton = new IconButton(
+                btn -> switchToScreen(new WirelessTerminalSettingsScreen(this)), Icon.MAGNET);
+        widgets.add("wirelessTerminalSettingsButton", wirelessTerminalSettingsButton);
 
         magnetCardMenuButton = new IconButton(btn -> getMenu().openMagnetMenu(), Icon.MAGNET_FILTER);
         widgets.add("magnetCardMenuButton", magnetCardMenuButton);
@@ -50,44 +49,12 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
         upgradesPanel.setMaxRows(Math.max(2, getVisibleRows()));
     }
 
-    private void setMagnetMode() {
-        if (isHandlingRightClick()) {
-            switch (getMenu().getMagnetMode()) {
-                case OFF -> getMenu().setMagnetMode(MagnetMode.PICKUP_ME);
-                case PICKUP_INVENTORY -> getMenu().setMagnetMode(MagnetMode.OFF);
-                case PICKUP_ME -> getMenu().setMagnetMode(MagnetMode.PICKUP_INVENTORY);
-            }
-            return;
-        }
-        switch (getMenu().getMagnetMode()) {
-            case OFF -> getMenu().setMagnetMode(MagnetMode.PICKUP_INVENTORY);
-            case PICKUP_INVENTORY -> getMenu().setMagnetMode(MagnetMode.PICKUP_ME);
-            case PICKUP_ME -> getMenu().setMagnetMode(MagnetMode.OFF);
-        }
-    }
-
     private void setMagnetModeText() {
-        switch (getMenu().getMagnetMode()) {
-            case INVALID, NO_CARD -> {
-                magnetCardToggleButton.setVisibility(false);
-                magnetCardMenuButton.setVisibility(false);
-            }
-            case OFF -> {
-                magnetCardToggleButton.setVisibility(true);
-                magnetCardMenuButton.setVisibility(true);
-                magnetCardToggleButton.setMessage(TextConstants.MAGNETCARD_OFF);
-            }
-            case PICKUP_INVENTORY -> {
-                magnetCardToggleButton.setVisibility(true);
-                magnetCardMenuButton.setVisibility(true);
-                magnetCardToggleButton.setMessage(TextConstants.MAGNETCARD_INVENTORY);
-            }
-            case PICKUP_ME -> {
-                magnetCardToggleButton.setVisibility(true);
-                magnetCardMenuButton.setVisibility(true);
-                magnetCardToggleButton.setMessage(TextConstants.MAGNETCARD_ME);
-            }
-        }
+        magnetCardMenuButton.setVisibility(
+                switch (getMenu().getMagnetMode()) {
+                    case INVALID, NO_CARD -> false;
+                    case OFF, PICKUP_ME, PICKUP_INVENTORY, PICKUP_ME_NO_MAGNET -> true;
+                });
     }
 
     protected void updateBeforeRender() {
