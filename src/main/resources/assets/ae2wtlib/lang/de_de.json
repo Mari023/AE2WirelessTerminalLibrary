@@ -20,6 +20,11 @@
   "gui.ae2wtlib.on": "An",
   "gui.ae2wtlib.slot.magnetcard.desc": "Magnet Karte",
 
+  "gui.ae2wtlib.pick_block.text" : "Block Auswählen",
+  "gui.ae2wtlib.restock.text" : "Nachfüllen",
+  "gui.ae2wtlib.magnet.text" : "Magnet",
+  "gui.ae2wtlib.pickup_to_me.text" : "In ME System einsammeln",
+
   "gui.ae2wtlib.Magnet": "Magnet Filter",
   "gui.ae2wtlib.allow": "Erlaubt",
   "gui.ae2wtlib.deny": "Blockiert",
