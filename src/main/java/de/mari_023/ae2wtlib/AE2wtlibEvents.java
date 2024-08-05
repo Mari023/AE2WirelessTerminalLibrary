@@ -16,6 +16,7 @@ import appeng.api.stacks.AEItemKey;
 import appeng.me.helpers.PlayerSource;
 
 import de.mari_023.ae2wtlib.api.AE2wtlibComponents;
+import de.mari_023.ae2wtlib.networking.PickBlockPacket;
 import de.mari_023.ae2wtlib.networking.UpdateRestockPacket;
 import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHandler;
@@ -119,5 +120,13 @@ public class AE2wtlibEvents {
         player.onItemPickup(entity);
 
         stack.setCount(leftover);
+    }
+
+    public static void pickBlock(ItemStack stack) {
+        PacketDistributor.sendToServer(new PickBlockPacket(stack));
+    }
+
+    public static void pickBlock(ServerPlayer player, ItemStack stack) {
+        // TODO
     }
 }
