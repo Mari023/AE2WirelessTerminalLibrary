@@ -12,7 +12,7 @@
         "top": 7
       },
       "text": {
-        "translate": "gui.ae2.TerminalSettingsTitle"
+        "translate": "gui.ae2wtlib.wireless_terminal_settings_title"
       }
     },
     "search_settings_title": {
@@ -21,7 +21,7 @@
         "top": 65
       },
       "text": {
-        "translate": "gui.ae2.SearchSettingsTitle"
+        "translate": "gui.ae2wtlib.magnet_settings_title"
       }
     }
   },

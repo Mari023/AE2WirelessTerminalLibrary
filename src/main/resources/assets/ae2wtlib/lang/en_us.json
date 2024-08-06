@@ -21,6 +21,8 @@
   "gui.ae2wtlib.on": "On",
   "gui.ae2wtlib.slot.magnetcard.desc": "Magnet Card",
 
+  "gui.ae2wtlib.wireless_terminal_settings_title" : "Wireless Terminal Settings",
+  "gui.ae2wtlib.magnet_settings_title" : "Magnet Settings",
   "gui.ae2wtlib.pick_block.text" : "Enable Pick Block",
   "gui.ae2wtlib.restock.text" : "Restock",
   "gui.ae2wtlib.magnet.text" : "Magnet",
