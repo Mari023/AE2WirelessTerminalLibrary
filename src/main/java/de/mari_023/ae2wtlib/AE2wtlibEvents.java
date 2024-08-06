@@ -2,6 +2,7 @@ package de.mari_023.ae2wtlib;
 
 import java.util.function.Consumer;
 
+import net.minecraft.network.protocol.game.ClientboundSetCarriedItemPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -16,11 +17,11 @@ import appeng.api.stacks.AEItemKey;
 import appeng.me.helpers.PlayerSource;
 
 import de.mari_023.ae2wtlib.api.AE2wtlibComponents;
+import de.mari_023.ae2wtlib.networking.PickBlockPacket;
 import de.mari_023.ae2wtlib.networking.UpdateRestockPacket;
 import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHandler;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHost;
-import de.mari_023.ae2wtlib.wct.magnet_card.MagnetMode;
 
 public class AE2wtlibEvents {
     /**
@@ -91,7 +92,7 @@ public class AE2wtlibEvents {
         CraftingTerminalHandler cTHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
         ItemStack terminal = cTHandler.getCraftingTerminal();
 
-        if (!(MagnetHandler.getMagnetMode(terminal) == MagnetMode.PICKUP_ME))
+        if (!(MagnetHandler.getMagnetMode(terminal).pickupToME()))
             return;
         if (!cTHandler.inRange())
             return;
@@ -119,5 +120,53 @@ public class AE2wtlibEvents {
         player.onItemPickup(entity);
 
         stack.setCount(leftover);
+    }
+
+    public static void pickBlock(ItemStack stack) {
+        PacketDistributor.sendToServer(new PickBlockPacket(stack));
+    }
+
+    public static void pickBlock(ServerPlayer player, ItemStack stack) {
+        var cTHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
+        ItemStack terminal = cTHandler.getCraftingTerminal();
+        if (!terminal.getOrDefault(AE2wtlibComponents.PICK_BLOCK, false))
+            return;
+
+        if (cTHandler.getTargetGrid() == null)
+            return;
+        if (cTHandler.getTargetGrid().getStorageService() == null)
+            return;
+        var networkInventory = cTHandler.getTargetGrid().getStorageService().getInventory();
+        var playerSource = new PlayerSource(player, null);
+
+        var inventory = player.getInventory();
+        int targetSlot = inventory.getSuitableHotbarSlot();
+        var toReplace = inventory.getItem(targetSlot);
+
+        var insert = networkInventory.insert(AEItemKey.of(toReplace), toReplace.getCount(), Actionable.SIMULATE,
+                playerSource);
+        if (insert < toReplace.getCount())
+            return;
+        var extracted = networkInventory.extract(AEItemKey.of(stack), 32, Actionable.SIMULATE, playerSource);
+        if (extracted == 0)
+            return;
+
+        insert = networkInventory.insert(AEItemKey.of(toReplace), toReplace.getCount(), Actionable.MODULATE,
+                playerSource);
+        if (insert < toReplace.getCount()) {
+            toReplace.setCount(toReplace.getCount() - (int) insert);
+            inventory.setItem(targetSlot, toReplace);
+            return;
+        }
+
+        extracted = networkInventory.extract(AEItemKey.of(stack), 32, Actionable.MODULATE, playerSource);
+        if (extracted == 0) {
+            inventory.setItem(targetSlot, ItemStack.EMPTY);
+            return;
+        }
+        stack.setCount((int) extracted);
+        inventory.setItem(targetSlot, stack);
+        inventory.selected = targetSlot;
+        player.connection.send(new ClientboundSetCarriedItemPacket(player.getInventory().selected));
     }
 }

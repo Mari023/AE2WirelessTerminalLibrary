@@ -1,0 +1,56 @@
+{
+  "$schema": "schema.json",
+  "includes": ["../common/common.json"],
+  "generatedBackground": {
+    "width": 200,
+    "height": 122
+  },
+  "text": {
+    "dialog_title": {
+      "position": {
+        "left": 8,
+        "top": 7
+      },
+      "text": {
+        "translate": "gui.ae2wtlib.wireless_terminal_settings_title"
+      }
+    },
+    "search_settings_title": {
+      "position": {
+        "left": 8,
+        "top": 65
+      },
+      "text": {
+        "translate": "gui.ae2wtlib.magnet_settings_title"
+      }
+    }
+  },
+  "widgets": {
+    "back": {
+      "left": 176,
+      "top": -5,
+      "width": 20,
+      "height": 20
+    },
+    "pickBlock": {
+      "left": 10,
+      "top": 25,
+      "width": 180
+    },
+    "restock": {
+      "left": 10,
+      "top": 41,
+      "width": 180
+    },
+    "magnet": {
+      "left": 10,
+      "top": 83,
+      "width": 180
+    },
+    "pickupToME": {
+      "left": 10,
+      "top": 98,
+      "width": 180
+    }
+  }
+}

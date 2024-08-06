@@ -1,0 +1,54 @@
+package de.mari_023.ae2wtlib.wct;
+
+import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.network.PacketDistributor;
+
+import appeng.client.gui.AESubScreen;
+import appeng.client.gui.Icon;
+import appeng.client.gui.widgets.AECheckbox;
+import appeng.client.gui.widgets.TabButton;
+import appeng.menu.SlotSemantics;
+
+import de.mari_023.ae2wtlib.AE2wtlibAdditionalComponents;
+import de.mari_023.ae2wtlib.api.AE2wtlibComponents;
+import de.mari_023.ae2wtlib.api.TextConstants;
+import de.mari_023.ae2wtlib.api.terminal.WTMenuHost;
+import de.mari_023.ae2wtlib.networking.TerminalSettingsPacket;
+import de.mari_023.ae2wtlib.wct.magnet_card.MagnetMode;
+
+public class WirelessTerminalSettingsScreen extends AESubScreen<WCTMenu, WCTScreen> {
+    private final AECheckbox pickBlock = widgets.addCheckbox("pickBlock", TextConstants.PICK_BLOCK, this::save);
+    private final AECheckbox restock = widgets.addCheckbox("restock", TextConstants.RESTOCK, this::save);
+    private final AECheckbox magnet = widgets.addCheckbox("magnet", TextConstants.MAGNET, this::save);
+    private final AECheckbox pickupToME = widgets.addCheckbox("pickupToME", TextConstants.PICKUP_TO_ME, this::save);
+
+    public WirelessTerminalSettingsScreen(WCTScreen parent) {
+        super(parent, "/screens/wtlib/wireless_terminal_settings.json");
+        widgets.add("back",
+                new TabButton(Icon.BACK, menu.getHost().getMainMenuIcon().getHoverName(), btn -> returnToParent()));
+
+        pickBlock.setSelected(stack().getOrDefault(AE2wtlibComponents.PICK_BLOCK, false));
+        restock.setSelected(stack().getOrDefault(AE2wtlibComponents.RESTOCK, false));
+        magnet.setSelected(stack().getOrDefault(AE2wtlibAdditionalComponents.MAGNET_SETTINGS, MagnetMode.OFF).magnet());
+        pickupToME.setSelected(
+                stack().getOrDefault(AE2wtlibAdditionalComponents.MAGNET_SETTINGS, MagnetMode.OFF).pickupToME());
+    }
+
+    @Override
+    protected void init() {
+        super.init();
+        setSlotsHidden(SlotSemantics.TOOLBOX, true);
+    }
+
+    private ItemStack stack() {
+        return ((WTMenuHost) getMenu().getHost()).getItemStack();
+    }
+
+    private void save() {
+        var locator = ((WTMenuHost) getMenu().getHost()).getLocator();
+        if (locator == null)
+            return;
+        PacketDistributor.sendToServer(new TerminalSettingsPacket(locator,
+                pickBlock.isSelected(), restock.isSelected(), magnet.isSelected(), pickupToME.isSelected()));
+    }
+}

@@ -12,6 +12,7 @@
   "gui.ae2wtlib.magnetcard.desc.off": "ɟɟO",
   "gui.ae2wtlib.magnetcard.desc.inv": "ʎɹoʇuǝʌuI oʇ dnʞɔᴉԀ",
   "gui.ae2wtlib.magnetcard.desc.me": "ƎW oʇ dnʞɔᴉԀ",
+  "gui.ae2wtlib.magnetcard.desc.me_no_magnet": "ƎW oʇ 'dnʞɔᴉԀ ƎW oʇ dnʞɔᴉԀ",
   "gui.ae2wtlib.cycle_terminal.desc": "%s uǝdO",
   "gui.ae2wtlib.cycle_terminal.desc1": "%s uǝdO oʇ ʞɔᴉlɔ ʇɥƃᴉᴚ",
   "gui.ae2wtlib.magnetcard.hotkey": "%s :pɹɐƆ ʇǝuƃɐW",
@@ -19,6 +20,13 @@
   "gui.ae2wtlib.off": "ɟɟO",
   "gui.ae2wtlib.on": "uO",
   "gui.ae2wtlib.slot.magnetcard.desc": "pɹɐƆ ʇǝuƃɐW",
+
+  "gui.ae2wtlib.wireless_terminal_settings_title" : "sƃuᴉʇʇǝS lɐuᴉɯɹǝ⟘ ssǝlǝɹᴉM",
+  "gui.ae2wtlib.magnet_settings_title" : "sƃuᴉʇʇǝS ʇǝuƃɐW",
+  "gui.ae2wtlib.pick_block.text" : "Enable Pick Block",
+  "gui.ae2wtlib.restock.text" : "ʞɔoʇsǝᴚ",
+  "gui.ae2wtlib.magnet.text" : "ʇǝuƃɐW",
+  "gui.ae2wtlib.pickup_to_me.text" : "ɯǝʇsʎS ƎW oʇ dnʞɔᴉԀ",
 
   "gui.ae2wtlib.Magnet": "ɹǝʇlᴉℲ ʇǝuƃɐW",
   "gui.ae2wtlib.allow": "ʍoll∀",

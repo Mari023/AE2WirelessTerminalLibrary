@@ -11,7 +11,8 @@
   "gui.ae2wtlib.magnetcard": "Magnet Karte",
   "gui.ae2wtlib.magnetcard.desc.off": "Aus",
   "gui.ae2wtlib.magnetcard.desc.inv": "Items werden in das Inventar eingesammelt",
-  "gui.ae2wtlib.magnetcard.desc.me": "Items werden in das Inventar eingesammelt",
+  "gui.ae2wtlib.magnetcard.desc.me": "Items werden in das ME System eingesammelt",
+  "gui.ae2wtlib.magnetcard.desc.me_no_magnet": "Magnet Aus, Items werden in das ME System eingesammelt",
   "gui.ae2wtlib.cycle_terminal.desc": "%s Öffnen",
   "gui.ae2wtlib.cycle_terminal.desc1": "Rechtsklick um %s zu Öffnen",
   "gui.ae2wtlib.magnetcard.hotkey": "Magnet Karte: %s",
@@ -19,6 +20,13 @@
   "gui.ae2wtlib.off": "Aus",
   "gui.ae2wtlib.on": "An",
   "gui.ae2wtlib.slot.magnetcard.desc": "Magnet Karte",
+
+  "gui.ae2wtlib.wireless_terminal_settings_title" : "Drahtloskonsoleneinstellung",
+  "gui.ae2wtlib.magnet_settings_title" : "Magneteinstellungen",
+  "gui.ae2wtlib.pick_block.text" : "Block Auswählen",
+  "gui.ae2wtlib.restock.text" : "Nachfüllen",
+  "gui.ae2wtlib.magnet.text" : "Magnet",
+  "gui.ae2wtlib.pickup_to_me.text" : "In ME System einsammeln",
 
   "gui.ae2wtlib.Magnet": "Magnet Filter",
   "gui.ae2wtlib.allow": "Erlaubt",

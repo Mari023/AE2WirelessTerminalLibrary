@@ -26,15 +26,11 @@ public final class TextConstants {
             Component.translatable("gui.ae2wtlib.magnetcard.desc.inv").setStyle(STYLE_GREEN));
     public static final MutableComponent HOTKEY_MAGNETCARD_ME = Component.translatable("gui.ae2wtlib.magnetcard.hotkey",
             Component.translatable("gui.ae2wtlib.magnetcard.desc.me").setStyle(STYLE_GREEN));
+    public static final MutableComponent PICKUP_ME_NO_MAGNET = Component.translatable("gui.ae2wtlib.magnetcard.hotkey",
+            Component.translatable("gui.ae2wtlib.magnetcard.desc.me_no_magnet").setStyle(STYLE_GREEN));
     public static final MutableComponent HOTKEY_MAGNETCARD_OFF = Component.translatable(
             "gui.ae2wtlib.magnetcard.hotkey",
             Component.translatable("gui.ae2wtlib.magnetcard.desc.off").setStyle(STYLE_RED));
-    public static final MutableComponent MAGNETCARD_OFF = Component.translatable("gui.ae2wtlib.magnetcard").append("\n")
-            .append(Component.translatable("gui.ae2wtlib.magnetcard.desc.off"));
-    public static final MutableComponent MAGNETCARD_INVENTORY = Component.translatable("gui.ae2wtlib.magnetcard")
-            .append("\n").append(Component.translatable("gui.ae2wtlib.magnetcard.desc.inv"));
-    public static final MutableComponent MAGNETCARD_ME = Component.translatable("gui.ae2wtlib.magnetcard").append("\n")
-            .append(Component.translatable("gui.ae2wtlib.magnetcard.desc.me"));
 
     public static final MutableComponent UNIVERSAL = Component
             .translatable("item.ae2wtlib.wireless_universal_terminal.desc").withStyle(STYLE_GRAY);
@@ -95,4 +91,9 @@ public final class TextConstants {
     public static final Component NO_QNB_UPGRADE = Component.translatable("chat.ae2wtlib.NoQuantumBridgeCard");
     public static final Component NO_QNB = Component.translatable("chat.ae2wtlib.NoQuantumBridge");
     public static final Component DIFFERENT_NETWORKS = Component.translatable("chat.ae2wtlib.NetworkMismatch");
+
+    public static final Component PICK_BLOCK = Component.translatable("gui.ae2wtlib.pick_block.text");
+    public static final Component RESTOCK = Component.translatable("gui.ae2wtlib.restock.text");
+    public static final Component MAGNET = Component.translatable("gui.ae2wtlib.magnet.text");
+    public static final Component PICKUP_TO_ME = Component.translatable("gui.ae2wtlib.pickup_to_me.text");
 }

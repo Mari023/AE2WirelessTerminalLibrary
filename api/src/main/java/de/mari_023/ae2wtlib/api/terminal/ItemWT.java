@@ -62,4 +62,8 @@ public abstract class ItemWT extends WirelessTerminalItem {
         return WTDefinition.of(locator.locateItem(player)).wTMenuHostFactory().create(this, player, locator,
                 (p, subMenu) -> tryOpen(player, locator, true));
     }
+
+    public boolean isNotReplaceableByPickAction(ItemStack stack, Player player, int inventorySlot) {
+        return true;
+    }
 }
