@@ -14,6 +14,7 @@ import de.mari_023.ae2wtlib.api.AE2wtlibComponents;
 import de.mari_023.ae2wtlib.api.TextConstants;
 import de.mari_023.ae2wtlib.api.terminal.WTMenuHost;
 import de.mari_023.ae2wtlib.networking.TerminalSettingsPacket;
+import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHandler;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetMode;
 
 public class WirelessTerminalSettingsScreen extends AESubScreen<WCTMenu, WCTScreen> {
@@ -32,6 +33,10 @@ public class WirelessTerminalSettingsScreen extends AESubScreen<WCTMenu, WCTScre
         magnet.setSelected(stack().getOrDefault(AE2wtlibAdditionalComponents.MAGNET_SETTINGS, MagnetMode.OFF).magnet());
         pickupToME.setSelected(
                 stack().getOrDefault(AE2wtlibAdditionalComponents.MAGNET_SETTINGS, MagnetMode.OFF).pickupToME());
+        if (MagnetHandler.getMagnetMode(stack()) == MagnetMode.NO_CARD) {
+            magnet.active = false;
+            pickupToME.active = false;
+        }
     }
 
     @Override
