@@ -28,6 +28,10 @@ public class MagnetHotkeyAction implements HotkeyAction {
                 yield MagnetMode.PICKUP_ME;
             }
             case PICKUP_ME -> {
+                player.displayClientMessage(TextConstants.PICKUP_ME_NO_MAGNET, true);
+                yield MagnetMode.PICKUP_ME_NO_MAGNET;
+            }
+            case PICKUP_ME_NO_MAGNET -> {
                 player.displayClientMessage(TextConstants.HOTKEY_MAGNETCARD_OFF, true);
                 yield MagnetMode.OFF;
             }

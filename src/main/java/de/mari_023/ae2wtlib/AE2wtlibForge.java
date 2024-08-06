@@ -53,6 +53,7 @@ public class AE2wtlibForge {
             PayloadRegistrar registrar = event.registrar(AE2wtlibAPI.MOD_NAME);
             registerPacket(registrar, CycleTerminalPacket.ID, CycleTerminalPacket.STREAM_CODEC);
             registerPacket(registrar, PickBlockPacket.ID, PickBlockPacket.STREAM_CODEC);
+            registerPacket(registrar, TerminalSettingsPacket.ID, TerminalSettingsPacket.STREAM_CODEC);
             registerPacket(registrar, UpdateWUTPackage.ID, UpdateWUTPackage.STREAM_CODEC);
             registerPacket(registrar, UpdateRestockPacket.ID, UpdateRestockPacket.STREAM_CODEC);
             registerPacket(registrar, RestockAmountPacket.ID, RestockAmountPacket.STREAM_CODEC);
