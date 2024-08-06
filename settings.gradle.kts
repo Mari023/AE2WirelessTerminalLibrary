@@ -1,2 +1,2 @@
 rootProject.name = "ae2wtlib"
-include("api")
+include("ae2wtlib_api")
