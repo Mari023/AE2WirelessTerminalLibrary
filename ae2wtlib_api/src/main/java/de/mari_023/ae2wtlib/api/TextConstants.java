@@ -92,6 +92,8 @@ public final class TextConstants {
     public static final Component NO_QNB = Component.translatable("chat.ae2wtlib.NoQuantumBridge");
     public static final Component DIFFERENT_NETWORKS = Component.translatable("chat.ae2wtlib.NetworkMismatch");
 
+    public static final Component TERMINAL_SETTINGS = Component
+            .translatable("gui.ae2wtlib.wireless_terminal_settings_title");
     public static final Component PICK_BLOCK = Component.translatable("gui.ae2wtlib.pick_block.text");
     public static final Component RESTOCK = Component.translatable("gui.ae2wtlib.restock.text");
     public static final Component MAGNET = Component.translatable("gui.ae2wtlib.magnet.text");

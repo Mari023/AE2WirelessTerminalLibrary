@@ -30,6 +30,7 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
         IconButton wirelessTerminalSettingsButton = new IconButton(
                 btn -> switchToScreen(new WirelessTerminalSettingsScreen(this)), Icon.MAGNET);
         widgets.add("wirelessTerminalSettingsButton", wirelessTerminalSettingsButton);
+        wirelessTerminalSettingsButton.setMessage(TextConstants.TERMINAL_SETTINGS);
 
         magnetCardMenuButton = new IconButton(btn -> getMenu().openMagnetMenu(), Icon.MAGNET_FILTER);
         widgets.add("magnetCardMenuButton", magnetCardMenuButton);
