@@ -1,1 +1,2 @@
--  move Menus into ae2 namespace
+- move Menus into ae2 namespace
+- allow Pick Block to draw items from the terminal
