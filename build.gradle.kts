@@ -2,8 +2,6 @@ plugins {
     id("net.neoforged.moddev") version "2.0.19-beta"
     id("com.diffplug.spotless") version "7.0.0.BETA2"
     id("maven-publish")
-    java
-    idea
 }
 
 val ae2Version: String by project
