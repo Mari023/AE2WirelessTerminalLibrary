@@ -1,1 +1,1 @@
-- workaround for #305
+- fix #305 properly and remove the workaround
