@@ -1,11 +1,10 @@
 package de.mari_023.ae2wtlib.wct;
 
 import java.util.HashMap;
-import java.util.Objects;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -16,14 +15,19 @@ public class ClientTerminalHandler {
     @Nullable
     private static ClientTerminalHandler instance;
 
-    private final Player player = Objects.requireNonNull(Minecraft.getInstance().player);
-    private final CraftingTerminalHandler craftingHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
+    private final Player player;
+    private final CraftingTerminalHandler craftingHandler;
     private HashMap<Item, Long> restockAbleItems = new HashMap<>();
     private boolean restockEnabled = false;
 
-    public static ClientTerminalHandler get() {
-        if (instance == null || instance.player != Minecraft.getInstance().player)
-            instance = new ClientTerminalHandler();
+    public ClientTerminalHandler(Player player) {
+        this.player = player;
+        craftingHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
+    }
+
+    public static ClientTerminalHandler get(LocalPlayer player) {
+        if (instance == null || instance.player != player)
+            instance = new ClientTerminalHandler(player);
 
         return instance;
     }

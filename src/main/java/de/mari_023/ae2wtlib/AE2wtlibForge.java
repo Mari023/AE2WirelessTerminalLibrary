@@ -1,5 +1,6 @@
 package de.mari_023.ae2wtlib;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -147,6 +148,8 @@ public class AE2wtlibForge {
 
     @SubscribeEvent
     public static void handle(ClientTickEvent.Post event) {
-        ClientTerminalHandler.get().checkTerminal();
+        if (Minecraft.getInstance().player == null)
+            return;
+        ClientTerminalHandler.get(Minecraft.getInstance().player).checkTerminal();
     }
 }

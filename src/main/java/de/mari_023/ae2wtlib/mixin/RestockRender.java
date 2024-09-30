@@ -26,7 +26,7 @@ public abstract class RestockRender {
     public void renderGuiItemOverlay(Font font, ItemStack stack, int x, int y, CallbackInfo ci) {
         if (Minecraft.getInstance().player == null || Minecraft.getInstance().player.isCreative())
             return;
-        ClientTerminalHandler handler = ClientTerminalHandler.get();
+        ClientTerminalHandler handler = ClientTerminalHandler.get(Minecraft.getInstance().player);
         if (!handler.isRestockEnabled() || stack.getCount() == 1 || !handler.isRestockAble(stack))
             return;
         renderItemDecorations(font, stack, x, y, ReadableNumberConverter.format(handler.getAccessibleAmount(stack), 3));

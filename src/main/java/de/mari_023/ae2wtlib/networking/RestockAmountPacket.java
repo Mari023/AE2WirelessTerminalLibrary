@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import com.google.common.collect.Maps;
 
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -27,7 +28,9 @@ public record RestockAmountPacket(HashMap<Holder<Item>, Long> items) implements 
     public void processPacketData(Player player) {
         HashMap<Item, Long> map = Maps.newHashMapWithExpectedSize(items().size());
         items().forEach((item, count) -> map.put(item.value(), count));
-        ClientTerminalHandler.get().setRestockAbleItems(map);
+        if (!(player instanceof LocalPlayer localPlayer))
+            return;
+        ClientTerminalHandler.get(localPlayer).setRestockAbleItems(map);
     }
 
     @Override
