@@ -15,6 +15,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.common.CommonHooks;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
@@ -31,6 +32,7 @@ import appeng.items.tools.powered.powersink.PoweredItemCapabilities;
 import de.mari_023.ae2wtlib.api.AE2wtlibAPI;
 import de.mari_023.ae2wtlib.api.terminal.ItemWT;
 import de.mari_023.ae2wtlib.networking.*;
+import de.mari_023.ae2wtlib.wct.ClientTerminalHandler;
 
 @Mod(AE2wtlibAPI.MOD_NAME)
 @EventBusSubscriber
@@ -141,5 +143,10 @@ public class AE2wtlibForge {
         ItemStack projectile = player.getProjectile(event.getBow());
         AE2wtlibEvents.restock(player, projectile, projectile.getCount(), (itemStack) -> {
         });
+    }
+
+    @SubscribeEvent
+    public static void handle(ClientTickEvent.Post event) {
+        ClientTerminalHandler.get().checkTerminal();
     }
 }

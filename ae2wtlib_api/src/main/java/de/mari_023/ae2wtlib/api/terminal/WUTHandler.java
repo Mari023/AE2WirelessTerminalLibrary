@@ -144,8 +144,8 @@ public class WUTHandler {
             }
         }
 
-        for (int i = 0; i < player.inventory.getContainerSize(); i++) {
-            var stack = player.inventory.getItem(i);
+        for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+            var stack = player.getInventory().getItem(i);
             if (!hasTerminal(stack, terminal))
                 continue;
 

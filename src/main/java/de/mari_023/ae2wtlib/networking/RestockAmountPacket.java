@@ -14,7 +14,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 
 import de.mari_023.ae2wtlib.api.AE2wtlibAPI;
-import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
+import de.mari_023.ae2wtlib.wct.ClientTerminalHandler;
 
 public record RestockAmountPacket(HashMap<Holder<Item>, Long> items) implements AE2wtlibPacket {
     public static final Type<RestockAmountPacket> ID = new Type<>(AE2wtlibAPI.id("restock_amounts"));
@@ -25,10 +25,9 @@ public record RestockAmountPacket(HashMap<Holder<Item>, Long> items) implements 
 
     @Override
     public void processPacketData(Player player) {
-        CraftingTerminalHandler ctHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
         HashMap<Item, Long> map = Maps.newHashMapWithExpectedSize(items().size());
         items().forEach((item, count) -> map.put(item.value(), count));
-        ctHandler.setRestockAbleItems(map);
+        ClientTerminalHandler.get().setRestockAbleItems(map);
     }
 
     @Override

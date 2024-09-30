@@ -1,12 +1,9 @@
 package de.mari_023.ae2wtlib.wct;
 
-import java.util.HashMap;
-
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 import appeng.api.networking.IGrid;
@@ -25,7 +22,6 @@ public class CraftingTerminalHandler {
     private WTMenuHost menuHost;
     @Nullable
     private ItemMenuHostLocator locator;
-    private HashMap<Item, Long> restockAbleItems = new HashMap<>();
     @Nullable
     private MagnetHost magnetHost;
 
@@ -38,10 +34,9 @@ public class CraftingTerminalHandler {
         return player.getData(AE2wtlibAdditionalComponents.CT_HANDLER);
     }
 
-    private void invalidateCache() {
+    protected void invalidateCache() {
         menuHost = null;
         locator = null;
-        restockAbleItems.clear();
         magnetHost = null;
     }
 
@@ -110,19 +105,6 @@ public class CraftingTerminalHandler {
         getMenuHost().updateConnectedAccessPoint();
         getMenuHost().updateLinkStatus();
         return getMenuHost().getLinkStatus().connected();
-    }
-
-    public long getAccessibleAmount(ItemStack stack) {
-        return stack.getCount()
-                + (restockAbleItems.get(stack.getItem()) == null ? 0 : restockAbleItems.get(stack.getItem()));
-    }
-
-    public boolean isRestockAble(ItemStack stack) {
-        return restockAbleItems.containsKey(stack.getItem());
-    }
-
-    public void setRestockAbleItems(HashMap<Item, Long> items) {
-        restockAbleItems = items;
     }
 
     @Nullable
