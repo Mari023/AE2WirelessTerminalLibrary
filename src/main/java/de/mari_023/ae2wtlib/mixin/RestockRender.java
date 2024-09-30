@@ -15,7 +15,7 @@ import net.minecraft.world.item.ItemStack;
 
 import appeng.util.ReadableNumberConverter;
 
-import de.mari_023.ae2wtlib.wct.ClientTerminalHandler;
+import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
 
 @Mixin(value = GuiGraphics.class, remap = false)
 public abstract class RestockRender {
@@ -26,7 +26,8 @@ public abstract class RestockRender {
     public void renderGuiItemOverlay(Font font, ItemStack stack, int x, int y, CallbackInfo ci) {
         if (Minecraft.getInstance().player == null || Minecraft.getInstance().player.isCreative())
             return;
-        ClientTerminalHandler handler = ClientTerminalHandler.get(Minecraft.getInstance().player);
+        CraftingTerminalHandler handler = CraftingTerminalHandler
+                .getCraftingTerminalHandler(Minecraft.getInstance().player);
         if (!handler.isRestockEnabled() || stack.getCount() == 1 || !handler.isRestockAble(stack))
             return;
         renderItemDecorations(font, stack, x, y, ReadableNumberConverter.format(handler.getAccessibleAmount(stack), 3));

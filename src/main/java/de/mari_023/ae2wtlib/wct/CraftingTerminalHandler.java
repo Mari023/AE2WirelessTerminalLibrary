@@ -1,9 +1,12 @@
 package de.mari_023.ae2wtlib.wct;
 
+import java.util.HashMap;
+
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 import appeng.api.networking.IGrid;
@@ -11,6 +14,7 @@ import appeng.api.networking.IGridNode;
 import appeng.menu.locator.ItemMenuHostLocator;
 
 import de.mari_023.ae2wtlib.AE2wtlibAdditionalComponents;
+import de.mari_023.ae2wtlib.api.AE2wtlibComponents;
 import de.mari_023.ae2wtlib.api.terminal.WTMenuHost;
 import de.mari_023.ae2wtlib.api.terminal.WUTHandler;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHost;
@@ -24,6 +28,8 @@ public class CraftingTerminalHandler {
     private ItemMenuHostLocator locator;
     @Nullable
     private MagnetHost magnetHost;
+    private HashMap<Item, Long> restockAbleItems = new HashMap<>();
+    private boolean restockEnabled = false;
 
     @ApiStatus.Internal
     public CraftingTerminalHandler(Player player) {
@@ -38,6 +44,8 @@ public class CraftingTerminalHandler {
         menuHost = null;
         locator = null;
         magnetHost = null;
+        restockAbleItems.clear();
+        restockEnabled = false;
     }
 
     public ItemStack getCraftingTerminal() {
@@ -115,5 +123,26 @@ public class CraftingTerminalHandler {
             magnetHost = new MagnetHost(this);
         }
         return magnetHost;
+    }
+
+    public long getAccessibleAmount(ItemStack stack) {
+        return stack.getCount()
+                + (restockAbleItems.get(stack.getItem()) == null ? 0 : restockAbleItems.get(stack.getItem()));
+    }
+
+    public boolean isRestockAble(ItemStack stack) {
+        return restockAbleItems.containsKey(stack.getItem());
+    }
+
+    public void setRestockAbleItems(HashMap<Item, Long> items) {
+        restockAbleItems = items;
+    }
+
+    public boolean isRestockEnabled() {
+        return restockEnabled;
+    }
+
+    public void checkTerminal() {
+        restockEnabled = getCraftingTerminal().getOrDefault(AE2wtlibComponents.RESTOCK, false);
     }
 }
