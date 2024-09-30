@@ -58,7 +58,7 @@ jobs:
           changelog-file: CHANGELOG.md
           github-token: ${{ secrets.GITHUB_TOKEN }}
           loaders: neoforge
-          game-versions: 1.21
+          game-versions: 1.21.1
           curseforge-dependencies: |
             applied-energistics-2 | depends
           modrinth-dependencies: |
