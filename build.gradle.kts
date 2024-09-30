@@ -65,6 +65,7 @@ dependencies {
 
     //testing
     //runtimeOnly(fg.deobf("maven.modrinth:aeinfinitybooster:1.20.1-1.0.0+20"))
+    //implementation("maven.modrinth:spark:1.10.109-neoforge")
 }
 
 allprojects {
