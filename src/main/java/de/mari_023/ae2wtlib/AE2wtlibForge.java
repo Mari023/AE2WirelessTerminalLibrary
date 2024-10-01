@@ -1,6 +1,5 @@
 package de.mari_023.ae2wtlib;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -33,7 +32,6 @@ import appeng.items.tools.powered.powersink.PoweredItemCapabilities;
 import de.mari_023.ae2wtlib.api.AE2wtlibAPI;
 import de.mari_023.ae2wtlib.api.terminal.ItemWT;
 import de.mari_023.ae2wtlib.networking.*;
-import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
 
 @Mod(AE2wtlibAPI.MOD_NAME)
 @EventBusSubscriber
@@ -148,8 +146,6 @@ public class AE2wtlibForge {
 
     @SubscribeEvent
     public static void handle(ClientTickEvent.Post event) {
-        if (Minecraft.getInstance().player == null)
-            return;
-        CraftingTerminalHandler.getCraftingTerminalHandler(Minecraft.getInstance().player).checkTerminal();
+        AE2wtlibClient.clientTick();
     }
 }

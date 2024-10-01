@@ -1,1 +1,1 @@
-- fix #305 properly and remove the workaround
+- fix #307
