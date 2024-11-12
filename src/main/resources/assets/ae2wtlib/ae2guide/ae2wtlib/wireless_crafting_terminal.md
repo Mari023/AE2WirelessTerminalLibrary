@@ -22,16 +22,16 @@ It can be combined with other [Wireless Terminals](wireless_terminals.md) into a
 
 ## The UI
 
-See [Terminals](../items-blocks-machines/terminals.md)
+See [Terminals](ae2:items-blocks-machines/terminals.md)
 
 ## Upgrades
 
-The Wireless Crafting Terminal supports the following [upgrades](../items-blocks-machines/upgrade_cards.md):
+The Wireless Crafting Terminal supports the following [upgrades](ae2:items-blocks-machines/upgrade_cards.md):
 
-*   <ItemLink id="energy_card" /> in order to increase the battery capacity
+*   <ItemLink id="ae2:energy_card" /> in order to increase the battery capacity
 *   <ItemLink id="ae2wtlib:quantum_bridge_card" /> which allows the terminal to have unlimited range, even across dimensions and automatically charges the terminal from the ME Network 
 *   <ItemLink id="ae2wtlib:magnet_card" /> to add magnet functionality
 
 ## Recipe
 
-<RecipeFor id="wireless_crafting_terminal" />
+<RecipeFor id="ae2:wireless_crafting_terminal" />
