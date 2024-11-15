@@ -25,9 +25,9 @@ It will also change the item count in your hotbar,
 to show the item count in the network (+ the items that actually are in your hotbar).
 
 It only works as long as you are in range of an access point,
-or if your terminal is [quantum linked](quantum_bridge_card.md)
+or if your terminal is [quantum linked](quantum_bridge_card.md).
 
-In creative mode, this is automatically disabled since you are not depleting items anyway
+In creative mode, this is automatically disabled since you are not depleting items anyway.
 
 Restock works for most actions like placing blocks, eating food and shooting with a bow, restock should work,
 but other actions (especially actions from other mods) might not be recognized and items used won't be restocked.
