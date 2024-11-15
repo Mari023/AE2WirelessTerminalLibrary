@@ -1,1 +1,1 @@
-- fix #307
+- add guidebook pages
