@@ -20,6 +20,9 @@ With a <ItemLink id="ae2wtlib:magnet_card" /> it also acts as a magnet.
 
 It can be combined with other [Wireless Terminals](wireless_terminals.md) into an <ItemLink id="ae2wtlib:wireless_universal_terminal" />
 
+AE2WTLib enhances Minecrafts `Pick Block` functionality, it will draw items from the network if they can't be found in your inventory.
+(It will also try to store items if your current slot happens to be full)
+
 ## The UI
 
 See [Terminals](ae2:items-blocks-machines/terminals.md)
