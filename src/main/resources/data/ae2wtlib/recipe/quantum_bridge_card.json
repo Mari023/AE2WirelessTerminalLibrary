@@ -1,12 +1,19 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": ["a a", " b "],
+  "pattern": [
+    "a a",
+    " b ",
+    "aca"
+  ],
   "key": {
     "a": {
-      "item": "ae2:fluix_pearl"
+      "item": "ae2:quantum_ring"
     },
     "b": {
-      "item": "ae2:wireless_receiver"
+      "item": "ae2:advanced_card"
+    },
+    "c": {
+      "item": "ae2:quantum_link"
     }
   },
   "result": {
