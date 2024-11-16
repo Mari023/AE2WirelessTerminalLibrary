@@ -30,9 +30,9 @@ which can be left-clicked (and right-clicked) to cycle to the next (or last) [Wi
 ## Upgrades
 
 The <ItemLink id="ae2wtlib:wireless_universal_terminal" /> accepts the same upgrades as the installed [Wireless Terminals](wireless_terminals.md).
-Each installed terminal adds 2 upgrade slots
+Each installed terminal adds 2 upgrade slots.
 
 ## Energy storage
 
 Adding terminals combines their energy storage,
-so a <ItemLink id="ae2wtlib:wireless_universal_terminal" /> with two terminals has twice the energy storage of a [Wireless Terminal](wireless_terminals.md) 
+so a <ItemLink id="ae2wtlib:wireless_universal_terminal" /> with two terminals has twice the energy storage of a [Wireless Terminal](wireless_terminals.md).
