@@ -1,0 +1,49 @@
+{
+  "gui.ae2wtlib.creativetab": "AE2 Wireless Terminals (AE2WTLib)",
+
+  "gui.ae2wtlib.trash": "ごみ箱",
+
+  "item.ae2wtlib.quantum_bridge_card": "量子ブリッジカード",
+  "item.ae2wtlib.quantum_bridge_card.desc": "無線端末を量子ブリッジに接続し、無線減の範囲を可能にする。",
+  "item.ae2wtlib.magnet_card": "マグネットカード",
+  "item.ae2wtlib.magnet_card.desc": "無線クラフトターミナルのマグネットアップグレード",
+
+  "gui.ae2wtlib.magnetcard": "マグネットカード",
+  "gui.ae2wtlib.magnetcard.desc.off": "オフ",
+  "gui.ae2wtlib.magnetcard.desc.inv": "インベントリに収集",
+  "gui.ae2wtlib.magnetcard.desc.me": "MEに収集",
+  "gui.ae2wtlib.magnetcard.desc.me_no_magnet": "マグネットオフ、MEに収集",
+  "gui.ae2wtlib.cycle_terminal.desc": "開く%s",
+  "gui.ae2wtlib.cycle_terminal.desc1": "右クリックして %s を開きます",
+  "gui.ae2wtlib.magnetcard.hotkey": "マグネットカード: %s",
+  "gui.ae2wtlib.restock": "補充: %s",
+  "gui.ae2wtlib.off": "オフ",
+  "gui.ae2wtlib.on": "オン",
+  "gui.ae2wtlib.slot.magnetcard.desc": "マグネットカード",
+
+  "gui.ae2wtlib.wireless_terminal_settings_title" : "無線ターミナル設定",
+  "gui.ae2wtlib.magnet_settings_title" : "マグネット設定",
+  "gui.ae2wtlib.pick_block.text" : "ブロック収集を有効にする",
+  "gui.ae2wtlib.restock.text" : "補充",
+  "gui.ae2wtlib.magnet.text" : "マグネット",
+  "gui.ae2wtlib.pickup_to_me.text" : "MEシステムに収集",
+
+  "gui.ae2wtlib.Magnet": "マグネットフィルター",
+  "gui.ae2wtlib.allow": "許可",
+  "gui.ae2wtlib.deny": "拒否",
+  "gui.ae2wtlib.pickup_filter": "収集フィルター: %s",
+  "gui.ae2wtlib.insert_filter": "挿入フィルター: %s",
+  "gui.ae2wtlib.copy_pickup": "収集をコピー",
+  "gui.ae2wtlib.copy_insert": "挿入をコピー",
+  "gui.ae2wtlib.switch": "フィルターを切り替え",
+
+  "item.ae2wtlib.wireless_pattern_encoding_terminal": "無線パターンエンコーディングターミナル",
+  "item.ae2wtlib.wireless_pattern_access_terminal": "無線パターンアクセスターミナル",
+  "item.ae2wtlib.wireless_universal_terminal": "無線ユニバーサルターミナル",
+  "item.ae2wtlib.wireless_universal_terminal.desc": "インストール済みターミナル:",
+
+  "key.ae2.wireless_pattern_access_terminal": "無線パターンアクセスターミナルを開く",
+  "key.ae2.wireless_pattern_encoding_terminal": "無線パターンエンコーディングターミナルを開く",
+  "key.ae2.ae2wtlib_restock": "補充切替",
+  "key.ae2.ae2wtlib_magnet": "マグネットカード切替"
+}
