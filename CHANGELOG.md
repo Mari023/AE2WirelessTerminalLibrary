@@ -1,1 +1,1 @@
-
+- Updated Simplified Chinese localization (#315)
