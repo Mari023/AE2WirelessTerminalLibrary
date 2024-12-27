@@ -20,7 +20,8 @@ import de.mari_023.ae2wtlib.api.terminal.WTMenuHost;
 
 public class WATMenu extends PatternAccessTermMenu {
     public static final ResourceLocation ID = id("wireless_pattern_access_terminal");
-    public static final MenuType<WATMenu> TYPE = MenuTypeBuilder.create(WATMenu::new, WATMenuHost.class).build(ID);
+    public static final MenuType<WATMenu> TYPE = MenuTypeBuilder.create(WATMenu::new, WATMenuHost.class)
+            .buildUnregistered(ID);
 
     private final WATMenuHost watMenuHost;
     private final ToolboxMenu toolboxMenu;

@@ -25,7 +25,8 @@ import de.mari_023.ae2wtlib.wct.magnet_card.MagnetMode;
 
 public class WCTMenu extends CraftingTermMenu {
     public static final ResourceLocation ID = id("wireless_crafting_terminal");
-    public static final MenuType<WCTMenu> TYPE = MenuTypeBuilder.create(WCTMenu::new, WCTMenuHost.class).build(ID);
+    public static final MenuType<WCTMenu> TYPE = MenuTypeBuilder.create(WCTMenu::new, WCTMenuHost.class)
+            .buildUnregistered(ID);
 
     public static final String MAGNET_MODE = "magnetMode";
     public static final String MAGNET_MENU = "magnetMenu";

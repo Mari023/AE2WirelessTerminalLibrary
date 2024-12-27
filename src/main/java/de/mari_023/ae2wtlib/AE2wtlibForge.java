@@ -39,15 +39,18 @@ public class AE2wtlibForge {
     public AE2wtlibForge(IEventBus modEventBus, ModContainer modContainer) {
         new AE2wtlibAPIImplementation();
         CommonHooks.markComponentClassAsValid(ItemStack.class);// TODO figure out if there is a better way
-        AE2wtlib.registerMenus();
         modContainer.registerConfig(ModConfig.Type.COMMON, AE2wtlibConfig.SPEC,
                 AE2wtlibAPI.MOD_NAME + ".toml");
         modEventBus.addListener((RegisterEvent e) -> {
+            if (e.getRegistryKey().equals(Registries.MENU)) {
+                AE2wtlib.registerMenus();
+            }
             if (!e.getRegistryKey().equals(Registries.ITEM))
                 return;
             AE2wtlibItems.init();
             AE2wtlib.onAe2Initialized();
             AE2wtlibCreativeTab.init();
+
         });
         modEventBus.addListener((BuildCreativeModeTabContentsEvent e) -> AE2wtlib.addToCreativeTab());
         modEventBus.addListener((RegisterPayloadHandlersEvent event) -> {

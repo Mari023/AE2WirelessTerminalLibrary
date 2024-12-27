@@ -75,15 +75,12 @@ public class AE2wtlib {
         AE2wtlibCreativeTab.add(AE2wtlibItems.MAGNET_CARD);
     }
 
-    @SuppressWarnings("unused")
     static void registerMenus() {
-        // TODO find a better way to do this.
-        // classloading causes this to be registered by ae2, but I don't know how reliable this is
-        var a = WCTMenu.TYPE;
-        var b = WETMenu.TYPE;
-        var c = WATMenu.TYPE;
-        var d = MagnetMenu.TYPE;
-        var e = TrashMenu.TYPE;
+        Registry.register(BuiltInRegistries.MENU, WCTMenu.ID, WCTMenu.TYPE);
+        Registry.register(BuiltInRegistries.MENU, WETMenu.ID, WETMenu.TYPE);
+        Registry.register(BuiltInRegistries.MENU, WATMenu.ID, WATMenu.TYPE);
+        Registry.register(BuiltInRegistries.MENU, MagnetMenu.ID, MagnetMenu.TYPE);
+        Registry.register(BuiltInRegistries.MENU, TrashMenu.ID, TrashMenu.TYPE);
     }
 
     public static void registerScreens(RegisterMenuScreensEvent event) {

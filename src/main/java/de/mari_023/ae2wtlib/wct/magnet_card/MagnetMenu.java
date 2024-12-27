@@ -24,7 +24,7 @@ import de.mari_023.ae2wtlib.wct.WCTMenuHost;
 public class MagnetMenu extends AEBaseMenu implements ISubMenu {
     public static final ResourceLocation ID = id("magnet");
     public static final MenuType<MagnetMenu> TYPE = MenuTypeBuilder.create(MagnetMenu::new, WCTMenuHost.class)
-            .build(ID);
+            .buildUnregistered(ID);
 
     private final WCTMenuHost host;
     @Nullable

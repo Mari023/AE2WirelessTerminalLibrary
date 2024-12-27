@@ -17,7 +17,8 @@ import de.mari_023.ae2wtlib.api.terminal.WTMenuHost;
 
 public class WETMenu extends PatternEncodingTermMenu {
     public static final ResourceLocation ID = id("wireless_pattern_encoding_terminal");
-    public static final MenuType<WETMenu> TYPE = MenuTypeBuilder.create(WETMenu::new, WETMenuHost.class).build(ID);
+    public static final MenuType<WETMenu> TYPE = MenuTypeBuilder.create(WETMenu::new, WETMenuHost.class)
+            .buildUnregistered(ID);
 
     private final WETMenuHost wetMenuHost;
 

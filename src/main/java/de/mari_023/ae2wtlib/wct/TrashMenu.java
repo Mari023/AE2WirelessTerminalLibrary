@@ -16,7 +16,8 @@ import de.mari_023.ae2wtlib.api.gui.AE2wtlibSlotSemantics;
 
 public class TrashMenu extends AEBaseMenu implements ISubMenu {
     public static final ResourceLocation ID = id("trash");
-    public static final MenuType<TrashMenu> TYPE = MenuTypeBuilder.create(TrashMenu::new, WCTMenuHost.class).build(ID);
+    public static final MenuType<TrashMenu> TYPE = MenuTypeBuilder.create(TrashMenu::new, WCTMenuHost.class)
+            .buildUnregistered(ID);
 
     private final WCTMenuHost host;
 
