@@ -57,11 +57,11 @@ public class AE2wtlibEvents {
         if (toAdd > 0)
             changed = cTHandler.getTargetGrid().getStorageService().getInventory().extract(
                     AEItemKey.of(item), toAdd, Actionable.MODULATE,
-                    new PlayerSource(player, null));
+                    new PlayerSource(player));
         else
             changed = -cTHandler.getTargetGrid().getStorageService().getInventory().insert(
                     AEItemKey.of(item), -toAdd, Actionable.MODULATE,
-                    new PlayerSource(player, null));
+                    new PlayerSource(player));
 
         item.setCount(count + (int) changed);
         setStack.accept(item);
@@ -113,7 +113,7 @@ public class AE2wtlibEvents {
             return;
 
         long inserted = cTHandler.getTargetGrid().getStorageService().getInventory().insert(AEItemKey.of(stack),
-                stack.getCount(), Actionable.MODULATE, new PlayerSource(player, null));
+                stack.getCount(), Actionable.MODULATE, new PlayerSource(player));
         int leftover = (int) (stack.getCount() - inserted);
 
         player.awardStat(Stats.ITEM_PICKED_UP.get(stack.getItem()), (int) inserted);
@@ -137,7 +137,7 @@ public class AE2wtlibEvents {
         if (cTHandler.getTargetGrid().getStorageService() == null)
             return;
         var networkInventory = cTHandler.getTargetGrid().getStorageService().getInventory();
-        var playerSource = new PlayerSource(player, null);
+        var playerSource = new PlayerSource(player);
 
         var inventory = player.getInventory();
         int targetSlot = inventory.getSuitableHotbarSlot();
