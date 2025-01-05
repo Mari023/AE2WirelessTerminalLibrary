@@ -1,3 +1,1 @@
-- Updated Simplified Chinese localization (#315)
-- fix restock amount also displaying in stacks in JEI (#318)
-- add stow hotkey
+
