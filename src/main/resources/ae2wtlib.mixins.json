@@ -8,8 +8,8 @@
     "ServerPlayerMixin"
   ],
   "client": [
-    "MinecraftMixin",
-    "RestockRender"
+    "GuiMixin",
+    "MinecraftMixin"
   ],
   "injectors": {
     "defaultRequire": 1
