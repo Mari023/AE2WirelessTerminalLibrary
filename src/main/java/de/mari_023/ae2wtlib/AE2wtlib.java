@@ -20,6 +20,7 @@ import de.mari_023.ae2wtlib.api.registration.UpgradeHelper;
 import de.mari_023.ae2wtlib.api.registration.WTDefinition;
 import de.mari_023.ae2wtlib.hotkeys.MagnetHotkeyAction;
 import de.mari_023.ae2wtlib.hotkeys.RestockHotkeyAction;
+import de.mari_023.ae2wtlib.hotkeys.StowHotkeyAction;
 import de.mari_023.ae2wtlib.wat.WATMenu;
 import de.mari_023.ae2wtlib.wat.WATMenuHost;
 import de.mari_023.ae2wtlib.wat.WATScreen;
@@ -63,6 +64,7 @@ public class AE2wtlib {
 
         HotkeyActions.register(new RestockHotkeyAction(), "ae2wtlib_restock");
         HotkeyActions.register(new MagnetHotkeyAction(), "ae2wtlib_magnet");
+        HotkeyActions.register(new StowHotkeyAction(), "ae2wtlib_stow");
     }
 
     static void addToCreativeTab() {

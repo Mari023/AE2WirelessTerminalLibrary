@@ -45,5 +45,6 @@
   "key.ae2.wireless_pattern_access_terminal": "Drahtlose Schablonenkonsole Öffnen",
   "key.ae2.wireless_pattern_encoding_terminal": "Drahtlose Schnittstellenkonsole Öffnen",
   "key.ae2.ae2wtlib_restock": "Nachfüllen umschalten",
-  "key.ae2.ae2wtlib_magnet": "Magnet Karte umschalten"
+  "key.ae2.ae2wtlib_magnet": "Magnet Karte umschalten",
+  "key.ae2.ae2wtlib_stow": "Hand in ME System lagern"
 }

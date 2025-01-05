@@ -45,5 +45,6 @@
   "key.ae2.wireless_pattern_access_terminal": "Open Wireless Pattern Access Terminal",
   "key.ae2.wireless_pattern_encoding_terminal": "Open Wireless Pattern Encoding Terminal",
   "key.ae2.ae2wtlib_restock": "Toggle Restock",
-  "key.ae2.ae2wtlib_magnet": "Toggle Magnet Card"
+  "key.ae2.ae2wtlib_magnet": "Toggle Magnet Card",
+  "key.ae2.ae2wtlib_stow": "Stow stack in hand into ME System"
 }
