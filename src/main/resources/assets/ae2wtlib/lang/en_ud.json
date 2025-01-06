@@ -46,5 +46,7 @@
   "key.ae2.wireless_pattern_encoding_terminal": "lɐuᴉɯɹǝ⟘ ƃuᴉpoɔuƎ uɹǝʇʇɐԀ ssǝlǝɹᴉM uǝdO",
   "key.ae2.ae2wtlib_restock": "ʞɔoʇsǝᴚ ǝlƃƃo⟘",
   "key.ae2.ae2wtlib_magnet": "pɹɐƆ ʇǝuƃɐW ǝlƃƃo⟘",
-  "key.ae2.ae2wtlib_stow": "ɯǝʇsʎS ƎW oʇuᴉ puɐɥ uᴉ ʞɔɐʇs ʍoʇS"
+  "key.ae2.ae2wtlib_stow": "ɯǝʇsʎS ƎW oʇuᴉ puɐɥ uᴉ ʞɔɐʇs ʍoʇS",
+
+  "ae2wtlib.configuration.magnet_card_range": "ǝƃuɐɹ pɹɐƆ ʇǝuƃɐW"
 }

@@ -16,6 +16,8 @@ import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.client.gui.ConfigurationScreen;
+import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.CommonHooks;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
@@ -41,6 +43,7 @@ public class AE2wtlibForge {
         CommonHooks.markComponentClassAsValid(ItemStack.class);// TODO figure out if there is a better way
         modContainer.registerConfig(ModConfig.Type.COMMON, AE2wtlibConfig.SPEC,
                 AE2wtlibAPI.MOD_NAME + ".toml");
+        modContainer.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
         modEventBus.addListener((RegisterEvent e) -> {
             if (e.getRegistryKey().equals(Registries.MENU)) {
                 AE2wtlib.registerMenus();
