@@ -1,5 +1,7 @@
 package de.mari_023.ae2wtlib.api.terminal;
 
+import java.util.function.Supplier;
+
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.InteractionHand;
@@ -12,6 +14,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 
+import appeng.api.config.Settings;
+import appeng.api.config.SortDir;
+import appeng.api.config.SortOrder;
+import appeng.api.config.ViewItems;
+import appeng.api.util.IConfigManager;
 import appeng.core.AEConfig;
 import appeng.helpers.WirelessTerminalMenuHost;
 import appeng.items.tools.powered.WirelessTerminalItem;
@@ -65,5 +72,18 @@ public abstract class ItemWT extends WirelessTerminalItem {
 
     public boolean isNotReplaceableByPickAction(ItemStack stack, Player player, int inventorySlot) {
         return true;
+    }
+
+    /**
+     * Return the config manager for the wireless terminal.
+     *
+     * @return config manager of wireless terminal
+     */
+    public IConfigManager getConfigManager(Supplier<ItemStack> target) {
+        return AE2wtlibConfigManager.builder(target)
+                .registerSetting(Settings.SORT_BY, SortOrder.NAME)
+                .registerSetting(Settings.VIEW_MODE, ViewItems.ALL)
+                .registerSetting(Settings.SORT_DIRECTION, SortDir.ASCENDING)
+                .build();
     }
 }
