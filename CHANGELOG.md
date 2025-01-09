@@ -1,3 +1,1 @@
-- add config screen
-- fix an issue where opening the wireless access terminal would reset the settings of other terminals and vice versa (see #317)
-- add AE2wtlib config manager, which allows addons to avoid a similar issue with their terminals  
+
