@@ -10,7 +10,7 @@
 
   "gui.ae2wtlib.magnetcard": "磁卡",
   "gui.ae2wtlib.magnetcard.desc.off": "关",
-  "gui.ae2wtlib.magnetcard.desc.inv": "拾取到库存",
+  "gui.ae2wtlib.magnetcard.desc.inv": "拾取到物品栏",
   "gui.ae2wtlib.magnetcard.desc.me": "拾取到 ME 网路",
   "gui.ae2wtlib.magnetcard.desc.me_no_magnet": "磁铁关闭, 拾取到ME网络",
   "gui.ae2wtlib.cycle_terminal.desc": "打开 %s",
@@ -23,7 +23,7 @@
 
   "gui.ae2wtlib.wireless_terminal_settings_title" : "无线终端设置",
   "gui.ae2wtlib.magnet_settings_title" : "磁铁设置",
-  "gui.ae2wtlib.pick_block.text" : "启用拾取方块",
+  "gui.ae2wtlib.pick_block.text" : "启用选取方块",
   "gui.ae2wtlib.restock.text" : "补货",
   "gui.ae2wtlib.magnet.text" : "磁铁",
   "gui.ae2wtlib.pickup_to_me.text" : "拾取到ME网络",
@@ -45,5 +45,8 @@
   "key.ae2.wireless_pattern_access_terminal": "打开样板管理终端",
   "key.ae2.wireless_pattern_encoding_terminal": "打开无线样板终端",
   "key.ae2.ae2wtlib_restock": "切换补货",
-  "key.ae2.ae2wtlib_magnet": "切换磁卡"
+  "key.ae2.ae2wtlib_magnet": "切换磁卡",
+  "key.ae2.ae2wtlib_stow": "将手持物品收纳至ME网络",
+
+  "ae2wtlib.configuration.magnet_card_range": "磁力卡作用范围"
 }
