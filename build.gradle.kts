@@ -149,8 +149,8 @@ neoForge {
 
         create("guide") {
             client()
-            systemProperty("guideDev.ae2guide.startupPage", "ae2:index.md")
-            systemProperty("guideDev.ae2guide.sources", file("src/main/resources/assets/ae2wtlib/ae2guide").absolutePath)
+            systemProperty("guideme.showOnStartup", "ae2:guide")
+            systemProperty("guideme.ae2.guide.sources", file("src/main/resources/assets/ae2wtlib/ae2guide").absolutePath)
         }
     }
 }
