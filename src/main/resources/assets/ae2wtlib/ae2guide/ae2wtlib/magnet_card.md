@@ -14,7 +14,7 @@ item_ids:
 
 <ItemImage id="ae2wtlib:magnet_card" scale="3" />
 
-The Magnet Card is an [Upgrade Card](ae2:items-blocks-machines/upgrade_cards.md) for the <ItemLink id="ae2:wireless_crafting_terminal" />.
+The <ItemLink id="ae2wtlib:magnet_card" /> is an [Upgrade Card](ae2:items-blocks-machines/upgrade_cards.md) for the <ItemLink id="ae2:wireless_crafting_terminal" />.
 It adds a magnet to the <ItemLink id="ae2:wireless_crafting_terminal" /> which can be toggled or filtered in the GUI.
 There is also a keybinding to turn it on or off.
 
