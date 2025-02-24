@@ -1,5 +1,5 @@
 plugins {
-    id("net.neoforged.moddev") version "2.0.73"
+    id("net.neoforged.moddev") version "2.0.78"
     id("com.diffplug.spotless") version "7.0.0.BETA2"
     id("maven-publish")
 }
@@ -35,7 +35,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 dependencies {
     //implementation("top.theillusivec4.curios:curios-neoforge:${curiosVersion}")
-    implementation("appeng:appliedenergistics2:${ae2Version}")
+    implementation("org.appliedenergistics:appliedenergistics2:${ae2Version}")
     jarJar(project(path = ":ae2wtlib_api"))
     api(project(path = ":ae2wtlib_api"))
 
@@ -75,7 +75,6 @@ allprojects {
         maven {
             url = uri("https://modmaven.dev/")
             content {
-                includeGroup("appeng")
                 includeGroup("mezz.jei")
             }
         }
