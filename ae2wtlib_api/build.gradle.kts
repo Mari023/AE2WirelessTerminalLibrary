@@ -29,7 +29,7 @@ val artifactVersion = version
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
 dependencies {
-    implementation("appeng:appliedenergistics2:${ae2Version}")
+    implementation("org.appliedenergistics:appliedenergistics2:${ae2Version}")
     compileOnly("com.google.code.findbugs:jsr305:3.0.2")
 }
 
