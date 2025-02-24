@@ -33,8 +33,10 @@ public class GuiMixin {
                 .getCraftingTerminalHandler(Minecraft.getInstance().player);
         if (!handler.isRestockEnabled() || stack.getCount() == 1 || !handler.isRestockAble(stack))
             return;
-        guiGraphics.renderItemDecorations(minecraft.font, stack, x, y,
-                ReadableNumberConverter.format(handler.getAccessibleAmount(stack), 3));
+        String number = ReadableNumberConverter.format(handler.getAccessibleAmount(stack), 3);
+        if (number.startsWith(","))
+            number = 0 + number;
+        guiGraphics.renderItemDecorations(minecraft.font, stack, x, y, number);
         ci.cancel();
     }
 }
