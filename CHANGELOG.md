@@ -1,1 +1,2 @@
 - update chinese translations (#329)
+- add leading zero if first char is "," (fix #311)
