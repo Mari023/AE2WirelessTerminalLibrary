@@ -1,1 +1,1 @@
-- Fix incompatibility with AE2 Insert Export Upgrade
+-  Mexican Spanish Translation (#331)
