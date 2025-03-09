@@ -1,0 +1,52 @@
+{
+  "gui.ae2wtlib.creativetab": "AE2 Wireless Terminals (AE2WTLib)",
+
+  "gui.ae2wtlib.trash": "Basura",
+
+  "item.ae2wtlib.quantum_bridge_card": "Tarjeta de Puente Cuántico",
+  "item.ae2wtlib.quantum_bridge_card.desc": "Permite que los terminales inalámbricos se conecten a un puente cuántico, permitiendo un alcance ilimitado",
+  "item.ae2wtlib.magnet_card": "Tarjeta de Imán",
+  "item.ae2wtlib.magnet_card.desc": "Mejora de imán para el Terminal de Artesanía Inalámbrico",
+
+  "gui.ae2wtlib.magnetcard": "Tarjeta de Imán",
+  "gui.ae2wtlib.magnetcard.desc.off": "Apagado",
+  "gui.ae2wtlib.magnetcard.desc.inv": "Recoger al Inventario",
+  "gui.ae2wtlib.magnetcard.desc.me": "Recoger al ME",
+  "gui.ae2wtlib.magnetcard.desc.me_no_magnet": "Imán Apagado, Recoger al ME",
+  "gui.ae2wtlib.cycle_terminal.desc": "Abrir siguiente Terminal",
+  "gui.ae2wtlib.cycle_terminal.desc1": "Haga clic derecho para abrir %s",
+  "gui.ae2wtlib.magnetcard.hotkey": "Tarjeta de Imán: ",
+  "gui.ae2wtlib.restock": "Reabastecer: ",
+  "gui.ae2wtlib.off": "Apagado",
+  "gui.ae2wtlib.on": "Encendido",
+  "gui.ae2wtlib.slot.magnetcard.desc": "Tarjeta de Imán",
+
+  "gui.ae2wtlib.wireless_terminal_settings_title" : "Configuración del Terminal Inalámbrico",
+  "gui.ae2wtlib.magnet_settings_title" : "Configuración del Imán",
+  "gui.ae2wtlib.pick_block.text" : "Habilitar Pick Block",
+  "gui.ae2wtlib.restock.text" : "Reabastecer",
+  "gui.ae2wtlib.magnet.text" : "Imán",
+  "gui.ae2wtlib.pickup_to_me.text" : "Recoger al Sistema ME",
+
+  "gui.ae2wtlib.Magnet": "Filtro de Imán",
+  "gui.ae2wtlib.allow": "Permitir",
+  "gui.ae2wtlib.deny": "Denegar",
+  "gui.ae2wtlib.pickup_filter": "Filtro de Recogida: ",
+  "gui.ae2wtlib.insert_filter": "Filtro de Inserción: ",
+  "gui.ae2wtlib.copy_pickup": "Copiar a Recogida",
+  "gui.ae2wtlib.copy_insert": "Copiar a Inserción",
+  "gui.ae2wtlib.switch": "Cambiar Filtros",
+
+  "item.ae2wtlib.wireless_pattern_encoding_terminal": "Terminal de Codificación de Patrones Inalámbrico",
+  "item.ae2wtlib.wireless_pattern_access_terminal": "Terminal de Acceso a Patrones Inalámbrico",
+  "item.ae2wtlib.wireless_universal_terminal": "Terminal Universal Inalámbrico",
+  "item.ae2wtlib.wireless_universal_terminal.desc": "Terminales Instalados:",
+
+  "key.ae2.wireless_pattern_access_terminal": "Abrir Terminal de Acceso a Patrones Inalámbrico",
+  "key.ae2.wireless_pattern_encoding_terminal": "Abrir Terminal de Codificación de Patrones Inalámbrico",
+  "key.ae2.ae2wtlib_restock": "Alternar Reabastecimiento",
+  "key.ae2.ae2wtlib_magnet": "Alternar Tarjeta de Imán",
+  "key.ae2.ae2wtlib_stow": "Guardar pila en mano en el Sistema ME",
+
+  "ae2wtlib.configuration.magnet_card_range": "Rango de la Tarjeta de Imán"
+}
