@@ -1,0 +1,52 @@
+{
+  "gui.ae2wtlib.creativetab": "AE2 Wireless Terminals (AE2WTLib)",
+
+  "gui.ae2wtlib.trash": "Çöp",
+
+  "item.ae2wtlib.quantum_bridge_card": "Kuantum Köprü Kartı",
+  "item.ae2wtlib.quantum_bridge_card.desc": "Kablosuz terminallerin kuantum köprüsüne bağlanmasına izin verir ve sınırsız menzil sağlar",
+  "item.ae2wtlib.magnet_card": "Mıknatıs Kartı",
+  "item.ae2wtlib.magnet_card.desc": "Kablosuz Üretim Terminali için Mıknatıs yükseltmesi",
+
+  "gui.ae2wtlib.magnetcard": "Mıknatıs Kartı",
+  "gui.ae2wtlib.magnetcard.desc.off": "Kapalı",
+  "gui.ae2wtlib.magnetcard.desc.inv": "Envantere Al",
+  "gui.ae2wtlib.magnetcard.desc.me": "ME'ye Al",
+  "gui.ae2wtlib.magnetcard.desc.me_no_magnet": "Mıknatıs Kapalı, ME'ye Al",
+  "gui.ae2wtlib.cycle_terminal.desc": "Aç %s",
+  "gui.ae2wtlib.cycle_terminal.desc1": "%s açmak için sağ tıkla",
+  "gui.ae2wtlib.magnetcard.hotkey": "Mıknatıs Kartı: %s",
+  "gui.ae2wtlib.restock": "Stok Yenile: %s",
+  "gui.ae2wtlib.off": "Kapalı",
+  "gui.ae2wtlib.on": "Açık",
+  "gui.ae2wtlib.slot.magnetcard.desc": "Mıknatıs Kartı",
+
+  "gui.ae2wtlib.wireless_terminal_settings_title" : "Kablosuz Terminal Ayarları",
+  "gui.ae2wtlib.magnet_settings_title" : "Mıknatıs Ayarları",
+  "gui.ae2wtlib.pick_block.text" : "Blok Seçmeyi Etkinleştir",
+  "gui.ae2wtlib.restock.text" : "Stok Yenile",
+  "gui.ae2wtlib.magnet.text" : "Mıknatıs",
+  "gui.ae2wtlib.pickup_to_me.text" : "ME Sistemine Al",
+
+  "gui.ae2wtlib.Magnet": "Mıknatıs Filtresi",
+  "gui.ae2wtlib.allow": "İzin Ver",
+  "gui.ae2wtlib.deny": "Reddet",
+  "gui.ae2wtlib.pickup_filter": "Alma Filtresi: %s",
+  "gui.ae2wtlib.insert_filter": "Yerleştirme Filtresi: %s",
+  "gui.ae2wtlib.copy_pickup": "Almaya Kopyala",
+  "gui.ae2wtlib.copy_insert": "Yerleştir'e Kopyala",
+  "gui.ae2wtlib.switch": "Filtreleri Değiştir",
+
+  "item.ae2wtlib.wireless_pattern_encoding_terminal": "Kablosuz Şablon Kodlama Terminali",
+  "item.ae2wtlib.wireless_pattern_access_terminal": "Kablosuz Şablon Erişim Terminali",
+  "item.ae2wtlib.wireless_universal_terminal": "Kablosuz Evrensel Terminal",
+  "item.ae2wtlib.wireless_universal_terminal.desc": "Takılan Terminaller:",
+
+  "key.ae2.wireless_pattern_access_terminal": "Kablosuz Şablon Erişim Terminali'ni Aç",
+  "key.ae2.wireless_pattern_encoding_terminal": "Kablosuz Şablon Kodlama Terminali'ni Aç",
+  "key.ae2.ae2wtlib_restock": "Stok Yenile'yi Aç/Kapat",
+  "key.ae2.ae2wtlib_magnet": "Mıknatıs Kartı'nı Aç/Kapat",
+  "key.ae2.ae2wtlib_stow": "Elindeki istifi ME Sistemine yerleştir",
+
+  "ae2wtlib.configuration.magnet_card_range": "Mıknatıs Kartı Menzili"
+}
