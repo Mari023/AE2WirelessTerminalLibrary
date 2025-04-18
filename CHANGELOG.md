@@ -1,1 +1,1 @@
-- Allow WTDefinitionBuilder to automatically retrieve translation keys for a given item (closes #336)
+- add Turkish translation (#335)
