@@ -41,7 +41,7 @@ public class WTDefinitionBuilder {
         this.item = item;
 
         this.hotkeyName = "wireless_" + terminalName + "_terminal";
-        this.translationKey = "item.ae2wtlib.wireless_" + terminalName + "_terminal";
+        this.translationKey = item.getDescriptionId();
         this.upgradeCount = 2;
         this.icon = icon;
     }
@@ -85,10 +85,12 @@ public class WTDefinitionBuilder {
     }
 
     /**
+     * Since 19.2.3, the translationKey is set automatically from the item.
      *
      * @param translationKey The translationKey for the terminal.
      * @return this
      */
+    @Deprecated(forRemoval = true, since = "19.2.3")
     @Contract("_ -> this")
     public WTDefinitionBuilder translationKey(String translationKey) {
         this.translationKey = translationKey;
@@ -96,7 +98,6 @@ public class WTDefinitionBuilder {
     }
 
     /**
-     *
      * @param upgradeCount How many upgrades does this support.
      * @return this
      */

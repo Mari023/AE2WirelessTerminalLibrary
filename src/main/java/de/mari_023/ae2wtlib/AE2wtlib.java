@@ -44,7 +44,7 @@ public class AE2wtlib {
             event.builder("crafting", WCTMenuHost::new, WCTMenu.TYPE, AE2wtlibItems.WIRELESS_CRAFTING_TERMINAL,
                     Icon.CRAFTING)
                     .hotkeyName(HotkeyAction.WIRELESS_TERMINAL)
-                    .translationKey("item.ae2.wireless_crafting_terminal").addTerminal();
+                    .addTerminal();
             event.builder("pattern_encoding", WETMenuHost::new, WETMenu.TYPE, AE2wtlibItems.PATTERN_ENCODING_TERMINAL,
                     Icon.PATTERN_ENCODING)
                     .addTerminal();
