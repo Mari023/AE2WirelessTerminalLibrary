@@ -42,8 +42,8 @@
   "item.ae2wtlib.wireless_universal_terminal": "Vezeték nélküli univerzális terminál",
   "item.ae2wtlib.wireless_universal_terminal.desc": "Telepített terminálok:",
 
-  "key.ae2.wireless_pattern_access_terminal": "Vezeték nélküli minta hozzáférési terminál megnyitása",
-  "key.ae2.wireless_pattern_encoding_terminal": "Vezeték nélküli mintakódoló terminál megnyitása",
+  "key.ae2.wireless_pattern_access_terminal": "Vez. nélküli minta hozzf. term. megnyitása",
+  "key.ae2.wireless_pattern_encoding_terminal": "Vez. nélküli mintakódoló term. megnyitása",
   "key.ae2.ae2wtlib_restock": "Újratöltés vált",
   "key.ae2.ae2wtlib_magnet": "Mágnes kártya vált",
   "key.ae2.ae2wtlib_stow": "Halom elhelyezése az ME rendszerbe",
