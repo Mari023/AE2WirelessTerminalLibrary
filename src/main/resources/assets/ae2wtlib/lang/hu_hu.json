@@ -1,0 +1,52 @@
+{
+  "gui.ae2wtlib.creativetab": "AE2 Vezeték Nélküli Terminálok (AE2WTLib)",
+
+  "gui.ae2wtlib.trash": "Kuka",
+
+  "item.ae2wtlib.quantum_bridge_card": "Kvantum híd kártya",
+  "item.ae2wtlib.quantum_bridge_card.desc": "Lehetővé teszi a vezeték nélküli terminálok csatlakozását egy kvantum híddal, lehetővé téve a korlátlan hatótávolságot",
+  "item.ae2wtlib.magnet_card": "Mágnes kártya",
+  "item.ae2wtlib.magnet_card.desc": "Mágnes fejlesztés a Vezeték nélküli barkácsterminálhoz",
+
+  "gui.ae2wtlib.magnetcard": "Mágnes kártya",
+  "gui.ae2wtlib.magnetcard.desc.off": "Ki",
+  "gui.ae2wtlib.magnetcard.desc.inv": "Felvétel a tárolódba",
+  "gui.ae2wtlib.magnetcard.desc.me": "Felvétel az ME rendszerbe",
+  "gui.ae2wtlib.magnetcard.desc.me_no_magnet": "Mágnes Ki, Felvétel az ME-be",
+  "gui.ae2wtlib.cycle_terminal.desc": "%s megnyitása",
+  "gui.ae2wtlib.cycle_terminal.desc1": "Jobb kattintás %s megnyitásához",
+  "gui.ae2wtlib.magnetcard.hotkey": "Mágnes kártya: ",
+  "gui.ae2wtlib.restock": "Újratöltés: ",
+  "gui.ae2wtlib.off": "Ki",
+  "gui.ae2wtlib.on": "Be",
+  "gui.ae2wtlib.slot.magnetcard.desc": "Mágnes kártya",
+
+  "gui.ae2wtlib.wireless_terminal_settings_title" : "Vez. nélküli Terminál Beállítások",
+  "gui.ae2wtlib.magnet_settings_title" : "Mágnes beállítások",
+  "gui.ae2wtlib.pick_block.text" : "Blokk kiválasztás engedélyezése",
+  "gui.ae2wtlib.restock.text" : "Készletfeltöltés",
+  "gui.ae2wtlib.magnet.text" : "Mágnes",
+  "gui.ae2wtlib.pickup_to_me.text" : "Felvétel az ME rendszerbe",
+
+  "gui.ae2wtlib.Magnet": "Mágnesszűrő",
+  "gui.ae2wtlib.allow": "Enged",
+  "gui.ae2wtlib.deny": "Tilt",
+  "gui.ae2wtlib.pickup_filter": "Felvétel szűrő: %s",
+  "gui.ae2wtlib.insert_filter": "Behelyezés szűrő: %s",
+  "gui.ae2wtlib.copy_pickup": "Másolás a felvételbe",
+  "gui.ae2wtlib.copy_insert": "Másolás a behelyezésbe",
+  "gui.ae2wtlib.switch": "Szűrők vált",
+
+  "item.ae2wtlib.wireless_pattern_encoding_terminal": "Vezeték nélküli mintakódoló terminál",
+  "item.ae2wtlib.wireless_pattern_access_terminal": "Vezeték nélküli minta hozzáférési terminál",
+  "item.ae2wtlib.wireless_universal_terminal": "Vezeték nélküli univerzális terminál",
+  "item.ae2wtlib.wireless_universal_terminal.desc": "Telepített terminálok:",
+
+  "key.ae2.wireless_pattern_access_terminal": "Vez. nélküli minta hozzf. term. megnyitása",
+  "key.ae2.wireless_pattern_encoding_terminal": "Vez. nélküli mintakódoló term. megnyitása",
+  "key.ae2.ae2wtlib_restock": "Újratöltés vált",
+  "key.ae2.ae2wtlib_magnet": "Mágnes kártya vált",
+  "key.ae2.ae2wtlib_stow": "Halom elhelyezése az ME rendszerbe",
+
+  "ae2wtlib.configuration.magnet_card_range": "Mágnes hártya hatótávolsága"
+}
