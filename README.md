@@ -37,6 +37,18 @@ It also adds a wireless universal terminal which has all wireless terminals in o
 * Text and Translations
   - [![License](https://img.shields.io/badge/License-No%20Restriction-green.svg?style=flat-square)](https://creativecommons.org/publicdomain/zero/1.0/)
 
+## Translations
+
+There are two sets of localisation files:
+
+The main mod, in `src/main/resources/assets/ae2wtlib/lang/en_us.json`
+
+https://github.com/bayi/AE2WirelessTerminalLibrary/blob/main/src/main/resources/assets/ae2wtlib/lang/en_us.json
+
+And the api mod, in `ae2wtlib_api/src/main/resources/assets/ae2wtlib_api/lang/en_us.json`
+
+https://github.com/Mari023/AE2WirelessTerminalLibrary/blob/main/ae2wtlib_api/src/main/resources/assets/ae2wtlib_api/lang/en_us.json
+
 ## API
 
 Like ae2, ae2wtlib is available on modmaven
