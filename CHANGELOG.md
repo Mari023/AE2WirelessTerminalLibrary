@@ -1,1 +1,2 @@
 - add Turkish translation (#335)
+- add Hungarian translation (#345, #347)
