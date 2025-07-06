@@ -1,0 +1,7 @@
+{
+  "chat.ae2wtlib.NetworkNotPowered" :  "Hálózat nincs táplálva",
+  "chat.ae2wtlib.SingularityNotPresent" : "Hiányzó szingularitás",
+  "chat.ae2wtlib.NoQuantumBridgeCard" : "Hiányzó kvantum híd kártya",
+  "chat.ae2wtlib.NoQuantumBridge" : "Kvantum hálózati híd nem található. Betöltött chunkban van?",
+  "chat.ae2wtlib.NetworkMismatch": "Kvantum híd és a vezeték nélküli hozzáférési pont különböző hálózatokhoz csatlakozik"
+}
