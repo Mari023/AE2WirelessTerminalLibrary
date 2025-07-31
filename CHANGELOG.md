@@ -1,2 +1,3 @@
 - add Turkish translation (#335)
 - add Hungarian translation (#345, #347)
+- disallow removing armor with curse of binding (fix #348)

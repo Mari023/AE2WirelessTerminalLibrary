@@ -3,8 +3,9 @@ package de.mari_023.ae2wtlib.wct;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
 import appeng.menu.slot.AppEngSlot;
 
@@ -22,9 +23,13 @@ public class ArmorSlot extends AppEngSlot {
 
     public boolean mayPlace(ItemStack stack) {
         return armor == Armor.OFFHAND
-                || (playerInventory.canPlaceItem(armor.armor.invSlot, stack)
-                        && stack.getItem() instanceof ArmorItem aItem
-                        && aItem.getEquipmentSlot().equals(armor.armor.equipmentSlot));
+                || stack.canEquip(armor.armor.equipmentSlot(), playerInventory.player);
+    }
+
+    @Override
+    public boolean mayPickup(Player player) {
+        return super.mayPickup(player) && (player.isCreative()
+                || !EnchantmentHelper.has(getItem(), EnchantmentEffectComponents.PREVENT_ARMOR_CHANGE));
     }
 
     public Icon icon() {
@@ -36,7 +41,7 @@ public class ArmorSlot extends AppEngSlot {
         LEGS(new ArmorValue(EquipmentSlot.LEGS, 37, Icon.EMPTY_ARMOR_SLOT_LEGGINGS)),
         CHEST(new ArmorValue(EquipmentSlot.CHEST, 38, Icon.EMPTY_ARMOR_SLOT_CHESTPLATE)),
         HEAD(new ArmorValue(EquipmentSlot.HEAD, 39, Icon.EMPTY_ARMOR_SLOT_HELMET)),
-        OFFHAND(new ArmorValue(EquipmentSlot.HEAD, Inventory.SLOT_OFFHAND, Icon.EMPTY_ARMOR_SLOT_SHIELD));
+        OFFHAND(new ArmorValue(EquipmentSlot.OFFHAND, Inventory.SLOT_OFFHAND, Icon.EMPTY_ARMOR_SLOT_SHIELD));
 
         public final ArmorValue armor;
 
