@@ -2,3 +2,4 @@
 - add Hungarian translation (#345, #347)
 - disallow removing armor with curse of binding (fix #348)
 - add tag for disabling restock, disable restock for powah reactors (fix #349)
+- fix issue where items that stack to less than 32 would get overstacked by pick block
