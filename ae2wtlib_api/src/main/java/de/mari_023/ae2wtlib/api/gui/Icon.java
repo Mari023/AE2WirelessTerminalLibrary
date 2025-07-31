@@ -22,7 +22,9 @@ public record Icon(int x, int y, int width, int height, Texture texture) {
     public static final Icon TOOLBAR_BUTTON_BACKGROUND_HOVERED = new Icon(212, 128, 18, 19, AE2TEXTURE);
     public static final Icon TOOLBAR_BUTTON_BACKGROUND_FOCUSED = new Icon(194, 128, 18, 20, AE2TEXTURE);
 
+    public static final Icon TERMINAL_SETTINGS = new Icon(32, 65, 16, 15, Icon.AE2TEXTURE);
     public static final Icon MAGNET = new Icon(0, 0);
+    @Deprecated
     public static final Icon MAGNET_FILTER = new Icon(0, 16);
     public static final Icon TRASH = new Icon(0, 32);
 
