@@ -1,3 +1,4 @@
 - add Turkish translation (#335)
 - add Hungarian translation (#345, #347)
 - disallow removing armor with curse of binding (fix #348)
+- add tag for disabling restock, disable restock for powah reactors (fix #349)

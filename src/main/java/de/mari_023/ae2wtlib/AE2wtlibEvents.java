@@ -2,6 +2,7 @@ package de.mari_023.ae2wtlib;
 
 import java.util.function.Consumer;
 
+import de.mari_023.ae2wtlib.api.AE2wtlibTags;
 import net.minecraft.network.protocol.game.ClientboundSetCarriedItemPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
@@ -37,6 +38,9 @@ public class AE2wtlibEvents {
             return;
         if (item.isEmpty())
             return;
+        if (item.is(AE2wtlibTags.NO_RESTOCK)) {
+            return;
+        }
 
         CraftingTerminalHandler cTHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
         if (!cTHandler.inRange())

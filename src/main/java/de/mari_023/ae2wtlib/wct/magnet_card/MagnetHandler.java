@@ -6,6 +6,7 @@ import java.util.WeakHashMap;
 
 import com.google.common.collect.Maps;
 
+import de.mari_023.ae2wtlib.api.AE2wtlibTags;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntitySelector;
@@ -70,6 +71,9 @@ public class MagnetHandler {
                 continue;
             if (items.containsKey(stack.getItem()))
                 continue;
+            if (stack.is(AE2wtlibTags.NO_RESTOCK)) {
+                continue;
+            }
             AEItemKey key = AEItemKey.of(stack);
             if (key == null)
                 items.put(stack.getItem(), 0L);
