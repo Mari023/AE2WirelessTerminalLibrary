@@ -121,7 +121,8 @@ public class AE2wtlibEvents {
                 playerSource);
         if (insert < toReplace.getCount())
             return;
-        var extracted = networkInventory.extract(AEItemKey.of(stack), 32, Actionable.SIMULATE, playerSource);
+        int targetAmount = Math.max(1, stack.getMaxStackSize() / 2);
+        var extracted = networkInventory.extract(AEItemKey.of(stack), targetAmount, Actionable.SIMULATE, playerSource);
         if (extracted == 0)
             return;
 
@@ -133,7 +134,7 @@ public class AE2wtlibEvents {
             return;
         }
 
-        extracted = networkInventory.extract(AEItemKey.of(stack), 32, Actionable.MODULATE, playerSource);
+        extracted = networkInventory.extract(AEItemKey.of(stack), targetAmount, Actionable.MODULATE, playerSource);
         if (extracted == 0) {
             inventory.setItem(targetSlot, ItemStack.EMPTY);
             return;
