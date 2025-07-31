@@ -1,6 +1,5 @@
 package de.mari_023.ae2wtlib;
 
-import appeng.api.ids.AETags;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;

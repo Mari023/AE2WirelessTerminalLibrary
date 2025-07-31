@@ -2,7 +2,6 @@ package de.mari_023.ae2wtlib;
 
 import java.util.function.Consumer;
 
-import de.mari_023.ae2wtlib.api.AE2wtlibTags;
 import net.minecraft.network.protocol.game.ClientboundSetCarriedItemPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
@@ -18,6 +17,7 @@ import appeng.api.stacks.AEItemKey;
 import appeng.me.helpers.PlayerSource;
 
 import de.mari_023.ae2wtlib.api.AE2wtlibComponents;
+import de.mari_023.ae2wtlib.api.AE2wtlibTags;
 import de.mari_023.ae2wtlib.networking.PickBlockPacket;
 import de.mari_023.ae2wtlib.networking.UpdateRestockPacket;
 import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;

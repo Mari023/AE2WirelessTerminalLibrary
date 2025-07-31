@@ -6,7 +6,6 @@ import java.util.WeakHashMap;
 
 import com.google.common.collect.Maps;
 
-import de.mari_023.ae2wtlib.api.AE2wtlibTags;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntitySelector;
@@ -26,6 +25,7 @@ import de.mari_023.ae2wtlib.AE2wtlibAdditionalComponents;
 import de.mari_023.ae2wtlib.AE2wtlibConfig;
 import de.mari_023.ae2wtlib.AE2wtlibItems;
 import de.mari_023.ae2wtlib.api.AE2wtlibComponents;
+import de.mari_023.ae2wtlib.api.AE2wtlibTags;
 import de.mari_023.ae2wtlib.networking.RestockAmountPacket;
 import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
 
