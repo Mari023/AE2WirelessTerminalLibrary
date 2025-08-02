@@ -1,1 +1,2 @@
 - fix bug where the singularity component would cause issues when ae2wtlib is not present
+- fix wireless pattern access terminal hotkey not closing the terminal when used inside the terminal (fix #351)

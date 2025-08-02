@@ -33,6 +33,12 @@ public interface IUniversalTerminalCapable {
     void storeState();
 
     default boolean checkForTerminalKeys(int keyCode, int scanCode) {
+        var closingHotkey = Hotkeys.getHotkeyMapping(getHost().getCloseHotkey());
+        if (closingHotkey != null && closingHotkey.mapping().matches(keyCode, scanCode)) {
+            getHost().getPlayer().closeContainer();
+            return true;
+        }
+
         for (var terminal : WTDefinition.wirelessTerminals()) {
             var hotkey = Hotkeys.getHotkeyMapping(terminal.hotkeyName());
             if (hotkey == null)
@@ -61,7 +67,7 @@ public interface IUniversalTerminalCapable {
 
     /**
      * creates and adds the upgrade panel
-     * 
+     *
      * @param widgets the WidgetContainer where the widget will be added
      * @param menu    the menu corresponding to this screen
      */
