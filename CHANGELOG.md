@@ -1,1 +1,1 @@
-
+- fix bug where the singularity component would cause issues when ae2wtlib is not present

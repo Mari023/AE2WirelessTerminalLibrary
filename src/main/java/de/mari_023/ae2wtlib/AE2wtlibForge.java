@@ -16,7 +16,6 @@ import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
-import net.neoforged.neoforge.common.CommonHooks;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
 import net.neoforged.neoforge.event.entity.player.ArrowLooseEvent;
@@ -38,7 +37,6 @@ import de.mari_023.ae2wtlib.networking.*;
 public class AE2wtlibForge {
     public AE2wtlibForge(IEventBus modEventBus, ModContainer modContainer) {
         new AE2wtlibAPIImplementation();
-        CommonHooks.markComponentClassAsValid(ItemStack.class);// TODO figure out if there is a better way
         modContainer.registerConfig(ModConfig.Type.COMMON, AE2wtlibConfig.SPEC,
                 AE2wtlibAPI.MOD_NAME + ".toml");
         modEventBus.addListener((RegisterEvent e) -> {
