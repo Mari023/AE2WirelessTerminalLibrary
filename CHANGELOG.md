@@ -1,1 +1,2 @@
--  Mexican Spanish Translation (#331)
+- Mexican Spanish Translation (#331)
+- Spanish Translation and updates to the Mexican Spanish Translation (#352)
