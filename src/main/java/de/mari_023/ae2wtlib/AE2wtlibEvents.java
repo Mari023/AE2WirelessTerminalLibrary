@@ -53,7 +53,7 @@ public class AE2wtlibEvents {
         if (cTHandler.getTargetGrid().getStorageService() == null)
             return;
 
-        int toAdd = Math.max(item.getMaxStackSize() / 2, 1) - count;
+        int toAdd = item.getMaxStackSize() - count;
         if (toAdd == 0)
             return;
 
@@ -91,24 +91,12 @@ public class AE2wtlibEvents {
             return;
         if (player.level().isClientSide())
             return;
-        if (player.isShiftKeyDown())
+
+        if (!canInsert(stack, player))
             return;
+
         CraftingTerminalHandler cTHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
-        ItemStack terminal = cTHandler.getCraftingTerminal();
-
-        if (!(MagnetHandler.getMagnetMode(terminal).pickupToME()))
-            return;
         if (!cTHandler.inRange())
-            return;
-
-        MagnetHost magnetHost = cTHandler.getMagnetHost();
-        if (magnetHost == null)
-            return;
-
-        // if the filter is empty, it will match anything, even in whitelist mode
-        if (magnetHost.getInsertFilter().isEmpty() && magnetHost.getInsertMode() == IncludeExclude.WHITELIST)
-            return;
-        if (!magnetHost.getInsertFilter().matchesFilter(AEItemKey.of(stack), magnetHost.getInsertMode()))
             return;
 
         if (cTHandler.getTargetGrid() == null)
@@ -124,6 +112,47 @@ public class AE2wtlibEvents {
         player.onItemPickup(entity);
 
         stack.setCount(leftover);
+    }
+
+    private static boolean canInsert(ItemStack stack, Player player) {
+        CraftingTerminalHandler cTHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
+        ItemStack terminal = cTHandler.getCraftingTerminal();
+
+        cTHandler.checkTerminal();
+        if (cTHandler.isRestockEnabled() && isRestocking(stack, player))
+            return true;
+
+        if (player.isShiftKeyDown())
+            return false;
+
+        if (!(MagnetHandler.getMagnetMode(terminal).pickupToME()))
+            return false;
+
+        MagnetHost magnetHost = cTHandler.getMagnetHost();
+        if (magnetHost == null)
+            return false;
+
+        // if the filter is empty, it will match anything, even in whitelist mode
+        if (magnetHost.getInsertFilter().isEmpty() && magnetHost.getInsertMode() == IncludeExclude.WHITELIST)
+            return false;
+        if (!magnetHost.getInsertFilter().matchesFilter(AEItemKey.of(stack), magnetHost.getInsertMode()))
+            return false;
+
+        return true;
+    }
+
+    private static boolean isRestocking(ItemStack stack, Player player) {
+        if (stack.is(AE2wtlibTags.NO_RESTOCK)) {
+            return false;
+        }
+        if (stack.getMaxStackSize() == 1) {
+            return false;
+        }
+        for (int i = 0; i < 9; i++) {
+            if (ItemStack.isSameItemSameComponents(stack, player.getInventory().getItem(i)))
+                return true;
+        }
+        return false;
     }
 
     public static void pickBlock(ItemStack stack) {
@@ -152,9 +181,6 @@ public class AE2wtlibEvents {
         if (insert < toReplace.getCount())
             return;
         int targetAmount = stack.getMaxStackSize();
-        if (!stack.is(AE2wtlibTags.NO_RESTOCK) && targetAmount != 1) {
-            targetAmount /= 2;
-        }
         var extracted = networkInventory.extract(AEItemKey.of(stack), targetAmount, Actionable.SIMULATE, playerSource);
         if (extracted == 0)
             return;

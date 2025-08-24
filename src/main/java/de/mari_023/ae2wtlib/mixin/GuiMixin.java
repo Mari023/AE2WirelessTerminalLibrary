@@ -31,7 +31,7 @@ public class GuiMixin {
             return;
         CraftingTerminalHandler handler = CraftingTerminalHandler
                 .getCraftingTerminalHandler(Minecraft.getInstance().player);
-        if (!handler.isRestockEnabled() || stack.getCount() == 1 || !handler.isRestockAble(stack))
+        if (!handler.isRestockEnabled() || stack.getMaxStackSize() == 1 || !handler.isRestockAble(stack))
             return;
         String number = ReadableNumberConverter.format(handler.getAccessibleAmount(stack), 3);
         if (number.startsWith(","))

@@ -1,1 +1,3 @@
 - Spain Spanish Translation and updates to the Mexican Spanish Translation (#353)
+- rework pickup so it will fill to a full stack 
+- always use pickup to ME for items that are being restocked (even if it wouldn't be available / enabled)
