@@ -1,5 +1,1 @@
-- Spain Spanish Translation and updates to the Mexican Spanish Translation (#353)
-- rework pickup so it will fill to a full stack 
-- always use pickup to ME for items that are being restocked (even if it wouldn't be available / enabled)
-- mention that ae2wtlib's Wireless Terminals can be linked like ae2's Wireless Terminals
-- improve Restock: it now works on Create Depots, and likely a lot more clicking-on-block situations
+
