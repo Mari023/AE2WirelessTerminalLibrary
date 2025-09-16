@@ -10,7 +10,6 @@ import de.mari_023.ae2wtlib.AE2wtlibSlotSemantics;
 import de.mari_023.ae2wtlib.terminal.ArmorSlot;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHandler;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetMode;
-import de.mari_023.ae2wtlib.wct.magnet_card.MagnetSettings;
 import de.mari_023.ae2wtlib.wct.magnet_card.config.MagnetMenu;
 import de.mari_023.ae2wtlib.wut.ItemWUT;
 
@@ -63,21 +62,14 @@ public class WCTMenu extends CraftingTermMenu {
         return wctMenuHost.getActionableNode();
     }
 
-    private MagnetSettings magnetSettings;
-
-    public MagnetSettings getMagnetSettings() {
-        return magnetSettings = MagnetHandler.getMagnetSettings(wctMenuHost.getItemStack());
-    }
-
-    public void saveMagnetSettings() {
-        MagnetHandler.saveMagnetSettings(wctMenuHost.getItemStack(), magnetSettings);
+    public MagnetMode getMagnetMode() {
+        return MagnetHandler.getMagnetMode(wctMenuHost.getItemStack());
     }
 
     public void setMagnetMode(MagnetMode mode) {
         if (isClientSide())
             sendClientAction(MAGNET_MODE, mode);
-        getMagnetSettings().magnetMode = mode;
-        saveMagnetSettings();
+        MagnetHandler.saveMagnetMode(wctMenuHost.getItemStack(), mode);
     }
 
     public void openMagnetMenu() {

@@ -7,7 +7,6 @@ import de.mari_023.ae2wtlib.TextConstants;
 import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHandler;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetMode;
-import de.mari_023.ae2wtlib.wct.magnet_card.MagnetSettings;
 
 import appeng.api.features.HotkeyAction;
 
@@ -18,8 +17,8 @@ public class MagnetHotkeyAction implements HotkeyAction {
                 .getCraftingTerminal();
         if (terminal.isEmpty())
             return false;
-        MagnetSettings settings = MagnetHandler.getMagnetSettings(terminal);
-        settings.magnetMode = switch (settings.magnetMode) {
+        MagnetMode settings = MagnetHandler.getMagnetMode(terminal);
+        settings = switch (settings) {
             case OFF -> {
                 player.displayClientMessage(TextConstants.HOTKEY_MAGNETCARD_INVENTORY, true);
                 yield MagnetMode.PICKUP_INVENTORY;
@@ -29,12 +28,16 @@ public class MagnetHotkeyAction implements HotkeyAction {
                 yield MagnetMode.PICKUP_ME;
             }
             case PICKUP_ME -> {
+                player.displayClientMessage(TextConstants.PICKUP_ME_NO_MAGNET, true);
+                yield MagnetMode.PICKUP_ME_NO_MAGNET;
+            }
+            case PICKUP_ME_NO_MAGNET -> {
                 player.displayClientMessage(TextConstants.HOTKEY_MAGNETCARD_OFF, true);
                 yield MagnetMode.OFF;
             }
-            default -> settings.magnetMode;
+            default -> settings;
         };
-        MagnetHandler.saveMagnetSettings(terminal, settings);
+        MagnetHandler.saveMagnetMode(terminal, settings);
         return true;
     }
 }

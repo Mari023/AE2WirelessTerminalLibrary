@@ -1,16 +1,17 @@
 {
-  "required": true,
-  "minVersion": "0.8",
-  "package": "de.mari_023.ae2wtlib.mixin",
-  "compatibilityLevel": "JAVA_17",
-  "refmap": "ae2wtlib.mixins.refmap.json",
-  "mixins": [
-    "CraftingTerminalItemMixin"
-  ],
-  "client": [
-    "RestockRender"
-  ],
-  "injectors": {
-    "defaultRequire": 1
+    "required": true,
+    "minVersion": "0.8",
+    "package": "de.mari_023.ae2wtlib.mixin",
+    "compatibilityLevel": "JAVA_17",
+    "refmap": "ae2wtlib.mixins.refmap.json",
+    "mixins": [
+        "CraftingTerminalItemMixin"
+    ],
+    "client": [
+        "MinecraftMixin",
+        "RestockRender"
+    ],
+    "injectors": {
+        "defaultRequire": 1
   }
 }
