@@ -50,12 +50,11 @@ public class WirelessTerminalSettingsScreen extends AESubScreen<WCTMenu, WCTScre
         ItemStack item = stack();
 
         item.getOrCreateTag().putBoolean(AE2wtlibTags.PICK_BLOCK, pickBlock.isSelected());
-        item.getOrCreateTag().putBoolean(AE2wtlibTags.RESTOCK, restock.isSelected());
-        var magnetSettings = MagnetMode.fromByte(item.getOrCreateTag().getByte(AE2wtlibTags.MAGNET_SETTINGS));
+        item.getTag().putBoolean(AE2wtlibTags.RESTOCK, restock.isSelected());
+        var magnetSettings = MagnetMode.fromByte(item.getTag().getByte(AE2wtlibTags.MAGNET_SETTINGS));
         magnetSettings = magnetSettings.set(magnet.isSelected(), pickupToME.isSelected());
-        item.getOrCreateTag().putByte(AE2wtlibTags.MAGNET_SETTINGS, magnetSettings.getId());
+        item.getTag().putByte(AE2wtlibTags.MAGNET_SETTINGS, magnetSettings.getId());
 
-        ClientNetworkManager.sendToServer(new TerminalSettingsPacket(pickBlock.isSelected(), restock.isSelected(),
-                magnet.isSelected(), pickupToME.isSelected()));
+        ClientNetworkManager.sendToServer(new TerminalSettingsPacket(item.getTag()));
     }
 }

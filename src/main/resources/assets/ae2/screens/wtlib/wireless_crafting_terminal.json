@@ -71,16 +71,16 @@
       "bottom": 167
     },
     "wirelessTerminalSettingsButton": {
-        "right": 82,
-        "bottom": 110
+        "right": 81,
+        "bottom": 111
     },
     "magnetCardMenuButton": {
-        "right": 66,
-        "bottom": 110
+        "right": 65,
+        "bottom": 111
     },
     "trashButton": {
-        "right": 50,
-        "bottom": 110
+        "right": 49,
+        "bottom": 111
     },
     "player": {
       "left": 52,
