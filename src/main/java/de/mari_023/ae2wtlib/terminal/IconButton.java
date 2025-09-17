@@ -16,21 +16,17 @@ import appeng.client.gui.widgets.ITooltip;
 public class IconButton extends Button implements ITooltip {
     private final Icon icon;
     private final Icon bg;
-    private final Icon bg_hovered;
-    private final Icon bg_focused;
     @Nullable
     private List<Component> tooltip;
 
     public IconButton(OnPress onPress, Icon icon) {
-        this(onPress, icon, Icon.BUTTON_BACKGROUND, Icon.BUTTON_BACKGROUND_HOVERED, Icon.BUTTON_BACKGROUND_FOCUSED);
+        this(onPress, icon, Icon.BUTTON_BACKGROUND);
     }
 
-    public IconButton(OnPress onPress, Icon icon, Icon bg, Icon bg_hovered, Icon bg_focused) {
+    public IconButton(OnPress onPress, Icon icon, Icon bg) {
         super(0, 0, 16, 16, Component.empty(), onPress, Button.DEFAULT_NARRATION);
         this.icon = icon;
         this.bg = bg;
-        this.bg_hovered = bg_hovered;
-        this.bg_focused = bg_focused;
     }
 
     public void setVisibility(boolean vis) {
@@ -43,23 +39,24 @@ public class IconButton extends Button implements ITooltip {
         if (!visible)
             return;
 
-        var yOffset = isHovered() ? 1 : 0;
-        var bg = getBG();
-        var bgSizeOffset = bg.width() > 16 ? 1 : 0;
+        bg.getBlitter().dest(getX(), getY(), bg.width(), bg.height()).blit(guiGraphics);
+        getIcon().getBlitter().dest(getX(), getY()).blit(guiGraphics);
 
-        bg.getBlitter()
-                .dest(getX() - 1, getY() + yOffset, bg.width(), bg.height())
-                .blit(guiGraphics);
-        getIcon().getBlitter().dest(getX() - 1 + bgSizeOffset, getY() + bgSizeOffset + yOffset)
-                .blit(guiGraphics);
+        if (isFocused()) {
+            // Draw 1px border with 4 quads
+            // top
+            guiGraphics.fill(getX() - 1, getY() - 1, getX() + width + 1, getY(), 0xFFFFFFFF);
+            // left
+            guiGraphics.fill(getX() - 1, getY(), getX(), getY() + height, 0xFFFFFFFF);
+            // right
+            guiGraphics.fill(getX() + width, getY(), getX() + width + 1, getY() + height, 0xFFFFFFFF);
+            // bottom
+            guiGraphics.fill(getX() - 1, getY() + height, getX() + width + 1, getY() + height + 1, 0xFFFFFFFF);
+        }
     }
 
     protected Icon getIcon() {
         return icon;
-    }
-
-    private Icon getBG() {
-        return isHovered() ? bg_hovered : isFocused() ? bg_focused : bg;
     }
 
     @Override
@@ -74,8 +71,8 @@ public class IconButton extends Button implements ITooltip {
         return new Rect2i(
                 getX(),
                 getY(),
-                getBG().width(),
-                getBG().height());
+                bg.width(),
+                bg.height());
     }
 
     @Override
