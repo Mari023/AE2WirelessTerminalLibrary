@@ -8,7 +8,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
@@ -29,8 +28,8 @@ import de.mari_023.ae2wtlib.api.AE2wtlibAPI;
 import de.mari_023.ae2wtlib.api.registration.WTDefinition;
 
 public abstract class ItemWT extends WirelessTerminalItem {
-    public ItemWT() {
-        super(AEConfig.instance().getWirelessTerminalBattery(), new Item.Properties().stacksTo(1));
+    public ItemWT(Properties p) {
+        super(AEConfig.instance().getWirelessTerminalBattery(), p.stacksTo(1));
     }
 
     public boolean open(final Player player, final ItemMenuHostLocator locator,

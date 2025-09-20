@@ -22,8 +22,8 @@ public class AE2wtlibEmiPlugin implements EmiPlugin {
         registry.addRecipeHandler(WCTMenu.TYPE, new EmiUseCraftingRecipeHandler<>(WCTMenu.class));*/
 
         ItemStack wut = WTDefinitions.CRAFTING.universalTerminal();
-        AE2wtlibItems.UNIVERSAL_TERMINAL.injectAEPower(wut,
-                AE2wtlibItems.UNIVERSAL_TERMINAL.getAEMaxPower(wut), Actionable.MODULATE);
+        AE2wtlibItems.UNIVERSAL_TERMINAL.asItem().injectAEPower(wut,
+                AE2wtlibItems.UNIVERSAL_TERMINAL.asItem().getAEMaxPower(wut), Actionable.MODULATE);
 
         registry.addWorkstation(VanillaEmiRecipeCategories.CRAFTING,
                 EmiStack.of(wut));

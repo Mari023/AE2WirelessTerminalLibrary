@@ -23,7 +23,7 @@ public class AE2wtlibAPIImplementation extends AE2wtlibAPIImpl {
 
     @Override
     public boolean isUniversalTerminal(Item item) {
-        return item == AE2wtlibItems.UNIVERSAL_TERMINAL;
+        return item == AE2wtlibItems.UNIVERSAL_TERMINAL.asItem();
     }
 
     @Override
@@ -38,6 +38,6 @@ public class AE2wtlibAPIImplementation extends AE2wtlibAPIImpl {
 
     @Override
     public Item getWUT() {
-        return AE2wtlibItems.UNIVERSAL_TERMINAL;
+        return AE2wtlibItems.UNIVERSAL_TERMINAL.asItem();
     }
 }

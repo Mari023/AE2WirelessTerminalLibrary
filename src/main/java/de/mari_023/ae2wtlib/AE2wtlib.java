@@ -41,14 +41,14 @@ public class AE2wtlib {
 
     public static void onAe2Initialized() {
         AddTerminalEvent.register((event -> {
-            event.builder("crafting", WCTMenuHost::new, WCTMenu.TYPE, AE2wtlibItems.WIRELESS_CRAFTING_TERMINAL,
+            event.builder("crafting", WCTMenuHost::new, WCTMenu.TYPE, (ItemWCT) AE2wtlibItems.WIRELESS_CRAFTING_TERMINAL.asItem(),
                     Icon.CRAFTING)
                     .hotkeyName(HotkeyAction.WIRELESS_TERMINAL)
                     .addTerminal();
-            event.builder("pattern_encoding", WETMenuHost::new, WETMenu.TYPE, AE2wtlibItems.PATTERN_ENCODING_TERMINAL,
+            event.builder("pattern_encoding", WETMenuHost::new, WETMenu.TYPE, AE2wtlibItems.PATTERN_ENCODING_TERMINAL.asItem(),
                     Icon.PATTERN_ENCODING)
                     .addTerminal();
-            event.builder("pattern_access", WATMenuHost::new, WATMenu.TYPE, AE2wtlibItems.PATTERN_ACCESS_TERMINAL,
+            event.builder("pattern_access", WATMenuHost::new, WATMenu.TYPE, AE2wtlibItems.PATTERN_ACCESS_TERMINAL.asItem(),
                     Icon.PATTERN_ACCESS)
                     .addTerminal();
         }));
@@ -72,9 +72,9 @@ public class AE2wtlib {
             return;
         for (var t : WTDefinition.wirelessTerminals())
             AE2wtlibCreativeTab.addTerminal(t.item());
-        AE2wtlibCreativeTab.addUniversalTerminal(AE2wtlibItems.UNIVERSAL_TERMINAL);
-        AE2wtlibCreativeTab.add(AE2wtlibItems.QUANTUM_BRIDGE_CARD);
-        AE2wtlibCreativeTab.add(AE2wtlibItems.MAGNET_CARD);
+        AE2wtlibCreativeTab.addUniversalTerminal(AE2wtlibItems.UNIVERSAL_TERMINAL.asItem());
+        AE2wtlibCreativeTab.add(AE2wtlibItems.QUANTUM_BRIDGE_CARD.asItem());
+        AE2wtlibCreativeTab.add(AE2wtlibItems.MAGNET_CARD.asItem());
     }
 
     static void registerMenus() {

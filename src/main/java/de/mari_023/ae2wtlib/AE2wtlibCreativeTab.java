@@ -27,7 +27,7 @@ public class AE2wtlibCreativeTab {
                 .icon(() -> {
                     var terminal = AE2wtlibItems.UNIVERSAL_TERMINAL;
                     var stack = new ItemStack(terminal);
-                    terminal.injectAEPower(stack, terminal.getAEMaxPower(stack), Actionable.MODULATE);
+                    terminal.asItem().injectAEPower(stack, terminal.asItem().getAEMaxPower(stack), Actionable.MODULATE);
                     return stack;
                 })
                 .displayItems(AE2wtlibCreativeTab::buildDisplayItems)

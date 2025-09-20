@@ -16,6 +16,10 @@ import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHandler;
 import javax.annotation.Nullable;
 
 public class ItemWCT extends ItemWT {
+    public ItemWCT(Properties p) {
+        super(p);
+    }
+
     @Override
     public MenuType<?> getMenuType(ItemMenuHostLocator locator, Player player) {
         return WCTMenu.TYPE;

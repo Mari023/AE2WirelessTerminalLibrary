@@ -29,6 +29,10 @@ import de.mari_023.ae2wtlib.api.registration.WTDefinition;
 import javax.annotation.Nullable;
 
 public class ItemWUT extends ItemWT {
+    public ItemWUT(Properties p) {
+        super(p);
+    }
+
     @Override
     public InteractionResult use(final Level level, final Player player, final InteractionHand hand) {
         if (WTDefinition.ofOrNull(player.getItemInHand(hand)) == null) {

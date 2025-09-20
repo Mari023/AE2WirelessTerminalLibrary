@@ -39,6 +39,7 @@ public class AE2wtlibForge {
         new AE2wtlibAPIImplementation();
         modContainer.registerConfig(ModConfig.Type.COMMON, AE2wtlibConfig.SPEC,
                 AE2wtlibAPI.MOD_NAME + ".toml");
+        AE2wtlibItems.DR.register(modEventBus);
         modEventBus.addListener((RegisterEvent e) -> {
             if (e.getRegistryKey().equals(Registries.MENU)) {
                 AE2wtlib.registerMenus();
@@ -48,7 +49,6 @@ public class AE2wtlibForge {
             AE2wtlibItems.init();
             AE2wtlib.onAe2Initialized();
             AE2wtlibCreativeTab.init();
-
         });
         modEventBus.addListener((BuildCreativeModeTabContentsEvent e) -> AE2wtlib.addToCreativeTab());
         modEventBus.addListener((RegisterPayloadHandlersEvent event) -> {
@@ -62,9 +62,9 @@ public class AE2wtlibForge {
         });
         modEventBus.addListener(AE2wtlib::registerScreens);
         modEventBus.addListener((RegisterCapabilitiesEvent event) -> {
-            registerPowerStorageItem(event, AE2wtlibItems.UNIVERSAL_TERMINAL);
-            registerPowerStorageItem(event, AE2wtlibItems.PATTERN_ACCESS_TERMINAL);
-            registerPowerStorageItem(event, AE2wtlibItems.PATTERN_ENCODING_TERMINAL);
+            registerPowerStorageItem(event, AE2wtlibItems.UNIVERSAL_TERMINAL.asItem());
+            registerPowerStorageItem(event, AE2wtlibItems.PATTERN_ACCESS_TERMINAL.asItem());
+            registerPowerStorageItem(event, AE2wtlibItems.PATTERN_ENCODING_TERMINAL.asItem());
         });
         AE2wtlibAdditionalComponents.init();
         AE2wtlib.ATTACHMENT_TYPES.register(modEventBus);

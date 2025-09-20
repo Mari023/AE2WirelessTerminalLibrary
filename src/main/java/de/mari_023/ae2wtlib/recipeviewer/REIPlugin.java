@@ -24,8 +24,8 @@ public class REIPlugin implements REIClientPlugin {
     @Override
     public void registerCategories(CategoryRegistry registry) {
         ItemStack wut = WTDefinitions.CRAFTING.universalTerminal();
-        AE2wtlibItems.UNIVERSAL_TERMINAL.injectAEPower(wut,
-                AE2wtlibItems.UNIVERSAL_TERMINAL.getAEMaxPower(wut), Actionable.MODULATE);
+        AE2wtlibItems.UNIVERSAL_TERMINAL.asItem().injectAEPower(wut,
+                AE2wtlibItems.UNIVERSAL_TERMINAL.asItem().getAEMaxPower(wut), Actionable.MODULATE);
 
         registry.addWorkstations(BuiltinPlugin.CRAFTING,
                 EntryStacks.of(wut));
