@@ -8,7 +8,6 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 import appeng.api.config.Actionable;
@@ -18,7 +17,6 @@ import appeng.me.helpers.PlayerSource;
 
 import de.mari_023.ae2wtlib.api.AE2wtlibComponents;
 import de.mari_023.ae2wtlib.api.AE2wtlibTags;
-import de.mari_023.ae2wtlib.networking.PickBlockPacket;
 import de.mari_023.ae2wtlib.networking.UpdateRestockPacket;
 import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHandler;
@@ -153,10 +151,6 @@ public class AE2wtlibEvents {
                 return true;
         }
         return false;
-    }
-
-    public static void pickBlock(ItemStack stack) {
-        ClientPacketDistributor.sendToServer(new PickBlockPacket(stack));
     }
 
     public static void pickBlock(ServerPlayer player, ItemStack stack) {

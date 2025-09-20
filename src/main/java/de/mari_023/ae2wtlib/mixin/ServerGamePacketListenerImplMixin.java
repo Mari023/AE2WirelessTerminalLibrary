@@ -2,6 +2,7 @@ package de.mari_023.ae2wtlib.mixin;
 
 import com.llamalad7.mixinextras.sugar.Local;
 
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -9,7 +10,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.item.ItemStack;
 
 import de.mari_023.ae2wtlib.AE2wtlibEvents;
@@ -17,7 +17,7 @@ import de.mari_023.ae2wtlib.AE2wtlibEvents;
 @Mixin(ServerGamePacketListenerImpl.class)
 public abstract class ServerGamePacketListenerImplMixin {
     @Shadow
-    public LocalPlayer player;
+    public ServerPlayer player;
 
     @Inject(method = "tryPickItem", at = {
             @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerGamePacketListenerImpl;send(Lnet/minecraft/network/protocol/Packet;)V") })
@@ -28,6 +28,6 @@ public abstract class ServerGamePacketListenerImplMixin {
             return;
         if (i != -1)
             return;
-        AE2wtlibEvents.pickBlock(stack);
+        AE2wtlibEvents.pickBlock(player, stack);
     }
 }

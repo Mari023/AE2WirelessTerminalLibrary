@@ -53,12 +53,11 @@ public class AE2wtlibForge {
         modEventBus.addListener((BuildCreativeModeTabContentsEvent e) -> AE2wtlib.addToCreativeTab());
         modEventBus.addListener((RegisterPayloadHandlersEvent event) -> {
             PayloadRegistrar registrar = event.registrar(AE2wtlibAPI.MOD_NAME);
-            registerPacket(registrar, CycleTerminalPacket.ID, CycleTerminalPacket.STREAM_CODEC);
-            registerPacket(registrar, PickBlockPacket.ID, PickBlockPacket.STREAM_CODEC);
-            registerPacket(registrar, TerminalSettingsPacket.ID, TerminalSettingsPacket.STREAM_CODEC);
-            registerPacket(registrar, UpdateWUTPackage.ID, UpdateWUTPackage.STREAM_CODEC);
-            registerPacket(registrar, UpdateRestockPacket.ID, UpdateRestockPacket.STREAM_CODEC);
-            registerPacket(registrar, RestockAmountPacket.ID, RestockAmountPacket.STREAM_CODEC);
+            registerC2S(registrar, CycleTerminalPacket.ID, CycleTerminalPacket.STREAM_CODEC);
+            registerC2S(registrar, TerminalSettingsPacket.ID, TerminalSettingsPacket.STREAM_CODEC);
+            registerS2C(registrar, UpdateWUTPackage.ID, UpdateWUTPackage.STREAM_CODEC);
+            registerS2C(registrar, UpdateRestockPacket.ID, UpdateRestockPacket.STREAM_CODEC);
+            registerS2C(registrar, RestockAmountPacket.ID, RestockAmountPacket.STREAM_CODEC);
         });
         modEventBus.addListener(AE2wtlib::registerScreens);
         modEventBus.addListener((RegisterCapabilitiesEvent event) -> {
@@ -70,10 +69,14 @@ public class AE2wtlibForge {
         AE2wtlib.ATTACHMENT_TYPES.register(modEventBus);
     }
 
-    private static <T extends AE2wtlibPacket> void registerPacket(PayloadRegistrar registrar,
+    private static <T extends AE2wtlibPacket> void registerC2S(PayloadRegistrar registrar,
             CustomPacketPayload.Type<T> id, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec) {
-        registrar.playBidirectional(id, streamCodec,
+        registrar.playToServer(id, streamCodec,
                 (packet, context) -> context.enqueueWork(() -> packet.processPacketData(context.player())));
+    }
+
+    private static <T extends AE2wtlibPacket> void registerS2C(PayloadRegistrar registrar, CustomPacketPayload.Type<T> id, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec) {
+        registrar.playToClient(id, streamCodec, (packet, context) -> context.enqueueWork(() -> packet.processPacketData(context.player())));
     }
 
     private static void registerPowerStorageItem(RegisterCapabilitiesEvent event, ItemWT item) {
