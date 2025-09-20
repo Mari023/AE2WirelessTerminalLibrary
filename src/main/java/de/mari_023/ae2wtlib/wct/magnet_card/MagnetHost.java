@@ -1,6 +1,7 @@
 package de.mari_023.ae2wtlib.wct.magnet_card;
 
-import net.minecraft.nbt.CompoundTag;
+import de.mari_023.ae2wtlib.ValueIOHelper;
+import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.item.ItemStack;
 
 import appeng.api.config.FuzzyMode;
@@ -11,6 +12,11 @@ import appeng.util.prioritylist.IPartitionList;
 
 import de.mari_023.ae2wtlib.api.AE2wtlibComponents;
 import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
+import net.minecraft.world.level.storage.TagValueOutput;
+
+import static de.mari_023.ae2wtlib.ValueIOHelper.fromComponent;
+import static de.mari_023.ae2wtlib.api.AE2wtlibComponents.INSERT_CONFIG;
+import static de.mari_023.ae2wtlib.api.AE2wtlibComponents.PICKUP_CONFIG;
 
 public class MagnetHost {
     public final ConfigInventory pickupConfig = ConfigInventory.configTypes(27).changeListener(this::updatePickupFilter)
@@ -25,8 +31,8 @@ public class MagnetHost {
 
     public MagnetHost(CraftingTerminalHandler ctHandler) {
         this.ctHandler = ctHandler;
-        pickupConfig.readFromChildTag(getStack().getOrDefault(AE2wtlibComponents.PICKUP_CONFIG, new CompoundTag()), "");
-        insertConfig.readFromChildTag(getStack().getOrDefault(AE2wtlibComponents.INSERT_CONFIG, new CompoundTag()), "");
+        pickupConfig.readFromChildTag(fromComponent(ctHandler.player, getStack(), PICKUP_CONFIG), "");
+        insertConfig.readFromChildTag(fromComponent(ctHandler.player, getStack(), INSERT_CONFIG), "");
     }
 
     private IPartitionList createFilter(ConfigInventory config) {
@@ -40,16 +46,16 @@ public class MagnetHost {
 
     private void updatePickupFilter() {
         pickupFilter = createFilter(pickupConfig);
-        CompoundTag tag = getStack().getOrDefault(AE2wtlibComponents.PICKUP_CONFIG, new CompoundTag());
-        pickupConfig.writeToChildTag(tag, "");
-        getStack().set(AE2wtlibComponents.PICKUP_CONFIG, tag);
+        TagValueOutput tagValueOutput = TagValueOutput.createWithoutContext(ProblemReporter.DISCARDING);
+        pickupConfig.writeToChildTag(tagValueOutput, "");
+        getStack().set(PICKUP_CONFIG, tagValueOutput.buildResult());
     }
 
     private void updateInsertFilter() {
         insertFilter = createFilter(insertConfig);
-        CompoundTag tag = getStack().getOrDefault(AE2wtlibComponents.INSERT_CONFIG, new CompoundTag());
-        insertConfig.writeToChildTag(tag, "");
-        getStack().set(AE2wtlibComponents.INSERT_CONFIG, tag);
+        TagValueOutput tagValueOutput = TagValueOutput.createWithoutContext(ProblemReporter.DISCARDING);
+        insertConfig.writeToChildTag(tagValueOutput, "");
+        getStack().set(INSERT_CONFIG, tagValueOutput.buildResult());
     }
 
     public IPartitionList getPickupFilter() {
@@ -90,24 +96,24 @@ public class MagnetHost {
     }
 
     public void copyUp() {
-        pickupConfig.readFromChildTag(getStack().getOrDefault(AE2wtlibComponents.INSERT_CONFIG, new CompoundTag()), "");
+        pickupConfig.readFromChildTag(fromComponent(ctHandler.player, getStack(), INSERT_CONFIG), "");
     }
 
     public void copyDown() {
-        insertConfig.readFromChildTag(getStack().getOrDefault(AE2wtlibComponents.PICKUP_CONFIG, new CompoundTag()), "");
+        insertConfig.readFromChildTag(fromComponent(ctHandler.player, getStack(), PICKUP_CONFIG), "");
     }
 
     public void switchInsertPickup() {
-        CompoundTag pickupTag = getStack().getOrDefault(AE2wtlibComponents.PICKUP_CONFIG, new CompoundTag());
-        CompoundTag insertTag = getStack().getOrDefault(AE2wtlibComponents.INSERT_CONFIG, new CompoundTag());
+        TagValueOutput pickupTVO = TagValueOutput.createWithoutContext(ProblemReporter.DISCARDING);
+        TagValueOutput insertTVO = TagValueOutput.createWithoutContext(ProblemReporter.DISCARDING);
 
-        pickupConfig.writeToChildTag(pickupTag, "");
-        getStack().set(AE2wtlibComponents.INSERT_CONFIG, pickupTag);
+        pickupConfig.writeToChildTag(pickupTVO, "");
+        getStack().set(INSERT_CONFIG, pickupTVO.buildResult());
 
-        insertConfig.writeToChildTag(insertTag, "");
-        getStack().set(AE2wtlibComponents.PICKUP_CONFIG, insertTag);
+        insertConfig.writeToChildTag(insertTVO, "");
+        getStack().set(PICKUP_CONFIG, insertTVO.buildResult());
 
-        pickupConfig.readFromChildTag(getStack().getOrDefault(AE2wtlibComponents.PICKUP_CONFIG, new CompoundTag()), "");
-        insertConfig.readFromChildTag(getStack().getOrDefault(AE2wtlibComponents.INSERT_CONFIG, new CompoundTag()), "");
+        pickupConfig.readFromChildTag(ValueIOHelper.fromTag(ctHandler.player, pickupTVO.buildResult()), "");
+        insertConfig.readFromChildTag(ValueIOHelper.fromTag(ctHandler.player, insertTVO.buildResult()), "");
     }
 }

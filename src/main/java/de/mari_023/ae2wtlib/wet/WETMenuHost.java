@@ -2,7 +2,8 @@ package de.mari_023.ae2wtlib.wet;
 
 import java.util.function.BiConsumer;
 
-import net.minecraft.nbt.CompoundTag;
+import de.mari_023.ae2wtlib.ValueIOHelper;
+import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
@@ -16,6 +17,7 @@ import appeng.parts.encoding.PatternEncodingLogic;
 import de.mari_023.ae2wtlib.api.AE2wtlibComponents;
 import de.mari_023.ae2wtlib.api.terminal.ItemWT;
 import de.mari_023.ae2wtlib.api.terminal.WTMenuHost;
+import net.minecraft.world.level.storage.TagValueOutput;
 
 public class WETMenuHost extends WTMenuHost
         implements IViewCellStorage, IPatternTerminalMenuHost, IPatternTerminalLogicHost {
@@ -24,7 +26,7 @@ public class WETMenuHost extends WTMenuHost
     public WETMenuHost(ItemWT item, Player player, ItemMenuHostLocator locator,
             BiConsumer<Player, ISubMenu> returnToMainMenu) {
         super(item, player, locator, returnToMainMenu);
-        logic.readFromNBT(getItemStack().getOrDefault(AE2wtlibComponents.PATTERN_ENCODING_LOGIC, new CompoundTag()));
+        logic.readFromNBT(ValueIOHelper.fromComponent(getPlayer(), getItemStack(), AE2wtlibComponents.PATTERN_ENCODING_LOGIC));
     }
 
     @Override
@@ -39,8 +41,8 @@ public class WETMenuHost extends WTMenuHost
 
     @Override
     public void markForSave() {
-        CompoundTag tag = getItemStack().getOrDefault(AE2wtlibComponents.PATTERN_ENCODING_LOGIC, new CompoundTag());
-        logic.writeToNBT(tag);
-        getItemStack().set(AE2wtlibComponents.PATTERN_ENCODING_LOGIC, tag);
+        TagValueOutput tagValueOutput = TagValueOutput.createWithoutContext(ProblemReporter.DISCARDING);
+        logic.writeToNBT(tagValueOutput);
+        getItemStack().set(AE2wtlibComponents.PATTERN_ENCODING_LOGIC, tagValueOutput.buildResult());
     }
 }
