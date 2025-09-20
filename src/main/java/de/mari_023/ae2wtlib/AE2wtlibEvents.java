@@ -2,7 +2,6 @@ package de.mari_023.ae2wtlib;
 
 import java.util.function.Consumer;
 
-import net.minecraft.network.protocol.game.ClientboundSetCarriedItemPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -202,6 +201,5 @@ public class AE2wtlibEvents {
         stack.setCount((int) extracted);
         inventory.setItem(targetSlot, stack);
         inventory.setSelectedSlot(targetSlot);
-        player.connection.send(new ClientboundSetCarriedItemPacket(player.getInventory().getSelectedSlot()));
     }
 }
