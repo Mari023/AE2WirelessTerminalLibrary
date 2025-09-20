@@ -8,7 +8,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -18,8 +17,8 @@ import de.mari_023.ae2wtlib.AE2wtlibEvents;
 
 @Mixin(ServerPlayer.class)
 public abstract class ServerPlayerMixin extends Player {
-    public ServerPlayerMixin(Level pLevel, BlockPos pPos, float pYRot, GameProfile pGameProfile) {
-        super(pLevel, pPos, pYRot, pGameProfile);
+    public ServerPlayerMixin(Level level, GameProfile gameProfile) {
+        super(level, gameProfile);
     }
 
     @Inject(method = "drop(Z)Z", at = @At(value = "TAIL"))
@@ -29,6 +28,6 @@ public abstract class ServerPlayerMixin extends Player {
             return;
 
         AE2wtlibEvents.restock((ServerPlayer) (Object) this, item, item.getCount(),
-                (itemStack) -> getInventory().setItem(getInventory().selected, itemStack));
+                (itemStack) -> getInventory().setItem(getInventory().getSelectedSlot(), itemStack));
     }
 }

@@ -19,7 +19,7 @@ public abstract class MinecraftMixin {
     @Shadow
     public LocalPlayer player;
 
-    @Inject(method = "pickBlock", at = {
+    @Inject(method = "pickBlock", at = {//FIXME 1.21.8
             @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/world/entity/player/Inventory;findSlotMatchingItem(Lnet/minecraft/world/item/ItemStack;)I") })
     public void pickBlock(CallbackInfo ci, @Local ItemStack itemstack, @Local int i) {
         if (player.getAbilities().instabuild)

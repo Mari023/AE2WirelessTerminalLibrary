@@ -1,5 +1,6 @@
 package de.mari_023.ae2wtlib;
 
+import appeng.client.InitScreens;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.neoforged.neoforge.attachment.AttachmentType;
@@ -11,7 +12,6 @@ import appeng.api.features.HotkeyAction;
 import appeng.api.upgrades.Upgrades;
 import appeng.core.definitions.AEItems;
 import appeng.hotkeys.HotkeyActions;
-import appeng.init.client.InitScreens;
 
 import de.mari_023.ae2wtlib.api.AE2wtlibAPI;
 import de.mari_023.ae2wtlib.api.gui.Icon;

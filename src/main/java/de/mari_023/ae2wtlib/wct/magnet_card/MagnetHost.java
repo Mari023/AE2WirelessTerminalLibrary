@@ -25,10 +25,8 @@ public class MagnetHost {
 
     public MagnetHost(CraftingTerminalHandler ctHandler) {
         this.ctHandler = ctHandler;
-        pickupConfig.readFromChildTag(getStack().getOrDefault(AE2wtlibComponents.PICKUP_CONFIG, new CompoundTag()), "",
-                ctHandler.player.registryAccess());
-        insertConfig.readFromChildTag(getStack().getOrDefault(AE2wtlibComponents.INSERT_CONFIG, new CompoundTag()), "",
-                ctHandler.player.registryAccess());
+        pickupConfig.readFromChildTag(getStack().getOrDefault(AE2wtlibComponents.PICKUP_CONFIG, new CompoundTag()), "");
+        insertConfig.readFromChildTag(getStack().getOrDefault(AE2wtlibComponents.INSERT_CONFIG, new CompoundTag()), "");
     }
 
     private IPartitionList createFilter(ConfigInventory config) {
@@ -43,14 +41,14 @@ public class MagnetHost {
     private void updatePickupFilter() {
         pickupFilter = createFilter(pickupConfig);
         CompoundTag tag = getStack().getOrDefault(AE2wtlibComponents.PICKUP_CONFIG, new CompoundTag());
-        pickupConfig.writeToChildTag(tag, "", ctHandler.player.registryAccess());
+        pickupConfig.writeToChildTag(tag, "");
         getStack().set(AE2wtlibComponents.PICKUP_CONFIG, tag);
     }
 
     private void updateInsertFilter() {
         insertFilter = createFilter(insertConfig);
         CompoundTag tag = getStack().getOrDefault(AE2wtlibComponents.INSERT_CONFIG, new CompoundTag());
-        insertConfig.writeToChildTag(tag, "", ctHandler.player.registryAccess());
+        insertConfig.writeToChildTag(tag, "");
         getStack().set(AE2wtlibComponents.INSERT_CONFIG, tag);
     }
 
@@ -92,28 +90,24 @@ public class MagnetHost {
     }
 
     public void copyUp() {
-        pickupConfig.readFromChildTag(getStack().getOrDefault(AE2wtlibComponents.INSERT_CONFIG, new CompoundTag()), "",
-                ctHandler.player.registryAccess());
+        pickupConfig.readFromChildTag(getStack().getOrDefault(AE2wtlibComponents.INSERT_CONFIG, new CompoundTag()), "");
     }
 
     public void copyDown() {
-        insertConfig.readFromChildTag(getStack().getOrDefault(AE2wtlibComponents.PICKUP_CONFIG, new CompoundTag()), "",
-                ctHandler.player.registryAccess());
+        insertConfig.readFromChildTag(getStack().getOrDefault(AE2wtlibComponents.PICKUP_CONFIG, new CompoundTag()), "");
     }
 
     public void switchInsertPickup() {
         CompoundTag pickupTag = getStack().getOrDefault(AE2wtlibComponents.PICKUP_CONFIG, new CompoundTag());
         CompoundTag insertTag = getStack().getOrDefault(AE2wtlibComponents.INSERT_CONFIG, new CompoundTag());
 
-        pickupConfig.writeToChildTag(pickupTag, "", ctHandler.player.registryAccess());
+        pickupConfig.writeToChildTag(pickupTag, "");
         getStack().set(AE2wtlibComponents.INSERT_CONFIG, pickupTag);
 
-        insertConfig.writeToChildTag(insertTag, "", ctHandler.player.registryAccess());
+        insertConfig.writeToChildTag(insertTag, "");
         getStack().set(AE2wtlibComponents.PICKUP_CONFIG, insertTag);
 
-        pickupConfig.readFromChildTag(getStack().getOrDefault(AE2wtlibComponents.PICKUP_CONFIG, new CompoundTag()), "",
-                ctHandler.player.registryAccess());
-        insertConfig.readFromChildTag(getStack().getOrDefault(AE2wtlibComponents.INSERT_CONFIG, new CompoundTag()), "",
-                ctHandler.player.registryAccess());
+        pickupConfig.readFromChildTag(getStack().getOrDefault(AE2wtlibComponents.PICKUP_CONFIG, new CompoundTag()), "");
+        insertConfig.readFromChildTag(getStack().getOrDefault(AE2wtlibComponents.INSERT_CONFIG, new CompoundTag()), "");
     }
 }

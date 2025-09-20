@@ -5,7 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 
-public class AE2wtlibTags {
+public class AE2wtlibTags {//TODO 1.21.8 potentially remove
     public static TagKey<Item> NO_RESTOCK = itemTag("ae2wtlib:no_restock");
 
     private static TagKey<Item> itemTag(String name) {

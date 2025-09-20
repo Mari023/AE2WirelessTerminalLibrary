@@ -11,8 +11,7 @@ import appeng.core.AppEng;
 public record Icon(int x, int y, int width, int height, Texture texture) {
 
     public static final Texture TEXTURE = new Texture(AppEng.makeId("textures/wtlib/guis/icons.png"), 128, 128);
-    public static final Texture AE2TEXTURE = new Texture(appeng.client.gui.Icon.TEXTURE,
-            appeng.client.gui.Icon.TEXTURE_WIDTH, appeng.client.gui.Icon.TEXTURE_HEIGHT);
+    public static final Texture AE2TEXTURE = new Texture(AppEng.makeId("textures/guis/states.png"), 256, 256); //TODO 1.21.8 maybe use Blitter.icon instead
 
     public static final Icon BUTTON_BACKGROUND = new Icon(63, 0, 16, 17);
     public static final Icon BUTTON_BACKGROUND_HOVERED = new Icon(95, 1, 16, 16);

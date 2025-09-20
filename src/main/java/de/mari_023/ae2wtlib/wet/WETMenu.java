@@ -14,6 +14,7 @@ import appeng.menu.slot.RestrictedInputSlot;
 import de.mari_023.ae2wtlib.api.gui.AE2wtlibSlotSemantics;
 import de.mari_023.ae2wtlib.api.terminal.ItemWUT;
 import de.mari_023.ae2wtlib.api.terminal.WTMenuHost;
+import org.jetbrains.annotations.Nullable;
 
 public class WETMenu extends PatternEncodingTermMenu {
     public static final ResourceLocation ID = id("wireless_pattern_encoding_terminal");
@@ -29,6 +30,7 @@ public class WETMenu extends PatternEncodingTermMenu {
                 wetMenuHost.getSubInventory(WTMenuHost.INV_SINGULARITY), 0), AE2wtlibSlotSemantics.SINGULARITY);
     }
 
+    @Nullable
     @Override
     public IGridNode getGridNode() {
         return wetMenuHost.getActionableNode();

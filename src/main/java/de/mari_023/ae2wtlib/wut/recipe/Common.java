@@ -1,10 +1,10 @@
 package de.mari_023.ae2wtlib.wut.recipe;
 
 import java.util.Iterator;
+import java.util.List;
 
 import com.mojang.datafixers.util.Unit;
 
-import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingRecipe;
@@ -17,18 +17,24 @@ import de.mari_023.ae2wtlib.AE2wtlibItems;
 import de.mari_023.ae2wtlib.api.registration.WTDefinition;
 import de.mari_023.ae2wtlib.api.terminal.ItemWT;
 import de.mari_023.ae2wtlib.api.terminal.ItemWUT;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.PlacementInfo;
+
+import javax.annotation.Nullable;
 
 public abstract class Common implements CraftingRecipe {
     protected final ItemStack outputStack = new ItemStack(AE2wtlibItems.UNIVERSAL_TERMINAL);
+    @Nullable
+    private PlacementInfo placementInfo;
 
-    @Override
-    public boolean canCraftInDimensions(int width, int height) {
-        return width > 1 || height > 1;
-    }
+    protected abstract List<Ingredient> getIngredients();
 
-    @Override
-    public ItemStack getResultItem(HolderLookup.Provider provider) {
-        return outputStack;
+    public PlacementInfo placementInfo() {
+        if (placementInfo == null) {
+            placementInfo = PlacementInfo.create(getIngredients());
+        }
+
+        return placementInfo;
     }
 
     @Override

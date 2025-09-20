@@ -3,6 +3,7 @@ package de.mari_023.ae2wtlib.api.terminal;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import org.jetbrains.annotations.Contract;
 
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -44,7 +45,7 @@ public interface IUniversalTerminalCapable {
             if (hotkey == null)
                 continue;
             if (hotkey.mapping().matches(keyCode, scanCode)) {
-                PacketDistributor.sendToServer(new HotkeyPacket(hotkey));
+                ClientPacketDistributor.sendToServer(new HotkeyPacket(hotkey));
                 return true;
             }
         }

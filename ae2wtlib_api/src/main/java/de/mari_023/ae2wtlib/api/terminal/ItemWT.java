@@ -6,7 +6,6 @@ import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.Item;
@@ -53,14 +52,14 @@ public abstract class ItemWT extends WirelessTerminalItem {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(final Level level, final Player player, final InteractionHand hand) {
+    public InteractionResult use(final Level level, final Player player, final InteractionHand hand) {
         ItemStack is = player.getItemInHand(hand);
         if (checkPreconditions(is)) {
             if (!level.isClientSide())
                 open(player, MenuLocators.forHand(player, hand), false);
-            return new InteractionResultHolder<>(InteractionResult.sidedSuccess(level.isClientSide()), is);
+            return InteractionResult.SUCCESS;
         }
-        return new InteractionResultHolder<>(InteractionResult.FAIL, is);
+        return InteractionResult.FAIL;
     }
 
     @Override

@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 import appeng.api.upgrades.IUpgradeInventory;
@@ -27,7 +28,7 @@ public class AE2wtlibAPIImplementation extends AE2wtlibAPIImpl {
 
     @Override
     public void cycleTerminal(boolean isHandlingRightClick) {
-        PacketDistributor.sendToServer(new CycleTerminalPacket(isHandlingRightClick));
+        ClientPacketDistributor.sendToServer(new CycleTerminalPacket(isHandlingRightClick));
     }
 
     @Override

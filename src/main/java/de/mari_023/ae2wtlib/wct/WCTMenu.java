@@ -2,12 +2,10 @@ package de.mari_023.ae2wtlib.wct;
 
 import static de.mari_023.ae2wtlib.api.AE2wtlibAPI.id;
 
+import appeng.menu.guisync.ClientActionKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Equipable;
-import net.minecraft.world.item.ItemStack;
 
 import appeng.api.networking.IGridNode;
 import appeng.menu.MenuOpener;
@@ -22,15 +20,17 @@ import de.mari_023.ae2wtlib.api.terminal.WTMenuHost;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHandler;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetMenu;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetMode;
+import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs;
+import org.jetbrains.annotations.Nullable;
 
 public class WCTMenu extends CraftingTermMenu {
     public static final ResourceLocation ID = id("wireless_crafting_terminal");
     public static final MenuType<WCTMenu> TYPE = MenuTypeBuilder.create(WCTMenu::new, WCTMenuHost.class)
             .buildUnregistered(ID);
 
-    public static final String MAGNET_MODE = "magnetMode";
-    public static final String MAGNET_MENU = "magnetMenu";
-    public static final String TRASH_MENU = "trash";
+    public static final ClientActionKey<MagnetMode> MAGNET_MODE = new ClientActionKey<>("magnetMode");
+    public static final ClientActionKey<Void> MAGNET_MENU = new ClientActionKey<>("magnetMenu");
+    public static final ClientActionKey<Void> TRASH_MENU = new ClientActionKey<>("trash");
 
     private final WCTMenuHost wctMenuHost;
 
@@ -38,13 +38,7 @@ public class WCTMenu extends CraftingTermMenu {
         super(TYPE, id, ip, gui, true);
         wctMenuHost = gui;
 
-        addSlot(new ArmorSlot(getPlayerInventory(), ArmorSlot.Armor.HEAD) {
-            @Override
-            public boolean mayPlace(ItemStack stack) {
-                return (stack.getItem() instanceof BlockItem bItem && bItem.getBlock() instanceof Equipable)
-                        || super.mayPlace(stack);
-            }
-        }, AE2wtlibSlotSemantics.HELMET);
+        addSlot(new ArmorSlot(getPlayerInventory(), ArmorSlot.Armor.HEAD), AE2wtlibSlotSemantics.HELMET);//TODO 1.21.8 check that pumpkin still works
         addSlot(new ArmorSlot(getPlayerInventory(), ArmorSlot.Armor.CHEST), AE2wtlibSlotSemantics.CHESTPLATE);
         addSlot(new ArmorSlot(getPlayerInventory(), ArmorSlot.Armor.LEGS), AE2wtlibSlotSemantics.LEGGINGS);
         addSlot(new ArmorSlot(getPlayerInventory(), ArmorSlot.Armor.FEET), AE2wtlibSlotSemantics.BOOTS);
@@ -56,11 +50,12 @@ public class WCTMenu extends CraftingTermMenu {
         addSlot(new RestrictedInputSlot(RestrictedInputSlot.PlacableItemType.QE_SINGULARITY,
                 wctMenuHost.getSubInventory(WTMenuHost.INV_SINGULARITY), 0), AE2wtlibSlotSemantics.SINGULARITY);
 
-        registerClientAction(MAGNET_MODE, MagnetMode.class, this::setMagnetMode);
+        registerClientAction(MAGNET_MODE, NeoForgeStreamCodecs.enumCodec(MagnetMode.class), this::setMagnetMode);
         registerClientAction(MAGNET_MENU, this::openMagnetMenu);
         registerClientAction(TRASH_MENU, this::openTrashMenu);
     }
 
+    @Nullable
     @Override
     public IGridNode getGridNode() {
         return wctMenuHost.getActionableNode();

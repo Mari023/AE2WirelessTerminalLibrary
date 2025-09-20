@@ -9,6 +9,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 import appeng.api.config.Actionable;
@@ -70,10 +71,10 @@ public class AE2wtlibEvents {
         item.setCount(count + (int) changed);
         setStack.accept(item);
 
-        int slot = player.getInventory().findSlotMatchingUnusedItem(item);
+        int slot = player.getInventory().findSlotMatchingItem(item);//TODO 1.21.8 test if that still works properly
         if (slot == -1) {
-            if (player.getInventory().offhand.contains(item))
-                slot = Inventory.INVENTORY_SIZE;
+            if (ItemStack.isSameItemSameComponents(player.getInventory().getItem(Inventory.SLOT_OFFHAND), item))
+                slot = Inventory.SLOT_OFFHAND;
         }
         PacketDistributor.sendToPlayer(player, new UpdateRestockPacket(slot, item.getCount()));
     }
@@ -156,7 +157,7 @@ public class AE2wtlibEvents {
     }
 
     public static void pickBlock(ItemStack stack) {
-        PacketDistributor.sendToServer(new PickBlockPacket(stack));
+        ClientPacketDistributor.sendToServer(new PickBlockPacket(stack));
     }
 
     public static void pickBlock(ServerPlayer player, ItemStack stack) {
@@ -200,7 +201,7 @@ public class AE2wtlibEvents {
         }
         stack.setCount((int) extracted);
         inventory.setItem(targetSlot, stack);
-        inventory.selected = targetSlot;
-        player.connection.send(new ClientboundSetCarriedItemPacket(player.getInventory().selected));
+        inventory.setSelectedSlot(targetSlot);
+        player.connection.send(new ClientboundSetCarriedItemPacket(player.getInventory().getSelectedSlot()));
     }
 }

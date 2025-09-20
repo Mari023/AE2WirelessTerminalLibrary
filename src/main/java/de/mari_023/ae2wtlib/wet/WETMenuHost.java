@@ -24,8 +24,7 @@ public class WETMenuHost extends WTMenuHost
     public WETMenuHost(ItemWT item, Player player, ItemMenuHostLocator locator,
             BiConsumer<Player, ISubMenu> returnToMainMenu) {
         super(item, player, locator, returnToMainMenu);
-        logic.readFromNBT(getItemStack().getOrDefault(AE2wtlibComponents.PATTERN_ENCODING_LOGIC, new CompoundTag()),
-                player.registryAccess());
+        logic.readFromNBT(getItemStack().getOrDefault(AE2wtlibComponents.PATTERN_ENCODING_LOGIC, new CompoundTag()));
     }
 
     @Override
@@ -41,7 +40,7 @@ public class WETMenuHost extends WTMenuHost
     @Override
     public void markForSave() {
         CompoundTag tag = getItemStack().getOrDefault(AE2wtlibComponents.PATTERN_ENCODING_LOGIC, new CompoundTag());
-        logic.writeToNBT(tag, getPlayer().registryAccess());
+        logic.writeToNBT(tag);
         getItemStack().set(AE2wtlibComponents.PATTERN_ENCODING_LOGIC, tag);
     }
 }

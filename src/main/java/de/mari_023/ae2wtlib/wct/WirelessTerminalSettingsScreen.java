@@ -1,10 +1,10 @@
 package de.mari_023.ae2wtlib.wct;
 
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 import appeng.client.gui.AESubScreen;
-import appeng.client.gui.Icon;
+import appeng.util.Icon;
 import appeng.client.gui.widgets.AECheckbox;
 import appeng.client.gui.widgets.TabButton;
 import appeng.menu.SlotSemantics;
@@ -53,7 +53,7 @@ public class WirelessTerminalSettingsScreen extends AESubScreen<WCTMenu, WCTScre
         var locator = ((WTMenuHost) getMenu().getHost()).getLocator();
         if (locator == null)
             return;
-        PacketDistributor.sendToServer(new TerminalSettingsPacket(locator,
+        ClientPacketDistributor.sendToServer(new TerminalSettingsPacket(locator,
                 pickBlock.isSelected(), restock.isSelected(), magnet.isSelected(), pickupToME.isSelected()));
     }
 }
