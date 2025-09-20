@@ -51,6 +51,10 @@ public abstract class ItemWT extends WirelessTerminalItem implements IUniversalW
                 slot, stack, (p, subMenu) -> tryOpen(player, MenuLocators.forInventorySlot(slot), stack, true));
     }
 
+    public boolean isNotReplaceableByPickAction(ItemStack stack, Player player, int inventorySlot) {
+        return true;
+    }
+
     @Nullable
     public static IActionHost findQuantumBridge(Level level, long frequency) {
         IActionHost quantumBridge = Locatables.quantumNetworkBridges().get(level, frequency);

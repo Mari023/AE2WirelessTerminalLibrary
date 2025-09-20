@@ -4,6 +4,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
+import de.mari_023.ae2wtlib.AE2wtlibTags;
 import de.mari_023.ae2wtlib.TextConstants;
 import de.mari_023.ae2wtlib.terminal.ItemWT;
 import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
@@ -20,12 +21,12 @@ public class RestockHotkeyAction implements HotkeyAction {
         ItemStack terminal = craftingTerminalHandler.getCraftingTerminal();
         if (terminal.isEmpty())
             return false;
-        ItemWT.setBoolean(terminal, !ItemWT.getBoolean(terminal, "restock"), "restock");
+        ItemWT.setBoolean(terminal, !ItemWT.getBoolean(terminal, AE2wtlibTags.RESTOCK), AE2wtlibTags.RESTOCK);
         MenuLocator locator = craftingTerminalHandler.getLocator();
         if (locator != null)
             WUTHandler.updateClientTerminal((ServerPlayer) player, locator, terminal.getTag());
 
-        if (ItemWT.getBoolean(terminal, "restock"))
+        if (ItemWT.getBoolean(terminal, AE2wtlibTags.RESTOCK))
             player.displayClientMessage(TextConstants.RESTOCK_ON, true);
         else
             player.displayClientMessage(TextConstants.RESTOCK_OFF, true);

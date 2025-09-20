@@ -1,2 +1,3 @@
 - Mexican Spanish Translation (#331)
 - Spanish Translation and updates to the Mexican Spanish Translation (#352)
+- Pick Block Support and Stow Hotkey for 1.20.1

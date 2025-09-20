@@ -12,6 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import de.mari_023.ae2wtlib.AE2wtlibTags;
 import de.mari_023.ae2wtlib.terminal.ItemWT;
 import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
 
@@ -27,7 +28,7 @@ public class RestockRender {
         CraftingTerminalHandler handler = CraftingTerminalHandler
                 .getCraftingTerminalHandler(Minecraft.getInstance().player);
         if (stack.getCount() == 1 || !handler.isRestockable(stack)
-                || !ItemWT.getBoolean(handler.getCraftingTerminal(), "restock") || !handler.inRange())
+                || !ItemWT.getBoolean(handler.getCraftingTerminal(), AE2wtlibTags.RESTOCK) || !handler.inRange())
             return;
         ((GuiGraphics) (Object) this).renderItemDecorations(font, stack, x, y,
                 ReadableNumberConverter.format(handler.getAccessibleAmount(stack), 3));

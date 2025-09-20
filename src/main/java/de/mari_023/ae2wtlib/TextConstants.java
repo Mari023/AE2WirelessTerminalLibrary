@@ -35,6 +35,8 @@ public final class TextConstants {
             .append("\n").append(Component.translatable("gui.ae2wtlib.magnetcard.desc.inv"));
     public static final MutableComponent MAGNETCARD_ME = Component.translatable("gui.ae2wtlib.magnetcard").append("\n")
             .append(Component.translatable("gui.ae2wtlib.magnetcard.desc.me"));
+    public static final MutableComponent PICKUP_ME_NO_MAGNET = Component.translatable("gui.ae2wtlib.magnetcard.hotkey",
+            Component.translatable("gui.ae2wtlib.magnetcard.desc.me_no_magnet").setStyle(STYLE_GREEN));
 
     public static final MutableComponent UNIVERSAL = Component
             .translatable("item.ae2wtlib.wireless_universal_terminal.desc").withStyle(STYLE_GRAY);
@@ -84,4 +86,9 @@ public final class TextConstants {
     public static final Component CREATIVE_TAB = Component.translatable("gui.ae2wtlib.creativetab");
 
     public static final Component NETWORK_NOT_POWERED = Component.translatable("chat.ae2wtlib.NetworkNotPowered");
+
+    public static final Component PICK_BLOCK = Component.translatable("gui.ae2wtlib.pick_block.text");
+    public static final Component RESTOCK = Component.translatable("gui.ae2wtlib.restock.text");
+    public static final Component MAGNET = Component.translatable("gui.ae2wtlib.magnet.text");
+    public static final Component PICKUP_TO_ME = Component.translatable("gui.ae2wtlib.pickup_to_me.text");
 }

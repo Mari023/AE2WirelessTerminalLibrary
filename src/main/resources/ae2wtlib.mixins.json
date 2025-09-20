@@ -8,6 +8,7 @@
     "CraftingTerminalItemMixin"
   ],
   "client": [
+    "MinecraftMixin",
     "RestockRender"
   ],
   "injectors": {

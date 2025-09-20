@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.WeakHashMap;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -14,6 +13,7 @@ import net.minecraft.world.item.ItemStack;
 
 import de.mari_023.ae2wtlib.AE2wtlib;
 import de.mari_023.ae2wtlib.AE2wtlibConfig;
+import de.mari_023.ae2wtlib.AE2wtlibTags;
 import de.mari_023.ae2wtlib.Platform;
 import de.mari_023.ae2wtlib.networking.ServerNetworkManager;
 import de.mari_023.ae2wtlib.networking.s2c.RestockAmountPacket;
@@ -23,6 +23,7 @@ import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
 import appeng.api.stacks.AEItemKey;
 import appeng.api.stacks.KeyCounter;
 import appeng.api.upgrades.IUpgradeableItem;
+import appeng.api.upgrades.Upgrades;
 
 public class MagnetHandler {
     private static final WeakHashMap<ServerPlayer, Integer> players = new WeakHashMap<>();
@@ -44,14 +45,14 @@ public class MagnetHandler {
     private static void sendRestockAble(ServerPlayer player, ItemStack terminal) {
         if (player.isCreative())
             return;
-        if (!ItemWT.getBoolean(terminal, "restock"))
+        if (!ItemWT.getBoolean(terminal, AE2wtlibTags.RESTOCK))
             return;
         sendRestockAble(player);
     }
 
     private static void sendRestockAble(ServerPlayer player) {
         CraftingTerminalHandler handler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
-        if (!ItemWT.getBoolean(handler.getCraftingTerminal(), "restock") || !handler.inRange())
+        if (!ItemWT.getBoolean(handler.getCraftingTerminal(), AE2wtlibTags.RESTOCK) || !handler.inRange())
             return;
         HashMap<Item, Long> items = new HashMap<>();
 
@@ -78,14 +79,14 @@ public class MagnetHandler {
     private static void handleMagnet(Player player, ItemStack terminal) {
         if (player.isShiftKeyDown())
             return;
-        if (getMagnetSettings(terminal).isDisabled())
+        if (!getMagnetMode(terminal).magnet())
             return;
         handleMagnet(player);
     }
 
     private static void handleMagnet(Player player) {
         CraftingTerminalHandler ctHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
-        if (getMagnetSettings(ctHandler.getCraftingTerminal()).isDisabled())
+        if (!getMagnetMode(ctHandler.getCraftingTerminal()).magnet())
             return;
         MagnetHost magnetHost = ctHandler.getMagnetHost();
         if (magnetHost == null)
@@ -106,16 +107,23 @@ public class MagnetHandler {
         }
     }
 
-    public static void saveMagnetSettings(ItemStack terminal, MagnetSettings magnetSettings) {
-        if (terminal.getItem() instanceof IUpgradeableItem upgradeableItem
-                && upgradeableItem.getUpgrades(terminal).isInstalled(AE2wtlib.MAGNET_CARD))
-            terminal.getOrCreateTag().put("magnet_settings", magnetSettings.toTag());
+    public static void saveMagnetMode(ItemStack terminal, MagnetMode magnetSettings) {
+        if (magnetSettings == MagnetMode.INVALID || magnetSettings == MagnetMode.NO_CARD)
+            return;
+        if (!(terminal.getItem() instanceof IUpgradeableItem upgradeableItem))
+            return;
+        if (!upgradeableItem.getUpgrades(terminal).isInstalled(AE2wtlib.MAGNET_CARD))
+            return;
+        terminal.getOrCreateTag().putByte(AE2wtlibTags.MAGNET_SETTINGS, magnetSettings.getId());
     }
 
-    public static MagnetSettings getMagnetSettings(ItemStack terminal) {
+    public static MagnetMode getMagnetMode(ItemStack terminal) {
         if (terminal.getItem() instanceof IUpgradeableItem upgradeableItem
-                && upgradeableItem.getUpgrades(terminal).isInstalled(AE2wtlib.MAGNET_CARD))
-            return new MagnetSettings((CompoundTag) terminal.getOrCreateTag().get("magnet_settings"));
-        return new MagnetSettings();
+                && Upgrades.getMaxInstallable(AE2wtlib.MAGNET_CARD, upgradeableItem) != 0) {
+            if (upgradeableItem.getUpgrades(terminal).isInstalled(AE2wtlib.MAGNET_CARD))
+                return MagnetMode.fromByte(terminal.getOrCreateTag().getByte(AE2wtlibTags.MAGNET_SETTINGS));
+            return MagnetMode.NO_CARD;
+        }
+        return MagnetMode.INVALID;
     }
 }
