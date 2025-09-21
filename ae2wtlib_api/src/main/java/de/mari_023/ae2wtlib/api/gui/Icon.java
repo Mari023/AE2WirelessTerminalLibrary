@@ -23,8 +23,6 @@ public record Icon(int x, int y, int width, int height, Texture texture) {
 
     public static final Icon TERMINAL_SETTINGS = new Icon(32, 65, 16, 15, Icon.AE2TEXTURE);
     public static final Icon MAGNET = new Icon(0, 0);
-    @Deprecated
-    public static final Icon MAGNET_FILTER = new Icon(0, 16);
     public static final Icon TRASH = new Icon(0, 32);
 
     public static final Icon PATTERN_ACCESS = new Icon(16, 0);
