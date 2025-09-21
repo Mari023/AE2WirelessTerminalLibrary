@@ -5,7 +5,6 @@ import static de.mari_023.ae2wtlib.api.AE2wtlibAPI.MOD_NAME;
 import appeng.core.definitions.ItemDefinition;
 import net.minecraft.world.item.Item;
 
-import appeng.api.features.GridLinkables;
 import appeng.api.upgrades.Upgrades;
 import appeng.core.definitions.AEItems;
 import appeng.items.tools.powered.WirelessTerminalItem;
@@ -30,12 +29,6 @@ public final class AE2wtlibItems {
 
     public static final ItemDefinition<Item> QUANTUM_BRIDGE_CARD = item("quantum_bridge_card", p -> Upgrades.createUpgradeCardItem(p.stacksTo(1)));
     public static final ItemDefinition<Item> MAGNET_CARD = item("magnet_card", p -> Upgrades.createUpgradeCardItem(p.stacksTo(1)));
-
-    public static void init() {//FIXME 1.21.8
-        GridLinkables.register(PATTERN_ENCODING_TERMINAL, WirelessTerminalItem.LINKABLE_HANDLER);
-        GridLinkables.register(PATTERN_ACCESS_TERMINAL, WirelessTerminalItem.LINKABLE_HANDLER);
-        GridLinkables.register(UNIVERSAL_TERMINAL, WirelessTerminalItem.LINKABLE_HANDLER);
-    }
 
     private static <T extends Item> ItemDefinition<T> item(String name, Function<Item.Properties, T> factory) {
         return new ItemDefinition<>(name, DR.registerItem(name, factory));

@@ -38,7 +38,7 @@ public class WCTMenu extends CraftingTermMenu {
         super(TYPE, id, ip, gui, true);
         wctMenuHost = gui;
 
-        addSlot(new ArmorSlot(getPlayerInventory(), ArmorSlot.Armor.HEAD), AE2wtlibSlotSemantics.HELMET);//TODO 1.21.8 check that pumpkin still works
+        addSlot(new ArmorSlot(getPlayerInventory(), ArmorSlot.Armor.HEAD), AE2wtlibSlotSemantics.HELMET);
         addSlot(new ArmorSlot(getPlayerInventory(), ArmorSlot.Armor.CHEST), AE2wtlibSlotSemantics.CHESTPLATE);
         addSlot(new ArmorSlot(getPlayerInventory(), ArmorSlot.Armor.LEGS), AE2wtlibSlotSemantics.LEGGINGS);
         addSlot(new ArmorSlot(getPlayerInventory(), ArmorSlot.Armor.FEET), AE2wtlibSlotSemantics.BOOTS);

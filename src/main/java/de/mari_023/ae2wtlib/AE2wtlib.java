@@ -1,6 +1,8 @@
 package de.mari_023.ae2wtlib;
 
+import appeng.api.features.GridLinkables;
 import appeng.client.InitScreens;
+import appeng.items.tools.powered.WirelessTerminalItem;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.neoforged.neoforge.attachment.AttachmentType;
@@ -39,32 +41,44 @@ public class AE2wtlib {
     public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister
             .create(NeoForgeRegistries.ATTACHMENT_TYPES, AE2wtlibAPI.MOD_NAME);
 
-    public static void onAe2Initialized() {
+    public static void registerTerminals() {
         AddTerminalEvent.register((event -> {
             event.builder("crafting", WCTMenuHost::new, WCTMenu.TYPE, (ItemWCT) AE2wtlibItems.WIRELESS_CRAFTING_TERMINAL.asItem(),
-                    Icon.CRAFTING)
+                            Icon.CRAFTING)
                     .hotkeyName(HotkeyAction.WIRELESS_TERMINAL)
                     .addTerminal();
             event.builder("pattern_encoding", WETMenuHost::new, WETMenu.TYPE, AE2wtlibItems.PATTERN_ENCODING_TERMINAL.asItem(),
-                    Icon.PATTERN_ENCODING)
+                            Icon.PATTERN_ENCODING)
                     .addTerminal();
             event.builder("pattern_access", WATMenuHost::new, WATMenu.TYPE, AE2wtlibItems.PATTERN_ACCESS_TERMINAL.asItem(),
-                    Icon.PATTERN_ACCESS)
+                            Icon.PATTERN_ACCESS)
                     .addTerminal();
         }));
+    }
 
+    public static void registerGridLinkables() {
+        GridLinkables.register(AE2wtlibItems.PATTERN_ENCODING_TERMINAL, WirelessTerminalItem.LINKABLE_HANDLER);
+        GridLinkables.register(AE2wtlibItems.PATTERN_ACCESS_TERMINAL, WirelessTerminalItem.LINKABLE_HANDLER);
+        GridLinkables.register(AE2wtlibItems.UNIVERSAL_TERMINAL, WirelessTerminalItem.LINKABLE_HANDLER);
+    }
+
+    public static void registerUpgrades() {
         UpgradeHelper.addUpgradeToAllTerminals(AE2wtlibItems.QUANTUM_BRIDGE_CARD, 1);
         Upgrades.add(AE2wtlibItems.MAGNET_CARD, AEItems.WIRELESS_CRAFTING_TERMINAL, 1);
         Upgrades.add(AE2wtlibItems.MAGNET_CARD, AE2wtlibItems.UNIVERSAL_TERMINAL, 1);
+    }
 
+    public static void registerHotkeyActions() {
+        HotkeyActions.register(new RestockHotkeyAction(), "ae2wtlib_restock");
+        HotkeyActions.register(new MagnetHotkeyAction(), "ae2wtlib_magnet");
+        HotkeyActions.register(new StowHotkeyAction(), "ae2wtlib_stow");
+    }
+
+    public static void registerRecipes() {
         Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, AE2wtlibAPI.id(UpgradeSerializer.NAME),
                 Upgrade.serializer);
         Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, AE2wtlibAPI.id(CombineSerializer.NAME),
                 Combine.serializer);
-
-        HotkeyActions.register(new RestockHotkeyAction(), "ae2wtlib_restock");
-        HotkeyActions.register(new MagnetHotkeyAction(), "ae2wtlib_magnet");
-        HotkeyActions.register(new StowHotkeyAction(), "ae2wtlib_stow");
     }
 
     static void addToCreativeTab() {

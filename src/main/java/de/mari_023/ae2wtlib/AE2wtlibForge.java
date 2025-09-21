@@ -13,6 +13,7 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
@@ -46,10 +47,15 @@ public class AE2wtlibForge {
             }
             if (!e.getRegistryKey().equals(Registries.ITEM))
                 return;
-            AE2wtlibItems.init();
-            AE2wtlib.onAe2Initialized();
+            AE2wtlib.registerTerminals();
+            AE2wtlib.registerRecipes();
+            AE2wtlib.registerHotkeyActions();
             AE2wtlibCreativeTab.init();
         });
+        modEventBus.addListener((FMLCommonSetupEvent e) -> e.enqueueWork(() -> {
+            AE2wtlib.registerGridLinkables();
+            AE2wtlib.registerUpgrades();
+        }));
         modEventBus.addListener((BuildCreativeModeTabContentsEvent e) -> AE2wtlib.addToCreativeTab());
         modEventBus.addListener((RegisterPayloadHandlersEvent event) -> {
             PayloadRegistrar registrar = event.registrar(AE2wtlibAPI.MOD_NAME);
