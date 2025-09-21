@@ -1,7 +1,5 @@
 {
   "type": "ae2wtlib:upgrade",
-  "terminal": {
-    "item": "ae2wtlib:wireless_pattern_encoding_terminal"
-  },
+  "terminal": "ae2wtlib:wireless_pattern_encoding_terminal",
   "terminalName": "pattern_encoding"
 }
