@@ -9,7 +9,8 @@ import net.minecraft.world.level.storage.TagValueInput;
 import net.minecraft.world.level.storage.ValueInput;
 
 public class ValueIOHelper {
-    public static ValueInput fromComponent(Player player, ItemStack itemStack, DataComponentType<CompoundTag> component) {
+    public static ValueInput fromComponent(Player player, ItemStack itemStack,
+            DataComponentType<CompoundTag> component) {
         CompoundTag tag = itemStack.getOrDefault(component, new CompoundTag());
         return fromTag(player, tag);
     }

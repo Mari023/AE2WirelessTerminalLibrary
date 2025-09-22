@@ -2,14 +2,17 @@ package de.mari_023.ae2wtlib.wct;
 
 import static de.mari_023.ae2wtlib.api.AE2wtlibAPI.id;
 
-import appeng.menu.guisync.ClientActionKey;
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
+import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs;
 
 import appeng.api.networking.IGridNode;
 import appeng.menu.MenuOpener;
 import appeng.menu.SlotSemantic;
+import appeng.menu.guisync.ClientActionKey;
 import appeng.menu.implementations.MenuTypeBuilder;
 import appeng.menu.me.items.CraftingTermMenu;
 import appeng.menu.slot.RestrictedInputSlot;
@@ -20,8 +23,6 @@ import de.mari_023.ae2wtlib.api.terminal.WTMenuHost;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHandler;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetMenu;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetMode;
-import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs;
-import org.jetbrains.annotations.Nullable;
 
 public class WCTMenu extends CraftingTermMenu {
     public static final ResourceLocation ID = id("wireless_crafting_terminal");

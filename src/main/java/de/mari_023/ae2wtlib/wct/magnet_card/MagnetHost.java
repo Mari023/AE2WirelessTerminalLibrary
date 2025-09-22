@@ -1,8 +1,12 @@
 package de.mari_023.ae2wtlib.wct.magnet_card;
 
-import de.mari_023.ae2wtlib.ValueIOHelper;
+import static de.mari_023.ae2wtlib.ValueIOHelper.fromComponent;
+import static de.mari_023.ae2wtlib.api.AE2wtlibComponents.INSERT_CONFIG;
+import static de.mari_023.ae2wtlib.api.AE2wtlibComponents.PICKUP_CONFIG;
+
 import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.TagValueOutput;
 
 import appeng.api.config.FuzzyMode;
 import appeng.api.config.IncludeExclude;
@@ -10,13 +14,9 @@ import appeng.api.stacks.AEKeyType;
 import appeng.util.ConfigInventory;
 import appeng.util.prioritylist.IPartitionList;
 
+import de.mari_023.ae2wtlib.ValueIOHelper;
 import de.mari_023.ae2wtlib.api.AE2wtlibComponents;
 import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
-import net.minecraft.world.level.storage.TagValueOutput;
-
-import static de.mari_023.ae2wtlib.ValueIOHelper.fromComponent;
-import static de.mari_023.ae2wtlib.api.AE2wtlibComponents.INSERT_CONFIG;
-import static de.mari_023.ae2wtlib.api.AE2wtlibComponents.PICKUP_CONFIG;
 
 public class MagnetHost {
     public final ConfigInventory pickupConfig = ConfigInventory.configTypes(27).changeListener(this::updatePickupFilter)

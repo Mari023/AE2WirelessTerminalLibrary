@@ -2,7 +2,6 @@ package de.mari_023.ae2wtlib.wct.magnet_card;
 
 import static de.mari_023.ae2wtlib.api.AE2wtlibAPI.id;
 
-import appeng.menu.guisync.ClientActionKey;
 import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.resources.ResourceLocation;
@@ -13,6 +12,7 @@ import appeng.api.storage.ISubMenuHost;
 import appeng.menu.AEBaseMenu;
 import appeng.menu.ISubMenu;
 import appeng.menu.SlotSemantic;
+import appeng.menu.guisync.ClientActionKey;
 import appeng.menu.implementations.MenuTypeBuilder;
 import appeng.menu.slot.FakeSlot;
 import appeng.util.ConfigInventory;

@@ -3,11 +3,15 @@ package de.mari_023.ae2wtlib.wut.recipe;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.mojang.datafixers.util.Unit;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingRecipe;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.PlacementInfo;
 
 import appeng.api.config.Actionable;
 import appeng.api.ids.AEComponents;
@@ -17,10 +21,6 @@ import de.mari_023.ae2wtlib.AE2wtlibItems;
 import de.mari_023.ae2wtlib.api.registration.WTDefinition;
 import de.mari_023.ae2wtlib.api.terminal.ItemWT;
 import de.mari_023.ae2wtlib.api.terminal.ItemWUT;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.PlacementInfo;
-
-import javax.annotation.Nullable;
 
 public abstract class Common implements CraftingRecipe {
     protected final ItemStack outputStack = new ItemStack(AE2wtlibItems.UNIVERSAL_TERMINAL);

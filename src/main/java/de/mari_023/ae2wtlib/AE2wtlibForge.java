@@ -81,8 +81,10 @@ public class AE2wtlibForge {
                 (packet, context) -> context.enqueueWork(() -> packet.processPacketData(context.player())));
     }
 
-    private static <T extends AE2wtlibPacket> void registerS2C(PayloadRegistrar registrar, CustomPacketPayload.Type<T> id, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec) {
-        registrar.playToClient(id, streamCodec, (packet, context) -> context.enqueueWork(() -> packet.processPacketData(context.player())));
+    private static <T extends AE2wtlibPacket> void registerS2C(PayloadRegistrar registrar,
+            CustomPacketPayload.Type<T> id, StreamCodec<? super RegistryFriendlyByteBuf, T> streamCodec) {
+        registrar.playToClient(id, streamCodec,
+                (packet, context) -> context.enqueueWork(() -> packet.processPacketData(context.player())));
     }
 
     private static void registerPowerStorageItem(RegisterCapabilitiesEvent event, ItemWT item) {

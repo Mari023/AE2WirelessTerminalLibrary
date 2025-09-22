@@ -18,8 +18,8 @@ public class AE2wtlibEmiPlugin implements EmiPlugin {
     @Override
     public void register(EmiRegistry registry) {
         // FIXME 1.21.8
-        /*registry.addRecipeHandler(WETMenu.TYPE, new EmiEncodePatternHandler<>(WETMenu.class));
-        registry.addRecipeHandler(WCTMenu.TYPE, new EmiUseCraftingRecipeHandler<>(WCTMenu.class));*/
+        // registry.addRecipeHandler(WETMenu.TYPE, new EmiEncodePatternHandler<>(WETMenu.class));
+        // registry.addRecipeHandler(WCTMenu.TYPE, new EmiUseCraftingRecipeHandler<>(WCTMenu.class));
 
         ItemStack wut = WTDefinitions.CRAFTING.universalTerminal();
         AE2wtlibItems.UNIVERSAL_TERMINAL.asItem().injectAEPower(wut,

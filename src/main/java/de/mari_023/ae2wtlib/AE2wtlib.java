@@ -1,8 +1,5 @@
 package de.mari_023.ae2wtlib;
 
-import appeng.api.features.GridLinkables;
-import appeng.client.InitScreens;
-import appeng.items.tools.powered.WirelessTerminalItem;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.neoforged.neoforge.attachment.AttachmentType;
@@ -10,10 +7,13 @@ import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
+import appeng.api.features.GridLinkables;
 import appeng.api.features.HotkeyAction;
 import appeng.api.upgrades.Upgrades;
+import appeng.client.InitScreens;
 import appeng.core.definitions.AEItems;
 import appeng.hotkeys.HotkeyActions;
+import appeng.items.tools.powered.WirelessTerminalItem;
 
 import de.mari_023.ae2wtlib.api.AE2wtlibAPI;
 import de.mari_023.ae2wtlib.api.gui.Icon;
@@ -43,15 +43,15 @@ public class AE2wtlib {
 
     public static void registerTerminals() {
         AddTerminalEvent.register((event -> {
-            event.builder("crafting", WCTMenuHost::new, WCTMenu.TYPE, (ItemWCT) AE2wtlibItems.WIRELESS_CRAFTING_TERMINAL.asItem(),
-                            Icon.CRAFTING)
+            event.builder("crafting", WCTMenuHost::new, WCTMenu.TYPE,
+                    (ItemWCT) AE2wtlibItems.WIRELESS_CRAFTING_TERMINAL.asItem(), Icon.CRAFTING)
                     .hotkeyName(HotkeyAction.WIRELESS_TERMINAL)
                     .addTerminal();
-            event.builder("pattern_encoding", WETMenuHost::new, WETMenu.TYPE, AE2wtlibItems.PATTERN_ENCODING_TERMINAL.asItem(),
-                            Icon.PATTERN_ENCODING)
+            event.builder("pattern_encoding", WETMenuHost::new, WETMenu.TYPE,
+                    AE2wtlibItems.PATTERN_ENCODING_TERMINAL.asItem(), Icon.PATTERN_ENCODING)
                     .addTerminal();
-            event.builder("pattern_access", WATMenuHost::new, WATMenu.TYPE, AE2wtlibItems.PATTERN_ACCESS_TERMINAL.asItem(),
-                            Icon.PATTERN_ACCESS)
+            event.builder("pattern_access", WATMenuHost::new, WATMenu.TYPE,
+                    AE2wtlibItems.PATTERN_ACCESS_TERMINAL.asItem(), Icon.PATTERN_ACCESS)
                     .addTerminal();
         }));
     }

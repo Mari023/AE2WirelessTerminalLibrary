@@ -3,10 +3,9 @@ package de.mari_023.ae2wtlib.api.terminal;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import org.jetbrains.annotations.Contract;
 
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 import appeng.client.Hotkeys;
 import appeng.client.gui.WidgetContainer;
