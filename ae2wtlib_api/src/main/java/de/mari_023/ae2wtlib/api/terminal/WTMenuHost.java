@@ -37,6 +37,7 @@ import appeng.util.inv.SupplierInternalInventory;
 
 import de.mari_023.ae2wtlib.api.AE2wtlibAPI;
 import de.mari_023.ae2wtlib.api.AE2wtlibComponents;
+import de.mari_023.ae2wtlib.api.StackWrapper;
 import de.mari_023.ae2wtlib.api.registration.WTDefinition;
 import de.mari_023.ae2wtlib.api.results.ActionHostResult;
 import de.mari_023.ae2wtlib.api.results.LongResult;
@@ -137,7 +138,8 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<ItemWT>
     }
 
     public LongResult getQEFrequency() {
-        ItemStack singularity = getItemStack().getOrDefault(AE2wtlibComponents.SINGULARITY, ItemStack.EMPTY);
+        ItemStack singularity = getItemStack().getOrDefault(AE2wtlibComponents.SINGULARITY, StackWrapper.EMPTY)
+                .toStack();
 
         if (singularity.isEmpty())
             return LongResult.invalid(Status.NoSingularity);
@@ -260,7 +262,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<ItemWT>
         var inv = new AppEngInternalInventory(new InternalInventoryHost() {
             @Override
             public void saveChangedInventory(AppEngInternalInventory inv) {
-                stack.set(AE2wtlibComponents.SINGULARITY, inv.getStackInSlot(0));
+                stack.set(AE2wtlibComponents.SINGULARITY, new StackWrapper(inv.getStackInSlot(0)));
             }
 
             @Override
@@ -268,7 +270,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<ItemWT>
                 return player.level().isClientSide();
             }
         }, 1, 1);
-        inv.setItemDirect(0, stack.getOrDefault(AE2wtlibComponents.SINGULARITY, ItemStack.EMPTY));
+        inv.setItemDirect(0, stack.getOrDefault(AE2wtlibComponents.SINGULARITY, StackWrapper.EMPTY).toStack());
         return inv;
     }
 }
