@@ -1,1 +1,1 @@
-
+- Updated to latest AE2 (Added native EMI integration)
