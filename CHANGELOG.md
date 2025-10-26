@@ -1,1 +1,1 @@
-
+- Add native EMI integration (#358)

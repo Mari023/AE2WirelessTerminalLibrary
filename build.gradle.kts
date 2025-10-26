@@ -30,6 +30,7 @@ val ccaVersion: String by project
 val clothVersion: String by project
 val modMenuVersion: String by project
 val ae2Version: String by project
+val guidemeVersion: String by project
 val architecturyVersion: String by project
 val runtimeItemlistMod: String by project
 val jeiMinecraftVersion: String by project
@@ -57,6 +58,7 @@ if (tag != "") {
 dependencies {
     add("minecraft", "net.neoforged:forge:${minecraftVersion}-${forgeVersion}")
 
+    implementation(fg.deobf("org.appliedenergistics:guideme:${guidemeVersion}"))
     implementation(fg.deobf("top.theillusivec4.curios:curios-forge:${curiosVersion}"))
     implementation(fg.deobf("me.shedaniel.cloth:cloth-config-${modloader}:${clothVersion}"))
     implementation(fg.deobf("dev.architectury:architectury-${modloader}:${architecturyVersion}"))
@@ -67,6 +69,7 @@ dependencies {
 
     compileOnly(fg.deobf("me.shedaniel:RoughlyEnoughItems-${modloader}:${reiVersion}"))
     compileOnly(fg.deobf("mezz.jei:jei-${jeiMinecraftVersion}-${modloader}:${jeiVersion}"))
+    compileOnly(fg.deobf("dev.emi:emi-${modloader}:${emiVersion}+${minecraftVersion}:api"))
 
     when (runtimeItemlistMod) {
         "rei" -> runtimeOnly(fg.deobf("me.shedaniel:RoughlyEnoughItems-${modloader}:${reiVersion}"))
@@ -75,7 +78,7 @@ dependencies {
 
         "emi" -> {
             runtimeOnly(fg.deobf("dev.emi:emi-${modloader}:${emiVersion}+${minecraftVersion}"))
-            runtimeOnly(fg.deobf("mezz.jei:jei-${jeiMinecraftVersion}-${modloader}:${jeiVersion}"))
+            //runtimeOnly(fg.deobf("mezz.jei:jei-${jeiMinecraftVersion}-${modloader}:${jeiVersion}"))
         }
     }
 
