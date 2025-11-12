@@ -14,7 +14,7 @@ import de.mari_023.ae2wtlib.api.AE2wtlibComponents;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetMode;
 
 public record TerminalSettingsPacket(ItemMenuHostLocator terminal, boolean pickBlock, boolean restock, boolean magnet,
-        boolean pickupToME) implements AE2wtlibPacket {
+        boolean pickupToME, boolean craftIfMissing) implements AE2wtlibPacket {
 
     public static final Type<TerminalSettingsPacket> ID = new Type<>(AE2wtlibAPI.id("terminal_settings"));
     public static final StreamCodec<RegistryFriendlyByteBuf, TerminalSettingsPacket> STREAM_CODEC = StreamCodec
@@ -24,11 +24,13 @@ public record TerminalSettingsPacket(ItemMenuHostLocator terminal, boolean pickB
                     ByteBufCodecs.BOOL, TerminalSettingsPacket::restock,
                     ByteBufCodecs.BOOL, TerminalSettingsPacket::magnet,
                     ByteBufCodecs.BOOL, TerminalSettingsPacket::pickupToME,
+                    ByteBufCodecs.BOOL, TerminalSettingsPacket::craftIfMissing,
                     TerminalSettingsPacket::new);
     @Override
     public void processPacketData(Player player) {
         var stack = terminal.locateItem(player);
         stack.set(AE2wtlibComponents.PICK_BLOCK, pickBlock);
+        stack.set(AE2wtlibComponents.CRAFT_IF_MISSING, craftIfMissing);
         stack.set(AE2wtlibComponents.RESTOCK, restock);
         var magnetSettings = stack.getOrDefault(AE2wtlibAdditionalComponents.MAGNET_SETTINGS, MagnetMode.OFF);
         magnetSettings = magnetSettings.set(magnet, pickupToME);
