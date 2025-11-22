@@ -15,6 +15,7 @@ import appeng.api.config.Actionable;
 import appeng.api.config.IncludeExclude;
 import appeng.api.stacks.AEItemKey;
 import appeng.me.helpers.PlayerSource;
+import appeng.menu.me.crafting.CraftAmountMenu;
 
 import de.mari_023.ae2wtlib.api.AE2wtlibComponents;
 import de.mari_023.ae2wtlib.api.AE2wtlibTags;
@@ -181,9 +182,15 @@ public class AE2wtlibEvents {
         if (insert < toReplace.getCount())
             return;
         int targetAmount = stack.getMaxStackSize();
-        var extracted = networkInventory.extract(AEItemKey.of(stack), targetAmount, Actionable.SIMULATE, playerSource);
-        if (extracted == 0)
+        var what = AEItemKey.of(stack);
+        var extracted = networkInventory.extract(what, targetAmount, Actionable.SIMULATE, playerSource);
+        if (extracted == 0) {
+            if (!terminal.getOrDefault(AE2wtlibComponents.CRAFT_IF_MISSING, false)
+                    || cTHandler.getTargetGrid().getCraftingService().getCraftingFor(what).isEmpty())
+                return;
+            CraftAmountMenu.open(player, cTHandler.getLocator(), what, 1);
             return;
+        }
 
         insert = networkInventory.insert(AEItemKey.of(toReplace), toReplace.getCount(), Actionable.MODULATE,
                 playerSource);

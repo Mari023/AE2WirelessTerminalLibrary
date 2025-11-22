@@ -53,6 +53,8 @@ public class AE2wtlibComponents {
             .persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL));
     public static final DataComponentType<Boolean> PICK_BLOCK = register("pick_block", builder -> builder
             .persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL));
+    public static final DataComponentType<Boolean> CRAFT_IF_MISSING = register("craft_if_missing", builder -> builder
+            .persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL));
 
     public static final DataComponentType<CompoundTag> PATTERN_ENCODING_LOGIC = register("pattern_encoding_logic",
             COMPOUND_TAG_CODECS);

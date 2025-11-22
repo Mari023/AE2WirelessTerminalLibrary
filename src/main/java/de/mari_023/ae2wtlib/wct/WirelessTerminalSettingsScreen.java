@@ -18,7 +18,10 @@ import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHandler;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetMode;
 
 public class WirelessTerminalSettingsScreen extends AESubScreen<WCTMenu, WCTScreen> {
-    private final AECheckbox pickBlock = widgets.addCheckbox("pickBlock", TextConstants.PICK_BLOCK, this::save);
+    private final AECheckbox pickBlock = widgets.addCheckbox("pickBlock", TextConstants.PICK_BLOCK,
+            this::changeVisibility);
+    private final AECheckbox craftIfMissing = widgets.addCheckbox("craftIfMissing", TextConstants.CRAFT_IF_MISSING,
+            this::save);
     private final AECheckbox restock = widgets.addCheckbox("restock", TextConstants.RESTOCK, this::save);
     private final AECheckbox magnet = widgets.addCheckbox("magnet", TextConstants.MAGNET, this::save);
     private final AECheckbox pickupToME = widgets.addCheckbox("pickupToME", TextConstants.PICKUP_TO_ME, this::save);
@@ -29,6 +32,8 @@ public class WirelessTerminalSettingsScreen extends AESubScreen<WCTMenu, WCTScre
                 new TabButton(Icon.BACK, menu.getHost().getMainMenuIcon().getHoverName(), btn -> returnToParent()));
 
         pickBlock.setSelected(stack().getOrDefault(AE2wtlibComponents.PICK_BLOCK, false));
+        craftIfMissing.setSelected(stack().getOrDefault(AE2wtlibComponents.CRAFT_IF_MISSING, false));
+        craftIfMissing.active = pickBlock.isSelected();
         restock.setSelected(stack().getOrDefault(AE2wtlibComponents.RESTOCK, false));
         magnet.setSelected(stack().getOrDefault(AE2wtlibAdditionalComponents.MAGNET_SETTINGS, MagnetMode.OFF).magnet());
         pickupToME.setSelected(
@@ -49,11 +54,17 @@ public class WirelessTerminalSettingsScreen extends AESubScreen<WCTMenu, WCTScre
         return ((WTMenuHost) getMenu().getHost()).getItemStack();
     }
 
+    private void changeVisibility() {
+        craftIfMissing.active = pickBlock.isSelected();
+        save();
+    }
+
     private void save() {
         var locator = ((WTMenuHost) getMenu().getHost()).getLocator();
         if (locator == null)
             return;
         PacketDistributor.sendToServer(new TerminalSettingsPacket(locator,
-                pickBlock.isSelected(), restock.isSelected(), magnet.isSelected(), pickupToME.isSelected()));
+                pickBlock.isSelected(), restock.isSelected(), magnet.isSelected(), pickupToME.isSelected(),
+                craftIfMissing.isSelected()));
     }
 }
