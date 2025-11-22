@@ -19,6 +19,7 @@ import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHost;
 import appeng.api.config.Actionable;
 import appeng.api.stacks.AEItemKey;
 import appeng.me.helpers.PlayerSource;
+import appeng.menu.me.crafting.CraftAmountMenu;
 
 public class AE2wtlibEvents {
     /**
@@ -122,9 +123,15 @@ public class AE2wtlibEvents {
         if (insert < toReplace.getCount())
             return;
         int targetAmount = Math.max(1, stack.getMaxStackSize() / 2);
-        var extracted = networkInventory.extract(AEItemKey.of(stack), targetAmount, Actionable.SIMULATE, playerSource);
-        if (extracted == 0)
+        var what = AEItemKey.of(stack);
+        var extracted = networkInventory.extract(what, targetAmount, Actionable.SIMULATE, playerSource);
+        if (extracted == 0) {
+            if (!ItemWT.getBoolean(terminal, AE2wtlibTags.CRAFT_IF_MISSING)
+                    || cTHandler.getTargetGrid().getCraftingService().getCraftingFor(what).isEmpty())
+                return;
+            CraftAmountMenu.open(player, cTHandler.getLocator(), what, 1);
             return;
+        }
 
         insert = networkInventory.insert(AEItemKey.of(toReplace), toReplace.getCount(), Actionable.MODULATE,
                 playerSource);

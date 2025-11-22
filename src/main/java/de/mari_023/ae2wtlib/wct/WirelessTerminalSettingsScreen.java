@@ -17,6 +17,8 @@ import appeng.menu.SlotSemantics;
 
 public class WirelessTerminalSettingsScreen extends AESubScreen<WCTMenu, WCTScreen> {
     private final AECheckbox pickBlock = widgets.addCheckbox("pickBlock", TextConstants.PICK_BLOCK, this::save);
+    private final AECheckbox craftIfMissing = widgets.addCheckbox("craftIfMissing", TextConstants.CRAFT_IF_MISSING,
+            this::save);
     private final AECheckbox restock = widgets.addCheckbox("restock", TextConstants.RESTOCK, this::save);
     private final AECheckbox magnet = widgets.addCheckbox("magnet", TextConstants.MAGNET, this::save);
     private final AECheckbox pickupToME = widgets.addCheckbox("pickupToME", TextConstants.PICKUP_TO_ME, this::save);
@@ -30,6 +32,8 @@ public class WirelessTerminalSettingsScreen extends AESubScreen<WCTMenu, WCTScre
 
         CompoundTag itemTag = stack().getOrCreateTag();
         pickBlock.setSelected(itemTag.getBoolean(AE2wtlibTags.PICK_BLOCK));
+        craftIfMissing.setSelected(itemTag.getBoolean(AE2wtlibTags.CRAFT_IF_MISSING));
+        craftIfMissing.active = pickBlock.isSelected();
         restock.setSelected(itemTag.getBoolean(AE2wtlibTags.RESTOCK));
         MagnetMode magnetMode = MagnetMode.fromByte(itemTag.getByte(AE2wtlibTags.MAGNET_SETTINGS));
         magnet.setSelected(magnetMode.magnet());
@@ -50,11 +54,13 @@ public class WirelessTerminalSettingsScreen extends AESubScreen<WCTMenu, WCTScre
         ItemStack item = stack();
 
         item.getOrCreateTag().putBoolean(AE2wtlibTags.PICK_BLOCK, pickBlock.isSelected());
+        item.getOrCreateTag().putBoolean(AE2wtlibTags.CRAFT_IF_MISSING, craftIfMissing.isSelected());
         item.getTag().putBoolean(AE2wtlibTags.RESTOCK, restock.isSelected());
         var magnetSettings = MagnetMode.fromByte(item.getTag().getByte(AE2wtlibTags.MAGNET_SETTINGS));
         magnetSettings = magnetSettings.set(magnet.isSelected(), pickupToME.isSelected());
         item.getTag().putByte(AE2wtlibTags.MAGNET_SETTINGS, magnetSettings.getId());
 
+        craftIfMissing.active = pickBlock.isSelected();
         ClientNetworkManager.sendToServer(new TerminalSettingsPacket(item.getTag()));
     }
 }

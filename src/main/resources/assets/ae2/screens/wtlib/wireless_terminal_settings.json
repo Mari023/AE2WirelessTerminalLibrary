@@ -18,7 +18,7 @@
         "search_settings_title": {
             "position": {
                 "left": 8,
-                "top": 65
+                "top": 73
             },
             "text": {
                 "translate": "gui.ae2wtlib.magnet_settings_title"
@@ -37,9 +37,14 @@
             "top": 25,
             "width": 180
         },
-        "restock": {
+        "craftIfMissing": {
             "left": 10,
             "top": 41,
+            "width": 180
+        },
+        "restock": {
+            "left": 10,
+            "top": 57,
             "width": 180
         },
         "magnet": {

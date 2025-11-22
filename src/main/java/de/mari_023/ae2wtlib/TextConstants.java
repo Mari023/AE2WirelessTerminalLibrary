@@ -88,6 +88,7 @@ public final class TextConstants {
     public static final Component NETWORK_NOT_POWERED = Component.translatable("chat.ae2wtlib.NetworkNotPowered");
 
     public static final Component PICK_BLOCK = Component.translatable("gui.ae2wtlib.pick_block.text");
+    public static final Component CRAFT_IF_MISSING = Component.translatable("gui.ae2wtlib.craft_if_missing.text");
     public static final Component RESTOCK = Component.translatable("gui.ae2wtlib.restock.text");
     public static final Component MAGNET = Component.translatable("gui.ae2wtlib.magnet.text");
     public static final Component PICKUP_TO_ME = Component.translatable("gui.ae2wtlib.pickup_to_me.text");
