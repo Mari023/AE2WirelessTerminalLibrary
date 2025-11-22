@@ -1,2 +1,1 @@
-- Add setting for pick block to request the item when not available (#360)
-- change text of Wireless Terminal Settings button (fix #359)
+
