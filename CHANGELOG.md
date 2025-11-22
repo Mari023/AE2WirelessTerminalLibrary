@@ -1,1 +1,1 @@
-- Add setting for pick block to request the item when not available (#361)
+
