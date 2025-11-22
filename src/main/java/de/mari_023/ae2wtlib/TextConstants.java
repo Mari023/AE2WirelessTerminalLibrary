@@ -51,6 +51,8 @@ public final class TextConstants {
 
     public static final MutableComponent TRASH = Component.translatable("gui.ae2wtlib.trash");
 
+    public static final Component TERMINAL_SETTINGS = Component
+            .translatable("gui.ae2wtlib.wireless_terminal_settings_title");
     public static final Component MAGNET_FILTER = Component.translatable("gui.ae2wtlib.Magnet");
 
     private static final Component WHITELIST = Component.translatable("gui.ae2wtlib.whitelist");
