@@ -1,0 +1,53 @@
+{
+  "gui.ae2wtlib.creativetab": "AE2 Wireless Terminals (AE2WTLib)",
+
+  "gui.ae2wtlib.trash": "Lixo",
+
+  "item.ae2wtlib.quantum_bridge_card": "Cartão de Ponte Quântica",
+  "item.ae2wtlib.quantum_bridge_card.desc": "Permite que terminais sem fio se conectem a uma ponte quântica, permitindo alcance ilimitado",
+  "item.ae2wtlib.magnet_card": "Cartão Magnético",
+  "item.ae2wtlib.magnet_card.desc": "Melhoria de ímã para o Terminal de Criação Sem Fio",
+
+  "gui.ae2wtlib.magnetcard": "Cartão Magnético",
+  "gui.ae2wtlib.magnetcard.desc.off": "Desligado",
+  "gui.ae2wtlib.magnetcard.desc.inv": "Coletar para o Inventário",
+  "gui.ae2wtlib.magnetcard.desc.me": "Coletar para o ME",
+  "gui.ae2wtlib.magnetcard.desc.me_no_magnet": "Ímã Desligado, Coletar para o ME",
+  "gui.ae2wtlib.cycle_terminal.desc": "Abrir %s",
+  "gui.ae2wtlib.cycle_terminal.desc1": "Clique com o botão direito para abrir %s",
+  "gui.ae2wtlib.magnetcard.hotkey": "Cartão Magnético: %s",
+  "gui.ae2wtlib.restock": "Reabastecer: %s",
+  "gui.ae2wtlib.off": "Desligado",
+  "gui.ae2wtlib.on": "Ligado",
+  "gui.ae2wtlib.slot.magnetcard.desc": "Cartão Magnético",
+
+  "gui.ae2wtlib.wireless_terminal_settings_title" : "Configurações do Terminal Sem Fio",
+  "gui.ae2wtlib.magnet_settings_title" : "Configurações do Ímã",
+  "gui.ae2wtlib.pick_block.text" : "Habilitar Escolher Bloco",
+  "gui.ae2wtlib.craft_if_missing.text": "Fabricar se Faltar",
+  "gui.ae2wtlib.restock.text" : "Reabastecer",
+  "gui.ae2wtlib.magnet.text" : "Ímã",
+  "gui.ae2wtlib.pickup_to_me.text" : "Coletar para o Sistema ME",
+
+  "gui.ae2wtlib.Magnet": "Filtro de Ímã",
+  "gui.ae2wtlib.allow": "Permitir",
+  "gui.ae2wtlib.deny": "Negar",
+  "gui.ae2wtlib.pickup_filter": "Filtro de Coleta: %s",
+  "gui.ae2wtlib.insert_filter": "Filtro de Inserção: %s",
+  "gui.ae2wtlib.copy_pickup": "Copiar para Coleta",
+  "gui.ae2wtlib.copy_insert": "Copiar para Inserção",
+  "gui.ae2wtlib.switch": "Alternar Filtros",
+
+  "item.ae2wtlib.wireless_pattern_encoding_terminal": "Terminal de Codificação de Padrões Sem Fio",
+  "item.ae2wtlib.wireless_pattern_access_terminal": "Terminal de Acesso a Padrões Sem Fio",
+  "item.ae2wtlib.wireless_universal_terminal": "Terminal Universal Sem Fio",
+  "item.ae2wtlib.wireless_universal_terminal.desc": "Terminais Instalados:",
+
+  "key.ae2.wireless_pattern_access_terminal": "Abrir Terminal de Acesso a Padrões Sem Fio",
+  "key.ae2.wireless_pattern_encoding_terminal": "Abrir Terminal de Codificação de Padrões Sem Fio",
+  "key.ae2.ae2wtlib_restock": "Alternar Reabastecimento",
+  "key.ae2.ae2wtlib_magnet": "Alternar Cartão Magnético",
+  "key.ae2.ae2wtlib_stow": "Guardar pilha da mão no Sistema ME",
+
+  "ae2wtlib.configuration.magnet_card_range": "Alcance do Cartão Magnético"
+}

@@ -1,0 +1,7 @@
+{
+  "chat.ae2wtlib.NetworkNotPowered" :  "Rede Não Energizada",
+  "chat.ae2wtlib.SingularityNotPresent" : "Singularidade Ausente",
+  "chat.ae2wtlib.NoQuantumBridgeCard" : "Cartão de Ponte Quântica Ausente",
+  "chat.ae2wtlib.NoQuantumBridge" : "Ponte de Rede Quântica não encontrada. Ela está em chunks carregados?",
+  "chat.ae2wtlib.NetworkMismatch": "A Ponte Quântica e o Ponto de Acesso Sem Fio estão conectados a Redes Diferentes"
+}
