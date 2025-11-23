@@ -1,1 +1,2 @@
-- Update zh_cn.json
+- Update zh_cn localisation (#363)
+- PT_BR localisation (#364)
