@@ -12,6 +12,7 @@ import appeng.api.storage.ISubMenuHost;
 import appeng.menu.AEBaseMenu;
 import appeng.menu.ISubMenu;
 import appeng.menu.SlotSemantic;
+import appeng.menu.guisync.ClientActionKey;
 import appeng.menu.implementations.MenuTypeBuilder;
 import appeng.menu.slot.FakeSlot;
 import appeng.util.ConfigInventory;
@@ -29,11 +30,11 @@ public class MagnetMenu extends AEBaseMenu implements ISubMenu {
     private final WCTMenuHost host;
     @Nullable
     private final MagnetHost magnetHost;
-    private final static String TOGGLE_PICKUP_MODE = "togglepickupmode";
-    private final static String TOGGLE_INSERT_MODE = "toggleinsertmode";
-    private final static String COPY_UP = "copy_up";
-    private final static String COPY_DOWN = "copy_down";
-    private final static String SWITCH_INSERT_PICKUP = "switch";
+    private final static ClientActionKey<Void> TOGGLE_PICKUP_MODE = new ClientActionKey<>("togglepickupmode");
+    private final static ClientActionKey<Void> TOGGLE_INSERT_MODE = new ClientActionKey<>("toggleinsertmode");
+    private final static ClientActionKey<Void> COPY_UP = new ClientActionKey<>("copy_up");
+    private final static ClientActionKey<Void> COPY_DOWN = new ClientActionKey<>("copy_down");
+    private final static ClientActionKey<Void> SWITCH_INSERT_PICKUP = new ClientActionKey<>("switch");
 
     public MagnetMenu(int id, Inventory playerInventory, WCTMenuHost host) {
         super(TYPE, id, playerInventory, host);

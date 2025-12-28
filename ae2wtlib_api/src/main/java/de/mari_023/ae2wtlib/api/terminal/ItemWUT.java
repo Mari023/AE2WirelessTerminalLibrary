@@ -1,20 +1,22 @@
 package de.mari_023.ae2wtlib.api.terminal;
 
-import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
 import appeng.api.upgrades.IUpgradeInventory;
 import appeng.api.upgrades.UpgradeInventories;
@@ -27,19 +29,17 @@ import de.mari_023.ae2wtlib.api.TextConstants;
 import de.mari_023.ae2wtlib.api.registration.WTDefinition;
 
 public class ItemWUT extends ItemWT {
+    public ItemWUT(Properties p) {
+        super(p);
+    }
+
     @Override
-    public InteractionResultHolder<ItemStack> use(final Level level, final Player player, final InteractionHand hand) {
+    public InteractionResult use(final Level level, final Player player, final InteractionHand hand) {
         if (WTDefinition.ofOrNull(player.getItemInHand(hand)) == null) {
             if (!level.isClientSide())
-                player.sendSystemMessage(TextConstants.TERMINAL_EMPTY);
-            return new InteractionResultHolder<>(InteractionResult.sidedSuccess(level.isClientSide()),
-                    player.getItemInHand(hand));
+                player.displayClientMessage(TextConstants.TERMINAL_EMPTY, true);
+            return InteractionResult.SUCCESS;
         }
-        /*
-         * if(player.isShiftKeyDown()) { if(w.isClientSide()) Minecraft.getInstance().setScreen(new
-         * WUTSelectScreen(player.getItemInHand(hand))); return new InteractionResultHolder<>(InteractionResult.SUCCESS,
-         * player.getItemInHand(hand)); } else
-         */
         return super.use(level, player, hand);
     }
 
@@ -61,15 +61,14 @@ public class ItemWUT extends ItemWT {
     }
 
     @Override
-    @OnlyIn(Dist.CLIENT)
-    public void appendHoverText(final ItemStack stack, final TooltipContext context, final List<Component> lines,
-            final TooltipFlag advancedTooltips) {
-        lines.add(TextConstants.UNIVERSAL);
+    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay tooltipDisplay,
+            Consumer<Component> lines, TooltipFlag tooltipFlags) {
+        lines.accept(TextConstants.UNIVERSAL);
         for (var terminal : WTDefinition.wirelessTerminals()) {
             if (stack.get(terminal.componentType()) != null)
-                lines.add(terminal.formattedName());
+                lines.accept(terminal.formattedName());
         }
-        super.appendHoverText(stack, context, lines, advancedTooltips);
+        super.appendHoverText(stack, context, tooltipDisplay, lines, tooltipFlags);
     }
 
     @Override
@@ -91,12 +90,12 @@ public class ItemWUT extends ItemWT {
         return terminals;
     }
 
-    public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int i, boolean bl) {
+    @Override
+    public void inventoryTick(ItemStack itemStack, ServerLevel level, Entity entity, @Nullable EquipmentSlot slot) {
         for (var terminal : WTDefinition.wirelessTerminals()) {
             if (itemStack.get(terminal.componentType()) == null)
                 continue;
-            terminal.item().inventoryTick(itemStack,
-                    level, entity, i, bl);
+            terminal.item().inventoryTick(itemStack, level, entity, slot);
         }
     }
 

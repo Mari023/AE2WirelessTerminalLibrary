@@ -2,7 +2,6 @@ package de.mari_023.ae2wtlib;
 
 import java.util.function.Consumer;
 
-import net.minecraft.network.protocol.game.ClientboundSetCarriedItemPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -18,8 +17,6 @@ import appeng.me.helpers.PlayerSource;
 import appeng.menu.me.crafting.CraftAmountMenu;
 
 import de.mari_023.ae2wtlib.api.AE2wtlibComponents;
-import de.mari_023.ae2wtlib.api.AE2wtlibTags;
-import de.mari_023.ae2wtlib.networking.PickBlockPacket;
 import de.mari_023.ae2wtlib.networking.UpdateRestockPacket;
 import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
 import de.mari_023.ae2wtlib.wct.magnet_card.MagnetHandler;
@@ -39,9 +36,6 @@ public class AE2wtlibEvents {
             return;
         if (item.isEmpty())
             return;
-        if (item.is(AE2wtlibTags.NO_RESTOCK)) {
-            return;
-        }
 
         CraftingTerminalHandler cTHandler = CraftingTerminalHandler.getCraftingTerminalHandler(player);
         if (!cTHandler.inRange())
@@ -71,10 +65,10 @@ public class AE2wtlibEvents {
         item.setCount(count + (int) changed);
         setStack.accept(item);
 
-        int slot = player.getInventory().findSlotMatchingUnusedItem(item);
+        int slot = player.getInventory().findSlotMatchingItem(item);
         if (slot == -1) {
-            if (player.getInventory().offhand.contains(item))
-                slot = Inventory.INVENTORY_SIZE;
+            if (ItemStack.isSameItemSameComponents(player.getInventory().getItem(Inventory.SLOT_OFFHAND), item))
+                slot = Inventory.SLOT_OFFHAND;
         }
         PacketDistributor.sendToPlayer(player, new UpdateRestockPacket(slot, item.getCount()));
     }
@@ -143,9 +137,6 @@ public class AE2wtlibEvents {
     }
 
     private static boolean isRestocking(ItemStack stack, Player player) {
-        if (stack.is(AE2wtlibTags.NO_RESTOCK)) {
-            return false;
-        }
         if (stack.getMaxStackSize() == 1) {
             return false;
         }
@@ -154,10 +145,6 @@ public class AE2wtlibEvents {
                 return true;
         }
         return false;
-    }
-
-    public static void pickBlock(ItemStack stack) {
-        PacketDistributor.sendToServer(new PickBlockPacket(stack));
     }
 
     public static void pickBlock(ServerPlayer player, ItemStack stack) {
@@ -207,7 +194,6 @@ public class AE2wtlibEvents {
         }
         stack.setCount((int) extracted);
         inventory.setItem(targetSlot, stack);
-        inventory.selected = targetSlot;
-        player.connection.send(new ClientboundSetCarriedItemPacket(player.getInventory().selected));
+        inventory.setSelectedSlot(targetSlot);
     }
 }

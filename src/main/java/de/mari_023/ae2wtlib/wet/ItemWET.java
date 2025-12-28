@@ -8,6 +8,10 @@ import appeng.menu.locator.ItemMenuHostLocator;
 import de.mari_023.ae2wtlib.api.terminal.ItemWT;
 
 public class ItemWET extends ItemWT {
+    public ItemWET(Properties p) {
+        super(p);
+    }
+
     @Override
     public MenuType<?> getMenuType(ItemMenuHostLocator locator, Player player) {
         return WETMenu.TYPE;

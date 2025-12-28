@@ -24,7 +24,6 @@ import de.mari_023.ae2wtlib.AE2wtlibAdditionalComponents;
 import de.mari_023.ae2wtlib.AE2wtlibConfig;
 import de.mari_023.ae2wtlib.AE2wtlibItems;
 import de.mari_023.ae2wtlib.api.AE2wtlibComponents;
-import de.mari_023.ae2wtlib.api.AE2wtlibTags;
 import de.mari_023.ae2wtlib.networking.RestockAmountPacket;
 import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
 
@@ -70,9 +69,6 @@ public class MagnetHandler {
                 continue;
             if (items.containsKey(stack.getItem()))
                 continue;
-            if (stack.is(AE2wtlibTags.NO_RESTOCK)) {
-                continue;
-            }
             AEItemKey key = AEItemKey.of(stack);
             if (key == null)
                 items.put(stack.getItem(), 0L);

@@ -1,12 +1,8 @@
 {
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
-    {
-      "item": "ae2:wireless_crafting_terminal"
-    },
-    {
-      "item": "ae2:engineering_processor"
-    }
+    "ae2:wireless_crafting_terminal",
+    "ae2:engineering_processor"
   ],
   "result": {
     "count": 1,

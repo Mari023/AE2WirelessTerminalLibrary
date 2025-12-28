@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.Contract;
 
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 import appeng.client.Hotkeys;
 import appeng.client.gui.WidgetContainer;
@@ -44,7 +44,7 @@ public interface IUniversalTerminalCapable {
             if (hotkey == null)
                 continue;
             if (hotkey.mapping().matches(keyCode, scanCode)) {
-                PacketDistributor.sendToServer(new HotkeyPacket(hotkey));
+                ClientPacketDistributor.sendToServer(new HotkeyPacket(hotkey));
                 return true;
             }
         }

@@ -35,6 +35,6 @@ public class AEItemsMixin {
     private static <T extends Item> void replaceWirelessCraftingTerminal(String name, ResourceLocation id,
             Function<Item.Properties, T> factory, CallbackInfoReturnable<ItemDefinition<T>> cir) {
         if (id.equals(AEItemIds.WIRELESS_CRAFTING_TERMINAL))
-            cir.setReturnValue(item(name, id, p -> (T) new ItemWCT(), AECreativeTabIds.MAIN));
+            cir.setReturnValue(item(name, id, p -> (T) new ItemWCT(p), AECreativeTabIds.MAIN));
     }
 }

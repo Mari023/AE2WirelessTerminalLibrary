@@ -2,6 +2,8 @@ package de.mari_023.ae2wtlib.wet;
 
 import static de.mari_023.ae2wtlib.api.AE2wtlibAPI.id;
 
+import org.jetbrains.annotations.Nullable;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
@@ -29,6 +31,7 @@ public class WETMenu extends PatternEncodingTermMenu {
                 wetMenuHost.getSubInventory(WTMenuHost.INV_SINGULARITY), 0), AE2wtlibSlotSemantics.SINGULARITY);
     }
 
+    @Nullable
     @Override
     public IGridNode getGridNode() {
         return wetMenuHost.getActionableNode();

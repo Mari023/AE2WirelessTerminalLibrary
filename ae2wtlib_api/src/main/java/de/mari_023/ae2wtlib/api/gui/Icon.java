@@ -11,8 +11,7 @@ import appeng.core.AppEng;
 public record Icon(int x, int y, int width, int height, Texture texture) {
 
     public static final Texture TEXTURE = new Texture(AppEng.makeId("textures/wtlib/guis/icons.png"), 128, 128);
-    public static final Texture AE2TEXTURE = new Texture(appeng.client.gui.Icon.TEXTURE,
-            appeng.client.gui.Icon.TEXTURE_WIDTH, appeng.client.gui.Icon.TEXTURE_HEIGHT);
+    public static final Texture AE2TEXTURE = new Texture(AppEng.makeId("textures/guis/states.png"), 256, 256);
 
     public static final Icon BUTTON_BACKGROUND = new Icon(63, 0, 16, 17);
     public static final Icon BUTTON_BACKGROUND_HOVERED = new Icon(95, 1, 16, 16);
@@ -24,8 +23,6 @@ public record Icon(int x, int y, int width, int height, Texture texture) {
 
     public static final Icon TERMINAL_SETTINGS = new Icon(32, 65, 16, 15, Icon.AE2TEXTURE);
     public static final Icon MAGNET = new Icon(0, 0);
-    @Deprecated
-    public static final Icon MAGNET_FILTER = new Icon(0, 16);
     public static final Icon TRASH = new Icon(0, 32);
 
     public static final Icon PATTERN_ACCESS = new Icon(16, 0);

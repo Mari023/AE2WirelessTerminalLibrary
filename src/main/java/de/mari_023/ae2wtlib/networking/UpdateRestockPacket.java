@@ -5,7 +5,6 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 
 import de.mari_023.ae2wtlib.api.AE2wtlibAPI;
@@ -19,12 +18,7 @@ public record UpdateRestockPacket(int slot, int amount) implements AE2wtlibPacke
 
     @Override
     public void processPacketData(Player player) {
-        switch (slot()) {
-            case Inventory.INVENTORY_SIZE -> player.getInventory().offhand.getFirst().setCount(amount());
-            case -1 -> {
-            }
-            default -> player.getInventory().getItem(slot()).setCount(amount());
-        }
+        player.getInventory().getItem(slot()).setCount(amount());
     }
 
     @Override
