@@ -26,7 +26,7 @@ if (tag != "") {
 
 val artifactVersion = version
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+java.toolchain.languageVersion = JavaLanguageVersion.of(25)
 
 dependencies {
     implementation("org.appliedenergistics:appliedenergistics2:${ae2Version}")
