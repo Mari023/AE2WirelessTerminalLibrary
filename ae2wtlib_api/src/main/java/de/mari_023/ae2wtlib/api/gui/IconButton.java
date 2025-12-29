@@ -44,7 +44,7 @@ public class IconButton extends Button implements ITooltip {
     }
 
     @Override
-    public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partial) {
+    public void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partial) {
         if (!visible)
             return;
 
@@ -52,12 +52,8 @@ public class IconButton extends Button implements ITooltip {
         var bg = getBG();
         var bgSizeOffset = bg.width() > 16 ? 1 : 0;
 
-        bg.getBlitter()
-                .dest(getX() - 1, getY() + yOffset, bg.width(), bg.height())
-                .zOffset(2)
-                .blit(guiGraphics);
-        getIcon().getBlitter().dest(getX() - 1 + bgSizeOffset, getY() + bgSizeOffset + yOffset).zOffset(3)
-                .blit(guiGraphics);
+        bg.getBlitter().dest(getX() - 1, getY() + yOffset, bg.width(), bg.height()).blit(guiGraphics);
+        getIcon().getBlitter().dest(getX() - 1 + bgSizeOffset, getY() + bgSizeOffset + yOffset).blit(guiGraphics);
     }
 
     protected Icon getIcon() {

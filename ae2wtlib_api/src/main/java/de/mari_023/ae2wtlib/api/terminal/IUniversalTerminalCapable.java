@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.jetbrains.annotations.Contract;
 
+import net.minecraft.client.input.KeyEvent;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 import appeng.client.Hotkeys;
@@ -34,7 +35,7 @@ public interface IUniversalTerminalCapable {
 
     default boolean checkForTerminalKeys(int keyCode, int scanCode) {
         var closingHotkey = Hotkeys.getHotkeyMapping(getHost().getCloseHotkey());
-        if (closingHotkey != null && closingHotkey.mapping().matches(keyCode, scanCode)) {
+        if (closingHotkey != null && closingHotkey.mapping().matches(new KeyEvent(keyCode, scanCode, 0))) {
             getHost().getPlayer().closeContainer();
             return true;
         }
@@ -43,7 +44,7 @@ public interface IUniversalTerminalCapable {
             var hotkey = Hotkeys.getHotkeyMapping(terminal.hotkeyName());
             if (hotkey == null)
                 continue;
-            if (hotkey.mapping().matches(keyCode, scanCode)) {
+            if (hotkey.mapping().matches(new KeyEvent(keyCode, scanCode, 0))) {
                 ClientPacketDistributor.sendToServer(new HotkeyPacket(hotkey));
                 return true;
             }
