@@ -56,7 +56,7 @@ public class AE2wtlibForge {
             AE2wtlib.registerGridLinkables();
             AE2wtlib.registerUpgrades();
         }));
-        modEventBus.addListener((BuildCreativeModeTabContentsEvent e) -> AE2wtlib.addToCreativeTab());
+        modEventBus.addListener((BuildCreativeModeTabContentsEvent _) -> AE2wtlib.addToCreativeTab());
         modEventBus.addListener((RegisterPayloadHandlersEvent event) -> {
             PayloadRegistrar registrar = event.registrar(AE2wtlibAPI.MOD_NAME);
             registerC2S(registrar, CycleTerminalPacket.ID, CycleTerminalPacket.STREAM_CODEC);
@@ -141,7 +141,7 @@ public class AE2wtlibForge {
         if (!(event.getEntity() instanceof ServerPlayer player))
             return;
         ItemStack projectile = player.getProjectile(event.getBow());
-        AE2wtlibEvents.restock(player, projectile, projectile.getCount(), (itemStack) -> {
+        AE2wtlibEvents.restock(player, projectile, projectile.getCount(), (_) -> {
         });
     }
 
@@ -152,7 +152,7 @@ public class AE2wtlibForge {
         if (!(event.getEntity() instanceof ServerPlayer player))
             return;
         ItemStack projectile = player.getProjectile(event.getBow());
-        AE2wtlibEvents.restock(player, projectile, projectile.getCount(), (itemStack) -> {
+        AE2wtlibEvents.restock(player, projectile, projectile.getCount(), (_) -> {
         });
     }
 

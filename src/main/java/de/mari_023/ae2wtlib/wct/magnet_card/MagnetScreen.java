@@ -19,7 +19,7 @@ public class MagnetScreen extends AEBaseScreen<MagnetMenu> {
         if (menu.getMagnetHost() == null)
             return;
 
-        widgets.add("pickup_mode", new IconButton(button -> menu.togglePickupMode(), Icon.YES) {
+        widgets.add("pickup_mode", new IconButton(_ -> menu.togglePickupMode(), Icon.YES) {
             @Override
             protected Icon getIcon() {
                 return icon(menu.getMagnetHost().getPickupMode());
@@ -31,7 +31,7 @@ public class MagnetScreen extends AEBaseScreen<MagnetMenu> {
             }
         });
 
-        widgets.add("insert_mode", new IconButton(button -> menu.toggleInsertMode(), Icon.YES) {
+        widgets.add("insert_mode", new IconButton(_ -> menu.toggleInsertMode(), Icon.YES) {
             @Override
             protected Icon getIcon() {
                 return icon(menu.getMagnetHost().getInsertMode());
@@ -43,13 +43,13 @@ public class MagnetScreen extends AEBaseScreen<MagnetMenu> {
             }
         });
 
-        widgets.add("copy_up", new IconButton(button -> menu.copyUp(), Icon.UP).withTooltip(TextConstants.COPY_PICKUP));
+        widgets.add("copy_up", new IconButton(_ -> menu.copyUp(), Icon.UP).withTooltip(TextConstants.COPY_PICKUP));
 
         widgets.add("copy_down",
-                new IconButton(button -> menu.copyDown(), Icon.DOWN).withTooltip(TextConstants.COPY_INSERT));
+                new IconButton(_ -> menu.copyDown(), Icon.DOWN).withTooltip(TextConstants.COPY_INSERT));
 
         widgets.add("switch",
-                new IconButton(button -> menu.switchInsertPickup(), Icon.SWITCH).withTooltip(TextConstants.SWITCH));
+                new IconButton(_ -> menu.switchInsertPickup(), Icon.SWITCH).withTooltip(TextConstants.SWITCH));
     }
 
     private Icon icon(IncludeExclude includeExclude) {

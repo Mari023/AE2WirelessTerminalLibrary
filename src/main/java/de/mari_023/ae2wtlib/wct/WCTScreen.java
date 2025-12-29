@@ -29,15 +29,15 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
             addToLeftToolbar(cycleTerminalButton());
 
         IconButton wirelessTerminalSettingsButton = new IconButton(
-                btn -> switchToScreen(new WirelessTerminalSettingsScreen(this)), Icon.TERMINAL_SETTINGS);
+                _ -> switchToScreen(new WirelessTerminalSettingsScreen(this)), Icon.TERMINAL_SETTINGS);
         widgets.add("wirelessTerminalSettingsButton", wirelessTerminalSettingsButton);
         wirelessTerminalSettingsButton.setMessage(TextConstants.TERMINAL_SETTINGS);
 
-        magnetCardMenuButton = new IconButton(btn -> getMenu().openMagnetMenu(), Icon.MAGNET);
+        magnetCardMenuButton = new IconButton(_ -> getMenu().openMagnetMenu(), Icon.MAGNET);
         widgets.add("magnetCardMenuButton", magnetCardMenuButton);
         magnetCardMenuButton.setMessage(TextConstants.MAGNET_FILTER);
 
-        IconButton trashButton = new IconButton(btn -> getMenu().openTrashMenu(), Icon.TRASH);
+        IconButton trashButton = new IconButton(_ -> getMenu().openTrashMenu(), Icon.TRASH);
         widgets.add("trashButton", trashButton);
         trashButton.setMessage(TextConstants.TRASH);
 
