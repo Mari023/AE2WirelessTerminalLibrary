@@ -24,5 +24,6 @@ public class AE2wtlibAdditionalComponents {
             .register("ct_handler",
                     () -> AttachmentType.builder((player) -> new CraftingTerminalHandler((Player) player)).build());
 
+    @SuppressWarnings("EmptyMethod")
     public static void init() {}
 }

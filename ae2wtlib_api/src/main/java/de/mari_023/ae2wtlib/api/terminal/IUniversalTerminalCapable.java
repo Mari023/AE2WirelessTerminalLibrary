@@ -31,6 +31,7 @@ public interface IUniversalTerminalCapable {
 
     boolean isHandlingRightClick();
 
+    @SuppressWarnings("EmptyMethod")
     void storeState();
 
     default boolean checkForTerminalKeys(int keyCode, int scanCode) {
@@ -62,7 +63,7 @@ public interface IUniversalTerminalCapable {
     default IconButton cycleTerminalButton() {
         var next = WUTHandler.nextTerminal(getHost().getItemStack(), false);
         var previous = WUTHandler.nextTerminal(getHost().getItemStack(), true);
-        return IconButton.withAE2Background(btn -> cycleTerminal(), next.icon())
+        return IconButton.withAE2Background(_ -> cycleTerminal(), next.icon())
                 .withTooltip(List.of(TextConstants.cycleNext(next), TextConstants.cyclePrevious(previous)));
     }
 

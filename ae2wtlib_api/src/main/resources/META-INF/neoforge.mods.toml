@@ -35,7 +35,7 @@ versionRange = "[${ae2_version},20.0.0)"
 ordering = "AFTER"
 side = "BOTH"
 
-[[dependencies.ae2wtlib]]
+[[dependencies.ae2wtlib_api]]
 modId = "ae2wtlib"
 type="INCOMPATIBLE"
 versionRange = "(,19.1.0-alpha)"
