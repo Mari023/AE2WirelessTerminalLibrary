@@ -10,9 +10,9 @@ val ae2Version: String by project
 val neoforgeVersion: String by project
 val mavenGroup: String by project
 val modID: String by project
+val ae2wtlibCurrentMajor: String by project
 
-
-version = "0.0.0-SNAPSHOT"
+version = "${ae2wtlibCurrentMajor}0.0.0-SNAPSHOT"
 
 val pr = System.getenv("PR_NUMBER") ?: ""
 if (pr != "") {

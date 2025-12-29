@@ -35,7 +35,6 @@ public class JEIPlugin implements IModPlugin {
         AE2wtlibItems.UNIVERSAL_TERMINAL.asItem().injectAEPower(wut,
                 AE2wtlibItems.UNIVERSAL_TERMINAL.asItem().getAEMaxPower(wut), Actionable.MODULATE);
 
-        registry.addRecipeCatalyst(wut,
-                RecipeTypes.CRAFTING);
+        registry.addCraftingStation(RecipeTypes.CRAFTING, wut);
     }
 }

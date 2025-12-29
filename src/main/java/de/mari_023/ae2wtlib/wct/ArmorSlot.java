@@ -8,6 +8,7 @@ import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
 import appeng.menu.slot.AppEngSlot;
+import appeng.util.inv.PlayerInternalInventory;
 
 import de.mari_023.ae2wtlib.api.gui.Icon;
 
@@ -16,7 +17,7 @@ public class ArmorSlot extends AppEngSlot {
     private final Armor armor;
 
     public ArmorSlot(Inventory playerInventory, Armor armor) {
-        super(new WrappedPlayerInventory(playerInventory), armor.armor.invSlot);
+        super(new PlayerInternalInventory(playerInventory), armor.armor.invSlot);
         this.playerInventory = playerInventory;
         this.armor = armor;
     }

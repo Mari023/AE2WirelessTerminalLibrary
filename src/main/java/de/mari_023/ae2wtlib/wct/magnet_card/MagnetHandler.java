@@ -39,9 +39,7 @@ public class MagnetHandler {
     }
 
     private static int getTick(ServerPlayer player) {
-        if (player.getServer() == null)
-            return -1;
-        return player.getServer().getTickCount();
+        return player.level().getServer().getTickCount();
     }
 
     private static void sendRestockAble(ServerPlayer player, ItemStack terminal) {

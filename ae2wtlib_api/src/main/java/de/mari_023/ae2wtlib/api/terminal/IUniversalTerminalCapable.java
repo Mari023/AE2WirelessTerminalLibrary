@@ -34,9 +34,9 @@ public interface IUniversalTerminalCapable {
     @SuppressWarnings("EmptyMethod")
     void storeState();
 
-    default boolean checkForTerminalKeys(int keyCode, int scanCode) {
+    default boolean checkForTerminalKeys(KeyEvent event) {
         var closingHotkey = Hotkeys.getHotkeyMapping(getHost().getCloseHotkey());
-        if (closingHotkey != null && closingHotkey.mapping().matches(new KeyEvent(keyCode, scanCode, 0))) {
+        if (closingHotkey != null && closingHotkey.mapping().matches(event)) {
             getHost().getPlayer().closeContainer();
             return true;
         }
@@ -45,7 +45,7 @@ public interface IUniversalTerminalCapable {
             var hotkey = Hotkeys.getHotkeyMapping(terminal.hotkeyName());
             if (hotkey == null)
                 continue;
-            if (hotkey.mapping().matches(new KeyEvent(keyCode, scanCode, 0))) {
+            if (hotkey.mapping().matches(event)) {
                 ClientPacketDistributor.sendToServer(new HotkeyPacket(hotkey));
                 return true;
             }

@@ -6,7 +6,7 @@ import com.mojang.authlib.GameProfile;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -21,10 +21,9 @@ public abstract class ServerPlayerMixin extends Player {
         super(level, gameProfile);
     }
 
-    @Inject(method = "drop(Z)Z", at = @At(value = "TAIL"))
-    public void restockDrop(boolean pDropStack, CallbackInfoReturnable<Boolean> cir,
-            @Local(name = "selected") ItemStack item) {
-        if (!cir.getReturnValue() || item.isEmpty())
+    @Inject(method = "drop(Z)V", at = @At(value = "TAIL"))
+    public void restockDrop(boolean all, CallbackInfo ci, @Local(name = "selected") ItemStack item) {
+        if (item.isEmpty())
             return;
 
         AE2wtlibEvents.restock((ServerPlayer) (Object) this, item, item.getCount(),

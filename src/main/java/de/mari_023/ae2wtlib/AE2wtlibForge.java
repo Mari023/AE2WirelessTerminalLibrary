@@ -88,8 +88,8 @@ public class AE2wtlibForge {
     }
 
     private static void registerPowerStorageItem(RegisterCapabilitiesEvent event, ItemWT item) {
-        event.registerItem(Capabilities.EnergyStorage.ITEM,
-                (object, context) -> new PoweredItemCapabilities(object, item), item);
+        event.registerItem(Capabilities.Energy.ITEM,
+                (_, context) -> new PoweredItemCapabilities(context, item, item), item);
     }
 
     @SubscribeEvent
