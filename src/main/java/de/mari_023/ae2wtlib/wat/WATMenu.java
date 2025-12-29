@@ -2,7 +2,7 @@ package de.mari_023.ae2wtlib.wat;
 
 import static de.mari_023.ae2wtlib.api.AE2wtlibAPI.id;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
 
@@ -19,7 +19,7 @@ import de.mari_023.ae2wtlib.api.terminal.ItemWUT;
 import de.mari_023.ae2wtlib.api.terminal.WTMenuHost;
 
 public class WATMenu extends PatternAccessTermMenu {
-    public static final ResourceLocation ID = id("wireless_pattern_access_terminal");
+    public static final Identifier ID = id("wireless_pattern_access_terminal");
     public static final MenuType<WATMenu> TYPE = MenuTypeBuilder.create(WATMenu::new, WATMenuHost.class)
             .buildUnregistered(ID);
 

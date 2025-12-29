@@ -1,6 +1,6 @@
 package de.mari_023.ae2wtlib.recipeviewer;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
 
 import mezz.jei.api.IModPlugin;
@@ -17,10 +17,10 @@ import de.mari_023.ae2wtlib.wut.WTDefinitions;
 
 @JeiPlugin
 public class JEIPlugin implements IModPlugin {
-    private static final ResourceLocation ID = AE2wtlibAPI.id("core");
+    private static final Identifier ID = AE2wtlibAPI.id("core");
 
     @Override
-    public ResourceLocation getPluginUid() {
+    public Identifier getPluginUid() {
         return ID;
     }
 

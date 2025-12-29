@@ -1,6 +1,6 @@
 package de.mari_023.ae2wtlib.api.gui;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import appeng.client.gui.style.Blitter;
 import appeng.core.AppEng;
@@ -60,6 +60,6 @@ public record Icon(int x, int y, int width, int height, Texture texture) {
         return Blitter.texture(texture.location(), texture.width(), texture.height())
                 .src(x, y, width, height);
     }
-    public record Texture(ResourceLocation location, int width, int height) {
+    public record Texture(Identifier location, int width, int height) {
     }
 }

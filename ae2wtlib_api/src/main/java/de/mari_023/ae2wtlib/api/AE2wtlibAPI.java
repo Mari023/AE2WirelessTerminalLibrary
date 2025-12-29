@@ -7,7 +7,7 @@ import com.mojang.datafixers.util.Unit;
 import org.jetbrains.annotations.ApiStatus;
 
 import net.minecraft.core.component.DataComponentType;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -24,8 +24,8 @@ public class AE2wtlibAPI {
 
     private AE2wtlibAPI() {}
 
-    public static ResourceLocation id(String name) {
-        return ResourceLocation.fromNamespaceAndPath(MOD_NAME, name);
+    public static Identifier id(String name) {
+        return Identifier.fromNamespaceAndPath(MOD_NAME, name);
     }
 
     public static boolean isModPresent(String mod) {

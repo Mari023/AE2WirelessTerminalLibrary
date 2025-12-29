@@ -6,7 +6,7 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnknownNullability;
 
 import net.minecraft.core.component.DataComponentType;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemContainerContents;
@@ -49,7 +49,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<ItemWT>
     private final SupplierInternalInventory<InternalInventory> viewCellInventory;
     @Nullable
     private IActionHost quantumBridge;
-    public static final ResourceLocation INV_SINGULARITY = AE2wtlibAPI.id("singularity");
+    public static final Identifier INV_SINGULARITY = AE2wtlibAPI.id("singularity");
     private final MEStorage storage;
     @UnknownNullability
     private ILinkStatus linkStatus;
@@ -234,7 +234,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<ItemWT>
     }
 
     @Nullable
-    public InternalInventory getSubInventory(ResourceLocation id) {
+    public InternalInventory getSubInventory(Identifier id) {
         if (id.equals(INV_SINGULARITY))
             return singularityInventory;
         return null;
