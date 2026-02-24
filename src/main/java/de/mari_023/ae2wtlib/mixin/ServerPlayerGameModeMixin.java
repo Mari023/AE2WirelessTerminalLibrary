@@ -20,7 +20,7 @@ public class ServerPlayerGameModeMixin {
     @Inject(method = "useItemOn", at = @At(value = "RETURN"))
     private static void handle(ServerPlayer player, Level level, ItemStack original, InteractionHand hand,
             BlockHitResult hitResult, CallbackInfoReturnable<InteractionResult> cir) {
-        AE2wtlibEvents.restock(player, original.copy(), player.getItemInHand(hand).getCount(),
+        AE2wtlibEvents.restock(player, original.copy(), player.getItemInHand(hand),
                 (stack -> player.setItemInHand(hand, stack)));
     }
 }

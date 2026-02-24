@@ -1,2 +1,3 @@
 - Update zh_cn localisation (#363)
 - PT_BR localisation (#364)
+- fix dupe bug with restock when items turn into different items on use (#366)

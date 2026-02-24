@@ -31,10 +31,11 @@ public class AE2wtlibEvents {
      *
      * @param player   The ServerPlayer
      * @param item     The ItemStack that should be restocked
-     * @param count    Current count of the item
+     * @param now      The ItemStack that is now there
      * @param setStack A callback for setting the final modified item stack
      */
-    public static void restock(ServerPlayer player, ItemStack item, int count, Consumer<ItemStack> setStack) {
+    public static void restock(ServerPlayer player, ItemStack item, ItemStack now, Consumer<ItemStack> setStack) {
+        int count = now.getCount();
         if (player.isCreative())
             return;
         if (item.isEmpty())
@@ -57,6 +58,8 @@ public class AE2wtlibEvents {
         int toAdd = item.getMaxStackSize() - count;
         if (toAdd == 0)
             return;
+        if (!now.isEmpty() && !ItemStack.isSameItemSameComponents(item, now))
+            return;
 
         long changed;
         if (toAdd > 0)
@@ -76,7 +79,7 @@ public class AE2wtlibEvents {
             if (player.getInventory().offhand.contains(item))
                 slot = Inventory.INVENTORY_SIZE;
         }
-        PacketDistributor.sendToPlayer(player, new UpdateRestockPacket(slot, item.getCount()));
+        PacketDistributor.sendToPlayer(player, new UpdateRestockPacket(slot, item));
     }
 
     /**

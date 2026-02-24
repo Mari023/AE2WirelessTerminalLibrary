@@ -145,6 +145,7 @@ neoForge {
         }
         create("server") {
             server()
+            programArguments.add("nogui")
         }
 
         create("guide") {

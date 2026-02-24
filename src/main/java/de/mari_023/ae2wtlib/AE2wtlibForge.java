@@ -86,7 +86,7 @@ public class AE2wtlibForge {
         if (!(event.getEntity() instanceof ServerPlayer player))
             return;
 
-        AE2wtlibEvents.restock(player, event.getItem(), event.getResultStack().getCount(), event::setResultStack);
+        AE2wtlibEvents.restock(player, event.getItem(), event.getResultStack(), event::setResultStack);
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
@@ -95,7 +95,7 @@ public class AE2wtlibForge {
             return;
         var item = event.getItemStack();
 
-        AE2wtlibEvents.restock(player, item, item.getCount(), (stack -> player.setItemInHand(event.getHand(), stack)));
+        AE2wtlibEvents.restock(player, item, item, (stack -> player.setItemInHand(event.getHand(), stack)));
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
@@ -104,7 +104,7 @@ public class AE2wtlibForge {
             return;
         var item = event.getItemStack();
 
-        AE2wtlibEvents.restock(player, item, item.getCount(), (stack -> player.setItemInHand(event.getHand(), stack)));
+        AE2wtlibEvents.restock(player, item, item, (stack -> player.setItemInHand(event.getHand(), stack)));
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
@@ -130,7 +130,7 @@ public class AE2wtlibForge {
         if (!(event.getEntity() instanceof ServerPlayer player))
             return;
         ItemStack projectile = player.getProjectile(event.getBow());
-        AE2wtlibEvents.restock(player, projectile, projectile.getCount(), (itemStack) -> {
+        AE2wtlibEvents.restock(player, projectile, projectile, (itemStack) -> {
         });
     }
 
@@ -141,7 +141,7 @@ public class AE2wtlibForge {
         if (!(event.getEntity() instanceof ServerPlayer player))
             return;
         ItemStack projectile = player.getProjectile(event.getBow());
-        AE2wtlibEvents.restock(player, projectile, projectile.getCount(), (itemStack) -> {
+        AE2wtlibEvents.restock(player, projectile, projectile, (itemStack) -> {
         });
     }
 

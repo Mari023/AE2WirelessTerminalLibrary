@@ -28,7 +28,7 @@ public abstract class ServerPlayerMixin extends Player {
         if (!cir.getReturnValue() || item.isEmpty())
             return;
 
-        AE2wtlibEvents.restock((ServerPlayer) (Object) this, item, item.getCount(),
+        AE2wtlibEvents.restock((ServerPlayer) (Object) this, item, item,
                 (itemStack) -> getInventory().setItem(getInventory().selected, itemStack));
     }
 }
