@@ -1,1 +1,1 @@
-
+- fix disconnect when restock results in empty stacks (#371)

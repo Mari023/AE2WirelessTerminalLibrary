@@ -14,7 +14,7 @@ public record UpdateRestockPacket(int slot, ItemStack itemStack) implements AE2w
     public static final Type<UpdateRestockPacket> ID = new Type<>(AE2wtlibAPI.id("update_restock"));
     public static final StreamCodec<RegistryFriendlyByteBuf, UpdateRestockPacket> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.INT, UpdateRestockPacket::slot,
-            ItemStack.STREAM_CODEC, UpdateRestockPacket::itemStack,
+            ItemStack.OPTIONAL_STREAM_CODEC, UpdateRestockPacket::itemStack,
             UpdateRestockPacket::new);
 
     @Override
