@@ -3,7 +3,7 @@ package de.mari_023.ae2wtlib.wct;
 import java.util.Objects;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -81,7 +81,7 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
      * This overrides the base-class method through some access transformer hackery...
      */
     @Override
-    public void renderSlot(GuiGraphics guiGraphics, Slot s, int mouseX, int mouseY) {
+    public void renderSlot(GuiGraphicsExtractor guiGraphics, Slot s, int mouseX, int mouseY) {
         if (s instanceof ArmorSlot armorSlot) {
             renderArmorSlot(guiGraphics, armorSlot, mouseX, mouseY);
         } else {
@@ -89,14 +89,11 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
         }
     }
 
-    private void renderArmorSlot(GuiGraphics guiGraphics, ArmorSlot s, int mouseX, int mouseY) {
+    private void renderArmorSlot(GuiGraphicsExtractor guiGraphics, ArmorSlot s, int mouseX, int mouseY) {
         var is = s.getItem();
 
         if (is.isEmpty() && s.isSlotEnabled()) {
-            s.icon().getBlitter()
-                    .dest(s.x, s.y)
-                    .opacity(s.getOpacityOfIcon())
-                    .blit(guiGraphics);
+            s.icon().blit(guiGraphics, s.x, s.y, s.getOpacityOfIcon());
         }
 
         super.renderSlot(guiGraphics, s, mouseX, mouseY);

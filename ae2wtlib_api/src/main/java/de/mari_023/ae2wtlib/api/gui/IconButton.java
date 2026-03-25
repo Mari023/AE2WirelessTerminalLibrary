@@ -3,10 +3,10 @@ package de.mari_023.ae2wtlib.api.gui;
 import java.util.Collections;
 import java.util.List;
 
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
@@ -44,7 +44,7 @@ public class IconButton extends Button implements ITooltip {
     }
 
     @Override
-    public void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partial) {
+    protected void extractContents(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
         if (!visible)
             return;
 
@@ -52,8 +52,8 @@ public class IconButton extends Button implements ITooltip {
         var bg = getBG();
         var bgSizeOffset = bg.width() > 16 ? 1 : 0;
 
-        bg.getBlitter().dest(getX() - 1, getY() + yOffset, bg.width(), bg.height()).blit(guiGraphics);
-        getIcon().getBlitter().dest(getX() - 1 + bgSizeOffset, getY() + bgSizeOffset + yOffset).blit(guiGraphics);
+        bg.blit(graphics, getX() - 1, getY() + yOffset);
+        getIcon().blit(graphics, getX() - 1 + bgSizeOffset, getY() + bgSizeOffset + yOffset);
     }
 
     protected Icon getIcon() {

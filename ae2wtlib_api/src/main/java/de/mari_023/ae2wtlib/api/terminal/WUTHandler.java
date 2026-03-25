@@ -112,7 +112,7 @@ public class WUTHandler {
     public static boolean open(final Player player, final ItemMenuHostLocator locator, boolean returningFromSubmenu) {
         var currentTerminal = WTDefinition.ofOrNull(locator.locateItem(player));
         if (currentTerminal == null) {
-            player.displayClientMessage(TextConstants.TERMINAL_EMPTY, false);
+            player.sendOverlayMessage(TextConstants.TERMINAL_EMPTY);
             return false;
         }
         return currentTerminal.containerOpener().tryOpen(player, locator, returningFromSubmenu);

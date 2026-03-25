@@ -37,7 +37,7 @@ public class ItemWUT extends ItemWT {
     public InteractionResult use(final Level level, final Player player, final InteractionHand hand) {
         if (WTDefinition.ofOrNull(player.getItemInHand(hand)) == null) {
             if (!level.isClientSide())
-                player.displayClientMessage(TextConstants.TERMINAL_EMPTY, true);
+                player.sendOverlayMessage(TextConstants.TERMINAL_EMPTY);
             return InteractionResult.SUCCESS;
         }
         return super.use(level, player, hand);
