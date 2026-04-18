@@ -1,8 +1,8 @@
 package de.mari_023.ae2wtlib.api.gui;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.ARGB;
 
 import appeng.client.gui.style.Blitter;
 import appeng.core.AppEng;
@@ -13,15 +13,18 @@ import appeng.core.AppEng;
 public record Icon(int x, int y, int width, int height, Texture texture) {
 
     public static final Texture TEXTURE = new Texture(AppEng.makeId("textures/wtlib/guis/icons.png"), 128, 128);
-    public static final Texture AE2TEXTURE = new Texture(AppEng.makeId("textures/guis/states.png"), 256, 256);
+    public static final Texture AE2TEXTURE = new Texture(appeng.util.Icon.TEXTURE, appeng.util.Icon.TEXTURE_WIDTH,
+            appeng.util.Icon.TEXTURE_HEIGHT);
 
     public static final Icon BUTTON_BACKGROUND = new Icon(63, 0, 16, 17);
     public static final Icon BUTTON_BACKGROUND_HOVERED = new Icon(95, 1, 16, 16);
     public static final Icon BUTTON_BACKGROUND_FOCUSED = new Icon(79, 0, 16, 17);
 
-    public static final Icon TOOLBAR_BUTTON_BACKGROUND = new Icon(176, 128, 18, 20, AE2TEXTURE);
-    public static final Icon TOOLBAR_BUTTON_BACKGROUND_HOVERED = new Icon(212, 128, 18, 19, AE2TEXTURE);
-    public static final Icon TOOLBAR_BUTTON_BACKGROUND_FOCUSED = new Icon(194, 128, 18, 20, AE2TEXTURE);
+    public static final Icon TOOLBAR_BUTTON_BACKGROUND = new Icon(appeng.util.Icon.TOOLBAR_BUTTON_BACKGROUND);
+    public static final Icon TOOLBAR_BUTTON_BACKGROUND_HOVERED = new Icon(
+            appeng.util.Icon.TOOLBAR_BUTTON_BACKGROUND_HOVER);
+    public static final Icon TOOLBAR_BUTTON_BACKGROUND_FOCUSED = new Icon(
+            appeng.util.Icon.TOOLBAR_BUTTON_BACKGROUND_FOCUS);
 
     public static final Icon TERMINAL_SETTINGS = new Icon(32, 65, 16, 15, Icon.AE2TEXTURE);
     public static final Icon MAGNET = new Icon(0, 0);
@@ -58,19 +61,20 @@ public record Icon(int x, int y, int width, int height, Texture texture) {
         this(x, y, width, height, TEXTURE);
     }
 
-    @Deprecated
+    private Icon(appeng.util.Icon icon) {
+        this(icon.x, icon.y, icon.width, icon.height, AE2TEXTURE);
+    }
+
     public Blitter getBlitter() {
-        return Blitter.texture(texture.location(), texture.width(), texture.height())
-                .src(x, y, width, height);
+        return Blitter.texture(texture.location(), texture.width(), texture.height()).src(x, y, width, height);
     }
 
     public void blit(GuiGraphicsExtractor graphics, int x, int y) {
-        graphics.blit(texture.location(), x, y, width, height, width, height, texture.width, texture.height);
+        getBlitter().dest(x, y, width, height).blit(graphics);
     }
 
     public void blit(GuiGraphicsExtractor graphics, int x, int y, float alpha) {
-        graphics.blit(RenderPipelines.GUI_TEXTURED, texture.location(), x, y, width, height, width, height,
-                texture.width, texture.height, ((int) alpha * 255) * 0x1000000);
+        getBlitter().dest(x, y, width, height).colorArgb(ARGB.white(alpha)).blit(graphics);
     }
     public record Texture(Identifier location, int width, int height) {
     }

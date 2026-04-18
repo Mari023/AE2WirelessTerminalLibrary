@@ -54,6 +54,7 @@ public class IconButton extends Button implements ITooltip {
 
         bg.blit(graphics, getX() - 1, getY() + yOffset);
         getIcon().blit(graphics, getX() - 1 + bgSizeOffset, getY() + bgSizeOffset + yOffset);
+        graphics.nextStratum();
     }
 
     protected Icon getIcon() {
