@@ -4,6 +4,8 @@ import java.util.function.Supplier;
 
 import com.mojang.datafixers.util.Unit;
 
+import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.world.item.ItemStackTemplate;
 import org.jetbrains.annotations.ApiStatus;
 
 import net.minecraft.core.component.DataComponentType;
@@ -17,6 +19,7 @@ import appeng.api.upgrades.IUpgradeInventory;
 import appeng.menu.locator.ItemMenuHostLocator;
 
 import de.mari_023.ae2wtlib.api.terminal.ItemWUT;
+import org.jspecify.annotations.Nullable;
 
 public class AE2wtlibAPI {
     public static final String MOD_NAME = "ae2wtlib";
@@ -44,13 +47,10 @@ public class AE2wtlibAPI {
         return isUniversalTerminal(stack.getItem());
     }
 
-    public static ItemStack makeWUT(DataComponentType<Unit> componentType) {
+    public static @Nullable ItemStackTemplate makeWUT(DataComponentType<Unit> componentType) {
         if (!(getWUT() instanceof ItemWUT wutItem))
-            return ItemStack.EMPTY;
-        ItemStack wut = new ItemStack(wutItem);
-
-        wut.set(componentType, Unit.INSTANCE);
-        return wut;
+            return null;
+        return new ItemStackTemplate(wutItem, DataComponentPatch.builder().set(componentType, Unit.INSTANCE).build());
     }
 
     public static Item getWUT() {

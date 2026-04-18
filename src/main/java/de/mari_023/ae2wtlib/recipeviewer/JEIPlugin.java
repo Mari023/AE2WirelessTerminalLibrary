@@ -31,10 +31,6 @@ public class JEIPlugin implements IModPlugin {
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registry) {
-        ItemStack wut = WTDefinitions.CRAFTING.universalTerminal();
-        AE2wtlibItems.UNIVERSAL_TERMINAL.asItem().injectAEPower(wut,
-                AE2wtlibItems.UNIVERSAL_TERMINAL.asItem().getAEMaxPower(wut), Actionable.MODULATE);
-
-        registry.addCraftingStation(RecipeTypes.CRAFTING, wut);
+        registry.addCraftingStation(RecipeTypes.CRAFTING, WTDefinitions.CRAFTING.universalTerminalStackWithEnergy());
     }
 }
