@@ -1,6 +1,5 @@
 package de.mari_023.ae2wtlib.wut.recipe;
 
-import com.mojang.datafixers.util.Unit;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
@@ -35,7 +34,6 @@ public class Upgrade extends Common {
     public Upgrade(Ingredient terminal, WTDefinition terminalDefinition) {
         this.terminal = terminal;
         this.terminalDefinition = terminalDefinition;
-        outputStack.set(terminalDefinition.componentType(), Unit.INSTANCE);
     }
 
     public Ingredient getTerminal() {

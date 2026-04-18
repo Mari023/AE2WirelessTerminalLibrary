@@ -16,6 +16,7 @@ public class AE2wtlibEmiPlugin implements EmiPlugin {
         // registry.addRecipeHandler(WETMenu.TYPE, new EmiEncodePatternHandler<>(WETMenu.class));
         // registry.addRecipeHandler(WCTMenu.TYPE, new EmiUseCraftingRecipeHandler<>(WCTMenu.class));
 
-        registry.addWorkstation(VanillaEmiRecipeCategories.CRAFTING, EmiStack.of(WTDefinitions.CRAFTING.universalTerminalStackWithEnergy()));
+        registry.addWorkstation(VanillaEmiRecipeCategories.CRAFTING,
+                EmiStack.of(WTDefinitions.CRAFTING.universalTerminalStackWithEnergy()));
     }
 }

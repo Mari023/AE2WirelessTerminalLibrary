@@ -1,7 +1,6 @@
 package de.mari_023.ae2wtlib.recipeviewer;
 
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.item.ItemStack;
 
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -9,9 +8,6 @@ import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeTransferRegistration;
 
-import appeng.api.config.Actionable;
-
-import de.mari_023.ae2wtlib.AE2wtlibItems;
 import de.mari_023.ae2wtlib.api.AE2wtlibAPI;
 import de.mari_023.ae2wtlib.wut.WTDefinitions;
 

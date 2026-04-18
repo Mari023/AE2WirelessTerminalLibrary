@@ -1,9 +1,9 @@
 package de.mari_023.ae2wtlib.wut.recipe;
 
-import com.mojang.datafixers.util.Unit;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
+import de.mari_023.ae2wtlib.api.AE2wtlibAPI;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -45,8 +45,6 @@ public class Combine extends Common {
         this.terminalB = terminalB;
         this.terminalADefinition = terminalADefinition;
         this.terminalBDefinition = terminalBDefinition;
-        outputStack.set(terminalADefinition.componentType(), Unit.INSTANCE);
-        outputStack.set(terminalBDefinition.componentType(), Unit.INSTANCE);
     }
 
     public Ingredient getTerminalA() {
@@ -73,7 +71,7 @@ public class Combine extends Common {
 
     @Override
     public ItemStack assemble(CraftingInput input) {
-        ItemStack wut = mergeTerminal(outputStack.copy(), InputHelper.getInputStack(input, terminalA),
+        ItemStack wut = mergeTerminal(new ItemStack(AE2wtlibAPI.getWUT()), InputHelper.getInputStack(input, terminalA),
                 terminalADefinition);
         wut = mergeTerminal(wut, InputHelper.getInputStack(input, terminalB), terminalBDefinition);
 

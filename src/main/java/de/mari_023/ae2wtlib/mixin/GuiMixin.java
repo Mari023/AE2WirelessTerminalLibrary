@@ -1,6 +1,5 @@
 package de.mari_023.ae2wtlib.mixin;
 
-import net.minecraft.client.gui.GuiGraphicsExtractor;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -11,6 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
@@ -24,9 +24,10 @@ public class GuiMixin {
     @Shadow
     private Minecraft minecraft;
 
-    //TODO replace with MixinExtras WrapOperation https://github.com/LlamaLad7/MixinExtras/wiki/WrapOperation
+    // TODO replace with MixinExtras WrapOperation https://github.com/LlamaLad7/MixinExtras/wiki/WrapOperation
     @Inject(method = "extractSlot(Lnet/minecraft/client/gui/GuiGraphicsExtractor;IILnet/minecraft/client/DeltaTracker;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/item/ItemStack;I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;itemDecorations(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;II)V"), cancellable = true)
-    public void restockOverlay(GuiGraphicsExtractor graphics, int x, int y, DeltaTracker deltaTracker, Player player, ItemStack itemStack, int seed, CallbackInfo ci) {
+    public void restockOverlay(GuiGraphicsExtractor graphics, int x, int y, DeltaTracker deltaTracker, Player player,
+            ItemStack itemStack, int seed, CallbackInfo ci) {
         if (Minecraft.getInstance().player == null || Minecraft.getInstance().player.isCreative())
             return;
         CraftingTerminalHandler handler = CraftingTerminalHandler

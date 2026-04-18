@@ -4,22 +4,22 @@ import java.util.function.Supplier;
 
 import com.mojang.datafixers.util.Unit;
 
-import net.minecraft.core.component.DataComponentPatch;
-import net.minecraft.world.item.ItemStackTemplate;
 import org.jetbrains.annotations.ApiStatus;
+import org.jspecify.annotations.Nullable;
 
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.neoforged.fml.ModList;
 
 import appeng.api.upgrades.IUpgradeInventory;
 import appeng.menu.locator.ItemMenuHostLocator;
 
 import de.mari_023.ae2wtlib.api.terminal.ItemWUT;
-import org.jspecify.annotations.Nullable;
 
 public class AE2wtlibAPI {
     public static final String MOD_NAME = "ae2wtlib";

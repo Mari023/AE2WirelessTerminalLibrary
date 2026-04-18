@@ -59,7 +59,8 @@ public class WTDefinitionBuilder {
         if (WTDefinition.exists(name))
             throw new IllegalStateException("Trying to register terminal with name " + name + " but it already exists");
 
-        WTDefinition wtDefinition = new WTDefinition(name, item::tryOpen, wTMenuHostFactory, menuType, item, AE2wtlibAPI.makeWUT(componentType),
+        WTDefinition wtDefinition = new WTDefinition(name, item::tryOpen, wTMenuHostFactory, menuType, item,
+                AE2wtlibAPI.makeWUT(componentType),
                 TextConstants.formatTerminalName(translationKey), translationKey, hotkeyName, componentType,
                 upgradeCount, icon);
 

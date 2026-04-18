@@ -3,12 +3,10 @@ package de.mari_023.ae2wtlib.api.registration;
 import java.util.*;
 import java.util.function.BiConsumer;
 
-import appeng.api.config.Actionable;
 import com.mojang.datafixers.util.Unit;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 
-import net.minecraft.world.item.ItemStackTemplate;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,7 +19,9 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 
+import appeng.api.config.Actionable;
 import appeng.menu.ISubMenu;
 import appeng.menu.locator.ItemMenuHostLocator;
 
@@ -32,9 +32,10 @@ import de.mari_023.ae2wtlib.api.terminal.ItemWUT;
 import de.mari_023.ae2wtlib.api.terminal.WTMenuHost;
 
 public record WTDefinition(String terminalName, ContainerOpener containerOpener, WTMenuHostFactory wTMenuHostFactory,
-                           MenuType<?> menuType, ItemWT item, @Nullable ItemStackTemplate universalTerminal, MutableComponent formattedName,
-                           String translationKey,
-                           String hotkeyName, DataComponentType<Unit> componentType, int upgradeCount, Icon icon) {
+        MenuType<?> menuType, ItemWT item, @Nullable ItemStackTemplate universalTerminal,
+        MutableComponent formattedName,
+        String translationKey,
+        String hotkeyName, DataComponentType<Unit> componentType, int upgradeCount, Icon icon) {
     @FunctionalInterface
     public interface ContainerOpener {
         boolean tryOpen(Player player, ItemMenuHostLocator locator, boolean returningFromSubmenu);
