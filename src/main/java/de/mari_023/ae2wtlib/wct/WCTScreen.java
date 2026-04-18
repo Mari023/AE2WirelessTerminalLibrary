@@ -81,21 +81,21 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
      * This overrides the base-class method through some access transformer hackery...
      */
     @Override
-    public void renderSlot(GuiGraphicsExtractor guiGraphics, Slot s, int mouseX, int mouseY) {
-        if (s instanceof ArmorSlot armorSlot) {
-            renderArmorSlot(guiGraphics, armorSlot, mouseX, mouseY);
+    public void extractSlot(GuiGraphicsExtractor graphics, Slot slot, int mouseX, int mouseY) {
+        if (slot instanceof ArmorSlot armorSlot) {
+            extractArmorSlot(graphics, armorSlot, mouseX, mouseY);
         } else {
-            super.renderSlot(guiGraphics, s, mouseX, mouseY);
+            super.extractSlot(graphics, slot, mouseX, mouseY);
         }
     }
 
-    private void renderArmorSlot(GuiGraphicsExtractor guiGraphics, ArmorSlot s, int mouseX, int mouseY) {
+    private void extractArmorSlot(GuiGraphicsExtractor graphics, ArmorSlot s, int mouseX, int mouseY) {
         var is = s.getItem();
 
         if (is.isEmpty() && s.isSlotEnabled()) {
-            s.icon().blit(guiGraphics, s.x, s.y, s.getOpacityOfIcon());
+            s.icon().blit(graphics, s.x, s.y, s.getOpacityOfIcon());
         }
 
-        super.renderSlot(guiGraphics, s, mouseX, mouseY);
+        super.extractSlot(graphics, s, mouseX, mouseY);
     }
 }

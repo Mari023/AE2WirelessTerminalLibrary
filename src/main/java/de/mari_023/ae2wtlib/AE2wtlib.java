@@ -33,9 +33,7 @@ import de.mari_023.ae2wtlib.wet.WETMenu;
 import de.mari_023.ae2wtlib.wet.WETMenuHost;
 import de.mari_023.ae2wtlib.wet.WETScreen;
 import de.mari_023.ae2wtlib.wut.recipe.Combine;
-import de.mari_023.ae2wtlib.wut.recipe.CombineSerializer;
 import de.mari_023.ae2wtlib.wut.recipe.Upgrade;
-import de.mari_023.ae2wtlib.wut.recipe.UpgradeSerializer;
 
 public class AE2wtlib {
     public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister
@@ -75,9 +73,9 @@ public class AE2wtlib {
     }
 
     public static void registerRecipes() {
-        Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, AE2wtlibAPI.id(UpgradeSerializer.NAME),
+        Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, AE2wtlibAPI.id(Upgrade.NAME),
                 Upgrade.serializer);
-        Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, AE2wtlibAPI.id(CombineSerializer.NAME),
+        Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, AE2wtlibAPI.id(Combine.NAME),
                 Combine.serializer);
     }
 

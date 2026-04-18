@@ -69,9 +69,9 @@ public record Icon(int x, int y, int width, int height, Texture texture) {
     }
 
     public void blit(GuiGraphicsExtractor graphics, int x, int y, float alpha) {
-        graphics.blit(RenderPipelines.GUI_TEXTURED, texture.location(), x, y, width, height, width, height, texture.width, texture.height, ((int) alpha * 255) * 0x1000000);
+        graphics.blit(RenderPipelines.GUI_TEXTURED, texture.location(), x, y, width, height, width, height,
+                texture.width, texture.height, ((int) alpha * 255) * 0x1000000);
     }
-
     public record Texture(Identifier location, int width, int height) {
     }
 }
