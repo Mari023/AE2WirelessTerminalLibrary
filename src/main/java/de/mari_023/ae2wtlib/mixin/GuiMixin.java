@@ -32,9 +32,12 @@ public class GuiMixin {
             return;
         CraftingTerminalHandler handler = CraftingTerminalHandler
                 .getCraftingTerminalHandler(Minecraft.getInstance().player);
-        if (!handler.isRestockEnabled() || itemStack.getCount() == 1 || !handler.isRestockAble(itemStack))
+        if (!handler.isRestockEnabled() || !handler.isRestockAble(itemStack))
             return;
-        String number = ReadableNumberConverter.format(handler.getAccessibleAmount(itemStack), 3);
+        long amount = handler.getAccessibleAmount(itemStack);
+        if (amount <= 1)
+            return;
+        String number = ReadableNumberConverter.format(amount, 3);
         if (number.startsWith(","))
             number = 0 + number;
         graphics.itemDecorations(minecraft.font, itemStack, x, y, number);
