@@ -8,7 +8,6 @@ import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
 import appeng.menu.slot.AppEngSlot;
-import appeng.util.inv.PlayerInternalInventory;
 
 import de.mari_023.ae2wtlib.api.gui.Icon;
 
@@ -17,14 +16,14 @@ public class ArmorSlot extends AppEngSlot {
     private final Armor armor;
 
     public ArmorSlot(Inventory playerInventory, Armor armor) {
-        super(new PlayerInternalInventory(playerInventory), armor.armor.invSlot);
+        super(new WrappedPlayerInventory(playerInventory), armor.value.invSlot);
         this.playerInventory = playerInventory;
         this.armor = armor;
     }
 
     public boolean mayPlace(ItemStack stack) {
         return armor == Armor.OFFHAND
-                || stack.canEquip(armor.armor.equipmentSlot(), playerInventory.player);
+                || stack.canEquip(armor.value.equipmentSlot(), playerInventory.player);
     }
 
     @Override
@@ -34,7 +33,7 @@ public class ArmorSlot extends AppEngSlot {
     }
 
     public Icon icon() {
-        return armor.armor.background;
+        return armor.value.background;
     }
 
     public enum Armor {
@@ -44,10 +43,10 @@ public class ArmorSlot extends AppEngSlot {
         HEAD(new ArmorValue(EquipmentSlot.HEAD, 39, Icon.EMPTY_ARMOR_SLOT_HELMET)),
         OFFHAND(new ArmorValue(EquipmentSlot.OFFHAND, Inventory.SLOT_OFFHAND, Icon.EMPTY_ARMOR_SLOT_SHIELD));
 
-        public final ArmorValue armor;
+        public final ArmorValue value;
 
-        Armor(ArmorValue armor) {
-            this.armor = armor;
+        Armor(ArmorValue value) {
+            this.value = value;
         }
 
         public record ArmorValue(EquipmentSlot equipmentSlot, int invSlot, Icon background) {
