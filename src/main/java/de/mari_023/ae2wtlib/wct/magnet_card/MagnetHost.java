@@ -113,7 +113,7 @@ public class MagnetHost {
         insertConfig.writeToChildTag(insertTVO, "");
         getStack().set(PICKUP_CONFIG, insertTVO.buildResult());
 
-        pickupConfig.readFromChildTag(ValueIOHelper.fromTag(ctHandler.player, pickupTVO.buildResult()), "");
-        insertConfig.readFromChildTag(ValueIOHelper.fromTag(ctHandler.player, insertTVO.buildResult()), "");
+        pickupConfig.readFromChildTag(ValueIOHelper.fromTag(ctHandler.player, insertTVO.buildResult()), "");
+        insertConfig.readFromChildTag(ValueIOHelper.fromTag(ctHandler.player, pickupTVO.buildResult()), "");
     }
 }
