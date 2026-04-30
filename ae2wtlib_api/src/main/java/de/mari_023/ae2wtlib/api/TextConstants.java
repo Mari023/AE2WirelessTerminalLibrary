@@ -40,7 +40,7 @@ public final class TextConstants {
     }
 
     public static final Component TERMINAL_EMPTY = Component
-            .literal("This terminal does not contain any other Terminals");
+            .translatable("gui.ae2wtlib.terminal_empty");
 
     public static Component currentTerminal(WTDefinition terminal) {
         return Component.translatable("gui.ae2wtlib.current_terminal",
