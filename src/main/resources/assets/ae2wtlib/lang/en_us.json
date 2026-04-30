@@ -51,5 +51,6 @@
   "key.ae2.ae2wtlib_magnet": "Toggle Magnet Card",
   "key.ae2.ae2wtlib_stow": "Stow stack in hand into ME System",
 
-  "ae2wtlib.configuration.magnet_card_range": "Magnet Card Range"
+  "ae2wtlib.configuration.magnet_card_range": "Magnet Card Range",
+  "ae2wtlib.configuration.always_show_terminal_selector": "Always Show Universal Terminal Selector"
 }

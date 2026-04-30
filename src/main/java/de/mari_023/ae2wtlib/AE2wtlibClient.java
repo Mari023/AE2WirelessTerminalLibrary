@@ -6,6 +6,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
@@ -19,6 +20,8 @@ import de.mari_023.ae2wtlib.wct.CraftingTerminalHandler;
 @Mod(value = AE2wtlibAPI.MOD_NAME, dist = Dist.CLIENT)
 public class AE2wtlibClient {
     public AE2wtlibClient(IEventBus modEventBus, ModContainer modContainer) {
+        modContainer.registerConfig(ModConfig.Type.CLIENT, AE2wtlibClientConfig.SPEC,
+                AE2wtlibAPI.MOD_NAME + "-client.toml");
         modContainer.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
     }
 

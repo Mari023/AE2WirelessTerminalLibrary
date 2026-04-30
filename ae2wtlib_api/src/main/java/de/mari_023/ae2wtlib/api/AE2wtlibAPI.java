@@ -68,6 +68,11 @@ public class AE2wtlibAPI {
         AE2wtlibAPIImpl.instance().selectTerminal(terminal);
     }
 
+    @ApiStatus.Internal
+    public static boolean alwaysShowTerminalSelector() {
+        return AE2wtlibAPIImpl.instance().alwaysShowTerminalSelector();
+    }
+
     /**
      * Sends an update to the client about the current terminal. This is only relevant for Universal Terminals, and only
      * sent when ae2wtlib is present.

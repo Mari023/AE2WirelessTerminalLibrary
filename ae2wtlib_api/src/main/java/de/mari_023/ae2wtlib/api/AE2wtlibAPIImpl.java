@@ -54,5 +54,10 @@ public class AE2wtlibAPIImpl {
     @ApiStatus.Internal
     public void selectTerminal(WTDefinition terminal) {}
 
+    @ApiStatus.Internal
+    public boolean alwaysShowTerminalSelector() {
+        return false;
+    }
+
     public void updateClientTerminal(ServerPlayer player, ItemMenuHostLocator locator, ItemStack stack) {}
 }

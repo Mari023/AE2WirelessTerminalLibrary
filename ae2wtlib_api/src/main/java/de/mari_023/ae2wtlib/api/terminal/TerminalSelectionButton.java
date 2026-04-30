@@ -26,6 +26,7 @@ final class TerminalSelectionButton extends IconButton {
     private static final int PANEL_GAP = 5;
     private static final int PANEL_PADDING = 5;
     private static final int ICON_OFFSET = 1;
+    private static final int TOOLBAR_BUTTON_SPACING = 6;
 
     private final WTMenuHost host;
     private final List<WTDefinition> terminals;
@@ -47,12 +48,15 @@ final class TerminalSelectionButton extends IconButton {
         if (!visible)
             return;
 
+        boolean alwaysVisible = alwaysVisible();
         tooltip = List.of();
-        super.renderWidget(guiGraphics, mouseX, mouseY, partial);
-        if (isHovered())
-            tooltip = currentTooltip();
+        if (!alwaysVisible) {
+            super.renderWidget(guiGraphics, mouseX, mouseY, partial);
+            if (isHovered())
+                tooltip = currentTooltip();
+        }
 
-        if (menuOpen)
+        if (menuOpen || alwaysVisible)
             renderMenu(guiGraphics, mouseX, mouseY);
     }
 
@@ -64,21 +68,26 @@ final class TerminalSelectionButton extends IconButton {
 
     @Override
     public void onPress() {
-        if (!terminals.isEmpty())
+        if (!alwaysVisible() && !terminals.isEmpty())
             menuOpen = !menuOpen;
     }
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if (menuOpen && button == 0) {
+        boolean alwaysVisible = alwaysVisible();
+        if ((menuOpen || alwaysVisible) && button == 0) {
             WTDefinition terminal = terminalAt(mouseX, mouseY);
             if (terminal != null) {
-                menuOpen = false;
+                if (!alwaysVisible)
+                    menuOpen = false;
                 storeState.run();
                 AE2wtlibAPI.selectTerminal(terminal);
                 return true;
             }
         }
+
+        if (alwaysVisible)
+            return false;
 
         if (super.mouseClicked(mouseX, mouseY, button))
             return true;
@@ -90,18 +99,28 @@ final class TerminalSelectionButton extends IconButton {
     }
 
     @Override
+    public int getWidth() {
+        return alwaysVisible() ? 0 : super.getWidth();
+    }
+
+    @Override
+    public int getHeight() {
+        return alwaysVisible() ? -TOOLBAR_BUTTON_SPACING : super.getHeight();
+    }
+
+    @Override
     public List<Component> getTooltipMessage() {
         return tooltip;
     }
 
     @Override
     public Rect2i getTooltipArea() {
-        if (!menuOpen)
+        if (!menuOpen && !alwaysVisible())
             return super.getTooltipArea();
 
         int x = panelX() - 1;
         int y = panelY() - 1;
-        int right = getX() + getWidth();
+        int right = Math.max(getX() + getWidth(), panelX() + panelWidth() + 1);
         int bottom = Math.max(getY() + getHeight(), panelY() + panelHeight() + 1);
         return new Rect2i(x, y, right - x, bottom - y);
     }
@@ -113,6 +132,10 @@ final class TerminalSelectionButton extends IconButton {
                 terminals.add(terminal);
         }
         return terminals;
+    }
+
+    private boolean alwaysVisible() {
+        return AE2wtlibAPI.alwaysShowTerminalSelector() && !terminals.isEmpty();
     }
 
     private List<Component> currentTooltip() {
@@ -161,7 +184,10 @@ final class TerminalSelectionButton extends IconButton {
     }
 
     private int panelX() {
-        return getX() - PANEL_GAP - panelWidth();
+        int x = getX();
+        if (alwaysVisible())
+            x -= super.getWidth();
+        return x - PANEL_GAP - panelWidth();
     }
 
     private int panelY() {

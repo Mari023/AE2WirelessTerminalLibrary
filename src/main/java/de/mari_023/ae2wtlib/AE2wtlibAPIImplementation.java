@@ -38,6 +38,11 @@ public class AE2wtlibAPIImplementation extends AE2wtlibAPIImpl {
     }
 
     @Override
+    public boolean alwaysShowTerminalSelector() {
+        return AE2wtlibClientConfig.CONFIG.alwaysShowTerminalSelector();
+    }
+
+    @Override
     public void updateClientTerminal(ServerPlayer player, ItemMenuHostLocator locator, ItemStack stack) {
         PacketDistributor.sendToPlayer(player, new UpdateWUTPackage(locator, stack));
     }
