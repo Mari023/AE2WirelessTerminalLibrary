@@ -50,9 +50,9 @@ public interface IUniversalTerminalCapable {
     }
 
     /**
-     * Creates the button that opens the terminal selector. You are responsible for adding this to the leftToolbar
-     * when appropriate
-     * 
+     * creates the button that opens the terminal selector. you are responsible for adding this to the leftToolbar when
+     * appropriate
+     *
      * @return TerminalSelectionButton
      */
     @Contract(value = "-> new", pure = true)
