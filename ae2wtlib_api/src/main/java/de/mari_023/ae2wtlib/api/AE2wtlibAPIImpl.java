@@ -14,6 +14,8 @@ import net.minecraft.world.item.Items;
 import appeng.api.upgrades.IUpgradeInventory;
 import appeng.menu.locator.ItemMenuHostLocator;
 
+import de.mari_023.ae2wtlib.api.registration.WTDefinition;
+
 @ApiStatus.Internal
 public class AE2wtlibAPIImpl {
     @Nullable
@@ -48,6 +50,9 @@ public class AE2wtlibAPIImpl {
 
     @ApiStatus.Internal
     public void cycleTerminal(boolean isHandlingRightClick) {}
+
+    @ApiStatus.Internal
+    public void selectTerminal(WTDefinition terminal) {}
 
     public void updateClientTerminal(ServerPlayer player, ItemMenuHostLocator locator, ItemStack stack) {}
 }

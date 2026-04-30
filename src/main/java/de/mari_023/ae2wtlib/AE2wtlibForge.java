@@ -16,6 +16,7 @@ import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
 import net.neoforged.neoforge.event.entity.player.ArrowLooseEvent;
@@ -54,6 +55,7 @@ public class AE2wtlibForge {
         modEventBus.addListener((RegisterPayloadHandlersEvent event) -> {
             PayloadRegistrar registrar = event.registrar(AE2wtlibAPI.MOD_NAME);
             registerPacket(registrar, CycleTerminalPacket.ID, CycleTerminalPacket.STREAM_CODEC);
+            registerPacket(registrar, SelectTerminalPacket.ID, SelectTerminalPacket.STREAM_CODEC);
             registerPacket(registrar, PickBlockPacket.ID, PickBlockPacket.STREAM_CODEC);
             registerPacket(registrar, TerminalSettingsPacket.ID, TerminalSettingsPacket.STREAM_CODEC);
             registerPacket(registrar, UpdateWUTPackage.ID, UpdateWUTPackage.STREAM_CODEC);
@@ -148,5 +150,10 @@ public class AE2wtlibForge {
     @SubscribeEvent
     public static void handle(ClientTickEvent.Post event) {
         AE2wtlibClient.clientTick();
+    }
+
+    @SubscribeEvent
+    public static void handle(InputEvent.MouseScrollingEvent event) {
+        AE2wtlibClient.mouseScroll(event);
     }
 }

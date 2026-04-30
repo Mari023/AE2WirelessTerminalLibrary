@@ -15,6 +15,7 @@
   "gui.ae2wtlib.magnetcard.desc.me_no_magnet": "Imán apagado, recoger a ME",
   "gui.ae2wtlib.cycle_terminal.desc": "Abrir %s",
   "gui.ae2wtlib.cycle_terminal.desc1": "Haz clic derecho para abrir %s",
+  "gui.ae2wtlib.current_terminal": "Terminal actual: %s",
   "gui.ae2wtlib.magnetcard.hotkey": "Tarjeta de imán: %s",
   "gui.ae2wtlib.restock": "Reabastecer: %s",
   "gui.ae2wtlib.off": "Apagado",

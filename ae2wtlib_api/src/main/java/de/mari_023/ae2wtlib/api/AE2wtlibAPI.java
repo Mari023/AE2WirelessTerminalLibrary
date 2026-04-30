@@ -16,6 +16,7 @@ import net.neoforged.fml.ModList;
 import appeng.api.upgrades.IUpgradeInventory;
 import appeng.menu.locator.ItemMenuHostLocator;
 
+import de.mari_023.ae2wtlib.api.registration.WTDefinition;
 import de.mari_023.ae2wtlib.api.terminal.ItemWUT;
 
 public class AE2wtlibAPI {
@@ -60,6 +61,11 @@ public class AE2wtlibAPI {
     @ApiStatus.Internal
     public static void cycleTerminal(boolean isHandlingRightClick) {
         AE2wtlibAPIImpl.instance().cycleTerminal(isHandlingRightClick);
+    }
+
+    @ApiStatus.Internal
+    public static void selectTerminal(WTDefinition terminal) {
+        AE2wtlibAPIImpl.instance().selectTerminal(terminal);
     }
 
     /**
