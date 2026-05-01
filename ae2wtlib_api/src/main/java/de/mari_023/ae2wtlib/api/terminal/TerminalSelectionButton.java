@@ -24,7 +24,9 @@ final class TerminalSelectionButton extends IconButton {
     private static final int MAX_ROWS = 3;
     private static final int GAP = 2;
     private static final int PANEL_GAP = 5;
-    private static final int PANEL_PADDING = 5;
+    private static final int ALWAYS_VISIBLE_PANEL_X_OFFSET = -15;
+    private static final int ALWAYS_VISIBLE_PANEL_Y_OFFSET = 3;
+    private static final int PANEL_PADDING = 3;
     private static final int ICON_OFFSET = 1;
     private static final int TOOLBAR_BUTTON_SPACING = 6;
 
@@ -185,13 +187,16 @@ final class TerminalSelectionButton extends IconButton {
 
     private int panelX() {
         int x = getX();
-        if (alwaysVisible())
+        int gap = PANEL_GAP;
+        if (alwaysVisible()) {
             x -= super.getWidth();
-        return x - PANEL_GAP - panelWidth();
+            gap = ALWAYS_VISIBLE_PANEL_X_OFFSET;
+        }
+        return x - gap - panelWidth();
     }
 
     private int panelY() {
-        return getY();
+        return getY() + (alwaysVisible() ? ALWAYS_VISIBLE_PANEL_Y_OFFSET : 0);
     }
 
     private int panelWidth() {
@@ -199,22 +204,29 @@ final class TerminalSelectionButton extends IconButton {
     }
 
     private int panelHeight() {
-        return PANEL_PADDING * 2 + rows() * BUTTON_HEIGHT + Math.max(0, rows() - 1) * GAP;
+        return PANEL_PADDING * 2 + 2 + rows() * BUTTON_HEIGHT + Math.max(0, rows() - 1) * GAP;
     }
 
     private int buttonX(int index) {
-        return panelX() + PANEL_PADDING + (index % columns()) * (BUTTON_WIDTH + GAP);
+        return panelX() + PANEL_PADDING + (index / rows()) * (BUTTON_WIDTH + GAP);
     }
 
     private int buttonY(int index) {
-        return panelY() + PANEL_PADDING + (index / columns()) * (BUTTON_HEIGHT + GAP);
+        return panelY() + PANEL_PADDING + (index % rows()) * (BUTTON_HEIGHT + GAP) + lastColumnYOffset(index);
     }
 
     private int columns() {
-        return Math.max(1, (terminals.size() + MAX_ROWS - 1) / MAX_ROWS);
+        return Math.max(1, (terminals.size() + rows() - 1) / rows());
     }
 
     private int rows() {
-        return Math.max(1, (terminals.size() + columns() - 1) / columns());
+        return Math.max(1, Math.min(MAX_ROWS, terminals.size()));
+    }
+
+    private int lastColumnYOffset(int index) {
+        int entries = terminals.size() % rows();
+        if (entries == 0 || index / rows() != columns() - 1)
+            return 0;
+        return (rows() - entries) * (BUTTON_HEIGHT + GAP) / 2;
     }
 }
