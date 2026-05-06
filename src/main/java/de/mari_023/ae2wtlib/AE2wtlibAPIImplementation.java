@@ -11,7 +11,9 @@ import appeng.api.upgrades.IUpgradeInventory;
 import appeng.menu.locator.ItemMenuHostLocator;
 
 import de.mari_023.ae2wtlib.api.AE2wtlibAPIImpl;
+import de.mari_023.ae2wtlib.api.registration.WTDefinition;
 import de.mari_023.ae2wtlib.networking.CycleTerminalPacket;
+import de.mari_023.ae2wtlib.networking.SelectTerminalPacket;
 import de.mari_023.ae2wtlib.networking.UpdateWUTPackage;
 
 public class AE2wtlibAPIImplementation extends AE2wtlibAPIImpl {
@@ -28,6 +30,16 @@ public class AE2wtlibAPIImplementation extends AE2wtlibAPIImpl {
     @Override
     public void cycleTerminal(boolean isHandlingRightClick) {
         PacketDistributor.sendToServer(new CycleTerminalPacket(isHandlingRightClick));
+    }
+
+    @Override
+    public void selectTerminal(WTDefinition terminal) {
+        PacketDistributor.sendToServer(new SelectTerminalPacket(terminal));
+    }
+
+    @Override
+    public boolean alwaysShowTerminalSelector() {
+        return AE2wtlibClientConfig.CONFIG.alwaysShowTerminalSelector();
     }
 
     @Override

@@ -1,7 +1,6 @@
 package de.mari_023.ae2wtlib.api.terminal;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.jetbrains.annotations.Contract;
 
@@ -14,7 +13,6 @@ import appeng.menu.AEBaseMenu;
 import appeng.menu.SlotSemantics;
 
 import de.mari_023.ae2wtlib.api.AE2wtlibAPI;
-import de.mari_023.ae2wtlib.api.TextConstants;
 import de.mari_023.ae2wtlib.api.gui.AE2wtlibSlotSemantics;
 import de.mari_023.ae2wtlib.api.gui.IconButton;
 import de.mari_023.ae2wtlib.api.gui.ScrollingUpgradesPanel;
@@ -52,17 +50,14 @@ public interface IUniversalTerminalCapable {
     }
 
     /**
-     * creates the button that switches to the next terminal. you are responsible for adding this to the leftToolbar
-     * when appropriate
-     * 
-     * @return CycleTerminalButton
+     * creates the button that opens the terminal selector. you are responsible for adding this to the leftToolbar when
+     * appropriate
+     *
+     * @return TerminalSelectionButton
      */
     @Contract(value = "-> new", pure = true)
     default IconButton cycleTerminalButton() {
-        var next = WUTHandler.nextTerminal(getHost().getItemStack(), false);
-        var previous = WUTHandler.nextTerminal(getHost().getItemStack(), true);
-        return IconButton.withAE2Background(btn -> cycleTerminal(), next.icon())
-                .withTooltip(List.of(TextConstants.cycleNext(next), TextConstants.cyclePrevious(previous)));
+        return new TerminalSelectionButton(getHost(), this::storeState);
     }
 
     /**

@@ -64,6 +64,11 @@ public class ItemWUT extends ItemWT {
     @OnlyIn(Dist.CLIENT)
     public void appendHoverText(final ItemStack stack, final TooltipContext context, final List<Component> lines,
             final TooltipFlag advancedTooltips) {
+        var currentTerminal = WTDefinition.ofOrNull(stack);
+        if (currentTerminal != null) {
+            lines.add(TextConstants.currentTerminal(currentTerminal));
+            lines.add(Component.empty());
+        }
         lines.add(TextConstants.UNIVERSAL);
         for (var terminal : WTDefinition.wirelessTerminals()) {
             if (stack.get(terminal.componentType()) != null)
