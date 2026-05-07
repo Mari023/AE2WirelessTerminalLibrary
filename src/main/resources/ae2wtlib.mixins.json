@@ -10,7 +10,7 @@
   ],
   "client": [
     "GuiMixin",
-    "MinecraftMixin"
+    "ServerGamePacketListenerImplMixin"
   ],
   "injectors": {
     "defaultRequire": 1

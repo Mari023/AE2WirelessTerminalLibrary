@@ -19,7 +19,9 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 
+import appeng.api.config.Actionable;
 import appeng.menu.ISubMenu;
 import appeng.menu.locator.ItemMenuHostLocator;
 
@@ -30,7 +32,8 @@ import de.mari_023.ae2wtlib.api.terminal.ItemWUT;
 import de.mari_023.ae2wtlib.api.terminal.WTMenuHost;
 
 public record WTDefinition(String terminalName, ContainerOpener containerOpener, WTMenuHostFactory wTMenuHostFactory,
-        MenuType<?> menuType, ItemWT item, ItemStack universalTerminal, MutableComponent formattedName,
+        MenuType<?> menuType, ItemWT item, @Nullable ItemStackTemplate universalTerminal,
+        MutableComponent formattedName,
         String translationKey,
         String hotkeyName, DataComponentType<Unit> componentType, int upgradeCount, Icon icon) {
     @FunctionalInterface
@@ -60,6 +63,18 @@ public record WTDefinition(String terminalName, ContainerOpener containerOpener,
     static void add(String terminalName, WTDefinition definition) {
         wirelessTerminals.put(terminalName, definition);
         wirelessTerminalList.add(definition);
+    }
+
+    public ItemStack universalTerminalStack() {
+        if (universalTerminal() == null)
+            return ItemStack.EMPTY;
+        return universalTerminal().create();
+    }
+
+    public ItemStack universalTerminalStackWithEnergy() {
+        ItemStack wut = universalTerminalStack();
+        item().injectAEPower(wut, item().getAEMaxPower(wut), Actionable.MODULATE);
+        return wut;
     }
 
     public static boolean exists(String terminalName) {

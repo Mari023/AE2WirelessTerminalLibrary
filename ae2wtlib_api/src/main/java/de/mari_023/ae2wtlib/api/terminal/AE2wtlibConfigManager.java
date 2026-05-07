@@ -10,9 +10,9 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 
 import appeng.api.config.Setting;
 import appeng.api.ids.AEComponents;
@@ -63,12 +63,12 @@ public class AE2wtlibConfigManager implements IConfigManager {
     }
 
     @Override
-    public void writeToNBT(CompoundTag tagCompound, HolderLookup.Provider registries) {
+    public void writeToNBT(ValueOutput output) {
         throw new UnsupportedOperationException("Not implemented.");
     }
 
     @Override
-    public boolean readFromNBT(CompoundTag tagCompound, HolderLookup.Provider registries) {
+    public boolean readFromNBT(ValueInput input) {
         throw new UnsupportedOperationException("Not implemented.");
     }
 

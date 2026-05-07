@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
@@ -24,19 +24,23 @@ public class GuiMixin {
     @Shadow
     private Minecraft minecraft;
 
-    @Inject(method = "renderSlot(Lnet/minecraft/client/gui/GuiGraphics;IILnet/minecraft/client/DeltaTracker;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/item/ItemStack;I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;renderItemDecorations(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;II)V"), cancellable = true)
-    public void restockOverlay(GuiGraphics guiGraphics, int x, int y, DeltaTracker deltaTracker, Player player,
-            ItemStack stack, int seed, CallbackInfo ci) {
+    // TODO replace with MixinExtras WrapOperation https://github.com/LlamaLad7/MixinExtras/wiki/WrapOperation
+    @Inject(method = "extractSlot(Lnet/minecraft/client/gui/GuiGraphicsExtractor;IILnet/minecraft/client/DeltaTracker;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/item/ItemStack;I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphicsExtractor;itemDecorations(Lnet/minecraft/client/gui/Font;Lnet/minecraft/world/item/ItemStack;II)V"), cancellable = true)
+    public void restockOverlay(GuiGraphicsExtractor graphics, int x, int y, DeltaTracker deltaTracker, Player player,
+            ItemStack itemStack, int seed, CallbackInfo ci) {
         if (Minecraft.getInstance().player == null || Minecraft.getInstance().player.isCreative())
             return;
         CraftingTerminalHandler handler = CraftingTerminalHandler
                 .getCraftingTerminalHandler(Minecraft.getInstance().player);
-        if (!handler.isRestockEnabled() || stack.getCount() == 1 || !handler.isRestockAble(stack))
+        if (!handler.isRestockEnabled() || !handler.isRestockAble(itemStack))
             return;
-        String number = ReadableNumberConverter.format(handler.getAccessibleAmount(stack), 3);
+        long amount = handler.getAccessibleAmount(itemStack);
+        if (amount <= 1)
+            return;
+        String number = ReadableNumberConverter.format(amount, 3);
         if (number.startsWith(","))
             number = 0 + number;
-        guiGraphics.renderItemDecorations(minecraft.font, stack, x, y, number);
+        graphics.itemDecorations(minecraft.font, itemStack, x, y, number);
         ci.cancel();
     }
 }

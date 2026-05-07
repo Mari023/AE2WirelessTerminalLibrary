@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 import appeng.api.upgrades.IUpgradeInventory;
@@ -24,17 +25,17 @@ public class AE2wtlibAPIImplementation extends AE2wtlibAPIImpl {
 
     @Override
     public boolean isUniversalTerminal(Item item) {
-        return item == AE2wtlibItems.UNIVERSAL_TERMINAL;
+        return item == AE2wtlibItems.UNIVERSAL_TERMINAL.asItem();
     }
 
     @Override
     public void cycleTerminal(boolean isHandlingRightClick) {
-        PacketDistributor.sendToServer(new CycleTerminalPacket(isHandlingRightClick));
+        ClientPacketDistributor.sendToServer(new CycleTerminalPacket(isHandlingRightClick));
     }
 
     @Override
     public void selectTerminal(WTDefinition terminal) {
-        PacketDistributor.sendToServer(new SelectTerminalPacket(terminal));
+        ClientPacketDistributor.sendToServer(new SelectTerminalPacket(terminal));
     }
 
     @Override
@@ -49,6 +50,6 @@ public class AE2wtlibAPIImplementation extends AE2wtlibAPIImpl {
 
     @Override
     public Item getWUT() {
-        return AE2wtlibItems.UNIVERSAL_TERMINAL;
+        return AE2wtlibItems.UNIVERSAL_TERMINAL.asItem();
     }
 }

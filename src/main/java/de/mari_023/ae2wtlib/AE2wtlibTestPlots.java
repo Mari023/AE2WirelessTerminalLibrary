@@ -4,6 +4,7 @@ import java.util.Objects;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
@@ -76,6 +77,6 @@ public class AE2wtlibTestPlots {
         plot.hopper("0 0 0", Direction.DOWN);
 
         plot.test(test -> test.assertTrue(test.countContainerContentAt(BlockPos.ZERO).isEmpty(),
-                "Failed to craft universal Terminal"));
+                Component.literal("Failed to craft universal Terminal")));
     }
 }

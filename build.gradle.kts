@@ -1,6 +1,6 @@
 plugins {
-    id("net.neoforged.moddev") version "2.0.80"
-    id("com.diffplug.spotless") version "7.0.0.BETA2"
+    id("net.neoforged.moddev")
+    id("com.diffplug.spotless")
     id("maven-publish")
 }
 
@@ -16,8 +16,9 @@ val neoforgeVersion: String by project
 val curiosVersion: String by project
 val mavenGroup: String by project
 val modID: String by project
+val ae2wtlibCurrentMajor: String by project
 
-version = "0.0.0-SNAPSHOT"
+version = "${ae2wtlibCurrentMajor}0.0.0-SNAPSHOT"
 
 val pr = System.getenv("PR_NUMBER") ?: ""
 if (pr != "") {
@@ -31,7 +32,7 @@ if (tag != "") {
 
 val artifactVersion = version
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+java.toolchain.languageVersion = JavaLanguageVersion.of(25)
 
 dependencies {
     //implementation("top.theillusivec4.curios:curios-neoforge:${curiosVersion}")
@@ -66,45 +67,6 @@ dependencies {
     //testing
     //runtimeOnly(fg.deobf("maven.modrinth:aeinfinitybooster:1.20.1-1.0.0+20"))
     //implementation("maven.modrinth:spark:1.10.109-neoforge")
-}
-
-allprojects {
-    repositories {
-        mavenLocal()
-        mavenCentral()
-        maven {
-            url = uri("https://modmaven.dev/")
-            content {
-                includeGroup("mezz.jei")
-            }
-        }
-        maven {
-            url = uri("https://maven.shedaniel.me/")
-            content {
-                includeGroup("me.shedaniel")
-                includeGroup("me.shedaniel.cloth")
-                includeGroup("dev.architectury")
-            }
-        }
-        maven {
-            url = uri("https://maven.terraformersmc.com/")
-            content {
-                includeGroup("dev.emi")
-            }
-        }
-        maven {
-            url = uri("https://maven.theillusivec4.top/")
-            content {
-                includeGroup("top.theillusivec4.curios")
-            }
-        }
-        maven {
-            url = uri("https://api.modrinth.com/maven")
-            content {
-                includeGroup("maven.modrinth")
-            }
-        }
-    }
 }
 
 tasks {

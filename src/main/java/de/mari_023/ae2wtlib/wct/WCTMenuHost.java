@@ -4,7 +4,7 @@ import java.util.function.BiConsumer;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 
 import appeng.api.ids.AEComponents;
@@ -24,7 +24,7 @@ import de.mari_023.ae2wtlib.api.terminal.WTMenuHost;
 public class WCTMenuHost extends WTMenuHost implements IViewCellStorage {
     private final SupplierInternalInventory<InternalInventory> craftingGrid;
     private final AppEngInternalInventory trash = new AppEngInternalInventory(27);
-    public static final ResourceLocation INV_TRASH = AE2wtlibAPI.id("wct_trash");
+    public static final Identifier INV_TRASH = AE2wtlibAPI.id("wct_trash");
 
     public WCTMenuHost(ItemWT item, Player player, ItemMenuHostLocator locator,
             BiConsumer<Player, ISubMenu> returnToMainMenu) {
@@ -37,7 +37,7 @@ public class WCTMenuHost extends WTMenuHost implements IViewCellStorage {
 
     @Nullable
     @Override
-    public InternalInventory getSubInventory(ResourceLocation id) {
+    public InternalInventory getSubInventory(Identifier id) {
         if (id.equals(CraftingTerminalPart.INV_CRAFTING))
             return craftingGrid;
         if (id.equals(INV_TRASH))

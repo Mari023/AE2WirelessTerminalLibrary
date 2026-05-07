@@ -29,9 +29,9 @@ public class RestockHotkeyAction implements HotkeyAction {
             WUTHandler.updateClientTerminal((ServerPlayer) player, locator, terminal);
 
         if (terminal.getOrDefault(AE2wtlibComponents.RESTOCK, false))
-            player.displayClientMessage(TextConstants.RESTOCK_ON, true);
+            player.sendOverlayMessage(TextConstants.RESTOCK_ON);
         else
-            player.displayClientMessage(TextConstants.RESTOCK_OFF, true);
+            player.sendOverlayMessage(TextConstants.RESTOCK_OFF);
 
         return true;
     }

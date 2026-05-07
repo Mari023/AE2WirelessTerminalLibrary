@@ -3,7 +3,9 @@ package de.mari_023.ae2wtlib.api.terminal;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.input.InputWithModifiers;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 
@@ -14,6 +16,7 @@ import de.mari_023.ae2wtlib.api.TextConstants;
 import de.mari_023.ae2wtlib.api.gui.Icon;
 import de.mari_023.ae2wtlib.api.gui.IconButton;
 import de.mari_023.ae2wtlib.api.registration.WTDefinition;
+import org.jspecify.annotations.Nullable;
 
 /**
  * Provides a button that opens a terminal selector panel for the wireless universal terminal.
@@ -37,8 +40,8 @@ final class TerminalSelectionButton extends IconButton {
     private List<Component> tooltip = List.of();
 
     TerminalSelectionButton(WTMenuHost host, Runnable storeState) {
-        super(btn -> {
-        }, Icon.CRAFTING, Icon.TOOLBAR_BUTTON_BACKGROUND, Icon.TOOLBAR_BUTTON_BACKGROUND_HOVERED,
+        super(_ -> {
+                }, Icon.CRAFTING, Icon.TOOLBAR_BUTTON_BACKGROUND, Icon.TOOLBAR_BUTTON_BACKGROUND_HOVERED,
                 Icon.TOOLBAR_BUTTON_BACKGROUND_FOCUSED);
         this.host = host;
         this.storeState = storeState;
@@ -46,14 +49,14 @@ final class TerminalSelectionButton extends IconButton {
     }
 
     @Override
-    public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partial) {
+    public void extractContents(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partial) {
         if (!visible)
             return;
 
         boolean alwaysVisible = alwaysVisible();
         tooltip = List.of();
         if (!alwaysVisible) {
-            super.renderWidget(guiGraphics, mouseX, mouseY, partial);
+            super.extractContents(guiGraphics, mouseX, mouseY, partial);
             if (isHovered())
                 tooltip = currentTooltip();
         }
@@ -69,35 +72,33 @@ final class TerminalSelectionButton extends IconButton {
     }
 
     @Override
-    public void onPress() {
+    public void onPress(InputWithModifiers input) {
         if (!alwaysVisible() && !terminals.isEmpty())
             menuOpen = !menuOpen;
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+    public void onClick(MouseButtonEvent event, boolean doubleClick) {
         boolean alwaysVisible = alwaysVisible();
-        if ((menuOpen || alwaysVisible) && button == 0) {
-            WTDefinition terminal = terminalAt(mouseX, mouseY);
+        if ((menuOpen || alwaysVisible) && event.button() == 0) {
+            WTDefinition terminal = terminalAt(event.x(), event.y());
             if (terminal != null) {
                 if (!alwaysVisible)
                     menuOpen = false;
                 storeState.run();
                 AE2wtlibAPI.selectTerminal(terminal);
-                return true;
+                return;
             }
         }
 
         if (alwaysVisible)
-            return false;
+            return;
 
-        if (super.mouseClicked(mouseX, mouseY, button))
-            return true;
+        super.onClick(event, doubleClick);
 
         if (menuOpen) {
             menuOpen = false;
         }
-        return false;
     }
 
     @Override
@@ -147,7 +148,7 @@ final class TerminalSelectionButton extends IconButton {
         return List.of(TextConstants.currentTerminal(terminal));
     }
 
-    private void renderMenu(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+    private void renderMenu(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
         int panelX = panelX();
         int panelY = panelY();
         int width = panelWidth();
@@ -166,15 +167,15 @@ final class TerminalSelectionButton extends IconButton {
             Icon background = hovered ? Icon.TOOLBAR_BUTTON_BACKGROUND_HOVERED
                     : selected ? Icon.TOOLBAR_BUTTON_BACKGROUND_FOCUSED : Icon.TOOLBAR_BUTTON_BACKGROUND;
 
-            background.getBlitter().dest(x, y + yOffset, background.width(), background.height()).zOffset(2)
-                    .blit(guiGraphics);
-            terminal.icon().getBlitter().dest(x + ICON_OFFSET, y + ICON_OFFSET + yOffset).zOffset(3).blit(guiGraphics);
+            background.getBlitter().dest(x, y + yOffset, background.width(), background.height()).blit(guiGraphics);
+            terminal.icon().getBlitter().dest(x + ICON_OFFSET, y + ICON_OFFSET + yOffset).blit(guiGraphics);
 
             if (hovered)
                 tooltip = List.of(terminal.formattedName());
         }
     }
 
+    @Nullable
     private WTDefinition terminalAt(double mouseX, double mouseY) {
         for (int i = 0; i < terminals.size(); i++) {
             int x = buttonX(i);

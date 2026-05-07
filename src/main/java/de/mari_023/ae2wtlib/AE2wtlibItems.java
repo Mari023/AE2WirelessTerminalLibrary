@@ -1,43 +1,39 @@
 package de.mari_023.ae2wtlib;
 
-import static de.mari_023.ae2wtlib.api.AE2wtlibAPI.id;
+import static de.mari_023.ae2wtlib.api.AE2wtlibAPI.MOD_NAME;
 
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
+import java.util.function.Function;
+
 import net.minecraft.world.item.Item;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
-import appeng.api.features.GridLinkables;
 import appeng.api.upgrades.Upgrades;
 import appeng.core.definitions.AEItems;
+import appeng.core.definitions.ItemDefinition;
 import appeng.items.tools.powered.WirelessTerminalItem;
 
 import de.mari_023.ae2wtlib.api.terminal.ItemWUT;
 import de.mari_023.ae2wtlib.wat.ItemWAT;
-import de.mari_023.ae2wtlib.wct.ItemWCT;
 import de.mari_023.ae2wtlib.wet.ItemWET;
 
 public final class AE2wtlibItems {
     private AE2wtlibItems() {}
 
-    public static final ItemWCT WIRELESS_CRAFTING_TERMINAL = (ItemWCT) AEItems.WIRELESS_CRAFTING_TERMINAL.asItem();
-    public static final ItemWET PATTERN_ENCODING_TERMINAL = new ItemWET();
-    public static final ItemWAT PATTERN_ACCESS_TERMINAL = new ItemWAT();
-    public static final ItemWUT UNIVERSAL_TERMINAL = new ItemWUT();
+    public static final DeferredRegister.Items DR = DeferredRegister.createItems(MOD_NAME);
 
-    public static final Item QUANTUM_BRIDGE_CARD = Upgrades.createUpgradeCardItem(new Item.Properties().stacksTo(1));
-    public static final Item MAGNET_CARD = Upgrades.createUpgradeCardItem(new Item.Properties().stacksTo(1));
+    public static final ItemDefinition<WirelessTerminalItem> WIRELESS_CRAFTING_TERMINAL = AEItems.WIRELESS_CRAFTING_TERMINAL;
+    public static final ItemDefinition<ItemWET> PATTERN_ENCODING_TERMINAL = item("wireless_pattern_encoding_terminal",
+            ItemWET::new);
+    public static final ItemDefinition<ItemWAT> PATTERN_ACCESS_TERMINAL = item("wireless_pattern_access_terminal",
+            ItemWAT::new);
+    public static final ItemDefinition<ItemWUT> UNIVERSAL_TERMINAL = item("wireless_universal_terminal", ItemWUT::new);
 
-    public static void init() {
-        Registry.register(BuiltInRegistries.ITEM, id("quantum_bridge_card"), QUANTUM_BRIDGE_CARD);
-        Registry.register(BuiltInRegistries.ITEM, id("magnet_card"), MAGNET_CARD);
-        Registry.register(BuiltInRegistries.ITEM, id("wireless_pattern_encoding_terminal"),
-                PATTERN_ENCODING_TERMINAL);
-        Registry.register(BuiltInRegistries.ITEM, id("wireless_pattern_access_terminal"),
-                PATTERN_ACCESS_TERMINAL);
-        Registry.register(BuiltInRegistries.ITEM, id("wireless_universal_terminal"), UNIVERSAL_TERMINAL);
+    public static final ItemDefinition<Item> QUANTUM_BRIDGE_CARD = item("quantum_bridge_card",
+            p -> Upgrades.createUpgradeCardItem(p.stacksTo(1)));
+    public static final ItemDefinition<Item> MAGNET_CARD = item("magnet_card",
+            p -> Upgrades.createUpgradeCardItem(p.stacksTo(1)));
 
-        GridLinkables.register(PATTERN_ENCODING_TERMINAL, WirelessTerminalItem.LINKABLE_HANDLER);
-        GridLinkables.register(PATTERN_ACCESS_TERMINAL, WirelessTerminalItem.LINKABLE_HANDLER);
-        GridLinkables.register(UNIVERSAL_TERMINAL, WirelessTerminalItem.LINKABLE_HANDLER);
+    private static <T extends Item> ItemDefinition<T> item(String name, Function<Item.Properties, T> factory) {
+        return new ItemDefinition<>(name, DR.registerItem(name, factory));
     }
 }

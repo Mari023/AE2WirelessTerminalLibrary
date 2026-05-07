@@ -4,7 +4,8 @@ import java.util.ArrayList;
 
 import org.jetbrains.annotations.Contract;
 
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.minecraft.client.input.KeyEvent;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 import appeng.client.Hotkeys;
 import appeng.client.gui.WidgetContainer;
@@ -28,11 +29,12 @@ public interface IUniversalTerminalCapable {
 
     boolean isHandlingRightClick();
 
+    @SuppressWarnings("EmptyMethod")
     void storeState();
 
-    default boolean checkForTerminalKeys(int keyCode, int scanCode) {
+    default boolean checkForTerminalKeys(KeyEvent event) {
         var closingHotkey = Hotkeys.getHotkeyMapping(getHost().getCloseHotkey());
-        if (closingHotkey != null && closingHotkey.mapping().matches(keyCode, scanCode)) {
+        if (closingHotkey != null && closingHotkey.mapping().matches(event)) {
             getHost().getPlayer().closeContainer();
             return true;
         }
@@ -41,8 +43,8 @@ public interface IUniversalTerminalCapable {
             var hotkey = Hotkeys.getHotkeyMapping(terminal.hotkeyName());
             if (hotkey == null)
                 continue;
-            if (hotkey.mapping().matches(keyCode, scanCode)) {
-                PacketDistributor.sendToServer(new HotkeyPacket(hotkey));
+            if (hotkey.mapping().matches(event)) {
+                ClientPacketDistributor.sendToServer(new HotkeyPacket(hotkey));
                 return true;
             }
         }

@@ -19,6 +19,7 @@ import de.mari_023.ae2wtlib.api.AE2wtlibComponents;
 import de.mari_023.ae2wtlib.api.TextConstants;
 import de.mari_023.ae2wtlib.api.terminal.ItemWUT;
 import de.mari_023.ae2wtlib.api.terminal.WUTHandler;
+import org.jspecify.annotations.Nullable;
 
 public record CycleTerminalPacket(boolean isRightClick) implements AE2wtlibPacket {
     public static final Type<CycleTerminalPacket> ID = new Type<>(AE2wtlibAPI.id("cycle_terminal"));
@@ -59,12 +60,13 @@ public record CycleTerminalPacket(boolean isRightClick) implements AE2wtlibPacke
 
         var terminal = item.get(AE2wtlibComponents.CURRENT_TERMINAL);
         if (terminal != null)
-            player.displayClientMessage(TextConstants.currentTerminal(terminal), true);
+            player.sendOverlayMessage(TextConstants.currentTerminal(terminal));
     }
 
+    @Nullable
     private static ItemMenuHostLocator getHeldUniversalTerminalLocator(Player player) {
         if (player.getMainHandItem().getItem() instanceof ItemWUT)
-            return MenuLocators.forInventorySlot(player.getInventory().selected);
+            return MenuLocators.forInventorySlot(player.getInventory().getSelectedSlot());
         if (player.getOffhandItem().getItem() instanceof ItemWUT)
             return MenuLocators.forInventorySlot(Inventory.SLOT_OFFHAND);
         return null;

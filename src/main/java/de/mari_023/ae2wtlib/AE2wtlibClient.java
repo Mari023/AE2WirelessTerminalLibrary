@@ -1,5 +1,6 @@
 package de.mari_023.ae2wtlib;
 
+import com.mojang.authlib.minecraft.client.MinecraftClient;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.neoforged.api.distmarker.Dist;
@@ -10,7 +11,7 @@ import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
-import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
 import de.mari_023.ae2wtlib.api.AE2wtlibAPI;
 import de.mari_023.ae2wtlib.api.terminal.ItemWUT;
@@ -34,14 +35,14 @@ public class AE2wtlibClient {
     public static void mouseScroll(InputEvent.MouseScrollingEvent event) {
         var minecraft = Minecraft.getInstance();
         var player = minecraft.player;
-        if (player == null || minecraft.screen != null || !Screen.hasShiftDown() || event.getScrollDeltaY() == 0)
+        if (player == null || minecraft.screen != null || !player.isShiftKeyDown() || event.getScrollDeltaY() == 0)
             return;
 
         if (!(player.getMainHandItem().getItem() instanceof ItemWUT)
                 && !(player.getOffhandItem().getItem() instanceof ItemWUT))
             return;
 
-        PacketDistributor.sendToServer(new CycleTerminalPacket(event.getScrollDeltaY() < 0));
+        ClientPacketDistributor.sendToServer(new CycleTerminalPacket(event.getScrollDeltaY() < 0));
         event.setCanceled(true);
     }
 }

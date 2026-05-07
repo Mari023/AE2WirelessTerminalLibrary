@@ -15,6 +15,10 @@ import de.mari_023.ae2wtlib.api.terminal.AE2wtlibConfigManager;
 import de.mari_023.ae2wtlib.api.terminal.ItemWT;
 
 public class ItemWAT extends ItemWT {
+    public ItemWAT(Properties p) {
+        super(p);
+    }
+
     @Override
     public MenuType<?> getMenuType(ItemMenuHostLocator locator, Player player) {
         return WATMenu.TYPE;

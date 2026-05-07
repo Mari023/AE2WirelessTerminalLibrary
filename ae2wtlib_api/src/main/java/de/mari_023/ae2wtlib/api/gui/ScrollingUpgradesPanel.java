@@ -6,7 +6,7 @@ import java.util.function.Supplier;
 
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
@@ -134,7 +134,7 @@ public class ScrollingUpgradesPanel implements ICompositeWidget {
     }
 
     @Override
-    public void drawBackgroundLayer(GuiGraphics guiGraphics, Rect2i bounds, Point mouse) {
+    public void drawBackgroundLayer(GuiGraphicsExtractor guiGraphics, Rect2i bounds, Point mouse) {
         int slotCount = getVisibleSlotCount();
         if (slotCount <= 0) {
             return;
@@ -145,11 +145,11 @@ public class ScrollingUpgradesPanel implements ICompositeWidget {
         int slotOriginY = screenOrigin.getY() + y + PADDING;
         UpgradeBackground bg = UpgradeBackground.get(scrolling());
 
-        bg.top().getBlitter().dest(slotOriginX, slotOriginY - PADDING).blit(guiGraphics);
+        bg.top().blit(guiGraphics, slotOriginX, slotOriginY - PADDING);
         for (int i = 1; i < slotCount - 1; i++) {
-            bg.middle().getBlitter().dest(slotOriginX, slotOriginY + i * SLOT_SIZE).blit(guiGraphics);
+            bg.middle().blit(guiGraphics, slotOriginX, slotOriginY + i * SLOT_SIZE);
         }
-        bg.bottom().getBlitter().dest(slotOriginX, slotOriginY + (slotCount - 1) * SLOT_SIZE).blit(guiGraphics);
+        bg.bottom().blit(guiGraphics, slotOriginX, slotOriginY + (slotCount - 1) * SLOT_SIZE);
     }
 
     @Override

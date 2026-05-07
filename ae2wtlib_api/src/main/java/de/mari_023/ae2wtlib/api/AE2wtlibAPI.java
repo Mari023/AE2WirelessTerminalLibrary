@@ -5,12 +5,15 @@ import java.util.function.Supplier;
 import com.mojang.datafixers.util.Unit;
 
 import org.jetbrains.annotations.ApiStatus;
+import org.jspecify.annotations.Nullable;
 
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponentType;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.neoforged.fml.ModList;
 
 import appeng.api.upgrades.IUpgradeInventory;
@@ -25,8 +28,8 @@ public class AE2wtlibAPI {
 
     private AE2wtlibAPI() {}
 
-    public static ResourceLocation id(String name) {
-        return ResourceLocation.fromNamespaceAndPath(MOD_NAME, name);
+    public static Identifier id(String name) {
+        return Identifier.fromNamespaceAndPath(MOD_NAME, name);
     }
 
     public static boolean isModPresent(String mod) {
@@ -45,13 +48,10 @@ public class AE2wtlibAPI {
         return isUniversalTerminal(stack.getItem());
     }
 
-    public static ItemStack makeWUT(DataComponentType<Unit> componentType) {
+    public static @Nullable ItemStackTemplate makeWUT(DataComponentType<Unit> componentType) {
         if (!(getWUT() instanceof ItemWUT wutItem))
-            return ItemStack.EMPTY;
-        ItemStack wut = new ItemStack(wutItem);
-
-        wut.set(componentType, Unit.INSTANCE);
-        return wut;
+            return null;
+        return new ItemStackTemplate(wutItem, DataComponentPatch.builder().set(componentType, Unit.INSTANCE).build());
     }
 
     public static Item getWUT() {

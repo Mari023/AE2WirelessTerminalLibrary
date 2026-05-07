@@ -21,7 +21,7 @@ public class StowHotkeyAction implements HotkeyAction {
             return false;
         if (handler.getTargetGrid() == null)
             return false;
-        if (stack.isNotReplaceableByPickAction(player, player.getInventory().selected))
+        if (stack.isNotReplaceableByPickAction(player, player.getInventory().getSelectedSlot()))
             return false;
 
         stack.setCount(stack.getCount() - (int) handler.getTargetGrid().getStorageService().getInventory()

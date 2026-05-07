@@ -7,7 +7,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-import appeng.integration.modules.curios.CuriosIntegration;
 import appeng.menu.locator.ItemMenuHostLocator;
 import appeng.menu.locator.MenuLocators;
 
@@ -112,7 +111,7 @@ public class WUTHandler {
     public static boolean open(final Player player, final ItemMenuHostLocator locator, boolean returningFromSubmenu) {
         var currentTerminal = WTDefinition.ofOrNull(locator.locateItem(player));
         if (currentTerminal == null) {
-            player.displayClientMessage(TextConstants.TERMINAL_EMPTY, false);
+            player.sendOverlayMessage(TextConstants.TERMINAL_EMPTY);
             return false;
         }
         return currentTerminal.containerOpener().tryOpen(player, locator, returningFromSubmenu);
@@ -129,7 +128,8 @@ public class WUTHandler {
     public static ItemMenuHostLocator findTerminal(Player player, WTDefinition terminal) {
         ItemMenuHostLocator locator = null;
 
-        var cap = player.getCapability(CuriosIntegration.ITEM_HANDLER);
+        //FIXME reintroduce curio compat once the ae2 curio integration is fixed
+        /*var cap = player.getCapability(CuriosIntegration.ITEM_HANDLER);
         if (cap != null) {
             for (int i = 0; i < cap.getSlots(); i++) {
                 var stack = cap.getStackInSlot(i);
@@ -142,7 +142,7 @@ public class WUTHandler {
                     locator = MenuLocators.forCurioSlot(i);
                 }
             }
-        }
+        }*/
 
         for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
             var stack = player.getInventory().getItem(i);

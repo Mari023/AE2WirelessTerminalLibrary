@@ -1,5 +1,6 @@
 package de.mari_023.ae2wtlib.wat;
 
+import net.minecraft.client.input.KeyEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -39,10 +40,10 @@ public class WATScreen extends PatternAccessTermScreen<WATMenu> implements IUniv
     public void storeState() {}
 
     @Override
-    public boolean keyPressed(int keyCode, int scanCode, int keyPressed) {
-        boolean value = super.keyPressed(keyCode, scanCode, keyPressed);
+    public boolean keyPressed(KeyEvent event) {
+        boolean value = super.keyPressed(event);
         if (!value)
-            return checkForTerminalKeys(keyCode, scanCode);
+            return checkForTerminalKeys(event);
         return true;
     }
 }

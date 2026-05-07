@@ -11,8 +11,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs;
 
@@ -34,13 +33,13 @@ public class AE2wtlibComponents {
             .ofMember((locator, buf) -> MenuLocators.writeToPacket(buf, locator),
                     (buf) -> (ItemMenuHostLocator) MenuLocators.readFromPacket(buf));
 
-    public static final Map<ResourceLocation, DataComponentType<?>> DR = new HashMap<>();
+    public static final Map<Identifier, DataComponentType<?>> DR = new HashMap<>();
 
     public static final DataComponentType<WTDefinition> CURRENT_TERMINAL = register("current_terminal",
             builder -> builder.persistent(WTDefinition.CODEC).networkSynchronized(WTDefinition.STREAM_CODEC));
 
-    public static final DataComponentType<ItemStack> SINGULARITY = register("singularity", builder -> builder
-            .persistent(ItemStack.OPTIONAL_CODEC).networkSynchronized(ItemStack.OPTIONAL_STREAM_CODEC));
+    public static final DataComponentType<StackWrapper> SINGULARITY = register("singularity", builder -> builder
+            .persistent(StackWrapper.CODEC).networkSynchronized(StackWrapper.STREAM_CODEC));
     public static final DataComponentType<ItemContainerContents> VIEW_CELL_INVENTORY = register("view_cell_inv",
             builder -> builder.persistent(ItemContainerContents.CODEC)
                     .networkSynchronized(ItemContainerContents.STREAM_CODEC));

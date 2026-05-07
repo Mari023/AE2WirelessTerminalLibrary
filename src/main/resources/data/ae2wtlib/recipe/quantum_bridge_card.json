@@ -6,15 +6,9 @@
     "aca"
   ],
   "key": {
-    "a": {
-      "item": "ae2:quantum_ring"
-    },
-    "b": {
-      "item": "ae2:advanced_card"
-    },
-    "c": {
-      "item": "ae2:quantum_link"
-    }
+    "a": "ae2:quantum_ring",
+    "b": "ae2:advanced_card",
+    "c": "ae2:quantum_link"
   },
   "result": {
     "count": 1,

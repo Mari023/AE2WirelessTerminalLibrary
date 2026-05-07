@@ -6,7 +6,7 @@ import java.util.List;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
@@ -44,7 +44,7 @@ public class IconButton extends Button implements ITooltip {
     }
 
     @Override
-    public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partial) {
+    protected void extractContents(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
         if (!visible)
             return;
 
@@ -52,12 +52,9 @@ public class IconButton extends Button implements ITooltip {
         var bg = getBG();
         var bgSizeOffset = bg.width() > 16 ? 1 : 0;
 
-        bg.getBlitter()
-                .dest(getX() - 1, getY() + yOffset, bg.width(), bg.height())
-                .zOffset(2)
-                .blit(guiGraphics);
-        getIcon().getBlitter().dest(getX() - 1 + bgSizeOffset, getY() + bgSizeOffset + yOffset).zOffset(3)
-                .blit(guiGraphics);
+        bg.blit(graphics, getX() - 1, getY() + yOffset);
+        getIcon().blit(graphics, getX() - 1 + bgSizeOffset, getY() + bgSizeOffset + yOffset);
+        graphics.nextStratum();
     }
 
     protected Icon getIcon() {
