@@ -98,7 +98,7 @@ public class CraftingTerminalHandler {
     public IGrid getTargetGrid() {
         if (getMenuHost() == null)
             return null;
-        final IGridNode n = getMenuHost().getActionableNode();
+        IGridNode n = getMenuHost().getActionableNode();
 
         if (n == null)
             return null;

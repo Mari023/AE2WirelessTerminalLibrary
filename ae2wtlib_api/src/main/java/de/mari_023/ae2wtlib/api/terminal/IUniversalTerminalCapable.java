@@ -13,21 +13,13 @@ import appeng.core.network.serverbound.HotkeyPacket;
 import appeng.menu.AEBaseMenu;
 import appeng.menu.SlotSemantics;
 
-import de.mari_023.ae2wtlib.api.AE2wtlibAPI;
 import de.mari_023.ae2wtlib.api.gui.AE2wtlibSlotSemantics;
 import de.mari_023.ae2wtlib.api.gui.IconButton;
 import de.mari_023.ae2wtlib.api.gui.ScrollingUpgradesPanel;
 import de.mari_023.ae2wtlib.api.registration.WTDefinition;
 
 public interface IUniversalTerminalCapable {
-    default void cycleTerminal() {
-        storeState();
-        AE2wtlibAPI.cycleTerminal(isHandlingRightClick());
-    }
-
     WTMenuHost getHost();
-
-    boolean isHandlingRightClick();
 
     @SuppressWarnings("EmptyMethod")
     void storeState();

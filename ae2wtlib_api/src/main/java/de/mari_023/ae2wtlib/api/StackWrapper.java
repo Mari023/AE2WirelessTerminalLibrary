@@ -30,7 +30,7 @@ public class StackWrapper {
 
     @Override
     public int hashCode() {
-        return this.hashCode;
+        return hashCode;
     }
 
     public ItemStack toStack() {

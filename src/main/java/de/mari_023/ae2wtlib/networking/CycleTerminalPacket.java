@@ -1,5 +1,7 @@
 package de.mari_023.ae2wtlib.networking;
 
+import org.jspecify.annotations.Nullable;
+
 import io.netty.buffer.ByteBuf;
 
 import net.minecraft.network.codec.ByteBufCodecs;
@@ -19,7 +21,6 @@ import de.mari_023.ae2wtlib.api.AE2wtlibComponents;
 import de.mari_023.ae2wtlib.api.TextConstants;
 import de.mari_023.ae2wtlib.api.terminal.ItemWUT;
 import de.mari_023.ae2wtlib.api.terminal.WUTHandler;
-import org.jspecify.annotations.Nullable;
 
 public record CycleTerminalPacket(boolean isRightClick) implements AE2wtlibPacket {
     public static final Type<CycleTerminalPacket> ID = new Type<>(AE2wtlibAPI.id("cycle_terminal"));

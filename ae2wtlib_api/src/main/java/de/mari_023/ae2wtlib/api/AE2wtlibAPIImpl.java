@@ -49,9 +49,6 @@ public class AE2wtlibAPIImpl {
     }
 
     @ApiStatus.Internal
-    public void cycleTerminal(boolean isHandlingRightClick) {}
-
-    @ApiStatus.Internal
     public void selectTerminal(WTDefinition terminal) {}
 
     @ApiStatus.Internal

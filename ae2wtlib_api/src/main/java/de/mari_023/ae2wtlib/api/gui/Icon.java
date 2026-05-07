@@ -26,7 +26,7 @@ public record Icon(int x, int y, int width, int height, Texture texture) {
     public static final Icon TOOLBAR_BUTTON_BACKGROUND_FOCUSED = new Icon(
             appeng.util.Icon.TOOLBAR_BUTTON_BACKGROUND_FOCUS);
 
-    public static final Icon TERMINAL_SETTINGS = new Icon(32, 65, 16, 15, Icon.AE2TEXTURE);
+    public static final Icon TERMINAL_SETTINGS = new Icon(32, 65, 16, 15, AE2TEXTURE);
     public static final Icon MAGNET = new Icon(0, 0);
     public static final Icon TRASH = new Icon(0, 32);
 

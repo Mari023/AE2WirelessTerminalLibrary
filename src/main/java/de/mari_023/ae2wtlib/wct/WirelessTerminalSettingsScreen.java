@@ -29,7 +29,7 @@ public class WirelessTerminalSettingsScreen extends AESubScreen<WCTMenu, WCTScre
     public WirelessTerminalSettingsScreen(WCTScreen parent) {
         super(parent, "/screens/wtlib/wireless_terminal_settings.json");
         widgets.add("back",
-                new TabButton(Icon.BACK, menu.getHost().getMainMenuIcon().getHoverName(), btn -> returnToParent()));
+                new TabButton(Icon.BACK, menu.getHost().getMainMenuIcon().getHoverName(), _ -> returnToParent()));
 
         pickBlock.setSelected(stack().getOrDefault(AE2wtlibComponents.PICK_BLOCK, false));
         craftIfMissing.setSelected(stack().getOrDefault(AE2wtlibComponents.CRAFT_IF_MISSING, false));

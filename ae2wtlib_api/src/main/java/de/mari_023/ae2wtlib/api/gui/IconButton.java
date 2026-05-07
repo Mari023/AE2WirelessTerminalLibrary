@@ -26,7 +26,7 @@ public class IconButton extends Button implements ITooltip {
     }
 
     public IconButton(OnPress onPress, Icon icon, Icon bg, Icon bg_hovered, Icon bg_focused) {
-        super(0, 0, 16, 16, Component.empty(), onPress, Button.DEFAULT_NARRATION);
+        super(0, 0, 16, 16, Component.empty(), onPress, DEFAULT_NARRATION);
         this.icon = icon;
         this.bg = bg;
         this.bg_hovered = bg_hovered;
@@ -88,7 +88,7 @@ public class IconButton extends Button implements ITooltip {
 
     @Contract("_ -> this")
     public IconButton withTooltip(Component message) {
-        super.setMessage(message);
+        setMessage(message);
         return this;
     }
 

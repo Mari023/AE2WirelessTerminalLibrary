@@ -118,7 +118,7 @@ public record WTDefinition(String terminalName, ContainerOpener containerOpener,
 
                 if (currentTerminal != null)
                     yield currentTerminal;
-                for (var term : WTDefinition.wirelessTerminals.entrySet())
+                for (var term : wirelessTerminals.entrySet())
                     if (stack.get(term.getValue().componentType()) != null) {
                         currentTerminal = term.getValue();
                         stack.set(AE2wtlibComponents.CURRENT_TERMINAL, currentTerminal);
@@ -133,7 +133,7 @@ public record WTDefinition(String terminalName, ContainerOpener containerOpener,
 
     @Nullable
     private static WTDefinition ofOrNull(ItemWT item) {
-        for (Map.Entry<String, WTDefinition> entry : WTDefinition.wirelessTerminals.entrySet()) {
+        for (Map.Entry<String, WTDefinition> entry : wirelessTerminals.entrySet()) {
             if (item.equals(entry.getValue().item()))
                 return entry.getValue();
         }

@@ -108,7 +108,7 @@ public class WUTHandler {
      * @param returningFromSubmenu Set to true when the player is returning from a submenu.
      * @return true if the terminal can be opened, false otherwise.
      */
-    public static boolean open(final Player player, final ItemMenuHostLocator locator, boolean returningFromSubmenu) {
+    public static boolean open(Player player, ItemMenuHostLocator locator, boolean returningFromSubmenu) {
         var currentTerminal = WTDefinition.ofOrNull(locator.locateItem(player));
         if (currentTerminal == null) {
             player.sendOverlayMessage(TextConstants.TERMINAL_EMPTY);
@@ -128,21 +128,14 @@ public class WUTHandler {
     public static ItemMenuHostLocator findTerminal(Player player, WTDefinition terminal) {
         ItemMenuHostLocator locator = null;
 
-        //FIXME reintroduce curio compat once the ae2 curio integration is fixed
-        /*var cap = player.getCapability(CuriosIntegration.ITEM_HANDLER);
-        if (cap != null) {
-            for (int i = 0; i < cap.getSlots(); i++) {
-                var stack = cap.getStackInSlot(i);
-                if (!hasTerminal(stack, terminal))
-                    continue;
-
-                if (AE2wtlibAPI.isUniversalTerminal(stack)) {
-                    return MenuLocators.forCurioSlot(i);
-                } else if (locator == null) {
-                    locator = MenuLocators.forCurioSlot(i);
-                }
-            }
-        }*/
+        // FIXME reintroduce curio compat once the ae2 curio integration is fixed
+        /*
+         * var cap = player.getCapability(CuriosIntegration.ITEM_HANDLER); if (cap != null) { for (int i = 0; i <
+         * cap.getSlots(); i++) { var stack = cap.getStackInSlot(i); if (!hasTerminal(stack, terminal)) continue;
+         * 
+         * if (AE2wtlibAPI.isUniversalTerminal(stack)) { return MenuLocators.forCurioSlot(i); } else if (locator ==
+         * null) { locator = MenuLocators.forCurioSlot(i); } } }
+         */
 
         for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
             var stack = player.getInventory().getItem(i);

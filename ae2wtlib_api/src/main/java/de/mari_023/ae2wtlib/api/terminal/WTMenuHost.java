@@ -60,8 +60,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<ItemWT>
     public WTMenuHost(ItemWT item, Player player, ItemMenuHostLocator locator,
             BiConsumer<Player, ISubMenu> returnToMainMenu) {
         super(item, player, locator, returnToMainMenu);
-        this.storage = new SupplierStorage(new StackDependentSupplier<>(
-                this::getItemStack, this::getStorageFromStack));
+        storage = new SupplierStorage(new StackDependentSupplier<>(this::getItemStack, this::getStorageFromStack));
         viewCellInventory = new SupplierInternalInventory<>(
                 new StackDependentSupplier<>(this::getItemStack,
                         stack -> createInv(player, stack, AE2wtlibComponents.VIEW_CELL_INVENTORY, 5)));
@@ -82,7 +81,7 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<ItemWT>
 
     @Override
     public MEStorage getInventory() {
-        return this.storage;
+        return storage;
     }
 
     @Nullable

@@ -21,13 +21,14 @@ public abstract class ServerGamePacketListenerImplMixin {
 
     @Inject(method = "tryPickItem", at = {
             @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerGamePacketListenerImpl;send(Lnet/minecraft/network/protocol/Packet;)V") })
-    public void pickBlock(ItemStack stack, CallbackInfo ci, @Local int i) {
+    public void pickBlock(ItemStack itemStack, CallbackInfo ci,
+            @Local(name = "slotWithExistingItem") int slotWithExistingItem) {
         if (player.hasInfiniteMaterials())
             return;
         if (player.isSpectator())
             return;
-        if (i != -1)
+        if (slotWithExistingItem != -1)
             return;
-        AE2wtlibEvents.pickBlock(player, stack);
+        AE2wtlibEvents.pickBlock(player, itemStack);
     }
 }

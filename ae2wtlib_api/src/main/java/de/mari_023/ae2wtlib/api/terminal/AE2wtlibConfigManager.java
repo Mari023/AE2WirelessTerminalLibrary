@@ -105,7 +105,7 @@ public class AE2wtlibConfigManager implements IConfigManager {
      */
     public static IConfigManagerBuilder builder(Supplier<ItemStack> stack) {
         var manager = new AE2wtlibConfigManager(
-                (mgr, settingName) -> stack.get().set(AEComponents.EXPORTED_SETTINGS, mgr.exportSettings()));
+                (mgr, _) -> stack.get().set(AEComponents.EXPORTED_SETTINGS, mgr.exportSettings()));
 
         return new IConfigManagerBuilder() {
             @Override

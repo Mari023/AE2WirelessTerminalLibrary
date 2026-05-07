@@ -32,7 +32,7 @@ public abstract class ItemWT extends WirelessTerminalItem {
         super(AEConfig.instance().getWirelessTerminalBattery(), p.stacksTo(1));
     }
 
-    public boolean open(final Player player, final ItemMenuHostLocator locator,
+    public boolean open(Player player, ItemMenuHostLocator locator,
             boolean returningFromSubmenu) {
         return MenuOpener.open(getMenuType(locator, player), player, locator, returningFromSubmenu);
     }
@@ -51,7 +51,7 @@ public abstract class ItemWT extends WirelessTerminalItem {
     }
 
     @Override
-    public InteractionResult use(final Level level, final Player player, final InteractionHand hand) {
+    public InteractionResult use(Level level, Player player, InteractionHand hand) {
         ItemStack is = player.getItemInHand(hand);
         if (checkPreconditions(is)) {
             if (!level.isClientSide())
@@ -65,7 +65,7 @@ public abstract class ItemWT extends WirelessTerminalItem {
     public WirelessTerminalMenuHost<?> getMenuHost(Player player, ItemMenuHostLocator locator,
             @Nullable BlockHitResult hitResult) {
         return WTDefinition.of(locator.locateItem(player)).wTMenuHostFactory().create(this, player, locator,
-                (p, subMenu) -> tryOpen(player, locator, true));
+                (_, _) -> tryOpen(player, locator, true));
     }
 
     public boolean isNotReplaceableByPickAction(ItemStack stack, Player player, int inventorySlot) {

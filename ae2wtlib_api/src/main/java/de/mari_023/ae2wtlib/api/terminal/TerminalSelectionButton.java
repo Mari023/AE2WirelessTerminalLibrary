@@ -3,6 +3,8 @@ package de.mari_023.ae2wtlib.api.terminal;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jspecify.annotations.Nullable;
+
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.InputWithModifiers;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -16,7 +18,6 @@ import de.mari_023.ae2wtlib.api.TextConstants;
 import de.mari_023.ae2wtlib.api.gui.Icon;
 import de.mari_023.ae2wtlib.api.gui.IconButton;
 import de.mari_023.ae2wtlib.api.registration.WTDefinition;
-import org.jspecify.annotations.Nullable;
 
 /**
  * Provides a button that opens a terminal selector panel for the wireless universal terminal.
@@ -41,11 +42,11 @@ final class TerminalSelectionButton extends IconButton {
 
     TerminalSelectionButton(WTMenuHost host, Runnable storeState) {
         super(_ -> {
-                }, Icon.CRAFTING, Icon.TOOLBAR_BUTTON_BACKGROUND, Icon.TOOLBAR_BUTTON_BACKGROUND_HOVERED,
+        }, Icon.CRAFTING, Icon.TOOLBAR_BUTTON_BACKGROUND, Icon.TOOLBAR_BUTTON_BACKGROUND_HOVERED,
                 Icon.TOOLBAR_BUTTON_BACKGROUND_FOCUSED);
         this.host = host;
         this.storeState = storeState;
-        this.terminals = installedTerminals(host);
+        terminals = installedTerminals(host);
     }
 
     @Override

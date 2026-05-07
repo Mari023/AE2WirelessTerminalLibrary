@@ -2,14 +2,16 @@ package de.mari_023.ae2wtlib.wct;
 
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
-
-import appeng.api.inventories.InternalInventory;
 import net.neoforged.neoforge.transfer.ResourceHandler;
 import net.neoforged.neoforge.transfer.item.ItemResource;
 import net.neoforged.neoforge.transfer.item.PlayerInventoryWrapper;
 
+import appeng.api.inventories.InternalInventory;
+
 /**
- * PlayerInternalInventory returns the wrong size, so it doesn't work for the armor and offhand (what we actually care about)
+ * PlayerInternalInventory returns the wrong size, so it doesn't work for the armor and offhand (what we actually care
+ * about)
+ * 
  * @param playerInventory the Inventory to wrap
  */
 public record WrappedPlayerInventory(Inventory playerInventory) implements InternalInventory {

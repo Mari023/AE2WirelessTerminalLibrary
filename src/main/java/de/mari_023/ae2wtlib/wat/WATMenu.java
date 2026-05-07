@@ -26,7 +26,7 @@ public class WATMenu extends PatternAccessTermMenu {
     private final WATMenuHost watMenuHost;
     private final ToolboxMenu toolboxMenu;
 
-    public WATMenu(int id, final Inventory ip, final WATMenuHost anchor) {
+    public WATMenu(int id, Inventory ip, WATMenuHost anchor) {
         super(TYPE, id, ip, anchor, true);
         watMenuHost = anchor;
         toolboxMenu = new ToolboxMenu(this);

@@ -29,7 +29,7 @@ public class WCTMenuHost extends WTMenuHost implements IViewCellStorage {
     public WCTMenuHost(ItemWT item, Player player, ItemMenuHostLocator locator,
             BiConsumer<Player, ISubMenu> returnToMainMenu) {
         super(item, player, locator, returnToMainMenu);
-        this.craftingGrid = new SupplierInternalInventory<>(
+        craftingGrid = new SupplierInternalInventory<>(
                 new StackDependentSupplier<>(
                         this::getItemStack,
                         stack -> createInv(player, stack, AEComponents.CRAFTING_INV, 9)));

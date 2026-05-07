@@ -13,7 +13,6 @@ import appeng.menu.locator.ItemMenuHostLocator;
 
 import de.mari_023.ae2wtlib.api.AE2wtlibAPIImpl;
 import de.mari_023.ae2wtlib.api.registration.WTDefinition;
-import de.mari_023.ae2wtlib.networking.CycleTerminalPacket;
 import de.mari_023.ae2wtlib.networking.SelectTerminalPacket;
 import de.mari_023.ae2wtlib.networking.UpdateWUTPackage;
 
@@ -26,11 +25,6 @@ public class AE2wtlibAPIImplementation extends AE2wtlibAPIImpl {
     @Override
     public boolean isUniversalTerminal(Item item) {
         return item == AE2wtlibItems.UNIVERSAL_TERMINAL.asItem();
-    }
-
-    @Override
-    public void cycleTerminal(boolean isHandlingRightClick) {
-        ClientPacketDistributor.sendToServer(new CycleTerminalPacket(isHandlingRightClick));
     }
 
     @Override

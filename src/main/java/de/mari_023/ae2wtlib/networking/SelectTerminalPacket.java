@@ -5,7 +5,6 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 
 import appeng.menu.AEBaseMenu;
@@ -22,9 +21,7 @@ public record SelectTerminalPacket(WTDefinition terminal) implements AE2wtlibPac
             .map(SelectTerminalPacket::new, SelectTerminalPacket::terminal);
 
     public void processPacketData(Player player) {
-        final AbstractContainerMenu containerMenu = player.containerMenu;
-
-        if (!(containerMenu instanceof AEBaseMenu aeMenu))
+        if (!(player.containerMenu instanceof AEBaseMenu aeMenu))
             return;
 
         if (!(aeMenu.getLocator() instanceof ItemMenuHostLocator locator))

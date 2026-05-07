@@ -34,7 +34,7 @@ public class ItemWUT extends ItemWT {
     }
 
     @Override
-    public InteractionResult use(final Level level, final Player player, final InteractionHand hand) {
+    public InteractionResult use(Level level, Player player, InteractionHand hand) {
         if (WTDefinition.ofOrNull(player.getItemInHand(hand)) == null) {
             if (!level.isClientSide())
                 player.sendOverlayMessage(TextConstants.TERMINAL_EMPTY);
@@ -50,7 +50,7 @@ public class ItemWUT extends ItemWT {
     }
 
     @Override
-    public boolean open(final Player player, final ItemMenuHostLocator locator,
+    public boolean open(Player player, ItemMenuHostLocator locator,
             boolean returningFromSubmenu) {
         return WUTHandler.open(player, locator, returningFromSubmenu);
     }

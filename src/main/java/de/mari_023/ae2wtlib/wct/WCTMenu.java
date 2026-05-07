@@ -35,7 +35,7 @@ public class WCTMenu extends CraftingTermMenu {
 
     private final WCTMenuHost wctMenuHost;
 
-    public WCTMenu(int id, final Inventory ip, final WCTMenuHost gui) {
+    public WCTMenu(int id, Inventory ip, WCTMenuHost gui) {
         super(TYPE, id, ip, gui, true);
         wctMenuHost = gui;
 
