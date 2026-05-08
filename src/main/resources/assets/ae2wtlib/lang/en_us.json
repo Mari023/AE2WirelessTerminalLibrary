@@ -13,8 +13,6 @@
   "gui.ae2wtlib.magnetcard.desc.inv": "Pickup to Inventory",
   "gui.ae2wtlib.magnetcard.desc.me": "Pickup to ME",
   "gui.ae2wtlib.magnetcard.desc.me_no_magnet": "Magnet Off, Pickup to ME",
-  "gui.ae2wtlib.cycle_terminal.desc": "Open %s",
-  "gui.ae2wtlib.cycle_terminal.desc1": "Right click to open %s",
   "gui.ae2wtlib.current_terminal": "Current Terminal: %s",
   "gui.ae2wtlib.terminal_empty": "This terminal does not contain any other terminals",
   "gui.ae2wtlib.magnetcard.hotkey": "Magnet Card: %s",

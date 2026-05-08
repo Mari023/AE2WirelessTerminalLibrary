@@ -18,7 +18,7 @@ public class WATScreen extends PatternAccessTermScreen<WATMenu> implements IUniv
     public WATScreen(WATMenu container, Inventory playerInventory, Component title, ScreenStyle style) {
         super(container, playerInventory, title, style);
         if (getMenu().isWUT())
-            addToLeftToolbar(cycleTerminalButton());
+            addTerminalSelectionPanel(widgets);
 
         upgradesPanel = addUpgradePanel(widgets, getMenu());
         if (getMenu().getToolbox().isPresent())
@@ -35,9 +35,6 @@ public class WATScreen extends PatternAccessTermScreen<WATMenu> implements IUniv
     public WTMenuHost getHost() {
         return (WTMenuHost) getMenu().getHost();
     }
-
-    @Override
-    public void storeState() {}
 
     @Override
     public boolean keyPressed(KeyEvent event) {

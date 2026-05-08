@@ -13,8 +13,6 @@
   "gui.ae2wtlib.magnetcard.desc.inv": "Coletar para o Inventário",
   "gui.ae2wtlib.magnetcard.desc.me": "Coletar para o ME",
   "gui.ae2wtlib.magnetcard.desc.me_no_magnet": "Ímã Desligado, Coletar para o ME",
-  "gui.ae2wtlib.cycle_terminal.desc": "Abrir %s",
-  "gui.ae2wtlib.cycle_terminal.desc1": "Clique com o botão direito para abrir %s",
   "gui.ae2wtlib.magnetcard.hotkey": "Cartão Magnético: %s",
   "gui.ae2wtlib.restock": "Reabastecer: %s",
   "gui.ae2wtlib.off": "Desligado",

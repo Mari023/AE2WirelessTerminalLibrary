@@ -2,7 +2,7 @@ package de.mari_023.ae2wtlib.api.terminal;
 
 import java.util.ArrayList;
 
-import org.jetbrains.annotations.Contract;
+import de.mari_023.ae2wtlib.api.gui.TerminalSelectionPanel;
 
 import net.minecraft.client.input.KeyEvent;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
@@ -14,15 +14,11 @@ import appeng.menu.AEBaseMenu;
 import appeng.menu.SlotSemantics;
 
 import de.mari_023.ae2wtlib.api.gui.AE2wtlibSlotSemantics;
-import de.mari_023.ae2wtlib.api.gui.IconButton;
 import de.mari_023.ae2wtlib.api.gui.ScrollingUpgradesPanel;
 import de.mari_023.ae2wtlib.api.registration.WTDefinition;
 
 public interface IUniversalTerminalCapable {
     WTMenuHost getHost();
-
-    @SuppressWarnings("EmptyMethod")
-    void storeState();
 
     default boolean checkForTerminalKeys(KeyEvent event) {
         var closingHotkey = Hotkeys.getHotkeyMapping(getHost().getCloseHotkey());
@@ -44,14 +40,12 @@ public interface IUniversalTerminalCapable {
     }
 
     /**
-     * creates the button that opens the terminal selector. you are responsible for adding this to the leftToolbar when
-     * appropriate
+     * creates and adds the terminal selection panel
      *
-     * @return TerminalSelectionButton
+     * @param widgets the WidgetContainer where the widget will be added
      */
-    @Contract(value = "-> new", pure = true)
-    default IconButton cycleTerminalButton() {
-        return new TerminalSelectionButton(getHost(), this::storeState);
+    default void addTerminalSelectionPanel(WidgetContainer widgets) {
+        widgets.add("terminalSelection", new TerminalSelectionPanel(getHost()));
     }
 
     /**

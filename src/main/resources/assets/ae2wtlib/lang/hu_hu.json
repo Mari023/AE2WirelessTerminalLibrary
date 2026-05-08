@@ -13,8 +13,6 @@
   "gui.ae2wtlib.magnetcard.desc.inv": "Felvétel a tárolódba",
   "gui.ae2wtlib.magnetcard.desc.me": "Felvétel az ME rendszerbe",
   "gui.ae2wtlib.magnetcard.desc.me_no_magnet": "Mágnes Ki, Felvétel az ME-be",
-  "gui.ae2wtlib.cycle_terminal.desc": "%s megnyitása",
-  "gui.ae2wtlib.cycle_terminal.desc1": "Jobb kattintás %s megnyitásához",
   "gui.ae2wtlib.magnetcard.hotkey": "Mágnes kártya: ",
   "gui.ae2wtlib.restock": "Újratöltés: ",
   "gui.ae2wtlib.off": "Ki",

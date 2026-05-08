@@ -74,7 +74,7 @@ final class TerminalSelectionButton extends IconButton {
 
     @Override
     public void onPress(InputWithModifiers input) {
-        if (!alwaysVisible() && !terminals.isEmpty())
+        if (!alwaysVisible())
             menuOpen = !menuOpen;
     }
 
@@ -96,10 +96,6 @@ final class TerminalSelectionButton extends IconButton {
             return;
 
         super.onClick(event, doubleClick);
-
-        if (menuOpen) {
-            menuOpen = false;
-        }
     }
 
     @Override
@@ -150,13 +146,9 @@ final class TerminalSelectionButton extends IconButton {
     }
 
     private void renderMenu(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY) {
-        int panelX = panelX();
-        int panelY = panelY();
-        int width = panelWidth();
-        int height = panelHeight();
         WTDefinition currentTerminal = WTDefinition.ofOrNull(host.getItemStack());
 
-        BackgroundGenerator.draw(width, height, guiGraphics, panelX, panelY);
+        BackgroundGenerator.draw(panelWidth(), panelHeight(), guiGraphics, panelX(), panelY());
 
         for (int i = 0; i < terminals.size(); i++) {
             WTDefinition terminal = terminals.get(i);

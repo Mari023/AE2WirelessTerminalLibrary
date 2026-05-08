@@ -113,7 +113,7 @@ public record WTDefinition(String terminalName, ContainerOpener containerOpener,
     @Nullable
     public static WTDefinition ofOrNull(ItemStack stack) {
         return switch (stack.getItem()) {
-            case ItemWUT ignored -> {
+            case ItemWUT _ -> {
                 WTDefinition currentTerminal = stack.get(AE2wtlibComponents.CURRENT_TERMINAL);
 
                 if (currentTerminal != null)

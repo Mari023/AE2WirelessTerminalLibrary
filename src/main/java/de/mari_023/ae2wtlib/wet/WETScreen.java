@@ -17,7 +17,7 @@ public class WETScreen extends PatternEncodingTermScreen<WETMenu> implements IUn
     public WETScreen(WETMenu container, Inventory playerInventory, Component title, ScreenStyle style) {
         super(container, playerInventory, title, style);
         if (getMenu().isWUT())
-            addToLeftToolbar(cycleTerminalButton());
+            addTerminalSelectionPanel(widgets);
         upgradesPanel = addUpgradePanel(widgets, getMenu());
     }
 

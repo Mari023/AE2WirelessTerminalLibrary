@@ -12,6 +12,10 @@
     "upgrades": {
       "left": -9999,
       "top": -9999
+    },
+    "terminalSelection": {
+      "left": -10,
+      "bottom": 200
     }
   }
 }

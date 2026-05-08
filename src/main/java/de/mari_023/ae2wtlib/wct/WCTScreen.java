@@ -26,7 +26,7 @@ public class WCTScreen extends CraftingTermScreen<WCTMenu> implements IUniversal
     public WCTScreen(WCTMenu container, Inventory playerInventory, Component title, ScreenStyle style) {
         super(container, playerInventory, title, style);
         if (getMenu().isWUT())
-            addToLeftToolbar(cycleTerminalButton());
+            addTerminalSelectionPanel(widgets);
 
         IconButton wirelessTerminalSettingsButton = new IconButton(
                 _ -> switchToScreen(new WirelessTerminalSettingsScreen(this)), Icon.TERMINAL_SETTINGS);

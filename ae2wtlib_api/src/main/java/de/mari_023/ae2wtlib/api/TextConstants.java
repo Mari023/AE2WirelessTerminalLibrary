@@ -43,18 +43,7 @@ public final class TextConstants {
             .translatable("gui.ae2wtlib.terminal_empty");
 
     public static Component currentTerminal(WTDefinition terminal) {
-        return Component.translatable("gui.ae2wtlib.current_terminal",
-                Component.translatable(terminal.translationKey()).withStyle(STYLE_GRAY));
-    }
-
-    public static Component cycleNext(WTDefinition terminal) {
-        return Component.translatable("gui.ae2wtlib.cycle_terminal.desc",
-                Component.translatable(terminal.translationKey()));
-    }
-
-    public static Component cyclePrevious(WTDefinition terminal) {
-        return Component.translatable("gui.ae2wtlib.cycle_terminal.desc1",
-                Component.translatable(terminal.translationKey()));
+        return Component.translatable("gui.ae2wtlib.current_terminal", terminal.formattedName());
     }
 
     public static final MutableComponent TRASH = Component.translatable("gui.ae2wtlib.trash");

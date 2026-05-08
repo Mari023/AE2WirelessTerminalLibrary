@@ -13,8 +13,6 @@
   "gui.ae2wtlib.magnetcard.desc.inv": "Envantere Al",
   "gui.ae2wtlib.magnetcard.desc.me": "ME'ye Al",
   "gui.ae2wtlib.magnetcard.desc.me_no_magnet": "Mıknatıs Kapalı, ME'ye Al",
-  "gui.ae2wtlib.cycle_terminal.desc": "Aç %s",
-  "gui.ae2wtlib.cycle_terminal.desc1": "%s açmak için sağ tıkla",
   "gui.ae2wtlib.magnetcard.hotkey": "Mıknatıs Kartı: %s",
   "gui.ae2wtlib.restock": "Stok Yenile: %s",
   "gui.ae2wtlib.off": "Kapalı",

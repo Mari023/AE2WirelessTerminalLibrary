@@ -13,8 +13,6 @@
   "gui.ae2wtlib.magnetcard.desc.inv": "インベントリに収集",
   "gui.ae2wtlib.magnetcard.desc.me": "MEに収集",
   "gui.ae2wtlib.magnetcard.desc.me_no_magnet": "マグネットオフ、MEに収集",
-  "gui.ae2wtlib.cycle_terminal.desc": "開く%s",
-  "gui.ae2wtlib.cycle_terminal.desc1": "右クリックして %s を開きます",
   "gui.ae2wtlib.magnetcard.hotkey": "マグネットカード: %s",
   "gui.ae2wtlib.restock": "補充: %s",
   "gui.ae2wtlib.off": "オフ",
