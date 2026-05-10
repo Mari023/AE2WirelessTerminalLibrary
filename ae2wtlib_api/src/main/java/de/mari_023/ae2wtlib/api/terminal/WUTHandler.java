@@ -128,13 +128,13 @@ public class WUTHandler {
     public static ItemMenuHostLocator findTerminal(Player player, WTDefinition terminal) {
         ItemMenuHostLocator locator = null;
         // FIXME reintroduce curio compat once the ae2 curio integration is updated to work properly
-        /*
+        /*-
         var cap = player.getCapability(CuriosIntegration.ITEM_HANDLER);
         if (cap != null) {
             for (int i = 0; i < cap.size(); i++) {
                 var stack = cap.getResource(i).toStack();
                 if (!hasTerminal(stack, terminal)) continue;
-
+        
                 if (AE2wtlibAPI.isUniversalTerminal(stack)) {
                     return MenuLocators.forCurioSlot(i);
                 } else if (locator == null) {
