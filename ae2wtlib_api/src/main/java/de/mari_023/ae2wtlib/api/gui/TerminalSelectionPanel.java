@@ -1,21 +1,23 @@
 package de.mari_023.ae2wtlib.api.gui;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.renderer.Rect2i;
+import net.neoforged.neoforge.client.network.ClientPacketDistributor;
+
 import appeng.client.Hotkeys;
 import appeng.client.Point;
 import appeng.client.gui.AEBaseScreen;
 import appeng.client.gui.ICompositeWidget;
 import appeng.client.gui.Rects;
 import appeng.core.network.serverbound.HotkeyPacket;
+
 import de.mari_023.ae2wtlib.api.registration.WTDefinition;
 import de.mari_023.ae2wtlib.api.terminal.WTMenuHost;
 import de.mari_023.ae2wtlib.api.terminal.WUTHandler;
-import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.renderer.Rect2i;
-import net.neoforged.neoforge.client.network.ClientPacketDistributor;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Consumer;
 
 public class TerminalSelectionPanel implements ICompositeWidget {
     private static final int BUTTON_WIDTH = Icon.TOOLBAR_BUTTON_BACKGROUND.width();
@@ -60,8 +62,7 @@ public class TerminalSelectionPanel implements ICompositeWidget {
     }
 
     @Override
-    public void setSize(int width, int height) {
-    }
+    public void setSize(int width, int height) {}
 
     @Override
     public Rect2i getBounds() {

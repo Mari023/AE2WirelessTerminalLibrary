@@ -2,8 +2,6 @@ package de.mari_023.ae2wtlib.api.terminal;
 
 import java.util.ArrayList;
 
-import de.mari_023.ae2wtlib.api.gui.TerminalSelectionPanel;
-
 import net.minecraft.client.input.KeyEvent;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
 
@@ -15,6 +13,7 @@ import appeng.menu.SlotSemantics;
 
 import de.mari_023.ae2wtlib.api.gui.AE2wtlibSlotSemantics;
 import de.mari_023.ae2wtlib.api.gui.ScrollingUpgradesPanel;
+import de.mari_023.ae2wtlib.api.gui.TerminalSelectionPanel;
 import de.mari_023.ae2wtlib.api.registration.WTDefinition;
 
 public interface IUniversalTerminalCapable {
