@@ -44,7 +44,7 @@ public interface IUniversalTerminalCapable {
      * @param widgets the WidgetContainer where the widget will be added
      */
     default void addTerminalSelectionPanel(WidgetContainer widgets) {
-        widgets.add("terminalSelection", new TerminalSelectionPanel(getHost()));
+        widgets.add("terminalSelection", new TerminalSelectionPanel(getHost(), widgets));
     }
 
     /**

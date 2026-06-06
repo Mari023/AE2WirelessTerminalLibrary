@@ -3,6 +3,9 @@ loaderVersion = "[1,)"
 issueTrackerURL = "https://github.com/Mari023/AE2WirelessTerminalLibrary/issues"
 license = "MIT"
 
+[[mixins]]
+config="ae2wtlib_api.mixins.json"
+
 [[mods]]
 modId = "ae2wtlib_api"
 version = "${version}"

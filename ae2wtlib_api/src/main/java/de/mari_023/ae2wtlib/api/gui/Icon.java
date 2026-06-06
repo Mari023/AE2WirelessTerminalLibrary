@@ -53,6 +53,8 @@ public record Icon(int x, int y, int width, int height, Texture texture) {
     public static final Icon UPGRADE_BACKGROUND_SCROLLING_MIDDLE = new Icon(48, 85, 29, 18);
     public static final Icon UPGRADE_BACKGROUND_SCROLLING_BOTTOM = new Icon(48, 103, 29, 25);
 
+    public static final Icon TERMINAL_SWITCHER = new Icon(0, 66, 21, 62);
+
     private Icon(int x, int y) {
         this(x, y, 16, 16);
     }

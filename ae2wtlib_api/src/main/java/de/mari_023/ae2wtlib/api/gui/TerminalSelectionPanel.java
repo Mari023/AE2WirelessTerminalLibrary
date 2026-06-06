@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+import appeng.client.gui.WidgetContainer;
+import appeng.client.gui.widgets.VerticalButtonBar;
+import de.mari_023.ae2wtlib.api.mixin.WidgetContainerAccessor;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.renderer.Rect2i;
 import net.neoforged.neoforge.client.network.ClientPacketDistributor;
@@ -24,7 +28,7 @@ public class TerminalSelectionPanel implements ICompositeWidget {
     private static final int BUTTON_HEIGHT = Icon.TOOLBAR_BUTTON_BACKGROUND.height();
     private static final int MAX_ROWS = 3;
     private static final int GAP = 2;
-    private static final int PADDING = 5;
+    private static final int PADDING = 2;
 
     // The screen origin in window space
     private Point screenOrigin = Point.ZERO;
@@ -35,11 +39,13 @@ public class TerminalSelectionPanel implements ICompositeWidget {
 
     private final WTMenuHost host;
     private final List<WTDefinition> terminals;
+    private final WidgetContainer widgets;
     private final List<IconButton> buttons = new ArrayList<>();
 
-    public TerminalSelectionPanel(WTMenuHost host) {
+    public TerminalSelectionPanel(WTMenuHost host, WidgetContainer widgets) {
         this.host = host;
         terminals = installedTerminals(host);
+        this.widgets = widgets;
         for (var terminal : terminals) {
             IconButton button = IconButton.withAE2Background((_) -> {
                 var hotkey = Hotkeys.getHotkeyMapping(terminal.hotkeyName());
@@ -48,6 +54,14 @@ public class TerminalSelectionPanel implements ICompositeWidget {
                 ClientPacketDistributor.sendToServer(new HotkeyPacket(hotkey));
             }, terminal.icon()).withTooltip(terminal.formattedName());
             buttons.add(button);
+        }
+    }
+
+    @Override
+    public void updateBeforeRender() {
+        for (int i = 0; i < buttons.size(); i++) {
+            IconButton button = buttons.get(i);
+            button.setPosition(buttonX(i), buttonY(i));
         }
     }
 
@@ -62,7 +76,8 @@ public class TerminalSelectionPanel implements ICompositeWidget {
     }
 
     @Override
-    public void setSize(int width, int height) {}
+    public void setSize(int width, int height) {
+    }
 
     @Override
     public Rect2i getBounds() {
@@ -89,33 +104,42 @@ public class TerminalSelectionPanel implements ICompositeWidget {
     }
 
     @Override
+    public void drawBackgroundLayer(GuiGraphicsExtractor guiGraphics, Rect2i bounds, Point mouse) {
+        Icon.TERMINAL_SWITCHER.blit(guiGraphics, x() - PADDING, y() - PADDING);
+    }
+
+    @Override
     public void addExclusionZones(List<Rect2i> exclusionZones, Rect2i screenBounds) {
         // Use a bit of a margin around the zone to avoid things looking too cramped
-        exclusionZones.add(Rects.expand(Rects.move(getBounds(), screenBounds.getX(), screenBounds.getY()), 2));
+        exclusionZones.add(Rects.expand(getBounds(), 2));
     }
 
     private int x() {
-        return screenOrigin.getX() + x;
+        return screenOrigin.getX() + x - (columns() - 1) * (BUTTON_WIDTH + GAP);
     }
 
     private int y() {
-        return screenOrigin.getY() + y;
+        VerticalButtonBar toolbar = (VerticalButtonBar) ((WidgetContainerAccessor) widgets).getCompositeWidgets().get("verticalToolbar");
+        if (toolbar == null) {
+            return screenOrigin.getY();
+        }
+        return screenOrigin.getY() + toolbar.getBounds().getY() + toolbar.getBounds().getHeight();
     }
 
     private int width() {
-        return PADDING * 2 + columns() * (BUTTON_WIDTH + GAP) - GAP;
+        return columns() * (BUTTON_WIDTH + GAP) - GAP;
     }
 
     private int height() {
-        return PADDING * 2 + rows() * (BUTTON_HEIGHT + GAP) - GAP;
+        return Math.min(rows(), MAX_ROWS) * (BUTTON_HEIGHT + GAP) - GAP;
     }
 
     private int buttonX(int i) {
-        return x();
+        return x() + (BUTTON_WIDTH + GAP) * (i / MAX_ROWS);
     }
 
     private int buttonY(int i) {
-        return y();
+        return y() + (BUTTON_HEIGHT + GAP) * (i % MAX_ROWS);
     }
 
     private int columns() {
