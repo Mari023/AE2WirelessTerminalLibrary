@@ -1,2 +1,2 @@
-- fix disconnect when restock results in empty stacks (#371)
-- Add Buttons to switch to terminals directly (#375)
+- Port to 26.1
+- Add Buttons to switch to terminals directly, work in progress (based on #375)
