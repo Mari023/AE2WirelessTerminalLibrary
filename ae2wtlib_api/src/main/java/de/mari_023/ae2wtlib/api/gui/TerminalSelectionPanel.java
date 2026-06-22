@@ -28,22 +28,16 @@ public class TerminalSelectionPanel implements ICompositeWidget {
     private static final int BUTTON_HEIGHT = Icon.TOOLBAR_BUTTON_BACKGROUND.height();
     private static final int MAX_ROWS = 3;
     private static final int GAP = 2;
-    private static final int PADDING = 2;
+    private static final int PADDING = 3;
 
     // The screen origin in window space
     private Point screenOrigin = Point.ZERO;
 
-    // Relative to current screen origin (not window)
-    private int x;
-    private int y;
-
-    private final WTMenuHost host;
     private final List<WTDefinition> terminals;
     private final WidgetContainer widgets;
     private final List<IconButton> buttons = new ArrayList<>();
 
     public TerminalSelectionPanel(WTMenuHost host, WidgetContainer widgets) {
-        this.host = host;
         terminals = installedTerminals(host);
         this.widgets = widgets;
         for (var terminal : terminals) {
@@ -61,22 +55,17 @@ public class TerminalSelectionPanel implements ICompositeWidget {
     public void updateBeforeRender() {
         for (int i = 0; i < buttons.size(); i++) {
             IconButton button = buttons.get(i);
-            button.setPosition(buttonX(i), buttonY(i));
+            button.setPosition(buttonX(i, buttons.size()), buttonY(i, buttons.size()));
         }
     }
 
     @Override
     public void setPosition(Point position) {
-        x = position.getX();
-        y = position.getY();
-        for (int i = 0; i < buttons.size(); i++) {
-            IconButton button = buttons.get(i);
-            button.setPosition(buttonX(i), buttonY(i));
-        }
     }
 
     @Override
-    public void setSize(int width, int height) {}
+    public void setSize(int width, int height) {
+    }
 
     @Override
     public Rect2i getBounds() {
@@ -89,7 +78,7 @@ public class TerminalSelectionPanel implements ICompositeWidget {
         for (int i = 0; i < buttons.size(); i++) {
             IconButton button = buttons.get(i);
             addWidget.accept(button);
-            button.setPosition(buttonX(i), buttonY(i));
+            button.setPosition(buttonX(i, buttons.size()), buttonY(i, buttons.size()));
         }
     }
 
@@ -110,11 +99,16 @@ public class TerminalSelectionPanel implements ICompositeWidget {
     @Override
     public void addExclusionZones(List<Rect2i> exclusionZones, Rect2i screenBounds) {
         // Use a bit of a margin around the zone to avoid things looking too cramped
-        exclusionZones.add(Rects.expand(getBounds(), 2));
+        exclusionZones.add(Rects.expand(getBounds(), PADDING));
     }
 
     private int x() {
-        return screenOrigin.getX() + x - (columns() - 1) * (BUTTON_WIDTH + GAP);
+        VerticalButtonBar toolbar = (VerticalButtonBar) ((WidgetContainerAccessor) widgets).getCompositeWidgets()
+                .get("verticalToolbar");
+        if (toolbar == null) {
+            return screenOrigin.getX();
+        }
+        return screenOrigin.getX() + toolbar.getBounds().getX() + 1 - (columns() - 1) * (BUTTON_WIDTH + GAP);
     }
 
     private int y() {
@@ -134,11 +128,19 @@ public class TerminalSelectionPanel implements ICompositeWidget {
         return Math.min(rows(), MAX_ROWS) * (BUTTON_HEIGHT + GAP) - GAP;
     }
 
-    private int buttonX(int i) {
-        return x() + (BUTTON_WIDTH + GAP) * (i / MAX_ROWS);
+    private int buttonX(int i, int count) {
+        int overflow = count % MAX_ROWS;
+        if (i >= overflow && overflow != 0) {
+            i += MAX_ROWS - overflow;
+        }
+        return x() + 1 + (BUTTON_WIDTH + GAP) * (i / MAX_ROWS);
     }
 
-    private int buttonY(int i) {
+    private int buttonY(int i, int count) {
+        int overflow = count % MAX_ROWS;
+        if (i >= overflow && overflow != 0) {
+            i += MAX_ROWS - overflow;
+        }
         return y() + (BUTTON_HEIGHT + GAP) * (i % MAX_ROWS);
     }
 
