@@ -60,12 +60,10 @@ public class TerminalSelectionPanel implements ICompositeWidget {
     }
 
     @Override
-    public void setPosition(Point position) {
-    }
+    public void setPosition(Point position) {}
 
     @Override
-    public void setSize(int width, int height) {
-    }
+    public void setSize(int width, int height) {}
 
     @Override
     public Rect2i getBounds() {
