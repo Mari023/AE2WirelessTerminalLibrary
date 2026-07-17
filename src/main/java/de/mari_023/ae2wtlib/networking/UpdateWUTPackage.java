@@ -25,6 +25,9 @@ public record UpdateWUTPackage(ItemMenuHostLocator locator, DataComponentPatch p
     }
 
     public void processPacketData(Player player) {
+        if (!player.level().isClientSide()) {
+            return;
+        }
         WTMenuHost host = locator().locate(player, WTMenuHost.class);
         if (host != null)
             host.getItemStack().applyComponents(patch());

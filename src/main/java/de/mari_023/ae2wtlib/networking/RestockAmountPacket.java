@@ -25,6 +25,9 @@ public record RestockAmountPacket(HashMap<Holder<Item>, Long> items) implements 
 
     @Override
     public void processPacketData(Player player) {
+        if (!player.level().isClientSide()) {
+            return;
+        }
         HashMap<Item, Long> map = Maps.newHashMapWithExpectedSize(items().size());
         items().forEach((item, count) -> map.put(item.value(), count));
         CraftingTerminalHandler.getCraftingTerminalHandler(player).setRestockAbleItems(map);

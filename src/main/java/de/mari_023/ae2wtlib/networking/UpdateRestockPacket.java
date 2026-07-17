@@ -18,6 +18,15 @@ public record UpdateRestockPacket(int slot, ItemStack itemStack) implements AE2w
 
     @Override
     public void processPacketData(Player player) {
+        if (!player.level().isClientSide()) {
+            return;
+        }
+        if (slot() == -1) {
+            return;
+        }
+        if (slot() < 0 || slot() >= player.getInventory().getContainerSize()) {
+            return;
+        }
         player.getInventory().setItem(slot(), itemStack());
     }
 
