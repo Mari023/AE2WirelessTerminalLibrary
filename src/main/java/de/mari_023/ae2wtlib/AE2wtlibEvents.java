@@ -2,6 +2,7 @@ package de.mari_023.ae2wtlib;
 
 import java.util.function.Consumer;
 
+import net.minecraft.network.protocol.game.ClientboundSetHeldSlotPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -198,5 +199,7 @@ public class AE2wtlibEvents {
         stack.setCount((int) extracted);
         inventory.setItem(targetSlot, stack);
         inventory.setSelectedSlot(targetSlot);
+        player.inventoryMenu.broadcastChanges();
+        player.connection.send(new ClientboundSetHeldSlotPacket(targetSlot));
     }
 }

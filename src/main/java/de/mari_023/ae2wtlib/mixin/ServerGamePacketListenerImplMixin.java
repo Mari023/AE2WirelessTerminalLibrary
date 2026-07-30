@@ -20,7 +20,7 @@ public abstract class ServerGamePacketListenerImplMixin {
     public ServerPlayer player;
 
     @Inject(method = "tryPickItem", at = {
-            @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerGamePacketListenerImpl;send(Lnet/minecraft/network/protocol/Packet;)V") })
+            @At(value = "INVOKE", shift = At.Shift.AFTER, target = "Lnet/minecraft/server/network/ServerGamePacketListenerImpl;send(Lnet/minecraft/network/protocol/Packet;)V") })
     public void pickBlock(ItemStack itemStack, CallbackInfo ci,
             @Local(name = "slotWithExistingItem") int slotWithExistingItem) {
         if (player.hasInfiniteMaterials())
