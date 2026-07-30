@@ -1,2 +1,3 @@
 - fix Pick Block probably not working on dedicated Servers (#381)
 - fix Pick Block not visually switching to the correct slot
+- fix JEI recipe transfer not working (#382)

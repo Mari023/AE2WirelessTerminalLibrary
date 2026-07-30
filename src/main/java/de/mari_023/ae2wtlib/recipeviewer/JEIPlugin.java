@@ -8,7 +8,12 @@ import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeTransferRegistration;
 
+import appeng.client.integrations.jei.transfer.EncodePatternTransferHandler;
+import appeng.client.integrations.jei.transfer.UseCraftingRecipeTransfer;
+
 import de.mari_023.ae2wtlib.api.AE2wtlibAPI;
+import de.mari_023.ae2wtlib.wct.WCTMenu;
+import de.mari_023.ae2wtlib.wet.WETMenu;
 import de.mari_023.ae2wtlib.wut.WTDefinitions;
 
 @JeiPlugin
@@ -22,7 +27,13 @@ public class JEIPlugin implements IModPlugin {
 
     @Override
     public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
-        // FIXME 1.20.2
+        registration.addRecipeTransferHandler(
+                new UseCraftingRecipeTransfer<>(WCTMenu.class, WCTMenu.TYPE, registration.getTransferHelper()),
+                RecipeTypes.CRAFTING);
+
+        // Universal handler for processing to try and handle all IRecipe
+        registration.addUniversalRecipeTransferHandler(
+                new EncodePatternTransferHandler<>(WETMenu.TYPE, WETMenu.class, registration.getTransferHelper()));
     }
 
     @Override
