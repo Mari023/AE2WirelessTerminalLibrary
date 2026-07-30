@@ -1,2 +1,1 @@
-- Port to 26.1
-- Add Buttons to switch to terminals directly, work in progress (based on #375)
+- fix Pick Block probably not working on dedicated Servers

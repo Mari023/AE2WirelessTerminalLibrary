@@ -5,12 +5,12 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "AEItemsMixin",
+    "ServerGamePacketListenerImplMixin",
     "ServerPlayerGameModeMixin",
     "ServerPlayerMixin"
   ],
   "client": [
-    "GuiMixin",
-    "ServerGamePacketListenerImplMixin"
+    "GuiMixin"
   ],
   "injectors": {
     "defaultRequire": 1
