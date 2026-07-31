@@ -1,5 +1,6 @@
 package de.mari_023.ae2wtlib.wut.recipe;
 
+import com.mojang.datafixers.util.Unit;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
@@ -7,12 +8,14 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 
+import de.mari_023.ae2wtlib.AE2wtlibItems;
 import de.mari_023.ae2wtlib.api.AE2wtlibAPI;
 import de.mari_023.ae2wtlib.api.registration.WTDefinition;
 
@@ -98,5 +101,12 @@ public class Combine extends Common {
         inputs.add(terminalA);
         inputs.add(terminalB);
         return inputs;
+    }
+
+    @Override
+    protected ItemStackTemplate wut() {
+        return AE2wtlibItems.UNIVERSAL_TERMINAL
+                .template(builder -> builder.set(terminalADefinition.componentType(), Unit.INSTANCE)
+                        .set(terminalBDefinition.componentType(), Unit.INSTANCE));
     }
 }

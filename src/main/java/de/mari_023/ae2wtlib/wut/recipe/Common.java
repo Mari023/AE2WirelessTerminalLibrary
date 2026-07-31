@@ -8,10 +8,12 @@ import javax.annotation.Nullable;
 import com.mojang.datafixers.util.Unit;
 
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
-import net.minecraft.world.item.crafting.CraftingRecipe;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.PlacementInfo;
+import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.display.RecipeDisplay;
+import net.minecraft.world.item.crafting.display.ShapelessCraftingRecipeDisplay;
+import net.minecraft.world.item.crafting.display.SlotDisplay;
 
 import appeng.api.config.Actionable;
 import appeng.api.ids.AEComponents;
@@ -25,7 +27,7 @@ public abstract class Common implements CraftingRecipe {
     @Nullable
     private PlacementInfo placementInfo;
 
-    protected abstract List<Ingredient> getIngredients();
+    public abstract List<Ingredient> getIngredients();
 
     public PlacementInfo placementInfo() {
         if (placementInfo == null) {
@@ -38,6 +40,14 @@ public abstract class Common implements CraftingRecipe {
     @Override
     public CraftingBookCategory category() {
         return CraftingBookCategory.EQUIPMENT;
+    }
+
+    protected abstract ItemStackTemplate wut();
+
+    @Override
+    public List<RecipeDisplay> display() {
+        return List.of(new ShapelessCraftingRecipeDisplay(getIngredients().stream().map(Ingredient::display).toList(),
+                new SlotDisplay.ItemStackSlotDisplay(wut()), new SlotDisplay.ItemSlotDisplay(Items.CRAFTING_TABLE)));
     }
 
     /**
