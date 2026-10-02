@@ -112,7 +112,7 @@ public class AE2wtlibForge {
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void handle(PlayerInteractEvent.EntityInteractSpecific event) {
+    public static void handle(PlayerInteractEvent.EntityInteract event) {
         if (!(event.getEntity() instanceof ServerPlayer player) || event.isCanceled())
             return;
         var item = event.getItemStack();

@@ -33,7 +33,7 @@ public class AE2wtlibClient {
     public static void mouseScroll(InputEvent.MouseScrollingEvent event) {
         var minecraft = Minecraft.getInstance();
         var player = minecraft.player;
-        if (player == null || minecraft.screen != null || !player.isShiftKeyDown() || event.getScrollDeltaY() == 0)
+        if (player == null || minecraft.gui.screen() != null || !player.isShiftKeyDown() || event.getScrollDeltaY() == 0)
             return;
 
         if (!(player.getMainHandItem().getItem() instanceof ItemWUT)

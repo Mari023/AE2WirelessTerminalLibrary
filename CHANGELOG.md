@@ -1,4 +1,1 @@
-- fix Pick Block probably not working on dedicated Servers (#381)
-- fix Pick Block not visually switching to the correct slot
-- fix JEI recipe transfer not working (#382)
-- fix Universal Terminal recipe not showing in JEI or the recipe book
+- update to 26.2

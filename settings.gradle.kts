@@ -1,8 +1,8 @@
 rootProject.name = "ae2wtlib"
 pluginManagement {
     plugins {
-        id("net.neoforged.moddev") version "2.0.141"
-        id("net.neoforged.moddev.repositories") version "2.0.141"
+        id("net.neoforged.moddev") version "2.0.148"
+        id("net.neoforged.moddev.repositories") version "2.0.148"
         id("com.diffplug.spotless") version "7.0.0.BETA2"
     }
 }
@@ -14,9 +14,10 @@ dependencyResolutionManagement {
         mavenLocal()
         mavenCentral()
         maven {
-            url = uri("https://modmaven.dev/")
+            url = uri("https://maven.blamejared.com/")
             content {
                 includeGroup("mezz.jei")
+                includeGroup("net.mezzdev.config")
             }
         }
         maven {

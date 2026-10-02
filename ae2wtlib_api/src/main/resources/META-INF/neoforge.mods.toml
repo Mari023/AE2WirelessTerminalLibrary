@@ -14,7 +14,7 @@ authors = "mari_023, Ridanisaurus"
 description = '''
 API for adding wireless terminals with easy integration with AE2wtlib.
 '''
-logoFile = "icon.png"
+iconFile = "icon.png"
 logoBlur=false
 
 [[dependencies.ae2wtlib_api]]

@@ -31,8 +31,8 @@ public class AE2wtlibTestPlots {
         plot.blockState(o.east(17).above(), AEBlocks.WIRELESS_ACCESS_POINT.block().defaultBlockState()
                 .setValue(BlockStateProperties.FACING, Direction.UP));
 
-        plot.block(o.north().below(), Blocks.RED_WOOL);
-        plot.block(o.north().below().east(), Blocks.GREEN_WOOL);
+        plot.block(o.north().below(), Blocks.WOOL.red());
+        plot.block(o.north().below().east(), Blocks.WOOL.green());
         plot.block(o.above(), AEBlocks.QUARTZ_VIBRANT_GLASS);
         plot.block(o.above().east(), AEBlocks.QUARTZ_VIBRANT_GLASS);
 
