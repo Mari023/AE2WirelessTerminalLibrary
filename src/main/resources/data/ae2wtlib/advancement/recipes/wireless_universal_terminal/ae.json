@@ -1,9 +1,19 @@
 {
   "parent": "minecraft:recipes/root",
   "rewards": {
-    "recipes": ["ae2wtlib:wireless_universal_terminal/upgrade_interface"]
+    "recipes": ["ae2wtlib:wireless_universal_terminal/ae"]
   },
   "criteria": {
+    "has_wpt": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "ae2wtlib:wireless_pattern_encoding_terminal"
+          }
+        ]
+      }
+    },
     "has_wit": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
@@ -17,9 +27,9 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "ae2wtlib:wireless_universal_terminal/upgrade_interface"
+        "recipes": "ae2wtlib:wireless_universal_terminal/ae"
       }
     }
   },
-  "requirements": [["has_wit", "has_the_recipe"]]
+  "requirements": [["has_wit", "has_wpt", "has_the_recipe"]]
 }

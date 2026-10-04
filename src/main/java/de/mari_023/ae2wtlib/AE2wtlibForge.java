@@ -39,7 +39,7 @@ import de.mari_023.ae2wtlib.networking.*;
 public class AE2wtlibForge {
     public AE2wtlibForge(IEventBus modEventBus, ModContainer modContainer) {
         new AE2wtlibAPIImplementation();
-        modContainer.registerConfig(ModConfig.Type.COMMON, AE2wtlibConfig.SPEC,
+        modContainer.registerConfig(ModConfig.Type.LOCAL, AE2wtlibConfig.SPEC,
                 AE2wtlibAPI.MOD_NAME + ".toml");
         AE2wtlibItems.DR.register(modEventBus);
         modEventBus.addListener((RegisterEvent e) -> {

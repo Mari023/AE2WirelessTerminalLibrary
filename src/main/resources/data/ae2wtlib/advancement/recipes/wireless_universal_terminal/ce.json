@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:recipes/root",
   "rewards": {
-    "recipes": ["ae2wtlib:wireless_universal_terminal/cp"]
+    "recipes": ["ae2wtlib:wireless_universal_terminal/ce"]
   },
   "criteria": {
     "has_wct": {
@@ -27,7 +27,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "ae2wtlib:wireless_universal_terminal/cp"
+        "recipes": "ae2wtlib:wireless_universal_terminal/ce"
       }
     }
   },

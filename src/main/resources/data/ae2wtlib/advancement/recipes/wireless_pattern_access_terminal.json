@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:recipes/root",
   "rewards": {
-    "recipes": ["ae2wtlib:wireless_pattern_access_terminal"]
+    "recipes": ["ae2wtlib:pattern_access/wireless_pattern_access_terminal"]
   },
   "criteria": {
     "has_wt": {
@@ -17,7 +17,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "ae2wtlib:wireless_pattern_access_terminal"
+        "recipes": "ae2wtlib:pattern_access/wireless_pattern_access_terminal"
       }
     }
   },

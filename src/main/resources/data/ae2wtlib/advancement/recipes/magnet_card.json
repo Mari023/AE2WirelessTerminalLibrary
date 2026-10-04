@@ -17,7 +17,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "ae2wtlib:magnet_card"
+        "recipes": "ae2wtlib:magnet_card"
       }
     }
   },
