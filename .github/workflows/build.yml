@@ -52,3 +52,11 @@ jobs:
         run: gradle spotlessCheck
         env:
           ORG_GRADLE_PROJECT_runtimeItemlistMod: none
+
+      - name: generatePackageInfos
+        run: gradle generatePackageInfos
+
+      - name: checkNullMarked
+        run: |
+          git status
+          if [ -n "$(git status --porcelain)" ]; then exit 1; fi

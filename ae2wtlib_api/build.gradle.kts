@@ -1,3 +1,5 @@
+import java.util.regex.Matcher
+
 plugins {
     id("net.neoforged.moddev")
     id("com.diffplug.spotless")
@@ -95,6 +97,37 @@ publishing {
             url = uri("https://modmaven.dev/artifactory/local-releases/")
         }
     }
+}
+
+abstract class GeneratePackageInfos : DefaultTask() {
+    @get:InputFiles
+    @get:PathSensitive(PathSensitivity.RELATIVE)
+    abstract val files: ConfigurableFileCollection
+
+    @TaskAction
+    fun generatePackageInfos() {
+        files.forEach { javaFile ->
+            val packageInfoFile = File(javaFile.parentFile, "package-info.java")
+            if (!packageInfoFile.exists()) {
+                var pkgName = javaFile.toString().replace(Matcher.quoteReplacement(File.separator), "/")
+                pkgName = pkgName.substring(pkgName.indexOf("de/mari_023/ae2wtlib"), pkgName.lastIndexOf("/"))
+                pkgName = pkgName.replace("/", ".")
+
+                val pkgInfoText = """
+                    |@NullMarked
+                    |package $pkgName;
+                    |
+                    |import org.jspecify.annotations.NullMarked;
+                """.trimMargin().trim()
+
+                packageInfoFile.writeText(pkgInfoText)
+            }
+        }
+    }
+}
+
+val generatePackageInfos = tasks.register("checkNullMarked", GeneratePackageInfos::class.java) {
+    files.from(fileTree("src/main/java"))
 }
 
 spotless {
