@@ -1,1 +1,1 @@
-- fix S2C packets being registered as bidirectional
+- fix magnets working in spectator mode (#386)
