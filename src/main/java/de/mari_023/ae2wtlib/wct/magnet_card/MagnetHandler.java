@@ -81,6 +81,8 @@ public class MagnetHandler {
     }
 
     private static void handleMagnet(Player player, ItemStack terminal) {
+        if (player.isSpectator())
+            return;
         if (player.isShiftKeyDown())
             return;
         if (!getMagnetMode(terminal).magnet())
