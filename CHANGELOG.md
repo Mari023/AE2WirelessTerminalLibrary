@@ -1,1 +1,1 @@
-
+- fix magnets working in spectator mode (#386)
