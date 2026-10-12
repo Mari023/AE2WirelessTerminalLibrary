@@ -1,1 +1,2 @@
 - fix magnets working in spectator mode (#386)
+- fix Create Mechanical Arm target selection breaking when restock is active (#385)
