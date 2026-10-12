@@ -79,7 +79,7 @@ public class AE2wtlibEvents {
             if (player.getInventory().offhand.contains(item))
                 slot = Inventory.INVENTORY_SIZE;
         }
-        PacketDistributor.sendToPlayer(player, new UpdateRestockPacket(slot, item));
+        PacketDistributor.sendToPlayer(player, new UpdateRestockPacket(slot, item.getCount()));
     }
 
     /**
