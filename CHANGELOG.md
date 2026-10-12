@@ -1,2 +1,3 @@
 - fix magnets working in spectator mode (#386)
 - fix Create Mechanical Arm target selection breaking when restock is active (#385)
+- fix Terminal Selection Panel not working properly with more than 3 terminals (#388)

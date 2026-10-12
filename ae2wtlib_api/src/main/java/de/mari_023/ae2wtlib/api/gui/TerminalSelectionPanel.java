@@ -91,7 +91,19 @@ public class TerminalSelectionPanel implements ICompositeWidget {
 
     @Override
     public void drawBackgroundLayer(GuiGraphicsExtractor guiGraphics, Rect2i bounds, Point mouse) {
-        Icon.TERMINAL_SWITCHER.blit(guiGraphics, x() - PADDING, y() - PADDING);
+        int x = x() - PADDING;
+        int y = y() - PADDING;
+        if (columns() == 1) {
+            Icon.TERMINAL_SWITCHER_SINGLE.blit(guiGraphics, x, y);
+            return;
+        }
+        Icon.TERMINAL_SWITCHER_BORDER.blit(guiGraphics, x, y);
+        x += Icon.TERMINAL_SWITCHER_BORDER.width();
+        for (int i = 1; i < columns(); i++) {
+            Icon.TERMINAL_SWITCHER_MIDDLE.blit(guiGraphics, x, y);
+            x += Icon.TERMINAL_SWITCHER_MIDDLE.width();
+        }
+        Icon.TERMINAL_SWITCHER_TRANSITION.blit(guiGraphics, x, y);
     }
 
     @Override
@@ -147,6 +159,6 @@ public class TerminalSelectionPanel implements ICompositeWidget {
     }
 
     private int rows() {
-        return Math.max(1, Math.min(MAX_ROWS, terminals.size()));
+        return Math.clamp(terminals.size(), 1, MAX_ROWS);
     }
 }
