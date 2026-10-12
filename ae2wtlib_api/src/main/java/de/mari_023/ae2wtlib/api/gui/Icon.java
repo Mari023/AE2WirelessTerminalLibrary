@@ -14,6 +14,8 @@ import de.mari_023.ae2wtlib.api.AE2wtlibAPI;
 public record Icon(int x, int y, int width, int height, Texture texture) {
 
     public static final Texture TEXTURE = new Texture(AE2wtlibAPI.apiId("textures/guis/icons.png"), 128, 128);
+    public static final Texture TERMINAL_SWITCHER_TEXTURE = new Texture(
+            AE2wtlibAPI.apiId("textures/guis/terminal_selection_panel_bg.png"), 128, 128);
     public static final Texture AE2TEXTURE = new Texture(appeng.util.Icon.TEXTURE, appeng.util.Icon.TEXTURE_WIDTH,
             appeng.util.Icon.TEXTURE_HEIGHT);
 
@@ -54,7 +56,10 @@ public record Icon(int x, int y, int width, int height, Texture texture) {
     public static final Icon UPGRADE_BACKGROUND_SCROLLING_MIDDLE = new Icon(48, 85, 29, 18);
     public static final Icon UPGRADE_BACKGROUND_SCROLLING_BOTTOM = new Icon(48, 103, 29, 25);
 
-    public static final Icon TERMINAL_SWITCHER = new Icon(0, 56, 21, 72);
+    public static final Icon TERMINAL_SWITCHER_BORDER = new Icon(0, 0, 2, 72, TERMINAL_SWITCHER_TEXTURE);
+    public static final Icon TERMINAL_SWITCHER_MIDDLE = new Icon(2, 0, 18, 72, TERMINAL_SWITCHER_TEXTURE);
+    public static final Icon TERMINAL_SWITCHER_TRANSITION = new Icon(20, 0, 21, 72, TERMINAL_SWITCHER_TEXTURE);
+    public static final Icon TERMINAL_SWITCHER_SINGLE = new Icon(41, 0, 21, 72, TERMINAL_SWITCHER_TEXTURE);
 
     private Icon(int x, int y) {
         this(x, y, 16, 16);
