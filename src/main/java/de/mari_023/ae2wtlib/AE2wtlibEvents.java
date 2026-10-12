@@ -74,7 +74,7 @@ public class AE2wtlibEvents {
             if (ItemStack.isSameItemSameComponents(player.getInventory().getItem(Inventory.SLOT_OFFHAND), item))
                 slot = Inventory.SLOT_OFFHAND;
         }
-        PacketDistributor.sendToPlayer(player, new UpdateRestockPacket(slot, item));
+        PacketDistributor.sendToPlayer(player, new UpdateRestockPacket(slot, item.getCount()));
     }
 
     /**
