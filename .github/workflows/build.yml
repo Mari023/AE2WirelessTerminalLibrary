@@ -1,10 +1,10 @@
 name: build neoforge
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "26.1" ]
   pull_request:
     branches:
-      - '*'
+      - '26.1'
 
 jobs:
   build:
