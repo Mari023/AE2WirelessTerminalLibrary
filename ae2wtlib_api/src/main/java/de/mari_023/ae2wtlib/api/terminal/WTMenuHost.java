@@ -101,8 +101,12 @@ public abstract class WTMenuHost extends WirelessTerminalMenuHost<ItemWT>
     @Override
     public IGridNode getActionableNode() {
         if (!getPlayer().level().isClientSide() && quantumStatus.connected()) {
-            assert quantumBridge != null;
-            return quantumBridge.getActionableNode();
+            if (quantumBridge instanceof QuantumCluster quantumCluster && quantumCluster.getCenter() != null) {
+                return quantumBridge.getActionableNode();
+            } else {
+                quantumStatus = Status.BridgeNotFound.toILinkStatus();
+                quantumBridge = null;
+            }
         }
         return super.getActionableNode();
     }
