@@ -42,7 +42,7 @@ public class WETMenuHost extends WTMenuHost
 
     @Override
     public void markForSave() {
-        TagValueOutput tagValueOutput = TagValueOutput.createWithoutContext(ProblemReporter.DISCARDING);
+        TagValueOutput tagValueOutput = TagValueOutput.createWithContext(ProblemReporter.DISCARDING, getPlayer().registryAccess());
         logic.writeToNBT(tagValueOutput);
         getItemStack().set(AE2wtlibComponents.PATTERN_ENCODING_LOGIC, tagValueOutput.buildResult());
     }
