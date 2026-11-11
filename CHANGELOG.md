@@ -1,2 +1,3 @@
 - fix magnets working in spectator mode (#386)
 - fix Create Mechanical Arm target selection breaking when restock is active (#385)
+- fix crash when quantum bridge gets unloaded while a connected wireless terminal is open (#393)
