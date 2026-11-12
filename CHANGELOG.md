@@ -1,3 +1,4 @@
 - fix magnets working in spectator mode (#386)
 - fix Create Mechanical Arm target selection breaking when restock is active (#385)
 - fix crash when quantum bridge gets unloaded while a connected wireless terminal is open (#393)
+- fix crash when addons report LONG.MAX_VALUE items even tho they shouldn't (#390)
